@@ -29,5 +29,10 @@ public class PC_SmeltRecipe implements PC_IRecipe {
 	public float getExperience(){
 		return experience;
 	}
+
+	@Override
+	public boolean canBeCrafted() {
+		return result.getID()!=-1 && input.getID()!=-1;
+	}
 	
 }

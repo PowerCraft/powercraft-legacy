@@ -4,28 +4,25 @@ import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_ClientServerSync;
 
 public class PCli_TileEntityLaserSensor extends PC_TileEntity {
-
-	public static final String ACTIVE = "active";
 	
-	//private boolean active=false;
+	@PC_ClientServerSync
+	private boolean active=false;
 	private int coolDown = 2;
-	
-	public PCli_TileEntityLaserSensor(){
-    	setData(ACTIVE, false);
-    }
 	
 	public void hitByBeam() {
 		coolDown = 2;
-		if(!isActive()){
-			setData(ACTIVE, true);
+		if(!active){
+			active = true;
+			notifyChanges("active");
 			ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 		}
 	}
 
 	public boolean isActive() {
-		return (Boolean)getData(ACTIVE);
+		return active;
 	}
 
 	@Override
@@ -37,7 +34,8 @@ public class PCli_TileEntityLaserSensor extends PC_TileEntity {
     public void updateEntity() {
     	if(coolDown>0){
     		if(--coolDown==0){
-    			setData(ACTIVE, false);
+    			active = false;
+    			notifyChanges("active");
     			ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
     		}
     	}

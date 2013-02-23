@@ -17,31 +17,30 @@ import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.PC_VecI;
 
 public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_ITileEntityRenderer {
 
-	public static final String RUNNING = "running";
-	
 	private static PCma_ModelFishingMachine model = new PCma_ModelFishingMachine();
 	private static Random rand = new Random();
 	
 	private long lastTime = System.currentTimeMillis();
 	private int fishTimer = 250 + rand.nextInt(350);
 	private int burningFuel;
-	//public boolean running;
+	@PC_ClientServerSync
+	public boolean running;
 	public int rotation;
 	
-	public PCma_TileEntityFishingMachine(){
-		setData(RUNNING, false);
-	}
-	
 	public boolean isRunning(){
-		return (Boolean)getData(RUNNING);
+		return running;
 	}
 	
 	public void setRunning(boolean state){
-		setData(RUNNING, state);
+		if(running!=state){
+			running = state;
+			notifyChanges("running");
+		}
 	}
 	
 	@Override

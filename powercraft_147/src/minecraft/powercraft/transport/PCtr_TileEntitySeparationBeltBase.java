@@ -5,38 +5,52 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Utils.Inventory;
+import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 
 public abstract class PCtr_TileEntitySeparationBeltBase extends
 		PCtr_TileEntityRedirectionBeltBase implements IInventory, PC_ISpecialAccessInventory{
 
-	public static final String GROUP_LOGS = "group_logs";
-	public static final String GROUP_PLANKS = "group_planks";
-	public static final String GROUP_ALL = "group_all";
 	protected ItemStack separatorContents[];
 
+	@PC_ClientServerSync
+	private boolean group_logs;
+	@PC_ClientServerSync
+	private boolean group_planks;
+	@PC_ClientServerSync
+	private boolean group_all;
+	
 	public boolean isGroupLogs() {
-		return (Boolean)getData(GROUP_LOGS);
+		return group_logs;
 	}
 
 	public void setGroupLogs(boolean state) {
-		setData(GROUP_LOGS, state);
+		if(group_logs != state){
+			group_logs = state;
+			notifyChanges("group_logs");
+		}
 	}
 
 	public boolean isGroupPlanks() {
-		return (Boolean)getData(GROUP_PLANKS);
+		return group_planks;
 	}
 
 	public void setGroupPlanks(boolean state) {
-		setData(GROUP_LOGS, state);
+		if(group_planks != state){
+			group_planks = state;
+			notifyChanges("group_planks");
+		}
 	}
 
 	public boolean isGroupAll() {
-		return (Boolean)getData(GROUP_ALL);
+		return group_all;
 	}
 
 	public void setGroupAll(boolean state) {
-		setData(GROUP_LOGS, state);
+		if(group_all != state){
+			group_all = state;
+			notifyChanges("group_all");
+		}
 	}
 
 	@Override

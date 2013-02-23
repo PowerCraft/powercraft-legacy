@@ -13,7 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_BeamTracer;
 import powercraft.management.PC_BeamTracer.BeamSettings;
 import powercraft.management.PC_BeamTracer.result;
 import powercraft.management.PC_Block;
@@ -24,8 +23,10 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_BlockRegistry;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCli_TileEntityMirror.class)
 public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
@@ -72,7 +73,7 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		ItemStack ihold = player.getCurrentEquippedItem();
 		if (ihold != null) {
-			if (ihold.itemID == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal")) {
+			if (Block.blocksList[ihold.itemID] == PC_BlockRegistry.getPCBlockByName("PCco_BlockPowerCrystal")) {
 
 				PCli_TileEntityMirror teo = GameInfo.getTE(world, i, j, k, blockID);
 				if (teo != null) {
@@ -303,24 +304,24 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
 			break;
-		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
 			break;
-		case PC_Utils.MSG_BLOCK_FLAGS:{
+		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 			list.add(PC_Utils.NO_HARVEST);
 			list.add(PC_Utils.NO_PICKUP);
 			list.add(PC_Utils.PASSIVE);
 	   		return list;
-		}case PC_Utils.MSG_ITEM_FLAGS:{
+		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
-		}case PC_Utils.MSG_DEFAULT_NAME:
+		}case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			return "Mirror";
-		case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
+		case PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER:
 			return onHitByBeamTracer(world, (BeamSettings)obj[0]);
 		default:
 			return null;

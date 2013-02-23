@@ -21,11 +21,12 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.annotation.PC_Shining.OFF;
 import powercraft.management.annotation.PC_Shining.ON;
-import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_Shining
 @PC_BlockInfo(itemBlock=PClo_ItemBlockDelayer.class, tileEntity=PClo_TileEntityDelayer.class)
@@ -90,7 +91,6 @@ public class PClo_BlockDelayer extends PC_Block
 	            }
 	
 	            stateBuffer[0] = data;
-	            te.updateStateBuffer();
 	        }
 	
 	        if (reset)
@@ -104,8 +104,6 @@ public class PClo_BlockDelayer extends PC_Block
 	            {
 	                stateBuffer[i] = false;
 	            }
-	
-	            te.updateStateBuffer();
 	        }
 	        break;
         case PClo_DelayerType.HOLD:
@@ -336,21 +334,21 @@ public class PClo_BlockDelayer extends PC_Block
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_LOAD_FROM_CONFIG:
+		case PC_MSGRegistry.MSG_LOAD_FROM_CONFIG:
 			on.setLightValue(((PC_Property)obj[0]).getInt("brightness", 15) * 0.0625F);
 			break;
-		case PC_Utils.MSG_BLOCK_FLAGS:{
+		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 			list.add(PC_Utils.NO_HARVEST);
 			list.add(PC_Utils.NO_PICKUP);
 	   		return list;
-		}case PC_Utils.MSG_ITEM_FLAGS:{
+		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
-		}case PC_Utils.MSG_RENDER_ITEM_HORIZONTAL:
+		}case PC_MSGRegistry.MSG_RENDER_ITEM_HORIZONTAL:
 			return false;
-		case PC_Utils.MSG_ROTATION:
+		case PC_MSGRegistry.MSG_ROTATION:
 			return getRotation_static((Integer)obj[0]);
 		default:
 			return null;

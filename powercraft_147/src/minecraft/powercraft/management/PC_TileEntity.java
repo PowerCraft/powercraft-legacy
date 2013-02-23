@@ -3,10 +3,9 @@ package powercraft.management;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,11 +15,14 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.management.annotation.PC_ClientServerSync;
+import powercraft.management.reflect.PC_FieldWithAnnotation;
+import powercraft.management.reflect.PC_IFieldAnnotationIterator;
+import powercraft.management.reflect.PC_ReflectHelper;
 
 public abstract class PC_TileEntity extends TileEntity
 {
 
-	protected HashMap<String, Object> map = new HashMap<String, Object>();
 	private List<PC_ITileEntityWatcher> watcher = new ArrayList<PC_ITileEntityWatcher>();
 	
     @Override
@@ -59,6 +61,28 @@ public abstract class PC_TileEntity extends TileEntity
         return new PC_VecI(xCoord, yCoord, zCoord);
     }
     
+    public Field getSyncFieldWithName(final String name){
+    	System.out.println(getClass() + ":" + this);
+    	List<Field> l = PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), this, PC_ClientServerSync.class, new PC_IFieldAnnotationIterator<PC_ClientServerSync>() {
+
+			@Override
+			public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_ClientServerSync> fieldWithAnnotation) {
+				String fieldName = fieldWithAnnotation.getAnnotation().name();
+				if(fieldName.equals("")){
+					fieldName = fieldWithAnnotation.getFieldName();
+				}
+				System.out.println("need: "+name+" get "+fieldName);
+				if(fieldName.equals(name))
+					return true;
+				return false;
+			}
+		});
+    	if(l.size()>0){
+    		return l.get(0);
+    	}
+    	return null;
+    }
+    
     public void setData(PC_Struct2<String, Object>[] o){
     	for(int i=0; i<o.length; i++){
     		if(o[i].a.equals("call")){
@@ -66,12 +90,40 @@ public abstract class PC_TileEntity extends TileEntity
     			onCall(s.a, s.b);
     		}else{
     			dataChange(o[i].a, o[i].b);
-    			map.put(o[i].a, o[i].b);
+    			Field f = getSyncFieldWithName(o[i].a);
+    			f.setAccessible(true);
+    			try {
+					f.set(this, o[i].b);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} 
     		}
     	}
     	dataRecieved();
     }
 
+    protected void notifyChanges(final String...fields){
+    	final List<PC_Struct2<String, Object>> data = new ArrayList<PC_Struct2<String, Object>>();
+    	PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), this, PC_ClientServerSync.class, new PC_IFieldAnnotationIterator<PC_ClientServerSync>() {
+
+			@Override
+			public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_ClientServerSync> fieldWithAnnotation) {
+				String fieldName = fieldWithAnnotation.getAnnotation().name();
+				if(fieldName.equals("")){
+					fieldName = fieldWithAnnotation.getFieldName();
+				}
+				for(String name:fields){
+					if(fieldName.equals(name)){
+						data.add(new PC_Struct2<String, Object>(name, fieldWithAnnotation.getValue()));
+						break;
+					}
+				}
+				return false;
+			}
+		});
+    	PC_PacketHandler.setTileEntity(this, data.toArray(new PC_Struct2[0]));
+    }
+    
     protected void dataRecieved(){}
     
     protected void dataChange(String key, Object value){}
@@ -79,13 +131,20 @@ public abstract class PC_TileEntity extends TileEntity
     protected void onCall(String key, Object value){}
     
     public PC_Struct2<String, Object>[] getData(){
-    	PC_Struct2<String, Object>[] data = new PC_Struct2[map.size()];
-    	int i=0;
-    	for(Entry<String, Object>e:map.entrySet()){
-    		data[i] = new PC_Struct2<String, Object>(e.getKey(), e.getValue());
-    		i++;
-    	}
-    	return data;
+    	final List<PC_Struct2<String, Object>> data = new ArrayList<PC_Struct2<String, Object>>();
+    	PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), this, PC_ClientServerSync.class, new PC_IFieldAnnotationIterator<PC_ClientServerSync>() {
+
+			@Override
+			public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_ClientServerSync> fieldWithAnnotation) {
+				String fieldName = fieldWithAnnotation.getAnnotation().name();
+				if(fieldName.equals("")){
+					fieldName = fieldWithAnnotation.getFieldName();
+				}
+				data.add(new PC_Struct2<String, Object>(fieldName, fieldWithAnnotation.getValue()));
+				return false;
+			}
+		});
+    	return data.toArray(new PC_Struct2[0]);
     }
 
     public void call(String key, Object value){
@@ -95,16 +154,6 @@ public abstract class PC_TileEntity extends TileEntity
     }
     
     public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
-    }
-
-    public void setData(String key, Object value){
-    	map.put(key, value);
-    	PC_PacketHandler.setTileEntity(this, new PC_Struct2<String, Object>(key, value));
-    	dataRecieved();
-    }
-    
-    public Object getData(String key){
-    	return map.get(key);
     }
     
     protected void notifyWatcher(String key, Object value){
@@ -128,24 +177,41 @@ public abstract class PC_TileEntity extends TileEntity
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
-		NBTTagCompound nbtTag = nbtTagCompound.getCompoundTag("map");
-		int size = nbtTag.getInteger("count");
-		for(int i=0; i<size; i++){
-			map.put(nbtTag.getString("key["+i+"]"), SaveHandler.loadFromNBT(nbtTag, "value["+i+"]"));
-		}
+		final NBTTagCompound nbtTag = nbtTagCompound.getCompoundTag("map");
+		PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), this, PC_ClientServerSync.class, new PC_IFieldAnnotationIterator<PC_ClientServerSync>() {
+
+			@Override
+			public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_ClientServerSync> fieldWithAnnotation) {
+				if(fieldWithAnnotation.getAnnotation().save()){
+					String fieldName = fieldWithAnnotation.getAnnotation().name();
+					if(fieldName.equals("")){
+						fieldName = fieldWithAnnotation.getFieldName();
+					}
+					fieldWithAnnotation.setValue(SaveHandler.loadFromNBT(nbtTag, fieldName));
+				}
+				return false;
+			}
+		});
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 		super.writeToNBT(nbtTagCompound);
-		NBTTagCompound nbtTag = new NBTTagCompound();
-		nbtTag.setInteger("count", map.size());
-		int i=0;
-		for(Entry<String, Object> e:map.entrySet()){
-			nbtTag.setString("key["+i+"]", e.getKey());
-			SaveHandler.saveToNBT(nbtTag, "value["+i+"]", e.getValue());
-			i++;
-		}
+		final NBTTagCompound nbtTag = new NBTTagCompound();
+		PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), this, PC_ClientServerSync.class, new PC_IFieldAnnotationIterator<PC_ClientServerSync>() {
+
+			@Override
+			public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_ClientServerSync> fieldWithAnnotation) {
+				if(fieldWithAnnotation.getAnnotation().save()){
+					String fieldName = fieldWithAnnotation.getAnnotation().name();
+					if(fieldName.equals("")){
+						fieldName = fieldWithAnnotation.getFieldName();
+					}
+					SaveHandler.saveToNBT(nbtTag, fieldName, fieldWithAnnotation.getValue());
+				}
+				return false;
+			}
+		});
 		nbtTagCompound.setCompoundTag("map", nbtTag);
 	}
 	

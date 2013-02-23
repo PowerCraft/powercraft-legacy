@@ -7,37 +7,35 @@ import net.minecraft.world.World;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_ClientServerSync;
 
 public class PClo_TileEntityGate extends PC_TileEntity
 {
-	public static final String TYPE = "type", INP = "inp";
-    //private int type = 0;
-    //private int inp = 0;
-
-	public PClo_TileEntityGate(){
-		setData(TYPE, 0);
-    	setData(INP, 0);
-    }
+	@PC_ClientServerSync
+	private int type = 0;
+	@PC_ClientServerSync
+    private int inp = 0;
 	
     public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
-    	setData(TYPE, stack.getItemDamage());
-    	setData(INP, PClo_GateType.ROT_L_D_R);
+    	type = stack.getItemDamage();
+    	inp = PClo_GateType.ROT_L_D_R;
     }
 
     public int getType()
     {
-        return (Integer)getData(TYPE);
+        return type;
     }
 
     public int getInp()
     {
-    	return (Integer)getData(INP);
+    	return inp;
     }
 
     public void rotInp()
     {
-    	setData(INP, PClo_RepeaterType.change(getType(), getInp()));
+    	inp = PClo_RepeaterType.change(type, inp);
+    	notifyChanges("inp");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         ValueWriting.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
     }

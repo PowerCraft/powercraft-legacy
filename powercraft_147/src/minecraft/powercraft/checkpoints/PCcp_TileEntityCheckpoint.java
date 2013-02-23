@@ -6,28 +6,23 @@ import net.minecraft.item.ItemStack;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
+import powercraft.management.annotation.PC_ClientServerSync;
 
 public class PCcp_TileEntityCheckpoint extends PC_TileEntity implements IInventory {
 
-	public static final String COLLIDETIGGERD = "collideTriggerd";
 	private ItemStack[] inventory = new ItemStack[36];
-	
-	public PCcp_TileEntityCheckpoint(){
-		setData(COLLIDETIGGERD, false);
-	}
+	@PC_ClientServerSync
+	private boolean collideTriggerd=false;
 	
 	public void setCollideTriggerd(boolean b){
-		if(isCollideTriggerd()!=b){
-			setData(COLLIDETIGGERD, b);
+		if(collideTriggerd!=b){
+			collideTriggerd = b;
+			notifyChanges("collideTriggerd");
 		}
 	}
 	
 	public boolean isCollideTriggerd(){
-		Object value = getData(COLLIDETIGGERD);
-		if(value instanceof Boolean){
-			return (Boolean)value;
-		}
-		return false;
+		return collideTriggerd;
 	}
 	
 	@Override

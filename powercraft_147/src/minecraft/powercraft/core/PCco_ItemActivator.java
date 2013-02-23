@@ -8,18 +8,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
-import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Struct3;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.MSG;
-import powercraft.management.PC_Utils.MSG.MSGIterator;
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.recipes.PC_3DRecipeManager;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_MSGRegistry.MSGIterator;
+import powercraft.management.registry.PC_RecipeRegistry;
 
 public class PCco_ItemActivator extends PC_Item{
     
@@ -37,7 +34,7 @@ public class PCco_ItemActivator extends PC_Item{
     	if(world.isRemote)
     		return false;
     	
-    	Boolean ok = (Boolean)MSG.callAllMSG(new MSGIterator() {
+    	Boolean ok = (Boolean)PC_MSGRegistry.callAllMSG(new MSGIterator() {
 			@Override
 			public Object onRet(Object o) {
 				if(o instanceof Boolean && (Boolean)o){
@@ -45,13 +42,13 @@ public class PCco_ItemActivator extends PC_Item{
 	        	}
 				return null;
 			}
-		}, PC_Utils.MSG_ON_ACTIVATOR_USED_ON_BLOCK, itemstack, entityplayer, world, new PC_VecI(x, y, z));
+		}, PC_MSGRegistry.MSG_ON_ACTIVATOR_USED_ON_BLOCK, itemstack, entityplayer, world, new PC_VecI(x, y, z));
     	
     	if(ok!=null && ok){
     		return true;
     	}
     	
-        if(PC_3DRecipeManager.searchRecipeAndDo(entityplayer, world, new PC_VecI(x, y, z)))
+        if(PC_RecipeRegistry.searchRecipe3DAndDo(entityplayer, world, new PC_VecI(x, y, z)))
         	return true;
         
     	int dir = ((PC_MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
@@ -85,7 +82,7 @@ public class PCco_ItemActivator extends PC_Item{
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
 			names.add(new LangEntry(getItemName(), "Activation Crystal"));
             return names;

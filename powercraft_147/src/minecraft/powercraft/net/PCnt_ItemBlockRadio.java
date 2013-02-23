@@ -5,8 +5,8 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_ItemBlock;
-import powercraft.management.PC_Utils;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PCnt_ItemBlockRadio extends PC_ItemBlock {
 
@@ -46,7 +46,7 @@ public class PCnt_ItemBlockRadio extends PC_ItemBlock {
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
 			names.add(new LangEntry(getItemName() + ".tx", "Redstone Radio Transmitter"));
 			names.add(new LangEntry(getItemName() + ".rx", "Redstone Radio Receiver"));

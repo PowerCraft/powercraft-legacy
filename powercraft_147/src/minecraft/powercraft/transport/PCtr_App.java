@@ -121,6 +121,11 @@ public class PCtr_App implements PC_IModule
                 	"XRX", 
                 	"XGX",
                         'X', conveyorBelt, 'G', Item.ingotGold, 'R', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(splitter), 
+        			" U ",
+        			"XSX",
+        			" D ",
+        			'U', new PC_ItemStack(elevator, 1, 0), 'X', conveyorBelt, 'S', separationBelt, 'D', new PC_ItemStack(elevator, 1, 1)));
         recipes.add(new PC_ShapedRecipes(new PC_ItemStack(slimeboots),
         			"B", 
         			"S", 

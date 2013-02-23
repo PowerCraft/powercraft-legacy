@@ -11,11 +11,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {
 
@@ -100,18 +101,18 @@ public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {
 		if(nbtTag==null)
 			return "";
 		ItemStack item = ItemStack.loadItemStackFromNBT(nbtTag.getCompoundTag("Item"));
-        return Lang.tr(getItemName()+".desc.name", item.getDisplayName());
+        return PC_LangRegistry.tr(getItemName()+".desc.name", item.getDisplayName());
     }
 	
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
 			names.add(new LangEntry(getItemName(), "Hologramblock"));
 			names.add(new LangEntry(getItemName()+".desc", "Contains: %s"));
 			return names;
-		case PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
+		case PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
 			return true;
 		}
 		return null;

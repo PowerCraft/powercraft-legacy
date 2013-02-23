@@ -29,11 +29,11 @@ public class PC_FieldWithAnnotation<T extends Annotation> {
 	}
 	
 	public Class<?> getFieldClass(){
-		return c.getFields()[index].getType();
+		return c.getDeclaredFields()[index].getType();
 	}
 	
 	public String getFieldName(){
-		return c.getFields()[index].getName();
+		return c.getDeclaredFields()[index].getName();
 	}
 	
 }

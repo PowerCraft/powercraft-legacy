@@ -3,11 +3,8 @@ package powercraft.weasel;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.itemstorage.PCis_ItemCompressor;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresColorPicker;
@@ -21,7 +18,6 @@ import powercraft.management.gres.PC_GresWidgetTab;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public abstract class PCws_GuiWeasel implements PC_IGresClient {
 

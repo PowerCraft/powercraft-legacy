@@ -20,8 +20,10 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_KeyRegistry;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(itemBlock=PChg_ItemBlockHologramBlock.class, tileEntity=PChg_TileEntityHologramBlock.class)
 public class PChg_BlockHologramBlock extends PC_Block {
@@ -58,7 +60,7 @@ public class PChg_BlockHologramBlock extends PC_Block {
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving){
         int l = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
-        if (entityliving instanceof EntityPlayer && GameInfo.isPlacingReversed(((EntityPlayer)entityliving)))
+        if (entityliving instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed(((EntityPlayer)entityliving)))
         {
             l = ValueWriting.reverseSide(l);
         }
@@ -133,25 +135,25 @@ public class PChg_BlockHologramBlock extends PC_Block {
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_BLOCK_FLAGS:{
+		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 			list.add(PC_Utils.NO_HARVEST);
 			list.add(PC_Utils.NO_PICKUP);
 	   		return list;
-		}case PC_Utils.MSG_ITEM_FLAGS:{
+		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
 		}
-		case PC_Utils.MSG_ROTATION:
+		case PC_MSGRegistry.MSG_ROTATION:
 			return getRotation_static((Integer)obj[0]);
-		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
 			break;
-		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
 			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
 			break;
-		case PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
+		case PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
 			return true;
 		default:
 			return null;

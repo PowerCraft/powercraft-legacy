@@ -9,10 +9,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(itemBlock=PChg_ItemBlockHologramBlockEmpty.class)
 public class PChg_BlockHologramBlockEmpty extends PC_Block {
@@ -43,12 +43,12 @@ public class PChg_BlockHologramBlockEmpty extends PC_Block {
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_BLOCK_FLAGS:{
+		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 			list.add(PC_Utils.NO_HARVEST);
 			list.add(PC_Utils.NO_PICKUP);
 	   		return list;
-		}case PC_Utils.MSG_ITEM_FLAGS:{
+		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;

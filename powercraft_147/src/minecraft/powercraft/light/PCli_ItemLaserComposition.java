@@ -25,6 +25,7 @@ import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PCli_ItemLaserComposition extends PC_Item
 {
@@ -286,7 +287,7 @@ public class PCli_ItemLaserComposition extends PC_Item
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
 			names.add(new LangEntry(getItemName(), "Laser Composition"));
 			names.add(new LangEntry(getItemName() + ".kill", "Kill Level %s"));

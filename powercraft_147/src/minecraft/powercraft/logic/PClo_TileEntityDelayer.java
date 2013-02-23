@@ -9,38 +9,30 @@ import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_ClientServerSync;
 
 public class PClo_TileEntityDelayer extends PC_TileEntity
 {
-	public static final String TYPE = "type", STATEBUFFER = "stateBuffer";
-    //private int type = 0;
-	//private boolean stateBuffer[] = new boolean[20];
+	@PC_ClientServerSync
+	private int type = 0;
+	@PC_ClientServerSync
+	private boolean stateBuffer[] = new boolean[20];
 	private int remainingTicks = 0;
     private int ticks = 20;
     
-    public PClo_TileEntityDelayer(){
-    	setData(TYPE, 0);
-    	setData(STATEBUFFER, new boolean[20]);
-    }
-    
     public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
-    	setData(TYPE, stack.getItemDamage());
+    	type = stack.getItemDamage();
     }
 
     public int getType()
     {
-    	return (Integer)getData(TYPE);
+    	return type;
     }
 
     public boolean[] getStateBuffer()
     {
-    	return (boolean[])getData(STATEBUFFER);
-    }
-
-    public void updateStateBuffer()
-    {
-        //PC_PacketHandler.setTileEntity(this, "stateBuffer", stateBuffer);
+    	return stateBuffer;
     }
 
     public int getDelay()
@@ -50,9 +42,9 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
 
     public void setDelay(int delay)
     {
-    	boolean [] stateBuffer = new boolean[delay];
+    	stateBuffer = new boolean[delay];
     	ticks = delay;
-    	setData(STATEBUFFER, stateBuffer);
+    	notifyChanges("stateBuffer");
     }
 
     public void resetRemainingTicks(){

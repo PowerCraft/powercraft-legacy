@@ -13,7 +13,7 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
-import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PCde_BlockRedstoneStorage extends PC_Block implements PC_IItemInfo {
 	private boolean wiresProvidePower = true;
@@ -36,9 +36,9 @@ public class PCde_BlockRedstoneStorage extends PC_Block implements PC_IItemInfo 
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			return "Redstone Storage";
-		case PC_Utils.MSG_BLOCK_FLAGS:{
+		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 			list.add(PC_Utils.NO_HARVEST);
 			list.add(PC_Utils.NO_PICKUP);
@@ -46,12 +46,12 @@ public class PCde_BlockRedstoneStorage extends PC_Block implements PC_IItemInfo 
 			list.add(PC_Utils.HARVEST_STOP);
 			return list;
 		}
-		case PC_Utils.MSG_ITEM_FLAGS:{
+		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
 		}
-		case PC_Utils.MSG_CONDUCTIVITY:
+		case PC_MSGRegistry.MSG_CONDUCTIVITY:
 			return 0.8f;
 		}
 		return null;

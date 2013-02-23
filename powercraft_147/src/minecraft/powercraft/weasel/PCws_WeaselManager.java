@@ -9,11 +9,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
-import powercraft.management.PC_INBT;
 import powercraft.management.PC_Struct3;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.MSG;
 import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.management.registry.PC_MSGRegistry;
 import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselObject;
@@ -124,10 +123,10 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_TICK_EVENT:
+		case PC_MSGRegistry.MSG_TICK_EVENT:
 			update();
 			return true;
-		case PC_Utils.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS:
+		case PC_MSGRegistry.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS:
 			List<PC_Struct3<String, String, Object>> l = (List<PC_Struct3<String, String, Object>>)obj[0];
 			l.add(new PC_Struct3<String, String, Object>("global.set", "setGlobalVariable", this));
 			l.add(new PC_Struct3<String, String, Object>("global.get", "getGlobalVariable", this));
@@ -309,7 +308,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	public static WeaselFunctionManager getGlobalFunctionManager() {
 		if(globalFunctions==null){
 			globalFunctions = new WeaselFunctionManager();
-			List<Object> l = MSG.callAllMSG(PC_Utils.MSG_LOAD_WORLD);
+			List<Object> l = MSG.callAllMSG(PC_MSGRegistry.MSG_LOAD_WORLD);
 			for(Object o:l){
 				if(o instanceof List){
 					List<PC_Struct3<String, String, Object>> list = (List<PC_Struct3<String, String, Object>>)o;

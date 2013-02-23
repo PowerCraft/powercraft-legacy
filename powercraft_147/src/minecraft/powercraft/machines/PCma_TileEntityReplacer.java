@@ -13,14 +13,13 @@ import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 
 public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
-	
-	public static final String COORDOFFSET = "coordOffset", AIDENABLED = "aidEnabled", AIDCOLOR = "aidcolor", STATE = "state";
 	
 	private static Random rand = new Random();
 	
@@ -29,18 +28,18 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
     private static final int MAXSTACK = 1;
     private static final int SIZE = 1;
 
-//    public PC_VecI coordOffset = new PC_VecI(0, 1, 0);
-//
-//    public boolean aidEnabled = false;
-//    private PC_Color aidcolor;
-//
-//    public boolean state = false;
+    @PC_ClientServerSync
+    public PC_VecI coordOffset = new PC_VecI(0, 1, 0);
+    @PC_ClientServerSync
+    public boolean aidEnabled = false;
+    @PC_ClientServerSync
+    private PC_Color aidcolor;
+    @PC_ClientServerSync
+    public boolean state = false;
 
     public int extraMeta = -1;
     
     public PCma_TileEntityReplacer(){
-    	setData(COORDOFFSET, new PC_VecI(0, 1, 0));
-    	setData(AIDENABLED, false);
     	float used = 2.0f;
         float r = rand.nextFloat();
         used -= r;
@@ -68,41 +67,51 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
             b = r;
             r = f;
         }
-
-        setData(AIDCOLOR, new PC_Color(r, g, b));
-    	setData(STATE, false);
+        aidcolor = new PC_Color(r, g, b);
     }
 
 	public PC_VecI getCoordOffset() {
-		return (PC_VecI)getData(COORDOFFSET);
+		return coordOffset;
 	}
 
 	public void setCoordOffset(PC_VecI coordOffset) {
-		setData(COORDOFFSET, coordOffset);
+		if(!this.coordOffset.equals(coordOffset)){
+			this.coordOffset = coordOffset.copy();
+			notifyChanges("coordOffset");
+		}
 	}
 
 	public boolean isAidEnabled() {
-		return (Boolean)getData(AIDENABLED);
+		return aidEnabled;
 	}
 
 	public void setAidEnabled(boolean aidEnabled) {
-		setData(AIDENABLED, aidEnabled);
+		if(this.aidEnabled != aidEnabled){
+			this.aidEnabled = aidEnabled;
+			notifyChanges("aidEnabled");
+		}
 	}
 
 	public PC_Color getAidcolor() {
-		return (PC_Color)getData(AIDCOLOR);
+		return aidcolor.copy();
 	}
 
 	public void setAidcolor(PC_Color aidcolor) {
-		setData(AIDCOLOR, aidcolor);
+		if(!this.aidcolor.equals(aidcolor)){
+			this.aidcolor = aidcolor.copy();
+			notifyChanges("aidcolor");
+		}
 	}
 
 	public boolean isState() {
-		return (Boolean)getData(STATE);
+		return state;
 	}
 
 	public void setState(boolean state) {
-		setData(STATE, state);
+		if(this.state != state){
+			this.state = state;
+			notifyChanges("state");
+		}
 	}
 
 	@Override

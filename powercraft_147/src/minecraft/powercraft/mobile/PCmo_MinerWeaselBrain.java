@@ -64,8 +64,12 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 	/**  */
 	private List<String> userInput = new ArrayList<String>();
 	
-	public PCmo_MinerWeaselBrain(PCmo_EntityMiner miner) {
-		id = PCws_WeaselManager.registerPlugin(this);
+	public PCmo_MinerWeaselBrain(PCmo_EntityMiner miner, boolean server) {
+		if(server){
+			id = PCws_WeaselManager.registerPlugin(this);
+		}else{
+			id=-1;
+		}
 		functionProvider = new MinerProvider();
 		engine = new WeaselEngine(functionProvider);
 		this.miner = miner;
@@ -989,9 +993,11 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 	
 	@Override
 	public PCmo_IMinerBrain readFromNBT(NBTTagCompound nbttag) {
-		PCws_WeaselManager.removePlugin(this);
-		id = nbttag.getInteger("id");
-		PCws_WeaselManager.registerPlugin(this, id);
+		if(id!=-1){
+			PCws_WeaselManager.removePlugin(this);
+			id = nbttag.getInteger("id");
+			PCws_WeaselManager.registerPlugin(this, id);
+		}
 		networkID = nbttag.getInteger("networkID");
 		miner.setInfo("deviceName", nbttag.getString("name"));
 		SaveHandler.loadFromNBT(nbttag, "engine", engine);
@@ -1274,6 +1280,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 	public void onOpenGui() {
 		miner.setInfo("deviceNames", PCws_WeaselManager.getAllPluginNames());
 		miner.setInfo("networkNames", PCws_WeaselManager.getAllNetworkNames());
+		miner.setInfo("text", text);
 		if(getNetwork()!=null){
 			miner.setInfo("networkName", getNetwork().getName());
 		}

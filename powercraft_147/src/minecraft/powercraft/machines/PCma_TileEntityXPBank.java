@@ -9,27 +9,25 @@ import net.minecraft.util.AxisAlignedBB;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.annotation.PC_ClientServerSync;
 
 public class PCma_TileEntityXPBank extends PC_TileEntity
 {
-	public static final String XP = "xp";
-	
     private Random rand = new Random();
-
-    //private int xp = 0;
-
-    public PCma_TileEntityXPBank(){
-    	setData(XP, 0);
-    }
+    @PC_ClientServerSync
+    private int xp = 0;
     
     public int getXP()
     {
-        return (Integer)getData(XP);
+        return xp;
     }
 
     public void setXP(int xp)
     {
-    	setData(XP, xp);
+    	if(this.xp != xp){
+    		this.xp = xp;
+    		notifyChanges("xp");
+    	}
     }
 
     @Override

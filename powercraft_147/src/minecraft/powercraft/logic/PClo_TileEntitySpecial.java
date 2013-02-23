@@ -10,26 +10,22 @@ import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 
 public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
 	
-	public static final String TYPE = "type";
-	
     private ItemStack itemstack;
-    //private int type = 0;
-
-	public PClo_TileEntitySpecial(){
-		setData(TYPE, 0);
-    }
+    @PC_ClientServerSync
+    private int type = 0;
 	
     public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
-        setData(TYPE, stack.getItemDamage());
+    	type = stack.getItemDamage();
     }
 
     public int getType(){
-        return (Integer)getData(TYPE);
+        return type;
     }
 
     @Override

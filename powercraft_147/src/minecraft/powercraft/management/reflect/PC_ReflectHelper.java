@@ -12,6 +12,8 @@ import java.util.List;
 public final class PC_ReflectHelper {
 
 	public static Class<?> getWrapper(Class<?> c) {
+		if(c==null)
+			return null;
 		if (c.isPrimitive()) {
 			if (c == boolean.class) {
 				c = Boolean.class;
@@ -63,8 +65,6 @@ public final class PC_ReflectHelper {
 		for (int i = 0; i < paramsExpect.length; i++) {
 			paramsExpect[i] = getWrapper(paramsExpect[i]);
 		}
-		System.out.println(Arrays.toString(params1));
-		System.out.println(Arrays.toString(paramsExpect));
 		for (int i = 0; i < paramsExpect.length; i++) {
 			Class<?> expect = paramsExpect[i];
 			Class<?> pc1 = params1[i];
@@ -72,8 +72,11 @@ public final class PC_ReflectHelper {
 			if (params2 != null) {
 				pc2 = params2[i];
 			}
-			if (!expect.isAssignableFrom(pc1))
-				return false;
+			if(expect!=null){
+				if (!pc1.isAssignableFrom(expect)){
+					return false;
+				}
+			}
 		}
 		return true;
 	}
@@ -99,7 +102,11 @@ public final class PC_ReflectHelper {
 
 		Class classes[] = new Class[o.length];
 		for (int i = 0; i < o.length; i++) {
-			classes[i] = o[i].getClass();
+			if(o[i] == null){
+				classes[i] = null;
+			}else{
+				classes[i] = o[i].getClass();
+			}
 		}
 
 		Constructor<T> constructor = findBestConstructor(c, classes);

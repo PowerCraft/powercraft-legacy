@@ -14,91 +14,58 @@ import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.management.annotation.PC_ClientServerSync;
+import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntityRenderer{
 	
-	public static final String COLOR = "color", ISSTABLE = "isStable", ISHUGE = "isHuge";
+	private static PCli_ModelLight model = new PCli_ModelLight();
 	
-    //private PC_Color color = new PC_Color();
-
-    //private boolean isStable;
-
-    //private boolean isHuge;
-
-    private static PCli_ModelLight model = new PCli_ModelLight();
-
-    public PCli_TileEntityLight(){
-    	setData(COLOR, new PC_Color(1.0f, 1.0f, 1.0f));
-    	setData(ISSTABLE,false);
-    	setData(ISHUGE, false);
-    }
+	@PC_ClientServerSync
+	private PC_Color color = new PC_Color(1.0f, 1.0f, 1.0f);
+	@PC_ClientServerSync
+	private boolean isStable;
+	@PC_ClientServerSync
+    private boolean isHuge;
     
     public void setColor(PC_Color c) {
-    	setData(COLOR, c.copy());
+    	color = c.copy();
+    	notifyChanges("color");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     public PC_Color getColor(){
-        return (PC_Color)getData(COLOR);
+        return color;
     }
 
     public void setStable(boolean stable){
-    	setData(ISSTABLE, stable);
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
+    	if(isStable!=stable){
+    		isStable = stable;
+    		notifyChanges("isStable");
+    		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    	}
+   }
 
     public boolean isStable(){
-        return (Boolean)getData(ISSTABLE);
+        return isStable;
     }
 
     public void setHuge(boolean huge){
-    	setData(ISHUGE, huge);
+    	if(isHuge != huge){
+    		isHuge = huge;
+    		notifyChanges("isHuge");
+    	}
     }
 
     public boolean isHuge() {
-        return (Boolean)getData(ISHUGE);
+        return isHuge;
     }
 
     public boolean isActive()
     {
         return GameInfo.getBID(worldObj, xCoord, yCoord, zCoord) == PCli_BlockLight.on.blockID;
     }
-
-   /* @Override
-    public void setData(Object[] o)
-    {
-        int p = 0;
-
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("color"))
-            {
-                color.setTo((PC_Color)o[p++]);
-            }
-            else if (var.equals("isStable"))
-            {
-                isStable = (Boolean)o[p++];
-                PCli_BlockLight bLight = (PCli_BlockLight)getBlockType();
-
-                if (isStable)
-                {
-                    bLight.onPoweredBlockChange(worldObj, xCoord, yCoord, zCoord, true);
-                }
-                else
-                {
-                    bLight.updateTick(worldObj, xCoord, yCoord, zCoord, new Random());
-                }
-            }
-            else if (var.equals("isHuge"))
-            {
-                isHuge = (Boolean)o[p++];
-            }
-        }
-
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }*/
 
 	@Override
 	public void renderTileEntityAt(double x, double y, double z, float rot) {
@@ -108,7 +75,7 @@ public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntit
 
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 		
-		PC_Renderer.bindTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Light")) + "block_light.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Light")) + "block_light.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);

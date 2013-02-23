@@ -1,9 +1,7 @@
 package powercraft.net;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -27,8 +25,9 @@ import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(itemBlock=PCnt_ItemBlockRadio.class, tileEntity=PCnt_TileEntityRadio.class)
 public class PCnt_BlockRadio extends PC_Block {
@@ -295,19 +294,19 @@ public class PCnt_BlockRadio extends PC_Block {
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_BLOCK_FLAGS:{
+		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 			list.add(PC_Utils.NO_HARVEST);
 			list.add(PC_Utils.NO_PICKUP);
 	   		return list;
-		}case PC_Utils.MSG_ITEM_FLAGS:{
+		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
-		}case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+		}case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
 			break;
-		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
 			break;
 		default:
 			return null;

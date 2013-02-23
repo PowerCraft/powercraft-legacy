@@ -5,10 +5,10 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PCde_TileEntityChimney extends PC_TileEntity {
 
@@ -51,7 +51,7 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 		if (block == Block.stoneOvenActive) return true;
 		if (block == Block.fire) return true;
 		if (block instanceof PC_Block){
-			Object o = ((PC_Block) block).msg(PC_Utils.MGS_DOES_SMOKE, worldObj, pos);
+			Object o = ((PC_Block) block).msg(PC_MSGRegistry.MSG_DOES_SMOKE, worldObj, pos);
 			if(o instanceof Boolean){
 				return (Boolean)o;
 			}

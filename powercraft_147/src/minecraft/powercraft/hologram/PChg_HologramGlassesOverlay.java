@@ -9,7 +9,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,9 +22,8 @@ import org.lwjgl.util.glu.GLU;
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Renderer;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
-import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PChg_HologramGlassesOverlay implements PC_IMSG {
 
@@ -36,9 +34,9 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 	
 	@Override
 	public Object msg(int msg, Object... obj) {
-		if(msg==PC_Utils.MSG_RENDER_OVERLAY){
+		if(msg==PC_MSGRegistry.MSG_RENDER_OVERLAY){
 			onRenderOverlay((GuiIngame)obj[0]);
-		}else if(msg==PC_Utils.MSG_TICK_EVENT){
+		}else if(msg==PC_MSGRegistry.MSG_TICK_EVENT){
 			onTick();
 		}
 		return null;
