@@ -1,6 +1,8 @@
 package powercraft.management.hacks;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
@@ -12,12 +14,15 @@ import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiOptions;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.ISaveHandler;
+import net.minecraft.src.ModLoader;
 import net.minecraft.src.RenderManager;
 import net.minecraft.src.World;
+import net.minecraft.src.mod_PowerCraft;
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_Logger;
 import powercraft.management.PC_OverlayRenderer;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_GresRegistry;
 
@@ -53,6 +58,16 @@ public class PC_MainMenuHacks {
 		return PC_GlobalVariables.splashes.get(rand.nextInt(PC_GlobalVariables.splashes.size()));
 	}
 
+	private List<String> getBrandings(){
+		int modsLoaded = ModLoader.getLoadedMods().size()+1;
+		int modsActive = modsLoaded;
+		List<String> brandings = new ArrayList<String>();
+		brandings.add(ModLoader.VERSION);
+		brandings.add("PowerCraft "+mod_PowerCraft.getInstance().getVersion());
+		brandings.add(modsLoaded+" mods loaded, "+modsActive+" mods active");
+		return brandings;
+	}
+	
 	public void tickStart() {
 		Minecraft mc = PC_ClientUtils.mc();
 		GuiScreen gs = mc.currentScreen;
@@ -65,7 +80,7 @@ public class PC_MainMenuHacks {
 		if(gs!=lastHacked){
 			if(gs instanceof GuiMainMenu){
 				if(!(gs instanceof PC_GuiMainMenuHack)){
-					mc.displayGuiScreen(new PC_GuiMainMenuHack());
+					mc.displayGuiScreen(new PC_GuiMainMenuHack(getBrandings()));
 					gs = mc.currentScreen;
 				}
 				if(PC_GlobalVariables.hackSplashes)

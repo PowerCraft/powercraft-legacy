@@ -499,4 +499,8 @@ public class mod_PowerCraft extends BaseMod {
 		return e;
 	}
 	
+	public static String getMinecraftVersion(){
+		return new CallableMinecraftVersion(null).minecraftVersion();
+	}
+	
 }
