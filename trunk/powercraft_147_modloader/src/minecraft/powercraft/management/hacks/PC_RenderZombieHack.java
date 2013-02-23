@@ -1,9 +1,5 @@
 package powercraft.management.hacks;
 
-import org.lwjgl.opengl.GL11;
-
-import powercraft.management.PC_ItemArmor;
-
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.Item;
@@ -11,6 +7,8 @@ import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.RenderZombie;
+
+import org.lwjgl.opengl.GL11;
 
 public class PC_RenderZombieHack extends RenderZombie {
 

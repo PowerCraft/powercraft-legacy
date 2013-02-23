@@ -2,12 +2,6 @@ package powercraft.management.hacks;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import powercraft.management.PC_Item;
-import powercraft.management.PC_ItemArmor;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityItem;
@@ -20,6 +14,9 @@ import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.RenderItem;
 import net.minecraft.src.Tessellator;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class PC_RenderItemHack extends RenderItem {
 	

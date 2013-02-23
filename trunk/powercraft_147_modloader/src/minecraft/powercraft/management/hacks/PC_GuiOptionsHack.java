@@ -2,7 +2,6 @@ package powercraft.management.hacks;
 
 import net.minecraft.src.GameSettings;
 import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiControls;
 import net.minecraft.src.GuiOptions;
 import net.minecraft.src.GuiScreen;
 

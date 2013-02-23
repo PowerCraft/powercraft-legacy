@@ -3,7 +3,6 @@ package powercraft.management.gres;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
-import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 import powercraft.management.PC_TileEntity;

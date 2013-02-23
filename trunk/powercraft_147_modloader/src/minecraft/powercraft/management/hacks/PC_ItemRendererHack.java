@@ -3,8 +3,6 @@ package powercraft.management.hacks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityLiving;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemRenderer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.RenderBlocks;
@@ -12,10 +10,6 @@ import net.minecraft.src.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import powercraft.management.PC_Item;
-import powercraft.management.PC_ItemArmor;
-import powercraft.management.PC_ItemBlock;
 
 public class PC_ItemRendererHack extends ItemRenderer {
 

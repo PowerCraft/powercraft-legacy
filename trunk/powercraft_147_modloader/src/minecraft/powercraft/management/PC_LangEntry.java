@@ -1,6 +1,8 @@
 package powercraft.management;
 
-public class PC_LangEntry extends PC_Struct3<String, String, String[]> {
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
+
+public class PC_LangEntry extends LangEntry {
 
 	public PC_LangEntry(String key, String trans, String... desc) {
 		super(key, trans, desc);

@@ -7,6 +7,7 @@ import powercraft.management.PC_VecI;
 
 public interface PC_I3DRecipeHandler {
 
-	boolean foundStructAt(EntityPlayer entityplayer, World world, PC_Struct2<PC_VecI, Integer> structStart);
-
+	public boolean foundStructAt(EntityPlayer entityplayer, World world, PC_Struct2<PC_VecI, Integer> structStart);
+	public boolean canBeCrafted();
+	
 }

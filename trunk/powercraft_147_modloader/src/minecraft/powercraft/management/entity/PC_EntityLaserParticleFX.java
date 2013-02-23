@@ -1,10 +1,10 @@
 package powercraft.management.entity;
 
-import powercraft.management.PC_Color;
-import powercraft.management.PC_VecF;
 import net.minecraft.src.EntityReddustFX;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.World;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_VecF;
 
 /**
  * Particle for lasers; small particle, moving using given movement vector,

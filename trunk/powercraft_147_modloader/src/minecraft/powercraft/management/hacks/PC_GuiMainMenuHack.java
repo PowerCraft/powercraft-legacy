@@ -1,18 +1,12 @@
 package powercraft.management.hacks;
 
-import powercraft.management.PC_ClientUtils;
-import powercraft.management.PC_GlobalVariables;
-import powercraft.management.PC_LangEntry;
-import powercraft.management.PC_Utils.Gres;
-import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.gres.PC_GresGui;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiMainMenu;
-import net.minecraft.src.GuiOptions;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.mod_PowerCraft;
+import powercraft.management.gres.PC_GresGui;
+import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_LangRegistry;
 
 public class PC_GuiMainMenuHack extends GuiMainMenu {
 
@@ -26,14 +20,14 @@ public class PC_GuiMainMenuHack extends GuiMainMenu {
         {
             GuiButton guiButton = (GuiButton)this.controlList.get(i);
             if(guiButton.id==3){
-            	ValueWriting.setPrivateValue(GuiButton.class, guiButton, 0, 98);
+            	PC_ReflectHelper.setValue(GuiButton.class, guiButton, 0, 98);
             	break;
             }
         }
 		
 		int var4 = this.height / 4 + 48;
 		
-		controlList.add(new GuiButton(100, this.width / 2 + 2, var4 + 48, 98, 20, Lang.tr("pc.gui.mods")));
+		controlList.add(new GuiButton(100, this.width / 2 + 2, var4 + 48, 98, 20, PC_LangRegistry.tr("pc.gui.mods")));
 		
 	}
 	

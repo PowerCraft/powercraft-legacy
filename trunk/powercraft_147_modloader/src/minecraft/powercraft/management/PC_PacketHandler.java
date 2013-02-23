@@ -16,7 +16,6 @@ import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.SaveHandler;
 
 public class PC_PacketHandler
 {
@@ -74,7 +73,7 @@ public class PC_PacketHandler
         {
             sendData = new ObjectOutputStream(data);
             sendData.writeInt(PC_PacketHandler.PACKETIDS);
-            sendData.writeObject(CompressedStreamTools.compress(SaveHandler.makeIDTagCompound()));
+            sendData.writeObject(CompressedStreamTools.compress(PC_IDResolver.makeIDTagCompound()));
             sendData.writeObject(PC_GlobalVariables.consts);
             sendData.writeInt(PC_PacketHandler.PACKETIDS);
         }
@@ -137,12 +136,14 @@ public class PC_PacketHandler
     protected void handleIncomingIDPacket(ObjectInputStream input, EntityPlayer player) throws ClassNotFoundException, IOException{
 	}
     
-    public static void setTileEntity(TileEntity tileEntity, PC_Struct2<String, Object>... o)
+    //AlphaI
+    @Deprecated
+    public static void setTileEntityArray(TileEntity tileEntity, PC_Struct2<String, Object>[] o)
     {
-        setTileEntityArray(tileEntity, o);
+        setTileEntity(tileEntity, o);
     }
 
-    public static void setTileEntityArray(TileEntity tileEntity, PC_Struct2<String, Object>[] o)
+    public static void setTileEntity(TileEntity tileEntity, PC_Struct2<String, Object>... o)
     {
     	if(tileEntity.getWorldObj()==null)
     		return;
@@ -186,12 +187,14 @@ public class PC_PacketHandler
     	}
     }
     
-    public static void sendToPacketHandler(World world, String name, Object... o)
+    //AlphaI
+    @Deprecated
+    public static void sendToPacketHandlerArray(World world, String name, Object[] o)
     {
-        sendToPacketHandlerArray(world, name, o);
+        sendToPacketHandler(world, name, o);
     }
 
-    public static void sendToPacketHandlerArray(World world, String name, Object[] o)
+    public static void sendToPacketHandler(World world, String name, Object... o)
     {
         ByteArrayOutputStream data = new ByteArrayOutputStream();
         ObjectOutputStream sendData;
@@ -222,12 +225,14 @@ public class PC_PacketHandler
         }
     }
 
-    public static void sendToPacketHandler(boolean onlyDimension, World world, String name, Object... o)
+    //AlphaI
+    @Deprecated
+    public static void sendToPacketHandlerArray(boolean onlyDimension, World world, String name, Object[] o)
     {
-        sendToPacketHandlerArray(onlyDimension, world, name, o);
+        sendToPacketHandler(onlyDimension, world, name, o);
     }
 
-    public static void sendToPacketHandlerArray(boolean onlyDimension, World world, String name, Object[] o)
+    public static void sendToPacketHandler(boolean onlyDimension, World world, String name, Object... o)
     {
         ByteArrayOutputStream data = new ByteArrayOutputStream();
         ObjectOutputStream sendData;

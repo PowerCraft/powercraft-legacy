@@ -8,7 +8,6 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.ModLoader;
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_VecI;
-import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresFrame;
 import powercraft.management.gres.PC_GresGap;
@@ -16,11 +15,11 @@ import powercraft.management.gres.PC_GresGui;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresScrollArea;
-import powercraft.management.gres.PC_GresSeparatorH;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.management.reflect.PC_ReflectHelper;
 
 public class PC_GuiMods implements PC_IGresClient {
 
@@ -61,7 +60,7 @@ public class PC_GuiMods implements PC_IGresClient {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_VecI size = gui.getSize();
-		baseWidget = (PC_GresLayoutV)ValueWriting.getPrivateValue(PC_GresGui.class, gui, 1);
+		baseWidget = (PC_GresLayoutV)PC_ReflectHelper.getValue(PC_GresGui.class, gui, 1);
 		PC_GresLabel label;
 		gui.add(label = new PC_GresLabel("pc.gui.mods"));
 		label.enable(false);
@@ -85,7 +84,7 @@ public class PC_GuiMods implements PC_IGresClient {
 		done = new PC_GresButton("gui.done");
 		done.setMinSize(200, 20);
 		gui.add(done);
-		ValueWriting.setPrivateValue(PC_GresWidget.class, baseWidget, 19, false);
+		PC_ReflectHelper.setValue(PC_GresWidget.class, baseWidget, 19, false);
 	}
 
 	@Override

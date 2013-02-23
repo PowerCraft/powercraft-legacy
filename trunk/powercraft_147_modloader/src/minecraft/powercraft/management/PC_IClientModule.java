@@ -4,10 +4,11 @@ import java.util.List;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.Render;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public interface PC_IClientModule extends PC_IModule {
 	
-	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang);
+	public List<LangEntry> initLanguage(List<LangEntry> lang);
 	
 	public List<String> loadTextureFiles(List<String> textures);
 	
