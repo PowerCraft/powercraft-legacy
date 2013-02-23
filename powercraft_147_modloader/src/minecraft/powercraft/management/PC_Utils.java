@@ -53,6 +53,7 @@ import net.minecraft.src.TileEntityFurnace;
 import net.minecraft.src.TileEntityMobSpawner;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldInfo;
+import net.minecraft.src.mod_PowerCraft;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.inventory.PC_IInventoryWrapper;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
@@ -946,6 +947,10 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static class GameInfo{
 
+    	public static String getMinecraftVersion(){
+    		return mod_PowerCraft.getMinecraftVersion();
+    	}
+    	
     	//AlphaI
     	@Deprecated
     	public static boolean shouldOpenGui(Block block, ItemStack itemStack){

@@ -1,8 +1,11 @@
 package powercraft.management.hacks;
 
+import java.util.List;
+
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiMainMenu;
+import net.minecraft.src.ModLoader;
 import net.minecraft.src.mod_PowerCraft;
 import powercraft.management.gres.PC_GresGui;
 import powercraft.management.reflect.PC_ReflectHelper;
@@ -11,6 +14,11 @@ import powercraft.management.registry.PC_LangRegistry;
 public class PC_GuiMainMenuHack extends GuiMainMenu {
 
 	private boolean resetDrawPos = false;
+	private List<String> brandings;
+	
+	public PC_GuiMainMenuHack(List<String> brandings){
+		this.brandings = brandings;
+	}
 	
 	@Override
 	public void initGui(){
@@ -47,13 +55,17 @@ public class PC_GuiMainMenuHack extends GuiMainMenu {
 		resetDrawPos = true;
 		super.drawScreen(par1, par2, par3);
 		resetDrawPos = false;
-		drawString(mc.fontRenderer, "PowerCraft " + mod_PowerCraft.getInstance().getVersion(), 2, height - 10, 0xffffffff);
+		int y = height - 10 - mc.fontRenderer.FONT_HEIGHT*(brandings.size()-1);
+		for(String s:brandings){
+			drawString(mc.fontRenderer, s, 2, y, 0xffffffff);
+			y += mc.fontRenderer.FONT_HEIGHT;
+		}
 	}
 
 	@Override
 	public void drawString(FontRenderer par1FontRenderer, String par2Str, int par3, int par4, int par5) {
 		if(resetDrawPos && par3==2 && par4==height - 10){
-			par4 -= par1FontRenderer.FONT_HEIGHT;
+			par4 -= par1FontRenderer.FONT_HEIGHT*brandings.size();
 		}
 		super.drawString(par1FontRenderer, par2Str, par3, par4, par5);
 	}
