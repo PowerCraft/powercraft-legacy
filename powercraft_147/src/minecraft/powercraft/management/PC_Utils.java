@@ -18,6 +18,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.crash.CallableMinecraftVersion;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -986,6 +987,10 @@ public class PC_Utils implements PC_IPacketHandler {
 
 	public static class GameInfo {
 
+		public static String getMinecraftVersion(){
+    		return new CallableMinecraftVersion(null).minecraftVersion();
+    	}
+		
 		public static CreativeTabs getCreativeTab(CreativeTabs _default) {
 			return mod_PowerCraft.getInstance().creativeTab;
 		}
