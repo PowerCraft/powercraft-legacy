@@ -10,6 +10,7 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.World;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.registry.PC_MSGRegistry;
 
 /**
  * Laser beam tracing class
@@ -289,7 +290,7 @@ public class PC_BeamTracer {
 			if (b!=null){
 				res = result.FALLBACK;
 				if(b instanceof PC_IMSG){
-					Object o = ((PC_IMSG) b).msg(PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER, getWorld(), settings);
+					Object o = ((PC_IMSG) b).msg(PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER, getWorld(), settings);
 					if(o instanceof result)
 						res = (result)o;
 				}
@@ -327,7 +328,7 @@ public class PC_BeamTracer {
 				for(Entity entity:hitList){
 					res = result.FALLBACK;
 					if(entity instanceof PC_IMSG){
-						Object o = ((PC_IMSG) entity).msg(PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER, getWorld(), settings);
+						Object o = ((PC_IMSG) entity).msg(PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER, getWorld(), settings);
 						if(o instanceof result)
 							res = (result)o;
 					}

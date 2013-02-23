@@ -1,6 +1,5 @@
 package powercraft.management;
 
-import net.minecraft.src.TileEntity;
 
 public interface PC_ITileEntityRenderer {
 	

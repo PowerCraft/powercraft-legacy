@@ -1,11 +1,5 @@
 package powercraft.management.hacks;
 
-import org.lwjgl.opengl.GL11;
-
-import powercraft.management.PC_ItemArmor;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.ValueWriting;
-
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.Item;
@@ -14,6 +8,10 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.RenderPlayer;
 
+import org.lwjgl.opengl.GL11;
+
+import powercraft.management.reflect.PC_ReflectHelper;
+
 public class PC_RenderPlayerHack extends RenderPlayer {
 
 	private ModelBiped modelArmorChestplate;
@@ -21,8 +19,8 @@ public class PC_RenderPlayerHack extends RenderPlayer {
 	private static final String[] armorFilenamePrefix = new String[] {"cloth", "chain", "iron", "diamond", "gold"};
 	
 	public PC_RenderPlayerHack(){
-		modelArmorChestplate = (ModelBiped)ValueWriting.getPrivateValue(RenderPlayer.class, this, 1);
-		modelArmor = (ModelBiped)ValueWriting.getPrivateValue(RenderPlayer.class, this, 2);
+		modelArmorChestplate = (ModelBiped)PC_ReflectHelper.getValue(RenderPlayer.class, this, 1);
+		modelArmor = (ModelBiped)PC_ReflectHelper.getValue(RenderPlayer.class, this, 2);
 	}
 	
 	@Override

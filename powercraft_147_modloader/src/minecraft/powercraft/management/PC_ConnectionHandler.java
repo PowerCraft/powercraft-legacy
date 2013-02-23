@@ -8,7 +8,6 @@ import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.NetLoginHandler;
 import net.minecraft.src.Packet250CustomPayload;
-import powercraft.management.PC_Utils.SaveHandler;
 
 public class PC_ConnectionHandler {
 
@@ -21,7 +20,7 @@ public class PC_ConnectionHandler {
         {
             sendData = new ObjectOutputStream(data);
             sendData.writeInt(PC_PacketHandler.PACKETIDS);
-            sendData.writeObject(CompressedStreamTools.compress(SaveHandler.makeIDTagCompound()));
+            sendData.writeObject(CompressedStreamTools.compress(PC_IDResolver.makeIDTagCompound()));
             sendData.writeObject(PC_GlobalVariables.consts);
             sendData.writeInt(PC_PacketHandler.PACKETIDS);
         }

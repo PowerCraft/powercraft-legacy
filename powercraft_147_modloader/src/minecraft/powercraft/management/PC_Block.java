@@ -15,9 +15,10 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_MSGRegistry;
 
-public abstract class PC_Block extends BlockContainer implements PC_IMSG
+public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IIDChangeAble
 {
     private boolean canSetTextureFile = true;
     private PC_IModule module;
@@ -97,7 +98,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
     @Override
     public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
     {
-        if (side == 1 && getRenderType() == PC_Renderer.getRendererID(true) && msg(PC_Utils.MSG_ROTATION, GameInfo.getMD(world, x, y, z))!=null)
+        if (side == 1 && getRenderType() == PC_Renderer.getRendererID(true) && msg(PC_MSGRegistry.MSG_ROTATION, GameInfo.getMD(world, x, y, z))!=null)
         {
             return false;
         }
@@ -130,13 +131,14 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 		thisBlock.itemBlock = itemBlock;
 	}
     
-	public void setBlockID(int id) {
+	@Override
+	public void setID(int id) {
 		int oldID = blockID;
 		if(oldID==id)
 			return;
-		if(ValueWriting.setPrivateValue(Block.class, this, PC_GlobalVariables.indexBlockID, id)){
-	    	if(ValueWriting.setPrivateValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, id)){
-	    		if(ValueWriting.setPrivateValue(ItemBlock.class, thisBlock.itemBlock, 0, id)){
+		if(PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, id)){
+	    	if(PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, id)){
+	    		if(PC_ReflectHelper.setValue(ItemBlock.class, thisBlock.itemBlock, 0, id)){
 		    		if(oldID!=-1){
 		    			replaced.storeToID(oldID);
 		    		}
@@ -148,11 +150,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 		    			replaced = null;
 		    		}
 	    		}else{
-	    			ValueWriting.setPrivateValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, oldID);
-	    			ValueWriting.setPrivateValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID);
+	    			PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, oldID);
+	    			PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID);
 	    		}
 	    	}else{
-	    		ValueWriting.setPrivateValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID);
+	    		PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID);
 	    	}
 		}
 	}

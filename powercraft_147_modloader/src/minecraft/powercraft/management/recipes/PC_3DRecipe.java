@@ -11,7 +11,7 @@ import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
-public class PC_3DRecipe {
+public class PC_3DRecipe implements PC_IRecipe {
 	
 	private PC_VecI size;
 	private PC_Struct2<Boolean, List<PC_Struct2<Block, Integer>>>[][][] array;
@@ -175,6 +175,11 @@ public class PC_3DRecipe {
 		if(structStart==null)
 			return false;
 		return obj.foundStructAt(entityplayer, world, structStart);
+	}
+
+	@Override
+	public boolean canBeCrafted() {
+		return obj.canBeCrafted();
 	}
 	
 }

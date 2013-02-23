@@ -2,6 +2,9 @@ package powercraft.management;
 
 import java.util.List;
 
+import net.minecraft.src.Entity;
+import powercraft.management.recipes.PC_IRecipe;
+
 public interface PC_IModule {
 
 	public String getName();
@@ -15,11 +18,9 @@ public interface PC_IModule {
 	public void postInit();
 	
 	public void initProperties(PC_Property config);
-	public void initBlocks();
-	public void initItems();
-	public void initEntities();
+	public List<Class<? extends Entity>> initEntities(List<Class<? extends Entity>> entities);
 	
-	public List<Object> initRecipes(List<Object> recipes);
+	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes);
 	
 	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(List<PC_Struct2<String, PC_IDataHandler>> dataHandlers);
 	

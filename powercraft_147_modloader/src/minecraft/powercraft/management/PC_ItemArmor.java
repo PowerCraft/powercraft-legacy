@@ -2,16 +2,15 @@ package powercraft.management;
 
 import java.util.List;
 
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ValueWriting;
-
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.reflect.PC_ReflectHelper;
 
-public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC_IMSG
+public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC_IMSG, PC_IIDChangeAble
 {
     public static final int HEAD = 0, TORSO = 1, LEGS = 2, FEET = 3;
 
@@ -39,11 +38,12 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
         setIconIndex(iconIndex);
     }
     
-    public void setItemID(int id){
+    @Override
+    public void setID(int id){
 		int oldID = itemID;
 		if(oldID == id)
 			return;
-    	if(ValueWriting.setPrivateValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id)){
+    	if(PC_ReflectHelper.setValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id)){
     		if(oldID!=-1){
     			Item.itemsList[oldID] = replacedItem;
     		}

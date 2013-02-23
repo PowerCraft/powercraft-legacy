@@ -1,6 +1,5 @@
 package powercraft.management;
 
-import net.minecraft.src.Block;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntitySpecialRenderer;
 

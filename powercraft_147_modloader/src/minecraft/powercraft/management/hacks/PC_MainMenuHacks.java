@@ -13,16 +13,13 @@ import net.minecraft.src.GuiOptions;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.ISaveHandler;
 import net.minecraft.src.RenderManager;
-import net.minecraft.src.SaveHandler;
 import net.minecraft.src.World;
-import net.minecraft.src.mod_PowerCraft;
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_Logger;
 import powercraft.management.PC_OverlayRenderer;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.Gres;
-import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_GresRegistry;
 
 public class PC_MainMenuHacks {
 
@@ -44,7 +41,7 @@ public class PC_MainMenuHacks {
 		PC_Logger.finest("Hacking main menu splashes");
 		if (rand.nextInt(2) == 0) {
 			try {
-				ValueWriting.setPrivateValue(GuiMainMenu.class, gui, 2, getRandomSplash());
+				PC_ReflectHelper.setValue(GuiMainMenu.class, gui, 2, getRandomSplash());
 			} catch (Throwable t) {}
 		}
 		lastHacked = gui;
@@ -61,7 +58,7 @@ public class PC_MainMenuHacks {
 		GuiScreen gs = mc.currentScreen;
 		if(gs instanceof GuiMainMenu){
 			if(PC_GlobalVariables.showUpdateWindow && !updateWindowShowed){
-				Gres.openGres("UpdateNotification", null, null, gs);
+				PC_GresRegistry.openGres("UpdateNotification", null, null, gs);
 				updateWindowShowed = true;
 			}
 		}
@@ -76,13 +73,13 @@ public class PC_MainMenuHacks {
 				
 			}else if(gs instanceof GuiOptions){
 				if(!(gs instanceof PC_GuiOptionsHack)){
-					GuiScreen parentScreen = (GuiScreen)ValueWriting.getPrivateValue(GuiOptions.class, gs, 1);
-					GameSettings options = (GameSettings)ValueWriting.getPrivateValue(GuiOptions.class, gs, 2);
+					GuiScreen parentScreen = (GuiScreen)PC_ReflectHelper.getValue(GuiOptions.class, gs, 1);
+					GameSettings options = (GameSettings)PC_ReflectHelper.getValue(GuiOptions.class, gs, 2);
 					mc.displayGuiScreen(new PC_GuiOptionsHack(parentScreen, options));
 					gs = mc.currentScreen;
 				}
 			}else if(gs instanceof GuiContainer){
-				ValueWriting.setPrivateValue(GuiContainer.class, gs, 0, new PC_RenderItemHack());
+				PC_ReflectHelper.setValue(GuiContainer.class, gs, 0, new PC_RenderItemHack());
 			}
 		}
 		lastHacked = gs;
@@ -95,20 +92,20 @@ public class PC_MainMenuHacks {
 		}
 		if(!ingameGuiHacked){
 			mc.ingameGUI = new PC_OverlayRenderer(mc);
-			ValueWriting.setPrivateValue(GuiIngame.class, mc.ingameGUI, 0, new PC_RenderItemHack());
+			PC_ReflectHelper.setValue(GuiIngame.class, mc.ingameGUI, 0, new PC_RenderItemHack());
 			RenderManager.instance.itemRenderer = new PC_ItemRendererHack(PC_ClientUtils.mc());
 			PC_ClientUtils.mc().entityRenderer.itemRenderer = new PC_ItemRendererHack(PC_ClientUtils.mc());
 			ingameGuiHacked = true;
 		}
 		MinecraftServer mcs = mc.getIntegratedServer();
 		if(mcs!=null){
-			if(!(ValueWriting.getPrivateValue(MinecraftServer.class, mcs, 2) instanceof PC_HackedSaveConverter)){
-				File file = (File)ValueWriting.getPrivateValue(MinecraftServer.class, mcs, 4);
+			if(!(PC_ReflectHelper.getValue(MinecraftServer.class, mcs, 2) instanceof PC_HackedSaveConverter)){
+				File file = (File)PC_ReflectHelper.getValue(MinecraftServer.class, mcs, 4);
 				PC_HackedSaveConverter saveConverter = new PC_HackedSaveConverter(file); 
-				ValueWriting.setPrivateValue(MinecraftServer.class, mcs, 2, saveConverter);
+				PC_ReflectHelper.setValue(MinecraftServer.class, mcs, 2, saveConverter);
 				ISaveHandler saveHandler = saveConverter.getSaveLoader(mcs.getFolderName(), true);
 				for(World world:mcs.worldServers){
-					ValueWriting.setPrivateValue(World.class, world, 23, saveHandler);
+					PC_ReflectHelper.setValue(World.class, world, 23, saveHandler);
 				}
 			}
 		}

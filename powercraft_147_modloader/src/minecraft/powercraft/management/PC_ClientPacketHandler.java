@@ -8,7 +8,8 @@ import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.EntityPlayer;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.MSG;
-import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.management.registry.PC_GresRegistry;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PC_ClientPacketHandler extends PC_PacketHandler {
 
@@ -24,16 +25,16 @@ public class PC_ClientPacketHandler extends PC_PacketHandler {
 	
 	@Override
 	protected void handleIncomingGuiPacket(ObjectInputStream input, EntityPlayer player) throws ClassNotFoundException, IOException{
-		Gres.openGres("", player, null, new Object[]{input});
+		PC_GresRegistry.openGres("", player, null, new Object[]{input});
     }
 
 	@Override
 	protected void handleIncomingIDPacket(ObjectInputStream input, EntityPlayer player) throws ClassNotFoundException, IOException{
 		byte[] b = (byte[])input.readObject();
-		SaveHandler.loadIDFromTagCompound(CompressedStreamTools.decompress(b));
+		PC_IDResolver.loadIDFromTagCompound(CompressedStreamTools.decompress(b), false);
 		PC_GlobalVariables.oldConsts = (HashMap<String, Object>) PC_GlobalVariables.consts.clone();
 		PC_GlobalVariables.consts.putAll((HashMap<String, Object>)input.readObject());
-		MSG.callAllMSG(PC_Utils.MSG_LOAD_WORLD);
+		PC_MSGRegistry.callAllMSG(PC_MSGRegistry.MSG_LOAD_WORLD);
 	}
 	
 }

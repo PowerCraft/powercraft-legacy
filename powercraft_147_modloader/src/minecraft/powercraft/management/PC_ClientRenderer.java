@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.inventory.PC_ISpecialInventoryTextures;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PC_ClientRenderer extends PC_Renderer {
 	
@@ -28,7 +29,7 @@ public class PC_ClientRenderer extends PC_Renderer {
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		boolean b = false;
 		if(block instanceof PC_IMSG){
-			Object o = ((PC_IMSG)block).msg(PC_Utils.MSG_RENDER_INVENTORY_BLOCK, block, metadata, modelID, renderer);
+			Object o = ((PC_IMSG)block).msg(PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK, block, metadata, modelID, renderer);
 			if(o instanceof Boolean)
 				b = (Boolean)o;
 		}
@@ -40,7 +41,7 @@ public class PC_ClientRenderer extends PC_Renderer {
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		boolean b = false;
 		if(block instanceof PC_IMSG){
-			Object o = ((PC_IMSG) block).msg(PC_Utils.MSG_RENDER_WORLD_BLOCK, world, new PC_VecI(x, y, z), block, modelId, renderer);
+			Object o = ((PC_IMSG) block).msg(PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK, world, new PC_VecI(x, y, z), block, modelId, renderer);
 			if(o instanceof Boolean)
 				b = (Boolean)o;
 		}
@@ -167,7 +168,7 @@ public class PC_ClientRenderer extends PC_Renderer {
 
 			block.setBlockBoundsBasedOnState(world, x, y, z);
 			((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
-			Object o=((PC_IMSG) block).msg(PC_Utils.MSG_ROTATION, metaAt);
+			Object o=((PC_IMSG) block).msg(PC_MSGRegistry.MSG_ROTATION, metaAt);
 			if(o instanceof Integer){
 				boolean swapped = swapTerrain(block);
 				int l = (Integer)o;
@@ -235,7 +236,7 @@ public class PC_ClientRenderer extends PC_Renderer {
 
 			boolean swapped = swapTerrain(block);
 
-			Object o=((PC_IMSG) block).msg(PC_Utils.MSG_RENDER_ITEM_HORIZONTAL);
+			Object o=((PC_IMSG) block).msg(PC_MSGRegistry.MSG_RENDER_ITEM_HORIZONTAL);
 			if(o instanceof Boolean){
 				boolean renderOnSide = (Boolean)o;
 	
