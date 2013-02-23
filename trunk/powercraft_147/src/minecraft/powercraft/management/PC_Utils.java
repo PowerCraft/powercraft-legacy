@@ -59,7 +59,6 @@ import powercraft.management.recipes.PC_SmeltRecipe;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_DataHandlerRegistry;
-import powercraft.management.registry.PC_EntityRegistry;
 import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_ItemRegistry;
 import powercraft.management.registry.PC_KeyRegistry;
@@ -408,7 +407,6 @@ public class PC_Utils implements PC_IPacketHandler {
 		@Deprecated
 		public static void registerEntity(Class<? extends Entity> c,
 				int entityID) {
-			PC_EntityRegistry.registerEntity(c, entityID);
 		}
 
 	}
@@ -884,7 +882,7 @@ public class PC_Utils implements PC_IPacketHandler {
 			float receivers = powerReceivers.size();
 
 			for (PC_Struct3<PC_VecI, PC_IMSG, Float> receiver : powerReceivers) {
-				receiver.b.msg(PC_Utils.MSG_RECIVE_POWER, world, receiver.a.x,
+				receiver.b.msg(PC_MSGRegistry.MSG_RECIVE_POWER, world, receiver.a.x,
 						receiver.a.y, receiver.a.z, power / receivers
 								* receiver.c);
 			}
@@ -1298,7 +1296,7 @@ public class PC_Utils implements PC_IPacketHandler {
 			}
 
 			if (b instanceof PC_IMSG) {
-				Object o = ((PC_IMSG) b).msg(PC_Utils.MSG_CONDUCTIVITY);
+				Object o = ((PC_IMSG) b).msg(PC_MSGRegistry.MSG_CONDUCTIVITY);
 				if (o instanceof Float)
 					return (Float) o;
 			}
@@ -1410,7 +1408,7 @@ public class PC_Utils implements PC_IPacketHandler {
 			}
 
 			if (b instanceof PC_IMSG) {
-				Object o = ((PC_IMSG) b).msg(PC_Utils.MSG_CAN_RECIVE_POWER, b);
+				Object o = ((PC_IMSG) b).msg(PC_MSGRegistry.MSG_CAN_RECIVE_POWER, b);
 				if (o instanceof Boolean && ((Boolean) o) == true) {
 					if (oldStruct == null) {
 						receivers.add(new PC_Struct3<PC_VecI, PC_IMSG, Float>(
@@ -1717,6 +1715,7 @@ public class PC_Utils implements PC_IPacketHandler {
 				NBTTagCompound nbtTag2 = nbtTag.getCompoundTag(key);
 				try {
 					Class c = Class.forName(nbtTag2.getString("type"));
+					System.out.println("Class:"+c);
 					if (c.isArray()) {
 						int size = nbtTag2.getInteger("count");
 						try {
@@ -2163,9 +2162,9 @@ public class PC_Utils implements PC_IPacketHandler {
 		public static boolean storeItemInInventory(IInventory inventory,
 				ItemStack stack) {
 			if (inventory instanceof TileEntityFurnace) {
-				if (GameInfo.isSmeltable(stack)) {
+				if (PC_RecipeRegistry.isSmeltable(stack)) {
 					return storeItemInSlot(inventory, stack, 0);
-				} else if (GameInfo.isFuel(stack)) {
+				} else if (PC_RecipeRegistry.isFuel(stack)) {
 					return storeItemInSlot(inventory, stack, 1);
 				} else {
 					return false;
@@ -2313,8 +2312,8 @@ public class PC_Utils implements PC_IPacketHandler {
 
 			for (int i = 0; i < inventory.getSizeInventory(); i++) {
 				if (inventory.getStackInSlot(i) != null
-						&& inventory.getStackInSlot(i).itemID == ModuleInfo
-								.getPCObjectIDByName("PCco_BlockPowerCrystal")) {
+						&& inventory.getStackInSlot(i).itemID == PC_BlockRegistry
+								.getPCBlockByName("PCco_BlockPowerCrystal").blockID) {
 					foundTable[PC_MathHelper.clamp_int(inventory
 							.getStackInSlot(i).getItemDamage(), 0, 7)] = true;
 				}
@@ -2524,7 +2523,7 @@ public class PC_Utils implements PC_IPacketHandler {
 				World world, PC_VecI pos) {
 			for (int i = start; i < end; i++) {
 				ItemStack is = inv.getStackInSlot(i);
-				int fuel = GameInfo.getFuelValue(is, 1);
+				int fuel = PC_RecipeRegistry.getFuelValue(is);
 				if (fuel > 0) {
 					inv.decrStackSize(i, 1);
 					ItemStack container = GameInfo.getContainerItemStack(is);

@@ -21,8 +21,9 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.Lang;
-import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCcp_TileEntityCheckpoint.class)
 public class PCcp_BlockCheckpoint extends PC_Block implements PC_IItemInfo {
@@ -109,14 +110,14 @@ public class PCcp_BlockCheckpoint extends PC_Block implements PC_IItemInfo {
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			return "Checkpoint";
-		case PC_Utils.MSG_BLOCK_FLAGS:{
+		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 			list.add(PC_Utils.NO_HARVEST);
 			list.add(PC_Utils.NO_PICKUP);
 	   		return list;
-		}case PC_Utils.MSG_ITEM_FLAGS:{
+		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;

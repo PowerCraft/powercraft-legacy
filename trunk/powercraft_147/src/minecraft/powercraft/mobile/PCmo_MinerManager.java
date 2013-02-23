@@ -20,14 +20,16 @@ import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
+import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_RecipeRegistry;
 
 public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler {
 	
 	public static Class<? extends PCmo_IMinerBrain> mierBrainClass = PCmo_MinerBrain.class;
 	
-	public static PCmo_IMinerBrain createMinerBrain(PCmo_EntityMiner miner){
+	public static PCmo_IMinerBrain createMinerBrain(PCmo_EntityMiner miner, boolean server){
 		try {
-			PCmo_IMinerBrain brain = ValueWriting.createClass(mierBrainClass, new Class[]{PCmo_EntityMiner.class}, new Object[]{miner});
+			PCmo_IMinerBrain brain = PC_ReflectHelper.create(mierBrainClass, miner, server);
 			return brain;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -150,6 +152,11 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public boolean canBeCrafted() {
+		return true;
 	}
 
 }

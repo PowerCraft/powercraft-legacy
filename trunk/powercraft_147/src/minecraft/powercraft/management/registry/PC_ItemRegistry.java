@@ -30,10 +30,12 @@ public final class PC_ItemRegistry {
 	}
 	
 	public static PC_Item registerItem(PC_IModule module, Class<? extends PC_Item> itemClass){
-		PC_Property config = PC_ModuleRegistry.getConfig(module);
+		PC_Property config = PC_ModuleRegistry.getConfig(module).getProperty(itemClass.getSimpleName(), null, null);
 		try {
-			config = config.getProperty(itemClass.getSimpleName(),
-					null, null);
+			if(!config.getBoolean("enabled", true)){
+				return null;
+			}
+			
 			int id = config.getInt("defaultID", -1);
 			if(id==-1){
 				id = getFreeItemID();
@@ -65,10 +67,11 @@ public final class PC_ItemRegistry {
 	}
 	
 	public static PC_ItemArmor registerItemArmor(PC_IModule module, Class<? extends PC_ItemArmor> itemArmorClass){
-		PC_Property config = PC_ModuleRegistry.getConfig(module);
+		PC_Property config = PC_ModuleRegistry.getConfig(module).getProperty(itemArmorClass.getSimpleName(), null, null);
 		try {
-			config = config.getProperty(itemArmorClass.getSimpleName(),
-					null, null);
+			if(!config.getBoolean("enabled", true)){
+				return null;
+			}
 			int id = config.getInt("defaultID", -1);
 			if(id==-1){
 				id = getFreeItemID();

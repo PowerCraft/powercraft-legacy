@@ -17,12 +17,22 @@ import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Inventory;
+import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 
 public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEntityRenderer, IInventory, PC_ISpecialAccessInventory{
 
+	private HashMap<String, Object>map = new HashMap<String, Object>();
 	private int pluginID = -1;
 	private ItemStack inv[];
+	
+	public void setData(String key, Object value){
+		map.put(key, value);
+	}
+	
+	public Object getData(String key){
+		return map.get(key);
+	}
 	
 	@Override
 	public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
@@ -49,6 +59,13 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 			inv = new ItemStack[nbtTag.getInteger("invSize")];
 			Inventory.loadInventoryFromNBT(nbtTag, "inv", this);
 		}
+		NBTTagCompound nbtTagCompound = nbtTag.getCompoundTag("weaselMap");
+		int size = nbtTagCompound.getInteger("count");
+		for(int i=0; i<size; i++){
+			String key = nbtTagCompound.getString("key["+i+"]");
+			Object value = SaveHandler.loadFromNBT(nbtTagCompound, "value["+i+"]");
+			map.put(key, value);
+		}
 	}
 
 	@Override
@@ -59,6 +76,15 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 			nbtTag.setInteger("invSize", inv.length);
 			Inventory.saveInventoryToNBT(nbtTag, "inv", this);
 		}
+		NBTTagCompound nbtTagCompound = new NBTTagCompound("weaselMap");
+		nbtTagCompound.setInteger("count", map.size());
+		int i=0;
+		for(Entry<String, Object>e:map.entrySet()){
+			nbtTagCompound.setString("key["+i+"]", e.getKey());
+			SaveHandler.saveToNBT(nbtTagCompound, "value["+i+"]", e.getValue());
+			i++;
+		}
+		nbtTag.setCompoundTag("weaselMap", nbtTagCompound);
 	}
 
 	@Override

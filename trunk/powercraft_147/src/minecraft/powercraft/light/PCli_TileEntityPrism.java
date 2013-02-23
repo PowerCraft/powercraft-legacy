@@ -6,37 +6,36 @@ import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.annotation.PC_ClientServerSync;
+import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PCli_TileEntityPrism extends PC_TileEntity implements PC_ITileEntityRenderer {
 
-	public static final String PRISMSIDES = "prismSides";
-	
 	private static PCli_ModelPrism modelPrism = new PCli_ModelPrism();
 	
 	/**
 	 * List of prism's sides, flags whether there are attached glass panels.
 	 * starts with up and down, but the order does not really matter here.
 	 */
-	//private boolean[] prismSides = { false, false, false, false, false, false, false, false, false, false };
-	
-	public PCli_TileEntityPrism(){
-    	setData(PRISMSIDES, new boolean[]{ false, false, false, false, false, false, false, false, false, false });
-    }
+	@PC_ClientServerSync
+	private boolean[] prismSides = { false, false, false, false, false, false, false, false, false, false };
 	
 	public boolean getPrismSide(int side) {
 		if (side < 0 || side > 9) {
 			return false;
 		}
-		return ((boolean[])getData(PRISMSIDES))[side];
+		return prismSides[side];
 	}
 
 	public void setPrismSide(int side, boolean state) {
 		if (side < 0 || side> 9) {
 			return;
 		}
-		boolean[] b = (boolean[])getData(PRISMSIDES);
-		b[side] = state;
-		setData(PRISMSIDES, b);
+		if(prismSides[side]!=state){
+			prismSides[side]=state;
+			notifyChanges("prismSides");
+		}
 	}
 
 	@Override
@@ -52,7 +51,7 @@ public class PCli_TileEntityPrism extends PC_TileEntity implements PC_ITileEntit
 
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
-		PC_Renderer.bindTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Light"))+"prism.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Light"))+"prism.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);

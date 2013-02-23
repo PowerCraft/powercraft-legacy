@@ -9,10 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_Item;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PCnt_ItemRadioRemote extends PC_Item {
 	
@@ -101,7 +101,7 @@ public class PCnt_ItemRadioRemote extends PC_Item {
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
 			names.add(new LangEntry(getItemName(), "Radio Remote"));
             return names;

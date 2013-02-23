@@ -9,43 +9,38 @@ import powercraft.management.PC_Utils.Converter;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_ClientServerSync;
+import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.registry.PC_SoundRegistry;
 
 public class PClo_TileEntityPulsar extends PC_TileEntity{
 	
-	public static final String DELAY = "delay", HOLDTIME = "holdtime", PAUSED = "paused", SILENT = "silent";
-	
-    private int delayTimer = 0;
-
-    //private int delay = 10;
-
-    //private int holdtime = 4;
-
-    //private boolean paused = false;
-
-    //private boolean silent = false;
+	private int delayTimer = 0;
+	@PC_ClientServerSync
+    private int delay = 10;
+	@PC_ClientServerSync
+    private int holdtime = 4;
+	@PC_ClientServerSync
+    private boolean paused = false;
+	@PC_ClientServerSync
+    private boolean silent = false;
 
     private boolean should = true;
-    
-    public PClo_TileEntityPulsar(){
-		setData(DELAY, 10);
-    	setData(HOLDTIME, 4);
-    	setData(PAUSED, false);
-    	setData(SILENT, false);
-    }
 
     public void setTimes(int delay, int holdTime){
         if (delay < 2){
         	delay = 2;
         }
 
-        setData(DELAY, delay);
+        this.delay = delay;
 
         if (holdTime >= delay)
         {
         	holdTime = delay - 1;
         }
         
-        setData(HOLDTIME, holdTime);
+        holdtime = holdTime;
+        notifyChanges("delay", "holdtime");
     }
 
     @Override
@@ -62,12 +57,12 @@ public class PClo_TileEntityPulsar extends PC_TileEntity{
 
     public void printDelay()
     {
-        Communication.chatMsg(Lang.tr("pc.pulsar.clickMsg", new String[] {getDelay() + "", Converter.ticksToSecs(getDelay()) + "" }), true);
+        Communication.chatMsg(PC_LangRegistry.tr("pc.pulsar.clickMsg", new String[] {getDelay() + "", Converter.ticksToSecs(getDelay()) + "" }), true);
     }
 
     public void printDelayTime()
     {
-        Communication.chatMsg(Lang.tr("pc.pulsar.clickMsgTime", new String[] {getDelay() + "", Converter.ticksToSecs(getDelay()) + "", (getDelay() - delayTimer) + "" }), true);
+        Communication.chatMsg(PC_LangRegistry.tr("pc.pulsar.clickMsgTime", new String[] {getDelay() + "", Converter.ticksToSecs(getDelay()) + "", (getDelay() - delayTimer) + "" }), true);
     }
 
     public boolean isActive()
@@ -109,31 +104,37 @@ public class PClo_TileEntityPulsar extends PC_TileEntity{
 
     public boolean isSilent()
     {
-        return (Boolean)getData(SILENT);
+        return silent;
     }
 
     public int getDelay()
     {
-        return (Integer)getData(DELAY);
+        return delay;
     }
 
     public int getHold()
     {
-        return (Integer)getData(HOLDTIME);
+        return holdtime;
     }
 
     public boolean isPaused()
     {
-        return (Boolean)getData(PAUSED);
+        return paused;
     }
 
     public void setPaused(boolean paused)
     {
-    	setData(PAUSED, paused);
+    	if(this.paused!=paused){
+    		this.paused=paused;
+    		notifyChanges("paused");
+    	}
     }
 
     public void setSilent(boolean silent) {
-		setData(SILENT, silent);
+    	if(this.silent!=silent){
+    		this.silent=silent;
+    		notifyChanges("silent");
+    	}
 	}
     
 	@Override
@@ -143,7 +144,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity{
              {
                  if (!isSilent())
                  {
-                     ValueWriting.playSound(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
+                     PC_SoundRegistry.playSound(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
                  }
              }
 		}

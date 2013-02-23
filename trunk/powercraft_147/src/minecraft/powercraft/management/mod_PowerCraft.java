@@ -149,20 +149,16 @@ public class mod_PowerCraft{
 		PC_Logger.enterSection("Module Field Init");
 		for(PC_IModule module:modules){
 			final PC_IModule m = module;
-			System.out.println(module);
 			PC_ReflectHelper.getAllFieldsWithAnnotation(module.getClass(), module, PC_FieldObject.class, new PC_IFieldAnnotationIterator<PC_FieldObject>(){
 
 				@Override
 				public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_FieldObject> fieldWithAnnotation) {
 					Class<?> clazz = fieldWithAnnotation.getAnnotation().clazz();
-					System.out.println(clazz);
 					if(PC_Block.class.isAssignableFrom(clazz)){
 						Object block = PC_BlockRegistry.register(m, (Class<? extends PC_Block>)clazz);
-						System.out.println(block);
 						fieldWithAnnotation.setValue(block);
 					}else if(PC_Item.class.isAssignableFrom(clazz) || PC_ItemArmor.class.isAssignableFrom(clazz)){
 						Object item = PC_ItemRegistry.register(m, (Class<? extends Item>)clazz);
-						System.out.println(item);
 						fieldWithAnnotation.setValue(item);
 					}
 					return false;
@@ -176,7 +172,7 @@ public class mod_PowerCraft{
 			List<Class<? extends Entity>> l = module.initEntities(new ArrayList<Class<? extends Entity>>());
 			if(l!=null){
 				for(Class<? extends Entity> entity:l){
-					PC_EntityRegistry.register(entity);
+					PC_EntityRegistry.register(module, entity);
 				}
 			}
 		}

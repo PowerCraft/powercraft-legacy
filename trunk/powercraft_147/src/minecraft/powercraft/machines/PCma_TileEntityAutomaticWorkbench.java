@@ -16,13 +16,12 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
+import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.inventory.PC_IStateReportingInventory;
 
 public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory
 {
-	
-	public static final String REDSTONEACTIVATED = "redstoneActivated";
 	
     private static class ContainerFake extends Container
     {
@@ -45,19 +44,18 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
     private ItemStack actContents[] = new ItemStack[18];
     
-    //public boolean redstoneActivated;
-
-    public PCma_TileEntityAutomaticWorkbench()
-    {
-        setData(REDSTONEACTIVATED, false);
-    }
+    @PC_ClientServerSync
+    public boolean redstoneActivated;
 
     public boolean isRedstoneActivated(){
-    	return (Boolean)getData(REDSTONEACTIVATED);
+    	return redstoneActivated;
     }
     
     public void setRedstoneActivated(boolean state){
-    	setData(REDSTONEACTIVATED, state);
+    	if(redstoneActivated!=state){
+    		redstoneActivated = state;
+    		notifyChanges("redstoneActivated");
+    	}
     }
     
     private InventoryCrafting getStorageAsCraftingGrid(Container container)

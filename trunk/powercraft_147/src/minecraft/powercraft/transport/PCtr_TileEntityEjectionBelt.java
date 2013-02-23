@@ -4,79 +4,66 @@ import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_TileEntity;
+import powercraft.management.annotation.PC_ClientServerSync;
 
 public class PCtr_TileEntityEjectionBelt extends PC_TileEntity
 {
-	public static final String ACTIONTYPE = "actionType", NUMSTACKSEJECTED = "numStacksEjected", NUMITEMSEJECTED = "numItemsEjected", ITEMSELECTMODE = "itemSelectMode";
-	
-    public static Random rand = new Random();
+	public static Random rand = new Random();
 
-    //public int actionType = 0;
-
-    //public int numStacksEjected = 1;
-
-    //public int numItemsEjected = 1;
-
-   // public int itemSelectMode = 0;
-
+    @PC_ClientServerSync
+    public int actionType = 0;
+    @PC_ClientServerSync
+    public int numStacksEjected = 1;
+    @PC_ClientServerSync
+    public int numItemsEjected = 1;
+    @PC_ClientServerSync
+    public int itemSelectMode = 0;
+    
 	public boolean isActive = false;
     
-    public PCtr_TileEntityEjectionBelt() {
-    	setData(ACTIONTYPE, 0);
-    	setData(NUMSTACKSEJECTED, 1);
-    	setData(NUMITEMSEJECTED, 1);
-    	setData(ITEMSELECTMODE, 0);
-    }
-
-    
-    
     public int getActionType() {
-		return (Integer)getData(ACTIONTYPE);
+		return actionType;
 	}
-
-
 
 	public void setActionType(int actionType) {
-		setData(ACTIONTYPE, actionType);
+		if(this.actionType != actionType){
+			this.actionType = actionType;
+			notifyChanges("actionType");
+		}
 	}
-
-
 
 	public int getNumStacksEjected() {
-		return (Integer)getData(NUMSTACKSEJECTED);
+		return numStacksEjected;
 	}
-
-
 
 	public void setNumStacksEjected(int numStacksEjected) {
-		setData(NUMSTACKSEJECTED, numStacksEjected);
+		if(this.numStacksEjected != numStacksEjected){
+			this.numStacksEjected = numStacksEjected;
+			notifyChanges("numStacksEjected");
+		}
 	}
-
-
 
 	public int getNumItemsEjected() {
-		return (Integer)getData(NUMITEMSEJECTED);
+		return numItemsEjected;
 	}
-
-
 
 	public void setNumItemsEjected(int numItemsEjected) {
-		setData(NUMITEMSEJECTED, numItemsEjected);
+		if(this.numItemsEjected != numItemsEjected){
+			this.numItemsEjected = numItemsEjected;
+			notifyChanges("numItemsEjected");
+		}
 	}
-
-
 
 	public int getItemSelectMode() {
-		return (Integer)getData(ITEMSELECTMODE);
+		return itemSelectMode;
 	}
-
-
 
 	public void setItemSelectMode(int itemSelectMode) {
-		setData(ITEMSELECTMODE, itemSelectMode);
+		if(this.itemSelectMode != itemSelectMode){
+			this.itemSelectMode = itemSelectMode;
+			notifyChanges("itemSelectMode");
+		}
 	}
-
-
 
 	@Override
     public final boolean canUpdate()

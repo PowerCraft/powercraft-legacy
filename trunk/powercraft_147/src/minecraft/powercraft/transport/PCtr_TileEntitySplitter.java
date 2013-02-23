@@ -12,9 +12,6 @@ public class PCtr_TileEntitySplitter extends PCtr_TileEntitySeparationBeltBase {
 
 	public PCtr_TileEntitySplitter(){
 		separatorContents = new ItemStack[30];
-		setData(GROUP_LOGS, false);
-        setData(GROUP_PLANKS, false);
-        setData(GROUP_ALL, false);
 	}
 	
 	private PC_Direction getDir(int dir){

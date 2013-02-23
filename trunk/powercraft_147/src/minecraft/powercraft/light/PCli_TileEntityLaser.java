@@ -5,61 +5,58 @@ import net.minecraft.entity.Entity;
 import powercraft.management.PC_BeamTracer;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_IBeamHandler;
-import powercraft.management.PC_IMSG;
 import powercraft.management.PC_ITileEntityRenderer;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.MSG;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_BlockRegistry;
+import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandler, PC_ITileEntityRenderer{
 	
-	public static final String ACTIVE = "active", ITEMSTACK = "itemstack", ISKILLER = "isKiller", POWERED = "powered";
-	
 	private static PCli_ModelLaser modelLaser = new PCli_ModelLaser();
-    //private boolean active = false;
-    //private ItemStack itemstack;
     private PC_BeamTracer laser;
-    //private boolean isKiller = false;
-   // private boolean powered = false;
+    @PC_ClientServerSync
     private boolean active = false;
-    
-    public PCli_TileEntityLaser(){
-    	setData(ACTIVE, false);
-    	setData(ITEMSTACK, null);
-    	setData(ISKILLER, false);
-    	setData(POWERED, false);
-    }
+    @PC_ClientServerSync
+    private PC_ItemStack itemstack;
+    @PC_ClientServerSync
+    private boolean isKiller = false;
+    @PC_ClientServerSync
+   	private boolean powered = false;
     
     public boolean isKiller() {
-    	return (Boolean)getData(ISKILLER);
+    	return isKiller;
     }
     
     public void setKiller(boolean b) {
-    	if(isKiller() != b){
-    		setData(ISKILLER, b);
+    	if(isKiller != b){
+    		isKiller = b;
+    		notifyChanges("isKiller");
     	}
 	}
 
     public boolean isPowered() {
-    	return (Boolean)getData(POWERED);
+    	return powered;
     }
     
     public void setPowered(boolean powered) {
-    	if(isPowered() != powered){
-    		setData(POWERED, powered);
+    	if(this.powered != powered){
+    		this.powered = powered;
+    		notifyChanges("powered");
     	}
 	}
     
 	public boolean isActive()
     {
 		if(PCli_ItemLaserComposition.isSensor(getItemStack()))
-			return (Boolean)getData(ACTIVE);
+			return active;
 		return false;
     }
 
@@ -89,7 +86,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     	laser.flash();
     	if(PCli_ItemLaserComposition.isSensor(getItemStack())){
 	    	if(oldActive != active){
-	    		setData(ACTIVE, active);
+	    		notifyChanges("active");
 	    		ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 	    	}
     	}
@@ -99,8 +96,8 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     	boolean isBurning = false;
 		if(isKiller()){
 			Block b = GameInfo.getBlock(worldObj, xCoord, yCoord-1, zCoord);
-			if(b!=null && b == ModuleInfo.getPCBlockByName("PCma_BlockRoaster")){
-				Object o = MSG.callBlockMSG(worldObj, getCoord().offset(0, -1, 0), PC_Utils.MGS_DOES_SMOKE);
+			if(b!=null && b == PC_BlockRegistry.getPCBlockByName("PCma_BlockRoaster")){
+				Object o = PC_MSGRegistry.callBlockMSG(worldObj, getCoord().offset(0, -1, 0), PC_MSGRegistry.MSG_DOES_SMOKE);
 				if(o instanceof Boolean)
 					isBurning = (Boolean)o;
 			}
@@ -120,17 +117,18 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 	}
 
 	public PC_ItemStack getItemStack() {
-		return (PC_ItemStack)getData(ITEMSTACK);
+		return itemstack;
 	}
 	
 	public void setItemStack(PC_ItemStack itemstack) {
-		setData(ITEMSTACK, itemstack);
+		this.itemstack = itemstack;
+		notifyChanges("itemstack");
 		laser = null;
 	}
 
 	@Override
 	protected void dataChange(String key, Object value){
-		if(key.equals(ITEMSTACK)){
+		if(key.equals("itemstack")){
 			laser = null;
 		}
 	}
@@ -151,7 +149,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 		float f1 = meta2angle[getBlockMetadata()];
 
-		PC_Renderer.bindTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Light")) + "laser.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Light")) + "laser.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);

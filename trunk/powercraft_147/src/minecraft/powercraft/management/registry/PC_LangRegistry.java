@@ -25,11 +25,15 @@ public final class PC_LangRegistry {
 	}
 
 	public static String tr(String identifier) {
+		if(identifier==null)
+			return "";
 		return StringTranslate.getInstance().translateKey(identifier)
 				.trim();
 	}
 
 	public static String tr(String identifier, String... replacements) {
+		if(identifier==null)
+			return "";
 		return StringTranslate.getInstance().translateKeyFormat(identifier,
 				(Object[]) replacements);
 	}

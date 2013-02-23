@@ -6,31 +6,30 @@ import java.util.List;
 import powercraft.management.PC_ITileEntityRenderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_ClientServerSync;
 
 public class PChg_TileEntityHologramField extends PC_TileEntity implements PC_ITileEntityRenderer{
-
-	public static final String OFFSETS = "offsets";
 	
 	public int glList = 0;
 	public int tick;
 	public static List<PChg_TileEntityHologramField> mapToUpdate = new ArrayList<PChg_TileEntityHologramField>();
 	
-	public PChg_TileEntityHologramField(){
-		setData(OFFSETS, new PC_VecI());
-	}
+	@PC_ClientServerSync
+	private PC_VecI offsets = new PC_VecI();
 	
 	public PC_VecI getOffset(){
-		return (PC_VecI)getData(OFFSETS);
+		return offsets;
 	}
 	
 	public void setOffset(PC_VecI coordOffset) {
-		setData(OFFSETS, coordOffset.copy());
+		offsets = coordOffset.copy();
+		notifyChanges("offsets");
 		tick=0;
 	}
 	
 	@Override
 	protected void dataChange(String key, Object value){
-		if(key.equals(OFFSETS))
+		if(key.equals("offsets"))
 			tick=0;
 	}
 	

@@ -10,11 +10,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Direction;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
-import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class, tileEntity=PCtr_TileEntitySeparationBelt.class)
 public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
@@ -97,7 +97,7 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
 	@Override
 	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
-		case PC_Utils.MSG_DEFAULT_NAME:{
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:{
 			return "separation belt";
 		}
 		}

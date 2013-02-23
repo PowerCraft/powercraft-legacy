@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Utils;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PCco_ItemBlockPowerCrystal extends PC_ItemBlock {
 
@@ -63,7 +63,7 @@ public class PCco_ItemBlockPowerCrystal extends PC_ItemBlock {
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
 			names.add(new LangEntry(getItemName() + ".color0", "Orange Power Crystal"));
             names.add(new LangEntry(getItemName() + ".color1", "Red Power Crystal"));

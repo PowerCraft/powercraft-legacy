@@ -1,28 +1,29 @@
 package powercraft.light;
 
-import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_ITileEntityRenderer;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.annotation.PC_ClientServerSync;
+import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PCli_TileEntityMirror extends PC_TileEntity implements PC_ITileEntityRenderer {
 
-	public static final String MIRRORCOLOR = "mirrorColor";
-	
 	private static PCli_ModelMirror modelMirror = new PCli_ModelMirror();
 	
-	public PCli_TileEntityMirror(){
-    	setData(MIRRORCOLOR, -1);
-    }
+	@PC_ClientServerSync
+	private int mirrorColor=-1;
 	
 	public void setMirrorColor(int mirrorColor) {
-		setData(MIRRORCOLOR, mirrorColor);
+		if(this.mirrorColor != mirrorColor){
+			this.mirrorColor = mirrorColor;
+			notifyChanges("mirrorColor");
+		}
 	}
 
 	public int getMirrorColor() {
-		return (Integer)getData(MIRRORCOLOR);
+		return mirrorColor;
 	}
 	
 	@Override
@@ -64,7 +65,7 @@ public class PCli_TileEntityMirror extends PC_TileEntity implements PC_ITileEnti
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F /* *f0 */, (float) z + 0.5F);
 		float f1 = (getBlockMetadata() * 360) / 16F;
 
-		PC_Renderer.bindTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Light")) + "mirror.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Light")) + "mirror.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);

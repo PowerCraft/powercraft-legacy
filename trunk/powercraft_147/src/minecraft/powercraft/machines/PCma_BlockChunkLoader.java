@@ -14,9 +14,10 @@ import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCma_TileEntityChunkLoader.class)
 public class PCma_BlockChunkLoader extends PC_Block implements PC_I3DRecipeHandler {
@@ -76,22 +77,27 @@ public class PCma_BlockChunkLoader extends PC_Block implements PC_I3DRecipeHandl
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			return "Chunk Loader";
-		case PC_Utils.MSG_BLOCK_FLAGS:{
+		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 	   		list.add(PC_Utils.NO_HARVEST);
 	   		list.add(PC_Utils.NO_PICKUP);
 	   		list.add(PC_Utils.HARVEST_STOP);
 	   		return list;
-		}case PC_Utils.MSG_ITEM_FLAGS:{
+		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
-		}case PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
+		}case PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
 			return true;
 		}
 		return null;
+	}
+
+	@Override
+	public boolean canBeCrafted() {
+		return blockID!=-1;
 	}
 
 }

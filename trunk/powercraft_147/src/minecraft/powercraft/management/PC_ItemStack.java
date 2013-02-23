@@ -99,7 +99,7 @@ public class PC_ItemStack implements Externalizable, PC_INBT<PC_ItemStack>
             return ((Item)o).itemID;
         }
 
-        return 0;
+        return -1;
     }
 
     public int getCount()

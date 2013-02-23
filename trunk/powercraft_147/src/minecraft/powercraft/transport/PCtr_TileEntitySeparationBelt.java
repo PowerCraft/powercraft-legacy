@@ -13,9 +13,6 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntitySeparationBelt
 	public PCtr_TileEntitySeparationBelt()
     {
         separatorContents = new ItemStack[18];
-        setData(GROUP_LOGS, false);
-        setData(GROUP_PLANKS, false);
-        setData(GROUP_ALL, false);
     }
     
     @Override

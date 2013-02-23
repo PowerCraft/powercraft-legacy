@@ -19,6 +19,7 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.PC_VecI;
 
 @PC_BlockInfo(tileEntity=PCma_TileEntityRoaster.class)
@@ -234,21 +235,21 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			return "Roaster";
-		case PC_Utils.MSG_ITEM_FLAGS:{
+		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
-		}case PC_Utils.MSG_BLOCK_FLAGS:{
+		}case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 	   		list.add(PC_Utils.NO_HARVEST);
 	   		list.add(PC_Utils.NO_PICKUP);
 	   		list.add(PC_Utils.HARVEST_STOP);
 	   		return list;
-		}case PC_Utils.MGS_DOES_SMOKE:
+		}case PC_MSGRegistry.MSG_DOES_SMOKE:
 			return isBurning(world, pos.x, pos.y, pos.z);
-		case PC_Utils.MSG_STR_MSG:{
+		case PC_MSGRegistry.MSG_STR_MSG:{
 			if("isBurning".equalsIgnoreCase((String) obj[0]))
 				return isBurning(world, pos.x, pos.y, pos.z);
 		}

@@ -18,8 +18,9 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(itemBlock=PCde_ItemBlockStairs.class, tileEntity=PCde_TileEntityStairs.class)
 public class PCde_BlockStairs extends PC_Block {
@@ -225,19 +226,19 @@ public class PCde_BlockStairs extends PC_Block {
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
 			break;
-		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
 			break;
-		case PC_Utils.MSG_BLOCK_FLAGS:{
+		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 			list.add(PC_Utils.NO_HARVEST);
 			list.add(PC_Utils.NO_PICKUP);
 			list.add(PC_Utils.PASSIVE);
 			return list;
 		}
-		case PC_Utils.MSG_ITEM_FLAGS:{
+		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;

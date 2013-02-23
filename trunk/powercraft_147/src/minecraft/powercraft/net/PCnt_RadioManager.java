@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Struct3;
-import powercraft.management.PC_Utils;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PCnt_RadioManager implements PC_IDataHandler, PC_IMSG {
 
@@ -144,7 +144,7 @@ public class PCnt_RadioManager implements PC_IDataHandler, PC_IMSG {
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS:
+		case PC_MSGRegistry.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS:
 			List<PC_Struct3<String, String, Object>> l = (List<PC_Struct3<String, String, Object>>)obj[0];
 			FunctionProvider fp = new FunctionProvider();
 			l.add(new PC_Struct3<String, String, Object>("tx", "tx", fp));

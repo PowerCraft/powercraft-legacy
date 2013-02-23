@@ -1,12 +1,5 @@
 package powercraft.light;
 
-import static net.minecraftforge.common.ForgeDirection.DOWN;
-import static net.minecraftforge.common.ForgeDirection.EAST;
-import static net.minecraftforge.common.ForgeDirection.NORTH;
-import static net.minecraftforge.common.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.ForgeDirection.UP;
-import static net.minecraftforge.common.ForgeDirection.WEST;
-
 import java.util.List;
 import java.util.Random;
 
@@ -25,18 +18,18 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_IItemInfo;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.annotation.PC_Shining.OFF;
 import powercraft.management.annotation.PC_Shining.ON;
-import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_Shining
 @PC_BlockInfo(tileEntity=PCli_TileEntityLight.class)
@@ -410,27 +403,27 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_LOAD_FROM_CONFIG:
+		case PC_MSGRegistry.MSG_LOAD_FROM_CONFIG:
 			on.setLightValue(((PC_Property)obj[0]).getInt("brightness", 15) * 0.0625F);
 			break;
-		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
 			break;
-		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
 			break;
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			return "Light";
-		case PC_Utils.MSG_BLOCK_FLAGS:{
+		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 			list.add(PC_Utils.NO_HARVEST);
 			list.add(PC_Utils.NO_PICKUP);
 			list.add(PC_Utils.HARVEST_STOP);
 	   		return list;
-		}case PC_Utils.MSG_ITEM_FLAGS:{
+		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
-		}case PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL:{
+		}case PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL:{
 			if(this==off)
 				return true;
 			return false;

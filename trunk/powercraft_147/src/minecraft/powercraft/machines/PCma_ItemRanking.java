@@ -7,8 +7,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -17,17 +17,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
-import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct3;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_ItemRegistry;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PCma_ItemRanking {
 	
@@ -332,7 +330,7 @@ public class PCma_ItemRanking {
 		TreeMap<String, PC_ItemArmor> itemArmors = PC_ItemRegistry.getPCItemArmors();
 		
 		for(PC_Block block:blocks.values()){
-			Object o = block.msg(PC_Utils.MSG_RATING);
+			Object o = block.msg(PC_MSGRegistry.MSG_RATING);
 			if(o instanceof List){
 				List<Integer> rating = (List<Integer>)o;
 				String s = "";
@@ -346,7 +344,7 @@ public class PCma_ItemRanking {
 		}
 		
 		for(PC_Item item:items.values()){
-			Object o = item.msg(PC_Utils.MSG_RATING);
+			Object o = item.msg(PC_MSGRegistry.MSG_RATING);
 			if(o instanceof List){
 				List<Integer> rating = (List<Integer>)o;
 				String s = "";
@@ -360,7 +358,7 @@ public class PCma_ItemRanking {
 		}
 		
 		for(PC_ItemArmor itemArmor:itemArmors.values()){
-			Object o = itemArmor.msg(PC_Utils.MSG_RATING);
+			Object o = itemArmor.msg(PC_MSGRegistry.MSG_RATING);
 			if(o instanceof List){
 				List<Integer> rating = (List<Integer>)o;
 				String s = "";

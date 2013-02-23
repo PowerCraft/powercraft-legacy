@@ -17,12 +17,12 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_MSGRegistry;
 import weasel.WeaselEngine;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselDouble;
@@ -110,12 +110,12 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			return "Digital Workbench";
-		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
 			break;
-		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
 			break;
 		default:
 			return null;

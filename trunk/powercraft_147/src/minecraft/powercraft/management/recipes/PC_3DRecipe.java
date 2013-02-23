@@ -176,5 +176,10 @@ public class PC_3DRecipe implements PC_IRecipe {
 			return false;
 		return obj.foundStructAt(entityplayer, world, structStart);
 	}
+
+	@Override
+	public boolean canBeCrafted() {
+		return obj.canBeCrafted();
+	}
 	
 }

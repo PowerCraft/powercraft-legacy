@@ -23,12 +23,11 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 
 public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
-	
-	public static final String BURNTIME = "burnTime", NETHERTIME = "netherTime", NETHERACTIONTIME = "netherActionTime", NONETHERRACK = "noNetherrack", ACTIVE = "active";
 	
 	private static Random random = new Random();
 	
@@ -37,63 +36,71 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     public static final int MAXSTACK = 16;
 
     public static final int SIZE = 9;
-//
-//    public int burnTime = 0;
-//
-//    public int netherTime = 0;
-//
-//    public int netherActionTime = 100;
-//    private boolean noNetherrack = false;
-//
-//    public boolean isActive;
-    
-    public PCma_TileEntityRoaster()
-    {
-    	setData(BURNTIME, 0);
-    	setData(NETHERTIME, 0);
-    	setData(NETHERACTIONTIME, 100);
-    	setData(NONETHERRACK, false);
-    	setData(ACTIVE, false);
-    }
+
+    @PC_ClientServerSync
+    public int burnTime = 0;
+    @PC_ClientServerSync
+    public int netherTime = 0;
+    @PC_ClientServerSync
+    public int netherActionTime = 100;
+    @PC_ClientServerSync
+    private boolean noNetherrack = false;
+    @PC_ClientServerSync
+    public boolean isActive;
 	
     public int getBurnTime() {
-		return (Integer)getData(BURNTIME);
+		return burnTime;
 	}
 
 	public void setBurnTime(int burnTime) {
-		setData(BURNTIME, burnTime);
+		if(this.burnTime != burnTime){
+			this.burnTime = burnTime;
+			notifyChanges("burnTime");
+		}
 	}
 
 	public int getNetherTime() {
-		return (Integer)getData(NETHERTIME);
+		return netherTime;
 	}
 
 	public void setNetherTime(int netherTime) {
-		setData(NETHERTIME, netherTime);
+		if(this.netherTime != netherTime){
+			this.netherTime = netherTime;
+			notifyChanges("netherTime");
+		}
 	}
 
 	public int getNetherActionTime() {
-		return (Integer)getData(NETHERACTIONTIME);
+		return netherActionTime;
 	}
 
 	public void setNetherActionTime(int netherActionTime) {
-		setData(NETHERACTIONTIME, netherActionTime);
+		if(this.netherActionTime != netherActionTime){
+			this.netherActionTime = netherActionTime;
+			notifyChanges("netherActionTime");
+		}
 	}
 
 	public boolean isNoNetherrack() {
-		return (Boolean)getData(NONETHERRACK);
+		return noNetherrack;
 	}
 
 	public void setNoNetherrack(boolean noNetherrack) {
-		setData(NONETHERRACK, noNetherrack);
+		if(this.noNetherrack != noNetherrack){
+			this.noNetherrack = noNetherrack;
+			notifyChanges("noNetherrack");
+		}
 	}
 
 	public boolean isActive() {
-		return (Boolean)getData(ACTIVE);
+		return isActive;
 	}
 
 	public void setActive(boolean isActive) {
-		setData(ACTIVE, isActive);
+		if(this.isActive != isActive){
+			this.isActive = isActive;
+			notifyChanges("isActive");
+		}
 	}
 
 	@Override
@@ -217,7 +224,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     @Override
     public void closeChest()
     {
-    	setData(NONETHERRACK, false);
+    	setNoNetherrack(false);
     }
 
     @Override

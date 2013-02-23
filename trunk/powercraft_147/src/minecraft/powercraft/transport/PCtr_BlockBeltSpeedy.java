@@ -4,10 +4,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class)
 public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltBase
@@ -70,7 +70,7 @@ public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltBase
 	@Override
 	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
-		case PC_Utils.MSG_DEFAULT_NAME:{
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:{
 			return "speedy belt";
 		}
 		}

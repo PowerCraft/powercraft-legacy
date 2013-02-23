@@ -9,36 +9,35 @@ import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
+import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.inventory.PC_IStateReportingInventory;
 
 public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IStateReportingInventory
 {
 	
-	public static final String LOADTIME = "loadTime", NEEDLOADTIME = "needLoadTime", TIMECRITICAL = "timeCritical";
-	
     private ItemStack[] itemStacks = new ItemStack[35];
     private int burnTime = 0;
-    //private int loadTime = 0;
+    @PC_ClientServerSync
+    private int loadTime = 0;
     private boolean finished = true;
-    //private int needLoadTime = 0;
-    //private boolean timeCritical = false;
+    @PC_ClientServerSync
+    private int needLoadTime = 0;
+    @PC_ClientServerSync
+    private boolean timeCritical = false;
     
-    public PCma_TileEntityTransmutabox(){
-    	setData(LOADTIME, 0);
-    	setData(NEEDLOADTIME, 0);
-    	setData(TIMECRITICAL, false);
-    }
-    
-    public void setTimeCritical(boolean checked) {
-    	setData(TIMECRITICAL, checked);
+    public void setTimeCritical(boolean state) {
+    	if(timeCritical!=state){
+    		timeCritical=state;
+    		notifyChanges("timeCritical");
+    	}
 	}
     
     public float getProgress()
     {
-    	if((Integer)getData(LOADTIME)<=0)
+    	if(loadTime<=0)
     		return 0.0f;
-        return (Integer)getData(LOADTIME)/(float)(Integer)getData(NEEDLOADTIME);
+        return loadTime/(float)needLoadTime;
     }
 
     @Override
@@ -316,7 +315,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
 		        						itemStacks[i] = null;
 		        					}else{
 		        						if(PCma_ItemRanking.getRank(new PC_ItemStack(itemStacks[i]))>0){
-			        						if((Boolean)getData(TIMECRITICAL)){
+			        						if(timeCritical){
 				        						itemStacks[9] = itemStacks[i].copy();
 				        						itemStacks[i] = null;
 			        						}else{
@@ -339,7 +338,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
 			        			itemStacks[10] = itemStacks[0].copy();
 		        				inRank *= itemStacks[9].stackSize;
 		        				
-			        			if(!(Boolean)getData(TIMECRITICAL)){
+			        			if(!timeCritical){
 			        				
 			        				if(inRank>outRank){
 			        					int num = (int)(inRank/outRank);
@@ -353,7 +352,8 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
 			        				
 			        			}
 			        			
-			        			setData(NEEDLOADTIME, (int)(outRank / inRank * 20));
+			        			needLoadTime = (int)(outRank / inRank * 20);
+			        			notifyChanges("needLoadTime");
 			        			
 			        			finished = false;
 		        			}
@@ -370,9 +370,9 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
 	                burnTime--;
 	            }
 	            
-	            if (((Integer)getData(LOADTIME)) >= ((Integer)getData(NEEDLOADTIME)))
+	            if (loadTime >= needLoadTime)
 	            {
-	            	addToLoadTime((Integer)getData(NEEDLOADTIME));
+	            	addToLoadTime(-needLoadTime);
 	                finished = true;
 	                sendToOutput(itemStacks[10]);
 	                itemStacks[9] = null;
@@ -389,7 +389,8 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     }
 
     public void addToLoadTime(int num){
-    	setData(LOADTIME, ((Integer)getData(LOADTIME))+num);
+    	loadTime += num;
+    	notifyChanges("loadTime");
     }
     
     public void addEnergy(int energy){

@@ -10,7 +10,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_BeamTracer;
 import powercraft.management.PC_BeamTracer.BeamSettings;
 import powercraft.management.PC_BeamTracer.result;
 import powercraft.management.PC_Block;
@@ -18,11 +17,11 @@ import powercraft.management.PC_Color;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(itemBlock=PCco_ItemBlockPowerCrystal.class)
 public class PCco_BlockPowerCrystal extends PC_Block
@@ -213,7 +212,7 @@ public class PCco_BlockPowerCrystal extends PC_Block
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_LOAD_FROM_CONFIG:
+		case PC_MSGRegistry.MSG_LOAD_FROM_CONFIG:
 			setLightValue(((PC_Property)obj[0]).getInt("brightness", 16) * 0.0625F);
 			makeSound = ((PC_Property)obj[0]).getBoolean("makeSound", true);
 			genCrystalsInChunk = ((PC_Property)obj[0]).getInt("spawn.in_chunk", 3, "Number of deposits in each 16x16 chunk.");
@@ -221,23 +220,23 @@ public class PCco_BlockPowerCrystal extends PC_Block
     		genCrystalsMaxY = ((PC_Property)obj[0]).getInt("spawn.min_y", 5, "Min Y coordinate of crystal deposits.");
     		genCrystalsMinY = ((PC_Property)obj[0]).getInt("spawn.max_y", 15, "Max Y coordinate of crystal deposits.");
 			break;
-		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
 			break;
-		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
 			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
 			break;
-		case PC_Utils.MSG_SPAWNS_IN_CHUNK:
+		case PC_MSGRegistry.MSG_SPAWNS_IN_CHUNK:
 			return genCrystalsInChunk;
-		case PC_Utils.MSG_BLOCKS_ON_SPAWN_POINT:
+		case PC_MSGRegistry.MSG_BLOCKS_ON_SPAWN_POINT:
 			return ((Random)obj[0]).nextInt(PC_MathHelper.clamp_int(genCrystalsDepositMaxCount - 1, 1, 10)) + 2;
-		case PC_Utils.MSG_SPAWN_POINT:
+		case PC_MSGRegistry.MSG_SPAWN_POINT:
 			return new PC_VecI(((Random)obj[0]).nextInt(16),
 					((Random)obj[0]).nextInt(PC_MathHelper.clamp_int(genCrystalsMaxY - genCrystalsMinY, 1, 255)) + genCrystalsMinY,
 					((Random)obj[0]).nextInt(16));
-		case PC_Utils.MSG_SPAWN_POINT_METADATA:
+		case PC_MSGRegistry.MSG_SPAWN_POINT_METADATA:
 			return ((Random)obj[0]).nextInt(8);
-		case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
+		case PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER:
 			BeamSettings bs = (BeamSettings)obj[0];
 			pos = bs.getPos();
 			bs.setColor(PC_Color.fromHex(colorMultiplier(world, pos.x, pos.y, pos.z)));
@@ -245,7 +244,7 @@ public class PCco_BlockPowerCrystal extends PC_Block
 			if(crystalAdd instanceof Integer)
 				bs.setLength(bs.getLength()+(Integer)crystalAdd);
 			return result.CONTINUE;
-		case PC_Utils.MSG_RATING:{
+		case PC_MSGRegistry.MSG_RATING:{
 			List<Integer> l = new ArrayList<Integer>();
 			l.add(10000);
 			l.add(10000);

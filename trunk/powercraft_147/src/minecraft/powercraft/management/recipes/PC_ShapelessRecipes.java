@@ -67,7 +67,7 @@ public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInfo, PC_IRecipe 
 		Object o = PC_GlobalVariables.consts.get(op);
 		if(o instanceof Boolean)
 			return (Boolean)o;
-		return true;
+		return recipeOutput.getID()!=-1;
 	}
     
     public ItemStack getRecipeOutput()

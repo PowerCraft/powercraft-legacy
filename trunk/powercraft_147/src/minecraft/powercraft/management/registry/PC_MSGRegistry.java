@@ -31,7 +31,7 @@ public final class PC_MSGRegistry {
 			MSG_RATING = 20, MSG_CONDUCTIVITY = 21, MSG_TICK_EVENT = 22,
 			MSG_LOAD_WORLD = 23, MSG_GET_PROVIDET_GLOBAL_FUNCTIONS = 24,
 			MSG_RENDER_OVERLAY = 25, MSG_OPEN_GUI_OR_PLACE_BLOCK = 26,
-			MGS_DOES_SMOKE = 27;
+			MSG_DOES_SMOKE = 27;
 	
 	public static List<PC_IMSG> getMSGObjects() {
 		return new ArrayList<PC_IMSG>(msgObjects);

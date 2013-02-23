@@ -1,7 +1,5 @@
 package powercraft.net;
 
-import com.google.common.util.concurrent.SettableFuture;
-
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -10,7 +8,6 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import powercraft.management.PC_ITileEntityRenderer;
@@ -18,35 +15,34 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.annotation.PC_ClientServerSync;
+import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEntityRenderer {
 	
-	public static final String ACTIVE = "active", RANGE = "range", TYPE = "type";
-	
 	/** Flag that the sensor is active - giving power */
-	//public boolean active = false;
+	@PC_ClientServerSync
+	private boolean active = false;
 	/** Current range in blocks. */
-	//public int range = 3;
-	
-	//public int type;
+	@PC_ClientServerSync
+	private int range = 3;
+	@PC_ClientServerSync
+	private int type;
 	
 	private static PCnt_ModelSensor model = new PCnt_ModelSensor();
-	
-	public PCnt_TileEntitySensor(){
-		setData(ACTIVE, false);
-		setData(RANGE, 3);
-		setData(TYPE, 0);
-	}
 	
 	@Override
 	public void create(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-		setData(TYPE, stack.getItemDamage());
+		type = stack.getItemDamage();
 	}
 
 	public void setRange(int range) {
-		setData(RANGE, range);
+		if(this.range != range){
+			this.range = range;
+			notifyChanges("range");
+		}
 	}
 	
 	/**
@@ -108,7 +104,8 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 		}
 		if (count > 0) {
 			if (!isActive()) {
-				setData(ACTIVE, true);
+				active = true;
+				notifyChanges("active");
 				if(getBlockType()!=null){
 					worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
 					worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, getBlockType().blockID);
@@ -119,7 +116,8 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 			}
 		} else {
 			if (isActive()) {
-				setData(ACTIVE, false);
+				active = false;
+				notifyChanges("active");
 				if(getBlockType()!=null){
 					worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
 					worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, getBlockType().blockID);
@@ -137,7 +135,7 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 	 * @return group number
 	 */
 	public int getGroup() {
-		return (Integer)getData(TYPE);
+		return type;
 	}
 
 	/**
@@ -146,11 +144,11 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 	 * @return range
 	 */
 	public int getRange() {
-		return (Integer)getData(RANGE);
+		return range;
 	}
 
 	public boolean isActive() {
-		return (Boolean)getData(ACTIVE);
+		return active;
 	}
 	
 	@Override
@@ -161,7 +159,7 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
 
-		PC_Renderer.bindTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Net"))+"block_sensor.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Net"))+"block_sensor.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);

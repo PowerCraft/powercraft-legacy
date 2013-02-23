@@ -45,6 +45,7 @@ import powercraft.management.entity.PC_FakePlayer;
 import powercraft.management.inventory.PC_IInventoryWrapper;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.inventory.PC_IStateReportingInventory;
+import powercraft.management.registry.PC_ItemRegistry;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 import powercraft.mobile.PCmo_Command.ParseException;
@@ -126,8 +127,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		setFlag(torches, false);
 		setFlag(cobbleMake, false);
 		setFlag(airFillingEnabled, false);
-		if(!world.isRemote)
-			br = PCmo_MinerManager.createMinerBrain(this);
+		br = PCmo_MinerManager.createMinerBrain(this, !world.isRemote);
 	}
 
 	/**
@@ -506,18 +506,24 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			super(Lang.tr("pc.miner.chestName"), 11 * 5);
 		}
 
+		public boolean moveEnabled=true;
+		
 		/**
 	     * Called when an the contents of an Inventory change, usually
 	     */
 	    public void onInventoryChanged(){
 	    	super.onInventoryChanged();
-	    	Inventory.moveStacks(cargo, xtals);
+	    	if(moveEnabled){
+	    		Inventory.moveStacks(cargo, xtals);
+	    	}
 	    }
 		
 		@Override
 		public void closeChest() {
 			super.closeChest();
-			Inventory.moveStacks(cargo, xtals);
+			if(moveEnabled){
+				Inventory.moveStacks(cargo, xtals);
+			}
 		}
 
 		/**
@@ -1034,7 +1040,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		 * inventory
 		 */
 		public MinerCrystalInventory() {
-			super(Lang.tr("xtals"), 8);
+			super("xtals", 8);
 		}
 		
 		@Override
@@ -3388,12 +3394,14 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 	@Override
 	public boolean interact(EntityPlayer entityplayer) {
+		if(worldObj.isRemote)
+			return true;
 		if (riddenByEntity != null && (riddenByEntity instanceof EntityPlayer) && riddenByEntity != entityplayer) {
 			return true;
 		}
 
 		// set for keyboard control or open gui.
-		if (entityplayer.getCurrentEquippedItem() != null && entityplayer.getCurrentEquippedItem().itemID == ModuleInfo.getPCObjectIDByName("PCco_ItemActivator")) {
+		if (entityplayer.getCurrentEquippedItem() != null && entityplayer.getCurrentEquippedItem().getItem() == PC_ItemRegistry.getPCItemByName("PCco_ItemActivator")) {
 			if(playerConectedID==null)
 				playerConectedID = entityplayer.getEntityName();
 			else
@@ -3503,18 +3511,15 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		IInventory inv = null;
 
-		test:
-		for (int x = xl; x <= xh; x++) {
-			for (int k = zl; k <= zh; k++) {
+		for (int x = xl; x <= xh && inv==null; x++) {
+			for (int k = zl; k <= zh && inv==null; k++) {
 				inv = Inventory.getCompositeInventoryAt(worldObj, new PC_VecI(x, y + 1, k));
-				if (inv != null) {
-					break test;
-				}
 			}
 		}
 
 		if (inv != null) {
 			Inventory.moveStacks(xtals, inv);
+			cargo.moveEnabled=false;
 			Inventory.moveStacks(cargo, inv);
 			Inventory.dropInventoryContents(cargo, worldObj, new PC_VecI((int)Math.round(posX), (int)Math.round(posY + 2.2F), (int)Math.round(posZ)));
 

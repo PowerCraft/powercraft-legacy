@@ -6,7 +6,6 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -15,10 +14,11 @@ import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.recipes.PC_3DRecipe;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
-import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCma_TileEntityFishingMachine.class)
 public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHandler {
@@ -145,16 +145,16 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_ITEM_FLAGS:{
+		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
-		}case PC_Utils.MSG_BLOCK_FLAGS:{
+		}case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 	   		list.add(PC_Utils.NO_HARVEST);
 	   		list.add(PC_Utils.NO_PICKUP);
 	   		return list;
-		}case PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
+		}case PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
 			break;
 		default:
 			return null;
@@ -177,6 +177,11 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 		int meta = GameInfo.getMD(world, pos);
 		ValueWriting.setBID(world, pos, blockID, meta);
 		return true;
+	}
+
+	@Override
+	public boolean canBeCrafted() {
+		return blockID!=-1;
 	}
 
 }

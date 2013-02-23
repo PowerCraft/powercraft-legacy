@@ -6,9 +6,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PClo_ItemBlockFlipFlop extends PC_ItemBlock
 {
@@ -68,7 +68,7 @@ public class PClo_ItemBlockFlipFlop extends PC_ItemBlock
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_DEFAULT_NAME:
+		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
 			for (int i = 0; i < PClo_FlipFlopType.TOTAL_FLIPFLOP_COUNT; i++)
 	        {
