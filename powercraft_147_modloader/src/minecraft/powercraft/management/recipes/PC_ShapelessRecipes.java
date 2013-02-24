@@ -85,7 +85,7 @@ public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInfo, PC_IRecipe 
     	boolean[] used = new boolean[recipeItems.length];
 
     	int craftSizeY = inventoryCrafting.getSizeInventory();
-		int craftSizeX = (Integer)PC_ReflectHelper.getValue(InventoryCrafting.class, inventoryCrafting, 1);
+		int craftSizeX = PC_ReflectHelper.getValue(InventoryCrafting.class, inventoryCrafting, 1, int.class);
 		craftSizeY = craftSizeY/craftSizeX;
 		
 		for (int y = 0; y < craftSizeY; y++) {

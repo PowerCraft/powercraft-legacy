@@ -43,7 +43,7 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
 		int oldID = itemID;
 		if(oldID == id)
 			return;
-    	if(PC_ReflectHelper.setValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id)){
+    	if(PC_ReflectHelper.setValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id, int.class)){
     		if(oldID!=-1){
     			Item.itemsList[oldID] = replacedItem;
     		}

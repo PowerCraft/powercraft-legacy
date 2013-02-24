@@ -28,7 +28,7 @@ public class PC_GuiMainMenuHack extends GuiMainMenu {
         {
             GuiButton guiButton = (GuiButton)this.controlList.get(i);
             if(guiButton.id==3){
-            	PC_ReflectHelper.setValue(GuiButton.class, guiButton, 0, 98);
+            	PC_ReflectHelper.setValue(GuiButton.class, guiButton, 0, 98, int.class);
             	break;
             }
         }

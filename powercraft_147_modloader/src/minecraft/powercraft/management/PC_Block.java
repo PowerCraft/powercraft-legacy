@@ -136,9 +136,9 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 		int oldID = blockID;
 		if(oldID==id)
 			return;
-		if(PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, id)){
-	    	if(PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, id)){
-	    		if(PC_ReflectHelper.setValue(ItemBlock.class, thisBlock.itemBlock, 0, id)){
+		if(PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, id, int.class)){
+	    	if(PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, id, int.class)){
+	    		if(PC_ReflectHelper.setValue(ItemBlock.class, thisBlock.itemBlock, 0, id, int.class)){
 		    		if(oldID!=-1){
 		    			replaced.storeToID(oldID);
 		    		}
@@ -150,11 +150,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 		    			replaced = null;
 		    		}
 	    		}else{
-	    			PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, oldID);
-	    			PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID);
+	    			PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, oldID, int.class);
+	    			PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID, int.class);
 	    		}
 	    	}else{
-	    		PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID);
+	    		PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID, int.class);
 	    	}
 		}
 	}

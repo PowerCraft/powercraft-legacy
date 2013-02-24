@@ -21,11 +21,11 @@ public class PC_FieldWithAnnotation<T extends Annotation> {
 	}
 	
 	public boolean setValue(Object value){
-		return PC_ReflectHelper.setValue(c, obj, index, value);
+		return PC_ReflectHelper.setValue(c, obj, index, value, Object.class);
 	}
 	
 	public Object getValue(){
-		return PC_ReflectHelper.getValue(c, obj, index);
+		return PC_ReflectHelper.getValue(c, obj, index, Object.class);
 	}
 	
 	public Class<?> getFieldClass(){

@@ -19,8 +19,8 @@ public class PC_RenderPlayerHack extends RenderPlayer {
 	private static final String[] armorFilenamePrefix = new String[] {"cloth", "chain", "iron", "diamond", "gold"};
 	
 	public PC_RenderPlayerHack(){
-		modelArmorChestplate = (ModelBiped)PC_ReflectHelper.getValue(RenderPlayer.class, this, 1);
-		modelArmor = (ModelBiped)PC_ReflectHelper.getValue(RenderPlayer.class, this, 2);
+		modelArmorChestplate = PC_ReflectHelper.getValue(RenderPlayer.class, this, 1, ModelBiped.class);
+		modelArmor = PC_ReflectHelper.getValue(RenderPlayer.class, this, 2, ModelBiped.class);
 	}
 	
 	@Override

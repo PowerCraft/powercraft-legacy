@@ -60,7 +60,7 @@ public class PC_GuiMods implements PC_IGresClient {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_VecI size = gui.getSize();
-		baseWidget = (PC_GresLayoutV)PC_ReflectHelper.getValue(PC_GresGui.class, gui, 1);
+		baseWidget = PC_ReflectHelper.getValue(PC_GresGui.class, gui, 1, PC_GresLayoutV.class);
 		PC_GresLabel label;
 		gui.add(label = new PC_GresLabel("pc.gui.mods"));
 		label.enable(false);
@@ -84,7 +84,7 @@ public class PC_GuiMods implements PC_IGresClient {
 		done = new PC_GresButton("gui.done");
 		done.setMinSize(200, 20);
 		gui.add(done);
-		PC_ReflectHelper.setValue(PC_GresWidget.class, baseWidget, 19, false);
+		PC_ReflectHelper.setValue(PC_GresWidget.class, baseWidget, 19, false, boolean.class);
 	}
 
 	@Override
