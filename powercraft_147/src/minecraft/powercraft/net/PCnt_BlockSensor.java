@@ -19,10 +19,10 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 
@@ -90,7 +90,7 @@ public class PCnt_BlockSensor extends PC_Block {
 			}
 		}
 
-		Gres.openGres("Sensor", player, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+		PC_GresRegistry.openGres("Sensor", player, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
 		//PC_Utils.openGres(player, new PClo_GuiSensor((PClo_TileEntitySensor) new PC_CoordI(i, j, k).getTileEntity(world)));
 		return true;
 	}

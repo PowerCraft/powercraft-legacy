@@ -1216,7 +1216,7 @@ public class PC_Utils implements PC_IPacketHandler {
 		}
 
 		public static String getMobID(TileEntityMobSpawner te) {
-			return (String) PC_ReflectHelper.getValue(TileEntityMobSpawner.class, te, 1);
+			return PC_ReflectHelper.getValue(TileEntityMobSpawner.class, te, 1, String.class);
 		}
 
 		public static File getMCDirectory() {

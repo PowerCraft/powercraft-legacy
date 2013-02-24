@@ -26,9 +26,8 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 	/** Hide the label */
 	@PC_ClientServerSync
 	public boolean hideLabel = false;
-
-
 	/** Render a smaller model */
+	@PC_ClientServerSync
 	public boolean renderMicro = false;
 
 	private static PCnt_ModelRadio model = new PCnt_ModelRadio();

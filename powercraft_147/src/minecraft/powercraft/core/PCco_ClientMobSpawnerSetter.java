@@ -1,8 +1,9 @@
 package powercraft.core;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.reflect.PC_ReflectHelper;
 
 public class PCco_ClientMobSpawnerSetter extends PCco_MobSpawnerSetter {
 
@@ -10,7 +11,7 @@ public class PCco_ClientMobSpawnerSetter extends PCco_MobSpawnerSetter {
 	public boolean handleIncomingPacket(EntityPlayer player, Object[] o) {
 		TileEntityMobSpawner tems = (TileEntityMobSpawner)player.worldObj.getBlockTileEntity((Integer)o[0], (Integer)o[1], (Integer)o[2]);
 		tems.setMobID((String)o[3]);
-		ValueWriting.setPrivateValue(TileEntityMobSpawner.class, tems, 8, null);
+		PC_ReflectHelper.setValue(TileEntityMobSpawner.class, tems, 8, null, Entity.class);
 		tems.getMobEntity();
 		return true;
 	}

@@ -14,17 +14,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresRadioButton;
+import powercraft.management.gres.PC_GresRadioButton.PC_GresRadioGroup;
 import powercraft.management.gres.PC_GresScrollArea;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresRadioButton.PC_GresRadioGroup;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_LangRegistry;
 
 public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 
@@ -39,7 +39,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(230, 100, Lang.tr("tile.mobSpawner.name")).setAlignH(PC_GresAlign.STRETCH);
+		PC_GresWidget w = new PC_GresWindow(230, 100, "tile.mobSpawner.name").setAlignH(PC_GresAlign.STRETCH);
 		
 		PC_GresScrollArea sa = new PC_GresScrollArea(PC_GresScrollArea.VSCROLL);
 		sa.setSize(0, 100);
@@ -49,13 +49,13 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 		
 		PC_GresRadioGroup rg = new PC_GresRadioGroup();
 		
-		Map<Class, String> c2s = (Map<Class, String>)ValueWriting.getPrivateValue(EntityList.class, EntityList.class, 1);
+		Map<Class, String> c2s = PC_ReflectHelper.getValue(EntityList.class, EntityList.class, 1, Map.class);
 		Entry<Class, String>[] se = c2s.entrySet().toArray(new Entry[0]);
 		Arrays.sort(se,  new Comparator<Entry<Class, String>>(){
 
 			@Override
 			public int compare(Entry<Class, String> arg0, Entry<Class, String> arg1) {
-				return Lang.tr(arg0.getValue()).compareToIgnoreCase(Lang.tr(arg1.getValue()));
+				return PC_LangRegistry.tr(arg0.getValue()).compareToIgnoreCase(PC_LangRegistry.tr(arg1.getValue()));
 			}
 			
 		});
@@ -63,7 +63,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 		for(Entry<Class, String> e: se){
 			Class mob = e.getKey();
 			if((mob.getModifiers() & Modifier.ABSTRACT)==0 && EntityLiving.class.isAssignableFrom(mob) && !EntityPlayer.class.isAssignableFrom(mob)){
-				PC_GresRadioButton rb = new PC_GresRadioButton(Lang.tr(e.getValue()), rg);
+				PC_GresRadioButton rb = new PC_GresRadioButton(e.getValue(), rg);
 				entityIds.add(e.getValue());
 				rb.setId(entityIds.size());
 				if(e.getValue().equalsIgnoreCase(tems.func_92015_a()))

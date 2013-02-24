@@ -19,12 +19,12 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.entity.PC_FakePlayer;
+import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCma_TileEntityReplacer.class)
@@ -148,7 +148,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             return true;
         }
 
-        Gres.openGres("Replacer", entityplayer, tileentity);
+        PC_GresRegistry.openGres("Replacer", entityplayer, tileentity);
         return true;
     }
 

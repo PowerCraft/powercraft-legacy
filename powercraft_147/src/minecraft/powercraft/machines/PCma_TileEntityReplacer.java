@@ -29,13 +29,13 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
     private static final int SIZE = 1;
 
     @PC_ClientServerSync
-    public PC_VecI coordOffset = new PC_VecI(0, 1, 0);
+    private PC_VecI coordOffset = new PC_VecI(0, 1, 0);
     @PC_ClientServerSync
-    public boolean aidEnabled = false;
+    private boolean aidEnabled = false;
     @PC_ClientServerSync
     private PC_Color aidcolor;
     @PC_ClientServerSync
-    public boolean state = false;
+    private boolean state = false;
 
     public int extraMeta = -1;
     

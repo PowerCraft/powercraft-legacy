@@ -11,9 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_Item;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
@@ -811,19 +811,19 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		checkTag(itemstack);
 		switch (itemstack.getTagCompound().getInteger("Type")) {
 			case EMPTY:
-				return Lang.tr("pc.weasel.disk.empty");
+				return PC_LangRegistry.tr("pc.weasel.disk.empty");
 			case TEXT:
-				return Lang.tr("pc.weasel.disk.text");
+				return PC_LangRegistry.tr("pc.weasel.disk.text");
 			case IMAGE:
-				return Lang.tr("pc.weasel.disk.image");
+				return PC_LangRegistry.tr("pc.weasel.disk.image");
 			case NUMBERLIST:
-				return Lang.tr("pc.weasel.disk.numberList");
+				return PC_LangRegistry.tr("pc.weasel.disk.numberList");
 			case STRINGLIST:
-				return Lang.tr("pc.weasel.disk.stringList");
+				return PC_LangRegistry.tr("pc.weasel.disk.stringList");
 			case VARMAP:
-				return Lang.tr("pc.weasel.disk.variableMap");
+				return PC_LangRegistry.tr("pc.weasel.disk.variableMap");
 			case LIBRARY:
-				return Lang.tr("pc.weasel.disk.programLibrary");
+				return PC_LangRegistry.tr("pc.weasel.disk.programLibrary");
 		}
 		return "FAILED DISK";
 	}

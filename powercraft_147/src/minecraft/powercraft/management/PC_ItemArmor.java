@@ -44,14 +44,14 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
     
     public void setID(int id){
     	int oldID = itemID;
-		Map<Integer, ItemData> map = (Map<Integer, ItemData>)PC_ReflectHelper.getValue(GameData.class, GameData.class, 0);
+		Map<Integer, ItemData> map = PC_ReflectHelper.getValue(GameData.class, GameData.class, 0, Map.class);
 		ItemData thisItemData = map.get(oldID);
-		if(PC_ReflectHelper.setValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id)){
+		if(PC_ReflectHelper.setValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id, int.class)){
     		if(oldID!=-1){
     			if(replacedItemData==null){
     				map.remove(oldID);
     			}else{
-    				PC_ReflectHelper.setValue(ItemData.class, replacedItemData, 3, oldID);
+    				PC_ReflectHelper.setValue(ItemData.class, replacedItemData, 3, oldID, int.class);
     				map.put(oldID, replacedItemData);
     			}
     			Item.itemsList[oldID] = replacedItem;
@@ -62,7 +62,7 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
     			if(thisItemData==null){
     				map.remove(id);
     			}else{
-    				PC_ReflectHelper.setValue(ItemData.class, thisItemData, 3, id);
+    				PC_ReflectHelper.setValue(ItemData.class, thisItemData, 3, id, int.class);
     				map.put(id, thisItemData);
     			}
     			Item.itemsList[id] = this;

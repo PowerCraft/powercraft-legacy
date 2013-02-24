@@ -14,8 +14,8 @@ import powercraft.management.PC_ITileEntityRenderer;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Communication;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.annotation.PC_ClientServerSync;
+import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.registry.PC_TextureRegistry;
 
@@ -52,13 +52,13 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 		String msg = "";
 
 		if (getRange() == 1) {
-			msg = Lang.tr("pc.sensor.range.1", new String[] { getRange() + "" });
+			msg = PC_LangRegistry.tr("pc.sensor.range.1", new String[] { getRange() + "" });
 		}
 		if (getRange() > 1 && getRange() < 5) {
-			msg = Lang.tr("pc.sensor.range.2-4", new String[] { getRange() + "" });
+			msg = PC_LangRegistry.tr("pc.sensor.range.2-4", new String[] { getRange() + "" });
 		}
 		if (getRange() >= 5) {
-			msg = Lang.tr("pc.sensor.range.5+", new String[] { getRange() + "" });
+			msg = PC_LangRegistry.tr("pc.sensor.range.5+", new String[] { getRange() + "" });
 		}
 
 		Communication.chatMsg(msg, true);

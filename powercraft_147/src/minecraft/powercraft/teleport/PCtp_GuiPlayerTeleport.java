@@ -35,7 +35,7 @@ public class PCtp_GuiPlayerTeleport implements PC_IGresClient {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWidget vg = new PC_GresLayoutV();
-		vg.add(new PC_GresLabel(Lang.tr("pc.gui.teleportTo.title")).setColor(PC_GresWidget.textColorDisabled, 0xFFFFFF).enable(false));
+		vg.add(new PC_GresLabel("pc.gui.teleportTo.title").setColor(PC_GresWidget.textColorDisabled, 0xFFFFFF).enable(false));
 		vg.add(search = new PC_GresTextEdit("", 10));
 		targetsBox = new PC_GresLayoutV();
 		targetsBox.setAlignH(PC_GresAlign.LEFT);
@@ -46,7 +46,7 @@ public class PCtp_GuiPlayerTeleport implements PC_IGresClient {
 			targets.add(but);
 		}
 		vg.add(targetsBoxScroll = new PC_GresScrollArea(0, 120, targetsBox, PC_GresScrollArea.VSCROLL));
-		vg.add(cancel = new PC_GresButton(Lang.tr("pc.gui.cancel")));
+		vg.add(cancel = new PC_GresButton("pc.gui.cancel"));
 		gui.add(vg);
 	}
 

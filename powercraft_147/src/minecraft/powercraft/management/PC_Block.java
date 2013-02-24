@@ -151,9 +151,9 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 		int oldID = blockID;
 		if(oldID==id)
 			return;
-		if(PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, id)){
-	    	if(PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, id)){
-	    		if(PC_ReflectHelper.setValue(ItemBlock.class, thisBlock.itemBlock, 0, id)){
+		if(PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, id, int.class)){
+	    	if(PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, id, int.class)){
+	    		if(PC_ReflectHelper.setValue(ItemBlock.class, thisBlock.itemBlock, 0, id, int.class)){
 		    		if(oldID!=-1){
 		    			replaced.storeToID(oldID);
 		    		}
@@ -165,11 +165,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 		    			replaced = null;
 		    		}
 	    		}else{
-	    			PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, oldID);
-	    			PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID);
+	    			PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, oldID, int.class);
+	    			PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID, int.class);
 	    		}
 	    	}else{
-	    		PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID);
+	    		PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID, int.class);
 	    	}
 		}
 	}
@@ -228,7 +228,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 			useNeighborBrightness = Block.useNeighborBrightness[id];
 			
 			itemBlock = (ItemBlock)Item.itemsList[id];
-			Map<Integer, ItemData> map = (Map<Integer, ItemData>)PC_ReflectHelper.getValue(GameData.class, GameData.class, 0);
+			Map<Integer, ItemData> map = PC_ReflectHelper.getValue(GameData.class, GameData.class, 0, Map.class);
 			itemData = map.get(id);
 		}
 		
@@ -242,11 +242,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 			Block.useNeighborBrightness[id] = useNeighborBrightness;
 			
 			Item.itemsList[id] = itemBlock;
-			Map<Integer, ItemData> map = (Map<Integer, ItemData>)PC_ReflectHelper.getValue(GameData.class, GameData.class, 0);
+			Map<Integer, ItemData> map = PC_ReflectHelper.getValue(GameData.class, GameData.class, 0, Map.class);
 			if(itemData==null){
 				map.remove(id);
 			}else{
-				PC_ReflectHelper.setValue(ItemData.class, itemData, 3, id);
+				PC_ReflectHelper.setValue(ItemData.class, itemData, 3, id, int.class);
 				map.put(id, itemData);
 			}
 		}

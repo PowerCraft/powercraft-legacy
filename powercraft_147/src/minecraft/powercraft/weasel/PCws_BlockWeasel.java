@@ -20,11 +20,11 @@ import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(itemBlock=PCws_ItemBlockWeasel.class, tileEntity=PCws_TileEntityWeasel.class)
@@ -176,7 +176,7 @@ public class PCws_BlockWeasel extends PC_Block {
 						weaselPlugin.connectToNetwork(PCws_WeaselManager.getNetwork(network));
 						world.scheduleBlockUpdate(x, y, z, blockID, 1);
 
-						Communication.chatMsg(Lang.tr("pc.weasel.activatorSetNetwork", new String[] { network }), true);
+						Communication.chatMsg(PC_LangRegistry.tr("pc.weasel.activatorSetNetwork", new String[] { network }), true);
 						world.playSoundEffect(x, y, z, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F, 0.5F);
 					}
 				}else{
@@ -185,7 +185,7 @@ public class PCws_BlockWeasel extends PC_Block {
 						ihold.setTagCompound(new NBTTagCompound());
 					}
 					ihold.getTagCompound().setString("WeaselNetwork", network);
-					Communication.chatMsg(Lang.tr("pc.weasel.activatorGetNetwork", new String[] { network }), true);
+					Communication.chatMsg(PC_LangRegistry.tr("pc.weasel.activatorGetNetwork", new String[] { network }), true);
 				}
 				return true;
 			}

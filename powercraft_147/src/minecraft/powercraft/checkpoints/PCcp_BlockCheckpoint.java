@@ -20,9 +20,10 @@ import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_GresRegistry;
+import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCcp_TileEntityCheckpoint.class)
@@ -62,7 +63,7 @@ public class PCcp_BlockCheckpoint extends PC_Block implements PC_IItemInfo {
 				if(!player.getBedLocation().equals(cc)){
 					player.setSpawnChunk(cc, true);
 					if(world.isRemote){
-			        	Communication.chatMsg(Lang.tr("pc.checkpoint.setSpawn", new PC_VecI(x, y, z).toString()), true);
+			        	Communication.chatMsg(PC_LangRegistry.tr("pc.checkpoint.setSpawn", new PC_VecI(x, y, z).toString()), true);
 			        }
 				}
 			}
@@ -72,11 +73,11 @@ public class PCcp_BlockCheckpoint extends PC_Block implements PC_IItemInfo {
 	@Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9){
 		if(entityplayer.isSneaking() && GameInfo.isPlayerOPOrOwner(entityplayer)){
-			Gres.openGres("Checkpoint", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+			PC_GresRegistry.openGres("Checkpoint", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
 			return true;
 		}
 		if(world.isRemote){
-        	Communication.chatMsg(Lang.tr("pc.checkpoint.setSpawn", new PC_VecI(i, j, k).toString()), true);
+        	Communication.chatMsg(PC_LangRegistry.tr("pc.checkpoint.setSpawn", new PC_VecI(i, j, k).toString()), true);
         }
 		entityplayer.setSpawnChunk(new ChunkCoordinates(i, j, k), true);
         return true;

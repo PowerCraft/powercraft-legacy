@@ -11,8 +11,8 @@ import net.minecraft.world.World;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
 
@@ -34,7 +34,7 @@ public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
     public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
     {
         if (!world.isRemote){
-        	Gres.openGres("Compressor", entityplayer, null);
+        	PC_GresRegistry.openGres("Compressor", entityplayer, null);
         }
         return itemstack;
     }

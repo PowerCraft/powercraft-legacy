@@ -2,18 +2,17 @@ package powercraft.itemstorage;
 
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresInventory;
 import powercraft.management.gres.PC_GresInventoryPlayer;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresTextEdit;
+import powercraft.management.gres.PC_GresTextEdit.PC_GresInputType;
 import powercraft.management.gres.PC_GresWidget;
 import powercraft.management.gres.PC_GresWidgetTab;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresTextEdit.PC_GresInputType;
 
 public class PCis_GuiCompressor extends PCis_ContainerCompressor
 		implements PC_IGresClient {
@@ -28,7 +27,7 @@ public class PCis_GuiCompressor extends PCis_ContainerCompressor
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCis_App.compressor.getItemNameIS(thePlayer.getCurrentEquippedItem())+".name"));
+		PC_GresWindow w = new PC_GresWindow(PCis_App.compressor.getItemNameIS(thePlayer.getCurrentEquippedItem())+".name");
 		
 		PC_GresWidgetTab wt = new PC_GresWidgetTab(0xBBBBBB, "/gui/items.png", 160, 48, 16, 16);
 		

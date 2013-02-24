@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.ISaveHandler;
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_GlobalVariables;
@@ -41,7 +42,7 @@ public class PC_MainMenuHacks implements ITickHandler {
 		PC_Logger.finest("Hacking main menu splashes");
 		if (rand.nextInt(2) == 0) {
 			try {
-				PC_ReflectHelper.setValue(GuiMainMenu.class, gui, 2, getRandomSplash());
+				PC_ReflectHelper.setValue(GuiMainMenu.class, gui, 2, getRandomSplash(), String.class);
 			} catch (Throwable t) {}
 		}
 	}
@@ -79,13 +80,13 @@ public class PC_MainMenuHacks implements ITickHandler {
 		}
 		MinecraftServer mcs = mc.getIntegratedServer();
 		if(mcs!=null){
-			if(!(PC_ReflectHelper.getValue(MinecraftServer.class, mcs, 2) instanceof PC_HackedSaveConverter)){
-				File file = (File)PC_ReflectHelper.getValue(MinecraftServer.class, mcs, 4);
+			if(!(PC_ReflectHelper.getValue(MinecraftServer.class, mcs, 2, ISaveFormat.class) instanceof PC_HackedSaveConverter)){
+				File file = PC_ReflectHelper.getValue(MinecraftServer.class, mcs, 4, File.class);
 				PC_HackedSaveConverter saveConverter = new PC_HackedSaveConverter(file); 
-				PC_ReflectHelper.setValue(MinecraftServer.class, mcs, 2, saveConverter);
+				PC_ReflectHelper.setValue(MinecraftServer.class, mcs, 2, saveConverter, ISaveFormat.class);
 				ISaveHandler saveHandler = saveConverter.getSaveLoader(mcs.getFolderName(), true);
 				for(World world:mcs.worldServers){
-					PC_ReflectHelper.setValue(World.class, world, 25, saveHandler);
+					PC_ReflectHelper.setValue(World.class, world, 25, saveHandler, ISaveHandler.class);
 				}
 			}
 		}

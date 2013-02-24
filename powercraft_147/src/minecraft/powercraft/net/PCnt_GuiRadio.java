@@ -1,21 +1,20 @@
 package powercraft.net;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresTextEdit;
+import powercraft.management.gres.PC_GresTextEdit.PC_GresInputType;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresTextEdit.PC_GresInputType;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.management.registry.PC_LangRegistry;
 
 public class PCnt_GuiRadio implements PC_IGresClient {
 
@@ -38,9 +37,9 @@ public class PCnt_GuiRadio implements PC_IGresClient {
 	public void initGui(PC_IGresGui gui) {
 		String title = "";
 		if (ter.isTransmitter()) {
-			title = Lang.tr("tile.PCnt_BlockRadio.tx.name");
+			title = "tile.PCnt_BlockRadio.tx.name";
 		} else {
-			title = Lang.tr("tile.PCnt_BlockRadio.rx.name");
+			title = "tile.PCnt_BlockRadio.rx.name";
 		}
 
 		// window
@@ -51,7 +50,7 @@ public class PCnt_GuiRadio implements PC_IGresClient {
 
 		// layout with the input
 		PC_GresWidget vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
-		vg.add(new PC_GresLabel(Lang.tr("pc.gui.radio.channel")));
+		vg.add(new PC_GresLabel("pc.gui.radio.channel"));
 		vg.add(edit = new PC_GresTextEdit(ter.getChannel(), 20, PC_GresInputType.TEXT).setMinWidth(140));
 		w.add(vg);
 
@@ -61,17 +60,17 @@ public class PCnt_GuiRadio implements PC_IGresClient {
 		w.add(hg);
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(checkLabel = new PC_GresCheckBox(Lang.tr("pc.gui.radio.showLabel")));
+		hg.add(checkLabel = new PC_GresCheckBox("pc.gui.radio.showLabel"));
 		checkLabel.check(!ter.isHideLabel());
 
-		hg.add(checkMicro = new PC_GresCheckBox(Lang.tr("pc.gui.radio.renderSmall")));
+		hg.add(checkMicro = new PC_GresCheckBox("pc.gui.radio.renderSmall"));
 		checkMicro.check(ter.isRenderMicro());
 		w.add(hg);
 
 		// buttons
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(buttonCancel = new PC_GresButton(Lang.tr("pc.gui.cancel")).setId(1));
-		hg.add(buttonOK = new PC_GresButton(Lang.tr("pc.gui.ok")).setId(0));
+		hg.add(buttonCancel = new PC_GresButton("pc.gui.cancel").setId(1));
+		hg.add(buttonOK = new PC_GresButton("pc.gui.ok").setId(0));
 		w.add(hg);
 
 		gui.add(w);
@@ -106,7 +105,7 @@ public class PCnt_GuiRadio implements PC_IGresClient {
 
 			if (edit.getText().trim().length() == 0) {
 				errMsg = "pc.gui.radio.errChannel";
-				txError.setText(Lang.tr(errMsg));
+				txError.setText(PC_LangRegistry.tr(errMsg));
 			} else {
 				txError.setText("");
 			}
@@ -138,8 +137,13 @@ public class PCnt_GuiRadio implements PC_IGresClient {
 
 	@Override
 	public void keyChange(String key, Object value) {
-		// TODO Auto-generated method stub
-		
+		if(key.equals("channel")){
+			edit.setText((String)value);
+		}else if(key.equals("hideLabel")){
+			checkLabel.check((Boolean)value);
+		}else if(key.equals("renderMicro")){
+			checkMicro.check((Boolean)value);
+		}
 	}
 
 }

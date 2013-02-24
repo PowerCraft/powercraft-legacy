@@ -16,15 +16,17 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_KeyHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.inventory.PC_ISpecialInventoryTextures;
+import powercraft.management.registry.PC_GresRegistry;
+import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCma_TileEntityAutomaticWorkbench.class)
@@ -59,7 +61,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
     {
         int l = MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 2.5D) & 3;
 
-        if (entityliving instanceof EntityPlayer && GameInfo.isPlacingReversed(((EntityPlayer)entityliving)))
+        if (entityliving instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed(((EntityPlayer)entityliving)))
         {
             l = ValueWriting.reverseSide(l);
         }
@@ -189,7 +191,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
             }
         }
 
-        Gres.openGres("AutomaticWorkbench", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+        PC_GresRegistry.openGres("AutomaticWorkbench", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
         return true;
     }
 

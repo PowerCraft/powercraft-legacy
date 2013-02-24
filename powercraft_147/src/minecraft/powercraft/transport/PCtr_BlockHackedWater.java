@@ -10,6 +10,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.World;
 import powercraft.management.PC_Logger;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.PC_VecI;
 
 public class PCtr_BlockHackedWater extends BlockStationary
@@ -23,7 +24,7 @@ public class PCtr_BlockHackedWater extends BlockStationary
         {
             Block.blocksList[Block.waterStill.blockID] = null;
             instance = new PCtr_BlockHackedWater();
-            ValueWriting.setPrivateValue(Block.class, Block.class, 32, instance);
+            PC_ReflectHelper.setValue(Block.class, Block.class, 32, instance, Block.class);
             PC_Logger.info("Water Hacked");
         }
 

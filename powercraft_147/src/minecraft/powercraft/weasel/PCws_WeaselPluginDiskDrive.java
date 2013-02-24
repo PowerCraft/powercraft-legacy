@@ -7,9 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import powercraft.management.PC_Utils.Gres;
-import powercraft.management.PC_VecI;
-import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
+import powercraft.management.registry.PC_GresRegistry;
 import weasel.Calc;
 import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;
@@ -99,7 +97,7 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 
 	@Override
 	protected void openPluginGui(EntityPlayer player) {
-		Gres.openGres("WeaselDiskDrive", player, getTE());
+		PC_GresRegistry.openGres("WeaselDiskDrive", player, getTE());
 	}
 
 	@Override

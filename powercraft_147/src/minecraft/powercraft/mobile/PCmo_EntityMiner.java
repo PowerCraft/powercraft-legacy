@@ -15,7 +15,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
@@ -35,19 +34,19 @@ import powercraft.management.PC_Logger;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.PC_VecF;
+import powercraft.management.PC_VecI;
 import powercraft.management.entity.PC_FakePlayer;
 import powercraft.management.inventory.PC_IInventoryWrapper;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.inventory.PC_IStateReportingInventory;
+import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_ItemRegistry;
-import powercraft.management.PC_VecF;
-import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_LangRegistry;
 import powercraft.mobile.PCmo_Command.ParseException;
 import weasel.Calc;
 import weasel.obj.WeaselDouble;
@@ -503,7 +502,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		 * inventory
 		 */
 		public MinerCargoInventory() {
-			super(Lang.tr("pc.miner.chestName"), 11 * 5);
+			super(PC_LangRegistry.tr("pc.miner.chestName"), 11 * 5);
 		}
 
 		public boolean moveEnabled=true;
@@ -2785,14 +2784,14 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mBridgeOn)) {
 			if (sendCommandToMiners(PCmo_Command.BRIDGE_ENABLE)) {
-				Communication.chatMsg(Lang.tr("pc.miner.bridgeOn"), true);
+				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.bridgeOn"), true);
 			}
 			return;
 		}
 
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mBridgeOff)) {
 			if (sendCommandToMiners(PCmo_Command.BRIDGE_DISABLE)) {
-				Communication.chatMsg(Lang.tr("pc.miner.bridgeOff"), true);
+				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.bridgeOff"), true);
 			}
 			return;
 		}
@@ -2809,7 +2808,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			if (keyPressTimer[8] == 0) {
 				keyPressTimer[8] = CooldownTime;
 				if (sendCommandToMiners(PCmo_Command.RUN_PROGRAM)) {
-					Communication.chatMsg(Lang.tr("pc.miner.launchedAll"), true);
+					Communication.chatMsg(PC_LangRegistry.tr("pc.miner.launchedAll"), true);
 				}
 			}
 			return;
@@ -2822,21 +2821,21 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mMiningOn)) {
 			if (sendCommandToMiners(PCmo_Command.MINING_ENABLE)) {
-				Communication.chatMsg(Lang.tr("pc.miner.miningOn"), true);
+				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.miningOn"), true);
 			}
 			return;
 		}
 
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mMiningOff)) {
 			if (sendCommandToMiners(PCmo_Command.MINING_DISABLE)) {
-				Communication.chatMsg(Lang.tr("pc.miner.miningOff"), true);
+				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.miningOff"), true);
 			}
 			return;
 		}
 
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mCancel)) {
 			if (sendCommandToMiners(PCmo_Command.RESET)) {
-				Communication.chatMsg(Lang.tr("pc.miner.operationsCancelled"), true);
+				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.operationsCancelled"), true);
 			}
 			return;
 		}
@@ -3414,7 +3413,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			setInfo("isRunning", !st.paused);
 			setInfo("script", br.getScriptName());
 			br.onOpenGui();
-			Gres.openGres("Miner", entityplayer, null, entityId);
+			PC_GresRegistry.openGres("Miner", entityplayer, null, entityId);
 			return true;
 		}
 		return true;

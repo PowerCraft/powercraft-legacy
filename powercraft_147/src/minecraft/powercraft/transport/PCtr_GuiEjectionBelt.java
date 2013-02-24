@@ -45,7 +45,7 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr("tile.PCtr_BlockBeltEjector.name"));
+		PC_GresWindow w = new PC_GresWindow("tile.PCtr_BlockBeltEjector.name");
 		w.setAlignH(PC_GresAlign.STRETCH);
 		w.gapUnderTitle = 13;
 
@@ -58,14 +58,14 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 		PC_GresRadioGroup actionMode = new PC_GresRadioGroup();
 
 
-		vg.add(new PC_GresLabel(Lang.tr("pc.gui.ejector.modeEjectTitle")));
+		vg.add(new PC_GresLabel("pc.gui.ejector.modeEjectTitle"));
 
 		vg.setWidgetMargin(0);
 
 		hg = new PC_GresLayoutH();
 		hg.setWidgetMargin(0);
 		hg.setAlignH(PC_GresAlign.LEFT);
-		hg.add(radioModeStacks = new PC_GresRadioButton(Lang.tr("pc.gui.ejector.modeStacks"), actionMode));
+		hg.add(radioModeStacks = new PC_GresRadioButton("pc.gui.ejector.modeStacks", actionMode));
 		radioModeStacks.setMinWidth(100);
 		radioModeStacks.check(teb.getActionType() == 0);
 		hg.add(editSlots = new PC_GresTextEdit(teb.getNumStacksEjected() + "", 6, PC_GresInputType.UNSIGNED_INT));
@@ -74,7 +74,7 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.LEFT);
 		hg.setWidgetMargin(0);
-		hg.add(radioModeItems = new PC_GresRadioButton(Lang.tr("pc.gui.ejector.modeItems"), actionMode));
+		hg.add(radioModeItems = new PC_GresRadioButton("pc.gui.ejector.modeItems", actionMode));
 		radioModeItems.setMinWidth(100);
 		radioModeItems.check(teb.getActionType() == 1);
 		hg.add(editItems = new PC_GresTextEdit(teb.getNumItemsEjected() + "", 6, PC_GresInputType.UNSIGNED_INT));
@@ -83,7 +83,7 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.LEFT);
 		hg.setWidgetMargin(0);
-		hg.add(radioModeAll = new PC_GresRadioButton(Lang.tr("pc.gui.ejector.modeAll"), actionMode));
+		hg.add(radioModeAll = new PC_GresRadioButton("pc.gui.ejector.modeAll", actionMode));
 		radioModeAll.setMinWidth(100);
 		radioModeAll.check(teb.getActionType() == 2);
 		vg.add(hg);
@@ -97,10 +97,10 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 
 		PC_GresRadioGroup selectMode = new PC_GresRadioGroup();
 
-		vg.add(new PC_GresLabel(Lang.tr("pc.gui.ejector.modeSelectTitle")));
-		vg.add(radioSelectFirst = new PC_GresRadioButton(Lang.tr("pc.gui.ejector.modeSelectFirst"), selectMode));
-		vg.add(radioSelectLast = new PC_GresRadioButton(Lang.tr("pc.gui.ejector.modeSelectLast"), selectMode));
-		vg.add(radioSelectRandom = new PC_GresRadioButton(Lang.tr("pc.gui.ejector.modeSelectRandom"), selectMode));
+		vg.add(new PC_GresLabel("pc.gui.ejector.modeSelectTitle"));
+		vg.add(radioSelectFirst = new PC_GresRadioButton("pc.gui.ejector.modeSelectFirst", selectMode));
+		vg.add(radioSelectLast = new PC_GresRadioButton("pc.gui.ejector.modeSelectLast", selectMode));
+		vg.add(radioSelectRandom = new PC_GresRadioButton("pc.gui.ejector.modeSelectRandom", selectMode));
 		radioSelectFirst.check(teb.getItemSelectMode() == 0);
 		radioSelectLast.check(teb.getItemSelectMode() == 1);
 		radioSelectRandom.check(teb.getItemSelectMode() == 2);
@@ -108,8 +108,8 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 		w.add(vg);
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(btnCANCEL = new PC_GresButton(Lang.tr("pc.gui.cancel")).setId(1));
-		hg.add(btnOK = new PC_GresButton(Lang.tr("pc.gui.ok")).setId(0));
+		hg.add(btnCANCEL = new PC_GresButton("pc.gui.cancel").setId(1));
+		hg.add(btnOK = new PC_GresButton("pc.gui.ok").setId(0));
 		w.add(hg);
 
 		w.add(new PC_GresGap(0, 0));
@@ -181,6 +181,20 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 	}
 
 	@Override
-	public void keyChange(String key, Object value) {}
+	public void keyChange(String key, Object value) {
+		if(key.equals("actionType")){
+			radioModeStacks.check((Integer)value == 0);
+			radioModeItems.check((Integer)value == 1);
+			radioModeAll.check((Integer)value == 2);
+		}else if(key.equals("numStacksEjected")){
+			editSlots.setText(""+(Integer)value);
+		}else if(key.equals("numItemsEjected")){
+			editItems.setText(""+(Integer)value);
+		}else if(key.equals("itemSelectMode")){
+			radioSelectFirst.check((Integer)value == 0);
+			radioSelectLast.check((Integer)value == 1);
+			radioSelectRandom.check((Integer)value == 2);
+		}
+	}
 
 }

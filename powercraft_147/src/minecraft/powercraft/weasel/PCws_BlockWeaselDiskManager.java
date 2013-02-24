@@ -18,10 +18,10 @@ import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 import weasel.WeaselEngine;
 import weasel.lang.Instruction;
@@ -91,7 +91,7 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
             }
         }
 
-        Gres.openGres("WeaselDiskManager", player, GameInfo.<PC_TileEntity>getTE(world, x, y, z));
+        PC_GresRegistry.openGres("WeaselDiskManager", player, GameInfo.<PC_TileEntity>getTE(world, x, y, z));
         
         return true;
 	}

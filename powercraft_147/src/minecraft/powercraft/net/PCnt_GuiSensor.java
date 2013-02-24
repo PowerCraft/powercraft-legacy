@@ -33,13 +33,13 @@ public class PCnt_GuiSensor implements PC_IGresClient {
 	public void initGui(PC_IGresGui gui) {
 		String title = "";
 		if (sensor.getGroup() == 0) {
-			title = Lang.tr("tile.PCnt_BlockSensor.item.name");
+			title = "tile.PCnt_BlockSensor.item.name";
 		}
 		if (sensor.getGroup() == 1) {
-			title = Lang.tr("tile.PCnt_BlockSensor.living.name");
+			title = "tile.PCnt_BlockSensor.living.name";
 		}
 		if (sensor.getGroup() == 2) {
-			title = Lang.tr("tile.PCnt_BlockSensor.player.name");
+			title = "tile.PCnt_BlockSensor.player.name";
 		}
 
 		// window
@@ -50,7 +50,7 @@ public class PCnt_GuiSensor implements PC_IGresClient {
 
 		// layout with the input
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
-		vg.add(new PC_GresLabel(Lang.tr("pc.gui.sensor.range")));
+		vg.add(new PC_GresLabel("pc.gui.sensor.range"));
 		vg.add(slider = new PC_GresProgressBar(0x00ff00, 200));
 		slider.configureLabel("", "32", 32);
 		slider.setEditable(true);
@@ -59,8 +59,8 @@ public class PCnt_GuiSensor implements PC_IGresClient {
 
 		// buttons
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(buttonCancel = new PC_GresButton(Lang.tr("pc.gui.cancel")).setId(1));
-		hg.add(buttonOK = new PC_GresButton(Lang.tr("pc.gui.ok")).setId(0));
+		hg.add(buttonCancel = new PC_GresButton("pc.gui.cancel").setId(1));
+		hg.add(buttonOK = new PC_GresButton("pc.gui.ok").setId(0));
 		w.add(hg);
 
 		gui.add(w);
@@ -108,6 +108,10 @@ public class PCnt_GuiSensor implements PC_IGresClient {
 	}
 
 	@Override
-	public void keyChange(String key, Object value) {}
+	public void keyChange(String key, Object value) {
+		if(key.equals("range")){
+			slider.setFraction(((Integer)value)/32F);
+		}
+	}
 
 }

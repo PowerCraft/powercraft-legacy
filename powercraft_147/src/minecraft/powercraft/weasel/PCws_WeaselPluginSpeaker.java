@@ -1,23 +1,11 @@
 package powercraft.weasel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Struct4;
-import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.Gres;
-import weasel.Calc;
-import weasel.WeaselEngine;
+import powercraft.management.registry.PC_GresRegistry;
 import weasel.WeaselFunctionManager;
-import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselNull;
-import weasel.obj.WeaselObject;
 
 public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 
@@ -115,7 +103,7 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 
 	@Override
 	protected void openPluginGui(EntityPlayer player) {
-		Gres.openGres("WeaselOnlyNet", player, getTE());
+		PC_GresRegistry.openGres("WeaselOnlyNet", player, getTE());
 	}
 
 	@Override

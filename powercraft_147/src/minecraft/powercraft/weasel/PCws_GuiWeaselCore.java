@@ -4,9 +4,6 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresImage;
 import powercraft.management.gres.PC_GresLabel;
@@ -15,11 +12,13 @@ import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresSeparatorV;
 import powercraft.management.gres.PC_GresTab;
 import powercraft.management.gres.PC_GresTextEditMultiline;
+import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.registry.PC_TextureRegistry;
 import weasel.WeaselEngine;
 
 public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
@@ -46,14 +45,14 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 				PCws_WeaselHighlightHelper.colorDefault, PCws_WeaselHighlightHelper.colorBackground,
 				kw, PCws_WeaselHighlightHelper.autoAdd));
 		
-		lv.add(programError = new PC_GresLabel(Lang.tr("pc.gui.weasel.core.noError")));
+		lv.add(programError = new PC_GresLabel("pc.gui.weasel.core.noError"));
 		programError.enable(false);
 		
 		PC_GresLayoutH lh = new PC_GresLayoutH();
 		
-		lh.add(launchProgram = new PC_GresButton(Lang.tr("pc.gui.weasel.core.launchProgram")));
-		lh.add(restartProgram = new PC_GresButton(Lang.tr("pc.gui.weasel.core.restartProgram")));
-		lh.add(stopProgram = new PC_GresButton(Lang.tr("pc.gui.weasel.core.stopProgram")));
+		lh.add(launchProgram = new PC_GresButton("pc.gui.weasel.core.launchProgram"));
+		lh.add(restartProgram = new PC_GresButton("pc.gui.weasel.core.restartProgram"));
+		lh.add(stopProgram = new PC_GresButton("pc.gui.weasel.core.stopProgram"));
 		
 		if(te.getData("error")!=null){
 			stopProgram.enable(false);
@@ -63,19 +62,19 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 			stopProgram.enable(false);
 			programError.setColor(PC_GresWidget.textColorDisabled, 0x00aa00);
 		}else{
-			programError.setText(Lang.tr("pc.gui.weasel.core.running"));
+			programError.setText(PC_LangRegistry.tr("pc.gui.weasel.core.running"));
 		}
 		
 		lv.add(lh);
 		
-		tab.addTab(lv, new PC_GresLabel(Lang.tr("pc.gui.weasel.core.program")));
+		tab.addTab(lv, new PC_GresLabel("pc.gui.weasel.core.program"));
 	}
 	
 	private void makeStatusTab(PC_GresTab tab){
 		PC_GresLayoutH mhl = new PC_GresLayoutH();
 		PC_GresLayoutV vl = new PC_GresLayoutV();
 		vl.setAlignH(PC_GresAlign.CENTER).setAlignV(PC_GresAlign.CENTER).setMinWidth(100);
-		vl.add(new PC_GresImage(ModuleInfo.getGresImgDir() + "graphics.png", 0, 24, 80, 80));
+		vl.add(new PC_GresImage(PC_TextureRegistry.getGresImgDir() + "graphics.png", 0, 24, 80, 80));
 		vl.add(new PC_GresLabel("WEASEL VM"));
 		vl.add(new PC_GresLabel("© MightyPork"));
 		mhl.add(vl);
@@ -88,48 +87,48 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 		vl.setAlignH(PC_GresAlign.LEFT).setAlignV(PC_GresAlign.CENTER).setMinWidth(100);
 		PC_GresLayoutH hl = new PC_GresLayoutH();
 		hl.setAlignH(PC_GresAlign.LEFT);
-		hl.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.core.runningStateLabel")).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
+		hl.add(new PC_GresLabel("pc.gui.weasel.core.runningStateLabel").setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
 		hl.add(txRunning = new PC_GresLabel("").setColor(PC_GresWidget.textColorDisabled, colorValue).enable(false));
 		vl.add(hl);
 
 		hl = new PC_GresLayoutH();
 		hl.setAlignH(PC_GresAlign.LEFT);
-		hl.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.core.programLength")).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
+		hl.add(new PC_GresLabel("pc.gui.weasel.core.programLength").setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
 		hl.add(txLength = new PC_GresLabel("").setColor(PC_GresWidget.textColorDisabled, colorValue).enable(false));
 		vl.add(hl);
 
 		hl = new PC_GresLayoutH();
 		hl.setAlignH(PC_GresAlign.LEFT);
-		hl.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.core.stackLabel")).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
+		hl.add(new PC_GresLabel("pc.gui.weasel.core.stackLabel").setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
 		hl.add(txStack = new PC_GresLabel("").setColor(PC_GresWidget.textColorDisabled, colorValue).enable(false));
 		vl.add(hl);
 
 		hl = new PC_GresLayoutH();
 		hl.setAlignH(PC_GresAlign.LEFT);
-		hl.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.core.memoryLabel")).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
+		hl.add(new PC_GresLabel("pc.gui.weasel.core.memoryLabel").setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
 		hl.add(txMemory = new PC_GresLabel("").setColor(PC_GresWidget.textColorDisabled, colorValue).enable(false));
 		vl.add(hl);
 
 		hl = new PC_GresLayoutH();
 		hl.setAlignH(PC_GresAlign.LEFT);
-		hl.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.core.peripheralsLabel")).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
+		hl.add(new PC_GresLabel("pc.gui.weasel.core.peripheralsLabel").setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
 		hl.add(txPeripherals = new PC_GresLabel("").setColor(PC_GresWidget.textColorDisabled, colorValue).enable(false));
 		vl.add(hl);
 		mhl.add(vl);
-		tab.addTab(mhl, new PC_GresLabel(Lang.tr("pc.gui.weasel.core.status")));
+		tab.addTab(mhl, new PC_GresLabel("pc.gui.weasel.core.status"));
 		
 		
 		if (te.getData("error")!=null) {
-			txRunning.setText(Lang.tr("pc.gui.weasel.core.crashed"));
+			txRunning.setText(PC_LangRegistry.tr("pc.gui.weasel.core.crashed"));
 		} else if ((Boolean)te.getData("isRunning")) {
-			txRunning.setText(Lang.tr("pc.gui.weasel.core.running"));
+			txRunning.setText(PC_LangRegistry.tr("pc.gui.weasel.core.running"));
 		} else {
-			txRunning.setText(Lang.tr("pc.gui.weasel.core.stoped"));
+			txRunning.setText(PC_LangRegistry.tr("pc.gui.weasel.core.stoped"));
 		}
-		txStack.setText((Integer)te.getData("stackSize") + " " + Lang.tr("pc.gui.weasel.core.unitObjects"));
-		txMemory.setText((Integer)te.getData("variableCount") + " " + Lang.tr("pc.gui.weasel.core.unitObjects"));
+		txStack.setText((Integer)te.getData("stackSize") + " " + PC_LangRegistry.tr("pc.gui.weasel.core.unitObjects"));
+		txMemory.setText((Integer)te.getData("variableCount") + " " + PC_LangRegistry.tr("pc.gui.weasel.core.unitObjects"));
 		txPeripherals.setText(""+(Integer)te.getData("networkMemberCount"));
-		txLength.setText((Integer)te.getData("instructionCount")+" " + Lang.tr("pc.gui.weasel.core.unitInstructions"));
+		txLength.setText((Integer)te.getData("instructionCount")+" " + PC_LangRegistry.tr("pc.gui.weasel.core.unitInstructions"));
 		
 	}
 	
@@ -162,11 +161,11 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 				programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
 			}else if((Boolean)te.getData("isRunning")){
 				stopProgram.enable(true);
-				programError.setText(Lang.tr("pc.gui.weasel.core.running"));
+				programError.setText(PC_LangRegistry.tr("pc.gui.weasel.core.running"));
 				programError.setColor(PC_GresWidget.textColorDisabled, 0x000000);
 			}else{
 				stopProgram.enable(false);
-				programError.setText(Lang.tr("pc.gui.weasel.core.noError"));
+				programError.setText(PC_LangRegistry.tr("pc.gui.weasel.core.noError"));
 				programError.setColor(PC_GresWidget.textColorDisabled, 0x00aa00);
 			}
 			try{
@@ -182,16 +181,16 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 				launchProgram.enable(false);
 			}
 			if (te.getData("error")!=null) {
-				txRunning.setText(Lang.tr("pc.gui.weasel.core.crashed"));
+				txRunning.setText(PC_LangRegistry.tr("pc.gui.weasel.core.crashed"));
 			} else if ((Boolean)te.getData("isRunning")) {
-				txRunning.setText(Lang.tr("pc.gui.weasel.core.running"));
+				txRunning.setText(PC_LangRegistry.tr("pc.gui.weasel.core.running"));
 			} else {
-				txRunning.setText(Lang.tr("pc.gui.weasel.core.stoped"));
+				txRunning.setText(PC_LangRegistry.tr("pc.gui.weasel.core.stoped"));
 			}
-			txStack.setText((Integer)te.getData("stackSize") + " " + Lang.tr("pc.gui.weasel.core.unitObjects"));
-			txMemory.setText((Integer)te.getData("variableCount") + " " + Lang.tr("pc.gui.weasel.core.unitObjects"));
+			txStack.setText((Integer)te.getData("stackSize") + " " + PC_LangRegistry.tr("pc.gui.weasel.core.unitObjects"));
+			txMemory.setText((Integer)te.getData("variableCount") + " " + PC_LangRegistry.tr("pc.gui.weasel.core.unitObjects"));
 			txPeripherals.setText(""+(Integer)te.getData("networkMemberCount"));
-			txLength.setText((Integer)te.getData("instructionCount")+" " + Lang.tr("pc.gui.weasel.core.unitInstructions"));
+			txLength.setText((Integer)te.getData("instructionCount")+" " + PC_LangRegistry.tr("pc.gui.weasel.core.unitInstructions"));
 		}
 	}
 	

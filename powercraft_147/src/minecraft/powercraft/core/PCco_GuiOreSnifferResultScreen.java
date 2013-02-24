@@ -145,7 +145,7 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr("item.PCco_ItemOreSniffer.name"));
+		PC_GresWindow w = new PC_GresWindow("item.PCco_ItemOreSniffer.name");
 		w.padding.setTo(10, 10, 0);
 		w.gapUnderTitle = 15;
 
@@ -157,7 +157,7 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_
 		vg = new PC_GresLayoutV();
 		vg.setAlignH(PC_GresAlign.LEFT);
 
-		vg.add(new PC_GresLabel(Lang.tr("pc.sniffer.distance")));
+		vg.add(new PC_GresLabel("pc.sniffer.distance"));
 
 		vg.add(slider = new PC_GresProgressBar(0x9900ff, 150));
 

@@ -1,19 +1,16 @@
 package powercraft.weasel;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct4;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_VecI;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresColorMap;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_VecI;
 
 
 public class PCws_GuiWeaselTouchscreen implements PC_IGresClient {
@@ -36,7 +33,7 @@ public class PCws_GuiWeaselTouchscreen implements PC_IGresClient {
 
 		colorMap = new PC_GresColorMap(screen).setScale(4);
 		mvg.add(colorMap);
-		mvg.add(close = new PC_GresButton(Lang.tr("pc.gui.close")).setButtonPadding(4, 4));
+		mvg.add(close = new PC_GresButton("pc.gui.close").setButtonPadding(4, 4));
 
 		gui.add(mvg);
 		gui.setBackground(0x90101010, 0x90101010);

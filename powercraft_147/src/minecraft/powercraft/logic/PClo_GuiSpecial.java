@@ -23,11 +23,11 @@ public class PClo_GuiSpecial extends PClo_ContainerSpecial implements PC_IGresCl
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr("pc.gui.special."+addString+".name"));
+		PC_GresWindow w = new PC_GresWindow("pc.gui.special."+addString+".name");
 		
 		PC_GresWidget lh = new PC_GresLayoutH();
 		
-		lh.add(new PC_GresLabel(Lang.tr("pc.gui.special."+addString+".inv")));
+		lh.add(new PC_GresLabel("pc.gui.special."+addString+".inv"));
 		PC_GresInventory inv = new PC_GresInventory(1, 1);
 		inv.setSlot(0, 0, invSlots[0]);
 		lh.add(inv);

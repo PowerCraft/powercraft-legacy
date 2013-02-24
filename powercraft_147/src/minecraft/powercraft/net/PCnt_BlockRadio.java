@@ -21,12 +21,12 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_GresRegistry;
+import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(itemBlock=PCnt_ItemBlockRadio.class, tileEntity=PCnt_TileEntityRadio.class)
@@ -107,7 +107,7 @@ public class PCnt_BlockRadio extends PC_Block {
 						ihold.setTagCompound(tag);
 					}
 
-					Communication.chatMsg(Lang.tr("pc.radio.activatorGetChannel", new String[] { ter.getChannel() }), true);
+					Communication.chatMsg(PC_LangRegistry.tr("pc.radio.activatorGetChannel", new String[] { ter.getChannel() }), true);
 
 				} else {
 					if (ihold.hasTagCompound()) {
@@ -125,7 +125,7 @@ public class PCnt_BlockRadio extends PC_Block {
 
 							world.scheduleBlockUpdate(pos.x, pos.y, pos.z, blockID, 1);
 
-							Communication.chatMsg(Lang.tr("pc.radio.activatorSetChannel", new String[] { chnl }), true);
+							Communication.chatMsg(PC_LangRegistry.tr("pc.radio.activatorSetChannel", new String[] { chnl }), true);
 							world.playSoundEffect(x, y, z, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F, 0.5F);
 						}
 					}
@@ -148,7 +148,7 @@ public class PCnt_BlockRadio extends PC_Block {
 			}
 		}
 
-		Gres.openGres("Radio", entityplayer, ter);
+		PC_GresRegistry.openGres("Radio", entityplayer, ter);
 		
 		/*int rtype = ter.isTransmitter() ? PClo_GuiRadio.TRANSMITTER : PClo_GuiRadio.RECEIVER;
 		String channel = ter.getChannel();

@@ -22,13 +22,13 @@ import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.annotation.PC_Shining.OFF;
 import powercraft.management.annotation.PC_Shining.ON;
+import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_Shining
@@ -150,7 +150,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
             }
         }
 
-        Gres.openGres("Light", entityplayer, te);
+        PC_GresRegistry.openGres("Light", entityplayer, te);
         return true;
     }
 

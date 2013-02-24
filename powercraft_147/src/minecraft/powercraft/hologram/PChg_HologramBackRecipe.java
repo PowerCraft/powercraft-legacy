@@ -13,6 +13,7 @@ import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.recipes.PC_ShapelessRecipes;
+import powercraft.management.reflect.PC_ReflectHelper;
 
 public class PChg_HologramBackRecipe extends PC_ShapelessRecipes {
 
@@ -32,7 +33,7 @@ public class PChg_HologramBackRecipe extends PC_ShapelessRecipes {
     	boolean[] used = new boolean[getRecipeSize()];
 
     	int craftSizeY = inventoryCrafting.getSizeInventory();
-		int craftSizeX = (Integer)ValueWriting.getPrivateValue(InventoryCrafting.class, inventoryCrafting, 1);
+		int craftSizeX = PC_ReflectHelper.getValue(InventoryCrafting.class, inventoryCrafting, 1, int.class);
 		craftSizeY = craftSizeY/craftSizeX;
 		
 		for (int y = 0; y < craftSizeY; y++) {
