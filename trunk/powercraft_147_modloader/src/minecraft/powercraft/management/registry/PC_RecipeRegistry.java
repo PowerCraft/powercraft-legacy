@@ -103,15 +103,6 @@ public class PC_RecipeRegistry {
 					l.add(new ItemStack((int) e.getKey(), 1, 0));
 				}
 			}
-			Map<List<Integer>, ItemStack> map2 = (Map<List<Integer>, ItemStack>) PC_ReflectHelper
-					.getValue(FurnaceRecipes.class,
-							FurnaceRecipes.smelting(), 3);
-			for (Entry<List<Integer>, ItemStack> e : map2.entrySet()) {
-				if (e.getValue().isItemEqual(itemstack)) {
-					l.add(new ItemStack((int) e.getKey().get(0), 1, e
-							.getKey().get(1)));
-				}
-			}
 		}
 		return l;
 	}

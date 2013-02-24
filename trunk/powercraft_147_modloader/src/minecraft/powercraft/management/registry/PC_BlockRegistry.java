@@ -147,9 +147,10 @@ public final class PC_BlockRegistry {
 			}
 
 			if (tileEntityClass != null) {
-				mod_PowerCraft.registerTileEntity(tileEntityClass);
 				if (PC_ITileEntityRenderer.class.isAssignableFrom(tileEntityClass))
 					PC_RegistryServer.getInstance().tileEntitySpecialRenderer(tileEntityClass);
+				else
+					mod_PowerCraft.registerTileEntity(tileEntityClass);
 			}
 
 			return (T)block;
