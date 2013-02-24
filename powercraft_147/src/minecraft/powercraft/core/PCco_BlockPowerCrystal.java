@@ -17,11 +17,11 @@ import powercraft.management.PC_Color;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
-import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_SoundRegistry;
 
 @PC_BlockInfo(itemBlock=PCco_ItemBlockPowerCrystal.class)
 public class PCco_BlockPowerCrystal extends PC_Block
@@ -119,7 +119,7 @@ public class PCco_BlockPowerCrystal extends PC_Block
     {
         int id_under = world.getBlockId(i, j - 1, k);
 
-        if (makeSound && GameInfo.isSoundEnabled())
+        if (makeSound && PC_SoundRegistry.isSoundEnabled())
         {
             EntityPlayer player = world.getClosestPlayer(i + 0.5D, j + 0.5D, k + 0.5D, 12);
 
@@ -136,7 +136,7 @@ public class PCco_BlockPowerCrystal extends PC_Block
 
                     if (random.nextInt(distance) == 0)
                     {
-                        ValueWriting.playSound(i + 0.5D, j + 0.5D, k + 0.5D, "random.orb", 0.15F,
+                        PC_SoundRegistry.playSound(i + 0.5D, j + 0.5D, k + 0.5D, "random.orb", 0.15F,
                                 0.5F * ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.8F));
                     }
                 }

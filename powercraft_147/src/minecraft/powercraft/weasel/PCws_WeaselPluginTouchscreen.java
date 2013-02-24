@@ -9,9 +9,9 @@ import powercraft.management.PC_Entry;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Struct4;
-import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 import powercraft.management.registry.PC_GresRegistry;
+import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapAdapter;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import weasel.WeaselFunctionManager;
@@ -113,7 +113,7 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 
 	@Override
 	protected void openPluginGui(EntityPlayer player) {
-		if(GameInfo.isPlacingReversed(player)){
+		if(PC_KeyRegistry.isPlacingReversed(player)){
 			PC_GresRegistry.openGres("WeaselOnlyNet", player, getTE());
 		}else{
 			PC_GresRegistry.openGres("WeaselTouchscreen", player, getTE());

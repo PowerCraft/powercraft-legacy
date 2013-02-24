@@ -1,6 +1,5 @@
 package powercraft.logic;
 
-import java.util.Random;
 
 public class PClo_FlipFlopType
 {

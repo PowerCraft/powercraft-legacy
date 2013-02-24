@@ -1,16 +1,12 @@
 package powercraft.weasel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_IMSG;
 import powercraft.management.PC_INBT;
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import weasel.Calc;
 import weasel.WeaselFunctionManager;

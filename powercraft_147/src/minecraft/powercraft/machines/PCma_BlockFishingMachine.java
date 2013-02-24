@@ -19,6 +19,7 @@ import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.recipes.PC_3DRecipe;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_SoundRegistry;
 
 @PC_BlockInfo(tileEntity=PCma_TileEntityFishingMachine.class)
 public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHandler {
@@ -118,8 +119,8 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 			}
 	
 			// splash sound
-			if (rand.nextInt(20) == 0 && GameInfo.isSoundEnabled()) {
-				ValueWriting.playSound(x, y, z, "random.splash", 0.08F, 0.5F + rand.nextFloat() * 0.3F);
+			if (rand.nextInt(20) == 0 && PC_SoundRegistry.isSoundEnabled()) {
+				PC_SoundRegistry.playSound(x, y, z, "random.splash", 0.08F, 0.5F + rand.nextFloat() * 0.3F);
 			}
 	
 			// smoke from chimney

@@ -118,7 +118,7 @@ public class PCde_BlockPlatform extends PC_Block {
 		if (Block.blocksList[id].blockMaterial.isLiquid() || !Block.blocksList[id].blockMaterial.isSolid()) {
 			return true;
 		}
-		if (GameInfo.hasFlag(world, pos, "BELT")) {
+		if (PC_MSGRegistry.hasFlag(world, pos, "BELT")) {
 			return true;
 		}
 		return false;

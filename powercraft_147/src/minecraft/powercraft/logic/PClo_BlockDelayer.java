@@ -26,6 +26,7 @@ import powercraft.management.annotation.PC_Shining;
 import powercraft.management.annotation.PC_Shining.OFF;
 import powercraft.management.annotation.PC_Shining.ON;
 import powercraft.management.registry.PC_GresRegistry;
+import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_Shining
@@ -265,7 +266,7 @@ public class PClo_BlockDelayer extends PC_Block
         int type = getType(world, x, y, z);
         int l = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
-        if (entityliving instanceof EntityPlayer && GameInfo.isPlacingReversed(((EntityPlayer)entityliving)))
+        if (entityliving instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed(((EntityPlayer)entityliving)))
         {
             l = ValueWriting.reverseSide(l);
         }

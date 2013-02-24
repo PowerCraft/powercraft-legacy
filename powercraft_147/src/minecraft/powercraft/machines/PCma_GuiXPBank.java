@@ -5,17 +5,15 @@ import java.util.Random;
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresSeparatorH;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PCma_GuiXPBank implements PC_IGresClient {
 

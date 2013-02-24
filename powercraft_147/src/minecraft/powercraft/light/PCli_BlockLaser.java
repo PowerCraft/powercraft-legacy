@@ -22,6 +22,8 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_BlockRegistry;
+import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCli_TileEntityLaser.class)
@@ -91,7 +93,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 
         if (entityliving instanceof EntityPlayer)
         {
-            GameInfo.isPlacingReversed((EntityPlayer)entityliving);
+            PC_KeyRegistry.isPlacingReversed((EntityPlayer)entityliving);
         }
 
         if (reverse)
@@ -121,7 +123,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
         PCli_TileEntityLaser te = GameInfo.getTE(world, i, j, k, blockID);
         
         if(te!=null){
-        	te.setKiller(GameInfo.isBlock(world, new PC_VecI(i, j-1, k), "PCma_BlockRoaster"));
+        	te.setKiller(PC_BlockRegistry.isBlock(world, new PC_VecI(i, j-1, k), "PCma_BlockRoaster"));
         }
         onNeighborBlockChange(world, i, j, k, 0);
     }
@@ -168,7 +170,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 		PCli_TileEntityLaser te = GameInfo.getTE(world, x, y, z, blockID);
 	        
         if(te!=null){
-        	te.setKiller(GameInfo.isBlock(world, new PC_VecI(x, y-1, z), "PCma_BlockRoaster"));
+        	te.setKiller(PC_BlockRegistry.isBlock(world, new PC_VecI(x, y-1, z), "PCma_BlockRoaster"));
         	boolean powered = world.isBlockIndirectlyGettingPowered(x, y, z);
         	te.setPowered(powered);
         }

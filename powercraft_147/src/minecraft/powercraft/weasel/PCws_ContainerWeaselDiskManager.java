@@ -1,19 +1,15 @@
 package powercraft.weasel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.PC_VecI;
 import powercraft.management.gres.PC_GresBaseWithInventory;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.inventory.PC_Slot;
-import powercraft.management.PC_VecI;
 
 public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory<PC_TileEntity> {
 	

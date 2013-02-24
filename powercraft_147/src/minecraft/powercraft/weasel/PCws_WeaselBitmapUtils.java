@@ -2,24 +2,17 @@ package powercraft.weasel;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-
 import powercraft.management.PC_Color;
 import powercraft.management.PC_Renderer;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
 import weasel.Calc;
-import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
 
 /**

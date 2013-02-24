@@ -13,7 +13,6 @@ import org.lwjgl.input.Keyboard;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_VecI;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresButtonImage;
@@ -109,7 +108,7 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 		main = new PC_GresLayoutV();
 		main_copy = new PC_GresLayoutV().setMinHeight(100).setAlignV(PC_GresAlign.CENTER).setAlignH(PC_GresAlign.CENTER).setWidgetMargin(0);
 		main_copy.setAlignH(PC_GresAlign.CENTER).setMinWidth(180);
-		main_copy.add(new PC_GresImage(ModuleInfo.getGresImgDir() + "graphics.png", 80, 24, 112, 70));
+		main_copy.add(new PC_GresImage(PC_TextureRegistry.getGresImgDir() + "graphics.png", 80, 24, 112, 70));
 
 		PC_GresWidget hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(3);
 		hg.add(cpyInv1 = new PC_GresInventory(1, 1));
@@ -185,7 +184,7 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 		vgt.setAlignH(PC_GresAlign.STRETCH).setAlignV(PC_GresAlign.TOP);
 		PC_GresWidget hg = new PC_GresLayoutH().setWidgetMargin(2).setAlignH(PC_GresAlign.CENTER).setAlignV(PC_GresAlign.TOP);
 		PC_GresWidget btn;
-		hg.add(btn = new PC_GresButtonImage(ModuleInfo.getGresImgDir()+"widgets.png", new PC_VecI(71,11), new PC_VecI(12, 11)).setButtonPadding(2, 2).setWidgetMargin(3));
+		hg.add(btn = new PC_GresButtonImage(PC_TextureRegistry.getGresImgDir()+"widgets.png", new PC_VecI(71,11), new PC_VecI(12, 11)).setButtonPadding(2, 2).setWidgetMargin(3));
 		btnBack.add(btn);
 		hg.add(text_textEdit = new PC_GresTextEditMultiline("", 220, 190, 0xffffff, 0x000000));
 		vgt.add(hg);

@@ -20,6 +20,7 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(itemBlock=PCde_ItemBlockStairs.class, tileEntity=PCde_TileEntityStairs.class)
@@ -113,7 +114,7 @@ public class PCde_BlockStairs extends PC_Block {
 		if (Block.blocksList[id].blockMaterial.isLiquid() || !Block.blocksList[id].blockMaterial.isSolid()) {
 			return true;
 		}
-		if (GameInfo.hasFlag(world, pos, "BELT")) {
+		if (PC_MSGRegistry.hasFlag(world, pos, "BELT")) {
 			return true;
 		}
 		return false;
@@ -188,7 +189,7 @@ public class PCde_BlockStairs extends PC_Block {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving) {
 
 		int dir = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
-		if (entityliving instanceof EntityPlayer && GameInfo.isPlacingReversed((EntityPlayer)entityliving)) {
+		if (entityliving instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed((EntityPlayer)entityliving)) {
 			dir = ValueWriting.reverseSide(dir);
 		}
 		world.setBlockMetadataWithNotify(x, y, z, dir);

@@ -1,7 +1,5 @@
 package powercraft.light;
 
-import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.annotation.PC_ClientServerSync;

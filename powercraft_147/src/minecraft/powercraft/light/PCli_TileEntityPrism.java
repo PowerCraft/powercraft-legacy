@@ -1,11 +1,8 @@
 package powercraft.light;
 
-import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_ITileEntityRenderer;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.registry.PC_TextureRegistry;

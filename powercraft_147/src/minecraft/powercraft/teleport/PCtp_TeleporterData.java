@@ -6,9 +6,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Entry;
 import powercraft.management.PC_INBT;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.management.PC_VecI;
 
 public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serializable {
 

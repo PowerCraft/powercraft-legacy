@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Struct3;
-import powercraft.management.PC_Utils.MSG;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.registry.PC_MSGRegistry;
 import weasel.WeaselFunctionManager;
@@ -308,7 +307,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	public static WeaselFunctionManager getGlobalFunctionManager() {
 		if(globalFunctions==null){
 			globalFunctions = new WeaselFunctionManager();
-			List<Object> l = MSG.callAllMSG(PC_MSGRegistry.MSG_LOAD_WORLD);
+			List<Object> l = PC_MSGRegistry.callAllMSG(PC_MSGRegistry.MSG_LOAD_WORLD);
 			for(Object o:l){
 				if(o instanceof List){
 					List<PC_Struct3<String, String, Object>> list = (List<PC_Struct3<String, String, Object>>)o;

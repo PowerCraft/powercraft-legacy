@@ -1,29 +1,17 @@
 package powercraft.weasel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_INBT;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import weasel.Calc;
-import weasel.IWeaselHardware;
-import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;
-import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselBoolean;
-import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 

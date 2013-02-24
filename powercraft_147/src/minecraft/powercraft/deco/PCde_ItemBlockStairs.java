@@ -11,6 +11,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
 
@@ -79,16 +80,16 @@ public class PCde_ItemBlockStairs extends PC_ItemBlock {
 
 				if (meta == dir) {
 
-					if (!GameInfo.isPlacingReversed(entityplayer)) {
+					if (!PC_KeyRegistry.isPlacingReversed(entityplayer)) {
 						j += 1;
 					}
 
-				} else if (GameInfo.isPlacingReversed(entityplayer)) {
+				} else if (PC_KeyRegistry.isPlacingReversed(entityplayer)) {
 					j--;
 				}
 
 			} else if (bID == PCde_App.platform.blockID) {
-				if (GameInfo.isPlacingReversed(entityplayer)) {
+				if (PC_KeyRegistry.isPlacingReversed(entityplayer)) {
 					j--;
 				}
 			}

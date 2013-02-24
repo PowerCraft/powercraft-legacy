@@ -2,8 +2,6 @@ package powercraft.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresInventory;
 import powercraft.management.gres.PC_GresInventoryPlayer;
@@ -11,10 +9,10 @@ import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresProgressBar;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		PC_IGresClient {

@@ -4,8 +4,8 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import powercraft.management.PC_Renderer;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.registry.PC_SoundRegistry;
 
 public class PCws_WeaselPluginInfoCore extends PCws_WeaselPluginInfo {
 
@@ -39,7 +39,7 @@ public class PCws_WeaselPluginInfoCore extends PCws_WeaselPluginInfo {
 	@Override
 	public void getServerMsg(PCws_TileEntityWeasel te, String msg, Object obj) {
 		if(msg.equalsIgnoreCase("bell")){
-			ValueWriting.playSound(te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, "random.orb", 0.8F,
+			PC_SoundRegistry.playSound(te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, "random.orb", 0.8F,
 					(rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 		te.getWorldObj().spawnParticle("note", te.xCoord + 0.5D, te.yCoord + 0.3D, te.zCoord + 0.5D, (Double)obj,
 				0.0D, 0.0D);

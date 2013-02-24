@@ -39,7 +39,9 @@ import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.inventory.PC_ISpecialInventoryTextures;
+import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_SoundRegistry;
 
 public class PCma_BlockHarvester extends PC_Block implements
 		PC_ISpecialInventoryTextures, PC_IBeamHandler, PC_IItemInfo, PC_IPacketHandler {
@@ -117,7 +119,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving) {
 		int l = MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
-		if (entityliving instanceof EntityPlayer && GameInfo.isPlacingReversed((EntityPlayer)entityliving)) {
+		if (entityliving instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed((EntityPlayer)entityliving)) {
 			l = ValueWriting.reverseSide(l);
 		}
 
@@ -255,7 +257,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 			}
 		}
 		
-		if(GameInfo.hasFlag(world, coord, PC_Utils.HARVEST_STOP)){
+		if(PC_MSGRegistry.hasFlag(world, coord, PC_Utils.HARVEST_STOP)){
 			return true;
 		}
 
@@ -266,7 +268,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 				|| id == Block.fire.blockID || Block.blocksList[id] instanceof BlockTorch || id == Block.redstoneWire.blockID || id == Block.mobSpawner.blockID
 				|| id == Block.lever.blockID || id == Block.woodenButton.blockID || id == Block.stoneButton.blockID || Block.blocksList[id] instanceof BlockRedstoneRepeater
 				|| id == Block.pistonStickyBase.blockID || id == Block.pistonBase.blockID || id == Block.pistonExtension.blockID
-				|| id == Block.pistonMoving.blockID || Block.blocksList[id] instanceof BlockRail || GameInfo.hasFlag(world, coord, PC_Utils.NO_HARVEST)) {
+				|| id == Block.pistonMoving.blockID || Block.blocksList[id] instanceof BlockRail || PC_MSGRegistry.hasFlag(world, coord, PC_Utils.NO_HARVEST)) {
 
 			return false;
 		}
@@ -307,7 +309,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 					for (ItemStack stack : harvested) {
 
 						// play breaking sound and animation
-						if (GameInfo.isSoundEnabled()) {
+						if (PC_SoundRegistry.isSoundEnabled()) {
 							world.playAuxSFX(2001, coord.x, coord.y, coord.z, id + (meta << 12));
 						}
 
@@ -350,7 +352,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 		dropQuant = Block.blocksList[id].quantityDropped(world.rand);
 
 		// play breaking sound and animation
-		if (GameInfo.isSoundEnabled()) {
+		if (PC_SoundRegistry.isSoundEnabled()) {
 			world.playAuxSFX(2001, coord.x, coord.y, coord.z, id + (meta << 12));
 		}
 
@@ -514,7 +516,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 		entityitem.delayBeforeCanPickup = 5;
 		world.spawnEntityInWorld(entityitem);
-		if (GameInfo.isSoundEnabled()) {
+		if (PC_SoundRegistry.isSoundEnabled()) {
 			world.playAuxSFX(1000, devPos.x, devPos.y, devPos.z, 0);
 		}
 

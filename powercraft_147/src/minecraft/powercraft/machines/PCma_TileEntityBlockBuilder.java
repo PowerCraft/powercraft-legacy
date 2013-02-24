@@ -19,8 +19,11 @@ import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.entity.PC_FakePlayer;
 import powercraft.management.PC_VecI;
+import powercraft.management.entity.PC_FakePlayer;
+import powercraft.management.registry.PC_BlockRegistry;
+import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_SoundRegistry;
 
 public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInventory {
 
@@ -97,7 +100,7 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 					continue;
 				}
 				if (state != 0) {
-					if (GameInfo.isSoundEnabled()) {
+					if (PC_SoundRegistry.isSoundEnabled()) {
 						worldObj.playAuxSFX(1000, xCoord, yCoord, zCoord, 0);
 					}
 				}
@@ -113,7 +116,7 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 				return;
 			}
 		} else {
-			if (GameInfo.isSoundEnabled()) {
+			if (PC_SoundRegistry.isSoundEnabled()) {
 				worldObj.playAuxSFX(1001, xCoord, yCoord, zCoord, 0);
 			}
 			return;
@@ -157,7 +160,7 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 		// try to put minecart
 		if (itemstack.getItem() instanceof ItemMinecart) {
 			
-			if (GameInfo.isBlock(worldObj, front, "PCtr_BlockBelt") || Block.blocksList[id] instanceof BlockRail) {
+			if (PC_BlockRegistry.isBlock(worldObj, front, "PCtr_BlockBelt") || Block.blocksList[id] instanceof BlockRail) {
 				if (!worldObj.isRemote) {
 					worldObj.spawnEntityInWorld(new EntityMinecart(worldObj, (float) x + incX + 0.5F, y + 0.5F, (float) z + incZ + 0.5F,
 							((ItemMinecart) itemstack.getItem()).minecartType));
@@ -170,14 +173,14 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 		if (id == 49
 				|| id == 7
 				|| id == 98
-				|| (GameInfo.hasFlag(worldObj, front, PC_Utils.HARVEST_STOP))) {
+				|| (PC_MSGRegistry.hasFlag(worldObj, front, PC_Utils.HARVEST_STOP))) {
 			return -1;
 		}
 
 		// try to place front
 		if (itemstack.getItem() instanceof ItemBlock) {
 
-			if(GameInfo.hasFlag(itemstack, PC_Utils.NO_BUILD)){
+			if(PC_MSGRegistry.hasFlag(itemstack, PC_Utils.NO_BUILD)){
 				return 0;
 			}
 			

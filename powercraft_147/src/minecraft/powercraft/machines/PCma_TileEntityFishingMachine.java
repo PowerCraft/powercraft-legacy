@@ -11,14 +11,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_ITileEntityRenderer;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_ClientServerSync;
+import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.management.registry.PC_RecipeRegistry;
 
 public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_ITileEntityRenderer {
 
@@ -81,7 +82,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 
 			for (int s = 0; s < inv.getSizeInventory(); s++) {
 				ItemStack stack = inv.getStackInSlot(s);
-				int cost = GameInfo.getFuelValue(stack, 1.0D);
+				int cost = PC_RecipeRegistry.getFuelValue(stack);
 				if (cost > 0) {
 					burningFuel += cost;
 					if (stack.getItem().hasContainerItem()) {
@@ -191,7 +192,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glTranslatef((float) x + 0.5f, (float) y, (float) z + 0.5f);
 		float f4 = 0.75F;
-		PC_Renderer.bindTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Machines")) + "fisher.png");
+		PC_Renderer.bindTexture(ModuleInfo.getTextureDirectory(PC_ModuleRegistry.getModule("Machines")) + "fisher.png");
 		int rota = GameInfo.getMD(worldObj, getCoord().offset(0, 1, 0));
 		if (rota == 2){
 			rota = 270;

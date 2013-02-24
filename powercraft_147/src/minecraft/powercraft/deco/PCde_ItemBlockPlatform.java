@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
 
@@ -71,7 +72,7 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 
 			int dir = ((MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
-			if (GameInfo.isPlacingReversed(entityplayer)) {
+			if (PC_KeyRegistry.isPlacingReversed(entityplayer)) {
 				dir = ValueWriting.reverseSide(dir);
 			}
 			int meta = world.getBlockMetadata(i, j - 1, k);
@@ -83,7 +84,7 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 
 				if (meta == dir) {
 
-					if (!GameInfo.isPlacingReversed(entityplayer)) {
+					if (!PC_KeyRegistry.isPlacingReversed(entityplayer)) {
 						j ++;
 					}
 

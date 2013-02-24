@@ -15,12 +15,12 @@ import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.ModuleInfo;
-import powercraft.management.PC_Utils.ModuleLoader;
 import powercraft.management.annotation.PC_FieldObject;
 import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.recipes.PC_ShapelessRecipes;
+import powercraft.management.registry.PC_BlockRegistry;
+import powercraft.management.registry.PC_ItemRegistry;
 
 public class PChg_App implements PC_IModule {
 
@@ -77,12 +77,12 @@ public class PChg_App implements PC_IModule {
 				" p ",
 				"gcg",
 				"ggg",
-				'g', Block.glass, 'c', Block.chest, 'p', new PC_ItemStack(ModuleInfo.getPCBlockByName("PCco_BlockPowerCrystal"), 1, -1)));
+				'g', Block.glass, 'c', Block.chest, 'p', new PC_ItemStack(PC_BlockRegistry.getPCBlockByName("PCco_BlockPowerCrystal"), 1, -1)));
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(hologramField), 
 				"ggg",
 				"hhh",
 				"ioi",
-				'i', Item.ingotIron, 'g', Block.glass, 'h', new PC_ItemStack(hologramBlockEmpty), 'o', new PC_ItemStack(ModuleInfo.getPCItemByName("PCco_ItemOreSniffer"))));
+				'i', Item.ingotIron, 'g', Block.glass, 'h', new PC_ItemStack(hologramBlockEmpty), 'o', new PC_ItemStack(PC_ItemRegistry.getPCItemByName("PCco_ItemOreSniffer"))));
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(hologramGlasses), 
 				"i i",
 				"ghg",
