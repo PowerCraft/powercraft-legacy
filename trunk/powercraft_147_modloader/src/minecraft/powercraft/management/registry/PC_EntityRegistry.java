@@ -7,24 +7,20 @@ import powercraft.management.PC_IModule;
 import powercraft.management.PC_Property;
 
 public class PC_EntityRegistry {
-
-	private static int nextID = 200;
 	
-	public static void register(PC_IModule module, Class<? extends Entity> c){
+	public static void register(PC_IModule module, Class<? extends Entity> c, int entityID){
 		final PC_Property config = PC_ModuleRegistry.getConfig(module).getProperty(c.getSimpleName(), null, null);
 		
 		if(!config.getBoolean("enabled", true)){
 			return;
 		}
 		
-		int id = config.getInt("defaultID", -1);
-		if(id==-1){
-			id = nextID++;
-			config.setInt("defaultID", id);
-		}
+		int id = config.getInt("defaultID", entityID);
 		
 		ModLoader.registerEntityID(c, c.getName(), id);
 		ModLoader.addEntityTracker(mod_PowerCraft.getInstance(), c, id, 50, 5, false);
 	}
+	
+	
 	
 }

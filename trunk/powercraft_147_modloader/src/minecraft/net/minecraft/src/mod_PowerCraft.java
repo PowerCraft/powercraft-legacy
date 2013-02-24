@@ -324,10 +324,10 @@ public class mod_PowerCraft extends BaseMod {
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module Entity Init");
 		for(PC_IModule module:modules){
-			List<Class<? extends Entity>> l = module.initEntities(new ArrayList<Class<? extends Entity>>());
+			List<PC_Struct2<Class<? extends Entity>, Integer>> l = module.initEntities(new ArrayList<PC_Struct2<Class<? extends Entity>, Integer>>());
 			if(l!=null){
-				for(Class<? extends Entity> entity:l){
-					PC_EntityRegistry.register(module, entity);
+				for(PC_Struct2<Class<? extends Entity>, Integer> entity:l){
+					PC_EntityRegistry.register(module, entity.a, entity.b);
 				}
 			}
 		}

@@ -62,7 +62,6 @@ private List<PC_ITileEntityWatcher> watcher = new ArrayList<PC_ITileEntityWatche
     }
     
     public Field getSyncFieldWithName(final String name){
-    	System.out.println(getClass() + ":" + this);
     	List<Field> l = PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), this, PC_ClientServerSync.class, new PC_IFieldAnnotationIterator<PC_ClientServerSync>() {
 
 			@Override
@@ -71,7 +70,6 @@ private List<PC_ITileEntityWatcher> watcher = new ArrayList<PC_ITileEntityWatche
 				if(fieldName.equals("")){
 					fieldName = fieldWithAnnotation.getFieldName();
 				}
-				System.out.println("need: "+name+" get "+fieldName);
 				if(fieldName.equals(name))
 					return true;
 				return false;
