@@ -150,109 +150,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 
 	public List<String> getProvidedFunctionNames() {
 		List<String> list = new ArrayList<String>();
-		list.add("run");
-		list.add("do");
-		
-		list.add("fw");
-		list.add("forward");
-		list.add("go");
-		
-		list.add("bw");
-		list.add("back");
-		list.add("backward");
-		
-		list.add("up");
-		list.add("down");			
-		
-		list.add("left");
-		list.add("right");
-		
-		list.add("turn");
-		
-		list.add("north");
-		list.add("south");
-		list.add("east");
-		list.add("west");
-		list.add("xplus");
-		list.add("xminus");
-		list.add("zplus");
-		list.add("zminus");
 
-		list.add("deminer.posit");
-		list.add("depo");
-		list.add("store");
-		list.add("depoKeep");
-		list.add("storeKeep");
-		list.add("countStacks");
-		list.add("stacks");
-		list.add("countItems");
-		list.add("items");
-		list.add("countEmpty");
-		list.add("full");
-		list.add("isFull");
-		list.add("empty");
-		list.add("isEmpty");
-		list.add("countFuel");
-		list.add("fuel");
-		
-		list.add("destroyMiner");
-
-		list.add("idMatch");
-		list.add("ideq");
-		list.add("getBlock");
-		list.add("setBlock");
-		list.add("place");
-		list.add("getId");
-		list.add("idAt");
-		list.add("blockAt");
-		list.add("canHarvest");
-
-		list.add("cleanup");
-		list.add("burn");
-		list.add("destroy");
-		list.add("burnItems");
-		list.add("destroyItems");
-		list.add("burnKeep");
-		list.add("destroyKeep");
-
-		list.add("bell");
-		list.add("isDay");
-		list.add("isNight");
-		list.add("isRaining");
-
-		list.add("sleep");
-
-		list.add("global.get");
-		list.add("global.set");
-		list.add("global.has");
-
-		list.add("cap");
-		list.add("opt");
-		list.add("miner.getFlag(PCmo_EntityMiner");
-		list.add("can");
-		list.add("hasCap");
-		list.add("hasOpt");
-		list.add("clearOpt");
-		list.add("clearCap");
-		list.add("clearminer.getFlag(PCmo_EntityMiner");
-		list.add("resetOpt");
-		list.add("resetCap");
-		list.add("resetminer.getFlag(PCmo_EntityMiner");
-		list.add("capOn");
-		list.add("optOn");
-		list.add("miner.getFlag(PCmo_EntityMinerOn");
-		list.add("capOff");
-		list.add("optOff");
-		list.add("miner.getFlag(PCmo_EntityMinerOff");
-		
-		list.add("term.clear");
-		list.add("term.cls");
-		list.add("term.print");
-		list.add("term.out");
-		list.add("term.hasInput");
-		list.add("term.getInput");
-		list.add("term.in");
-		list.add("term");
 		
 		return list;
 	}
@@ -288,7 +186,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 
 			if (functionName.equals("run")) functionName = "do";
 
-
+			
 
 			if (functionName.equals("forward")) functionName = "fw";
 			if (functionName.equals("go")) functionName = "fw";
@@ -934,19 +832,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 
 	public List<String> getProvidedVariableNames() {
 		List<String> list = new ArrayList<String>(0);
-		list.add("miner.pos.x");
-		list.add("miner.pos.y");
-		list.add("miner.pos.z");
-		list.add("dir");
-		list.add("dir.axis");
-		list.add("dir.compass");
-		list.add("dir.angle");
-		list.add("axis");
-		list.add("angle");
-		list.add("compass");
-		list.add("level");
-		list.add("term.text");
-		list.add("term.txt");
+
 		return list;
 	}
 	
@@ -1146,7 +1032,168 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 
 	@Override
 	public WeaselFunctionManager makePluginProvider() {
-		return new MinerProvider2();
+		WeaselFunctionManager fp = new WeaselFunctionManager();
+
+		fp.registerMethod("run", "runOldScript", this);
+		fp.registerMethod("do", "runOldScript", this);
+		
+		fp.registerMethod("forward", "forward", this);
+		fp.registerMethod("go", "forward", this);
+		fp.registerMethod("fw", "forward", this);
+		
+		fp.registerMethod("backward", "backward", this);
+		fp.registerMethod("back", "backward", this);
+		fp.registerMethod("bw", "backward", this);
+		
+		fp.registerMethod("up", this);
+		
+		fp.registerMethod("down", this);
+		
+		fp.registerMethod("left", this);
+		
+		fp.registerMethod("right", this);
+		
+		fp.registerMethod("turn", this);
+
+		fp.registerMethod("xplus", "xplus", this);
+		fp.registerMethod("east", "xminus", this);
+
+		fp.registerMethod("xminus", "xminus", this);
+		fp.registerMethod("west", "xminus", this);
+
+		fp.registerMethod("zplus", "zplus", this);
+		fp.registerMethod("south", "zplus", this);
+
+		fp.registerMethod("zminus", "zminus", this);
+		fp.registerMethod("north", "zminus", this);
+		
+		fp.registerMethod("deposit", "deposit", this);
+		fp.registerMethod("depo", "deposit", this);
+		fp.registerMethod("store", "deposit", this);
+		
+		fp.registerMethod("countStacks", "countStacks", this);
+		fp.registerMethod("stacks", "countStacks", this);
+
+		fp.registerMethod("countItems", "countItems", this);
+		fp.registerMethod("items", "countItems", this);
+		
+		fp.registerMethod("countEmpty", "countEmpty", this);
+
+		fp.registerMethod("isFull", "isFull", this);
+		fp.registerMethod("full", "isFull", this);
+		
+		fp.registerMethod("isEmpty", "isEmpty", this);
+		fp.registerMethod("empty", "isEmpty", this);
+		
+		fp.registerMethod("countFuel", "countFuel", this);
+		fp.registerMethod("fuel", "countFuel", this);
+
+		fp.registerMethod("destroyMiner", "destroyMiner", this);
+
+		fp.registerMethod("sleep", "sleep", this);
+		
+		fp.registerMethod("bell", "bell", this);
+
+		fp.registerMethod("isDay", "isDay", this);
+
+		fp.registerMethod("isNight", "isNight", this);
+
+		fp.registerMethod("isRaining", "isRaining", this);
+		
+		fp.registerMethod("term", "term_Input", this);
+		
+		fp.registerMethod("idMatch", "idMatch", this);
+		fp.registerMethod("ideq", "idMatch", this);
+
+		fp.registerMethod("getBlock", "getBlockAt", this);
+		fp.registerMethod("blockAt", "getBlockAt", this);
+		fp.registerMethod("getId", "getBlockAt", this);
+		fp.registerMethod("idAt", "getBlockAt", this);
+		
+		fp.registerMethod("setBlock", "setBlockAt", this);
+		fp.registerMethod("place", "setBlockAt", this);
+		
+		fp.registerMethod("canHarvest", "canHarvest", this);
+		
+		fp.registerMethod("sortInventory", "sortInventory", this);
+		fp.registerMethod("sortInv", "sortInventory", this);
+		fp.registerMethod("cleanup", "sortInventory", this);
+
+		fp.registerMethod("destroyItems", "destroyItems", this);
+		fp.registerMethod("burnItems", "destroyItems", this);
+		fp.registerMethod("destroy", "destroyItems", this);
+		fp.registerMethod("burn", "destroyItems", this);
+
+		fp.registerMethod("destroyKeep", "destroyKeep", this);
+		fp.registerMethod("burnKeep", "destroyKeep", this);
+
+		fp.registerMethod("depoKeep", "depoKeep", this);
+		fp.registerMethod("storeKeep", "depoKeep", this);
+		
+		fp.registerMethod("hasOpt", "hasOption", this);
+		fp.registerMethod("hasCap", "hasOption", this);
+		fp.registerMethod("can", "hasOption", this);
+
+		fp.registerMethod("cap", "setOption", this);
+		fp.registerMethod("opt", "setOption", this);
+		
+		fp.registerMethod("capOn", "activateOption", this);
+		fp.registerMethod("optOn", "activateOption", this);
+		
+		fp.registerMethod("capOff", "deactivateOption", this);
+		fp.registerMethod("optOff", "deactivateOption", this);
+		
+		fp.registerMethod("clearCap", "deactivateAllOptions", this);
+		fp.registerMethod("clearOpt", "deactivateAllOptions", this);
+		fp.registerMethod("resetCap", "deactivateAllOptions", this);
+		fp.registerMethod("resetOpt", "deactivateAllOptions", this);
+		
+		
+		
+		
+		WeaselFunctionManager term = new WeaselFunctionManager();
+		term.registerMethod("clear", "term_clear", this);
+		term.registerMethod("cls", "term_clear", this);
+		term.registerMethod("print", "term_print", this);
+		term.registerMethod("out", "term_print", this);
+		
+		term.registerMethod("hasInput", "term_hasInput", this);
+
+		term.registerMethod("getInput", "term_Input", this);
+		term.registerMethod("in", "term_Input", this);
+		
+		fp.registerFunctionProvider("term", term);
+		//TODO go on here
+		fp.registerVariable("dir", "dir", this);
+		list.add("miner.pos.x");
+		list.add("miner.pos.y");
+		list.add("miner.pos.z");
+		list.add("dir");
+		list.add("dir.axis");
+		list.add("dir.compass");
+		list.add("dir.angle");
+		list.add("axis");
+		list.add("angle");
+		list.add("compass");
+		list.add("level");
+		list.add("term.text");
+		list.add("term.txt");
+		
+		fp.registerVariable("front", this);
+		fp.registerVariable("f", "front", this);
+		fp.registerVariable("back", this);
+		fp.registerVariable("b", "back", this);
+		fp.registerVariable("left", this);
+		fp.registerVariable("l", "left", this);
+		fp.registerVariable("right", this);
+		fp.registerVariable("r", "right", this);
+		fp.registerVariable("top", this);
+		fp.registerVariable("up", "top", this);
+		fp.registerVariable("u", "top", this);
+		fp.registerVariable("bottom", this);
+		fp.registerVariable("down", "bottom", this);
+		fp.registerVariable("d", "bottom", this);
+		return fp;
 	}
 
 	@Override
@@ -1226,61 +1273,4 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		}
 		
 	}
-
-	public class MinerProvider2 extends WeaselFunctionManager{
-		
-		@Override
-		public WeaselObject call(WeaselEngine engine, String name, boolean var, WeaselObject... args) throws WeaselRuntimeException {
-			if(var){
-				if(PCmo_MinerWeaselBrain.this.getProvidedVariableNames().contains(name)){
-					if(args.length==0){
-						return PCmo_MinerWeaselBrain.this.getVariable(name);
-					}
-				}else{
-					throw new WeaselRuntimeExceptionFunctionNotExist(name);
-				}
-			}else{
-				if(PCmo_MinerWeaselBrain.this.doesProvideFunction(name)){
-					return PCmo_MinerWeaselBrain.this.callProvidedFunction(engine, name, args);
-				}
-			}
-			return PCws_WeaselManager.getGlobalFunctionManager().call(engine, name, var, args);
-		}
-
-		@Override
-		public boolean doesProvideFunction(String name) {
-			if(PCmo_MinerWeaselBrain.this.doesProvideFunction(name))
-				return true;
-			return PCws_WeaselManager.getGlobalFunctionManager().doesProvideFunction(name);
-		}
-		
-		@Override
-		public List<String> getProvidedFunctionNames() {
-			List<String> list = PCmo_MinerWeaselBrain.this.getProvidedFunctionNames();
-			list.addAll(PCws_WeaselManager.getGlobalFunctionManager().getProvidedFunctionNames());
-			return list;
-		}
-		
-		@Override
-		public List<String> getProvidedVariableNames() {
-			return PCmo_MinerWeaselBrain.this.getProvidedVariableNames();
-		}
-		
-	}
-	
-	@Override
-	public String getName() {
-		return (String)miner.getInfo("deviceName");
-	}
-
-	@Override
-	public void onOpenGui() {
-		miner.setInfo("deviceNames", PCws_WeaselManager.getAllPluginNames());
-		miner.setInfo("networkNames", PCws_WeaselManager.getAllNetworkNames());
-		miner.setInfo("text", text);
-		if(getNetwork()!=null){
-			miner.setInfo("networkName", getNetwork().getName());
-		}
-	}
-	
 }
