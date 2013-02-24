@@ -1206,34 +1206,24 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		
 		@Override
 		public WeaselObject call(WeaselEngine engine, String name, boolean var, WeaselObject... args) throws WeaselRuntimeException {
-			if(var){
-				if(PCmo_MinerWeaselBrain.this.getProvidedVariableNames().contains(name)){
-					if(args.length==0){
-						return PCmo_MinerWeaselBrain.this.getVariable(name);
-					}else{
-						PCmo_MinerWeaselBrain.this.setVariable(name, args[0]);
-						return new WeaselNull();
-					}
-				}
-			}else{
-				if(PCmo_MinerWeaselBrain.this.doesProvideFunction(name)){
-					return PCmo_MinerWeaselBrain.this.callProvidedFunction(engine, name, args);
-				}
-			}
 			try{
-				return PCws_WeaselManager.getGlobalFunctionManager().call(engine, name, var, args);
-			}catch(WeaselRuntimeExceptionFunctionNotExist e1){
-				if(getNetwork()==null){
-					throw e1;
-				}else{
-					return getNetwork().getFunctionHandler().call(engine, name, var, args);
+				return super.call(engine, name, var, args);
+			}catch(WeaselRuntimeExceptionFunctionNotExist e){
+				try{
+					return PCws_WeaselManager.getGlobalFunctionManager().call(engine, name, var, args);
+				}catch(WeaselRuntimeExceptionFunctionNotExist e1){
+					if(getNetwork()==null){
+						throw e1;
+					}else{
+						return getNetwork().getFunctionHandler().call(engine, name, var, args);
+					}
 				}
 			}
 		}
 
 		@Override
 		public boolean doesProvideFunction(String name) {
-			if(PCmo_MinerWeaselBrain.this.doesProvideFunction(name))
+			if(super.doesProvideFunction(name))
 				return true;
 			if(PCws_WeaselManager.getGlobalFunctionManager().doesProvideFunction(name))
 				return true;
@@ -1244,7 +1234,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		
 		@Override
 		public List<String> getProvidedFunctionNames() {
-			List<String> list = PCmo_MinerWeaselBrain.this.getProvidedFunctionNames();
+			List<String> list = super.getProvidedFunctionNames();
 			list.addAll(PCws_WeaselManager.getGlobalFunctionManager().getProvidedFunctionNames());
 			if(getNetwork()!=null){
 				list.addAll(getNetwork().getFunctionHandler().getProvidedFunctionNames());
@@ -1254,7 +1244,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		
 		@Override
 		public List<String> getProvidedVariableNames() {
-			List<String> list = PCmo_MinerWeaselBrain.this.getProvidedVariableNames();
+			List<String> list = super.getProvidedVariableNames();
 			if(getNetwork()!=null){
 				list.addAll(getNetwork().getFunctionHandler().getProvidedVariableNames());
 			}
