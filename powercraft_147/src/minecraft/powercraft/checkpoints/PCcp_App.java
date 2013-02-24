@@ -47,8 +47,7 @@ public class PCcp_App implements PC_IModule {
 	public void initProperties(PC_Property config) {}
 
 	@Override
-	public List<Class<? extends Entity>> initEntities(
-			List<Class<? extends Entity>> entities) {
+	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities) {
 		return null;
 	}
 	

@@ -21,21 +21,15 @@ import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class PC_EntityRegistry {
-
-	private static int nextID = 200;
 	
-	public static void register(PC_IModule module, Class<? extends Entity> c){
+	public static void register(PC_IModule module, Class<? extends Entity> c, int entityID){
 		final PC_Property config = PC_ModuleRegistry.getConfig(module).getProperty(c.getSimpleName(), null, null);
 		
 		if(!config.getBoolean("enabled", true)){
 			return;
 		}
 		
-		int id = config.getInt("defaultID", -1);
-		if(id==-1){
-			id = nextID++;
-			config.setInt("defaultID", id);
-		}
+		int id = config.getInt("defaultID", entityID);
 		
 		EntityRegistry.registerModEntity(c, c.getName(), id, mod_PowerCraft.getInstance(), 50, 5, false);
 	}

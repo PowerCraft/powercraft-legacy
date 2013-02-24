@@ -20,7 +20,7 @@ public interface PC_IModule {
 	
 	public void initProperties(PC_Property config);
 	
-	public List<Class<? extends Entity>> initEntities(List<Class<? extends Entity>> entities);
+	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities);
 	
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes);
 	
