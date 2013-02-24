@@ -28,7 +28,7 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(Lang.tr(PCma_App.transmutabox.getBlockName()+".name"));
+		PC_GresWidget w = new PC_GresWindow(PCma_App.transmutabox.getBlockName()+".name");
 		
 		PC_GresWidget hl = new PC_GresLayoutH();
 		hl.setAlignH(PC_GresAlign.JUSTIFIED);
@@ -55,7 +55,7 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		PC_GresLayoutV vl = new PC_GresLayoutV();
 		PC_GresLayoutH hl1 = new PC_GresLayoutH();
 		
-		vl.add(timeCritical = new PC_GresCheckBox(Lang.tr("pc.gui.transmutabox.timeCritical")));
+		vl.add(timeCritical = new PC_GresCheckBox("pc.gui.transmutabox.timeCritical"));
 		
 		vl.add(progress = new PC_GresProgressBar(0xff0000, 100));
 		
@@ -113,6 +113,10 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 	}
 
 	@Override
-	public void keyChange(String key, Object value) {}
+	public void keyChange(String key, Object value) {
+		if(key.equals("timeCritical")){
+			timeCritical.check((Boolean)value);
+		}
+	}
 
 }

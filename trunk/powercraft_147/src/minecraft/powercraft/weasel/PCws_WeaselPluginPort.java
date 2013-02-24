@@ -1,17 +1,8 @@
 package powercraft.weasel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import powercraft.management.PC_Utils.Gres;
-import weasel.Calc;
-import weasel.WeaselEngine;
-import weasel.WeaselFunctionManager;
-import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselBoolean;
-import weasel.obj.WeaselObject;
 import net.minecraft.entity.player.EntityPlayer;
+import powercraft.management.registry.PC_GresRegistry;
+import weasel.WeaselFunctionManager;
 
 public class PCws_WeaselPluginPort extends PCws_WeaselPlugin {
 
@@ -45,7 +36,7 @@ public class PCws_WeaselPluginPort extends PCws_WeaselPlugin {
 	
 	@Override
 	protected void openPluginGui(EntityPlayer player) {
-		Gres.openGres("WeaselOnlyNet", player, getTE());
+		PC_GresRegistry.openGres("WeaselOnlyNet", player, getTE());
 	}
 
 	@Override

@@ -31,14 +31,14 @@ public class PClo_GuiDelayer implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr("tile.PClo_BlockDelayer.delayer"+delayer.getType()+".name"));
+		PC_GresWindow w = new PC_GresWindow("tile.PClo_BlockDelayer.delayer"+delayer.getType()+".name");
 		
 		w.setAlignH(PC_GresAlign.STRETCH);
 		PC_GresWidget hg, vg;
 
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
-		vg.add(new PC_GresLabel(Lang.tr("pc.gui.delayer.delay")));
+		vg.add(new PC_GresLabel("pc.gui.delayer.delay"));
 		vg.add(editDelay = new PC_GresTextEdit(Converter.doubleToString(Converter.ticksToSecs(delayer.getDelay())), 8, PC_GresInputType.UNSIGNED_FLOAT));
 		w.add(vg);
 
@@ -54,8 +54,8 @@ public class PClo_GuiDelayer implements PC_IGresClient {
 		// buttons
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.setAlignH(PC_GresAlign.JUSTIFIED);
-		hg.add(buttonCancel = new PC_GresButton(Lang.tr("pc.gui.cancel")).setId(1));
-		hg.add(buttonOK = new PC_GresButton(Lang.tr("pc.gui.ok")).setId(0));
+		hg.add(buttonCancel = new PC_GresButton("pc.gui.cancel").setId(1));
+		hg.add(buttonOK = new PC_GresButton("pc.gui.ok").setId(0));
 		w.add(hg);
 		
 		gui.add(w);
@@ -87,10 +87,10 @@ public class PClo_GuiDelayer implements PC_IGresClient {
 				delayer.setDelay(delay);
 				gui.close();
 			}else{
-				txError.setText(Lang.tr("pc.gui.pulsar.errintputzero"));
+				txError.setText("pc.gui.pulsar.errintputzero");
 			}
 		}else{
-			txError.setText(Lang.tr("pc.gui.delayer.errnoinput"));
+			txError.setText("pc.gui.delayer.errnoinput");
 		}
 	}
 
@@ -107,8 +107,9 @@ public class PClo_GuiDelayer implements PC_IGresClient {
 
 	@Override
 	public void keyChange(String key, Object value) {
-		// TODO Auto-generated method stub
-		
+		if(key.equals("stateBuffer")){
+			editDelay.setText(""+((boolean[])value).length);
+		}
 	}
 
 }

@@ -38,7 +38,7 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCws_App.weasel.getBlockName() + "." + te.getPluginInfo().getKey()+".name"));
+		PC_GresWindow w = new PC_GresWindow(PCws_App.weasel.getBlockName() + "." + te.getPluginInfo().getKey()+".name");
 		
 		if(networkAsTab()){
 			PC_GresTab tab = new PC_GresTab();
@@ -56,17 +56,17 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 	protected void makeNetworkTab(PC_GresTab tab){
 		PC_GresLayoutV lv = new PC_GresLayoutV();
 		PC_GresLayoutH lh = new PC_GresLayoutH();
-		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.device.name")));
+		lh.add(new PC_GresLabel("pc.gui.weasel.device.name"));
 		lh.add(deviceName = new PC_GresTextEdit((String)te.getData("deviceName"), 10));
 		lv.add(lh);
-		lv.add(deviceRename = new PC_GresButton(Lang.tr("pc.gui.weasel.device.rename")));
+		lv.add(deviceRename = new PC_GresButton("pc.gui.weasel.device.rename"));
 		lh = new PC_GresLayoutH();
-		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.network.name")));
+		lh.add(new PC_GresLabel("pc.gui.weasel.network.name"));
 		lh.add(networkName = new PC_GresTextEdit((String)te.getData("networkName"), 10));
 		lv.add(lh);
 		lh = new PC_GresLayoutH();
-		lh.add(network1 = new PC_GresButton(Lang.tr("pc.gui.weasel.network.join")));
-		lh.add(network2 = new PC_GresButton(Lang.tr("pc.gui.weasel.network.new")));
+		lh.add(network1 = new PC_GresButton("pc.gui.weasel.network.join"));
+		lh.add(network2 = new PC_GresButton("pc.gui.weasel.network.new"));
 		network1.setId(0);
 		network2.enable(false);
 		lv.add(lh);
@@ -75,7 +75,7 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 			color = new PC_Color(0.3f, 0.3f, 0.3f);
 		lv.add(networkColor = new PC_GresColorPicker(color.getHex(), 100, 20));
 		
-		tab.addTab(lv, new PC_GresLabel(Lang.tr("pc.gui.weasel.network.tab")));
+		tab.addTab(lv, new PC_GresLabel("pc.gui.weasel.network.tab"));
 	}
 	
 	protected void makeNetworkTab(PC_GresWindow win){
@@ -119,17 +119,17 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 		}else if(widget==networkName){
 			List<String> networkNames = (List<String>)te.getData("networkNames");
 			if(networkNames.contains(networkName.getText())){
-				network1.setText(Lang.tr("pc.gui.weasel.network.join"));
+				network1.setText("pc.gui.weasel.network.join");
 				network1.setId(0);
 				network2.enable(false);
 			}else{
-				network1.setText(Lang.tr("pc.gui.weasel.network.rename"));
+				network1.setText("pc.gui.weasel.network.rename");
 				network1.setId(1);
 				network2.enable(true);
 			}
 			if(networkName.getText().equals("")){
 				network2.enable(false);
-				network1.setText(Lang.tr("pc.gui.weasel.network.join"));
+				network1.setText("pc.gui.weasel.network.join");
 				network1.setId(0);
 			}
 			network1.getParent().calcChildPositions();

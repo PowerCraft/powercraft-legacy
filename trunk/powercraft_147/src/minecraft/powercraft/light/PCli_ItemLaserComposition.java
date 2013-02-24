@@ -20,10 +20,11 @@ import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
+import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
 
@@ -102,17 +103,17 @@ public class PCli_ItemLaserComposition extends PC_Item
         
         if (levelKill > 0)
         {
-        	list.add(Lang.tr(getItemName() + ".kill.name", ("" + levelKill)));
+        	list.add(PC_LangRegistry.tr(getItemName() + ".kill.name", ("" + levelKill)));
         }
 
         if (levelDistance > 0)
         {
-        	list.add(Lang.tr(getItemName() + ".distance.name", ("" + levelDistance)));
+        	list.add(PC_LangRegistry.tr(getItemName() + ".distance.name", ("" + levelDistance)));
         }
         
         if (levelSensor > 0)
         {
-        	list.add(Lang.tr(getItemName() + ".sensor.name", ("" + levelSensor)));
+        	list.add(PC_LangRegistry.tr(getItemName() + ".sensor.name", ("" + levelSensor)));
         }
     }
 	
@@ -256,13 +257,13 @@ public class PCli_ItemLaserComposition extends PC_Item
         			shineTrough = false;
         	}else if(entity instanceof EntityPlayer){
         		if(handlePlayer(levelSensor)){
-        			ValueWriting.setPrivateValue(EntityLiving.class, entity, PC_GlobalVariables.indexRecentlyHit, 60);
+        			PC_ReflectHelper.setValue(EntityLiving.class, entity, PC_GlobalVariables.indexRecentlyHit, 60, int.class);
             		entity.attackEntityFrom(PCli_DamageSourceLaser.getDamageSource(), levelKill);
         		}else
         			shineTrough = false;
         	}else if(entity instanceof EntityLiving){
         		if(handleMob(levelSensor)){
-        			ValueWriting.setPrivateValue(EntityLiving.class, entity, PC_GlobalVariables.indexRecentlyHit, 60);
+        			PC_ReflectHelper.setValue(EntityLiving.class, entity, PC_GlobalVariables.indexRecentlyHit, 60, int.class);
             		entity.attackEntityFrom(PCli_DamageSourceLaser.getDamageSource(), levelKill);
         		}else
         			shineTrough = false;

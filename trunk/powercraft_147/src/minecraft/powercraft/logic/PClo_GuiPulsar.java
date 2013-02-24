@@ -1,22 +1,21 @@
 package powercraft.logic;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Converter;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresTextEdit;
+import powercraft.management.gres.PC_GresTextEdit.PC_GresInputType;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresTextEdit.PC_GresInputType;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.management.registry.PC_LangRegistry;
 
 public class PClo_GuiPulsar implements PC_IGresClient {
 
@@ -37,7 +36,7 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr("tile.PClo_BlockPulsar.name"));
+		PC_GresWindow w = new PC_GresWindow("tile.PClo_BlockPulsar.name");
 		
 		w.setAlignH(PC_GresAlign.STRETCH);
 		PC_GresWidget hg, vg;
@@ -46,12 +45,12 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
-		vg.add(new PC_GresLabel(Lang.tr("pc.gui.pulsar.delay")));
+		vg.add(new PC_GresLabel("pc.gui.pulsar.delay"));
 		vg.add(editDelay = new PC_GresTextEdit(Converter.doubleToString(Converter.ticksToSecs(pulsar.getDelay())), 8, PC_GresInputType.UNSIGNED_FLOAT));
 		hg.add(vg);
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
-		vg.add(new PC_GresLabel(Lang.tr("pc.gui.pulsar.hold")));
+		vg.add(new PC_GresLabel("pc.gui.pulsar.hold"));
 		vg.add(editHold = new PC_GresTextEdit(Converter.doubleToString(Converter.ticksToSecs(pulsar.getHold())), 8, PC_GresInputType.UNSIGNED_FLOAT));
 		hg.add(vg);
 
@@ -69,13 +68,13 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 		// buttons
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.setAlignH(PC_GresAlign.CENTER);
-		hg.add(checkSilent = new PC_GresCheckBox(Lang.tr("pc.gui.pulsar.silent")).check(pulsar.isSilent()));
-		hg.add(checkPaused = new PC_GresCheckBox(Lang.tr("pc.gui.pulsar.paused")).check(pulsar.isPaused()));
+		hg.add(checkSilent = new PC_GresCheckBox("pc.gui.pulsar.silent").check(pulsar.isSilent()));
+		hg.add(checkPaused = new PC_GresCheckBox("pc.gui.pulsar.paused").check(pulsar.isPaused()));
 		w.add(hg);
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.setAlignH(PC_GresAlign.JUSTIFIED);
-		hg.add(buttonCancel = new PC_GresButton(Lang.tr("pc.gui.cancel")).setId(1));
-		hg.add(buttonOK = new PC_GresButton(Lang.tr("pc.gui.ok")).setId(0));
+		hg.add(buttonCancel = new PC_GresButton("pc.gui.cancel").setId(1));
+		hg.add(buttonOK = new PC_GresButton("pc.gui.ok").setId(0));
 		w.add(hg);
 		
 		gui.add(w);
@@ -98,9 +97,9 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 				int idelay = Converter.secsToTicks(Double.parseDouble(delay));
 				int ihold = Converter.secsToTicks(Double.parseDouble(hold));
 				if(idelay<2){
-					txError.setText(Lang.tr("pc.gui.pulsar.errDelay"));
+					txError.setText(PC_LangRegistry.tr("pc.gui.pulsar.errDelay"));
 				}else if(ihold>=idelay||ihold<=0){
-					txError.setText(Lang.tr("pc.gui.pulsar.errHold"));
+					txError.setText(PC_LangRegistry.tr("pc.gui.pulsar.errHold"));
 				}
 			}
 		}
@@ -117,9 +116,9 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 				int idelay = Converter.secsToTicks(Double.parseDouble(delay));
 				int ihold = Converter.secsToTicks(Double.parseDouble(hold));
 				if(idelay<2){
-					txError.setText(Lang.tr("pc.gui.pulsar.errDelay"));
+					txError.setText(PC_LangRegistry.tr("pc.gui.pulsar.errDelay"));
 				}else if(ihold>=idelay||ihold<=0){
-					txError.setText(Lang.tr("pc.gui.pulsar.errHold"));
+					txError.setText(PC_LangRegistry.tr("pc.gui.pulsar.errHold"));
 				}else{
 					pulsar.setSilent(checkSilent.isChecked());
 					pulsar.setPaused(checkPaused.isChecked());
@@ -153,8 +152,15 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 
 	@Override
 	public void keyChange(String key, Object value) {
-		// TODO Auto-generated method stub
-		
+		if(key.equals("delay")){
+			editDelay.setText(""+(Integer)value);
+		}else if(key.equals("holdtime")){
+			editHold.setText(""+(Integer)value);
+		}else if(key.equals("paused")){
+			checkPaused.check((Boolean)value);
+		}else if(key.equals("silent")){
+			checkSilent.check((Boolean)value);
+		}
 	}
 
 }

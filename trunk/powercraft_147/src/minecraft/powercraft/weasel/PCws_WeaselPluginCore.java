@@ -7,15 +7,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import powercraft.management.PC_IThreadJob;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_ThreadJob;
 import powercraft.management.PC_ThreadManager;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.management.registry.PC_GresRegistry;
 import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;
 import weasel.exception.SyntaxError;
@@ -222,7 +220,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 			te.setData("networkMemberCount", getNetwork().size());
 		}
 		te.setData("instructionCount", weasel.instructionList.list.size());
-		Gres.openGres("WeaselCore", player, getTE());
+		PC_GresRegistry.openGres("WeaselCore", player, getTE());
 	}
 	
 	//Weasel-Functions START

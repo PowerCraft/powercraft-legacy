@@ -2,9 +2,7 @@ package powercraft.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_VecI;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresButtonImage;
 import powercraft.management.gres.PC_GresCheckBox;
@@ -15,13 +13,14 @@ import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresTextEdit;
+import powercraft.management.gres.PC_GresTextEdit.PC_GresInputType;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresTextEdit.PC_GresInputType;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGresClient {
 
@@ -40,7 +39,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(Lang.tr("pc.gui.blockReplacer.title")).setWidthForInventory().setAlignH(PC_GresAlign.CENTER);
+		PC_GresWidget w = new PC_GresWindow("pc.gui.blockReplacer.title").setWidthForInventory().setAlignH(PC_GresAlign.CENTER);
 
 		PC_GresWidget hg;
 		PC_GresWidget vg;
@@ -53,9 +52,9 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 		hg1.add(new PC_GresLabel("X"));
 		hg1.add(textedit[0] = new PC_GresTextEdit("" + tileEntity.getCoordOffset().x, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
-		vg.add(new PC_GresButtonImage(ModuleInfo.getGresImgDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
+		vg.add(new PC_GresButtonImage(PC_TextureRegistry.getGresImgDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(102).setWidgetMargin(0));
-		vg.add(new PC_GresButtonImage(ModuleInfo.getGresImgDir() + "widgets.png", new PC_VecI(50, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
+		vg.add(new PC_GresButtonImage(PC_TextureRegistry.getGresImgDir() + "widgets.png", new PC_VecI(50, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(101).setWidgetMargin(0));
 		hg1.add(vg);
 		hg.add(hg1);
@@ -66,9 +65,9 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 		hg1.add(new PC_GresLabel("Y"));
 		hg1.add(textedit[1] = new PC_GresTextEdit("" + tileEntity.getCoordOffset().y, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
-		vg.add(new PC_GresButtonImage(ModuleInfo.getGresImgDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
+		vg.add(new PC_GresButtonImage(PC_TextureRegistry.getGresImgDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(202).setWidgetMargin(0));
-		vg.add(new PC_GresButtonImage(ModuleInfo.getGresImgDir() + "widgets.png", new PC_VecI(50, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
+		vg.add(new PC_GresButtonImage(PC_TextureRegistry.getGresImgDir() + "widgets.png", new PC_VecI(50, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(201).setWidgetMargin(0));
 		hg1.add(vg);
 		hg.add(hg1);
@@ -79,9 +78,9 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 		hg1.add(new PC_GresLabel("Z"));
 		hg1.add(textedit[2] = new PC_GresTextEdit("" + tileEntity.getCoordOffset().z, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
-		vg.add(new PC_GresButtonImage(ModuleInfo.getGresImgDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
+		vg.add(new PC_GresButtonImage(PC_TextureRegistry.getGresImgDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(302).setWidgetMargin(0));
-		vg.add(new PC_GresButtonImage(ModuleInfo.getGresImgDir() + "widgets.png", new PC_VecI(50, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
+		vg.add(new PC_GresButtonImage(PC_TextureRegistry.getGresImgDir() + "widgets.png", new PC_VecI(50, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(301).setWidgetMargin(0));
 		hg1.add(vg);
 		hg.add(hg1);
@@ -100,9 +99,9 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 		w.add(new PC_GresInventoryPlayer(true));
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(checkFrame = new PC_GresCheckBox(Lang.tr("pc.gui.blockReplacer.particleFrame")));
+		hg.add(checkFrame = new PC_GresCheckBox("pc.gui.blockReplacer.particleFrame"));
 		checkFrame.check(tileEntity.isAidEnabled());
-		hg.add(button[1] = new PC_GresButton(Lang.tr("pc.gui.ok")));
+		hg.add(button[1] = new PC_GresButton("pc.gui.ok"));
 		w.add(hg);
 
 		gui.add(w);
@@ -140,7 +139,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 					if (!textedit[count].getText().equals("") && !textedit[count].getText().equals("-")) {
 
 						if (Math.abs(Integer.valueOf(textedit[count].getText())) > 16) {
-							errorLabel.setText(Lang.tr("pc.gui.blockReplacer.errWrongValue"));
+							errorLabel.setText(PC_LangRegistry.tr("pc.gui.blockReplacer.errWrongValue"));
 							button[1].enable(false);
 							return;
 						} else {
@@ -150,7 +149,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 						}
 
 					} else {
-						errorLabel.setText(Lang.tr("pc.gui.blockReplacer.errWrongValue"));
+						errorLabel.setText(PC_LangRegistry.tr("pc.gui.blockReplacer.errWrongValue"));
 						button[1].enable(false);
 						return;
 					}
@@ -161,7 +160,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 			}
 
 			if (!valid) {
-				errorLabel.setText(Lang.tr("pc.gui.blockReplacer.err3zeros"));
+				errorLabel.setText(PC_LangRegistry.tr("pc.gui.blockReplacer.err3zeros"));
 			}
 
 			if (valid) {
@@ -246,6 +245,15 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 	}
 
 	@Override
-	public void keyChange(String key, Object value) {}
+	public void keyChange(String key, Object value) {
+		if(key.equals("coordOffset")){
+			PC_VecI pos = (PC_VecI)value;
+			textedit[0].setText(""+pos.x);
+			textedit[1].setText(""+pos.y);
+			textedit[2].setText(""+pos.z);
+		}else if(key.equals("aidEnabled")){
+			checkFrame.check((Boolean)value);
+		}
+	}
 	
 }

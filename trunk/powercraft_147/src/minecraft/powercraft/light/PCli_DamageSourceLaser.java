@@ -2,7 +2,7 @@ package powercraft.light;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
-import powercraft.management.PC_Utils.Lang;
+import powercraft.management.registry.PC_LangRegistry;
 
 public class PCli_DamageSourceLaser extends DamageSource {
 	
@@ -21,7 +21,7 @@ public class PCli_DamageSourceLaser extends DamageSource {
 	@Override
 	public String getDeathMessage(EntityPlayer par1EntityPlayer)
     {
-        return Lang.tr("pc.damage.laser", par1EntityPlayer.username);
+        return PC_LangRegistry.tr("pc.damage.laser", par1EntityPlayer.username);
     }
 	
 }

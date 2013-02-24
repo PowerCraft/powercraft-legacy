@@ -1,7 +1,6 @@
 package powercraft.weasel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,15 +10,12 @@ import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Struct4;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_GresRegistry;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapAdapter;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
-import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;
-import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 
 public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements WeaselBitmapProvider {
@@ -118,9 +114,9 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 	@Override
 	protected void openPluginGui(EntityPlayer player) {
 		if(GameInfo.isPlacingReversed(player)){
-			Gres.openGres("WeaselOnlyNet", player, getTE());
+			PC_GresRegistry.openGres("WeaselOnlyNet", player, getTE());
 		}else{
-			Gres.openGres("WeaselTouchscreen", player, getTE());
+			PC_GresRegistry.openGres("WeaselTouchscreen", player, getTE());
 		}
 	}
 

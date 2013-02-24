@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_Utils.Communication;
-import powercraft.management.PC_Utils.Lang;
+import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
 
@@ -87,14 +87,14 @@ public class PCnt_ItemRadioRemote extends PC_Item {
 
 		tag.setString("channel", channel == null ? "default" : channel);
 
-		Communication.chatMsg(Lang.tr("pc.radioRemote.connected", new String[] { channel }), true);
+		Communication.chatMsg(PC_LangRegistry.tr("pc.radioRemote.connected", new String[] { channel }), true);
 	}
 
 	@Override
 	public void addInformation(ItemStack itemstack,
 			EntityPlayer par2EntityPlayer, List list, boolean par4) {
 		if (itemstack.hasTagCompound()) {
-			list.add(Lang.tr("pc.radioRemote.desc", new String[] { itemstack.getTagCompound().getString("channel") }));
+			list.add(PC_LangRegistry.tr("pc.radioRemote.desc", new String[] { itemstack.getTagCompound().getString("channel") }));
 		}
 	}
 	

@@ -6,8 +6,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import powercraft.management.PC_Logger;
 
 public final class PC_ReflectHelper {
 
@@ -126,20 +127,62 @@ public final class PC_ReflectHelper {
 
 	}
 
-	public static Object getValue(Class<?> c, Object o, int i) {
+	public static Field findNearesBestField(Class<?> c, int i, Class<?> expect){
+		Field fields[] = c.getDeclaredFields();
+		Field f;
+		if(i>=0 && i<fields.length){
+			f = fields[i];
+			if(expect.isAssignableFrom(f.getType())){
+				return f;
+			}
+		}else{
+			if(i<0)
+				i=0;
+			if(i>=fields.length){
+				i=fields.length-1;
+			}
+		}
+		int min=i-1, max=i+1;
+		while(min>=0 || max<fields.length){
+			if(max<fields.length){
+				f = fields[max];
+				if(expect.isAssignableFrom(f.getType())){
+					PC_Logger.warning("Field in "+c+" which should be at index "+i+" not found, now using index "+max);
+					return f;
+				}
+				max++;
+			}
+			if(min>=0){
+				f = fields[min];
+				if(expect.isAssignableFrom(f.getType())){
+					PC_Logger.warning("Field in "+c+" which should be at index "+i+" not found, now using index "+min);
+					return f;
+				}
+				min--;
+			}
+		}
+		PC_Logger.warning("Field in "+c+" which should be at index "+i+" not found");
+		return null;
+	}
+	
+	public static <T>T getValue(Class<?> c, Object o, int i, Class<T> expect) {
 		try {
-			Field f = c.getDeclaredFields()[i];
+			Field f = findNearesBestField(c, i, expect);
 			f.setAccessible(true);
-			return f.get(o);
+			return (T)f.get(o);
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-
-	public static boolean setValue(Class<?> c, Object o, int i, Object v) {
+	
+	public static boolean setValue(Class<?> c, Object o, int i, Object v){
+		return setValue(c, o, i, v, v!=null?v.getClass():Object.class);
+	}
+	
+	public static boolean setValue(Class<?> c, Object o, int i, Object v, Class<?> expect) {
 		try {
-			Field f = c.getDeclaredFields()[i];
+			Field f = findNearesBestField(c, i, expect);
 			f.setAccessible(true);
 			Field field_modifiers = Field.class.getDeclaredField("modifiers");
 			field_modifiers.setAccessible(true);

@@ -18,9 +18,9 @@ import powercraft.management.PC_Direction;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCtr_TileEntitySplitter.class)
@@ -95,7 +95,7 @@ public class PCtr_BlockSplitter extends PC_Block {
                 }
             }
 
-            Gres.openGres("Splitter", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+            PC_GresRegistry.openGres("Splitter", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
             return true;
         }
     }

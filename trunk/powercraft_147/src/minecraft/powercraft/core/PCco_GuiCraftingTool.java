@@ -136,7 +136,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 	private Page addPageSearch(){
 		searchPage = new Page();
 		searchPage.slots = new ArrayList<PCco_SlotDirectCrafting>();
-		searchPage.tabWidget = new PC_GresLabel(Lang.tr("pc.gui.craftingTool.search"));
+		searchPage.tabWidget = new PC_GresLabel("pc.gui.craftingTool.search");
 		searchPage.scroll = true;
 		PC_GresLayoutV lv = new PC_GresLayoutV();
 		lv.setAlignH(PC_GresAlign.STRETCH);
@@ -155,7 +155,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr("pc.gui.craftingTool.title"));
+		PC_GresWindow w = new PC_GresWindow("pc.gui.craftingTool.title");
 		w.setAlignH(PC_GresAlign.STRETCH);
 		
 		PC_GresTab t = new PC_GresTab();
@@ -183,12 +183,12 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		
 		PC_GresLayoutV lv1 = new PC_GresLayoutV();
 		lv1.add(new PC_GresInventory(trash));
-		lv1.add(trashAll = new PC_GresButton(Lang.tr("pc.gui.craftingTool.trashAll")));
-		lv1.add(sort = new PC_GresButton(Lang.tr("pc.gui.craftingTool.sort")));
+		lv1.add(trashAll = new PC_GresButton("pc.gui.craftingTool.trashAll"));
+		lv1.add(sort = new PC_GresButton("pc.gui.craftingTool.sort"));
 		lv.add(lv1);
 		
 		lv1 = new PC_GresLayoutV();
-		PC_GresWidget label = new PC_GresLabel(Lang.tr("container.inventory")).setWidgetMargin(2)
+		PC_GresWidget label = new PC_GresLabel("container.inventory").setWidgetMargin(2)
 				.setColor(PC_GresWidget.textColorEnabled, 0x404040).setColor(PC_GresWidget.textColorHover, 0x404040);
 		lv1.add(label);
 		PC_GresInventory inv = new PC_GresInventory(9, 3);
@@ -200,7 +200,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		lv1.add(inv);
 		lv.add(lv1);
 		
-		t.addTab(lv, new PC_GresLabel(Lang.tr("container.inventory")));
+		t.addTab(lv, new PC_GresLabel("container.inventory"));
 		
 		if(td!=null)
 			t.makeTabVisible(td);

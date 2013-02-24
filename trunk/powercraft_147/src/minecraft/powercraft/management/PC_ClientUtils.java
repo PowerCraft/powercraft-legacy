@@ -59,7 +59,7 @@ public class PC_ClientUtils extends PC_Utils {
 	
 	@Override
 	protected EnumGameType iGetGameTypeFor(EntityPlayer player){
-		return (EnumGameType)PC_ReflectHelper.getValue(PlayerControllerMP.class, mc().playerController, 11);
+		return PC_ReflectHelper.getValue(PlayerControllerMP.class, mc().playerController, 11, EnumGameType.class);
 	}
 	
 	@Override

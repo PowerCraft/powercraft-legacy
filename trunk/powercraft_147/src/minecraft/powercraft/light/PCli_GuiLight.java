@@ -40,23 +40,23 @@ public class PCli_GuiLight implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = (PC_GresWindow) new PC_GresWindow(Lang.tr("tile.PCli_BlockLight.name"));
+		PC_GresWindow w = new PC_GresWindow("tile.PCli_BlockLight.name");
 		
-		PC_GresLayoutV v = (PC_GresLayoutV)new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH);
+		PC_GresWidget v = new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH);
 		
-		PC_GresLayoutH h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.JUSTIFIED);
-		h.add(checkHuge = (PC_GresCheckBox) new PC_GresCheckBox(Lang.tr("pc.gui.light.isHuge")).check(light.isHuge()));
-		h.add(checkStable = (PC_GresCheckBox) new PC_GresCheckBox(Lang.tr("pc.gui.light.isStable")).check(light.isStable()));
+		PC_GresWidget h = new PC_GresLayoutH().setAlignH(PC_GresAlign.JUSTIFIED);
+		h.add(checkHuge = new PC_GresCheckBox("pc.gui.light.isHuge").check(light.isHuge()));
+		h.add(checkStable = new PC_GresCheckBox("pc.gui.light.isStable").check(light.isStable()));
 		v.add(h);
 		
-		h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.STRETCH);
+		h = new PC_GresLayoutH().setAlignH(PC_GresAlign.STRETCH);
 		h.add(colorWidget = new PC_GresColor(light.getColor()));
 		h.add(colorPicker = new PC_GresColorPicker(light.getColor().getHex(), 100, 20));
 		v.add(h);
 		
-		h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.STRETCH);;
-		h.add(accept = new PC_GresButton(Lang.tr("pc.gui.ok")));
-		h.add(cancel = new PC_GresButton(Lang.tr("pc.gui.cancel")));
+		h = new PC_GresLayoutH().setAlignH(PC_GresAlign.STRETCH);;
+		h.add(accept = new PC_GresButton("pc.gui.ok"));
+		h.add(cancel = new PC_GresButton("pc.gui.cancel"));
 		v.add(h);
 		w.add(v);
 		gui.add(w);
@@ -105,6 +105,15 @@ public class PCli_GuiLight implements PC_IGresClient {
 	}
 
 	@Override
-	public void keyChange(String key, Object value) {}
+	public void keyChange(String key, Object value) {
+		if(key.equals("color")){
+			colorPicker.setColor(((PC_Color)value).getHex());
+			colorWidget.setColor(((PC_Color)value).copy());
+		}else if(key.equals("isStable")){
+			checkStable.check((Boolean)value);
+		}else if(key.equals("isHuge")){
+			checkHuge.check((Boolean)value);
+		}
+	}
 
 }

@@ -1,30 +1,19 @@
 package powercraft.machines;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresFrame;
 import powercraft.management.gres.PC_GresGap;
 import powercraft.management.gres.PC_GresImage;
 import powercraft.management.gres.PC_GresInventory;
 import powercraft.management.gres.PC_GresInventoryPlayer;
-import powercraft.management.gres.PC_GresItemToggel;
 import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresWidget;
-import powercraft.management.gres.PC_GresWidgetTab;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench implements PC_IGresClient {
 
@@ -36,7 +25,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(50, 50, Lang.tr("tile.PCma_BlockAutomaticWorkbench.name"));
+		PC_GresWindow w = new PC_GresWindow(50, 50, "tile.PCma_BlockAutomaticWorkbench.name");
 		
 		PC_GresWidget hg = new PC_GresLayoutH();
 		PC_GresInventory inv = new PC_GresInventory(3, 3);
@@ -59,7 +48,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 		hg1.add(inv);
 
-		hg1.add(new PC_GresImage(ModuleInfo.getGresImgDir() + "widgets.png", 44, 66, 12, 11));
+		hg1.add(new PC_GresImage(PC_TextureRegistry.getGresImgDir() + "widgets.png", 44, 66, 12, 11));
 
 		hg1.add(new PC_GresInventory(invSlots[0]));
 
@@ -67,7 +56,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 		w.add(hg);
 
-		w.add(checkRedstone = new PC_GresCheckBox(Lang.tr("pc.gui.automaticWorkbench.redstoneActivated")));
+		w.add(checkRedstone = new PC_GresCheckBox("pc.gui.automaticWorkbench.redstoneActivated"));
 		checkRedstone.check(tileEntity.isRedstoneActivated());
 		w.add(new PC_GresGap(0, 3));
 
@@ -111,6 +100,10 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 	}
 
 	@Override
-	public void keyChange(String key, Object value) {}
+	public void keyChange(String key, Object value) {
+		if(key.equals("redstoneActivated")){
+			checkRedstone.check((Boolean)value);
+		}
+	}
 
 }

@@ -15,10 +15,10 @@ import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_GresRegistry;
 
 public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandler {
 
@@ -116,7 +116,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 			if(td2 != null)
 				defaultTarget = td2.name;
 		}
-		Gres.openGres("Teleporter", entityPlayer, null, td, names, defaultTarget);
+		PC_GresRegistry.openGres("Teleporter", entityPlayer, null, td, names, defaultTarget);
 	}
 	
 	public static void registerTeleporterData(int dimension, PC_VecI pos, PCtp_TeleporterData td){
@@ -283,7 +283,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		List<String> names = getTargetNames();
 		if(td.name!=null&&!td.equals(""))
 			names.remove(td.name);
-		Gres.openGres("PlayerTeleport", player, null, names);
+		PC_GresRegistry.openGres("PlayerTeleport", player, null, names);
 	}
 	
 }

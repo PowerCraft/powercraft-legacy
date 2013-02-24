@@ -1,9 +1,7 @@
 package powercraft.weasel;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutH;
@@ -41,9 +39,9 @@ public class PCws_GuiWeaselTerminal extends PCws_GuiWeasel {
 		inp.setColor(PC_GresWidget.textColorDisabled, 0x009900);
 		inp.setColor(PC_GresWidget.textColorClicked, 0x00ff00);
 		inp.setColor(PC_GresWidget.textColorHover, 0x00ff00);
-		lh.add(send = new PC_GresButton(Lang.tr("pc.gui.ok")));
+		lh.add(send = new PC_GresButton("pc.gui.ok"));
 		lv.add(lh);
-		tab.addTab(lv, new PC_GresLabel(Lang.tr("pc.gui.weasel.terminal.terminal")));
+		tab.addTab(lv, new PC_GresLabel("pc.gui.weasel.terminal.terminal"));
 	}
 	
 	@Override

@@ -2,7 +2,6 @@ package powercraft.checkpoints;
 
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresInventory;
 import powercraft.management.gres.PC_GresInventoryPlayer;
@@ -10,6 +9,7 @@ import powercraft.management.gres.PC_GresWidget;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.registry.PC_LangRegistry;
 
 public class PCcp_GuiCheckpoint extends PCcp_ContainerCheckpoint implements PC_IGresClient {
 
@@ -21,8 +21,9 @@ public class PCcp_GuiCheckpoint extends PCcp_ContainerCheckpoint implements PC_I
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr("pc.gui.checkpoint.title"));
-		w.add(cb = new PC_GresCheckBox(Lang.tr("pc.gui.checkpoint.walkingtiggerd")));
+		PC_GresWindow w = new PC_GresWindow("pc.gui.checkpoint.title");
+		w.add(cb = new PC_GresCheckBox("pc.gui.checkpoint.walkingtiggerd"));
+		cb.check(tileEntity.isCollideTriggerd());
 		PC_GresInventory inv = new PC_GresInventory(9, 3);
 		int n=9;
 		for(int j=0; j<3; j++){
@@ -76,6 +77,10 @@ public class PCcp_GuiCheckpoint extends PCcp_ContainerCheckpoint implements PC_I
 	}
 
 	@Override
-	public void keyChange(String key, Object value) {}
+	public void keyChange(String key, Object value) {
+		if(key.equals("collideTriggerd")){
+			cb.check((Boolean)value);
+		}
+	}
 
 }

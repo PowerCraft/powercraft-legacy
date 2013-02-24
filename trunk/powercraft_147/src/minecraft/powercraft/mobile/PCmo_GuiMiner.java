@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import powercraft.core.PCco_App;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresGap;
@@ -17,13 +16,13 @@ import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresTab;
 import powercraft.management.gres.PC_GresTextEditMultiline;
+import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
-import powercraft.management.inventory.PC_Slot;
+import powercraft.management.registry.PC_LangRegistry;
 import powercraft.weasel.PCws_WeaselHighlightHelper;
 
 public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient {
@@ -58,14 +57,14 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 				PCws_WeaselHighlightHelper.colorDefault, PCws_WeaselHighlightHelper.colorBackground,
 				kw, PCws_WeaselHighlightHelper.autoAdd));
 		
-		lv.add(programError = new PC_GresLabel(Lang.tr("pc.gui.miner.noError")));
+		lv.add(programError = new PC_GresLabel("pc.gui.miner.noError"));
 		programError.enable(false);
 		
 		PC_GresLayoutH lh = new PC_GresLayoutH();
 		
-		lh.add(launchProgram = new PC_GresButton(Lang.tr("pc.gui.miner.launchProgram")));
-		lh.add(restartProgram = new PC_GresButton(Lang.tr("pc.gui.miner.restartProgram")));
-		lh.add(stopProgram = new PC_GresButton(Lang.tr("pc.gui.miner.stopProgram")));
+		lh.add(launchProgram = new PC_GresButton("pc.gui.miner.launchProgram"));
+		lh.add(restartProgram = new PC_GresButton("pc.gui.miner.restartProgram"));
+		lh.add(stopProgram = new PC_GresButton("pc.gui.miner.stopProgram"));
 		
 		if(miner.getInfo("error")!=null){
 			stopProgram.enable(false);
@@ -75,12 +74,12 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 			stopProgram.enable(false);
 			programError.setColor(PC_GresWidget.textColorDisabled, 0x00aa00);
 		}else{
-			programError.setText(Lang.tr("pc.gui.miner.running"));
+			programError.setText(PC_LangRegistry.tr("pc.gui.miner.running"));
 		}
 		
 		lv.add(lh);
 		
-		tab.addTab(lv, new PC_GresLabel(Lang.tr("pc.gui.miner.program")));
+		tab.addTab(lv, new PC_GresLabel("pc.gui.miner.program"));
 	}
 	
 	private void makeSettingsTab(PC_GresTab tab){
@@ -88,16 +87,16 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		PC_GresWidget vgSettings = new PC_GresLayoutV().setWidgetMargin(0).setAlignV(PC_GresAlign.TOP).setAlignH(PC_GresAlign.CENTER);
 		PC_GresWidget vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT).setMinWidth(100).setWidgetMargin(1);
 
-		vg.add(checkMining = new PC_GresCheckBox(Lang.tr("pc.gui.miner.opt.mining")));
-		vg.add(checkBridge = new PC_GresCheckBox(Lang.tr("pc.gui.miner.opt.bridge")));
-		vg.add(checkAir = new PC_GresCheckBox(Lang.tr("pc.gui.miner.opt.airFill")));
-		vg.add(checkLava = new PC_GresCheckBox(Lang.tr("pc.gui.miner.opt.lavaFill")));
-		vg.add(checkWater = new PC_GresCheckBox(Lang.tr("pc.gui.miner.opt.waterFill")));
-		vg.add(checkCompress = new PC_GresCheckBox(Lang.tr("pc.gui.miner.opt.compress")));
-		vg.add(checkCobble = new PC_GresCheckBox(Lang.tr("pc.gui.miner.opt.makeCobble")));
-		vg.add(checkKeepFuel = new PC_GresCheckBox(Lang.tr("pc.gui.miner.opt.keepFuel")));
-		vg.add(checkTorch = new PC_GresCheckBox(Lang.tr("pc.gui.miner.opt.torchPlacing")));
-		vg.add(checkTorchFloor = new PC_GresCheckBox(Lang.tr("pc.gui.miner.opt.torchesOnlyOnFloor")));
+		vg.add(checkMining = new PC_GresCheckBox("pc.gui.miner.opt.mining"));
+		vg.add(checkBridge = new PC_GresCheckBox("pc.gui.miner.opt.bridge"));
+		vg.add(checkAir = new PC_GresCheckBox("pc.gui.miner.opt.airFill"));
+		vg.add(checkLava = new PC_GresCheckBox("pc.gui.miner.opt.lavaFill"));
+		vg.add(checkWater = new PC_GresCheckBox("pc.gui.miner.opt.waterFill"));
+		vg.add(checkCompress = new PC_GresCheckBox("pc.gui.miner.opt.compress"));
+		vg.add(checkCobble = new PC_GresCheckBox("pc.gui.miner.opt.makeCobble"));
+		vg.add(checkKeepFuel = new PC_GresCheckBox("pc.gui.miner.opt.keepFuel"));
+		vg.add(checkTorch = new PC_GresCheckBox("pc.gui.miner.opt.torchPlacing"));
+		vg.add(checkTorchFloor = new PC_GresCheckBox("pc.gui.miner.opt.torchesOnlyOnFloor"));
 
 		checkBridge.enable(miner.st.level >= PCmo_EntityMiner.LBRIDGE);
 		checkLava.enable(miner.st.level >= PCmo_EntityMiner.LLAVA);
@@ -121,7 +120,7 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		
 		vgSettings.add(vg);
 		
-		tab.addTab(vgSettings, new PC_GresLabel(Lang.tr("pc.gui.miner.settings")));
+		tab.addTab(vgSettings, new PC_GresLabel("pc.gui.miner.settings"));
 	}
 	
 	private PC_GresWidget makeCargoTab(PC_GresTab tab){
@@ -172,7 +171,7 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 
 		vgCargo.add(vg);
 		
-		tab.addTab(vgCargo, new PC_GresLabel(Lang.tr("pc.gui.miner.cargo")));
+		tab.addTab(vgCargo, new PC_GresLabel("pc.gui.miner.cargo"));
 		
 		return vgCargo;
 		
@@ -184,7 +183,7 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr("pc.gui.miner.title"));
+		PC_GresWindow w = new PC_GresWindow("pc.gui.miner.title");
 		
 		PC_GresTab tab = new PC_GresTab();
 		
@@ -259,11 +258,11 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 				programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
 			}else if((Boolean)miner.getInfo("isRunning")){
 				stopProgram.enable(true);
-				programError.setText(Lang.tr("pc.gui.miner.running"));
+				programError.setText(PC_LangRegistry.tr("pc.gui.miner.running"));
 				programError.setColor(PC_GresWidget.textColorDisabled, 0x000000);
 			}else{
 				stopProgram.enable(false);
-				programError.setText(Lang.tr("pc.gui.miner.noError"));
+				programError.setText(PC_LangRegistry.tr("pc.gui.miner.noError"));
 				programError.setColor(PC_GresWidget.textColorDisabled, 0x00aa00);
 			}
 			try{

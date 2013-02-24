@@ -19,11 +19,11 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.inventory.PC_ISpecialInventoryTextures;
+import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCma_TileEntityBlockBuilder.class)
@@ -128,7 +128,7 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 			return true;
 		}
 
-		Gres.openGres("BlockBuilder", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+		PC_GresRegistry.openGres("BlockBuilder", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
 
 		return true;
 	}

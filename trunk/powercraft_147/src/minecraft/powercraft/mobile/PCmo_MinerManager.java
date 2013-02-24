@@ -16,12 +16,11 @@ import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
 import powercraft.management.reflect.PC_ReflectHelper;
-import powercraft.management.registry.PC_RecipeRegistry;
+import powercraft.management.registry.PC_LangRegistry;
 
 public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler {
 	
@@ -60,8 +59,8 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 			return true;
 		}
 		
-		String eMinerStructure = Lang.tr("pc.miner.build.errInvalidStructure");
-		String eMinerCrystals = Lang.tr("pc.miner.build.errMissingCrystals");
+		String eMinerStructure = PC_LangRegistry.tr("pc.miner.build.errInvalidStructure");
+		String eMinerCrystals = PC_LangRegistry.tr("pc.miner.build.errMissingCrystals");
 		
 		PCmo_EntityMiner miner = new PCmo_EntityMiner(world, structStart.a.x+1, structStart.a.y, structStart.a.z+1);
 		miner.rotationYaw = (structStart.b+1)*90;

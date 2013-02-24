@@ -3,25 +3,24 @@ package powercraft.teleport;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresRadioButton;
+import powercraft.management.gres.PC_GresRadioButton.PC_GresRadioGroup;
 import powercraft.management.gres.PC_GresScrollArea;
 import powercraft.management.gres.PC_GresTab;
 import powercraft.management.gres.PC_GresTextEdit;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresRadioButton.PC_GresRadioGroup;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_LangRegistry;
 
 public class PCtp_GuiTeleporter implements PC_IGresClient {
 
@@ -58,20 +57,20 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = (new PC_GresWindow(Lang.tr("tile.PCtp_BlockTeleporter.name")));
+		PC_GresWindow w = (new PC_GresWindow("tile.PCtp_BlockTeleporter.name"));
 		
 		PC_GresTab t = new PC_GresTab();
 		
 		PC_GresWidget vg = new PC_GresLayoutV();
 		PC_GresWidget hg = new PC_GresLayoutH();
-		hg.add(new PC_GresLabel(Lang.tr("pc.gui.teleporter.name")));
+		hg.add(new PC_GresLabel("pc.gui.teleporter.name"));
 		hg.add(name = new PC_GresTextEdit(td.name, 10));
 		vg.add(hg);
 		
 		rg = new PC_GresRadioGroup();
 		
 		hg = new PC_GresLayoutH();
-		hg.add(new PC_GresLabel(Lang.tr("pc.gui.teleporter.target")));
+		hg.add(new PC_GresLabel("pc.gui.teleporter.target"));
 		hg.add(search = new PC_GresTextEdit("", 10));
 		vg.add(hg);
 		radioBox = new PC_GresLayoutV();
@@ -84,58 +83,58 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 				radioBox.add(rb);
 			}
 		}
-		PC_GresRadioButton rb = new PC_GresRadioButton(Lang.tr("pc.gui.teleporter.nothing"), rg);
+		PC_GresRadioButton rb = new PC_GresRadioButton("pc.gui.teleporter.nothing", rg);
 		if(defaultTarget==null||defaultTarget.equals(""))
 			rb.check(true);
 		radioBox.add(rb);
 		vg.add(radioBoxScroll = new PC_GresScrollArea(0, 100, radioBox, PC_GresScrollArea.VSCROLL));
-		t.addTab(vg, new PC_GresLabel(Lang.tr("pc.gui.teleporter.page1")));
+		t.addTab(vg, new PC_GresLabel("pc.gui.teleporter.page1"));
 		PC_GresWidget tab1 = vg;
 		
 		
 		vg = new PC_GresLayoutV();
 		vg.setAlignH(PC_GresAlign.LEFT);
-		vg.add(animals = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.animals")));
+		vg.add(animals = new PC_GresCheckBox("pc.gui.teleporter.animals"));
 		animals.check(td.animals);
-		vg.add(monsters = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.monsters")));
+		vg.add(monsters = new PC_GresCheckBox("pc.gui.teleporter.monsters"));
 		monsters.check(td.monsters);
-		vg.add(items = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.items")));
+		vg.add(items = new PC_GresCheckBox("pc.gui.teleporter.items"));
 		items.check(td.items);
-		vg.add(players = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.players")));
+		vg.add(players = new PC_GresCheckBox("pc.gui.teleporter.players"));
 		players.check(td.players);
-		vg.add(lasers = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.lasers")));
+		vg.add(lasers = new PC_GresCheckBox("pc.gui.teleporter.lasers"));
 		lasers.check(td.lasers);
-		vg.add(sneakTrigger = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.sneakTrigger")));
+		vg.add(sneakTrigger = new PC_GresCheckBox("pc.gui.teleporter.sneakTrigger"));
 		sneakTrigger.check(td.sneakTrigger);
-		vg.add(playerChoose = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.playerChoose")));
+		vg.add(playerChoose = new PC_GresCheckBox("pc.gui.teleporter.playerChoose"));
 		playerChoose.check(td.playerChoose);
-		vg.add(soundEnabled = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.soundEnabled")));
+		vg.add(soundEnabled = new PC_GresCheckBox("pc.gui.teleporter.soundEnabled"));
 		soundEnabled.check(td.soundEnabled);
 		
 		dir = new PC_GresRadioGroup();
-		rb = new PC_GresRadioButton(Lang.tr("pc.gui.teleporter.north"), dir);
+		rb = new PC_GresRadioButton("pc.gui.teleporter.north", dir);
 		rb.check(td.direction == PCtp_TeleporterData.N);
 		rb.setId(PCtp_TeleporterData.N);
 		vg.add(rb);
-		rb = new PC_GresRadioButton(Lang.tr("pc.gui.teleporter.east"), dir);
+		rb = new PC_GresRadioButton("pc.gui.teleporter.east", dir);
 		rb.check(td.direction == PCtp_TeleporterData.E);
 		rb.setId(PCtp_TeleporterData.E);
 		vg.add(rb);
-		rb = new PC_GresRadioButton(Lang.tr("pc.gui.teleporter.south"), dir);
+		rb = new PC_GresRadioButton("pc.gui.teleporter.south", dir);
 		rb.check(td.direction == PCtp_TeleporterData.S);
 		rb.setId(PCtp_TeleporterData.S);
 		vg.add(rb);
-		rb = new PC_GresRadioButton(Lang.tr("pc.gui.teleporter.west"), dir);
+		rb = new PC_GresRadioButton("pc.gui.teleporter.west", dir);
 		rb.check(td.direction == PCtp_TeleporterData.W);
 		rb.setId(PCtp_TeleporterData.W);
 		vg.add(rb);
 		
-		t.addTab(vg, new PC_GresLabel(Lang.tr("pc.gui.teleporter.page2")));
+		t.addTab(vg, new PC_GresLabel("pc.gui.teleporter.page2"));
 		
 		t.makeTabVisible(tab1);
 		
 		w.add(t);
-		w.add(ok = new PC_GresButton(Lang.tr("pc.gui.ok")));
+		w.add(ok = new PC_GresButton("pc.gui.ok"));
 		gui.add(w);
 	}
 
@@ -181,7 +180,7 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 			String target="";
 			if(rb!=null)
 				target = rb.getText();
-			if(target.equals(Lang.tr("pc.gui.teleporter.nothing")))
+			if(target.equals(PC_LangRegistry.tr("pc.gui.teleporter.nothing")))
 				target = "";
 			td.name = name.getText();
 			td.animals = animals.isChecked();

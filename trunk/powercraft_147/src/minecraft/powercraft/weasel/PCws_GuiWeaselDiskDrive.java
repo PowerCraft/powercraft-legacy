@@ -5,23 +5,18 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresColorPicker;
 import powercraft.management.gres.PC_GresInventory;
 import powercraft.management.gres.PC_GresInventoryPlayer;
 import powercraft.management.gres.PC_GresLabel;
-import powercraft.management.gres.PC_GresLayoutH;
-import powercraft.management.gres.PC_GresLayoutV;
-import powercraft.management.gres.PC_GresTab;
 import powercraft.management.gres.PC_GresTextEdit;
 import powercraft.management.gres.PC_GresWidget;
 import powercraft.management.gres.PC_GresWidgetTab;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.management.registry.PC_LangRegistry;
 
 public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 		implements PC_IGresClient {
@@ -62,7 +57,7 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCws_App.weasel.getBlockName() + "." + tileEntity.getPluginInfo().getKey()+".name"));
+		PC_GresWindow w = new PC_GresWindow(PCws_App.weasel.getBlockName() + "." + tileEntity.getPluginInfo().getKey()+".name");
 		
 		makeNetworkTab(w);
 		PC_GresInventory inv = new PC_GresInventory(4, 2);
@@ -93,17 +88,17 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 		}else if(widget==networkName){
 			List<String> networkNames = (List<String>)tileEntity.getData("networkNames");
 			if(networkNames.contains(networkName.getText())){
-				network1.setText(Lang.tr("pc.gui.weasel.network.join"));
+				network1.setText(PC_LangRegistry.tr("pc.gui.weasel.network.join"));
 				network1.setId(0);
 				network2.enable(false);
 			}else{
-				network1.setText(Lang.tr("pc.gui.weasel.network.rename"));
+				network1.setText(PC_LangRegistry.tr("pc.gui.weasel.network.rename"));
 				network1.setId(1);
 				network2.enable(true);
 			}
 			if(networkName.getText().equals("")){
 				network2.enable(false);
-				network1.setText(Lang.tr("pc.gui.weasel.network.join"));
+				network1.setText(PC_LangRegistry.tr("pc.gui.weasel.network.join"));
 				network1.setId(0);
 			}
 			network1.getParent().calcChildPositions();

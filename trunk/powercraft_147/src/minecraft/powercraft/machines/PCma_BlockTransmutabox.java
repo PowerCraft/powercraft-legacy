@@ -16,10 +16,10 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCma_TileEntityTransmutabox.class)
@@ -66,7 +66,7 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
             int z, EntityPlayer player, int par6, float par7,
             float par8, float par9)
     {
-        Gres.openGres("Transmutabox", player, GameInfo.<PC_TileEntity>getTE(world, x, y, z));
+        PC_GresRegistry.openGres("Transmutabox", player, GameInfo.<PC_TileEntity>getTE(world, x, y, z));
         return true;
     }
 

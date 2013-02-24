@@ -65,7 +65,7 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 		hg.setAlignH(PC_GresAlign.CENTER);
 		/**
 		 * @todo
-		 * hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.update.version", new String[] { mod_PCcore.instance.getVersion(), Minecraft.getVersion(),
+		 * hg.add(new PC_GresLabel(PC_PC_LangRegistry.tr("pc.gui.update.version", new String[] { mod_PCcore.instance.getVersion(), Minecraft.getVersion(),
 				mod_PCcore.updateModVersion, mod_PCcore.updateMcVersion })));
 		 */
 		w.add(hg);

@@ -1,22 +1,12 @@
 package powercraft.weasel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_Utils.Gres;
-import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.management.registry.PC_GresRegistry;
 import weasel.Calc;
-import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselNull;
-import weasel.obj.WeaselObject;
-import weasel.obj.WeaselString;
 
 public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 
@@ -85,7 +75,7 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 
 	@Override
 	protected void openPluginGui(EntityPlayer player) {
-		Gres.openGres("WeaselOnlyNet", player, getTE());
+		PC_GresRegistry.openGres("WeaselOnlyNet", player, getTE());
 	}
 
 	@Override

@@ -19,7 +19,7 @@ public class PCma_GuiBlockBuilder extends PCma_ContainerBlockBuilder implements 
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(Lang.tr("tile.PCma_BlockBlockBuilder.name")).setWidthForInventory();
+		PC_GresWidget w = new PC_GresWindow("tile.PCma_BlockBlockBuilder.name").setWidthForInventory();
 
 		w.setAlignH(PC_GresAlign.CENTER);
 

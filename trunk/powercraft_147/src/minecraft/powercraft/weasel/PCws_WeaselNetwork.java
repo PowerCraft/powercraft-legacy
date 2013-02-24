@@ -234,6 +234,10 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_IWeaselNetworkDev
 		return localHeap.getVariable(name) != null;
 	}
 
+	public boolean isConnected(String name) {
+		return getMember(name)!=null;
+	}
+	
 	public boolean callFunctionOnEngine(String functionName, WeaselObject... args) {
 		boolean call = false;
 		for(PCws_IWeaselNetworkDevice weaselPlugin:this){
@@ -258,6 +262,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_IWeaselNetworkDev
 		wfm.registerMethod("network.set", "setLocalVariable", this);
 		wfm.registerMethod("network.get", "getLocalVariable", this);
 		wfm.registerMethod("network.has", "hasLocalVariable", this);
+		wfm.registerMethod("network.isConnected", "isConnected", this);
 		return wfm;
 	}
 	

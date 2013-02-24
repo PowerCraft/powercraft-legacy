@@ -1,5 +1,6 @@
 package powercraft.weasel;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	
 	public void setData(String key, Object value){
 		map.put(key, value);
+		PC_PacketHandler.setTileEntity(this, new PC_Struct2<String, Object>(key, value));
 	}
 	
 	public Object getData(String key){
@@ -147,6 +149,20 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
     	}
 	}
 
+	@Override
+	public void setData(PC_Struct2<String, Object>[] data) {
+		for(int i=0; i<data.length; i++){
+    		if(data[i].a.equals("call")){
+    			PC_Struct2<String, Object> s = (PC_Struct2<String, Object>)data[i].b;
+    			onCall(s.a, s.b);
+    		}else{
+    			map.put(data[i].a, data[i].b);
+    			dataChange(data[i].a, data[i].b);
+    		}
+    	}
+    	dataRecieved();
+	}
+	
 	@Override
 	public PC_Struct2<String, Object>[] getData() {
 		int i=0;

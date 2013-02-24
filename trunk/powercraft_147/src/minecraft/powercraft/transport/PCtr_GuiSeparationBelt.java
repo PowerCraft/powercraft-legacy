@@ -1,10 +1,7 @@
 package powercraft.transport;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresGap;
 import powercraft.management.gres.PC_GresImage;
@@ -14,10 +11,11 @@ import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt implements PC_IGresClient {
 
@@ -31,10 +29,10 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(00, 00, Lang.tr("tile.PCtr_BlockBeltSeparator.name"));
+		PC_GresWindow w = new PC_GresWindow(00, 00, "tile.PCtr_BlockBeltSeparator.name");
 		w.setWidthForInventory();
 		PC_GresLayoutH hg = new PC_GresLayoutH();
-		hg.add(new PC_GresImage(ModuleInfo.getGresImgDir()+"widgets.png", 56, 66, 8, 15));
+		hg.add(new PC_GresImage(PC_TextureRegistry.getGresImgDir()+"widgets.png", 56, 66, 8, 15));
 
 		PC_GresInventory left, right;
 
@@ -49,21 +47,21 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 				right.setSlot(i % 3, (int) Math.floor(i / 6), invSlots[i]);
 			}
 		}
-		hg.add(new PC_GresImage(ModuleInfo.getGresImgDir()+"widgets.png", 64, 66, 8, 15));
+		hg.add(new PC_GresImage(PC_TextureRegistry.getGresImgDir()+"widgets.png", 64, 66, 8, 15));
 		w.add(hg);
 
 		PC_GresLayoutV vg = new PC_GresLayoutV();
 		vg.setAlignH(PC_GresAlign.LEFT);
 		vg.setMinWidth(100);
-		vg.add(new PC_GresLabel(Lang.tr("pc.gui.separationBelt.group")).setWidgetMargin(0));
+		vg.add(new PC_GresLabel("pc.gui.separationBelt.group").setWidgetMargin(0));
 		vg.setWidgetMargin(0);
 
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.LEFT);
 		hg.setWidgetMargin(0);
-		hg.add(checkLogs = new PC_GresCheckBox(Lang.tr("pc.gui.separationBelt.groupLogs")).check(tileEntity.isGroupLogs()));
-		hg.add(checkPlanks = new PC_GresCheckBox(Lang.tr("pc.gui.separationBelt.groupPlanks")).check(tileEntity.isGroupPlanks()));
-		hg.add(checkAll = new PC_GresCheckBox(Lang.tr("pc.gui.separationBelt.groupAll")).check(tileEntity.isGroupAll()));
+		hg.add(checkLogs = new PC_GresCheckBox("pc.gui.separationBelt.groupLogs").check(tileEntity.isGroupLogs()));
+		hg.add(checkPlanks = new PC_GresCheckBox("pc.gui.separationBelt.groupPlanks").check(tileEntity.isGroupPlanks()));
+		hg.add(checkAll = new PC_GresCheckBox("pc.gui.separationBelt.groupAll").check(tileEntity.isGroupAll()));
 
 		vg.add(hg);
 
@@ -109,6 +107,14 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 	}
 
 	@Override
-	public void keyChange(String key, Object value) {}
+	public void keyChange(String key, Object value) {
+		if(key.equals("group_logs")){
+			checkLogs.check((Boolean)value);
+		}else if(key.equals("group_planks")){
+			checkPlanks.check((Boolean)value);
+		}else if(key.equals("group_all")){
+			checkAll.check((Boolean)value);
+		}
+	}
 
 }
