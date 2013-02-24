@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.TileEntity;
+import net.minecraft.src.mod_PowerCraft;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_PacketHandler;
@@ -48,8 +49,8 @@ public class PC_RegistryServer implements PC_IPacketHandler {
 	protected void saveLanguage(PC_IModule module) {
 	}
 	
-	protected void tileEntitySpecialRenderer(
-			Class<? extends TileEntity> tileEntityClass) {
+	protected void tileEntitySpecialRenderer(Class<? extends TileEntity> tileEntityClass) {
+		mod_PowerCraft.registerTileEntity(tileEntityClass);
 	}
 	
 	protected void openGres(String name, EntityPlayer player,
