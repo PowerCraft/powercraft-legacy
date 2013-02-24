@@ -1164,35 +1164,24 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		
 		fp.registerFunctionProvider("term", term);
 		//TODO go on here
-		fp.registerVariable("dir", "dir", this);
-		list.add("miner.pos.x");
-		list.add("miner.pos.y");
-		list.add("miner.pos.z");
-		list.add("dir");
-		list.add("dir.axis");
-		list.add("dir.compass");
-		list.add("dir.angle");
-		list.add("axis");
-		list.add("angle");
-		list.add("compass");
-		list.add("level");
-		list.add("term.text");
-		list.add("term.txt");
+		fp.registerVariable("pos.x", "posX", this);
+		fp.registerVariable("pos.y", "posY", this);
+		fp.registerVariable("pos.z", "posZ", this);
+
+		fp.registerVariable("dir", "dirAxis", this);
+		fp.registerVariable("dir.axis", "dirAxis", this);
+		fp.registerVariable("axis", "dirAxis", this);
+
+		fp.registerVariable("dir.compass", "dirCompass", this);
+		fp.registerVariable("compass", "dirCompass", this);
 		
-		fp.registerVariable("front", this);
-		fp.registerVariable("f", "front", this);
-		fp.registerVariable("back", this);
-		fp.registerVariable("b", "back", this);
-		fp.registerVariable("left", this);
-		fp.registerVariable("l", "left", this);
-		fp.registerVariable("right", this);
-		fp.registerVariable("r", "right", this);
-		fp.registerVariable("top", this);
-		fp.registerVariable("up", "top", this);
-		fp.registerVariable("u", "top", this);
-		fp.registerVariable("bottom", this);
-		fp.registerVariable("down", "bottom", this);
-		fp.registerVariable("d", "bottom", this);
+		fp.registerVariable("dir.angle", "dirAngle", this);
+		fp.registerVariable("angle", "dirAngle", this);
+
+		fp.registerVariable("level", "minerLevel", this);
+
+		fp.registerVariable("term.text", "term_text", this);
+		fp.registerVariable("term.txt", "term_text", this);
 		return fp;
 	}
 
@@ -1273,4 +1262,19 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		}
 		
 	}
+
+	@Override
+    public String getName() {
+            return (String)miner.getInfo("deviceName");
+    }
+
+    @Override
+    public void onOpenGui() {
+            miner.setInfo("deviceNames", PCws_WeaselManager.getAllPluginNames());
+            miner.setInfo("networkNames", PCws_WeaselManager.getAllNetworkNames());
+            miner.setInfo("text", text);
+            if(getNetwork()!=null){
+                    miner.setInfo("networkName", getNetwork().getName());
+            }
+    }
 }
