@@ -26,6 +26,7 @@ import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.registry.PC_GresRegistry;
+import powercraft.management.registry.PC_ItemRegistry;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
@@ -95,7 +96,7 @@ public class PCnt_BlockRadio extends PC_Block {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().itemID != blockID) {
 				Block bhold = Block.blocksList[ihold.getItem().itemID];
 				return false;
-			} else if (ihold.getItem().itemID == ModuleInfo.getPCObjectIDByName("PCco_ItemActivator")) {
+			} else if (ihold.getItem().itemID == PC_ItemRegistry.getPCItemIDByName("PCco_ItemActivator")) {
 
 				if (ter.isTransmitter()) {
 

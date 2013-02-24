@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.registry.PC_ItemRegistry;
 
 public class PCco_DeleteAllPlayerStacks implements PC_IPacketHandler
 {
@@ -17,7 +18,7 @@ public class PCco_DeleteAllPlayerStacks implements PC_IPacketHandler
     public boolean handleIncomingPacket(EntityPlayer player, Object[] o)
     {
     	
-    	final int craftingTool = ModuleInfo.getPCObjectIDByName("PCco_ItemCraftingTool");
+    	final int craftingTool = PC_ItemRegistry.getPCItemIDByName("PCco_ItemCraftingTool");
     	
         if ("Delete".equals(o[0]))
         {

@@ -208,6 +208,13 @@ public final class PC_BlockRegistry {
 		return null;
 	}
 	
+	public static int getPCBlockIDByName(String name) {
+		if (blocks.containsKey(name)) {
+			return blocks.get(name).blockID;
+		}
+		return 0;
+	}
+	
 	public static TreeMap<String, PC_Block> getPCBlocks() {
 		return new TreeMap<String, PC_Block>(blocks);
 	}

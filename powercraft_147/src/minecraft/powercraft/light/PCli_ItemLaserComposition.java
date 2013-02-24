@@ -23,6 +23,7 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_VecI;
 import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
@@ -123,7 +124,7 @@ public class PCli_ItemLaserComposition extends PC_Item
         int levelDistance = 0;
     	int levelSensor = 0;
         
-    	if(is != null && is.itemID == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal")){
+    	if(is != null && is.itemID == PC_BlockRegistry.getPCBlockIDByName("PCco_BlockPowerCrystal")){
     		switch(is.getItemDamage()){
     		case 0:
     			levelDistance = 1;
