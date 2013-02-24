@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresColorPicker;
 import powercraft.management.gres.PC_GresLabel;

@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texturefx.TextureFX;
 import org.lwjgl.opengl.GL11;
 
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.registry.PC_ModuleRegistry;
 
 public class PChg_HologramTextureFX extends TextureFX {
 
@@ -30,7 +31,7 @@ public class PChg_HologramTextureFX extends TextureFX {
 	
 	@Override
 	public void bindImage(RenderEngine par1RenderEngine) {
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1RenderEngine.getTexture(ModuleInfo.getTerrainFile(ModuleInfo.getModule("Hologram"))));
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1RenderEngine.getTexture(ModuleInfo.getTerrainFile(PC_ModuleRegistry.getModule("Hologram"))));
 	}
 
 	@Override

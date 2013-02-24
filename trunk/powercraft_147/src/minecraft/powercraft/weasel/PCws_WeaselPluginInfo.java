@@ -1,14 +1,12 @@
 package powercraft.weasel;
 
 import net.minecraft.block.Block;
-
-import org.lwjgl.opengl.GL11;
-
 import powercraft.management.PC_Color;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
-import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_ModuleRegistry;
 
 public abstract class PCws_WeaselPluginInfo {
 
@@ -22,7 +20,7 @@ public abstract class PCws_WeaselPluginInfo {
 	
 	public PCws_WeaselPlugin createPlugin(){
 		try {
-			return ValueWriting.createClass(c, new Class[0], new Object[0]);
+			return PC_ReflectHelper.create(c);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
@@ -63,7 +61,7 @@ public abstract class PCws_WeaselPluginInfo {
 		
 		PC_Renderer.glTranslatef((float) x + 0.5F, ((float) y), (float) z + 0.5F);
 
-		PC_Renderer.bindTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Weasel")) + "block_chip.png");
+		PC_Renderer.bindTexture(ModuleInfo.getTextureDirectory(PC_ModuleRegistry.getModule("Weasel")) + "block_chip.png");
 
 		// push 2
 		PC_Renderer.glPushMatrix();

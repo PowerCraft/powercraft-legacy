@@ -12,10 +12,9 @@ import net.minecraft.world.World;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {

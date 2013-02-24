@@ -11,6 +11,8 @@ import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.inventory.PC_Slot;
+import powercraft.management.registry.PC_KeyRegistry;
+import powercraft.management.registry.PC_RecipeRegistry;
 
 
 public class PCco_SlotDirectCrafting extends PC_Slot {
@@ -61,7 +63,7 @@ public class PCco_SlotDirectCrafting extends PC_Slot {
             ItemStack output = product.copy();
 
             if(GameInfo.isCreative(thePlayer) || PC_GlobalVariables.config.getBoolean("cheats.survivalCheating")){
-            	if(GameInfo.isPlacingReversed(thePlayer)){
+            	if(PC_KeyRegistry.isPlacingReversed(thePlayer)){
             		 output.stackSize = output.getMaxStackSize();
             	}
             	available = true;
@@ -222,7 +224,7 @@ public class PCco_SlotDirectCrafting extends PC_Slot {
     }
     
     private int craft(ItemStack craft, ItemStack[] is, List<PC_ItemStack> not, int rec) {
-		List<IRecipe> recipes = GameInfo.getRecipesForProduct(craft);
+		List<IRecipe> recipes = PC_RecipeRegistry.getRecipesForProduct(craft);
 		if(rec>MAX_RECURSION)
 			return 0;
 		if(not.contains(new PC_ItemStack(craft)))
@@ -231,7 +233,7 @@ public class PCco_SlotDirectCrafting extends PC_Slot {
 		rec++;
 		for(IRecipe recipe:recipes){
 			ItemStack[] isc = setTo(null, is);
-			List<PC_ItemStack>[][] inp = GameInfo.getExpectedInput(recipe, -1, -1);
+			List<PC_ItemStack>[][] inp = PC_RecipeRegistry.getExpectedInput(recipe, -1, -1);
 			List<List<PC_ItemStack>> input = new ArrayList<List<PC_ItemStack>>();
 			if(inp==null)
 				continue;

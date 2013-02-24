@@ -11,9 +11,9 @@ import powercraft.management.PC_IThreadJob;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_ThreadJob;
 import powercraft.management.PC_ThreadManager;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.registry.PC_GresRegistry;
+import powercraft.management.registry.PC_ModuleRegistry;
 import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;
 import weasel.exception.SyntaxError;
@@ -62,7 +62,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 		defaultProvider.registerVariable("bottom", this);
 		defaultProvider.registerVariable("down", "bottom", this);
 		defaultProvider.registerVariable("d", "bottom", this);
-		if(ModuleInfo.getModule("Logic")!=null){
+		if(PC_ModuleRegistry.getModule("Logic")!=null){
 			defaultProvider.registerMethod("world.isDay", "isDay", this);
 			defaultProvider.registerMethod("world.isNight", "isNight", this);
 			defaultProvider.registerMethod("world.isRaining", "isRaining", this);

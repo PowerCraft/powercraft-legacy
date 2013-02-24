@@ -2,24 +2,21 @@ package powercraft.transport;
 
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresGap;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresRadioButton;
+import powercraft.management.gres.PC_GresRadioButton.PC_GresRadioGroup;
 import powercraft.management.gres.PC_GresSeparatorH;
 import powercraft.management.gres.PC_GresTextEdit;
+import powercraft.management.gres.PC_GresTextEdit.PC_GresInputType;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresRadioButton.PC_GresRadioGroup;
-import powercraft.management.gres.PC_GresTextEdit.PC_GresInputType;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 	

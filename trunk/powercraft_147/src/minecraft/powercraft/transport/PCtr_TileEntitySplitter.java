@@ -5,7 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_Direction;
-import powercraft.management.PC_VecI;
 import powercraft.management.entity.PC_EntityItem;
 
 public class PCtr_TileEntitySplitter extends PCtr_TileEntitySeparationBeltBase {

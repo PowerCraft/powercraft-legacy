@@ -11,14 +11,13 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.inventory.PC_IStateReportingInventory;
+import powercraft.management.registry.PC_SoundRegistry;
 
 public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory
 {
@@ -556,7 +555,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
     private void makeSound()
     {
-        if (GameInfo.isSoundEnabled())
+        if (PC_SoundRegistry.isSoundEnabled())
         {
             worldObj.playAuxSFX(1000, xCoord, yCoord, zCoord, 0);
         }

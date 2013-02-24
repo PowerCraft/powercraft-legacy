@@ -13,6 +13,7 @@ import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_SoundRegistry;
 
 @PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class)
 public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
@@ -65,7 +66,7 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
         {
             world.setBlockMetadataWithNotify(i, j, k, PCtr_BeltHelper.getMeta(meta, isPressed));
             ValueWriting.hugeUpdate(world, i, j, k);
-            ValueWriting.playSound(i + 0.5D, j + 0.125D, k + 0.5D, "random.click", 0.15F, 0.5F);
+            PC_SoundRegistry.playSound(i + 0.5D, j + 0.125D, k + 0.5D, "random.click", 0.15F, 0.5F);
         }
 
         if (isPressed)

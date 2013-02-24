@@ -25,6 +25,7 @@ import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.entity.PC_FakePlayer;
 import powercraft.management.registry.PC_GresRegistry;
+import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCma_TileEntityReplacer.class)
@@ -93,14 +94,14 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             {
                 int l = MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
-                if (GameInfo.isPlacingReversed(entityplayer))
+                if (PC_KeyRegistry.isPlacingReversed(entityplayer))
                 {
                     l = ValueWriting.reverseSide(l);
                 }
 
                 if (entityplayer.isSneaking())
                 {
-                    l = GameInfo.isPlacingReversed(entityplayer) ? 5 : 4;
+                    l = PC_KeyRegistry.isPlacingReversed(entityplayer) ? 5 : 4;
                 }
 
                 if (tileentity != null)
@@ -173,7 +174,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             return true;
         }
 
-        if (!GameInfo.hasFlag(world, pos, PC_Utils.NO_HARVEST))
+        if (!PC_MSGRegistry.hasFlag(world, pos, PC_Utils.NO_HARVEST))
         {
             return false;
         }
@@ -209,7 +210,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
                 return false;
             }
 
-            if (GameInfo.hasFlag(itemstack, PC_Utils.NO_BUILD))
+            if (PC_MSGRegistry.hasFlag(itemstack, PC_Utils.NO_BUILD))
             {
                 return false;
             }

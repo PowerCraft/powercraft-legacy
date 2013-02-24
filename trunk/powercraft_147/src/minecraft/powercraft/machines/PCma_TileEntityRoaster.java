@@ -20,10 +20,11 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
+import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.registry.PC_RecipeRegistry;
 
 public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
@@ -105,7 +106,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 	@Override
     public boolean canPlayerInsertStackTo(int slot, ItemStack stack)
     {
-        return stack != null && GameInfo.isFuel(stack);
+        return stack != null && PC_RecipeRegistry.isFuel(stack);
     }
 
     @Override
@@ -240,7 +241,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
             return;
         }
 
-        PC_Block laserB = ModuleInfo.getPCBlockByName("PCli_BlockLaser");
+        PC_Block laserB = PC_BlockRegistry.getPCBlockByName("PCli_BlockLaser");
         boolean laser = false;
 
         if (laserB != null)
@@ -454,7 +455,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     {
         for (int s = 0; s < getSizeInventory(); s++)
         {
-            int bt = GameInfo.getFuelValue(getStackInSlot(s), 1.0D);
+            int bt = PC_RecipeRegistry.getFuelValue(getStackInSlot(s));
 
             if (bt > 0)
             {
@@ -493,7 +494,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 
     private ItemStack getResult(ItemStack item)
     {
-    	return GameInfo.getSmeltingResult(item);
+    	return PC_RecipeRegistry.getSmeltingResult(item);
     }
 
     private int getItemSmeltTime(ItemStack stack)

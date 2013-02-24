@@ -21,7 +21,6 @@ import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
-import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_LangRegistry;
@@ -217,7 +216,7 @@ public class PCli_ItemLaserComposition extends PC_Item
 	}
 
 	public static boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_VecI coord, PC_ItemStack itemstack, boolean isBurning) {
-		if(block.isOpaqueCube() && !GameInfo.hasFlag(beamTracer.getWorld(), coord, PC_Utils.BEAMTRACER_STOP)){
+		if(block.isOpaqueCube() && !PC_MSGRegistry.hasFlag(beamTracer.getWorld(), coord, PC_Utils.BEAMTRACER_STOP)){
 			return true;
 		}
 		return false;

@@ -1,13 +1,10 @@
 package powercraft.logic;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.Converter;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.registry.PC_LangRegistry;

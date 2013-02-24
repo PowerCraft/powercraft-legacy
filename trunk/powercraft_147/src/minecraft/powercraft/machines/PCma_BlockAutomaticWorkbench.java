@@ -16,7 +16,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
-import powercraft.management.PC_KeyHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;

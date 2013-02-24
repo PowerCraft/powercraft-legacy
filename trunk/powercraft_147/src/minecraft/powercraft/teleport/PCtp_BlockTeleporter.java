@@ -38,6 +38,7 @@ import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_SoundRegistry;
 
 @PC_BlockInfo(tileEntity=PCtp_TileEntityTeleporter.class)
 public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
@@ -199,7 +200,7 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 		PCtp_TileEntityTeleporter te = GameInfo.getTE(world, x, y, z);
 		
 		if (random.nextInt(60) == 0 && te.soundEnabled) {
-			ValueWriting.playSound(x + 0.5D, y + 0.5D, z + 0.5D, "portal.portal", 0.1F, random.nextFloat() * 0.4F + 0.8F);
+			PC_SoundRegistry.playSound(x + 0.5D, y + 0.5D, z + 0.5D, "portal.portal", 0.1F, random.nextFloat() * 0.4F + 0.8F);
 		}
 
 		for (int i = 0; i < 8; i++) {

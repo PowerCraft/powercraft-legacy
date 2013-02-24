@@ -41,9 +41,11 @@ import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.PC_VecI;
 import powercraft.management.inventory.PC_IInventoryWrapper;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
-import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_KeyRegistry;
+import powercraft.management.registry.PC_SoundRegistry;
 
 public class PCtr_BeltHelper
 {
@@ -470,7 +472,7 @@ public class PCtr_BeltHelper
 
     public static void soundEffectChest(World world, PC_VecI pos)
     {
-        ValueWriting.playSound(pos.x + 0.5D, pos.y + 0.5D, pos.z + 0.5D, "random.pop", (world.rand.nextFloat() + 0.7F) / 5.0F,
+        PC_SoundRegistry.playSound(pos.x + 0.5D, pos.y + 0.5D, pos.z + 0.5D, "random.pop", (world.rand.nextFloat() + 0.7F) / 5.0F,
                 0.5F + world.rand.nextFloat() * 0.3F);
     }
 
@@ -960,7 +962,7 @@ public class PCtr_BeltHelper
 
     public static void soundEffectBelt(World world, PC_VecI pos)
     {
-        ValueWriting.playSound(pos.x + 0.5D, pos.y + 0.625D, pos.z + 0.5D, "random.wood click", (world.rand.nextFloat() + 0.2F) / 10.0F,
+        PC_SoundRegistry.playSound(pos.x + 0.5D, pos.y + 0.625D, pos.z + 0.5D, "random.wood click", (world.rand.nextFloat() + 0.2F) / 10.0F,
                 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.6F);
     }
 
@@ -968,7 +970,7 @@ public class PCtr_BeltHelper
     {
         int l = PC_MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 2.5D) & 3;
 
-        if (player instanceof EntityPlayer && GameInfo.isPlacingReversed(((EntityPlayer)player)))
+        if (player instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed(((EntityPlayer)player)))
         {
             l = ValueWriting.reverseSide(l);
         }

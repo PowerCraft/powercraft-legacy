@@ -1,19 +1,12 @@
 package powercraft.light;
 
-import java.util.Random;
-
-import net.minecraft.nbt.NBTTagCompound;
-
 import org.lwjgl.opengl.GL11;
 
 import powercraft.management.PC_Color;
 import powercraft.management.PC_ITileEntityRenderer;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ModuleInfo;
-import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.registry.PC_TextureRegistry;

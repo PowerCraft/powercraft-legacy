@@ -26,6 +26,7 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_ItemRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_RecipeRegistry;
 
 public class PCma_ItemRanking {
 	
@@ -80,7 +81,7 @@ public class PCma_ItemRanking {
 	                        	boolean bo = false;
 	                            for (int j = 0; true; j++){
 	                                ItemStack is = new ItemStack(b, 1, j);
-	                                if (GameInfo.getRecipesForProduct(is).size() > 0 || GameInfo.getFeedstock(is).size() > 0) {
+	                                if (PC_RecipeRegistry.getRecipesForProduct(is).size() > 0 || PC_RecipeRegistry.getFeedstock(is).size() > 0) {
 	                                	l.add(is);
 	                                	bo = false;
 	                                }else{
@@ -100,7 +101,7 @@ public class PCma_ItemRanking {
                 	boolean b = false;
                     for (int j = 0; true; j++){
                         ItemStack is = new ItemStack(item, 1, j);
-                        if (GameInfo.getRecipesForProduct(is).size() > 0 || GameInfo.getFeedstock(is).size() > 0) {
+                        if (PC_RecipeRegistry.getRecipesForProduct(is).size() > 0 || PC_RecipeRegistry.getFeedstock(is).size() > 0) {
                         	l.add(is);
                         	b = false;
                         }else{
@@ -118,8 +119,8 @@ public class PCma_ItemRanking {
 						PC_ItemStack pcis = new PC_ItemStack(is);
 						if(alreadyDone.contains(pcis))
 							continue;
-						List<IRecipe> recipes = GameInfo.getRecipesForProduct(is);
-						List<ItemStack> feedstocks = GameInfo.getFeedstock(is);
+						List<IRecipe> recipes = PC_RecipeRegistry.getRecipesForProduct(is);
+						List<ItemStack> feedstocks = PC_RecipeRegistry.getFeedstock(is);
 						if(recipes.size()==0&&feedstocks.size()==0){
 							if(get(pcis)==null){
 								setRank(pcis, 10000);
@@ -139,7 +140,7 @@ public class PCma_ItemRanking {
 							}
 						}
 						for(IRecipe recipe:recipes){
-							List<PC_ItemStack>[][] input = GameInfo.getExpectedInput(recipe, -1, -1);
+							List<PC_ItemStack>[][] input = PC_RecipeRegistry.getExpectedInput(recipe, -1, -1);
 							if(input==null){
 				                continue;
 				            }

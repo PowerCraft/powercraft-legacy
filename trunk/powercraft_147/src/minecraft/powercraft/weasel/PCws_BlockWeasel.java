@@ -24,6 +24,7 @@ import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
@@ -170,7 +171,7 @@ public class PCws_BlockWeasel extends PC_Block {
 				return false;
 			} else if (ihold.getItem().itemID == ModuleInfo.getPCObjectIDByName("PCco_ItemActivator")) {
 
-				if (weaselPlugin.getNetwork()==null||GameInfo.isPlacingReversed(player)){
+				if (weaselPlugin.getNetwork()==null||PC_KeyRegistry.isPlacingReversed(player)){
 					if (ihold.hasTagCompound()) {
 						String network = ihold.getTagCompound().getString("WeaselNetwork");
 						weaselPlugin.connectToNetwork(PCws_WeaselManager.getNetwork(network));
@@ -211,7 +212,7 @@ public class PCws_BlockWeasel extends PC_Block {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player) {
 		int l = PC_MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 2.5D) & 3;
 
-        if (player instanceof EntityPlayer && GameInfo.isPlacingReversed(((EntityPlayer)player)))
+        if (player instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed(((EntityPlayer)player)))
         {
             l = ValueWriting.reverseSide(l);
         }

@@ -28,6 +28,7 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_SoundRegistry;
 
 public class PCma_TreeHarvestingManager {
 
@@ -189,7 +190,7 @@ public class PCma_TreeHarvestingManager {
 			ValueWriting.setBIDNoNotify(world, pos, 0, 0);
 
 			if (world.rand.nextInt(10 - ((id == wood_id && (meta == wood_meta || wood_meta == -1)) ? 8 : 0)) == 0) {
-				if (GameInfo.isSoundEnabled()) {
+				if (PC_SoundRegistry.isSoundEnabled()) {
 					world.playAuxSFX(2001, pos.x, pos.y, pos.z, id + (meta << 12));
 				}
 			}

@@ -6,16 +6,15 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresScrollArea;
 import powercraft.management.gres.PC_GresTextEdit;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PCtp_GuiPlayerTeleport implements PC_IGresClient {
 

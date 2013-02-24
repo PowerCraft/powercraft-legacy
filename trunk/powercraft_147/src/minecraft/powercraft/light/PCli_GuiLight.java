@@ -1,29 +1,19 @@
 package powercraft.light;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresColor;
 import powercraft.management.gres.PC_GresColorPicker;
-import powercraft.management.gres.PC_GresItemToggel;
 import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresWidget;
-import powercraft.management.gres.PC_GresWidgetTab;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PCli_GuiLight implements PC_IGresClient {
 

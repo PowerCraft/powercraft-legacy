@@ -5,13 +5,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_ItemStack;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.inventory.PC_IStateReportingInventory;
+import powercraft.management.registry.PC_RecipeRegistry;
 
 public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IStateReportingInventory
 {
@@ -56,7 +55,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     public boolean canPlayerInsertStackTo(int slot, ItemStack stack)
     {
     	if (slot >= 1 && slot < 9)
-            return GameInfo.isFuel(stack);
+            return PC_RecipeRegistry.isFuel(stack);
     	if (slot == 9 || slot == 10)
     		return false;
     	if (slot >= 23)
@@ -70,7 +69,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
         if (slot == 0)
             return false;
         if (slot >= 1 && slot < 9)
-            return GameInfo.isFuel(stack);
+            return PC_RecipeRegistry.isFuel(stack);
         if (slot == 9 || slot == 10)
     		return false;
         if (slot >= 23)

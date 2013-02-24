@@ -3,6 +3,7 @@ package powercraft.weasel;
 import net.minecraft.block.Block;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.registry.PC_SoundRegistry;
 
 public class PCws_WeaselPluginInfoTerminal extends PCws_WeaselPluginInfo {
 
@@ -35,7 +36,7 @@ public class PCws_WeaselPluginInfoTerminal extends PCws_WeaselPluginInfo {
 	@Override
 	public void getServerMsg(PCws_TileEntityWeasel te, String msg, Object obj) {
 		if(msg.equals("play")){
-			ValueWriting.playSound(te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, "random.click", 0.05F, 3F);
+			PC_SoundRegistry.playSound(te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, "random.click", 0.05F, 3F);
 		}
 	}
 	

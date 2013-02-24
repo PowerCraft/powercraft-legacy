@@ -1,6 +1,5 @@
 package powercraft.weasel;
 
-import powercraft.management.PC_Renderer;
 import net.minecraft.client.model.ModelRenderer;
 
 public class PCws_WeaselModelCore extends PCws_WeaselModelBase {

@@ -46,7 +46,11 @@ import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.inventory.PC_IStateReportingInventory;
 import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_ItemRegistry;
+import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_RecipeRegistry;
+import powercraft.management.registry.PC_SoundRegistry;
 import powercraft.mobile.PCmo_Command.ParseException;
 import weasel.Calc;
 import weasel.obj.WeaselDouble;
@@ -460,7 +464,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			} else {
 				for (int s = 0; s < cargo.getSizeInventory(); s++) {
 					ItemStack stack = cargo.getStackInSlot(s);
-					int bt = GameInfo.getFuelValue(stack, FUEL_STRENGTH);
+					int bt = (int)(PC_RecipeRegistry.getFuelValue(stack) * FUEL_STRENGTH);
 					if (bt > 0 && !(stack.itemID == Item.bucketLava.itemID && getFlag(cobbleMake) && level >= LCOBBLE)) {
 						fuelBuffer += bt;
 						if (stack.getItem().hasContainerItem()) {
@@ -692,7 +696,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 			if (id == Block.stoneSingleSlab.blockID || id == Block.slowSand.blockID) return false;
 
-			if (GameInfo.hasFlag(is, "NO_BUILD")) {
+			if (PC_MSGRegistry.hasFlag(is, "NO_BUILD")) {
 				return false;
 			}
 
@@ -798,12 +802,11 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 										yes = stack.itemID != powerDust && stack.itemID != Block.torchWood.blockID
 												&& stack.itemID != Item.bucketEmpty.itemID && stack.itemID != Item.bucketLava.itemID
 												&& stack.itemID != Item.bucketWater.itemID
-												&& (!getFlag(keepAllFuel) || GameInfo.getFuelValue(stack, FUEL_STRENGTH) == 0);
+												&& (!getFlag(keepAllFuel) || PC_RecipeRegistry.getFuelValue(stack) == 0);
 
 									} else {
 										if (!getFlag(keepAllFuel)
-												|| (stack.itemID != powerDust && GameInfo.getFuelValue(stack,
-														FUEL_STRENGTH) == 0)) {
+												|| (stack.itemID != powerDust && PC_RecipeRegistry.getFuelValue(stack) == 0)) {
 											yes = agr.agree(stack);
 										} else {
 											yes = false;
@@ -960,7 +963,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			ItemStack stack = getStackInSlot(slot);
 			if (stack == null) return false;
 
-			if (GameInfo.getFuelValue(stack, 1) > 0) {
+			if (PC_RecipeRegistry.getFuelValue(stack) > 0) {
 				if (stack.getItem() instanceof ItemBlock) {
 					return !getFlag(keepAllFuel);
 				} else {
@@ -1713,7 +1716,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * @return should make effects
 	 */
 	private boolean shouldMakeEffects() {
-		return worldObj.getClosestPlayerToEntity(this, 17D) != null && GameInfo.isSoundEnabled();
+		return worldObj.getClosestPlayerToEntity(this, 17D) != null && PC_SoundRegistry.isSoundEnabled();
 	}
 
 	/**
@@ -1742,7 +1745,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		Block block = Block.blocksList[id];
 		if (st.miningTickCounter % 8 == 0 && block != null) {
-			ValueWriting.playSound(pos.x + 0.5F, pos.y + 0.5F, pos.z + 0.5F, block.stepSound.getBreakSound(), (block.stepSound.getVolume() + 1.0F) / 8F, block.stepSound.getPitch() * 0.5F);
+			PC_SoundRegistry.playSound(pos.x + 0.5F, pos.y + 0.5F, pos.z + 0.5F, block.stepSound.getBreakSound(), (block.stepSound.getVolume() + 1.0F) / 8F, block.stepSound.getPitch() * 0.5F);
 		}
 
 		if (block != null) {
@@ -1797,7 +1800,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 						for (ItemStack stack : harvested) {
 
 							// play breaking sound and animation
-							if (GameInfo.isSoundEnabled()) {
+							if (PC_SoundRegistry.isSoundEnabled()) {
 								worldObj.playAuxSFX(2001, pos.x, pos.y, pos.z, id + (meta << 12));
 							}
 							
@@ -1938,7 +1941,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		if (id == 0 || Block.blocksList[id] == null || Block.blocksList[id] instanceof BlockTorch || id == Block.fire.blockID
 				|| id == Block.portal.blockID || id == Block.endPortal.blockID || Block.blocksList[id] instanceof BlockFluid || id == 55 || id == 70
-				|| id == 72 || GameInfo.hasFlag(worldObj, pos, "LIFT") || GameInfo.hasFlag(worldObj, pos, "BELT")) {
+				|| id == 72 || PC_MSGRegistry.hasFlag(worldObj, pos, "LIFT") || PC_MSGRegistry.hasFlag(worldObj, pos, "BELT")) {
 			return true;
 		}
 
@@ -1965,7 +1968,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 */
 	public boolean canHarvestBlockWithCurrentLevel(PC_VecI pos, int id) {
 		// exception - miner 8 can mine bedrock.
-		if (GameInfo.hasFlag(worldObj, pos, "HARVEST_STOP") || GameInfo.hasFlag(worldObj, pos, "NO_HARVEST")) {
+		if (PC_MSGRegistry.hasFlag(worldObj, pos, "HARVEST_STOP") || PC_MSGRegistry.hasFlag(worldObj, pos, "NO_HARVEST")) {
 			return false;
 		}
 		if (id == 7) {
@@ -2731,35 +2734,35 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				keyPressTimer[i]--;
 			}
 		}
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mForward)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mForward)) {
 			if (keyPressTimer[0] == 0) {
 				keyPressTimer[0] = CooldownTime;
 				sendCommandToMiners(PCmo_Command.FORWARD);
 			}
 			return;
 		}
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mLeft)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mLeft)) {
 			if (keyPressTimer[1] == 0) {
 				keyPressTimer[1] = CooldownTime;
 				sendCommandToMiners(PCmo_Command.LEFT);
 			}
 			return;
 		}
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mRight)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mRight)) {
 			if (keyPressTimer[2] == 0) {
 				keyPressTimer[2] = CooldownTime;
 				sendCommandToMiners(PCmo_Command.RIGHT);
 			}
 			return;
 		}
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mAround)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mAround)) {
 			if (keyPressTimer[3] == 0) {
 				keyPressTimer[3] = CooldownTime;
 				sendSequenceToMiners("RR");
 			}
 			return;
 		}
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mBackward)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mBackward)) {
 			if (keyPressTimer[4] == 0) {
 				keyPressTimer[4] = CooldownTime;
 				sendCommandToMiners(PCmo_Command.BACKWARD);
@@ -2767,14 +2770,14 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			return;
 		}
 
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mDown)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mDown)) {
 			if (keyPressTimer[5] == 0) {
 				keyPressTimer[5] = CooldownTime;
 				sendCommandToMiners(PCmo_Command.DOWN);
 			}
 			return;
 		}
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mUp)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mUp)) {
 			if (keyPressTimer[6] == 0) {
 				keyPressTimer[6] = CooldownTime;
 				sendCommandToMiners(PCmo_Command.UP);
@@ -2782,21 +2785,21 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			return;
 		}
 
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mBridgeOn)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mBridgeOn)) {
 			if (sendCommandToMiners(PCmo_Command.BRIDGE_ENABLE)) {
 				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.bridgeOn"), true);
 			}
 			return;
 		}
 
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mBridgeOff)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mBridgeOff)) {
 			if (sendCommandToMiners(PCmo_Command.BRIDGE_DISABLE)) {
 				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.bridgeOff"), true);
 			}
 			return;
 		}
 
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mDeposit)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mDeposit)) {
 			if (keyPressTimer[7] == 0) {
 				keyPressTimer[7] = CooldownTime;
 				sendCommandToMiners(PCmo_Command.DEPOSIT);
@@ -2804,7 +2807,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			return;
 		}
 
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mRun)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mRun)) {
 			if (keyPressTimer[8] == 0) {
 				keyPressTimer[8] = CooldownTime;
 				if (sendCommandToMiners(PCmo_Command.RUN_PROGRAM)) {
@@ -2814,26 +2817,26 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			return;
 		}
 
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mToBlocks)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mToBlocks)) {
 			sendCommandToMiners(PCmo_Command.DISASSEMBLY);
 			return;
 		}
 
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mMiningOn)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mMiningOn)) {
 			if (sendCommandToMiners(PCmo_Command.MINING_ENABLE)) {
 				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.miningOn"), true);
 			}
 			return;
 		}
 
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mMiningOff)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mMiningOff)) {
 			if (sendCommandToMiners(PCmo_Command.MINING_DISABLE)) {
 				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.miningOff"), true);
 			}
 			return;
 		}
 
-		if (Communication.isKeyPressed(player, PCmo_App.pk_mCancel)) {
+		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mCancel)) {
 			if (sendCommandToMiners(PCmo_Command.RESET)) {
 				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.operationsCancelled"), true);
 			}
@@ -3607,7 +3610,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				}
 			}
 			if (str.equalsIgnoreCase("FUEL")) {
-				if (GameInfo.getFuelValue(stack, PCmo_EntityMiner.FUEL_STRENGTH) > 0) {
+				if (PC_RecipeRegistry.getFuelValue(stack) > 0) {
 					return true;
 				}
 			}
@@ -3688,7 +3691,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		if (id == Block.stoneSingleSlab.blockID || id == Block.slowSand.blockID) return false;
 
-		if (GameInfo.hasFlag(is, "NO_BUILD")) {
+		if (PC_MSGRegistry.hasFlag(is, "NO_BUILD")) {
 			return false;
 		}
 

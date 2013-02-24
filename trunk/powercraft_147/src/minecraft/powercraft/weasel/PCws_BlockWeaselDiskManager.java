@@ -23,6 +23,7 @@ import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_SoundRegistry;
 import weasel.WeaselEngine;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselDouble;
@@ -179,7 +180,7 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
 			itemStack2 = player.openContainer.getSlot(38).getStack();
 			if(itemStack1!=null&&itemStack2!=null){
 				player.openContainer.getSlot(38).putStack(itemStack1.copy());
-				ValueWriting.playSound(player.posX, player.posY, player.posZ, "random.wood click", 1.0F, 1.0F);
+				PC_SoundRegistry.playSound(player.posX, player.posY, player.posZ, "random.wood click", 1.0F, 1.0F);
 			}
 		}
 		return false;

@@ -3,7 +3,6 @@ package powercraft.deco;
 import powercraft.management.PC_ITileEntityRenderer;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.registry.PC_TextureRegistry;
 

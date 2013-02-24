@@ -6,18 +6,16 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
-import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
 import powercraft.management.PC_VecI;
+import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
+import powercraft.management.registry.PC_RecipeRegistry;
 import powercraft.mobile.PCmo_Command.ParseException;
 import powercraft.mobile.PCmo_EntityMiner.Agree;
 import powercraft.weasel.PCws_IWeaselEngine;
@@ -26,7 +24,6 @@ import powercraft.weasel.PCws_WeaselHighlightHelper;
 import powercraft.weasel.PCws_WeaselManager;
 import powercraft.weasel.PCws_WeaselNetwork;
 import weasel.Calc;
-import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
@@ -813,7 +810,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 					ItemStack stack = miner.cargo.getStackInSlot(i);
 					if (stack == null) continue;
 					if (stack.itemID != Item.bucketLava.itemID || !miner.getFlag(PCmo_EntityMiner.cobbleMake)) {
-						cnt += GameInfo.getFuelValue(stack, PCmo_EntityMiner.FUEL_STRENGTH) * stack.stackSize;
+						cnt += PC_RecipeRegistry.getFuelValue(stack) * PCmo_EntityMiner.FUEL_STRENGTH * stack.stackSize;
 					}
 				}
 

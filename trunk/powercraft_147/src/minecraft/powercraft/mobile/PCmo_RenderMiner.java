@@ -2,13 +2,13 @@ package powercraft.mobile;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.registry.PC_ModuleRegistry;
 
 public class PCmo_RenderMiner extends Render {
 
@@ -48,11 +48,11 @@ public class PCmo_RenderMiner extends Render {
 		float f4 = 0.75F;
 		GL11.glScalef(f4, f4, f4);
 		GL11.glScalef(1.0F / f4, 1.0F / f4, 1.0F / f4);
-		loadTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Mobile")) + "miner_base.png");
+		loadTexture(ModuleInfo.getTextureDirectory(PC_ModuleRegistry.getModule("Mobile")) + "miner_base.png");
 		GL11.glScalef(-1F, -1F, 1.0F);
 		modelMiner.render(entityminer, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
-		loadTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Mobile")) + "miner_overlay_" + (Integer.toString(entityminer.st.level)) + ".png");
+		loadTexture(ModuleInfo.getTextureDirectory(PC_ModuleRegistry.getModule("Mobile")) + "miner_overlay_" + (Integer.toString(entityminer.st.level)) + ".png");
 		GL11.glEnable(3042 /* GL_BLEND */);
 		GL11.glDisable(3008 /* GL_ALPHA_TEST */);
 		GL11.glBlendFunc(770, 771);
@@ -61,7 +61,7 @@ public class PCmo_RenderMiner extends Render {
 		modelMiner.render(entityminer, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
 		if (entityminer.hasPlayer()) {
-			loadTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Mobile")) + "miner_overlay_keyboard.png");
+			loadTexture(ModuleInfo.getTextureDirectory(PC_ModuleRegistry.getModule("Mobile")) + "miner_overlay_keyboard.png");
 			modelMiner.render(entityminer, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		}
 
