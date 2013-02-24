@@ -43,7 +43,7 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG, PC_
 		int oldID = itemID;
 		if(oldID==id)
 			return;
-    	if(PC_ReflectHelper.setValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id)){
+    	if(PC_ReflectHelper.setValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id, int.class)){
     		if(oldID!=-1){
     			Item.itemsList[oldID] = replacedItem;
     		}

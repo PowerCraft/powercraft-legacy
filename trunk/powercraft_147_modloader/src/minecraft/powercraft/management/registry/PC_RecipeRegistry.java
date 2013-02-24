@@ -141,11 +141,9 @@ public class PC_RecipeRegistry {
 				}
 			}
 		} else if (recipe instanceof ShapedRecipes) {
-			int sizeX = (Integer) PC_ReflectHelper.getValue(
-					ShapedRecipes.class, recipe, 0);
-			int sizeY = (Integer) PC_ReflectHelper.getValue(
-					ShapedRecipes.class, recipe, 1);
-			ItemStack[] stacks = (ItemStack[]) PC_ReflectHelper.getValue(ShapedRecipes.class, recipe, 2);
+			int sizeX = PC_ReflectHelper.getValue(ShapedRecipes.class, recipe, 0, int.class);
+			int sizeY = PC_ReflectHelper.getValue(ShapedRecipes.class, recipe, 1, int.class);
+			ItemStack[] stacks = PC_ReflectHelper.getValue(ShapedRecipes.class, recipe, 2, ItemStack[].class);
 			if (width == -1)
 				width = sizeX;
 			if (hight == -1)
@@ -166,7 +164,7 @@ public class PC_RecipeRegistry {
 				}
 			}
 		} else if (recipe instanceof ShapelessRecipes) {
-			List<ItemStack> stacks = ((List<ItemStack>) PC_ReflectHelper.getValue(ShapelessRecipes.class, recipe, 1));
+			List<ItemStack> stacks = PC_ReflectHelper.getValue(ShapelessRecipes.class, recipe, 1, List.class);
 			if (width == -1)
 				width = stacks.size();
 			if (hight == -1)
@@ -211,16 +209,8 @@ public class PC_RecipeRegistry {
 		for(PC_SmeltRecipe smelting:smeltings){
 			ItemStack is = smelting.getInput().toItemStack();
 			smlt.getSmeltingList().remove(Integer.valueOf(is.itemID));
-			int idx = 2; // ValueWriting.getFieldIDByName(FurnaceRecipes.class,
-						// "experienceList");
-			if (idx != -1) {
-				Object o = PC_ReflectHelper.getValue(FurnaceRecipes.class,
-						smlt, idx);
-				if (o instanceof Map) {
-					Map map = (Map) o;
-					map.remove(Integer.valueOf(is.itemID));
-				}
-			}
+			Map map = PC_ReflectHelper.getValue(FurnaceRecipes.class, smlt, 2, Map.class);
+			map.remove(Integer.valueOf(is.itemID));
 		}
 	}
 	

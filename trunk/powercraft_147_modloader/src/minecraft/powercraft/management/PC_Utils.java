@@ -437,12 +437,12 @@ public class PC_Utils implements PC_IPacketHandler
     	}
     	
     	public static void setBlockBounds(Block block, double x, double y, double z, double width, double height, double depht){
-    		PC_ReflectHelper.setValue(Block.class, block, 173, x);
-    		PC_ReflectHelper.setValue(Block.class, block, 174, y);
-    		PC_ReflectHelper.setValue(Block.class, block, 175, z);
-    		PC_ReflectHelper.setValue(Block.class, block, 176, width);
-    		PC_ReflectHelper.setValue(Block.class, block, 177, height);
-    		PC_ReflectHelper.setValue(Block.class, block, 178, depht);
+    		PC_ReflectHelper.setValue(Block.class, block, 173, x, double.class);
+    		PC_ReflectHelper.setValue(Block.class, block, 174, y, double.class);
+    		PC_ReflectHelper.setValue(Block.class, block, 175, z, double.class);
+    		PC_ReflectHelper.setValue(Block.class, block, 176, width, double.class);
+    		PC_ReflectHelper.setValue(Block.class, block, 177, height, double.class);
+    		PC_ReflectHelper.setValue(Block.class, block, 178, depht, double.class);
     	}
     	
     	//AlphaI
@@ -1234,7 +1234,7 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 
 		public static String getMobID(TileEntityMobSpawner te){
-			return (String)PC_ReflectHelper.getValue(TileEntityMobSpawner.class, te, 1);
+			return PC_ReflectHelper.getValue(TileEntityMobSpawner.class, te, 1, String.class);
 		}
 
 		public static File getMCDirectory()
