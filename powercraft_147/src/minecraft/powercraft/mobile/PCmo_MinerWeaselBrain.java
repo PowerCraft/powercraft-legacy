@@ -1163,7 +1163,8 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		term.registerMethod("in", "term_Input", this);
 		
 		fp.registerFunctionProvider("term", term);
-		//TODO go on here
+
+		
 		fp.registerVariable("pos.x", "posX", this);
 		fp.registerVariable("pos.y", "posY", this);
 		fp.registerVariable("pos.z", "posZ", this);
