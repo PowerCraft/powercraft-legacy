@@ -168,7 +168,12 @@ public final class PC_ReflectHelper {
 	
 	public static <T>T getValue(Class<?> c, Object o, int i, Class<T> expect) {
 		try {
-			Field f = findNearesBestField(c, i, expect);
+			Field f;
+			if(expect==null){
+				f = c.getDeclaredFields()[i];
+			}else{
+				f = findNearesBestField(c, i, expect);
+			}
 			f.setAccessible(true);
 			return (T)f.get(o);
 		} catch (IllegalAccessException e) {
@@ -183,7 +188,12 @@ public final class PC_ReflectHelper {
 	
 	public static boolean setValue(Class<?> c, Object o, int i, Object v, Class<?> expect) {
 		try {
-			Field f = findNearesBestField(c, i, expect);
+			Field f;
+			if(expect==null){
+				f = c.getDeclaredFields()[i];
+			}else{
+				f = findNearesBestField(c, i, expect);
+			}
 			f.setAccessible(true);
 			Field field_modifiers = Field.class.getDeclaredField("modifiers");
 			field_modifiers.setAccessible(true);
