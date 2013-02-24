@@ -136,6 +136,13 @@ public final class PC_ItemRegistry {
 		return null;
 	}
 	
+	public static int getPCItemIDByName(String name) {
+		if (items.containsKey(name)) {
+			return items.get(name).itemID;
+		}
+		return 0;
+	}
+	
 	public static TreeMap<String, PC_Item> getPCItems() {
 		return new TreeMap<String, PC_Item>(items);
 	}
@@ -145,6 +152,13 @@ public final class PC_ItemRegistry {
 			return itemArmors.get(name);
 		}
 		return null;
+	}
+	
+	public static int getPCItemArmorIDByName(String name) {
+		if (itemArmors.containsKey(name)) {
+			return itemArmors.get(name).itemID;
+		}
+		return 0;
 	}
 	
 	public static TreeMap<String, PC_ItemArmor> getPCItemArmors() {
