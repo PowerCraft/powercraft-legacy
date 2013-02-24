@@ -41,6 +41,7 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 	private void makeProgramTab(PC_GresTab tab){
 		List<Keyword> kw = (List<Keyword>)te.getData("keywords");
 		PC_GresLayoutV lv = new PC_GresLayoutV();
+		lv.setAlignH(PC_GresAlign.STRETCH);
 		lv.add(program = new PC_GresTextEditMultiline((String)te.getData("program"), 300, 120, 
 				PCws_WeaselHighlightHelper.colorDefault, PCws_WeaselHighlightHelper.colorBackground,
 				kw, PCws_WeaselHighlightHelper.autoAdd));
@@ -55,9 +56,7 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 		lh.add(stopProgram = new PC_GresButton("pc.gui.weasel.core.stopProgram"));
 		
 		if(te.getData("error")!=null){
-			stopProgram.enable(false);
-			programError.setText((String)te.getData("error"));
-			programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
+			showError((String)te.getData("error"));
 		}else if(!(Boolean)te.getData("isRunning")){
 			stopProgram.enable(false);
 			programError.setColor(PC_GresWidget.textColorDisabled, 0x00aa00);
@@ -132,6 +131,18 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 		
 	}
 	
+	private void showError(String error){
+		String split = null;
+		if(error.length()>50){
+			split = "..." + error.substring(48);
+			error = error.substring(0, 48)+"...";
+		}
+		programError.setText(error);
+		programError.setTooltip(split);
+		programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
+		launchProgram.enable(false);
+	}
+	
 	@Override
 	protected void addTabs(PC_GresWindow w, PC_GresTab tab) {
 		makeStatusTab(tab);
@@ -156,29 +167,24 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 		tick++;
 		if(tick%20==0){
 			if(te.getData("error")!=null){
-				stopProgram.enable(false);
-				programError.setText((String)te.getData("error"));
+				showError((String)te.getData("error"));
 				programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
 			}else if((Boolean)te.getData("isRunning")){
 				stopProgram.enable(true);
 				programError.setText(PC_LangRegistry.tr("pc.gui.weasel.core.running"));
+				programError.setTooltip(null);
 				programError.setColor(PC_GresWidget.textColorDisabled, 0x000000);
 			}else{
 				stopProgram.enable(false);
 				programError.setText(PC_LangRegistry.tr("pc.gui.weasel.core.noError"));
+				programError.setTooltip(null);
 				programError.setColor(PC_GresWidget.textColorDisabled, 0x00aa00);
 			}
 			try{
 				WeaselEngine.compileProgram(program.getText());
 				launchProgram.enable(true);
 			}catch(Exception e){
-				String msg = e.getMessage();
-				if(msg.length()>40){
-					msg = msg.substring(0, 38)+"...";
-				}
-				programError.setText(msg);
-				programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
-				launchProgram.enable(false);
+				showError(e.getMessage());
 			}
 			if (te.getData("error")!=null) {
 				txRunning.setText(PC_LangRegistry.tr("pc.gui.weasel.core.crashed"));

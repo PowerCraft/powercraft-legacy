@@ -52,6 +52,7 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 	private void makeProgramTab(PC_GresTab tab){
 		List<Keyword> kw = (List<Keyword>)miner.getInfo("keywords");
 		PC_GresLayoutV lv = new PC_GresLayoutV();
+		lv.setAlignH(PC_GresAlign.STRETCH);
 		lv.add(new PC_GresLabel((String)miner.getInfo("script")));
 		lv.add(program = new PC_GresTextEditMultiline((String)miner.getInfo("program"), 300, 120, 
 				PCws_WeaselHighlightHelper.colorDefault, PCws_WeaselHighlightHelper.colorBackground,
@@ -67,9 +68,7 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		lh.add(stopProgram = new PC_GresButton("pc.gui.miner.stopProgram"));
 		
 		if(miner.getInfo("error")!=null){
-			stopProgram.enable(false);
-			programError.setText((String)miner.getInfo("error"));
-			programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
+			showError((String)miner.getInfo("error"));
 		}else if(!(Boolean)miner.getInfo("isRunning")){
 			stopProgram.enable(false);
 			programError.setColor(PC_GresWidget.textColorDisabled, 0x00aa00);
@@ -253,29 +252,23 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		tick++;
 		if(tick%20==0){
 			if(miner.getInfo("error")!=null){
-				stopProgram.enable(false);
-				programError.setText((String)miner.getInfo("error"));
-				programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
+				showError((String)miner.getInfo("error"));
 			}else if((Boolean)miner.getInfo("isRunning")){
 				stopProgram.enable(true);
 				programError.setText(PC_LangRegistry.tr("pc.gui.miner.running"));
+				programError.setTooltip(null);
 				programError.setColor(PC_GresWidget.textColorDisabled, 0x000000);
 			}else{
 				stopProgram.enable(false);
 				programError.setText(PC_LangRegistry.tr("pc.gui.miner.noError"));
+				programError.setTooltip(null);
 				programError.setColor(PC_GresWidget.textColorDisabled, 0x00aa00);
 			}
 			try{
 				miner.br.compileProgram(program.getText());
 				launchProgram.enable(true);
 			}catch(Exception e){
-				String msg = e.getMessage();
-				if(msg.length()>40){
-					msg = msg.substring(0, 38)+"...";
-				}
-				programError.setText(msg);
-				programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
-				launchProgram.enable(false);
+				showError(e.getMessage());
 			}
 			checkBridge.enable(miner.st.level >= PCmo_EntityMiner.LBRIDGE);
 			checkLava.enable(miner.st.level >= PCmo_EntityMiner.LLAVA);
@@ -299,6 +292,18 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		}
 	}
 
+	private void showError(String error){
+		String split = null;
+		if(error.length()>50){
+			split = "..." + error.substring(48);
+			error = error.substring(0, 48)+"...";
+		}
+		programError.setText(error);
+		programError.setTooltip(split);
+		programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
+		launchProgram.enable(false);
+	}
+	
 	@Override
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2,
 			float par3) {

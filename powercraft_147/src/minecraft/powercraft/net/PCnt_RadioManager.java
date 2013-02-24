@@ -145,7 +145,7 @@ public class PCnt_RadioManager implements PC_IDataHandler, PC_IMSG {
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_MSGRegistry.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS:
-			List<PC_Struct3<String, String, Object>> l = (List<PC_Struct3<String, String, Object>>)obj[0];
+			List<PC_Struct3<String, String, Object>> l = new ArrayList<PC_Struct3<String, String, Object>>();
 			FunctionProvider fp = new FunctionProvider();
 			l.add(new PC_Struct3<String, String, Object>("tx", "tx", fp));
 			l.add(new PC_Struct3<String, String, Object>("rx", "rx", fp));
