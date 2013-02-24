@@ -25,6 +25,7 @@ import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.entity.PC_FakePlayer;
 import powercraft.management.registry.PC_GresRegistry;
+import powercraft.management.registry.PC_ItemRegistry;
 import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
@@ -90,7 +91,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             {
                 Block bhold = Block.blocksList[ihold.getItem().itemID];
             }
-            else if (ihold.getItem().itemID == ModuleInfo.getPCObjectIDByName("PCco_ItemActivator"))
+            else if (ihold.getItem().itemID == PC_ItemRegistry.getPCItemIDByName("PCco_ItemActivator"))
             {
                 int l = MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 

@@ -26,6 +26,7 @@ import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.management.registry.PC_ItemRegistry;
 import powercraft.management.PC_VecI;
 
 public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements PC_IGresClient {
@@ -238,7 +239,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 	
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		final int craftingTool = ModuleInfo.getPCObjectIDByName("PCco_ItemCraftingTool");
+		final int craftingTool = PC_ItemRegistry.getPCItemIDByName("PCco_ItemCraftingTool");
 		if(widget==search){
 			searchItems();
 			return;

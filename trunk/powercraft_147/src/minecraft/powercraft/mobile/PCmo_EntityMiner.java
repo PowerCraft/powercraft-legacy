@@ -44,6 +44,7 @@ import powercraft.management.entity.PC_FakePlayer;
 import powercraft.management.inventory.PC_IInventoryWrapper;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.inventory.PC_IStateReportingInventory;
+import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_ItemRegistry;
 import powercraft.management.registry.PC_KeyRegistry;
@@ -588,7 +589,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					break;
 				}
 				if (stack.itemID == Item.redstone.itemID) {
-					int redstonStorage = ModuleInfo.getPCObjectIDByName("PCde_BlockRedstoneStorage");
+					int redstonStorage = PC_BlockRegistry.getPCBlockIDByName("PCde_BlockRedstoneStorage");
 					if(redstonStorage!=0){
 						out = new ItemStack(redstonStorage, 1, 0);
 						neededForOne = 9;
@@ -795,7 +796,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 								if (stack != null) {
 									boolean yes = false;
 									
-									int powerDust = ModuleInfo.getPCObjectIDByName("PCco_ItemPowerDust");
+									int powerDust = PC_ItemRegistry.getPCItemIDByName("PCco_ItemPowerDust");
 									
 									if (agr == null) {
 
@@ -813,7 +814,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 										}
 									}
 									
-									yes &= stack.itemID != ModuleInfo.getPCObjectIDByName("PCws_ItemWeaselDisk");
+									yes &= stack.itemID != PC_ItemRegistry.getPCItemIDByName("PCws_ItemWeaselDisk");
 
 									if (yes) {
 										if (destroyInstead) {
@@ -1074,7 +1075,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		@Override
 		public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
-			return stack.itemID == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal") && stack.getItemDamage() == getCrystalTypeForSlot(slot);
+			return stack.itemID == PC_BlockRegistry.getPCBlockIDByName("PCco_BlockPowerCrystal") && stack.getItemDamage() == getCrystalTypeForSlot(slot);
 		}
 
 		private final int[] xtals = { 1, 0, 7, 2, 6, 4, 3, 5 };
@@ -1978,12 +1979,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		switch (st.level) {
 			case 1: // all but rocks and iron
 				return Block.blocksList[id].blockMaterial != Material.rock && Block.blocksList[id].blockMaterial != Material.iron
-						&& id != ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal");
+						&& id != PC_BlockRegistry.getPCBlockIDByName("PCco_BlockPowerCrystal");
 			case 2: // everything but precious ores (cobble, coal, iron)
 				return id != 49 && id != 14 && id != 21 && id != 22 && id != 41 && id != 56 && id != 57 && id != 73 && id != 74
-						&& id != ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal");
+						&& id != PC_BlockRegistry.getPCBlockIDByName("PCco_BlockPowerCrystal");
 			case 3: // all but diamonds + obsidian + power crystals
-				return id != 49 && id != 56 && id != 57 && id != ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal");
+				return id != 49 && id != 56 && id != 57 && id != PC_BlockRegistry.getPCBlockIDByName("PCco_BlockPowerCrystal");
 			case 4: // all but obsidian
 				return id != 49;
 			case 5:
@@ -2029,7 +2030,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		if (id == 7) {
 			return 2000;
 		}
-		if (id == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal")) {
+		if (id == PC_BlockRegistry.getPCBlockIDByName("PCco_BlockPowerCrystal")) {
 			return 100;
 		}
 
@@ -3227,7 +3228,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					
 					int id = itemStack.itemID;
 	
-					boolean xtal = id == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal");
+					boolean xtal = id == PC_BlockRegistry.getPCBlockIDByName("PCco_BlockPowerCrystal");
 	
 					if (shouldDestroyStack(itemStack)) {
 						entity.setDead();
@@ -3657,8 +3658,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 						id == Item.netherStalkSeeds.itemID || 
 						id == Item.diamond.itemID || 
 						id == Item.lightStoneDust.itemID || 
-						id == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal") ||
-						id == ModuleInfo.getPCObjectIDByName("PCco_ItemPowerDust") ||
+						id == PC_BlockRegistry.getPCBlockIDByName("PCco_BlockPowerCrystal") ||
+						id == PC_ItemRegistry.getPCItemIDByName("PCco_ItemPowerDust") ||
 						(id == Item.dyePowder.itemID && stack.getItemDamage() == 4) || 
 						(id == Item.dyePowder.itemID && stack.getItemDamage() == 3) || 
 						id == Block.bedrock.blockID || 

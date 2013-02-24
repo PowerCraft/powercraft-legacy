@@ -307,7 +307,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	public static WeaselFunctionManager getGlobalFunctionManager() {
 		if(globalFunctions==null){
 			globalFunctions = new WeaselFunctionManager();
-			List<Object> l = PC_MSGRegistry.callAllMSG(PC_MSGRegistry.MSG_LOAD_WORLD);
+			List<Object> l = PC_MSGRegistry.callAllMSG(PC_MSGRegistry.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS);
 			for(Object o:l){
 				if(o instanceof List){
 					List<PC_Struct3<String, String, Object>> list = (List<PC_Struct3<String, String, Object>>)o;

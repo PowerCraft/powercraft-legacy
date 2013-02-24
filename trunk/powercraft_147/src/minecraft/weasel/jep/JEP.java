@@ -17,6 +17,8 @@ import java.util.Map.Entry;
 import java.util.Vector;
 
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.registry.PC_BlockRegistry;
+import powercraft.management.registry.PC_ItemRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -583,10 +585,10 @@ public class JEP {
 		symTab.addConstant("APPLE", Item.appleRed.itemID);
 		symTab.addConstant("REDSTONE", Item.redstone.itemID);
 		symTab.addConstant("COAL", Item.coal.itemID);
-		int id = ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal");
+		int id = PC_BlockRegistry.getPCBlockIDByName("PCco_BlockPowerCrystal");
 		if(id!=0)
 			symTab.addConstant("CRYSTAL", id);
-		id = ModuleInfo.getPCObjectIDByName("PCco_ItemPowerDust");
+		id = PC_ItemRegistry.getPCItemIDByName("PCco_ItemPowerDust");
 		if(id!=0)
 			symTab.addConstant("POWERDUST", id);
 		symTab.addConstant("WATER", Block.waterMoving.blockID);
