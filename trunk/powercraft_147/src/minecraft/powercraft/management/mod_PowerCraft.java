@@ -78,11 +78,12 @@ public class mod_PowerCraft{
 		proxy.hack();
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Load Modules");
-		PC_ModuleLoader.load(ModuleLoader.createFile(GameInfo.getPowerCraftFile(), "Modules"));
-		PC_ModuleLoader.load(new File(GameInfo.getMCDirectory(), "mods"));
+		PC_ModuleLoader.addModuleFile(ModuleLoader.createFile(GameInfo.getPowerCraftFile(), "Modules"), true);
+		PC_ModuleLoader.addModuleFile(new File(GameInfo.getMCDirectory(), "mods"), false);
 		try {
-			PC_ModuleLoader.load(new File(mod_PowerCraft.class.getResource("../../").toURI()));
+			PC_ModuleLoader.addModuleFile(new File(mod_PowerCraft.class.getResource("../../").toURI()), false);
 		} catch (Throwable e) {}
+		PC_ModuleLoader.loadModules();
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Download Update Info");
 		PC_UpdateManager.downloadUpdateInfo(updateInfoPath);
