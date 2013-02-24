@@ -65,7 +65,7 @@ public class PCtr_App implements PC_IModule
 	}
 
 	@Override
-	public List<Class<? extends Entity>> initEntities(List<Class<? extends Entity>> entities) {
+	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities) {
 		return null;
 	}
 

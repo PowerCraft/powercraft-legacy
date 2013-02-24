@@ -87,9 +87,8 @@ public class PCmo_App implements PC_IModule {
 	}
 
 	@Override
-	public List<Class<? extends Entity>> initEntities(
-			List<Class<? extends Entity>> entities) {
-		entities.add(PCmo_EntityMiner.class);
+	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities){
+		entities.add(new PC_Struct2<Class<? extends Entity>, Integer>(PCmo_EntityMiner.class, 200));
 		return entities;
 	}
 	

@@ -1672,6 +1672,11 @@ public class PC_Utils implements PC_IPacketHandler {
 					saveToNBT(nbtTag2, "value[" + i + "]", Array.get(value, i));
 				}
 				nbtTag.setCompoundTag(key, nbtTag2);
+			} else if (value instanceof PC_INBT) {
+				NBTTagCompound nbtTag2 = new NBTTagCompound();
+				nbtTag2.setString("type", value.getClass().getName());
+				SaveHandler.saveToNBT(nbtTag2, "value", (PC_INBT) value);
+				nbtTag.setCompoundTag(key, nbtTag2);
 			} else if (value instanceof List) {
 				List l = (List) value;
 				NBTTagCompound nbtTag2 = new NBTTagCompound();
@@ -1701,11 +1706,6 @@ public class PC_Utils implements PC_IPacketHandler {
 				nbtTag.setCompoundTag(key, nbtTag2);
 			} else if (value instanceof String) {
 				nbtTag.setString(key, (String) value);
-			} else if (value instanceof PC_INBT) {
-				NBTTagCompound nbtTag2 = new NBTTagCompound();
-				nbtTag2.setString("type", value.getClass().getName());
-				SaveHandler.saveToNBT(nbtTag2, "value", (PC_INBT) value);
-				nbtTag.setCompoundTag(key, nbtTag2);
 			} else if (value instanceof ItemStack) {
 				NBTTagCompound nbtTag2 = new NBTTagCompound();
 				nbtTag2.setString("type", ItemStack.class.getName());
@@ -1742,15 +1742,15 @@ public class PC_Utils implements PC_IPacketHandler {
 					} else {
 						try {
 							Object o = c.newInstance();
-							if (o instanceof List) {
+							if (o instanceof PC_INBT) {
+								loadFromNBT(nbtTag2, "value", (PC_INBT) o);
+							}else if (o instanceof List) {
 								int size = nbtTag2.getInteger("count");
 								for (int i = 0; i < size; i++) {
 									((List) o).add(loadFromNBT(nbtTag2,
 											"value[" + i + "]"));
 								}
-							} else if (o instanceof PC_INBT) {
-								loadFromNBT(nbtTag2, "value", (PC_INBT) o);
-							}
+							} 
 							return o;
 						} catch (Exception e) {
 							e.printStackTrace();
