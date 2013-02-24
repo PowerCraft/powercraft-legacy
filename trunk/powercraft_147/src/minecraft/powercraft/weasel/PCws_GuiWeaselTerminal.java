@@ -25,7 +25,7 @@ public class PCws_GuiWeaselTerminal extends PCws_GuiWeasel {
 
 	@Override
 	public void onReturnPressed(PC_IGresGui gui) {
-		gui.close();
+		actionPerformed(send, gui);
 	}
 
 	private void makeTerminalTab(PC_GresTab tab){
