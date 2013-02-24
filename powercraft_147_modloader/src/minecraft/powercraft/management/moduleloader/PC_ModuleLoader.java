@@ -48,7 +48,6 @@ public class PC_ModuleLoader{
 	}
 
 	private static void addFileToClassLoader(File file){
-		System.out.println("addFileToClassLoader:"+addFile+":"+file);
 		if(addFile){
 			if(moduleLoader instanceof URLClassLoader){
 				try {
