@@ -68,6 +68,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 			id=-1;
 		}
 		functionProvider = new MinerProvider();
+		registerFunctions(functionProvider);
 		engine = new WeaselEngine(functionProvider);
 		this.miner = miner;
 		miner.setInfo("text", "");
@@ -76,6 +77,158 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		miner.setInfo("networkName", "");
 	}
 
+	public void registerFunctions(WeaselFunctionManager fp){
+		fp.registerMethod("run", "runOldScript", this);
+		fp.registerMethod("do", "runOldScript", this);
+		
+		fp.registerMethod("forward", "forward", this);
+		fp.registerMethod("go", "forward", this);
+		fp.registerMethod("fw", "forward", this);
+		
+		fp.registerMethod("backward", "backward", this);
+		fp.registerMethod("back", "backward", this);
+		fp.registerMethod("bw", "backward", this);
+		
+		fp.registerMethod("up", this);
+		
+		fp.registerMethod("down", this);
+		
+		fp.registerMethod("left", this);
+		
+		fp.registerMethod("right", this);
+		
+		fp.registerMethod("turn", this);
+
+		fp.registerMethod("xplus", "xplus", this);
+		fp.registerMethod("east", "xminus", this);
+
+		fp.registerMethod("xminus", "xminus", this);
+		fp.registerMethod("west", "xminus", this);
+
+		fp.registerMethod("zplus", "zplus", this);
+		fp.registerMethod("south", "zplus", this);
+
+		fp.registerMethod("zminus", "zminus", this);
+		fp.registerMethod("north", "zminus", this);
+		
+		fp.registerMethod("deposit", "deposit", this);
+		fp.registerMethod("depo", "deposit", this);
+		fp.registerMethod("store", "deposit", this);
+		
+		fp.registerMethod("countStacks", "countStacks", this);
+		fp.registerMethod("stacks", "countStacks", this);
+
+		fp.registerMethod("countItems", "countItems", this);
+		fp.registerMethod("items", "countItems", this);
+		
+		fp.registerMethod("countEmpty", "countEmpty", this);
+
+		fp.registerMethod("isFull", "isFull", this);
+		fp.registerMethod("full", "isFull", this);
+		
+		fp.registerMethod("isEmpty", "isEmpty", this);
+		fp.registerMethod("empty", "isEmpty", this);
+		
+		fp.registerMethod("countFuel", "countFuel", this);
+		fp.registerMethod("fuel", "countFuel", this);
+
+		fp.registerMethod("destroyMiner", "destroyMiner", this);
+
+		fp.registerMethod("sleep", "sleep", this);
+		
+		fp.registerMethod("bell", "bell", this);
+
+		fp.registerMethod("isDay", "isDay", this);
+
+		fp.registerMethod("isNight", "isNight", this);
+
+		fp.registerMethod("isRaining", "isRaining", this);
+		
+		fp.registerMethod("term", "term_Input", this);
+		
+		fp.registerMethod("idMatch", "idMatch", this);
+		fp.registerMethod("ideq", "idMatch", this);
+
+		fp.registerMethod("getBlock", "getBlockAt", this);
+		fp.registerMethod("blockAt", "getBlockAt", this);
+		fp.registerMethod("getId", "getBlockAt", this);
+		fp.registerMethod("idAt", "getBlockAt", this);
+		
+		fp.registerMethod("setBlock", "setBlockAt", this);
+		fp.registerMethod("place", "setBlockAt", this);
+		
+		fp.registerMethod("canHarvest", "canHarvest", this);
+		
+		fp.registerMethod("sortInventory", "sortInventory", this);
+		fp.registerMethod("sortInv", "sortInventory", this);
+		fp.registerMethod("cleanup", "sortInventory", this);
+
+		fp.registerMethod("destroyItems", "destroyItems", this);
+		fp.registerMethod("burnItems", "destroyItems", this);
+		fp.registerMethod("destroy", "destroyItems", this);
+		fp.registerMethod("burn", "destroyItems", this);
+
+		fp.registerMethod("destroyKeep", "destroyKeep", this);
+		fp.registerMethod("burnKeep", "destroyKeep", this);
+
+		fp.registerMethod("depoKeep", "depoKeep", this);
+		fp.registerMethod("storeKeep", "depoKeep", this);
+		
+		fp.registerMethod("hasOpt", "hasOption", this);
+		fp.registerMethod("hasCap", "hasOption", this);
+		fp.registerMethod("can", "hasOption", this);
+
+		fp.registerMethod("cap", "setOption", this);
+		fp.registerMethod("opt", "setOption", this);
+		
+		fp.registerMethod("capOn", "activateOption", this);
+		fp.registerMethod("optOn", "activateOption", this);
+		
+		fp.registerMethod("capOff", "deactivateOption", this);
+		fp.registerMethod("optOff", "deactivateOption", this);
+		
+		fp.registerMethod("clearCap", "deactivateAllOptions", this);
+		fp.registerMethod("clearOpt", "deactivateAllOptions", this);
+		fp.registerMethod("resetCap", "deactivateAllOptions", this);
+		fp.registerMethod("resetOpt", "deactivateAllOptions", this);
+		
+		
+		
+		
+		WeaselFunctionManager term = new WeaselFunctionManager();
+		term.registerMethod("clear", "term_clear", this);
+		term.registerMethod("cls", "term_clear", this);
+		term.registerMethod("print", "term_print", this);
+		term.registerMethod("out", "term_print", this);
+		
+		term.registerMethod("hasInput", "term_hasInput", this);
+
+		term.registerMethod("getInput", "term_Input", this);
+		term.registerMethod("in", "term_Input", this);
+		
+		fp.registerFunctionProvider("term", term);
+
+		
+		fp.registerVariable("pos.x", "posX", this);
+		fp.registerVariable("pos.y", "posY", this);
+		fp.registerVariable("pos.z", "posZ", this);
+
+		fp.registerVariable("dir", "dirAxis", this);
+		fp.registerVariable("dir.axis", "dirAxis", this);
+		fp.registerVariable("axis", "dirAxis", this);
+
+		fp.registerVariable("dir.compass", "dirCompass", this);
+		fp.registerVariable("compass", "dirCompass", this);
+		
+		fp.registerVariable("dir.angle", "dirAngle", this);
+		fp.registerVariable("angle", "dirAngle", this);
+
+		fp.registerVariable("level", "minerLevel", this);
+
+		fp.registerVariable("term.text", "term_text", this);
+		fp.registerVariable("term.txt", "term_text", this);
+	}
+	
 	@Override
 	public String getScriptName(){
 		return "Weasel";
@@ -1033,156 +1186,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 	@Override
 	public WeaselFunctionManager makePluginProvider() {
 		WeaselFunctionManager fp = new WeaselFunctionManager();
-
-		fp.registerMethod("run", "runOldScript", this);
-		fp.registerMethod("do", "runOldScript", this);
-		
-		fp.registerMethod("forward", "forward", this);
-		fp.registerMethod("go", "forward", this);
-		fp.registerMethod("fw", "forward", this);
-		
-		fp.registerMethod("backward", "backward", this);
-		fp.registerMethod("back", "backward", this);
-		fp.registerMethod("bw", "backward", this);
-		
-		fp.registerMethod("up", this);
-		
-		fp.registerMethod("down", this);
-		
-		fp.registerMethod("left", this);
-		
-		fp.registerMethod("right", this);
-		
-		fp.registerMethod("turn", this);
-
-		fp.registerMethod("xplus", "xplus", this);
-		fp.registerMethod("east", "xminus", this);
-
-		fp.registerMethod("xminus", "xminus", this);
-		fp.registerMethod("west", "xminus", this);
-
-		fp.registerMethod("zplus", "zplus", this);
-		fp.registerMethod("south", "zplus", this);
-
-		fp.registerMethod("zminus", "zminus", this);
-		fp.registerMethod("north", "zminus", this);
-		
-		fp.registerMethod("deposit", "deposit", this);
-		fp.registerMethod("depo", "deposit", this);
-		fp.registerMethod("store", "deposit", this);
-		
-		fp.registerMethod("countStacks", "countStacks", this);
-		fp.registerMethod("stacks", "countStacks", this);
-
-		fp.registerMethod("countItems", "countItems", this);
-		fp.registerMethod("items", "countItems", this);
-		
-		fp.registerMethod("countEmpty", "countEmpty", this);
-
-		fp.registerMethod("isFull", "isFull", this);
-		fp.registerMethod("full", "isFull", this);
-		
-		fp.registerMethod("isEmpty", "isEmpty", this);
-		fp.registerMethod("empty", "isEmpty", this);
-		
-		fp.registerMethod("countFuel", "countFuel", this);
-		fp.registerMethod("fuel", "countFuel", this);
-
-		fp.registerMethod("destroyMiner", "destroyMiner", this);
-
-		fp.registerMethod("sleep", "sleep", this);
-		
-		fp.registerMethod("bell", "bell", this);
-
-		fp.registerMethod("isDay", "isDay", this);
-
-		fp.registerMethod("isNight", "isNight", this);
-
-		fp.registerMethod("isRaining", "isRaining", this);
-		
-		fp.registerMethod("term", "term_Input", this);
-		
-		fp.registerMethod("idMatch", "idMatch", this);
-		fp.registerMethod("ideq", "idMatch", this);
-
-		fp.registerMethod("getBlock", "getBlockAt", this);
-		fp.registerMethod("blockAt", "getBlockAt", this);
-		fp.registerMethod("getId", "getBlockAt", this);
-		fp.registerMethod("idAt", "getBlockAt", this);
-		
-		fp.registerMethod("setBlock", "setBlockAt", this);
-		fp.registerMethod("place", "setBlockAt", this);
-		
-		fp.registerMethod("canHarvest", "canHarvest", this);
-		
-		fp.registerMethod("sortInventory", "sortInventory", this);
-		fp.registerMethod("sortInv", "sortInventory", this);
-		fp.registerMethod("cleanup", "sortInventory", this);
-
-		fp.registerMethod("destroyItems", "destroyItems", this);
-		fp.registerMethod("burnItems", "destroyItems", this);
-		fp.registerMethod("destroy", "destroyItems", this);
-		fp.registerMethod("burn", "destroyItems", this);
-
-		fp.registerMethod("destroyKeep", "destroyKeep", this);
-		fp.registerMethod("burnKeep", "destroyKeep", this);
-
-		fp.registerMethod("depoKeep", "depoKeep", this);
-		fp.registerMethod("storeKeep", "depoKeep", this);
-		
-		fp.registerMethod("hasOpt", "hasOption", this);
-		fp.registerMethod("hasCap", "hasOption", this);
-		fp.registerMethod("can", "hasOption", this);
-
-		fp.registerMethod("cap", "setOption", this);
-		fp.registerMethod("opt", "setOption", this);
-		
-		fp.registerMethod("capOn", "activateOption", this);
-		fp.registerMethod("optOn", "activateOption", this);
-		
-		fp.registerMethod("capOff", "deactivateOption", this);
-		fp.registerMethod("optOff", "deactivateOption", this);
-		
-		fp.registerMethod("clearCap", "deactivateAllOptions", this);
-		fp.registerMethod("clearOpt", "deactivateAllOptions", this);
-		fp.registerMethod("resetCap", "deactivateAllOptions", this);
-		fp.registerMethod("resetOpt", "deactivateAllOptions", this);
-		
-		
-		
-		
-		WeaselFunctionManager term = new WeaselFunctionManager();
-		term.registerMethod("clear", "term_clear", this);
-		term.registerMethod("cls", "term_clear", this);
-		term.registerMethod("print", "term_print", this);
-		term.registerMethod("out", "term_print", this);
-		
-		term.registerMethod("hasInput", "term_hasInput", this);
-
-		term.registerMethod("getInput", "term_Input", this);
-		term.registerMethod("in", "term_Input", this);
-		
-		fp.registerFunctionProvider("term", term);
-
-		
-		fp.registerVariable("pos.x", "posX", this);
-		fp.registerVariable("pos.y", "posY", this);
-		fp.registerVariable("pos.z", "posZ", this);
-
-		fp.registerVariable("dir", "dirAxis", this);
-		fp.registerVariable("dir.axis", "dirAxis", this);
-		fp.registerVariable("axis", "dirAxis", this);
-
-		fp.registerVariable("dir.compass", "dirCompass", this);
-		fp.registerVariable("compass", "dirCompass", this);
-		
-		fp.registerVariable("dir.angle", "dirAngle", this);
-		fp.registerVariable("angle", "dirAngle", this);
-
-		fp.registerVariable("level", "minerLevel", this);
-
-		fp.registerVariable("term.text", "term_text", this);
-		fp.registerVariable("term.txt", "term_text", this);
+		registerFunctions(fp);
 		return fp;
 	}
 
