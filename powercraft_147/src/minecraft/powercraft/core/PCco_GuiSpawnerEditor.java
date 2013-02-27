@@ -13,7 +13,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresRadioButton;
 import powercraft.management.gres.PC_GresRadioButton.PC_GresRadioGroup;
@@ -25,6 +24,7 @@ import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 

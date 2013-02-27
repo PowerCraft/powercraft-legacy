@@ -7,12 +7,12 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.management.PC_ItemBlock;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.block.PC_ItemBlock;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCli_ItemBlockLightningConductor extends PC_ItemBlock
 {

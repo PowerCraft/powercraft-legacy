@@ -1,7 +1,6 @@
 package powercraft.net;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresLabel;
@@ -15,6 +14,7 @@ import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCnt_GuiRadio implements PC_IGresClient {
 

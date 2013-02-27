@@ -9,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresBaseWithInventory;
@@ -24,6 +23,7 @@ import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.inventory.PC_Slot;
 import powercraft.management.inventory.PC_SlotNoPickup;
+import powercraft.management.tileentity.PC_TileEntity;
 import powercraft.management.PC_VecI;
 
 public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_TileEntity> implements PC_IGresClient {

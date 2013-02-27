@@ -1,7 +1,6 @@
 package powercraft.logic;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Converter;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresLabel;
@@ -14,6 +13,7 @@ import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PClo_GuiDelayer implements PC_IGresClient {
 

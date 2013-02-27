@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemStack;
-import powercraft.management.PC_ItemArmor;
+import powercraft.management.item.PC_ItemArmor;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.registry.PC_ModuleRegistry;

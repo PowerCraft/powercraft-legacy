@@ -13,6 +13,8 @@ import powercraft.management.hacks.PC_ClientHacks;
 import powercraft.management.hacks.PC_MainMenuHacks;
 import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.management.renderer.PC_ClientRenderer;
+import powercraft.management.tick.PC_ClientTickHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;

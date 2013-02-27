@@ -21,8 +21,6 @@ import powercraft.management.PC_Logger;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct3;
-import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_TileEntitySpecialRenderer;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 import powercraft.management.mod_PowerCraft;
@@ -32,6 +30,8 @@ import powercraft.management.gres.PC_GresGui;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.renderer.PC_TileEntitySpecialRenderer;
+import powercraft.management.tileentity.PC_TileEntity;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 

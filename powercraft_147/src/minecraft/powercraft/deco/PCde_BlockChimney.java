@@ -8,14 +8,14 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_Block;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.block.PC_Block;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.renderer.PC_Renderer;
 
 @PC_BlockInfo(itemBlock=PCde_ItemBlockChimney.class, tileEntity=PCde_TileEntityChimney.class)
 public class PCde_BlockChimney extends PC_Block {

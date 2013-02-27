@@ -19,25 +19,23 @@ import org.lwjgl.opengl.GL11;
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_IMSG;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_FieldObject;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_TextureRegistry;
+import powercraft.management.renderer.PC_Renderer;
 
 public class PChg_AppClient extends PChg_App implements PC_IClientModule {
+	
+	@PC_FieldObject(clazz=PChg_HologramGlassesOverlay.class)
+	public static PChg_HologramGlassesOverlay hologramGlassesOverlay;
 	
 	@Override
 	public void init() {
 		PC_ClientUtils.mc().renderEngine.registerTextureFX(new PChg_HologramTextureFX());
 	}
 	
-	@Override
-	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
-		msgObjects.add(new PChg_HologramGlassesOverlay());
-		return msgObjects;
-	}
-
 	@Override
 	public List<LangEntry> initLanguage(List<LangEntry> lang) {
 		return null;

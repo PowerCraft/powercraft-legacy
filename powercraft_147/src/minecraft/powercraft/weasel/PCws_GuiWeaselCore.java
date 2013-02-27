@@ -3,7 +3,6 @@ package powercraft.weasel;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresImage;
 import powercraft.management.gres.PC_GresLabel;
@@ -19,6 +18,7 @@ import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_TextureRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 import weasel.WeaselEngine;
 
 public class PCws_GuiWeaselCore extends PCws_GuiWeasel {

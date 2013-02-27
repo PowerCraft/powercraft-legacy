@@ -11,11 +11,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_GlobalVariables;
-import powercraft.management.PC_ItemStack;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.gres.PC_GresBaseWithInventory;
 import powercraft.management.inventory.PC_Slot;
+import powercraft.management.item.PC_ItemStack;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory<PC_TileEntity>
 {

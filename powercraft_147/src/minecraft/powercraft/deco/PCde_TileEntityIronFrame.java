@@ -1,14 +1,14 @@
 package powercraft.deco;
 
 import net.minecraft.block.Block;
-import powercraft.management.PC_ITileEntityRenderer;
-import powercraft.management.PC_Renderer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.registry.PC_TextureRegistry;
+import powercraft.management.renderer.PC_Renderer;
+import powercraft.management.tileentity.PC_ITileEntityRenderer;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCde_TileEntityIronFrame extends PC_TileEntity implements PC_ITileEntityRenderer {
 

@@ -12,29 +12,26 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_BeamTracer.BeamSettings;
 import powercraft.management.PC_BeamTracer.result;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Property;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.block.PC_Block;
+import powercraft.management.block.PC_BlockOre;
 import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.registry.PC_SoundRegistry;
+import powercraft.management.renderer.PC_Renderer;
 
 @PC_BlockInfo(itemBlock=PCco_ItemBlockPowerCrystal.class)
-public class PCco_BlockPowerCrystal extends PC_Block
+public class PCco_BlockPowerCrystal extends PC_BlockOre
 {
     public static boolean makeSound;
-    public static int genCrystalsInChunk;
-    public static int genCrystalsDepositMaxCount;
-    public static int genCrystalsMaxY;
-    public static int genCrystalsMinY;
 
     public PCco_BlockPowerCrystal(int id)
     {
-        super(id, 4, Material.glass);
+        super(id, "Power Crystal", 3, 4, 5, 15, 4, Material.glass);
         setHardness(0.5F);
         setResistance(0.5F);
         setStepSound(Block.soundGlassFootstep);
@@ -208,6 +205,12 @@ public class PCco_BlockPowerCrystal extends PC_Block
         PC_Renderer.resetTerrain(true);
         PC_Renderer.tessellatorStartDrawingQuads();
     }
+    
+	@Override
+	public int getGenOresSpawnMetadata(Random random, World world, int chunkX,
+			int chunkZ) {
+		return random.nextInt(8);
+	}
 
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
@@ -215,10 +218,6 @@ public class PCco_BlockPowerCrystal extends PC_Block
 		case PC_MSGRegistry.MSG_LOAD_FROM_CONFIG:
 			setLightValue(((PC_Property)obj[0]).getInt("brightness", 16) * 0.0625F);
 			makeSound = ((PC_Property)obj[0]).getBoolean("makeSound", true);
-			genCrystalsInChunk = ((PC_Property)obj[0]).getInt("spawn.in_chunk", 3, "Number of deposits in each 16x16 chunk.");
-    		genCrystalsDepositMaxCount = ((PC_Property)obj[0]).getInt("spawn.deposit_max_size", 4, "Highest crystal count in one deposit");
-    		genCrystalsMaxY = ((PC_Property)obj[0]).getInt("spawn.min_y", 5, "Min Y coordinate of crystal deposits.");
-    		genCrystalsMinY = ((PC_Property)obj[0]).getInt("spawn.max_y", 15, "Max Y coordinate of crystal deposits.");
 			break;
 		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
@@ -226,16 +225,6 @@ public class PCco_BlockPowerCrystal extends PC_Block
 		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
 			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
 			break;
-		case PC_MSGRegistry.MSG_SPAWNS_IN_CHUNK:
-			return genCrystalsInChunk;
-		case PC_MSGRegistry.MSG_BLOCKS_ON_SPAWN_POINT:
-			return ((Random)obj[0]).nextInt(PC_MathHelper.clamp_int(genCrystalsDepositMaxCount - 1, 1, 10)) + 2;
-		case PC_MSGRegistry.MSG_SPAWN_POINT:
-			return new PC_VecI(((Random)obj[0]).nextInt(16),
-					((Random)obj[0]).nextInt(PC_MathHelper.clamp_int(genCrystalsMaxY - genCrystalsMinY, 1, 255)) + genCrystalsMinY,
-					((Random)obj[0]).nextInt(16));
-		case PC_MSGRegistry.MSG_SPAWN_POINT_METADATA:
-			return ((Random)obj[0]).nextInt(8);
 		case PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER:
 			BeamSettings bs = (BeamSettings)obj[0];
 			pos = bs.getPos();

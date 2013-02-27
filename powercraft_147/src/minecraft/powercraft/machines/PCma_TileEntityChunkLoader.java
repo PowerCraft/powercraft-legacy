@@ -7,9 +7,9 @@ import net.minecraft.entity.Entity;
 import powercraft.management.PC_BeamTracer;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_IBeamHandler;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.tileentity.PC_TileEntity;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 

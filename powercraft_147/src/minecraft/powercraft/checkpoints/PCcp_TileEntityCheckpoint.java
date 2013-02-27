@@ -5,8 +5,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.annotation.PC_ClientServerSync;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCcp_TileEntityCheckpoint extends PC_TileEntity implements IInventory {
 

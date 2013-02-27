@@ -9,19 +9,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import powercraft.management.PC_ItemBlock;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.block.PC_ItemBlock;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {
 
 	public PChg_ItemBlockHologramBlock(int id) {
 		super(id);
 		setContainerItem(PChg_App.hologramBlockEmpty.getItemBlock());
+	}
+	
+	@Override
+	public boolean showInCraftingTool() {
+		return false;
 	}
 	
 	@Override
@@ -111,8 +116,6 @@ public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {
 			names.add(new LangEntry(getItemName(), "Hologramblock"));
 			names.add(new LangEntry(getItemName()+".desc", "Contains: %s"));
 			return names;
-		case PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
-			return true;
 		}
 		return null;
 	}

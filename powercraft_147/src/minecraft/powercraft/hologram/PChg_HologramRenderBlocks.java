@@ -2,11 +2,11 @@ package powercraft.hologram;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.IBlockAccess;
-import powercraft.management.PC_Block;
-import powercraft.management.PC_RenderBlocks;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.block.PC_Block;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.renderer.PC_RenderBlocks;
+import powercraft.management.renderer.PC_Renderer;
 
 public class PChg_HologramRenderBlocks extends PC_RenderBlocks {
 

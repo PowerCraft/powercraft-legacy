@@ -21,11 +21,12 @@ import org.lwjgl.util.glu.GLU;
 
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_IMSG;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_VecI;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.renderer.PC_Renderer;
+import powercraft.management.tick.PC_ITickHandler;
 
-public class PChg_HologramGlassesOverlay implements PC_IMSG {
+public class PChg_HologramGlassesOverlay implements PC_IMSG, PC_ITickHandler {
 
 	private static int glList;
 	private static int tick=0;
@@ -36,22 +37,8 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 	public Object msg(int msg, Object... obj) {
 		if(msg==PC_MSGRegistry.MSG_RENDER_OVERLAY){
 			onRenderOverlay((GuiIngame)obj[0]);
-		}else if(msg==PC_MSGRegistry.MSG_TICK_EVENT){
-			onTick();
 		}
 		return null;
-	}
-
-	private void onTick() {
-		if(tick%20==0){
-			update=true;
-		}else{
-			if(PChg_TileEntityHologramField.mapToUpdate.size()>0){
-				fieldToUpdate = PChg_TileEntityHologramField.mapToUpdate.get(0);
-				PChg_TileEntityHologramField.mapToUpdate.remove(0);
-			}
-		}
-		tick++;
 	}
 
 	private static void onRenderOverlay(GuiIngame gi) {
@@ -158,6 +145,19 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 		GL11.glPopMatrix();
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glPopAttrib();
+	}
+
+	@Override
+	public void tickEvent() {
+		if(tick%20==0){
+			update=true;
+		}else{
+			if(PChg_TileEntityHologramField.mapToUpdate.size()>0){
+				fieldToUpdate = PChg_TileEntityHologramField.mapToUpdate.get(0);
+				PChg_TileEntityHologramField.mapToUpdate.remove(0);
+			}
+		}
+		tick++;
 	}
 	
 }

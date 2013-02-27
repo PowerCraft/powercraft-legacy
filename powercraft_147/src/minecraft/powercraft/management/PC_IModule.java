@@ -3,8 +3,8 @@ package powercraft.management;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
 import powercraft.management.recipes.PC_IRecipe;
+import powercraft.management.tick.PC_ITickHandler;
 
 public interface PC_IModule {
 
@@ -25,8 +25,6 @@ public interface PC_IModule {
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes);
 	
 	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(List<PC_Struct2<String, PC_IDataHandler>> dataHandlers);
-	
-	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects);
 	
 	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers);
 	

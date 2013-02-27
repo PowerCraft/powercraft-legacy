@@ -10,7 +10,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
@@ -27,6 +26,7 @@ import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.registry.PC_ItemRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 import powercraft.management.PC_VecI;
 
 public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements PC_IGresClient {

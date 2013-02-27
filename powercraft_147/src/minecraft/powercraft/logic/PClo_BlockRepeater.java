@@ -14,10 +14,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Property;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
@@ -26,8 +24,10 @@ import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.annotation.PC_Shining.OFF;
 import powercraft.management.annotation.PC_Shining.ON;
+import powercraft.management.block.PC_Block;
 import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.renderer.PC_Renderer;
 
 @PC_Shining
 @PC_BlockInfo(itemBlock=PClo_ItemBlockRepeater.class, tileEntity=PClo_TileEntityRepeater.class)

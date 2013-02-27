@@ -12,7 +12,6 @@ import org.lwjgl.input.Keyboard;
 
 import powercraft.management.PC_Color;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_VecI;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresButtonImage;
@@ -39,6 +38,7 @@ import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_TextureRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import weasel.WeaselEngine;
 import weasel.obj.WeaselDouble;

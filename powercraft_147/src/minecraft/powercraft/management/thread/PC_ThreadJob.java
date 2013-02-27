@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.thread;
 
 
 public class PC_ThreadJob {

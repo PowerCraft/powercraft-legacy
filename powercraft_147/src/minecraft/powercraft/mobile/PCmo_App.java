@@ -137,11 +137,6 @@ public class PCmo_App implements PC_IModule {
 	}
 
 	@Override
-	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
-		return null;
-	}
-
-	@Override
 	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
 			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
 		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("MinerManager", minerManager));

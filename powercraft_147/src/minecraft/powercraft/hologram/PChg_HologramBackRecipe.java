@@ -6,9 +6,9 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.management.PC_Item;
-import powercraft.management.PC_ItemBlock;
-import powercraft.management.PC_ItemStack;
+import powercraft.management.block.PC_ItemBlock;
+import powercraft.management.item.PC_Item;
+import powercraft.management.item.PC_ItemStack;
 import powercraft.management.recipes.PC_ShapelessRecipes;
 import powercraft.management.reflect.PC_ReflectHelper;
 

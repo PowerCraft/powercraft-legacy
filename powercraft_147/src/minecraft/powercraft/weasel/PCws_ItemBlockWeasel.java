@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.item.ItemStack;
-import powercraft.management.PC_ItemBlock;
+import powercraft.management.block.PC_ItemBlock;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
 

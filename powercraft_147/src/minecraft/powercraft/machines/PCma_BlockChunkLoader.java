@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_ChunkUpdateForcer;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
@@ -16,6 +15,7 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.block.PC_Block;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
 import powercraft.management.registry.PC_MSGRegistry;
 
@@ -24,6 +24,11 @@ public class PCma_BlockChunkLoader extends PC_Block implements PC_I3DRecipeHandl
 
 	public PCma_BlockChunkLoader(int id) {
 		super(id, 49, Material.glass, false);
+	}
+	
+	@Override
+	public boolean showInCraftingTool() {
+		return false;
 	}
 	
 	@Override
@@ -89,9 +94,7 @@ public class PCma_BlockChunkLoader extends PC_Block implements PC_I3DRecipeHandl
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
-		}case PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
-			return true;
-		}
+		}}
 		return null;
 	}
 

@@ -2,8 +2,8 @@ package powercraft.management.recipes;
 
 import java.util.List;
 
-import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_VecI;
+import powercraft.management.item.PC_ItemStack;
 
 public interface PC_IRecipeInfo extends PC_IRecipe {
 

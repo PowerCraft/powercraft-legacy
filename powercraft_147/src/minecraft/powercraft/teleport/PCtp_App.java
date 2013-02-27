@@ -5,15 +5,15 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.block.PC_Block;
+import powercraft.management.item.PC_ItemStack;
 import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.registry.PC_BlockRegistry;
@@ -79,11 +79,6 @@ public class PCtp_App implements PC_IModule {
 			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
 		dataHandlers.add(new PC_Struct2<String, PC_IDataHandler>("Teleporter", teleporterManager));
 		return dataHandlers;
-	}
-
-	@Override
-	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
-		return null;
 	}
 
 	@Override

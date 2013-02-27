@@ -10,14 +10,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_Block;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.block.PC_Block;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.renderer.PC_Renderer;
 
 @PC_BlockInfo(itemBlock=PCde_ItemBlockPlatform.class, tileEntity=PCde_TileEntityPlatform.class)
 public class PCde_BlockPlatform extends PC_Block {

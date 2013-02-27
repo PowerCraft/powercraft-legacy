@@ -6,7 +6,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.management.PC_Item;
+import powercraft.management.item.PC_Item;
 import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;

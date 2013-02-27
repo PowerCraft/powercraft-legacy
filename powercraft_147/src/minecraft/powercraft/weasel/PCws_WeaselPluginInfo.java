@@ -2,11 +2,11 @@ package powercraft.weasel;
 
 import net.minecraft.block.Block;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.management.renderer.PC_Renderer;
 
 public abstract class PCws_WeaselPluginInfo {
 

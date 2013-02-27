@@ -6,10 +6,10 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresBaseWithInventory;
 import powercraft.management.inventory.PC_Slot;
 import powercraft.management.inventory.PC_SlotNoPickup;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCis_ContainerCompressor extends PC_GresBaseWithInventory<PC_TileEntity> {
 

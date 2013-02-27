@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
@@ -10,6 +10,11 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
+import powercraft.management.PC_ClientUtils;
+import powercraft.management.PC_IMSG;
+import powercraft.management.PC_VecF;
+import powercraft.management.PC_VecI;
+import powercraft.management.block.PC_Block;
 import powercraft.management.inventory.PC_ISpecialInventoryTextures;
 import powercraft.management.registry.PC_MSGRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;

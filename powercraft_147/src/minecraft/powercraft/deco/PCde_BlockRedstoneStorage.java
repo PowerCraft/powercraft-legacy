@@ -9,10 +9,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
-import powercraft.management.PC_Block;
-import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
+import powercraft.management.block.PC_Block;
+import powercraft.management.item.PC_IItemInfo;
 import powercraft.management.registry.PC_MSGRegistry;
 
 public class PCde_BlockRedstoneStorage extends PC_Block implements PC_IItemInfo {

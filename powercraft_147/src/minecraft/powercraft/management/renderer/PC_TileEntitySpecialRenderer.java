@@ -1,5 +1,6 @@
-package powercraft.management;
+package powercraft.management.renderer;
 
+import powercraft.management.tileentity.PC_ITileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 

@@ -4,20 +4,21 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_Item;
-import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.block.PC_Block;
+import powercraft.management.item.PC_Item;
+import powercraft.management.item.PC_ItemStack;
 import powercraft.management.recipes.PC_3DRecipe;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
 import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
+import powercraft.management.tick.PC_ITickHandler;
 
 public class PCis_App implements PC_IModule {
 
@@ -117,11 +118,6 @@ public class PCis_App implements PC_IModule {
 
 	@Override
 	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
-		return null;
-	}
-
-	@Override
-	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
 		return null;
 	}
 

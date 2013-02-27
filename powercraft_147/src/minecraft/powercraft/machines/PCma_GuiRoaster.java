@@ -1,7 +1,6 @@
 package powercraft.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresInventory;
 import powercraft.management.gres.PC_GresInventoryPlayer;
 import powercraft.management.gres.PC_GresWidget;
@@ -10,6 +9,7 @@ import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCma_GuiRoaster extends PCma_ContainerRoaster implements
 		PC_IGresClient {

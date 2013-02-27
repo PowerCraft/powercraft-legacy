@@ -14,16 +14,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.block.PC_Block;
 import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.renderer.PC_Renderer;
 
 @PC_BlockInfo(itemBlock=PChg_ItemBlockHologramBlock.class, tileEntity=PChg_TileEntityHologramBlock.class)
 public class PChg_BlockHologramBlock extends PC_Block {
@@ -31,6 +31,11 @@ public class PChg_BlockHologramBlock extends PC_Block {
 	public PChg_BlockHologramBlock(int id) {
 		super(id, 0, Material.ground);
 		setLightOpacity(255);
+	}
+	
+	@Override
+	public boolean showInCraftingTool() {
+		return false;
 	}
 	
 	public Block getContainingBlock(IBlockAccess world, int x, int y, int z){
@@ -153,8 +158,6 @@ public class PChg_BlockHologramBlock extends PC_Block {
 		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
 			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
 			break;
-		case PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
-			return true;
 		default:
 			return null;
 		}

@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;

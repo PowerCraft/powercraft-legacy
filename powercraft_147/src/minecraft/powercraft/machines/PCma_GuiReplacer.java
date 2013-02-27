@@ -1,7 +1,6 @@
 package powercraft.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_VecI;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresButtonImage;
@@ -21,6 +20,7 @@ import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_TextureRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGresClient {
 

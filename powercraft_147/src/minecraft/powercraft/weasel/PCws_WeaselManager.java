@@ -12,12 +12,13 @@ import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.tick.PC_ITickHandler;
 import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
 
-public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
+public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG, PC_ITickHandler {
 
 	/**
 	 * Globally shared variable pool
@@ -122,9 +123,6 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
-		case PC_MSGRegistry.MSG_TICK_EVENT:
-			update();
-			return true;
 		case PC_MSGRegistry.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS:
 			List<PC_Struct3<String, String, Object>> l = new ArrayList<PC_Struct3<String, String, Object>>();
 			l.add(new PC_Struct3<String, String, Object>("global.set", "setGlobalVariable", this));
@@ -318,6 +316,11 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 			}
 		}
 		return globalFunctions;
+	}
+
+	@Override
+	public void tickEvent() {
+		update();
 	}
 	
 }

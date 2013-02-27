@@ -1,6 +1,6 @@
 package powercraft.management.gres;
 
-import powercraft.management.PC_ITileEntityWatcher;
+import powercraft.management.tileentity.PC_ITileEntityWatcher;
 
 
 public interface PC_IGresClient extends PC_ITileEntityWatcher {

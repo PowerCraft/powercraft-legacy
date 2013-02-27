@@ -28,17 +28,17 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_BeamTracer.BeamSettings;
 import powercraft.management.PC_BeamTracer.result;
-import powercraft.management.PC_Block;
-import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Property;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.block.PC_Block;
+import powercraft.management.item.PC_IItemInfo;
 import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.registry.PC_SoundRegistry;
+import powercraft.management.renderer.PC_Renderer;
 
 @PC_BlockInfo(tileEntity=PCtp_TileEntityTeleporter.class)
 public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{

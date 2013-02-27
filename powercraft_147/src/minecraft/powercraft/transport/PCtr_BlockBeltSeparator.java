@@ -9,12 +9,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Direction;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 @PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class, tileEntity=PCtr_TileEntitySeparationBelt.class)
 public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase

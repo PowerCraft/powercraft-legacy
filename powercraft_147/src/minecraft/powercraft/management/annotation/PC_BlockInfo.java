@@ -5,8 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import powercraft.management.PC_ItemBlock;
-import powercraft.management.PC_TileEntity;
+import powercraft.management.block.PC_ItemBlock;
+import powercraft.management.tileentity.PC_TileEntity;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

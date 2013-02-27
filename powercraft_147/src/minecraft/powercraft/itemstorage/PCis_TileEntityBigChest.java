@@ -15,12 +15,12 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_Entry;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.inventory.PC_IInventoryWrapper;
 import powercraft.management.recipes.PC_3DRecipe;
+import powercraft.management.tileentity.PC_TileEntity;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 

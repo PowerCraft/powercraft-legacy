@@ -7,7 +7,7 @@ import java.util.Random;
 import net.minecraft.entity.Entity;
 import powercraft.management.PC_Direction;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_TileEntity;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public abstract class PCtr_TileEntityRedirectionBeltBase extends PC_TileEntity
 {

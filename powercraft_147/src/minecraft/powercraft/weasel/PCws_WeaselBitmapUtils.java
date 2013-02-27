@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Stack;
 
 import powercraft.management.PC_Color;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_VecI;
+import powercraft.management.renderer.PC_Renderer;
 import weasel.Calc;
 import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;

@@ -8,9 +8,9 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_GlobalVariables;
-import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.inventory.PC_Slot;
+import powercraft.management.item.PC_ItemStack;
 import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_RecipeRegistry;
 
