@@ -8,6 +8,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.mod_PowerCraft;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IModule;

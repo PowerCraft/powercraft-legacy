@@ -4,7 +4,9 @@ import java.util.Random;
 
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
+import powercraft.management.PC_OreDictionary;
 import powercraft.management.PC_VecI;
+import powercraft.management.item.PC_ItemStack;
 
 public abstract class PC_BlockOre extends PC_Block{
 
@@ -23,6 +25,7 @@ public abstract class PC_BlockOre extends PC_Block{
 
     protected PC_BlockOre(int id, String oreName, int genOresInChunk, int genOresDepositMaxCount, int genOresMinY, int genOresMaxY, int textureIndex, Material material, boolean canSetTextureFile) {
         super(id, textureIndex, material);
+        PC_OreDictionary.register(oreName, new PC_ItemStack(this));
         this.genOresInChunk = genOresInChunk;
         this.genOresDepositMaxCount = genOresDepositMaxCount;
         this.genOresMaxY = genOresMaxY;
