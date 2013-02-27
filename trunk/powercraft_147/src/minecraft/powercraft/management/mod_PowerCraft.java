@@ -274,7 +274,7 @@ public class mod_PowerCraft{
 	@PostInit
 	public void postInit(FMLPostInitializationEvent event) {
 		PC_Logger.enterSection("PostInit");
-		PC_TickRegistry.register(new PC_ChunkUpdateForcer());
+		PC_TickRegistry.register(PC_ChunkUpdateForcer.getInstance());
 		PC_Logger.enterSection("Module Recipes Init");
 		List<PC_IModule> modules = PC_ModuleRegistry.getModules();
 		for(PC_IModule module:modules){
