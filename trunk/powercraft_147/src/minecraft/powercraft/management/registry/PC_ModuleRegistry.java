@@ -36,7 +36,7 @@ public final class PC_ModuleRegistry {
 		m = new HashMap(m);
 		PC_DummyModContainer dummy = new PC_DummyModContainer(module);
 		l.add(dummy);
-		m.put(module.getName(), dummy);
+		m.put(dummy.getModId(), dummy);
 		l2.add(dummy);
 		l = ImmutableList.copyOf(l);
 		m = ImmutableMap.copyOf(m);
