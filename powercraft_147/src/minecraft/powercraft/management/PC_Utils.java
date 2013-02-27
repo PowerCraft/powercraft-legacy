@@ -1726,7 +1726,6 @@ public class PC_Utils implements PC_IPacketHandler {
 				NBTTagCompound nbtTag2 = nbtTag.getCompoundTag(key);
 				try {
 					Class c = Class.forName(nbtTag2.getString("type"));
-					System.out.println("Class:"+c);
 					if (c.isArray()) {
 						int size = nbtTag2.getInteger("count");
 						try {
