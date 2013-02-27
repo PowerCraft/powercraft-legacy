@@ -1,7 +1,10 @@
 package weasel;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -161,10 +164,12 @@ public class WeaselFunctionManager implements IWeaselHardware {
 		return null;
 	}
 	
-	private static Object[] makeParam(Object[] args, Class<?>[] expect){
+	private static Object[] makeParam(Object[] args, Class<?>[] expect, boolean varArgs){
 		Object[] obj = new Object[expect.length];
 		int dif = args.length - expect.length;
-		int max = expect.length-(dif<=0?0:1);
+		int max = expect.length-(varArgs?1:0);
+		if(varArgs)
+			dif++;
 		for(int i=0; i<max; i++){
 			obj[i] = args[i];
 			if(obj[i] instanceof WeaselObject){
@@ -172,14 +177,19 @@ public class WeaselFunctionManager implements IWeaselHardware {
 			}
 		}
 		if(dif>0){
-			Object[] o = new Object[dif];
-			obj[obj.length-1] = o;
-			for(int i=0; i<dif; i++){
-				o[i] = args[obj.length-1+i];
-				if(o[i] instanceof WeaselObject){
-					o[i] = weaselObject2Class(expect[i], (WeaselObject)o[i]);
+			try {
+				Object o = Array.newInstance(expect[max].getComponentType(), dif);
+				obj[obj.length-1] = o;
+				for(int i=0; i<dif; i++){
+					Object obj1 = args[obj.length-1+i];
+					if(obj1 instanceof WeaselObject){
+						obj1 = weaselObject2Class(expect[max].getComponentType(), (WeaselObject)obj1);
+					}
+					Array.set(o, i, obj1);
 				}
-			}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
 		}
 		return obj;
 	}
@@ -209,7 +219,7 @@ public class WeaselFunctionManager implements IWeaselHardware {
 			methods = c.getDeclaredMethods();
 			method = getBestMethod(methods, name, expect);
 		}
-		Object[] param = makeParam(args, method.getParameterTypes());
+		Object[] param = makeParam(args, method.getParameterTypes(), method.isVarArgs());
 		try {
 			return WeaselObject.getWrapperForValue(method.invoke(obj, param));
 		} catch (WeaselRuntimeException e) {

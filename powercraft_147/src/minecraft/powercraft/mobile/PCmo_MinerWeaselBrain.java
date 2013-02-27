@@ -1291,6 +1291,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
     }
     
     public void setOption(boolean flag, String...args){
+    	System.out.println("setOption");
     	for (int i = 0; i < args.length; i++) {
 
 			String capname = args[i];
