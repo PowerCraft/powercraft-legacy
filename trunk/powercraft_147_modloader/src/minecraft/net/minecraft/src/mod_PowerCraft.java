@@ -8,10 +8,8 @@ import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_ChunkUpdateForcer;
 import powercraft.management.PC_ClientPacketHandler;
-import powercraft.management.PC_ClientRenderer;
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_FuelHandler;
 import powercraft.management.PC_GlobalVariables;
@@ -21,20 +19,17 @@ import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_Item;
-import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_Logger;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_ThreadManager;
-import powercraft.management.PC_TickHandler;
 import powercraft.management.PC_UpdateManager;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
 import powercraft.management.PC_Utils.SaveHandler;
-import powercraft.management.PC_WorldGenerator;
 import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.block.PC_Block;
+import powercraft.management.block.PC_WorldOreGenerator;
 import powercraft.management.entity.PC_EntityFanFX;
 import powercraft.management.entity.PC_EntityLaserFX;
 import powercraft.management.entity.PC_EntityLaserParticleFX;
@@ -44,6 +39,8 @@ import powercraft.management.hacks.PC_RenderItemHack;
 import powercraft.management.hacks.PC_RenderPlayerHack;
 import powercraft.management.hacks.PC_RenderSkeletonHack;
 import powercraft.management.hacks.PC_RenderZombieHack;
+import powercraft.management.item.PC_Item;
+import powercraft.management.item.PC_ItemArmor;
 import powercraft.management.moduleloader.PC_ModuleLoader;
 import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.reflect.PC_FieldWithAnnotation;
@@ -62,12 +59,17 @@ import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.registry.PC_RecipeRegistry;
 import powercraft.management.registry.PC_RegistryClient;
 import powercraft.management.registry.PC_TextureRegistry;
+import powercraft.management.registry.PC_TickRegistry;
+import powercraft.management.renderer.PC_ClientRenderer;
+import powercraft.management.thread.PC_ThreadManager;
+import powercraft.management.tick.PC_ITickHandler;
+import powercraft.management.tick.PC_TickHandler;
 
 public class mod_PowerCraft extends BaseMod {
 
 	private static final String updateInfoPath = "https://dl.dropbox.com/s/nrkmh98nchr7nrj/VersionInfo.xml?dl=1";
 	
-	private PC_WorldGenerator worldGenerator;
+	private PC_WorldOreGenerator worldGenerator;
 	
 	private PC_FuelHandler fuelHandler;
 	
@@ -281,7 +283,7 @@ public class mod_PowerCraft extends BaseMod {
 
 	public void init() {
 		PC_Logger.enterSection("Init");
-		worldGenerator = new PC_WorldGenerator();
+		worldGenerator = new PC_WorldOreGenerator();
 		fuelHandler = new PC_FuelHandler();
 		mainMenuHacks = new PC_MainMenuHacks();
 		packetHandler = new PC_ClientPacketHandler();
@@ -309,13 +311,21 @@ public class mod_PowerCraft extends BaseMod {
 				@Override
 				public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_FieldObject> fieldWithAnnotation) {
 					Class<?> clazz = fieldWithAnnotation.getAnnotation().clazz();
+					Object o;
 					if(PC_Block.class.isAssignableFrom(clazz)){
-						Object block = PC_BlockRegistry.register(m, (Class<? extends PC_Block>)clazz);
-						fieldWithAnnotation.setValue(block);
+						o = PC_BlockRegistry.register(m, (Class<? extends PC_Block>)clazz);
 					}else if(PC_Item.class.isAssignableFrom(clazz) || PC_ItemArmor.class.isAssignableFrom(clazz)){
-						Object item = PC_ItemRegistry.register(m, (Class<? extends Item>)clazz);
-						fieldWithAnnotation.setValue(item);
+						o = PC_ItemRegistry.register(m, (Class<? extends Item>)clazz);
+					}else{
+						o = PC_ReflectHelper.create(clazz);
+						if(o instanceof PC_IMSG){
+							PC_MSGRegistry.registerMSGObject((PC_IMSG)o);
+						}
+						if(o instanceof PC_ITickHandler){
+							PC_TickRegistry.register((PC_ITickHandler)o);
+						}
 					}
+					fieldWithAnnotation.setValue(o);
 					return false;
 				}
 				
@@ -413,6 +423,7 @@ public class mod_PowerCraft extends BaseMod {
 
 	public void postInit() {
 		PC_Logger.enterSection("PostInit");
+		PC_TickRegistry.register(PC_ChunkUpdateForcer.getInstance());
 		PC_Logger.enterSection("Module Recipes Init");
 		List<PC_IModule> modules = PC_ModuleRegistry.getModules();
 		for(PC_IModule module:modules){
@@ -431,17 +442,6 @@ public class mod_PowerCraft extends BaseMod {
 			if(l!=null){
 				for(PC_Struct2<String, PC_IDataHandler> dataHandler:l){
 					PC_DataHandlerRegistry.regsterDataHandler(dataHandler.a, dataHandler.b);
-				}
-			}
-		}
-		PC_Logger.exitSection();
-		PC_Logger.enterSection("Module MSG Objects Init");
-		PC_MSGRegistry.registerMSGObject(PC_ChunkUpdateForcer.getInstance());
-		for(PC_IModule module:modules){
-			List<PC_IMSG> l = module.initMSGObjects(new ArrayList<PC_IMSG>());
-			if(l!=null){
-				for(PC_IMSG msgObject:l){
-					PC_MSGRegistry.registerMSGObject(msgObject);
 				}
 			}
 		}

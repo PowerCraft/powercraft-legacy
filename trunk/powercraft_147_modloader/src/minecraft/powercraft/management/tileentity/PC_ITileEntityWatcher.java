@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.tileentity;
 
 public interface PC_ITileEntityWatcher {
 

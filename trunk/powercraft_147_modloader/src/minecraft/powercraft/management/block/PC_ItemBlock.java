@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.block;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,12 @@ import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
+import powercraft.management.PC_IMSG;
+import powercraft.management.PC_IModule;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.item.PC_IItemInfo;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public abstract class PC_ItemBlock extends ItemBlock implements PC_IItemInfo, PC_IMSG
 {
@@ -33,7 +37,12 @@ public abstract class PC_ItemBlock extends ItemBlock implements PC_IItemInfo, PC
     {
     	this.module = module;
     }
-
+    
+    @Override
+	public boolean showInCraftingTool() {
+		return true;
+	}
+    
     @Override
     public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
     {

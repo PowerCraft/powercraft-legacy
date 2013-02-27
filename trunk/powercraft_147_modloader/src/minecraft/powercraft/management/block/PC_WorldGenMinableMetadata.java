@@ -1,10 +1,11 @@
-package powercraft.management;
+package powercraft.management.block;
 
 import java.util.Random;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldGenerator;
+import powercraft.management.PC_MathHelper;
 
 public class PC_WorldGenMinableMetadata extends WorldGenerator {
 	private int id, meta, size;

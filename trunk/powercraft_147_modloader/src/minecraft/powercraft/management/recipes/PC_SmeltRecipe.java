@@ -1,6 +1,6 @@
 package powercraft.management.recipes;
 
-import powercraft.management.PC_ItemStack;
+import powercraft.management.item.PC_ItemStack;
 
 public class PC_SmeltRecipe implements PC_IRecipe {
 

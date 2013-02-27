@@ -1,7 +1,8 @@
-package powercraft.management;
+package powercraft.management.renderer;
 
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntitySpecialRenderer;
+import powercraft.management.tileentity.PC_ITileEntityRenderer;
 
 public class PC_TileEntitySpecialRenderer extends TileEntitySpecialRenderer {
 	

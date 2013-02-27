@@ -16,6 +16,7 @@ import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PC_PacketHandler
 {

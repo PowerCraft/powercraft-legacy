@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.thread;
 
 public class PC_WorkerThread extends Thread {
 	
@@ -23,4 +23,3 @@ public class PC_WorkerThread extends Thread {
 	}
 	
 }
-

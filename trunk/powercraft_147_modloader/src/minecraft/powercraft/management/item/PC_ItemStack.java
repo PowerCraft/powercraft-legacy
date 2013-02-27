@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.item;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
+import powercraft.management.PC_INBT;
 
 public class PC_ItemStack implements Externalizable, PC_INBT<PC_ItemStack>
 {

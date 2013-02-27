@@ -1,5 +1,7 @@
-package powercraft.management;
+package powercraft.management.renderer;
 
+import powercraft.management.PC_VecF;
+import powercraft.management.block.PC_Block;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.FontRenderer;

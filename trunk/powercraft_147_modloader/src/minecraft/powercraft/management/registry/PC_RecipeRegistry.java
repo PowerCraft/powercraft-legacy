@@ -1,8 +1,6 @@
 package powercraft.management.registry;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,13 +10,12 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.ShapedRecipes;
 import net.minecraft.src.ShapelessRecipes;
 import net.minecraft.src.TileEntityFurnace;
 import net.minecraft.src.World;
-import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_VecI;
+import powercraft.management.item.PC_ItemStack;
 import powercraft.management.recipes.PC_3DRecipe;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
 import powercraft.management.recipes.PC_IRecipe;

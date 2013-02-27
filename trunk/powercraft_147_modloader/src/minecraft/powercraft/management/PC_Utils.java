@@ -55,9 +55,14 @@ import net.minecraft.src.World;
 import net.minecraft.src.WorldInfo;
 import net.minecraft.src.mod_PowerCraft;
 import powercraft.management.annotation.PC_Shining;
+import powercraft.management.block.PC_Block;
+import powercraft.management.block.PC_ItemBlock;
 import powercraft.management.inventory.PC_IInventoryWrapper;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.inventory.PC_IStateReportingInventory;
+import powercraft.management.item.PC_Item;
+import powercraft.management.item.PC_ItemArmor;
+import powercraft.management.item.PC_ItemStack;
 import powercraft.management.recipes.PC_SmeltRecipe;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_BlockRegistry;
@@ -73,6 +78,7 @@ import powercraft.management.registry.PC_RecipeRegistry;
 import powercraft.management.registry.PC_RegistryServer;
 import powercraft.management.registry.PC_SoundRegistry;
 import powercraft.management.registry.PC_TextureRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PC_Utils implements PC_IPacketHandler
 {
