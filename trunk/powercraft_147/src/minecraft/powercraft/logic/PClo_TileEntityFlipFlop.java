@@ -8,7 +8,7 @@ import powercraft.management.tileentity.PC_TileEntity;
 
 public class PClo_TileEntityFlipFlop extends PC_TileEntity
 {
-	@PC_ClientServerSync
+	@PC_ClientServerSync(clientChangeAble=false)
 	private int type = 0;
 	@PC_ClientServerSync
     private boolean clock = false;

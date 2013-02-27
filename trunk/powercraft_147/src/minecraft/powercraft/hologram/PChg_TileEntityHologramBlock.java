@@ -10,7 +10,7 @@ import powercraft.management.tileentity.PC_TileEntity;
 
 public class PChg_TileEntityHologramBlock extends PC_TileEntity {
 	
-	@PC_ClientServerSync()
+	@PC_ClientServerSync(clientChangeAble=false)
 	private int containingBlockID=0;
 	
 	@Override

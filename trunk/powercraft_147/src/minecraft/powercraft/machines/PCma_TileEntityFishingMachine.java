@@ -29,7 +29,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 	private long lastTime = System.currentTimeMillis();
 	private int fishTimer = 250 + rand.nextInt(350);
 	private int burningFuel;
-	@PC_ClientServerSync
+	@PC_ClientServerSync(clientChangeAble=false)
 	public boolean running;
 	public int rotation;
 	

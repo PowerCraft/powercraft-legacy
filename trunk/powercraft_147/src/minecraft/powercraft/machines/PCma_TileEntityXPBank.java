@@ -14,7 +14,7 @@ import powercraft.management.tileentity.PC_TileEntity;
 public class PCma_TileEntityXPBank extends PC_TileEntity
 {
     private Random rand = new Random();
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
     private int xp = 0;
     
     public int getXP()

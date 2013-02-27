@@ -1,7 +1,7 @@
 package powercraft.weasel;
 
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.management.registry.PC_TextureRegistry;
 import powercraft.management.renderer.PC_Renderer;
 import powercraft.management.tileentity.PC_ITileEntityRenderer;
 import powercraft.management.tileentity.PC_TileEntity;
@@ -19,7 +19,7 @@ public class PCws_TileEntityWeaselDiskManager extends PC_TileEntity implements P
 		
 		PC_Renderer.glTranslatef((float) x + 0.5F, ((float) y), (float) z + 0.5F);
 
-		PC_Renderer.bindTexture(ModuleInfo.getTextureDirectory(PC_ModuleRegistry.getModule("Weasel")) + "block_chip.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Weasel")) + "block_chip.png");
 
 		// push 2
 		PC_Renderer.glPushMatrix();

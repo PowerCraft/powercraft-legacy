@@ -22,13 +22,13 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 	
 	private static PCli_ModelLaser modelLaser = new PCli_ModelLaser();
     private PC_BeamTracer laser;
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
     private boolean active = false;
     @PC_ClientServerSync
     private PC_ItemStack itemstack;
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
     private boolean isKiller = false;
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
    	private boolean powered = false;
     
     public boolean isKiller() {

@@ -37,15 +37,15 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 
     public static final int SIZE = 9;
 
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
     public int burnTime = 0;
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
     public int netherTime = 0;
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
     public int netherActionTime = 100;
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
     private boolean noNetherrack = false;
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
     public boolean isActive;
 	
     public int getBurnTime() {

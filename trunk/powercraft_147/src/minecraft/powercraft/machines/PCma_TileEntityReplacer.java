@@ -33,7 +33,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
     private boolean aidEnabled = false;
     @PC_ClientServerSync
     private PC_Color aidcolor;
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
     private boolean state = false;
 
     public int extraMeta = -1;

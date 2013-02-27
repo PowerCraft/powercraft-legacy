@@ -22,12 +22,12 @@ import powercraft.management.tileentity.PC_TileEntity;
 public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEntityRenderer {
 	
 	/** Flag that the sensor is active - giving power */
-	@PC_ClientServerSync
+	@PC_ClientServerSync(clientChangeAble=false)
 	private boolean active = false;
 	/** Current range in blocks. */
 	@PC_ClientServerSync
 	private int range = 3;
-	@PC_ClientServerSync
+	@PC_ClientServerSync(clientChangeAble=false)
 	private int type;
 	
 	private static PCnt_ModelSensor model = new PCnt_ModelSensor();

@@ -16,7 +16,7 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
 {
 	
     private ItemStack itemstack;
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
     private int type = 0;
 	
     public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){

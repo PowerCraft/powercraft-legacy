@@ -10,9 +10,9 @@ import powercraft.management.tileentity.PC_TileEntity;
 public class PClo_TileEntityRepeater extends PC_TileEntity
 {
 	
-	@PC_ClientServerSync
+	@PC_ClientServerSync(clientChangeAble=false)
 	private int type = 0;
-	@PC_ClientServerSync
+	@PC_ClientServerSync(clientChangeAble=false)
     private int state = 0;
 	@PC_ClientServerSync
     private int inp = 0;
