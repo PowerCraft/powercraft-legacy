@@ -15,6 +15,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import powercraft.management.PC_Entry;
+import powercraft.management.PC_Logger;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
@@ -103,6 +104,8 @@ public abstract class PC_TileEntity extends TileEntity
 					} catch (Exception e) {
 						e.printStackTrace();
 					} 
+    			}else{
+    				PC_Logger.warning(this+":Try to write non existing Field "+o[i].a);
     			}
     		}
     	}

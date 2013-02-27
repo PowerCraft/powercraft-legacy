@@ -82,7 +82,7 @@ public class Calc {
 	 * @return result of the expression.
 	 * @throws CalcException when evaluation fails.
 	 */
-	public static Object evaluate(String expression, IVariableProvider variableContainer) throws CalcException {
+	public synchronized static Object evaluate(String expression, IVariableProvider variableContainer) throws CalcException {
 
 		if (expression == null || expression.length() == 0) return null;
 
