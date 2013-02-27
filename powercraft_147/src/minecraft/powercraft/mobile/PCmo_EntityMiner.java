@@ -2852,7 +2852,15 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		super.onUpdate();
 		
 		if (fakePlayer == null && worldObj != null) fakePlayer = new PC_FakePlayer(worldObj);
-
+		if(!worldObj.isRemote){
+			Object o = getInfo("error");
+			boolean error=false;
+			if(o instanceof Boolean && (Boolean)o)
+				error = true;
+			if((!error && br.hasError()) || (error && !br.hasError())){
+				setInfo("error", br.getError());
+			}
+		}
 		if(!worldObj.isRemote && br.hasError()){
 			setInfo("error", br.getError());
 		}
