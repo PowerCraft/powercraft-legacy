@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.renderer;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.FontRenderer;
@@ -12,7 +12,13 @@ import net.minecraft.src.mod_PowerCraft;
 
 import org.lwjgl.opengl.GL11;
 
+import powercraft.management.PC_ClientUtils;
+import powercraft.management.PC_IMSG;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecF;
+import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.block.PC_Block;
 import powercraft.management.inventory.PC_ISpecialInventoryTextures;
 import powercraft.management.registry.PC_MSGRegistry;
 

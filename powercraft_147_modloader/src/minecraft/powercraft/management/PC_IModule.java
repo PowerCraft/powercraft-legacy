@@ -24,8 +24,6 @@ public interface PC_IModule {
 	
 	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(List<PC_Struct2<String, PC_IDataHandler>> dataHandlers);
 	
-	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects);
-	
 	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers);
 	
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis);

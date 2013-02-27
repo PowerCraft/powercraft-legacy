@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.block;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
@@ -13,10 +13,18 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import powercraft.management.PC_GlobalVariables;
+import powercraft.management.PC_IIDChangeAble;
+import powercraft.management.PC_IMSG;
+import powercraft.management.PC_IModule;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.renderer.PC_Renderer;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IIDChangeAble
 {
@@ -78,6 +86,10 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
     public PC_IModule getModule(){
     	return module;
     }
+    
+	public boolean showInCraftingTool() {
+		return true;
+	}
     
     @Override
     public int getRenderType()

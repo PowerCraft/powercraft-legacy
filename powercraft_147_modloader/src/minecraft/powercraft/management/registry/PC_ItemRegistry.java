@@ -8,9 +8,9 @@ import net.minecraft.src.Block;
 import net.minecraft.src.Item;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IModule;
-import powercraft.management.PC_Item;
-import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_Property;
+import powercraft.management.item.PC_Item;
+import powercraft.management.item.PC_ItemArmor;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 

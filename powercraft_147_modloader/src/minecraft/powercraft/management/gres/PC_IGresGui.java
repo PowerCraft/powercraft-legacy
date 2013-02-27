@@ -1,7 +1,7 @@
 package powercraft.management.gres;
 
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_VecI;
+import powercraft.management.tileentity.PC_TileEntity;
 
 
 public interface PC_IGresGui {

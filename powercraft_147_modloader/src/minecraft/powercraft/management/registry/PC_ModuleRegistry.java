@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_Logger;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
+import powercraft.management.item.PC_IItemInfo;
 
 public final class PC_ModuleRegistry {
 

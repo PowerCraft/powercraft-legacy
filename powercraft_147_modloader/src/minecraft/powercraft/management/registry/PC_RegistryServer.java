@@ -12,10 +12,10 @@ import net.minecraft.src.mod_PowerCraft;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresBaseWithInventory;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PC_RegistryServer implements PC_IPacketHandler {
 

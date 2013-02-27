@@ -4,10 +4,10 @@ import net.minecraft.src.Block;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
-import powercraft.management.PC_Block;
-import powercraft.management.PC_Item;
-import powercraft.management.PC_ItemArmor;
-import powercraft.management.PC_ItemBlock;
+import powercraft.management.block.PC_Block;
+import powercraft.management.block.PC_ItemBlock;
+import powercraft.management.item.PC_Item;
+import powercraft.management.item.PC_ItemArmor;
 
 public class PC_Hacks {
 

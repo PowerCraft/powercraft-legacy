@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.tileentity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,6 +14,11 @@ import net.minecraft.src.Packet;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import powercraft.management.PC_Entry;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.reflect.PC_FieldWithAnnotation;

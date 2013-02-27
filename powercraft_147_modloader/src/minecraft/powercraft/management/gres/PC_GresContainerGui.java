@@ -17,11 +17,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import powercraft.management.PC_ClientUtils;
-import powercraft.management.PC_ITileEntityWatcher;
 import powercraft.management.PC_RectI;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_VecI;
 import powercraft.management.inventory.PC_Slot;
+import powercraft.management.tileentity.PC_ITileEntityWatcher;
+import powercraft.management.tileentity.PC_TileEntity;
 
 /**
  * GuiScreen class

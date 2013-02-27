@@ -9,21 +9,22 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.mod_PowerCraft;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IModule;
-import powercraft.management.PC_ITileEntityRenderer;
-import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_Property;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.annotation.PC_Shining;
+import powercraft.management.block.PC_Block;
+import powercraft.management.block.PC_BlockOre;
+import powercraft.management.block.PC_ItemBlock;
 import powercraft.management.reflect.PC_FieldWithAnnotation;
 import powercraft.management.reflect.PC_IFieldAnnotationIterator;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.tileentity.PC_ITileEntityRenderer;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public final class PC_BlockRegistry {
 
@@ -89,6 +90,14 @@ public final class PC_BlockRegistry {
 			block.setModule(module);
 			block.setTextureFile(PC_TextureRegistry.getTerrainFile(module));
 
+			if(block instanceof PC_BlockOre){
+				PC_BlockOre blockOre = (PC_BlockOre)block;
+				blockOre.setGenOresInChunk(config.getInt("spawn.in_chunk", blockOre.getGenOresInChunk(), "Number of deposits in each 16x16 chunk."));
+				blockOre.setGenOresDepositMaxCount(config.getInt("spawn.deposit_max_size", blockOre.getGenOresDepositMaxCount(), "Highest Ore count in one deposit"));
+				blockOre.setGenOresMaxY(config.getInt("spawn.max_y", blockOre.getGenOresMaxY(), "Max Y coordinate of ore deposits."));
+				blockOre.setGenOresMinY(config.getInt("spawn.min_y", blockOre.getGenOresMinY(), "Min Y coordinate of ore deposits."));
+			}
+			
 			PC_ReflectHelper.getAllFieldsWithAnnotation(block.getClass(), block, PC_BlockInfo.ConfigEntry.class, new PC_IFieldAnnotationIterator<PC_BlockInfo.ConfigEntry>() {
 
 				@Override

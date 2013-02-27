@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.item;
 
 import java.util.List;
 
@@ -7,6 +7,10 @@ import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
+import powercraft.management.PC_GlobalVariables;
+import powercraft.management.PC_IIDChangeAble;
+import powercraft.management.PC_IMSG;
+import powercraft.management.PC_IModule;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.reflect.PC_ReflectHelper;
 
@@ -66,6 +70,11 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
         this.module = module;
     }
 
+    @Override
+	public boolean showInCraftingTool() {
+		return true;
+	}
+    
     public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
     {
         arrayList.add(new ItemStack(this));

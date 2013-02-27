@@ -4,8 +4,8 @@ import net.minecraft.src.Block;
 import net.minecraft.src.BlockFire;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.World;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.block.PC_Block;
 
 public class PC_BlockFireHack extends BlockFire {
 

@@ -1,11 +1,15 @@
-package powercraft.management;
+package powercraft.management.thread;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import powercraft.management.PC_GlobalVariables;
+import powercraft.management.PC_IMSG;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_TickRegistry;
+import powercraft.management.tick.PC_ITickHandler;
 
-public class PC_ThreadManager implements PC_IMSG {
+public class PC_ThreadManager implements PC_ITickHandler {
 
 	private static boolean hasInit = false;
 	private static PC_WorkerThread[] threads;
@@ -21,22 +25,11 @@ public class PC_ThreadManager implements PC_IMSG {
 			return;
 		hasInit = true;
 		int numThreads = PC_GlobalVariables.config.getInt("threads.count", 3, "Number of thread of PowerCraft");
-		PC_MSGRegistry.registerMSGObject(new PC_ThreadManager());
+		PC_TickRegistry.register(new PC_ThreadManager());
 		threads = new PC_WorkerThread[numThreads];
 		for(int i=0; i<numThreads; i++){
 			threads[i] = new PC_WorkerThread();
 			threads[i].start();
-		}
-	}
-
-	private static void tick(){
-		while(true){
-			PC_ThreadJob job = PC_ThreadManager.getNextJob();
-			if(job==null){
-				break;
-			}else{
-				job.doJob();
-			}
 		}
 	}
 	
@@ -79,13 +72,17 @@ public class PC_ThreadManager implements PC_IMSG {
 			}
 		}
 	}
-	
+
 	@Override
-	public Object msg(int msg, Object... obj) {
-		if(msg==PC_MSGRegistry.MSG_TICK_EVENT){
-			tick();
+	public void tickEvent() {
+		while(true){
+			PC_ThreadJob job = PC_ThreadManager.getNextJob();
+			if(job==null){
+				break;
+			}else{
+				job.doJob();
+			}
 		}
-		return null;
 	}
 	
 }
