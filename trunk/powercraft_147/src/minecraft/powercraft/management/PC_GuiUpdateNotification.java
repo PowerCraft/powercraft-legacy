@@ -21,6 +21,7 @@ import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.registry.PC_TextureRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PC_GuiUpdateNotification implements PC_IGresClient {
 

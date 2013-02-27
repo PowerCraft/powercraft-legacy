@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapelessRecipes;
-import powercraft.management.PC_ItemStack;
+import powercraft.management.item.PC_ItemStack;
 import powercraft.management.recipes.PC_ShapelessRecipes;
 import codechicken.core.ReflectionManager;
 import codechicken.nei.NEIClientUtils;

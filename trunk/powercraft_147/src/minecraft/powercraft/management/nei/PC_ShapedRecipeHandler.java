@@ -10,7 +10,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import powercraft.management.PC_ItemStack;
+import powercraft.management.item.PC_ItemStack;
 import powercraft.management.recipes.PC_ShapedRecipes;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;

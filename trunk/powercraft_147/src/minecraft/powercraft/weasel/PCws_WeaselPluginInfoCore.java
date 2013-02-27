@@ -3,9 +3,9 @@ package powercraft.weasel;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.registry.PC_SoundRegistry;
+import powercraft.management.renderer.PC_Renderer;
 
 public class PCws_WeaselPluginInfoCore extends PCws_WeaselPluginInfo {
 

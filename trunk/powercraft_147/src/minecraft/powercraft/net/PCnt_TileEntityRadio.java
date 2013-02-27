@@ -3,14 +3,14 @@ package powercraft.net;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.management.PC_ITileEntityRenderer;
-import powercraft.management.PC_Renderer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecF;
 import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.registry.PC_TextureRegistry;
+import powercraft.management.renderer.PC_Renderer;
+import powercraft.management.tileentity.PC_ITileEntityRenderer;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntityRenderer {
 	

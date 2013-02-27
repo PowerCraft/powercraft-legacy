@@ -1,7 +1,6 @@
 package powercraft.logic;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.Converter;
 import powercraft.management.PC_Utils.GameInfo;
@@ -9,6 +8,7 @@ import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_SoundRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PClo_TileEntityPulsar extends PC_TileEntity{
 	

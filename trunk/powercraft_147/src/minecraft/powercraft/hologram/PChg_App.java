@@ -6,21 +6,22 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_ItemArmor;
-import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.block.PC_Block;
+import powercraft.management.item.PC_ItemArmor;
+import powercraft.management.item.PC_ItemStack;
 import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.recipes.PC_ShapelessRecipes;
 import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_ItemRegistry;
+import powercraft.management.tick.PC_ITickHandler;
 
 public class PChg_App implements PC_IModule {
 
@@ -97,11 +98,6 @@ public class PChg_App implements PC_IModule {
 	}
 
 	@Override
-	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
-		return null;
-	}
-
-	@Override
 	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
 			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
 		return null;
@@ -112,7 +108,7 @@ public class PChg_App implements PC_IModule {
 			List<PC_Struct2<String, Class>> guis) {
 		return null;
 	}
-
+	
 	public List<PC_ItemStack> getAllAccepptedBlocksForHologramBlock(){
 		List<PC_ItemStack>l = new ArrayList<PC_ItemStack>();
 		for(int i=1; i<Block.blocksList.length; i++){

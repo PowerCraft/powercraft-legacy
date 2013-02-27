@@ -5,10 +5,10 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.inventory.PC_IInventorySpecialSlots;
 import powercraft.management.inventory.PC_IInventoryWrapper;
 import powercraft.management.inventory.PC_Slot;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public abstract class PC_GresBaseWithInventory<t extends PC_TileEntity> extends Container
 {

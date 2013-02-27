@@ -1,7 +1,6 @@
 package powercraft.weasel;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutH;
@@ -12,6 +11,7 @@ import powercraft.management.gres.PC_GresTextEditMultiline;
 import powercraft.management.gres.PC_GresWidget;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCws_GuiWeaselTerminal extends PCws_GuiWeasel {
 

@@ -10,9 +10,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
+import powercraft.management.block.PC_Block;
 import powercraft.management.registry.PC_MSGRegistry;
 
 public abstract class PCtr_BlockBeltBase extends PC_Block

@@ -1,7 +1,6 @@
 package powercraft.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresFrame;
 import powercraft.management.gres.PC_GresGap;
@@ -14,6 +13,7 @@ import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.registry.PC_TextureRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench implements PC_IGresClient {
 

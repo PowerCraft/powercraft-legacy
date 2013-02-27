@@ -13,10 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_Block;
-import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Property;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
@@ -25,8 +22,11 @@ import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.annotation.PC_Shining.OFF;
 import powercraft.management.annotation.PC_Shining.ON;
+import powercraft.management.block.PC_Block;
+import powercraft.management.item.PC_IItemInfo;
 import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 @PC_Shining
 @PC_BlockInfo(tileEntity=PClo_TileEntityPulsar.class)
@@ -50,8 +50,15 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
             setCreativeTab(CreativeTabs.tabRedstone);
         }
     }
-
+    
     @Override
+	public boolean showInCraftingTool() {
+    	if(this==on)
+			return true;
+		return false;
+	}
+
+	@Override
     public TileEntity newTileEntity(World world, int metadata)
     {
         return new PClo_TileEntityPulsar();
@@ -207,11 +214,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
-		}case PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
-			if(this==off)
-				return true;
-			return false;
-		}
+		}}
 		return null;
 	}
 }

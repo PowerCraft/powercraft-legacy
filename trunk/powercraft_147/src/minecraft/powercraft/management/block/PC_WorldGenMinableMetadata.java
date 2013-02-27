@@ -1,6 +1,8 @@
-package powercraft.management;
+package powercraft.management.block;
 
 import java.util.Random;
+
+import powercraft.management.PC_MathHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;

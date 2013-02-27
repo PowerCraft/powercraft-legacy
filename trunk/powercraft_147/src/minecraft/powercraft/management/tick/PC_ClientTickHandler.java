@@ -1,9 +1,11 @@
-package powercraft.management;
+package powercraft.management.tick;
 
 import java.util.EnumSet;
 
 import net.minecraft.client.Minecraft;
+import powercraft.management.PC_ClientUtils;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_TickRegistry;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
@@ -14,10 +16,10 @@ public class PC_ClientTickHandler implements ITickHandler {
 		Minecraft mc = PC_ClientUtils.mc();
 		if(mc.getIntegratedServer()!=null){
 			if(type.contains(TickType.SERVER)){
-				PC_MSGRegistry.callAllMSG(PC_MSGRegistry.MSG_TICK_EVENT);
+				PC_TickRegistry.onTickEvent();
 			}
 		}else if(PC_ClientUtils.mc().theWorld!=null){
-			PC_MSGRegistry.callAllMSG(PC_MSGRegistry.MSG_TICK_EVENT);
+			PC_TickRegistry.onTickEvent();
 		}
 	}
 

@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.block;
 
 import java.util.List;
 import java.util.Map;
@@ -14,10 +14,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.management.PC_GlobalVariables;
+import powercraft.management.PC_IIDChangeAble;
+import powercraft.management.PC_IMSG;
+import powercraft.management.PC_IModule;
+import powercraft.management.PC_Struct3;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.renderer.PC_Renderer;
+import powercraft.management.tileentity.PC_TileEntity;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
 
@@ -36,7 +45,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
     	this(id, textureIndex, material, true);
     }
 
-    public PC_Block(int id, int textureIndex, Material material, boolean canSetTextureFile) {
+    protected PC_Block(int id, int textureIndex, Material material, boolean canSetTextureFile) {
         super(id, textureIndex, material);
         this.canSetTextureFile = canSetTextureFile;
         thisBlock = new BlockInfo(id);
@@ -92,6 +101,10 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
     public PC_IModule getModule(){
     	return module;
     }
+    
+	public boolean showInCraftingTool() {
+		return true;
+	}
     
     @Override
     public int getRenderType()

@@ -1,8 +1,8 @@
 package powercraft.logic;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresBaseWithInventory;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PClo_ContainerSpecial extends PC_GresBaseWithInventory<PClo_TileEntitySpecial>
 {

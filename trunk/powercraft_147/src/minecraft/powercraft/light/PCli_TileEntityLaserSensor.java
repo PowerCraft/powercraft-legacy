@@ -1,8 +1,8 @@
 package powercraft.light;
 
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.annotation.PC_ClientServerSync;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCli_TileEntityLaserSensor extends PC_TileEntity {
 	

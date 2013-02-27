@@ -1,6 +1,8 @@
 package powercraft.management;
 
 import powercraft.management.hacks.PC_ServerHacks;
+import powercraft.management.renderer.PC_Renderer;
+import powercraft.management.tick.PC_TickHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;

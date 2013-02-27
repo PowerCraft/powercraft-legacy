@@ -5,20 +5,21 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_Item;
-import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.block.PC_Block;
+import powercraft.management.item.PC_Item;
+import powercraft.management.item.PC_ItemStack;
 import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.recipes.PC_ShapelessRecipes;
+import powercraft.management.tick.PC_ITickHandler;
 
 public class PCco_App implements PC_IModule {
 
@@ -34,8 +35,10 @@ public class PCco_App implements PC_IModule {
 	public static PC_Item craftingTool;
 	@PC_FieldObject(clazz=PCco_ItemOreSniffer.class)
 	public static PC_Item oreSniffer;
-	
-	public static PCco_MobSpawnerSetter spawnerSetter = new PCco_MobSpawnerSetter();
+	@PC_FieldObject(clazz=PCco_MobSpawnerSetter.class)
+	public static PCco_MobSpawnerSetter spawnerSetter;
+	@PC_FieldObject(clazz=PCco_CraftingToolLoader.class)
+	public static PCco_CraftingToolLoader craftingToolLoader;
 	
 	@Override
 	public String getName() {
@@ -124,13 +127,6 @@ public class PCco_App implements PC_IModule {
 		return null;
 	}
 	
-	@Override
-	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
-		msgObjects.add(spawnerSetter);
-		msgObjects.add(new PCco_CraftingToolLoader());
-		return msgObjects;
-	}
-
 	@Override
 	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
 			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {

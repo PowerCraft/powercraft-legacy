@@ -7,13 +7,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_IThreadJob;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_ThreadJob;
-import powercraft.management.PC_ThreadManager;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.management.thread.PC_IThreadJob;
+import powercraft.management.thread.PC_ThreadJob;
+import powercraft.management.thread.PC_ThreadManager;
 import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;
 import weasel.exception.SyntaxError;

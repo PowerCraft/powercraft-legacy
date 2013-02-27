@@ -5,8 +5,8 @@ import java.util.List;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_MathHelper;
+import powercraft.management.block.PC_ItemBlock;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
 

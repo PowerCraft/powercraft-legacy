@@ -3,8 +3,8 @@ package powercraft.logic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.annotation.PC_ClientServerSync;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PClo_TileEntityFlipFlop extends PC_TileEntity
 {

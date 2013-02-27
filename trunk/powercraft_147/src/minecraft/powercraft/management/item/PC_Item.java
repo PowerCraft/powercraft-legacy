@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,11 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.management.PC_GlobalVariables;
+import powercraft.management.PC_IIDChangeAble;
+import powercraft.management.PC_IMSG;
+import powercraft.management.PC_IModule;
+import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.reflect.PC_ReflectHelper;
 import cpw.mods.fml.common.registry.GameData;
@@ -89,6 +94,11 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG, PC_
         return arrayList;
     }
 
+    @Override
+	public boolean showInCraftingTool() {
+		return true;
+	}
+    
     public void getSubItems(int index, CreativeTabs creativeTab, List list)
     {
         list.addAll(getItemStacks(new ArrayList<ItemStack>()));

@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresColorPicker;
 import powercraft.management.gres.PC_GresLabel;
@@ -17,6 +16,7 @@ import powercraft.management.gres.PC_GresWidgetTab;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public abstract class PCws_GuiWeasel implements PC_IGresClient {
 

@@ -6,8 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import powercraft.management.PC_Block;
-import powercraft.management.PC_TileEntity;
+import powercraft.management.block.PC_Block;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public final class PC_GresRegistry {
 

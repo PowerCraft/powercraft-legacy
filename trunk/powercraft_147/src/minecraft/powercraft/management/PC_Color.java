@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import powercraft.management.renderer.PC_Renderer;
+
 public class PC_Color extends PC_VecF {
 
 	public static final long serialVersionUID = 1745800961264333415L;

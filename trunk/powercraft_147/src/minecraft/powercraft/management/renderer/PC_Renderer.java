@@ -1,5 +1,7 @@
-package powercraft.management;
+package powercraft.management.renderer;
 
+import powercraft.management.PC_VecF;
+import powercraft.management.block.PC_Block;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.world.IBlockAccess;

@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.item;
 
 import java.util.List;
 import java.util.Map;
@@ -9,6 +9,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IArmorTextureProvider;
+import powercraft.management.PC_GlobalVariables;
+import powercraft.management.PC_IIDChangeAble;
+import powercraft.management.PC_IMSG;
+import powercraft.management.PC_IModule;
+import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.reflect.PC_ReflectHelper;
 import cpw.mods.fml.common.registry.GameData;
@@ -88,6 +93,11 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
+    
+    @Override
+	public boolean showInCraftingTool() {
+		return true;
+	}
     
     @Override
     public Item setTextureFile(String texture){

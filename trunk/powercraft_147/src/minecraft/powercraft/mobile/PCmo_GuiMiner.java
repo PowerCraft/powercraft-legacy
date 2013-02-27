@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import powercraft.core.PCco_App;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresGap;
@@ -23,6 +22,7 @@ import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 import powercraft.weasel.PCws_WeaselHighlightHelper;
 
 public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient {

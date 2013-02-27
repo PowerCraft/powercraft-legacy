@@ -16,15 +16,15 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenHell;
 import net.minecraft.world.biome.WorldChunkManager;
-import powercraft.management.PC_Block;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.annotation.PC_ClientServerSync;
+import powercraft.management.block.PC_Block;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_RecipeRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {

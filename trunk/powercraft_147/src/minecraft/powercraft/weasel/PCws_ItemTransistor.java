@@ -3,7 +3,7 @@ package powercraft.weasel;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
-import powercraft.management.PC_Item;
+import powercraft.management.item.PC_Item;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
 

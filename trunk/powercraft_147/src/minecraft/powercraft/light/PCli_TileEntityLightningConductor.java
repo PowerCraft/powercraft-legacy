@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.tileentity.PC_TileEntity;
 import powercraft.management.PC_VecF;
 
 public class PCli_TileEntityLightningConductor extends PC_TileEntity

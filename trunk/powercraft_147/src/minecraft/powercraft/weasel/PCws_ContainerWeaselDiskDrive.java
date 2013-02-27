@@ -1,8 +1,8 @@
 package powercraft.weasel;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresBaseWithInventory;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCws_ContainerWeaselDiskDrive extends PC_GresBaseWithInventory<PCws_TileEntityWeasel> {
 	

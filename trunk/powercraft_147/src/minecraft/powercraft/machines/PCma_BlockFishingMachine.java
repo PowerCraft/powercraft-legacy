@@ -9,13 +9,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_Block;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.block.PC_Block;
 import powercraft.management.recipes.PC_3DRecipe;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
 import powercraft.management.registry.PC_MSGRegistry;
@@ -62,25 +62,14 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	}
 	
 	@Override
+	public boolean showInCraftingTool() {
+		return false;
+	}
+	
+	@Override
 	public TileEntity newTileEntity(World world, int metadata) {
 		return new PCma_TileEntityFishingMachine();
 	}
-
-	/*@Override
-	public int getBlockTextureFromSideAndMetadata(int par1, int par2)
-    {
-        switch (par2)
-        {
-            case 1:
-                return 198;
-            case 2:
-                return 214;
-            case 3:
-                return 199;
-            default:
-                return 4;
-        }
-    }*/
 	
 	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
@@ -155,12 +144,9 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	   		list.add(PC_Utils.NO_HARVEST);
 	   		list.add(PC_Utils.NO_PICKUP);
 	   		return list;
-		}case PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
-			break;
-		default:
+		}default:
 			return null;
 		}
-		return true;
 	}
 
 	@Override

@@ -13,6 +13,10 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.block.PC_Block;
+import powercraft.management.block.PC_WorldOreGenerator;
+import powercraft.management.item.PC_Item;
+import powercraft.management.item.PC_ItemArmor;
 import powercraft.management.moduleloader.PC_ModuleLoader;
 import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.reflect.PC_FieldWithAnnotation;
@@ -30,6 +34,9 @@ import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.registry.PC_RecipeRegistry;
 import powercraft.management.registry.PC_TextureRegistry;
+import powercraft.management.registry.PC_TickRegistry;
+import powercraft.management.thread.PC_ThreadManager;
+import powercraft.management.tick.PC_ITickHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -136,7 +143,7 @@ public class mod_PowerCraft{
 	@Init
 	public void init(FMLInitializationEvent event) {
 		PC_Logger.enterSection("Init");
-		GameRegistry.registerWorldGenerator(new PC_WorldGenerator());
+		GameRegistry.registerWorldGenerator(new PC_WorldOreGenerator());
 		GameRegistry.registerFuelHandler(new PC_FuelHandler());
 		PC_ThreadManager.init();
 		List<PC_IModule> modules = PC_ModuleRegistry.getModules();
@@ -155,13 +162,21 @@ public class mod_PowerCraft{
 				@Override
 				public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_FieldObject> fieldWithAnnotation) {
 					Class<?> clazz = fieldWithAnnotation.getAnnotation().clazz();
+					Object o;
 					if(PC_Block.class.isAssignableFrom(clazz)){
-						Object block = PC_BlockRegistry.register(m, (Class<? extends PC_Block>)clazz);
-						fieldWithAnnotation.setValue(block);
+						o = PC_BlockRegistry.register(m, (Class<? extends PC_Block>)clazz);
 					}else if(PC_Item.class.isAssignableFrom(clazz) || PC_ItemArmor.class.isAssignableFrom(clazz)){
-						Object item = PC_ItemRegistry.register(m, (Class<? extends Item>)clazz);
-						fieldWithAnnotation.setValue(item);
+						o = PC_ItemRegistry.register(m, (Class<? extends Item>)clazz);
+					}else{
+						o = PC_ReflectHelper.create(clazz);
+						if(o instanceof PC_IMSG){
+							PC_MSGRegistry.registerMSGObject((PC_IMSG)o);
+						}
+						if(o instanceof PC_ITickHandler){
+							PC_TickRegistry.register((PC_ITickHandler)o);
+						}
 					}
+					fieldWithAnnotation.setValue(o);
 					return false;
 				}
 				
@@ -259,6 +274,7 @@ public class mod_PowerCraft{
 	@PostInit
 	public void postInit(FMLPostInitializationEvent event) {
 		PC_Logger.enterSection("PostInit");
+		PC_TickRegistry.register(new PC_ChunkUpdateForcer());
 		PC_Logger.enterSection("Module Recipes Init");
 		List<PC_IModule> modules = PC_ModuleRegistry.getModules();
 		for(PC_IModule module:modules){
@@ -279,17 +295,6 @@ public class mod_PowerCraft{
 			if(l!=null){
 				for(PC_Struct2<String, PC_IDataHandler> dataHandler:l){
 					PC_DataHandlerRegistry.regsterDataHandler(dataHandler.a, dataHandler.b);
-				}
-			}
-		}
-		PC_Logger.exitSection();
-		PC_Logger.enterSection("Module MSG Objects Init");
-		PC_MSGRegistry.registerMSGObject(PC_ChunkUpdateForcer.getInstance());
-		for(PC_IModule module:modules){
-			List<PC_IMSG> l = module.initMSGObjects(new ArrayList<PC_IMSG>());
-			if(l!=null){
-				for(PC_IMSG msgObject:l){
-					PC_MSGRegistry.registerMSGObject(msgObject);
 				}
 			}
 		}

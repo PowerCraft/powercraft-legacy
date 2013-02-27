@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresColorPicker;
 import powercraft.management.gres.PC_GresLabel;
@@ -16,6 +15,7 @@ import powercraft.management.gres.PC_GresTextEditMultiline;
 import powercraft.management.gres.PC_GresWidget;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCmo_GuiWeaselMiner extends PCmo_GuiMiner {
 

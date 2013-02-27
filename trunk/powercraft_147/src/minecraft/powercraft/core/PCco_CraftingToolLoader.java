@@ -8,10 +8,10 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
-import powercraft.management.PC_ItemStack;
+import powercraft.management.item.PC_IItemInfo;
+import powercraft.management.item.PC_ItemStack;
 import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.registry.PC_RecipeRegistry;
 
@@ -42,11 +42,8 @@ public class PCco_CraftingToolLoader extends Thread implements PC_IMSG{
                 {
                 	PC_IModule module = ((PC_IItemInfo)i).getModule();
                     List<ItemStack> l = ((PC_IItemInfo)i).getItemStacks(new ArrayList<ItemStack>());
-                    if(i instanceof PC_IMSG){
-                    	Object o = ((PC_IMSG) i).msg(PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL);
-                    	if(o instanceof Boolean && (Boolean)o){
-                    		continue;
-                    	}
+                    if(!((PC_IItemInfo)i).showInCraftingTool()){
+                    	continue;
                     }
                     List<PC_ItemStack> ls;
 
@@ -82,11 +79,8 @@ public class PCco_CraftingToolLoader extends Thread implements PC_IMSG{
                     {
                     	PC_IModule module = ((PC_IItemInfo)b).getModule();
                         List<ItemStack> l = ((PC_IItemInfo)b).getItemStacks(new ArrayList<ItemStack>());
-                        if(b instanceof PC_IMSG){
-                        	Object o = ((PC_IMSG) b).msg(PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL);
-                        	if(o instanceof Boolean && (Boolean)o){
-                        		continue;
-                        	}
+                        if(!((PC_IItemInfo)b).showInCraftingTool()){
+                        	continue;
                         }
                         List<PC_ItemStack> ls;
 

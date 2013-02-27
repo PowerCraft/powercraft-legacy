@@ -15,7 +15,6 @@ import net.minecraft.item.ItemReed;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Facing;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
@@ -24,6 +23,7 @@ import powercraft.management.entity.PC_FakePlayer;
 import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.registry.PC_SoundRegistry;
+import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInventory {
 

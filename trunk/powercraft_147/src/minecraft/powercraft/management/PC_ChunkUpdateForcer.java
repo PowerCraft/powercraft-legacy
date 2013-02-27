@@ -11,8 +11,9 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.tick.PC_ITickHandler;
 
-public class PC_ChunkUpdateForcer implements PC_IDataHandler, PC_IMSG {
+public class PC_ChunkUpdateForcer implements PC_IDataHandler, PC_ITickHandler {
 
 	private static PC_ChunkUpdateForcer instance;
 	private static HashMap<Integer, HashMap<PC_VecI, Integer>> chunks = new HashMap<Integer, HashMap<PC_VecI, Integer>>();
@@ -114,37 +115,34 @@ public class PC_ChunkUpdateForcer implements PC_IDataHandler, PC_IMSG {
 	}
 
 	@Override
-	public Object msg(int msg, Object... obj) {
-		if(msg==PC_MSGRegistry.MSG_TICK_EVENT){
-			for(Entry<Integer, HashMap<PC_VecI, Integer>> e:chunks.entrySet()){
-				World world = DimensionManager.getWorld(e.getKey());
-				if(world!=null){
-					IChunkProvider chunckProvider = world.getChunkProvider();
-					if(chunckProvider!=null){
-						List<PC_VecI> chunckList = new ArrayList<PC_VecI>();
-						for(Entry<PC_VecI, Integer> e2:e.getValue().entrySet()){
-							PC_VecI p = e2.getKey().copy();
-							p.x >>= 4;
-							p.y = 0;
-							p.z >>= 4;
-							int r = e2.getValue();
-							for(int i=-r; i<=r; i++){
-								for(int j=-r; j<=r; j++){
-									PC_VecI p2 = new PC_VecI(p.x+i, 0, p.z+j);
-									if(!chunckList.contains(p2)){
-										chunckList.add(p2);
-									}
+	public void tickEvent() {
+		for(Entry<Integer, HashMap<PC_VecI, Integer>> e:chunks.entrySet()){
+			World world = DimensionManager.getWorld(e.getKey());
+			if(world!=null){
+				IChunkProvider chunckProvider = world.getChunkProvider();
+				if(chunckProvider!=null){
+					List<PC_VecI> chunckList = new ArrayList<PC_VecI>();
+					for(Entry<PC_VecI, Integer> e2:e.getValue().entrySet()){
+						PC_VecI p = e2.getKey().copy();
+						p.x >>= 4;
+						p.y = 0;
+						p.z >>= 4;
+						int r = e2.getValue();
+						for(int i=-r; i<=r; i++){
+							for(int j=-r; j<=r; j++){
+								PC_VecI p2 = new PC_VecI(p.x+i, 0, p.z+j);
+								if(!chunckList.contains(p2)){
+									chunckList.add(p2);
 								}
 							}
 						}
-						for(PC_VecI pos:chunckList){
-							chunckProvider.loadChunk(pos.x, pos.z);
-						}
+					}
+					for(PC_VecI pos:chunckList){
+						chunckProvider.loadChunk(pos.x, pos.z);
 					}
 				}
 			}
 		}
-		return null;
 	}
 	
 }
