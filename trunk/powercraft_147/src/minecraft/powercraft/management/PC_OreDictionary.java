@@ -28,6 +28,11 @@ public class PC_OreDictionary {
         return OreDictionary.getOreNames();
     }
 	
+    public static String getOreName(ItemStack is){
+    	String name = OreDictionary.getOreName(OreDictionary.getOreID(is));
+    	return name.equals("Unknown")?null:name;
+    }
+    
     public static void register(String name, PC_ItemStack ore){
     	List<PC_ItemStack> l;
     	if(ores.containsKey(name)){
