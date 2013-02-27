@@ -15,7 +15,7 @@ public class PCli_TileEntityPrism extends PC_TileEntity implements PC_ITileEntit
 	 * List of prism's sides, flags whether there are attached glass panels.
 	 * starts with up and down, but the order does not really matter here.
 	 */
-	@PC_ClientServerSync
+	@PC_ClientServerSync(clientChangeAble=false)
 	private boolean[] prismSides = { false, false, false, false, false, false, false, false, false, false };
 	
 	public boolean getPrismSide(int side) {

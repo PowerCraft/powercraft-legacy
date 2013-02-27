@@ -6,7 +6,7 @@ import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCli_TileEntityLaserSensor extends PC_TileEntity {
 	
-	@PC_ClientServerSync
+	@PC_ClientServerSync(clientChangeAble=false)
 	private boolean active=false;
 	private int coolDown = 2;
 	

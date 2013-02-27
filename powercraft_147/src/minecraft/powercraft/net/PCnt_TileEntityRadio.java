@@ -18,10 +18,10 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 	@PC_ClientServerSync
 	private String channel = PCnt_RadioManager.default_radio_channel;
 	/** Device type, 0=TX, 1=RX */
-	@PC_ClientServerSync
+	@PC_ClientServerSync(clientChangeAble=false)
 	public int type = 0; // 0=tx, 1=rx
 	/** Device active flag */
-	@PC_ClientServerSync
+	@PC_ClientServerSync(clientChangeAble=false)
 	public boolean active = false;
 	/** Hide the label */
 	@PC_ClientServerSync

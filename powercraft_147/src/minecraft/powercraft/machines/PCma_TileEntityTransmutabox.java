@@ -17,10 +17,10 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
 	
     private ItemStack[] itemStacks = new ItemStack[35];
     private int burnTime = 0;
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
     private int loadTime = 0;
     private boolean finished = true;
-    @PC_ClientServerSync
+    @PC_ClientServerSync(clientChangeAble=false)
     private int needLoadTime = 0;
     @PC_ClientServerSync
     private boolean timeCritical = false;

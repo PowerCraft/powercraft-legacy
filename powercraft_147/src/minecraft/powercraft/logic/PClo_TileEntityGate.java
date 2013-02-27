@@ -9,7 +9,7 @@ import powercraft.management.tileentity.PC_TileEntity;
 
 public class PClo_TileEntityGate extends PC_TileEntity
 {
-	@PC_ClientServerSync
+	@PC_ClientServerSync(clientChangeAble=false)
 	private int type = 0;
 	@PC_ClientServerSync
     private int inp = 0;
