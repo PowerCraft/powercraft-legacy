@@ -71,6 +71,8 @@ public abstract class PC_TileEntity extends TileEntity
 
 			@Override
 			public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_ClientServerSync> fieldWithAnnotation) {
+				if(!worldObj.isRemote && !fieldWithAnnotation.getAnnotation().clientChangeAble())
+					return false;
 				String fieldName = fieldWithAnnotation.getAnnotation().name();
 				if(fieldName.equals("")){
 					fieldName = fieldWithAnnotation.getFieldName();
@@ -94,12 +96,14 @@ public abstract class PC_TileEntity extends TileEntity
     		}else{
     			dataChange(o[i].a, o[i].b);
     			Field f = getSyncFieldWithName(o[i].a);
-    			f.setAccessible(true);
-    			try {
-					f.set(this, o[i].b);
-				} catch (Exception e) {
-					e.printStackTrace();
-				} 
+    			if(f!=null){
+	    			f.setAccessible(true);
+	    			try {
+						f.set(this, o[i].b);
+					} catch (Exception e) {
+						e.printStackTrace();
+					} 
+    			}
     		}
     	}
     	dataRecieved();
@@ -111,6 +115,8 @@ public abstract class PC_TileEntity extends TileEntity
 
 			@Override
 			public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_ClientServerSync> fieldWithAnnotation) {
+				if(worldObj.isRemote && !fieldWithAnnotation.getAnnotation().clientChangeAble())
+					return false;
 				String fieldName = fieldWithAnnotation.getAnnotation().name();
 				if(fieldName.equals("")){
 					fieldName = fieldWithAnnotation.getFieldName();
