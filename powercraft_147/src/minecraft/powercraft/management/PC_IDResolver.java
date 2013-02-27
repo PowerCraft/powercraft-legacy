@@ -52,6 +52,7 @@ public class PC_IDResolver {
 			return;
 		
 		PC_RecipeRegistry.unloadSmeltRecipes();
+		PC_OreDictionary.unloadOres();
 		
 		TreeMap<String, PC_Block> blocks = PC_BlockRegistry.getPCBlocks();
 		TreeMap<String, PC_Item> items = PC_ItemRegistry.getPCItems();
@@ -109,6 +110,7 @@ public class PC_IDResolver {
 		
 		}
 		
+		PC_OreDictionary.loadOres();
 		PC_RecipeRegistry.loadSmeltRecipes();
 		
 	}
@@ -143,6 +145,7 @@ public class PC_IDResolver {
 			return;
 		
 		PC_RecipeRegistry.unloadSmeltRecipes();
+		PC_OreDictionary.unloadOres();
 		
 		TreeMap<String, PC_Block> blocks = PC_BlockRegistry.getPCBlocks();
 		TreeMap<String, PC_Item> items = PC_ItemRegistry.getPCItems();
@@ -172,6 +175,7 @@ public class PC_IDResolver {
 			e.getValue().setID(defaultID(e.getValue()));
 		}
 		
+		PC_OreDictionary.loadOres();
 		PC_RecipeRegistry.loadSmeltRecipes();
 		
 	}
