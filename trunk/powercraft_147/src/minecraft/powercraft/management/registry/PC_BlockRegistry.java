@@ -2,12 +2,15 @@ package powercraft.management.registry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.oredict.OreDictionary;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_Property;
@@ -237,5 +240,28 @@ public final class PC_BlockRegistry {
 		}
 		return false;
 	}
+	
+	public static int getOreID(String name) {
+        return OreDictionary.getOreID(name);
+    }
+	
+    public static String getOreName(int id){
+    	return OreDictionary.getOreName(id);
+    }
+    
+    public static int getOreID(ItemStack itemStack){
+    	return OreDictionary.getOreID(itemStack);
+    }
+    public static ArrayList<ItemStack> getOres(String name){
+    	return OreDictionary.getOres(name);
+    }
+    
+    public static String[] getOreNames(){
+    	return OreDictionary.getOreNames();
+    }
+    
+    public static ArrayList<ItemStack> getOres(int id){
+    	return OreDictionary.getOres(id);
+    }
 	
 }
