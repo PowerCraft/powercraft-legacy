@@ -1743,9 +1743,9 @@ public class PC_Utils implements PC_IPacketHandler
 					Class c = Class.forName(nbtTag2.getString("type"));
 					if(c.isArray()){
 						int size = nbtTag2.getInteger("count");
-						Object[] a = (Object[]) Array.newInstance(c, size);
+						Object a = Array.newInstance(c.getComponentType(), size);
 						for(int i=0; i<size; i++){
-							a[i] = loadFromNBT(nbtTag2, "value["+i+"]");
+							Array.set(a, i, loadFromNBT(nbtTag2, "value["+i+"]"));
 						}
 					}else if(c == ItemStack.class){
 						return ItemStack.loadItemStackFromNBT(nbtTag2);
