@@ -3380,6 +3380,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		if(tag.hasKey("player")){
 			playerConectedID = tag.getString("player");
+		}else{
+			playerConectedID=null;
 		}
 		
 		Inventory.loadInventoryFromNBT(tag, "XtalInv", xtals);
@@ -3576,6 +3578,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				setInfo((String)obj[0], obj[1]);
 			}else if(key.equalsIgnoreCase("launch")){
 				br.setProgram((String)obj[0]);
+				playerConectedID = null;
 				try {
 					br.launch();
 				} catch (ParseException e) {

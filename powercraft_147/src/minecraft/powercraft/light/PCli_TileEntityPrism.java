@@ -22,7 +22,11 @@ public class PCli_TileEntityPrism extends PC_TileEntity implements PC_ITileEntit
 		if (side < 0 || side > 9) {
 			return false;
 		}
-		return prismSides[side];
+		if(prismSides!=null){
+			return prismSides[side];
+		}
+		System.out.println("EROOR");
+		return false;
 	}
 
 	public void setPrismSide(int side, boolean state) {
