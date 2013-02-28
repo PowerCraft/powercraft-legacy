@@ -1728,19 +1728,11 @@ public class PC_Utils implements PC_IPacketHandler {
 					Class c = Class.forName(nbtTag2.getString("type"));
 					if (c.isArray()) {
 						int size = nbtTag2.getInteger("count");
-						try {
-							Object a = Array.newInstance(c.getComponentType(), size);
-							for (int i = 0; i < size; i++) {
-								Array.set(
-										a,
-										i,
-										loadFromNBT(nbtTag2, "value[" + i + "]"));
-							}
-							return a;
-						} catch (Exception e) {
-							e.printStackTrace();
+						Object a = Array.newInstance(c.getComponentType(), size);
+						for (int i = 0; i < size; i++) {
+							Array.set(a, i, loadFromNBT(nbtTag2, "value[" + i + "]"));
 						}
-						return null;
+						return a;
 					} else if (c == ItemStack.class) {
 						return ItemStack.loadItemStackFromNBT(nbtTag2);
 					} else if (c == Boolean.class) {
