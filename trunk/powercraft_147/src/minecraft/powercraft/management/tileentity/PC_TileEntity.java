@@ -199,7 +199,8 @@ public abstract class PC_TileEntity extends TileEntity
 					if(fieldName.equals("")){
 						fieldName = fieldWithAnnotation.getFieldName();
 					}
-					fieldWithAnnotation.setValue(SaveHandler.loadFromNBT(nbtTag, fieldName));
+					Object o = SaveHandler.loadFromNBT(nbtTag, fieldName);
+					fieldWithAnnotation.setValue(o);
 				}
 				return false;
 			}
