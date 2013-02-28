@@ -37,21 +37,14 @@ public class PCma_GuiXPBank implements PC_IGresClient {
 
 		PC_GresWidget hg;
 
-		int labelWidth = 0;
-		labelWidth = Math.max(labelWidth, w.getStringWidth("pc.gui.xpbank.storagePoints"));
-		labelWidth = Math.max(labelWidth, w.getStringWidth("pc.gui.xpbank.currentPlayerLevel"));
-		labelWidth = Math.max(labelWidth, w.getStringWidth("pc.gui.xpbank.withdraw"));
-		labelWidth = Math.max(labelWidth, w.getStringWidth("pc.gui.xpbank.deposit"));
-		labelWidth = Math.max(labelWidth, 80);
-
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT).setMinWidth(200);
-		hg.add(new PC_GresLabel("pc.gui.xpbank.storagePoints").setMinWidth(labelWidth).setAlignH(PC_GresAlign.RIGHT));
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
+		hg.add(new PC_GresLabel("pc.gui.xpbank.storagePoints").setAlignH(PC_GresAlign.RIGHT));
 		hg.add(txStoragePoints = new PC_GresLabel(xpbank.getXP() + "").setColor(PC_GresWidget.textColorEnabled, 0x009900));
 		hg.add(new PC_GresLabel("pc.gui.xpbank.xpUnit"));
 		w.add(hg);
 
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT).setMinWidth(200);
-		hg.add(new PC_GresLabel("pc.gui.xpbank.withdraw").setMinWidth(labelWidth).setAlignH(PC_GresAlign.RIGHT));
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
+		hg.add(new PC_GresLabel("pc.gui.xpbank.withdraw").setAlignH(PC_GresAlign.RIGHT));
 
 		hg.add(new PC_GresButton("pc.gui.xpbank.oneLevel").setId(10).setMinWidth(50).setWidgetMargin(2));
 		hg.add(new PC_GresButton("pc.gui.xpbank.all").setId(11).setMinWidth(50).setWidgetMargin(2));
@@ -59,14 +52,14 @@ public class PCma_GuiXPBank implements PC_IGresClient {
 
 		w.add(new PC_GresSeparatorH(0, 5).setLineColor(0x999999));
 
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT).setMinWidth(200);
-		hg.add(new PC_GresLabel("pc.gui.xpbank.currentPlayerLevel").setMinWidth(labelWidth).setAlignH(PC_GresAlign.RIGHT));
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
+		hg.add(new PC_GresLabel("pc.gui.xpbank.currentPlayerLevel").setAlignH(PC_GresAlign.RIGHT));
 		hg.add(txPlayerLevels = new PC_GresLabel(xpbank.getXP() + "").setColor(PC_GresWidget.textColorEnabled, 0x990099));
 		hg.add(new PC_GresLabel("pc.gui.xpbank.xpLevels"));
 		w.add(hg);
 
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT).setMinWidth(200);
-		hg.add(new PC_GresLabel("pc.gui.xpbank.deposit").setMinWidth(labelWidth).setAlignH(PC_GresAlign.RIGHT));
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
+		hg.add(new PC_GresLabel("pc.gui.xpbank.deposit").setAlignH(PC_GresAlign.RIGHT));
 
 		hg.add(new PC_GresButton("pc.gui.xpbank.oneLevel").setId(20).setMinWidth(50).setWidgetMargin(2));
 		hg.add(new PC_GresButton("pc.gui.xpbank.all").setId(21).setMinWidth(50).setWidgetMargin(2));

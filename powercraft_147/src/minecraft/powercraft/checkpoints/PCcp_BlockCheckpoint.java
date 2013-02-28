@@ -72,8 +72,10 @@ public class PCcp_BlockCheckpoint extends PC_Block implements PC_IItemInfo {
 
 	@Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9){
-		if(!world.isRemote && entityplayer.isSneaking() && GameInfo.isPlayerOPOrOwner(entityplayer)){
-			PC_GresRegistry.openGres("Checkpoint", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+		if(entityplayer.isSneaking()){
+			if(!world.isRemote && GameInfo.isPlayerOPOrOwner(entityplayer)){
+				PC_GresRegistry.openGres("Checkpoint", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+			}
 			return true;
 		}
 		if(world.isRemote){
