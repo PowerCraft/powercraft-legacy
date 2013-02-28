@@ -1736,9 +1736,11 @@ public class PC_Utils implements PC_IPacketHandler {
 										i,
 										loadFromNBT(nbtTag2, "value[" + i + "]"));
 							}
+							return a;
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
+						return null;
 					} else if (c == ItemStack.class) {
 						return ItemStack.loadItemStackFromNBT(nbtTag2);
 					} else if (c == Boolean.class) {
