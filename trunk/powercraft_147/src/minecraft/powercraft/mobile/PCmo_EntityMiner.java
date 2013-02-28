@@ -1895,7 +1895,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	/**
 	 * @return is mining in progress
 	 */
-	private boolean isMiningInProgress() {
+	public boolean isMiningInProgress() {
 		for (int counter : st.mineCounter) {
 			if (counter != 0) {
 				return true;
@@ -1907,7 +1907,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	/**
 	 * @return is mining finished
 	 */
-	private boolean isMiningDone() {
+	public boolean isMiningDone() {
 		return !isMiningInProgress();
 	}
 

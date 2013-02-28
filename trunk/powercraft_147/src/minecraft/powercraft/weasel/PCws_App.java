@@ -17,6 +17,7 @@ import powercraft.management.item.PC_Item;
 import powercraft.management.item.PC_ItemStack;
 import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
+import powercraft.management.recipes.PC_SmeltRecipe;
 import powercraft.management.registry.PC_BlockRegistry;
 
 public class PCws_App implements PC_IModule {
@@ -134,6 +135,8 @@ public class PCws_App implements PC_IModule {
 				"STS", 
 				"SSS",
 					'B', Block.stoneButton, 'S', new PC_ItemStack(Block.stoneSingleSlab, 1, 0), 'T', new PC_ItemStack(weaselTransistor,1,0)));
+		
+		recipes.add(new PC_SmeltRecipe(new PC_ItemStack(ingotSilicon), new PC_ItemStack(silicon), 0));
 		
 		return recipes;
 	}

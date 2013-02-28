@@ -71,25 +71,25 @@ public class NEIPowerCraftConfig implements IConfigureNEI, PC_IMSG {
 	        	}
 	        }
 			if(show){
-				API.hideItem(block.blockID);
-			}else{
 				ItemInfo.excludeIds.remove(Integer.valueOf(block.blockID));
+			}else{
+				API.hideItem(block.blockID);
 			}
 		}
 		
 		for(PC_Item item:items.values()){
 			if(item.showInCraftingTool()){
-				API.hideItem(item.itemID);
-			}else{
 				ItemInfo.excludeIds.remove(Integer.valueOf(item.itemID));
+			}else{
+				API.hideItem(item.itemID);
 			}
 		}
 		
 		for(PC_ItemArmor itemArmor:itemArmors.values()){
 			if(itemArmor.showInCraftingTool()){
-				API.hideItem(itemArmor.itemID);
-			}else{
 				ItemInfo.excludeIds.remove(Integer.valueOf(itemArmor.itemID));
+			}else{
+				API.hideItem(itemArmor.itemID);
 			}
 		}
 		

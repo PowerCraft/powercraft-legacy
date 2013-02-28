@@ -127,6 +127,8 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 	@Override
 	public void run() {
 		if (!hasError()) {
+			if(!miner.isMiningInProgress())
+				return;
 			engine.setStatementsToRun(500);
 			try {
 
