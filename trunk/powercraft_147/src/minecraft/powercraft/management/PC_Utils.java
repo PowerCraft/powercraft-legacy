@@ -1729,8 +1729,7 @@ public class PC_Utils implements PC_IPacketHandler {
 					if (c.isArray()) {
 						int size = nbtTag2.getInteger("count");
 						try {
-							Object a = c.getConstructor(int.class).newInstance(
-									size);
+							Object a = Array.newInstance(c.getComponentType(), size);
 							for (int i = 0; i < size; i++) {
 								Array.set(
 										a,
