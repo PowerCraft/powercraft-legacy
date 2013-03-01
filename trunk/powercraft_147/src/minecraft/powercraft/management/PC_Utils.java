@@ -636,15 +636,7 @@ public class PC_Utils implements PC_IPacketHandler {
 		}
 
 		public static int reverseSide(int l) {
-			if (l == 0) {
-				l = 2;
-			} else if (l == 2) {
-				l = 0;
-			} else if (l == 1) {
-				l = 3;
-			} else if (l == 3) {
-				l = 1;
-			}
+			l=(l+2)%4;
 
 			return l;
 		}
