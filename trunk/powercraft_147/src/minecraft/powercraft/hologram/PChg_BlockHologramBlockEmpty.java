@@ -67,16 +67,17 @@ public class PChg_BlockHologramBlockEmpty extends PC_Block {
     			fittingID=entry.getKey();
     		}
     	}
-    	if(fittingID==0) return;
-    	if(fittingID==PChg_App.hologramBlockEmpty.blockID){
-    		PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
-    		return;
-    	}
+    	if(fittingID==0) fittingID = PChg_App.hologramBlockEmpty.blockID;
+
     	Block renderingBlock = Block.blocksList[fittingID];
     	PC_Renderer.tessellatorDraw();
     	PC_Renderer.resetTerrain(true);
     	PC_Renderer.tessellatorStartDrawingQuads();
-        PC_Renderer.renderBlockByRenderType(renderer, renderingBlock, x, y, z);
+    	if(fittingID==PChg_App.hologramBlockEmpty.blockID){
+    		PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
+    	}else{
+            PC_Renderer.renderBlockByRenderType(renderer, renderingBlock, x, y, z);	
+    	}
         PC_Renderer.tessellatorDraw();
         PC_Renderer.tessellatorStartDrawingQuads();
     }
