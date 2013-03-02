@@ -3,8 +3,8 @@ package powercraft.management.registry;
 import net.minecraft.src.Entity;
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.mod_PowerCraft;
+import powercraft.launcher.PC_Property;
 import powercraft.management.PC_IModule;
-import powercraft.management.PC_Property;
 
 public class PC_EntityRegistry {
 	

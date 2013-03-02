@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import powercraft.launcher.PC_Logger;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_IModule;
-import powercraft.management.PC_Logger;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.registry.PC_ModuleRegistry;
