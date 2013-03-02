@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
-import powercraft.launcher.PC_Launcher;
 import powercraft.management.PC_ChunkUpdateForcer;
 import powercraft.management.PC_ClientPacketHandler;
 import powercraft.management.PC_ClientUtils;
@@ -222,7 +221,6 @@ public class mod_PowerCraft extends BaseMod {
 	}
 
 	public void preInit() {
-		new PC_Launcher().preInit();
 		PC_ClientUtils.create();
 		PC_Logger.init(GameInfo.getPowerCraftFile());
 		PC_Logger.enterSection("PreInit");
