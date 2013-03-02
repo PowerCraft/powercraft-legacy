@@ -142,7 +142,7 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 
 	private void putSlotUnderMouse(int x, int y){
 		for(int i=0; i<inventorySlots.inventorySlots.size(); i++){
-			Slot s = (Slot)inventorySlots.inventorySlots.get(0);
+			Slot s = (Slot)inventorySlots.inventorySlots.get(i);
 			s.xDisplayPosition = x - 999;
 			s.yDisplayPosition = y - 999;
 		}
