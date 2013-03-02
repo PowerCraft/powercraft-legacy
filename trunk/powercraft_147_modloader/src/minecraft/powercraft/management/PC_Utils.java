@@ -1684,13 +1684,12 @@ public class PC_Utils implements PC_IPacketHandler
 			if(value == null){
 				return;
 			}else if(value.getClass().isArray()){
-				Object[] a = (Object[])value;
 				NBTTagCompound nbtTag2 = new NBTTagCompound();
-				int size = a.length;
+				int size = Array.getLength(value);
 				nbtTag2.setInteger("count", size);
-				nbtTag2.setString("type", a.getClass().getName());
+				nbtTag2.setString("type", value.getClass().getName());
 				for(int i=0; i<size; i++){
-					saveToNBT(nbtTag2, "value["+i+"]", a[i]);
+					saveToNBT(nbtTag2, "value["+i+"]", Array.get(value, i));
 				}
 				nbtTag.setCompoundTag(key, nbtTag2);
 			}else if(value instanceof PC_INBT){
