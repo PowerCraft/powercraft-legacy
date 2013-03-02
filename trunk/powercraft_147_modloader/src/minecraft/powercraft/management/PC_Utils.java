@@ -563,8 +563,8 @@ public class PC_Utils implements PC_IPacketHandler
 		
 		        if (c.isAnnotationPresent(PC_Shining.class))
 		        {
-		            Block bon = (Block)PC_ReflectHelper.getFieldsWithAnnotation(c, PC_Shining.ON.class, c).get(0);
-		            Block boff = (Block)PC_ReflectHelper.getFieldsWithAnnotation(c, PC_Shining.OFF.class, c).get(0);
+		            Block bon = (Block)PC_ReflectHelper.getFieldsWithAnnotation(c, c, PC_Shining.ON.class).get(0);
+		            Block boff = (Block)PC_ReflectHelper.getFieldsWithAnnotation(c, c, PC_Shining.OFF.class).get(0);
 		
 		            if ((b == bon && !on) || (b == boff && on))
 		            {
