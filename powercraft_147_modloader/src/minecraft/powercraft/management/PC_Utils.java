@@ -54,6 +54,8 @@ import net.minecraft.src.TileEntityMobSpawner;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldInfo;
 import net.minecraft.src.mod_PowerCraft;
+import powercraft.launcher.PC_Logger;
+import powercraft.launcher.PC_Property;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.block.PC_Block;
 import powercraft.management.block.PC_ItemBlock;

@@ -20,6 +20,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import powercraft.launcher.PC_Logger;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_ModuleRegistry;

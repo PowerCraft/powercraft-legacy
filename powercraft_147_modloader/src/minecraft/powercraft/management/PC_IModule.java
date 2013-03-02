@@ -3,6 +3,7 @@ package powercraft.management;
 import java.util.List;
 
 import net.minecraft.src.Entity;
+import powercraft.launcher.PC_Property;
 import powercraft.management.recipes.PC_IRecipe;
 
 public interface PC_IModule {

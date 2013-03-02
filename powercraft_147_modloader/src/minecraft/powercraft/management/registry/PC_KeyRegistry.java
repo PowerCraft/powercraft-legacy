@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.src.EntityPlayer;
-import powercraft.management.PC_Property;
+import powercraft.launcher.PC_Property;
 
 public final class PC_KeyRegistry {
 
