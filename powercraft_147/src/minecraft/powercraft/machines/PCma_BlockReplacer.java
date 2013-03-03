@@ -14,10 +14,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.hologram.PChg_TileEntityHologramBlock;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
@@ -29,10 +29,10 @@ import powercraft.management.registry.PC_ItemRegistry;
 import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 
-@PC_BlockInfo(tileEntity=PCma_TileEntityReplacer.class)
+@PC_BlockInfo(tileEntity=PCma_TileEntityReplacer.class) //this is an Annotation; it can contain Data; here it references to the Blocks TileEntity
 public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 {
-    private static final int TXDOWN = 109, TXTOP = 153, TXSIDE = 137;
+    private static final int TXDOWN = 109, TXTOP = 153, TXSIDE = 137; //These are the sides and their IDs in the texture file
 
     public PCma_BlockReplacer(int id)
     {
@@ -81,9 +81,9 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
     @Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
     {
-        ItemStack ihold = entityplayer.getCurrentEquippedItem();
+        ItemStack ihold = entityplayer.getCurrentEquippedItem(); //This is the Item which the player has currently equipped
 
-        PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
+        PCma_TileEntityReplacer tileentity = GameInfo.<PCma_TileEntityReplacer>getTE(world, i, j, k); //This brings us the TileEntity of the current Block
         
         if (ihold != null)
         {
@@ -145,13 +145,13 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             }
         }
 
-        if (world.isRemote)
+        if (world.isRemote) //this says whether we're on server or not if isRemote==true then we're on client
         {
-            return true;
+            return true; //on the server there can't be a gui that's why we interrupt it before the gui get's opened
         }
 
-        PC_GresRegistry.openGres("Replacer", entityplayer, tileentity);
-        return true;
+        PC_GresRegistry.openGres("Replacer", entityplayer, tileentity); // This opens the Gui
+        return true; // If we return true, then this click is "counted" else it's like we've ignored it
     }
 
     @Override
