@@ -17,9 +17,9 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraft.src.mod_PowerCraft;
 import powercraft.launcher.PC_Logger;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.launcher.PC_Property;
 import powercraft.management.PC_ClientUtils;
-import powercraft.management.PC_IModule;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils.GameInfo;
@@ -46,10 +46,10 @@ public class PC_RegistryClient extends PC_RegistryServer {
 	}
 	
 	
-	private HashMap<PC_IModule, HashMap<String, PC_Property>> moduleTranslation = new HashMap<PC_IModule, HashMap<String, PC_Property>>();
+	private HashMap<PC_ModuleObject, HashMap<String, PC_Property>> moduleTranslation = new HashMap<PC_ModuleObject, HashMap<String, PC_Property>>();
 
 	@Override
-	protected void registerLanguage(PC_IModule module, String lang,
+	protected void registerLanguage(PC_ModuleObject module, String lang,
 			LangEntry[] translations) {
 		HashMap<String, PC_Property> langs;
 		if (moduleTranslation.containsKey(module))
@@ -69,15 +69,14 @@ public class PC_RegistryClient extends PC_RegistryServer {
 				}
 			}
 
-			mod_PowerCraft.addStringLocalization(trans.a, lang,
-					translation.getString(trans.a, trans.b, trans.c));
+			ModLoader.addLocalization(trans.a, lang, translation.getString(trans.a, trans.b, trans.c));
 
 		}
 	}
 
 	@Override
-	protected void loadLanguage(PC_IModule module) {
-		final PC_IModule m = module;
+	protected void loadLanguage(PC_ModuleObject module) {
+		final PC_ModuleObject m = module;
 		File folder = new File(Minecraft.getMinecraftDir(),
 				GameInfo.getPowerCraftFile() + "lang/");
 
@@ -154,12 +153,12 @@ public class PC_RegistryClient extends PC_RegistryServer {
 				}
 			}
 		} else {
-			mod_PowerCraft.addStringLocalization(key, lang, prop.getString());
+			ModLoader.addLocalization(key, lang, prop.getString());
 		}
 	}
 
 	@Override
-	protected void saveLanguage(PC_IModule module) {
+	protected void saveLanguage(PC_ModuleObject module) {
 		if (!moduleTranslation.containsKey(module))
 			return;
 		Set<Entry<String, PC_Property>> langs = moduleTranslation.get(module)

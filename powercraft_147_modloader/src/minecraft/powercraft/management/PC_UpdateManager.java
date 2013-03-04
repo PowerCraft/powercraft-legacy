@@ -21,6 +21,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import powercraft.launcher.PC_Logger;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_ModuleRegistry;
@@ -99,10 +100,10 @@ public class PC_UpdateManager {
 	
 	private static class ThreadDownloadTranslations extends Thread{
 		private String url;
-	    private PC_IModule module;
+	    private PC_ModuleObject module;
 	    private int langVersion;
 
-	    public ThreadDownloadTranslations(String url, PC_IModule module, int langVersion)
+	    public ThreadDownloadTranslations(String url, PC_ModuleObject module, int langVersion)
 	    {
 	        this.url = url;
 	        this.module = module;
@@ -210,36 +211,9 @@ public class PC_UpdateManager {
                     String sLangVersion = element.getAttribute("langVersion");
                     String sLangLink = element.getAttribute("langLink");
                     String sInfo = element.getTextContent();
-                    PC_IModule module = PC_ModuleRegistry.getModule(sModule);
+                    PC_ModuleObject module = PC_ModuleRegistry.getModule(sModule);
                     
-                    if (module != null)
-                    {
-                        int langVersion = -1;
-
-                        try
-                        {
-                            langVersion = Integer.parseInt(sLangVersion);
-                        }
-                        catch (NumberFormatException e) {}
-
-                        if (new Version(sModuleVersion).compareTo(new Version(module.getVersion()))>0)
-                        {
-                        	if(!sModuleVersion.equals(PC_GlobalVariables.config.getString("modules."+module.getName()+".lastIgnoredVersion"))){
-                        		updateModules.add(new PC_Struct2<PC_IModule, String>(module, sInfo.trim()));
-                            	PC_GlobalVariables.showUpdateWindow = true;
-                        	}
-                        }
-
-                        if (langVersion > PC_GlobalVariables.config.getInt("modules."+module.getName()+".langVersion", 0))
-                        {
-                            new ThreadDownloadTranslations(sLangLink, module, langVersion).start();
-                        }
-                    }else{
-                    	if(!sModuleVersion.equals(PC_GlobalVariables.config.getString("modules."+sModule+".lastIgnoredVersion"))){
-                    		newModules.add(new PC_Struct3<String, String, String>(sModule, sModuleVersion, sInfo.trim()));
-                    		PC_GlobalVariables.showUpdateWindow = true;
-                    	}
-                    }
+                    
                 }
             }
         }
