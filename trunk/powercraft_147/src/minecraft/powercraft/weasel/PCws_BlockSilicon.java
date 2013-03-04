@@ -1,15 +1,10 @@
 package powercraft.weasel;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.IBlockAccess;
-import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Property;
 import powercraft.management.PC_VecI;
-import powercraft.management.block.PC_Block;
 import powercraft.management.block.PC_BlockOre;
 import powercraft.management.registry.PC_MSGRegistry;
 

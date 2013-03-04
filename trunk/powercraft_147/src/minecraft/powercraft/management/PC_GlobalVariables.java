@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.tileentity.TileEntity;
+import powercraft.launcher.PC_Logger;
+import powercraft.launcher.PC_Property;
 import powercraft.management.PC_Utils.GameInfo;
 
 public class PC_GlobalVariables {

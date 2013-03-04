@@ -52,6 +52,8 @@ import net.minecraft.world.EnumGameType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
+import powercraft.launcher.PC_Logger;
+import powercraft.launcher.PC_Property;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.block.PC_Block;
 import powercraft.management.block.PC_ItemBlock;
@@ -63,13 +65,13 @@ import powercraft.management.item.PC_ItemArmor;
 import powercraft.management.item.PC_ItemStack;
 import powercraft.management.recipes.PC_SmeltRecipe;
 import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_DataHandlerRegistry;
 import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_ItemRegistry;
 import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
-import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.registry.PC_RecipeRegistry;
@@ -990,11 +992,11 @@ public class PC_Utils implements PC_IPacketHandler {
     	}
 		
 		public static CreativeTabs getCreativeTab(CreativeTabs _default) {
-			return mod_PowerCraft.getInstance().creativeTab;
+			return PC_ManagementModule.getInstance().creativeTab;
 		}
 
 		public static boolean isPlayerOPOrOwner(EntityPlayer player) {
-			if (mcs().getConfigurationManager().getOps().contains(player))
+			if (mcs().getConfigurationManager().getOps().contains(player.username.trim().toLowerCase()))
 				return true;
 			return GameInfo.mcs().getServerOwner() == player.getEntityName();
 		}

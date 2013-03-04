@@ -2,14 +2,11 @@ package powercraft.itemstorage;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_VecI;
-import powercraft.management.inventory.PC_IInventoryBackground;
 import powercraft.management.inventory.PC_IInventoryClickHandler;
-import powercraft.management.inventory.PC_Slot;
 
 public class PCis_HightCompressorInventory extends PCis_NormalCompressorInventory implements PC_IInventoryClickHandler {
 	

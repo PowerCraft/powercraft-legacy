@@ -15,7 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import powercraft.management.PC_Property;
+import powercraft.launcher.PC_Property;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.block.PC_Block;

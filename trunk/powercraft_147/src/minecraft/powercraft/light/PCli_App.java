@@ -7,11 +7,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import powercraft.launcher.PC_Property;
 import powercraft.management.PC_IDataHandler;
-import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.annotation.PC_FieldObject;
 import powercraft.management.block.PC_Block;
@@ -21,7 +20,6 @@ import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.recipes.PC_ShapelessRecipes;
 import powercraft.management.registry.PC_BlockRegistry;
-import powercraft.management.tick.PC_ITickHandler;
 
 public class PCli_App implements PC_IModule
 {

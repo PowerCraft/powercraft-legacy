@@ -9,7 +9,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.registry.PC_ItemRegistry;
 
 public class PCco_DeleteAllPlayerStacks implements PC_IPacketHandler

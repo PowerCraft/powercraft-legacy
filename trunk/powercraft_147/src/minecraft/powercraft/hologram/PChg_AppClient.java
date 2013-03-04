@@ -18,7 +18,6 @@ import org.lwjgl.opengl.GL11;
 
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_IClientModule;
-import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_FieldObject;

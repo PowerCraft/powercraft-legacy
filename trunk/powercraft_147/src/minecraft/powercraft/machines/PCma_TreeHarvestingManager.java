@@ -21,7 +21,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import powercraft.management.PC_Logger;
+import powercraft.launcher.PC_Logger;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils.GameInfo;

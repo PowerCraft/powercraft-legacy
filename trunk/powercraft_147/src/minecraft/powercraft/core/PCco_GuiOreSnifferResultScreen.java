@@ -1,30 +1,26 @@
 package powercraft.core;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_VecI;
 import powercraft.management.gres.PC_GresBaseWithInventory;
 import powercraft.management.gres.PC_GresInventory;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresProgressBar;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.inventory.PC_Slot;
 import powercraft.management.inventory.PC_SlotNoPickup;
 import powercraft.management.tileentity.PC_TileEntity;
-import powercraft.management.PC_VecI;
 
 public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_TileEntity> implements PC_IGresClient {
 

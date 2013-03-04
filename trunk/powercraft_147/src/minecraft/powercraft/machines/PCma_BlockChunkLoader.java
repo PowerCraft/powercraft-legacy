@@ -3,6 +3,7 @@ package powercraft.machines;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -36,17 +37,25 @@ public class PCma_BlockChunkLoader extends PC_Block implements PC_I3DRecipeHandl
 		return new PCma_TileEntityChunkLoader();
 	}
 
+	@Override
 	public int quantityDropped(Random par1Random){
         return 0;
     }
 	
+	@Override
 	public boolean isOpaqueCube(){
         return false;
     }
 	
+	@Override
 	public boolean renderAsNormalBlock(){
         return false;
     }
+	
+	@Override
+	public int idPicked(World par1World, int par2, int par3, int par4){
+		return Block.glass.blockID;
+	}
 	
 	@Override
 	public boolean foundStructAt(EntityPlayer entityplayer, World world, PC_Struct2<PC_VecI, Integer> structStart) {

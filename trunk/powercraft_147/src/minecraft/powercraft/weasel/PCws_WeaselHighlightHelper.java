@@ -4,7 +4,7 @@ package powercraft.weasel;
 import java.util.ArrayList;
 import java.util.List;
 
-import powercraft.management.PC_Property;
+import powercraft.launcher.PC_Property;
 import powercraft.management.gres.PC_GresTextEditMultiline;
 import powercraft.management.gres.PC_GresTextEditMultiline.AutoAdd;
 import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
