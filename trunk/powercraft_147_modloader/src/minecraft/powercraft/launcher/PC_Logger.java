@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.launcher;
 
 import java.io.File;
 import java.io.PrintWriter;

@@ -8,8 +8,9 @@ import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
-import net.minecraft.src.ItemStack;
+import net.minecraft.src.ModLoader;
 import net.minecraft.src.mod_PowerCraft;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.launcher.PC_Property;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IModule;
@@ -31,8 +32,8 @@ public final class PC_BlockRegistry {
 
 	protected static TreeMap<String, PC_Block> blocks = new TreeMap<String, PC_Block>();
 	
-	public static <T extends PC_Block> T register(PC_IModule module, Class<T> blockClass, Class<? extends PC_ItemBlock> itemBlockClass, Class<? extends PC_TileEntity> tileEntityClass){
-		final PC_Property config = PC_ModuleRegistry.getConfig(module).getProperty(blockClass.getSimpleName(), null, null);
+	public static <T extends PC_Block> T register(PC_ModuleObject module, Class<T> blockClass, Class<? extends PC_ItemBlock> itemBlockClass, Class<? extends PC_TileEntity> tileEntityClass){
+		final PC_Property config = module.getConfig().getProperty(blockClass.getSimpleName(), null, null);
 		try {
 			
 			if(!config.getBoolean("enabled", true)){
@@ -70,7 +71,7 @@ public final class PC_BlockRegistry {
 				blockOff.setTextureFile(PC_TextureRegistry.getTerrainFile(module));
 				PC_MSGRegistry.registerMSGObject(blockOff);
 				blocks.put(blockClass.getSimpleName() + ".Off", blockOff);
-				mod_PowerCraft.registerBlock(blockOff, null);
+				registerBlock(blockOff, null);
 				ItemBlock itemBlock = (ItemBlock) Item.itemsList[blockOff.blockID];
 				blockOff.setItemBlock(itemBlock);
 			} else {
@@ -132,7 +133,7 @@ public final class PC_BlockRegistry {
 			});
 			block.msg(PC_MSGRegistry.MSG_LOAD_FROM_CONFIG, config);
 
-			mod_PowerCraft.registerBlock(block, itemBlockClass);
+			registerBlock(block, itemBlockClass);
 
 			ItemBlock itemBlock = (ItemBlock) Item.itemsList[block.blockID];
 
@@ -160,7 +161,7 @@ public final class PC_BlockRegistry {
 				if (PC_ITileEntityRenderer.class.isAssignableFrom(tileEntityClass))
 					PC_RegistryServer.getInstance().tileEntitySpecialRenderer(tileEntityClass);
 				else
-					mod_PowerCraft.registerTileEntity(tileEntityClass);
+					ModLoader.registerTileEntity(tileEntityClass, tileEntityClass.getName());
 			}
 
 			return (T)block;
@@ -171,7 +172,14 @@ public final class PC_BlockRegistry {
 		return null;
 	}
 	
-	public static <T extends PC_Block> T register(PC_IModule module, Class<T> blockClass){
+	private static void registerBlock(PC_Block block, Class<? extends ItemBlock> itemBlock) {
+		if(itemBlock==null)
+			ModLoader.registerBlock(block);
+		else
+			ModLoader.registerBlock(block, itemBlock);
+	}
+
+	public static <T extends PC_Block> T register(PC_ModuleObject module, Class<T> blockClass){
 		
 		Class<? extends PC_ItemBlock> itemBlockClass = null;
 		Class<? extends PC_TileEntity> tileEntityClass = null;

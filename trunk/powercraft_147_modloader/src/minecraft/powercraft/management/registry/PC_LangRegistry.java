@@ -1,26 +1,26 @@
 package powercraft.management.registry;
 
 import net.minecraft.src.StringTranslate;
-import powercraft.management.PC_IModule;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.management.PC_Struct3;
 
 public final class PC_LangRegistry {
 	
-	public static void registerLanguageForLang(PC_IModule module,
+	public static void registerLanguageForLang(PC_ModuleObject module,
 			String lang, LangEntry... translations) {
 		PC_RegistryServer.getInstance().registerLanguage(module, lang, translations);
 	}
 
-	public static void registerLanguage(PC_IModule module,
+	public static void registerLanguage(PC_ModuleObject module,
 			LangEntry... translations) {
 		registerLanguageForLang(module, "en_US", translations);
 	}
 
-	public static void loadLanguage(PC_IModule module) {
+	public static void loadLanguage(PC_ModuleObject module) {
 		PC_RegistryServer.getInstance().loadLanguage(module);
 	}
 
-	public static void saveLanguage(PC_IModule module) {
+	public static void saveLanguage(PC_ModuleObject module) {
 		PC_RegistryServer.getInstance().saveLanguage(module);
 	}
 

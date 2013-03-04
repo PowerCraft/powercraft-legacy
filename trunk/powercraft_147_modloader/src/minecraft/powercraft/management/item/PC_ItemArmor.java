@@ -7,10 +7,10 @@ import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IIDChangeAble;
 import powercraft.management.PC_IMSG;
-import powercraft.management.PC_IModule;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.reflect.PC_ReflectHelper;
 
@@ -18,7 +18,7 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
 {
     public static final int HEAD = 0, TORSO = 1, LEGS = 2, FEET = 3;
 
-    private PC_IModule module;
+    private PC_ModuleObject module;
     private boolean canSetTextureFile = true;
     private String currentTexture = "/gui/items.png";
     private String armorTexture;
@@ -60,12 +60,12 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
     	}
     }
     
-    public PC_IModule getModule()
+    public PC_ModuleObject getModule()
     {
         return module;
     }
 
-    public void setModule(PC_IModule module)
+    public void setModule(PC_ModuleObject module)
     {
         this.module = module;
     }

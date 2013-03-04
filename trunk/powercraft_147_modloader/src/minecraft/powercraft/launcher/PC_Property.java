@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.launcher;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -294,6 +294,5 @@ public class PC_Property {
 		PC_Property prop = getProperty(key, s, null);
 		prop.setValue(s, prop.getComment());
 	}
-	
 	
 }

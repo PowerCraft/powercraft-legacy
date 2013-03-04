@@ -13,14 +13,13 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IIDChangeAble;
 import powercraft.management.PC_IMSG;
-import powercraft.management.PC_IModule;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
+import powercraft.management.PC_VecI;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.renderer.PC_Renderer;
@@ -29,7 +28,7 @@ import powercraft.management.tileentity.PC_TileEntity;
 public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IIDChangeAble
 {
     private boolean canSetTextureFile = true;
-    private PC_IModule module;
+    private PC_ModuleObject module;
 	private BlockInfo replaced = new BlockInfo();
 	private BlockInfo thisBlock;
 	private String textureFile = "/terrain.png";
@@ -79,11 +78,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 
     public abstract Object msg(IBlockAccess world, PC_VecI pos, int msg, Object...obj);
 
-    public void setModule(PC_IModule module){
+    public void setModule(PC_ModuleObject module){
     	this.module = module;
     }
     
-    public PC_IModule getModule(){
+    public PC_ModuleObject getModule(){
     	return module;
     }
     
