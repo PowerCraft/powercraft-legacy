@@ -2,9 +2,10 @@ package powercraft.management;
 
 import java.io.File;
 import java.security.cert.Certificate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import powercraft.launcher.mod_PowerCraft;
 
 import com.google.common.eventbus.EventBus;
 

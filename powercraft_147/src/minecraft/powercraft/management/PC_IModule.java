@@ -3,8 +3,8 @@ package powercraft.management;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import powercraft.launcher.PC_Property;
 import powercraft.management.recipes.PC_IRecipe;
-import powercraft.management.tick.PC_ITickHandler;
 
 public interface PC_IModule {
 

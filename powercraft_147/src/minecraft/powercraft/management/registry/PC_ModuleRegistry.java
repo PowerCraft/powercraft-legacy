@@ -9,10 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import powercraft.launcher.PC_Logger;
+import powercraft.launcher.PC_ModuleObject;
+import powercraft.launcher.PC_Property;
 import powercraft.management.PC_DummyModContainer;
 import powercraft.management.PC_IModule;
-import powercraft.management.PC_Logger;
-import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import powercraft.management.item.PC_IItemInfo;
@@ -82,7 +83,7 @@ public final class PC_ModuleRegistry {
 		return null;
 	}
 	
-	public static PC_Property getConfig(PC_IModule module) {
+	public static PC_Property getConfig(PC_ModuleObject module) {
 		if (modules.containsKey(module.getName())) {
 			return modules.get(module.getName()).b;
 		}

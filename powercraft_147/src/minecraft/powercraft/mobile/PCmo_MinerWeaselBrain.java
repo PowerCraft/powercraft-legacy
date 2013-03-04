@@ -29,9 +29,7 @@ import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.exception.WeaselRuntimeExceptionFunctionNotExist;
 import weasel.lang.Instruction;
-import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 

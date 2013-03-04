@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 import powercraft.management.PC_Utils.SaveHandler;
-import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.tick.PC_ITickHandler;
 
 public class PC_ChunkUpdateForcer implements PC_IDataHandler, PC_ITickHandler {

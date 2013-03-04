@@ -8,7 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.World;
-import powercraft.management.PC_Logger;
+import powercraft.launcher.PC_Logger;
 import powercraft.management.PC_VecI;
 import powercraft.management.reflect.PC_ReflectHelper;
 

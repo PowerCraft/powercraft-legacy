@@ -1,18 +1,16 @@
 package powercraft.net;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresProgressBar;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCnt_GuiSensor implements PC_IGresClient {

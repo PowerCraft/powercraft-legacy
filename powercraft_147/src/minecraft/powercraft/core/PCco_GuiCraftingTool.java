@@ -11,8 +11,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_VecI;
 import powercraft.management.gres.PC_GresButton;
 import powercraft.management.gres.PC_GresInventory;
 import powercraft.management.gres.PC_GresLabel;
@@ -21,13 +20,12 @@ import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresTab;
 import powercraft.management.gres.PC_GresTextEdit;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.registry.PC_ItemRegistry;
 import powercraft.management.tileentity.PC_TileEntity;
-import powercraft.management.PC_VecI;
 
 public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements PC_IGresClient {
 

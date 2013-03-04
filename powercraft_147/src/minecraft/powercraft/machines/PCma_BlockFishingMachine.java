@@ -92,6 +92,11 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 		return false;
 	}
 	
+	@Override
+	public int idPicked(World par1World, int par2, int par3, int par4){
+		return Block.blockSteel.blockID;
+	}
+	
 	public static boolean isStructOK(World world, PC_VecI pos){
 		return struct.getStructRotation(world, pos.offset(-1, -5, -1))!=-1;
 	}

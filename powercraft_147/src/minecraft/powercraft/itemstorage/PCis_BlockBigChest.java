@@ -3,6 +3,7 @@ package powercraft.itemstorage;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -48,6 +49,11 @@ public class PCis_BlockBigChest extends PC_Block implements PC_I3DRecipeHandler 
 	public boolean renderAsNormalBlock(){
         return false;
     }
+	
+	@Override
+	public int idPicked(World par1World, int par2, int par3, int par4){
+		return Block.glass.blockID;
+	}
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {

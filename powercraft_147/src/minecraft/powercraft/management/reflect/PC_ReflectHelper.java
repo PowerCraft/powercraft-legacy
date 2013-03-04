@@ -8,7 +8,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import powercraft.management.PC_Logger;
+import powercraft.launcher.PC_Logger;
 
 public final class PC_ReflectHelper {
 

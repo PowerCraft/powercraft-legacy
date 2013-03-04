@@ -1,10 +1,6 @@
 package powercraft.itemstorage;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import powercraft.management.gres.PC_GresBaseWithInventory;
 import powercraft.management.inventory.PC_Slot;

@@ -18,7 +18,6 @@ import powercraft.management.PC_Color;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_VecI;
 import powercraft.management.item.PC_Item;
 import powercraft.management.item.PC_ItemStack;

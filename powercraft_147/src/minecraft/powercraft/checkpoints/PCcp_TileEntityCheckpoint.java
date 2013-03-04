@@ -3,8 +3,6 @@ package powercraft.checkpoints;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Struct2;
 import powercraft.management.annotation.PC_ClientServerSync;
 import powercraft.management.tileentity.PC_TileEntity;
 

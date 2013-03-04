@@ -2,7 +2,7 @@ package powercraft.mobile;
 
 import java.util.Random;
 
-import powercraft.management.PC_Logger;
+import powercraft.launcher.PC_Logger;
 /**
  * Class for miner's direct program parsing
  * 

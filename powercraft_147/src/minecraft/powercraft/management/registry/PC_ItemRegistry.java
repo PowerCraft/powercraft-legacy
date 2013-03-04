@@ -6,9 +6,9 @@ import java.util.TreeMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import powercraft.launcher.PC_Property;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IModule;
-import powercraft.management.PC_Property;
 import powercraft.management.item.PC_Item;
 import powercraft.management.item.PC_ItemArmor;
 import powercraft.management.reflect.PC_ReflectHelper;

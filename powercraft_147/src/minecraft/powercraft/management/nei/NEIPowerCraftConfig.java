@@ -3,9 +3,9 @@ package powercraft.management.nei;
 import java.util.List;
 import java.util.TreeMap;
 
+import powercraft.launcher.PC_Logger;
+import powercraft.launcher.mod_PowerCraft;
 import powercraft.management.PC_IMSG;
-import powercraft.management.PC_Logger;
-import powercraft.management.mod_PowerCraft;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.block.PC_Block;
 import powercraft.management.item.PC_Item;

@@ -8,7 +8,6 @@ import powercraft.management.gres.PC_GresWidget;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.tileentity.PC_TileEntity;
 
 public class PCcp_GuiCheckpoint extends PCcp_ContainerCheckpoint implements PC_IGresClient {
