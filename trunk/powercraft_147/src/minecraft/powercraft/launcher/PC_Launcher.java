@@ -59,7 +59,7 @@ public class PC_Launcher {
 		File mods = new File(PC_LauncherUtils.getMCDirectory(), "mods");
 		File res = null;
 		try {
-			res = new File(mod_PowerCraft.class.getResource("../../../").toURI());
+			res = new File(mod_PowerCraft.class.getResource("../../").toURI());
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

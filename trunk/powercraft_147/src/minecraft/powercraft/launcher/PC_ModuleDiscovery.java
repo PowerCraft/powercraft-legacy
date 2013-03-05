@@ -36,7 +36,7 @@ public class PC_ModuleDiscovery {
 			if(getClientClassWithName(name)!=null){
 				return;
 			}
-			PC_ModuleObject module = getCommonClassWithName(name);
+			PC_ModuleObject module = getCommonClassWithName(superName);
 			if(module==null){
 				clinetModules.add(new PC_ModuleObject(access, name, signature, superName, interfaces, annotationVisitor, loadFile, startFile));
 			}else{
@@ -101,7 +101,7 @@ public class PC_ModuleDiscovery {
 				String dependencies = module.getDependencies();
 				String[] dependenciesList = dependencies.split(":", 2);
 				dependenciesList[0] = dependenciesList[0].trim();
-				if(dependenciesList[1]!=null){
+				if(dependenciesList.length>1 && dependenciesList[1]!=null){
 					dependenciesList[1] = dependenciesList[1].trim();
 				}
 				int addList=1;
@@ -231,7 +231,7 @@ public class PC_ModuleDiscovery {
 		sortModules();
 		management.load();
 		for(int i=0; i<3; i++){
-			for(PC_ModuleObject module:startList[0]){
+			for(PC_ModuleObject module:startList[i]){
 				module.load();
 			}
 		}

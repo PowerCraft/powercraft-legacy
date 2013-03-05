@@ -1,6 +1,11 @@
 package powercraft.launcher;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -147,7 +152,24 @@ public class PC_ModuleObject {
 		this.annotationVisitor = annotationVisitor;
 	}
 	
+	public void loadConfig(){
+		File f = new File(PC_LauncherUtils.getMCDirectory(), "config/PowerCraft-"+annotationVisitor.getModuleName()+".cfg");
+		if(f.exists()){
+			try {
+				InputStream is = new FileInputStream(f);
+				config = PC_Property.loadFromFile(is);
+			} catch (FileNotFoundException e) {
+				PC_Logger.severe("Can't find File "+f);
+			}
+		}
+		if(config==null){
+			config = new PC_Property(null);
+		}
+	}
+	
 	public PC_Property getConfig(){
+		if(config==null)
+			loadConfig();
 		return config;
 	}
 	
@@ -156,8 +178,14 @@ public class PC_ModuleObject {
 	}
 
 	public void saveConfig() {
-		// TODO Auto-generated method stub
-		
+		File f = new File(PC_LauncherUtils.getMCDirectory(), "config/PowerCraft-"+annotationVisitor.getModuleName()+".cfg");
+		f.mkdirs();
+		try {
+			OutputStream os = new FileOutputStream(f);
+			config.save(os);
+		} catch (FileNotFoundException e) {
+			PC_Logger.severe("Can't find File "+f);
+		}
 	}
 	
 	public void preInit() {
