@@ -1,6 +1,6 @@
 package powercraft.launcher.nei;
 
-import powercraft.launcher.mod_PowerCraft;
+import powercraft.launcher.PC_LauncherUtils;
 import codechicken.nei.api.IConfigureNEI;
 
 public class NEIPowerCraftConfig implements IConfigureNEI {
@@ -28,12 +28,12 @@ public class NEIPowerCraftConfig implements IConfigureNEI {
 
 	@Override
 	public String getName() {
-		return mod_PowerCraft.getInstance().getModMetadata().name;
+		return PC_LauncherUtils.getPowerCraftName();
 	}
 
 	@Override
 	public String getVersion() {
-		return mod_PowerCraft.getInstance().getModMetadata().version;
+		return PC_LauncherUtils.getPowerCraftVersion();
 	}
 
 }
