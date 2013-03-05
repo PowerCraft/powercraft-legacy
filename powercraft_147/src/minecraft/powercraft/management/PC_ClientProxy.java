@@ -49,7 +49,7 @@ public class PC_ClientProxy extends PC_CommonProxy {
 		PC_Logger.enterSection("Register EntityRender");
 		List<PC_ModuleObject> modules = PC_ModuleRegistry.getModuleList();
 		for(PC_ModuleObject module:modules){
-			List<PC_Struct2<Class<? extends Entity>, Render>> list = ((PC_IClientModule) module).registerEntityRender(new ArrayList<PC_Struct2<Class<? extends Entity>, Render>>());
+			List<PC_Struct2<Class<? extends Entity>, Render>> list = module.registerEntityRender(new ArrayList<PC_Struct2<Class<? extends Entity>, Render>>());
 			if(list!=null){
 				for(PC_Struct2<Class<? extends Entity>, Render> s:list){
 					RenderingRegistry.registerEntityRenderingHandler(s.a, s.b);
