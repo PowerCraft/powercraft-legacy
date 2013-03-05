@@ -44,10 +44,22 @@ public class PC_LauncherUtils {
 		return mod_PowerCraft.getInstance();
 	}
 
-	public static String getVersion() {
+	public static String getPowerCraftVersion() {
 		return mod_PowerCraft.getInstance().getVersion();
 	}
 
+	public static String getPowerCraftName() {
+		return mod_PowerCraft.getInstance().getName();
+	}
+	
+	public static void addAuthor(String name){
+		mod_PowerCraft.getInstance().getModMetadata().authorList.add(name);
+	}
+	
+	public static void addCredit(String name){
+		mod_PowerCraft.getInstance().getModMetadata().credits += ", "+name;
+	}
+	
 	public static boolean isForge() {
 		return true;
 	}
