@@ -5,6 +5,12 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import powercraft.launcher.PC_Module;
+import powercraft.launcher.PC_Module.PC_Init;
+import powercraft.launcher.PC_Module.PC_InitProperties;
+import powercraft.launcher.PC_Module.PC_InitRecipes;
+import powercraft.launcher.PC_Module.PC_PostInit;
+import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.launcher.PC_Property;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IModule;
@@ -19,8 +25,8 @@ import powercraft.management.recipes.PC_I3DRecipeHandler;
 import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 
-public class PCma_App implements PC_IModule
-{
+@PC_Module(name="Machines", version="1.1.0")
+public class PCma_App{
 
 	@PC_FieldObject(clazz=PCma_BlockAutomaticWorkbench.class)
     public static PC_Block automaticWorkbench;
@@ -43,41 +49,23 @@ public class PCma_App implements PC_IModule
     
     public static List<Integer> roasterIgnoreBlockIDs;
 
-	@Override
-	public String getName() {
-		return "Machines";
-	}
-
-	@Override
-	public String getVersion() {
-		return "1.0.4";
-	}
-
-	@Override
-	public void preInit() {}
-
-	@Override
+	@PC_Init
 	public void init() {
         PCma_CropHarvestingManager.loadCrops();
         PCma_TreeHarvestingManager.loadTrees();
 	}
 
-	@Override
+	@PC_PostInit
 	public void postInit() {
 		PCma_ItemRanking.init();
 	}
 
-	@Override
+	@PC_InitProperties
 	public void initProperties(PC_Property config) {
 		roasterIgnoreBlockIDs = GameInfo.parseIntList(config.getString("PCma_BlockRoaster.roasterIgnoreBlockIDs", "1"));
 	}
 	
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities){
-		return null;
-	}
-
-	@Override
+	@PC_InitRecipes
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(automaticWorkbench),
                 	"X", 
@@ -162,19 +150,7 @@ public class PCma_App implements PC_IModule
 		return recipes;
 	}
 
-	@Override
-	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
-			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
-		return null;
-	}
-
-	@Override
-	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
-			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
-		return null;
-	}
-	
-	@Override
+	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class>> registerGuis(
 			List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("AutomaticWorkbench", PCma_ContainerAutomaticWorkbench.class));

@@ -4,6 +4,12 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import powercraft.launcher.PC_Module;
+import powercraft.launcher.PC_Module.PC_InitEntities;
+import powercraft.launcher.PC_Module.PC_InitProperties;
+import powercraft.launcher.PC_Module.PC_InitRecipes;
+import powercraft.launcher.PC_Module.PC_PreInit;
+import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.launcher.PC_Property;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IModule;
@@ -14,7 +20,8 @@ import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.management.registry.PC_ModuleRegistry;
 
-public class PCmo_App implements PC_IModule {
+@PC_Module(name="Mobile", version="1.1.0")
+public class PCmo_App {
 
 	public static PCmo_MinerManager minerManager = new PCmo_MinerManager();
 	
@@ -34,17 +41,7 @@ public class PCmo_App implements PC_IModule {
 	public static final String pk_mMiningOff = "set_mining_off";
 	public static final String pk_mCancel = "reset";
 	
-	@Override
-	public String getName() {
-		return "Mobile";
-	}
-
-	@Override
-	public String getVersion() {
-		return "1.0.2";
-	}
-
-	@Override
+	@PC_PreInit
 	public void preInit() {
 		if(PC_ModuleRegistry.getModule("Weasel")!=null){
 			try {
@@ -55,15 +52,7 @@ public class PCmo_App implements PC_IModule {
 		}
 	}
 
-	@Override
-	public void init() {
-		
-	}
-
-	@Override
-	public void postInit() {}
-
-	@Override
+	@PC_InitProperties
 	public void initProperties(PC_Property config) {
 		PC_KeyRegistry.watchForKey(config, pk_mForward, 0x48); // KEY_NUMPAD8
 		PC_KeyRegistry.watchForKey(config, pk_mBackward, 0x50); // KEY_NUMPAD2
@@ -85,13 +74,13 @@ public class PCmo_App implements PC_IModule {
 		PC_KeyRegistry.watchForKey(config, pk_mCancel, 0xd3); // KEY_DELETE
 	}
 
-	@Override
+	@PC_InitEntities
 	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities){
 		entities.add(new PC_Struct2<Class<? extends Entity>, Integer>(PCmo_EntityMiner.class, 200));
 		return entities;
 	}
 	
-	@Override
+	@PC_InitRecipes
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		
 		recipes.add(new PC_3DRecipe(minerManager,
@@ -129,20 +118,14 @@ public class PCmo_App implements PC_IModule {
 		return recipes;
 	}
 
-	@Override
-	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
-			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
-		return null;
-	}
-
-	@Override
+	@PC_InitProperties
 	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
 			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
 		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("MinerManager", minerManager));
 		return packetHandlers;
 	}
 	
-	@Override
+	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class>> registerGuis(
 			List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("Miner", PCmo_ContainerMiner.class));

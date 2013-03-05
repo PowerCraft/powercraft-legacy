@@ -4,14 +4,20 @@ import java.util.List;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import powercraft.launcher.PC_ClientModule;
+import powercraft.launcher.PC_ClientModule.PC_AddSplashes;
+import powercraft.launcher.PC_ClientModule.PC_InitLanguage;
+import powercraft.launcher.PC_ClientModule.PC_LoadTextureFiles;
+import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_Struct2;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_TextureRegistry;
 
-public class PCco_AppClient extends PCco_App implements PC_IClientModule {
+@PC_ClientModule
+public class PCco_AppClient extends PCco_App {
 
-	@Override
+	@PC_InitLanguage
 	public List<LangEntry> initLanguage(List<LangEntry> lang) {
 		lang.add(new LangEntry("pc.gui.ok", "OK"));
 		lang.add(new LangEntry("pc.gui.cancel", "Cancel"));
@@ -31,31 +37,25 @@ public class PCco_AppClient extends PCco_App implements PC_IClientModule {
 		return lang;
 	}
 	
-	@Override
+	@PC_LoadTextureFiles
 	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add(PC_TextureRegistry.getTerrainFile(this));
+		textures.add("tiles.png");
 		return textures;
 	}
 
 	
-	@Override
+	@PC_AddSplashes
 	public List<String> addSplashes(List<String> list) {
 		list.add("Sniffing diamonds!");
 		return list;
 	}
 	
-	@Override
+	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("CraftingTool", PCco_GuiCraftingTool.class));
 		guis.add(new PC_Struct2<String, Class>("OreSnifferResultScreen", PCco_GuiOreSnifferResultScreen.class));
 		guis.add(new PC_Struct2<String, Class>("SpawnerEditor", PCco_GuiSpawnerEditor.class));
 		return guis;
-	}
-
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(
-			List<PC_Struct2<Class<? extends Entity>, Render>> list) {
-		return null;
 	}
 	
 }

@@ -4,14 +4,19 @@ import java.util.List;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import powercraft.launcher.PC_ClientModule;
+import powercraft.launcher.PC_ClientModule.PC_InitLanguage;
+import powercraft.launcher.PC_ClientModule.PC_LoadTextureFiles;
+import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_Struct2;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_TextureRegistry;
 
-public class PCma_AppClient extends PCma_App implements PC_IClientModule {
+@PC_ClientModule
+public class PCma_AppClient extends PCma_App {
 
-	@Override
+	@PC_InitLanguage
 	public List<LangEntry> initLanguage(List<LangEntry> lang) {
 		lang.add(new LangEntry("pc.gui.automaticWorkbench.redstoneActivated", "Redstone triggered"));
 		lang.add(new LangEntry("pc.roaster.insertFuel", "fuel"));
@@ -31,20 +36,14 @@ public class PCma_AppClient extends PCma_App implements PC_IClientModule {
 		return lang;
 	}
 
-	@Override
+	@PC_LoadTextureFiles
 	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add(PC_TextureRegistry.getTerrainFile(this));
-		textures.add(PC_TextureRegistry.getTextureDirectory(this) + "fisher.png");
+		textures.add("tiles.png");
+		textures.add("fisher.png");
 		return textures;
 	}
 
-	@Override
-	public List<String> addSplashes(List<String> list) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
+	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class>> registerGuis(
 			List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("AutomaticWorkbench", PCma_GuiAutomaticWorkbench.class));
@@ -54,12 +53,6 @@ public class PCma_AppClient extends PCma_App implements PC_IClientModule {
 		guis.add(new PC_Struct2<String, Class>("Transmutabox", PCma_GuiTransmutabox.class));
 		guis.add(new PC_Struct2<String, Class>("XPBank", PCma_GuiXPBank.class));
 		return guis;
-	}
-
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(
-			List<PC_Struct2<Class<? extends Entity>, Render>> list) {
-		return null;
 	}
 
 }

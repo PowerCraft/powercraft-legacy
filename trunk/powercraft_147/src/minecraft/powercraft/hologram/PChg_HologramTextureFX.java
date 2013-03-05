@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PChg_HologramTextureFX extends TextureFX {
 
@@ -31,7 +32,7 @@ public class PChg_HologramTextureFX extends TextureFX {
 	
 	@Override
 	public void bindImage(RenderEngine par1RenderEngine) {
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1RenderEngine.getTexture(ModuleInfo.getTerrainFile(PC_ModuleRegistry.getModule("Hologram"))));
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1RenderEngine.getTexture(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Hologram"))+"tiles.png"));
 	}
 
 	@Override

@@ -5,6 +5,8 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import powercraft.launcher.PC_Module;
+import powercraft.launcher.PC_Module.PC_InitRecipes;
 import powercraft.launcher.PC_Property;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IModule;
@@ -17,7 +19,8 @@ import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.recipes.PC_ShapelessRecipes;
 
-public class PCde_App implements PC_IModule {
+@PC_Module(name="Deco", version="1.1.0")
+public class PCde_App {
 
 	@PC_FieldObject(clazz=PCde_BlockRedstoneStorage.class)
 	public static PC_Block redstoneStorage;
@@ -29,33 +32,8 @@ public class PCde_App implements PC_IModule {
 	public static PC_Block platform;
 	@PC_FieldObject(clazz=PCde_BlockStairs.class)
 	public static PC_Block stairs;
-
-	@Override
-	public String getName() {
-		return "Deco";
-	}
-
-	@Override
-	public String getVersion() {
-		return "1.0.3";
-	}
 	
-    public void preInit(){}
-
-    public void init(){}
-
-    public void postInit(){}
-	
-	
-	@Override
-	public void initProperties(PC_Property config) {}
-	
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities){
-		return null;
-	}
-	
-	@Override
+	@PC_InitRecipes
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(ironFrame, 32, 0),
 					"XXX", 
@@ -108,23 +86,6 @@ public class PCde_App implements PC_IModule {
 				"X X", 
 					'X', Block.stoneBrick));
 		return recipes;
-	}
-
-	@Override
-	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
-			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
-		return null;
-	}
-
-	@Override
-	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
-			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
-		return null;
-	}
-	
-	@Override
-	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
-		return null;
 	}
 
 }

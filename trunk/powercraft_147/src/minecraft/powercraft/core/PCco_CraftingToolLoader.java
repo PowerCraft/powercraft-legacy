@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.item.PC_IItemInfo;
@@ -40,7 +41,7 @@ public class PCco_CraftingToolLoader extends Thread implements PC_IMSG{
                 
                 if (i instanceof PC_IItemInfo)
                 {
-                	PC_IModule module = ((PC_IItemInfo)i).getModule();
+                	PC_ModuleObject module = ((PC_IItemInfo)i).getModule();
                     List<ItemStack> l = ((PC_IItemInfo)i).getItemStacks(new ArrayList<ItemStack>());
                     if(!((PC_IItemInfo)i).showInCraftingTool()){
                     	continue;
@@ -77,7 +78,7 @@ public class PCco_CraftingToolLoader extends Thread implements PC_IMSG{
 
                     if (b != null && b instanceof PC_IItemInfo)
                     {
-                    	PC_IModule module = ((PC_IItemInfo)b).getModule();
+                    	PC_ModuleObject module = ((PC_IItemInfo)b).getModule();
                         List<ItemStack> l = ((PC_IItemInfo)b).getItemStacks(new ArrayList<ItemStack>());
                         if(!((PC_IItemInfo)b).showInCraftingTool()){
                         	continue;

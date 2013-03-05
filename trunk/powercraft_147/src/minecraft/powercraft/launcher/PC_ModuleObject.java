@@ -6,16 +6,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.renderer.entity.Render;
-
-import org.w3c.dom.Entity;
-
-import powercraft.management.PC_IDataHandler;
-import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_Struct2;
-import powercraft.management.recipes.PC_IRecipe;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
-
 public class PC_ModuleObject {
 
 	private int access;
@@ -185,39 +175,40 @@ public class PC_ModuleObject {
 	public void initProperties(PC_Property config){
 		callMethod(PC_Module.PC_InitProperties.class, new Object[]{config});
 	}
-	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities){
+	
+	public List initEntities(List entities){
 		return (List)callMethod(PC_Module.PC_InitEntities.class, new Object[]{entities});
 	}
 	
-	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes){
+	public List initRecipes(List recipes){
 		return (List)callMethod(PC_Module.PC_InitRecipes.class, new Object[]{recipes});
 	}
 	
-	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(List<PC_Struct2<String, PC_IDataHandler>> dataHandlers){
+	public List initDataHandlers(List dataHandlers){
 		return (List)callMethod(PC_Module.PC_InitDataHandlers.class, new Object[]{dataHandlers});
 	}
 	
-	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers){
+	public List initPacketHandlers(List packetHandlers){
 		return (List)callMethod(PC_Module.PC_InitPacketHandlers.class, new Object[]{packetHandlers});
 	}
 	
-	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis){
+	public List registerGuis(List guis){
 		return (List)callMethod(PC_Module.PC_RegisterGuis.class, new Object[]{guis});
 	}
 
-	public List<LangEntry> initLanguage(ArrayList<LangEntry> arrayList) {
+	public List initLanguage(List arrayList) {
 		return (List)callMethod(PC_ClientModule.PC_InitLanguage.class, new Object[]{arrayList});
 	}
 
-	public List<String> loadTextureFiles(ArrayList<String> arrayList) {
+	public List loadTextureFiles(List arrayList) {
 		return (List)callMethod(PC_ClientModule.PC_LoadTextureFiles.class, new Object[]{arrayList});
 	}
 
-	public List<String> addSplashes(ArrayList<String> arrayList) {
+	public List addSplashes(List arrayList) {
 		return (List)callMethod(PC_ClientModule.PC_AddSplashes.class, new Object[]{arrayList});
 	}
 	
-	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(ArrayList<PC_Struct2<Class<? extends Entity>, Render>> arrayList) {
+	public List registerEntityRender(List arrayList) {
 		return (List)callMethod(PC_ClientModule.PC_RegisterEntityRender.class, new Object[]{arrayList});
 	}
 	

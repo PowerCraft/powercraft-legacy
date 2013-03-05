@@ -4,15 +4,20 @@ import java.util.List;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import powercraft.launcher.PC_ClientModule;
+import powercraft.launcher.PC_ClientModule.PC_InitLanguage;
+import powercraft.launcher.PC_ClientModule.PC_LoadTextureFiles;
+import powercraft.launcher.PC_ClientModule.PC_RegisterEntityRender;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_Struct2;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.registry.PC_TextureRegistry;
 
-public class PCmo_AppClient extends PCmo_App implements PC_IClientModule {
+@PC_ClientModule
+public class PCmo_AppClient extends PCmo_App {
 
-	@Override
+	@PC_InitLanguage
 	public List<LangEntry> initLanguage(List<LangEntry> lang) {
 		lang.add(new LangEntry("pc.miner.disconnected", "Miner %s disconnected from keyboard."));
 		lang.add(new LangEntry("pc.miner.connected", "Miner %s connected to keyboard."));
@@ -57,16 +62,10 @@ public class PCmo_AppClient extends PCmo_App implements PC_IClientModule {
 		return lang;
 	}
 
-	@Override
+	@PC_LoadTextureFiles
 	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add(PC_TextureRegistry.getTextureDirectory(this) + "miner_base.png");
+		textures.add("miner_base.png");
 		return textures;
-	}
-
-	@Override
-	public List<String> addSplashes(List<String> list) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -79,7 +78,7 @@ public class PCmo_AppClient extends PCmo_App implements PC_IClientModule {
 		return guis;
 	}
 	
-	@Override
+	@PC_RegisterEntityRender
 	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(List<PC_Struct2<Class<? extends Entity>, Render>> list) {
 		list.add(new PC_Struct2<Class<? extends Entity>, Render>(PCmo_EntityMiner.class, new PCmo_RenderMiner()));
 		return list;

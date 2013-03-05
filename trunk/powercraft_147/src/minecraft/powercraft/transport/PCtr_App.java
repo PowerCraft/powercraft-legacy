@@ -5,6 +5,9 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import powercraft.launcher.PC_Module;
+import powercraft.launcher.PC_Module.PC_InitRecipes;
+import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.launcher.PC_Property;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IModule;
@@ -17,8 +20,9 @@ import powercraft.management.item.PC_ItemStack;
 import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 
-public class PCtr_App implements PC_IModule
-{
+@PC_Module(name="Transport", version="1.1.0")
+public class PCtr_App{
+	
 	@PC_FieldObject(clazz = PCtr_BlockBeltNormal.class)
     public static PC_Block conveyorBelt;
 	@PC_FieldObject(clazz = PCtr_BlockBeltSpeedy.class)
@@ -40,35 +44,7 @@ public class PCtr_App implements PC_IModule
 	@PC_FieldObject(clazz = PCtr_ItemArmorStickyBoots.class)
     public static PC_ItemArmor slimeboots;
 
-   @Override
-	public String getName() {
-		return "Transport";
-	}
-
-	@Override
-	public String getVersion() {
-		return "1.0.4";
-	}
-
-	@Override
-	public void preInit() {}
-
-	@Override
-	public void init() {}
-
-	@Override
-	public void postInit() {}
-
-	@Override
-	public void initProperties(PC_Property config) {
-	}
-
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities) {
-		return null;
-	}
-
-	@Override
+	@PC_InitRecipes
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(conveyorBelt, 16),
                 	"XXX", 
@@ -133,19 +109,7 @@ public class PCtr_App implements PC_IModule
 		return recipes;
 	}
 
-	@Override
-	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
-			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
-		return null;
-	}
-
-	@Override
-	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
-			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
-		return null;
-	}
-	
-	@Override
+	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("SeperationBelt", PCtr_ContainerSeparationBelt.class));
 		guis.add(new PC_Struct2<String, Class>("Splitter", PCtr_ContainerSplitter.class));

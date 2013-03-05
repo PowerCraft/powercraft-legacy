@@ -1,17 +1,11 @@
 package powercraft.management.registry;
 
-import powercraft.management.PC_IModule;
+import powercraft.launcher.PC_ModuleObject;
 
 public final class PC_TextureRegistry {
 
 	public static void registerTexture(String texture) {
 		PC_RegistryServer.getInstance().registerTexture(texture);
-	}
-	
-	public static void registerTextureFiles(String... textureFiles) {
-		for(String texture:textureFiles){
-			registerTexture(texture);
-		}
 	}
 	
 	public static String getPowerCraftLoaderImageDir() {
@@ -22,14 +16,13 @@ public final class PC_TextureRegistry {
 		return getPowerCraftLoaderImageDir() + "gres/";
 	}
 
-	public static String getTextureDirectory(PC_IModule module) {
+	public static String getTextureDirectory(PC_ModuleObject module) {
 		return "/powercraft/" + module.getName().toLowerCase()
 				+ "/textures/";
 	}
 
-	public static String getTerrainFile(PC_IModule module) {
-		return getTextureDirectory(module)
-				+ "tiles.png";
+	public static String getTerrainFile() {
+		return "tiles.png";
 	}
 	
 }

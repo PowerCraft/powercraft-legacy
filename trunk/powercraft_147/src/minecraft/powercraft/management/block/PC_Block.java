@@ -14,15 +14,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IIDChangeAble;
 import powercraft.management.PC_IMSG;
-import powercraft.management.PC_IModule;
 import powercraft.management.PC_Struct3;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
+import powercraft.management.PC_VecI;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.renderer.PC_Renderer;
@@ -33,7 +32,7 @@ import cpw.mods.fml.common.registry.ItemData;
 public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IIDChangeAble
 {
     private boolean canSetTextureFile = true;
-    private PC_IModule module;
+    private PC_ModuleObject module;
     private BlockInfo replaced = new BlockInfo();
 	private BlockInfo thisBlock;
 	
@@ -94,11 +93,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 		return newTileEntity(world, metadata);
 	}
 
-    public void setModule(PC_IModule module){
+    public void setModule(PC_ModuleObject module){
     	this.module = module;
     }
     
-    public PC_IModule getModule(){
+    public PC_ModuleObject getModule(){
     	return module;
     }
     

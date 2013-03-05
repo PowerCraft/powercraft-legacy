@@ -5,6 +5,11 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import powercraft.launcher.PC_Module;
+import powercraft.launcher.PC_Module.PC_InitPacketHandlers;
+import powercraft.launcher.PC_Module.PC_InitProperties;
+import powercraft.launcher.PC_Module.PC_InitRecipes;
+import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.launcher.PC_Property;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IDataHandler;
@@ -19,7 +24,8 @@ import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.recipes.PC_ShapelessRecipes;
 
-public class PCco_App implements PC_IModule {
+@PC_Module(name="Core", version="1.1.0")
+public class PCco_App {
 
 	@PC_FieldObject(clazz=PCco_BlockPowerCrystal.class)
 	public static PC_Block powerCrystal;
@@ -37,38 +43,14 @@ public class PCco_App implements PC_IModule {
 	public static PCco_MobSpawnerSetter spawnerSetter;
 	@PC_FieldObject(clazz=PCco_CraftingToolLoader.class)
 	public static PCco_CraftingToolLoader craftingToolLoader;
-	
-	@Override
-	public String getName() {
-		return "Core";
-	}
 
-	@Override
-	public String getVersion() {
-		return "1.0.4";
-	}
-	
-	@Override
-	public void preInit() {}
-
-	@Override
-	public void init() {}
-
-	@Override
-	public void postInit() {}
-
-	@Override
+	@PC_InitProperties
 	public void initProperties(PC_Property config) {
 		PC_GlobalVariables.consts.put("recipes.recyclation", config.getBoolean("recipes.recyclation", true, "Add new recypes allowing easy material recyclation"));
 		PC_GlobalVariables.consts.put("recipes.spawner", config.getBoolean("recipes.spawner", true, "Make spawners craftable of iron and mossy cobble"));
 	}
 	
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities){
-		return null;
-	}
-	
-	@Override
+	@PC_InitRecipes
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(craftingTool), 
 				" r ",
@@ -118,14 +100,8 @@ public class PCco_App implements PC_IModule {
 		
 		return recipes;
 	}
-
-	@Override
-	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
-			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
-		return null;
-	}
 	
-	@Override
+	@PC_InitPacketHandlers
 	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
 			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
 		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("DeleteAllPlayerStacks", new PCco_DeleteAllPlayerStacks()));
@@ -134,7 +110,7 @@ public class PCco_App implements PC_IModule {
 		return packetHandlers;
 	}
 	
-	@Override
+	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("CraftingTool", PCco_ContainerCraftingTool.class));
 		return guis;

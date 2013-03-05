@@ -16,6 +16,9 @@ import net.minecraft.world.ChunkCache;
 
 import org.lwjgl.opengl.GL11;
 
+import powercraft.launcher.PC_ClientModule;
+import powercraft.launcher.PC_ClientModule.PC_LoadTextureFiles;
+import powercraft.launcher.PC_Module.PC_Init;
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_Struct2;
@@ -25,37 +28,22 @@ import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_TextureRegistry;
 import powercraft.management.renderer.PC_Renderer;
 
-public class PChg_AppClient extends PChg_App implements PC_IClientModule {
+@PC_ClientModule
+public class PChg_AppClient extends PChg_App {
 	
 	@PC_FieldObject(clazz=PChg_HologramGlassesOverlay.class)
 	public static PChg_HologramGlassesOverlay hologramGlassesOverlay;
 	
-	@Override
+	@PC_Init
 	public void init() {
 		PC_ClientUtils.mc().renderEngine.registerTextureFX(new PChg_HologramTextureFX());
 	}
-	
-	@Override
-	public List<LangEntry> initLanguage(List<LangEntry> lang) {
-		return null;
-	}
 
-	@Override
+	@PC_LoadTextureFiles
 	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add(PC_TextureRegistry.getTerrainFile(this));
-		textures.add(PC_TextureRegistry.getTextureDirectory(this)+"glasses.png");
+		textures.add("tiles.png");
+		textures.add("glasses.png");
 		return textures;
-	}
-
-	@Override
-	public List<String> addSplashes(List<String> list) {
-		return null;
-	}
-
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(
-			List<PC_Struct2<Class<? extends Entity>, Render>> list) {
-		return null;
 	}
 	
 	@Override

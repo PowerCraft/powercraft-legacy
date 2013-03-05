@@ -124,11 +124,6 @@ public class PC_Utils implements PC_IPacketHandler {
 		public static void registerLanguageForLang(PC_IModule module,
 				String lang,
 				PC_Struct3<String, String, String[]>... translations) {
-			LangEntry le[] = new LangEntry[translations.length];
-			for(int i=0; i<le.length; i++){
-				le[i] = new LangEntry(translations[i].a, translations[i].b, translations[i].c);
-			}
-			PC_LangRegistry.registerLanguageForLang(module, lang, le);
 		}
 
 		@Deprecated
@@ -139,12 +134,10 @@ public class PC_Utils implements PC_IPacketHandler {
 
 		@Deprecated
 		public static void loadLanguage(PC_IModule module) {
-			PC_LangRegistry.loadLanguage(module);
 		}
 
 		@Deprecated
 		public static void saveLanguage(PC_IModule module) {
-			PC_LangRegistry.saveLanguage(module);
 		}
 
 		@Deprecated
@@ -206,19 +199,19 @@ public class PC_Utils implements PC_IPacketHandler {
 		//AlphaI
 		@Deprecated
 		public static PC_Block registerBlock(PC_IModule module, Class<? extends PC_Block> blockClass){
-			return PC_BlockRegistry.register(module, blockClass);
+			return null;
 		}
 		
 		//AlphaI
 		@Deprecated
 		public static PC_Item registerItem(PC_IModule module, Class<? extends PC_Item> itemClass){
-			return PC_ItemRegistry.registerItem(module, itemClass);
+			return null;
 		}
 		
 		//AlphaI
 		@Deprecated
 		public static PC_ItemArmor registerItemArmor(PC_IModule module, Class<? extends PC_ItemArmor> itemArmorClass){
-			return PC_ItemRegistry.registerItemArmor(module, itemArmorClass);
+			return null;
 		}
 		
 		//AlphaI
@@ -257,13 +250,12 @@ public class PC_Utils implements PC_IPacketHandler {
 				Class<t> blockClass,
 				Class<? extends PC_ItemBlock> itemBlockClass,
 				Class<? extends PC_TileEntity> tileEntityClass) {
-			return PC_BlockRegistry.register(module, blockClass, itemBlockClass, tileEntityClass);
+			return null;
 		}
 
 		//AlphaI
 		@Deprecated
 		public static void registerTextureFiles(String... textureFiles) {
-			PC_TextureRegistry.registerTextureFiles(textureFiles);
 		}
 
 		//AlphaI
@@ -326,7 +318,6 @@ public class PC_Utils implements PC_IPacketHandler {
 		//AlphaI
 		@Deprecated
 		public static void registerModule(PC_IModule module) {
-			PC_ModuleRegistry.registerModule(module);
 		}
 
 		//AlphaI
@@ -1545,13 +1536,13 @@ public class PC_Utils implements PC_IPacketHandler {
 		//AlphaI
 		@Deprecated
 		public static PC_IModule getModule(Object o) {
-			return PC_ModuleRegistry.getModule(o);
+			return null;
 		}
 
 		//AlphaI
 		@Deprecated
 		public static List<PC_IModule> getModules() {
-			return PC_ModuleRegistry.getModules();
+			return null;
 		}
 
 		//AlphaI
@@ -1563,7 +1554,7 @@ public class PC_Utils implements PC_IPacketHandler {
 		//AlphaI
 		@Deprecated
 		public static PC_IModule getModule(String name) {
-			return PC_ModuleRegistry.getModule(name);
+			return null;
 		}
 
 		//AlphaI
@@ -1581,13 +1572,13 @@ public class PC_Utils implements PC_IPacketHandler {
 		//AlphaI
 		@Deprecated
 		public static String getTextureDirectory(PC_IModule module) {
-			return PC_TextureRegistry.getTextureDirectory(module);
+			return null;
 		}
 
 		//AlphaI
 		@Deprecated
 		public static String getTerrainFile(PC_IModule module) {
-			return PC_TextureRegistry.getTerrainFile(module);
+			return null;
 		}
 
 	}
@@ -1626,23 +1617,13 @@ public class PC_Utils implements PC_IPacketHandler {
 		}
 
 		public static void saveConfig(PC_IModule module) {
-			PC_Property config = PC_ModuleRegistry.getConfig(module);
-			File f = new File(PC_Utils.GameInfo.getMCDirectory(),
-					"config/PowerCraft-" + module.getName() + ".cfg");
-			if (config != null) {
-				try {
-					OutputStream os = new FileOutputStream(f);
-					config.save(os);
-				} catch (FileNotFoundException e) {
-					PC_Logger.severe("Can't find File " + f);
-				}
-			}
+			
 		}
 
 		//AlphaI
 		@Deprecated
 		public static PC_Property getConfig(PC_IModule module) {
-			return PC_ModuleRegistry.getConfig(module);
+			return null;
 		}
 
 		//AlphaI

@@ -9,11 +9,10 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IIDChangeAble;
 import powercraft.management.PC_IMSG;
-import powercraft.management.PC_IModule;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.reflect.PC_ReflectHelper;
 import cpw.mods.fml.common.registry.GameData;
@@ -21,7 +20,7 @@ import cpw.mods.fml.common.registry.ItemData;
 
 public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG, PC_IIDChangeAble
 {
-    private PC_IModule module;
+    private PC_ModuleObject module;
     private boolean canSetTextureFile = true;
     private Item replacedItem = null;
     private ItemData replacedItemData = null;
@@ -78,12 +77,12 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG, PC_
     	}
     }
     
-    public PC_IModule getModule()
+    public PC_ModuleObject getModule()
     {
         return module;
     }
 
-    public void setModule(PC_IModule module)
+    public void setModule(PC_ModuleObject module)
     {
     	this.module = module;
     }

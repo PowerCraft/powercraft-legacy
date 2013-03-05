@@ -7,12 +7,12 @@ import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import powercraft.launcher.PC_Logger;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.management.entity.PC_EntityFanFX;
 import powercraft.management.entity.PC_EntityLaserFX;
 import powercraft.management.entity.PC_EntityLaserParticleFX;
 import powercraft.management.hacks.PC_ClientHacks;
 import powercraft.management.hacks.PC_MainMenuHacks;
-import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.renderer.PC_ClientRenderer;
 import powercraft.management.tick.PC_ClientTickHandler;
@@ -45,17 +45,14 @@ public class PC_ClientProxy extends PC_CommonProxy {
 		PC_ClientUtils.registerEnitiyFX(PC_EntityFanFX.class);
 		PC_ClientUtils.registerEnitiyFX("EntitySmokeFX", EntitySmokeFX.class);
 		NetworkRegistry.instance().registerConnectionHandler(new PC_ConnectionHandler());
-		PC_GresRegistry.registerGres("UpdateNotification", PC_GuiUpdateNotification.class);
 		
 		PC_Logger.enterSection("Register EntityRender");
-		List<PC_IModule> modules = PC_ModuleRegistry.getModules();
-		for(PC_IModule module:modules){
-			if(module instanceof PC_IClientModule){
-				List<PC_Struct2<Class<? extends Entity>, Render>> list = ((PC_IClientModule) module).registerEntityRender(new ArrayList<PC_Struct2<Class<? extends Entity>, Render>>());
-				if(list!=null){
-					for(PC_Struct2<Class<? extends Entity>, Render> s:list){
-						RenderingRegistry.registerEntityRenderingHandler(s.a, s.b);
-					}
+		List<PC_ModuleObject> modules = PC_ModuleRegistry.getModuleList();
+		for(PC_ModuleObject module:modules){
+			List<PC_Struct2<Class<? extends Entity>, Render>> list = ((PC_IClientModule) module).registerEntityRender(new ArrayList<PC_Struct2<Class<? extends Entity>, Render>>());
+			if(list!=null){
+				for(PC_Struct2<Class<? extends Entity>, Render> s:list){
+					RenderingRegistry.registerEntityRenderingHandler(s.a, s.b);
 				}
 			}
 		}

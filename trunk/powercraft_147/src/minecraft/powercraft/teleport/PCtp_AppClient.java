@@ -4,13 +4,17 @@ import java.util.List;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import powercraft.launcher.PC_ClientModule;
+import powercraft.launcher.PC_ClientModule.PC_InitLanguage;
+import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_Struct2;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
-public class PCtp_AppClient extends PCtp_App implements PC_IClientModule {
+@PC_ClientModule
+public class PCtp_AppClient extends PCtp_App {
 
-	@Override
+	@PC_InitLanguage
 	public List<LangEntry> initLanguage(List<LangEntry> lang) {
 		lang.add(new LangEntry("pc.gui.teleporter.name", "Name:"));
 		lang.add(new LangEntry("pc.gui.teleporter.target", "Target:"));
@@ -33,29 +37,12 @@ public class PCtp_AppClient extends PCtp_App implements PC_IClientModule {
 		return lang;
 	}
 
-	@Override
-	public List<String> loadTextureFiles(List<String> textures) {
-		return null;
-	}
-
-	@Override
-	public List<String> addSplashes(List<String> list) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
+	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class>> registerGuis(
 			List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("Teleporter", PCtp_GuiTeleporter.class));
 		guis.add(new PC_Struct2<String, Class>("PlayerTeleport", PCtp_GuiPlayerTeleport.class));
 		return guis;
-	}
-
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(
-			List<PC_Struct2<Class<? extends Entity>, Render>> list) {
-		return null;
 	}
 	
 }
