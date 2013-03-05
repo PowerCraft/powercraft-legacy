@@ -22,7 +22,7 @@ import powercraft.management.recipes.PC_I3DRecipeHandler;
 import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 
-@PC_Module(name="Itemstorage", version="1.1.0")
+@PC_Module(name="ItemStorage", version="1.1.0")
 public class PCis_App {
 
 	@PC_FieldObject(clazz=PCis_BlockBigChest.class)
