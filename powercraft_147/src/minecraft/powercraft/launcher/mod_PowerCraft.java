@@ -93,7 +93,7 @@ public class mod_PowerCraft {
 	 * 
 	 * @return the mod container
 	 */
-	private ModContainer getModContainer() {
+	public ModContainer getModContainer() {
 		List<ModContainer> modContainers = Loader.instance().getModList();
 
 		for (ModContainer modContainer : modContainers) {
@@ -111,7 +111,7 @@ public class mod_PowerCraft {
 	 * 
 	 * @return the mod metadata
 	 */
-	private ModMetadata getModMetadata() {
+	public ModMetadata getModMetadata() {
 		return getModContainer().getMetadata();
 	}
 
