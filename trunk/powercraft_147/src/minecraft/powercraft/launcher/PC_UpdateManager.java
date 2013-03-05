@@ -3,9 +3,7 @@ package powercraft.launcher;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,7 +18,6 @@ import java.util.List;
 
 import powercraft.launcher.PC_UpdateXMLFile.XMLInfoTag;
 import powercraft.launcher.PC_UpdateXMLFile.XMLModuleTag;
-import powercraft.launcher.PC_UpdateXMLFile.XMLPackTag;
 import powercraft.launcher.PC_UpdateXMLFile.XMLVersionTag;
 import powercraft.launcher.updategui.PC_GuiUpdate;
 

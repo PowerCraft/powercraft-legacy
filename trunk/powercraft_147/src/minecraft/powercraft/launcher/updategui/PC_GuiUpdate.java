@@ -39,11 +39,11 @@ public class PC_GuiUpdate extends GuiScreen {
 	private File downloadTarget;
 	
 	public PC_GuiUpdate(List<ModuleUpdateInfo> forUpdate, XMLInfoTag updateInfo) {
-		if(PC_Launcher.getLauncher().getConfig().getString("updater.source").equals("")){
+		if(PC_Launcher.getConfig().getString("updater.source").equals("")){
 			downloadTarget = new File(System.getProperty("user.home"));
 			new PC_FileRequestThread(this, downloadTarget);
 		}else{
-			downloadTarget = new File(PC_Launcher.getLauncher().getConfig().getString("updater.source"));
+			downloadTarget = new File(PC_Launcher.getConfig().getString("updater.source"));
 			
 		}
 		PC_UpdateManager.watchDirectory(downloadTarget);
@@ -240,8 +240,8 @@ public class PC_GuiUpdate extends GuiScreen {
 	}
 
 	public synchronized void setDownloadTarget(File file){
-		PC_Launcher.getLauncher().getConfig().setString("updater.source", file.getAbsolutePath());
-		PC_Launcher.getLauncher().saveConfig();
+		PC_Launcher.getConfig().setString("updater.source", file.getAbsolutePath());
+		PC_Launcher.saveConfig();
 		this.downloadTarget = file;
 		PC_UpdateManager.stopWatchDirectory();
 		PC_UpdateManager.watchDirectory(downloadTarget);

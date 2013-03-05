@@ -12,20 +12,11 @@ import java.util.HashMap;
 
 public class PC_Launcher {
 	
-	private PC_Property config;
-	private boolean autoUpdate;
-	private PC_ModuleDiscovery modules;
-	private static PC_Launcher instance;
+	private static PC_Property config;
+	private static boolean autoUpdate;
+	private static PC_ModuleDiscovery modules;
 	
-	public PC_Launcher(){
-		instance = this;
-	}
-	
-	public static PC_Launcher getLauncher(){
-		return instance;
-	}
-	
-	public void loadConfig(){
+	public static void loadConfig(){
 		File f = new File(PC_LauncherUtils.getMCDirectory(), "config/PowerCraft.cfg");
 		if(f.exists()){
 			try {
@@ -43,7 +34,7 @@ public class PC_Launcher {
 		
 	}
 	
-	public void saveConfig(){
+	public static void saveConfig(){
 		File f = new File(PC_LauncherUtils.getMCDirectory(), "config/PowerCraft.cfg");
 		f.mkdirs();
 		try {
@@ -54,7 +45,7 @@ public class PC_Launcher {
 		}
 	}
 	
-	public PC_ModuleDiscovery searchModules(boolean addAny){
+	public static PC_ModuleDiscovery searchModules(boolean addAny){
 		File modules = PC_LauncherUtils.getPowerCraftModuleFile();
 		File mods = new File(PC_LauncherUtils.getMCDirectory(), "mods");
 		File res = null;
@@ -73,18 +64,18 @@ public class PC_Launcher {
 		return moduleDiscovery;
 	}
 	
-	private void updatePowerCraft(){
+	private static void updatePowerCraft(){
 		PC_UpdateManager.startUpdateInfoDownload();
 		File moduleFiles = PC_LauncherUtils.getPowerCraftModuleFile();
 		HashMap<String, PC_ModuleObject> modules = searchModules(false).getModules();
 		PC_UpdateManager.moduleInfos(modules);
 	}
 	
-	private void loadModules(){
+	private static void loadModules(){
 		(modules = searchModules(true)).loadModules();
 	}
 	
-	public void preInit(){
+	public static void preInit(){
 		PC_Logger.init(PC_LauncherUtils.getPowerCraftFile());
 		PC_Logger.enterSection("Loading");
 		
@@ -103,38 +94,38 @@ public class PC_Launcher {
 		
 	}
 	
-	public void init(){
+	public static void init(){
 		
 		getManagement().initProperties(config);
 		getManagement().init();
 
 	}
 	
-	public void postInit(){
+	public static void postInit(){
 		
 		getManagement().postInit();
 		
 	}
 
-	public Object callManagementMethod(String name, Class<?>[] classes, Object[] objects) {
+	public static Object callManagementMethod(String name, Class<?>[] classes, Object[] objects) {
 		return getManagement().callMethod(name, classes, objects);
 	}
 
-	public Object callManagementMethod(Class<? extends Annotation> annontation, Object[] objects) {
+	public static Object callManagementMethod(Class<? extends Annotation> annontation, Object[] objects) {
 		return getManagement().callMethod(annontation, objects);
 	}
 	
-	public HashMap<String, PC_ModuleObject> getModules(){
+	public static HashMap<String, PC_ModuleObject> getModules(){
 		HashMap<String, PC_ModuleObject> hm = modules.getModules();
 		hm.remove("management");
 		return hm;
 	}
 	
-	public PC_ModuleObject getManagement(){
+	public static PC_ModuleObject getManagement(){
 		return modules.getManagement();
 	}
 	
-	public PC_Property getConfig(){
+	public static PC_Property getConfig(){
 		return config;
 	}
 	

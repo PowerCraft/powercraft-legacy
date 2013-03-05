@@ -9,6 +9,10 @@ public class PC_LauncherUtils {
 
 	protected static PC_LauncherUtils instance;
 	
+	public PC_LauncherUtils(){
+		instance = this;
+	}
+	
 	public static boolean isClient(){
 		return instance.pIsClient();
 	}
@@ -46,12 +50,6 @@ public class PC_LauncherUtils {
 
 	public static boolean isForge() {
 		return true;
-	}
-
-	public static void create() {
-		if(instance==null){
-			instance = new PC_LauncherUtils();
-		}
 	}
 	
 	protected boolean pIsClient(){

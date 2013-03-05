@@ -11,7 +11,7 @@ import powercraft.management.item.PC_IItemInfo;
 public final class PC_ModuleRegistry {
 
 	public static HashMap<String, PC_ModuleObject> getModules() {
-		return PC_Launcher.getLauncher().getModules();
+		return PC_Launcher.getModules();
 	}
 	
 	public static PC_ModuleObject getModule(Object o) {

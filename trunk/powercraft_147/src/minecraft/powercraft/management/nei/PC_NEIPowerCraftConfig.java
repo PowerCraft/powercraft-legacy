@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.TreeMap;
 
 import powercraft.launcher.PC_Logger;
-import powercraft.launcher.mod_PowerCraft;
 import powercraft.management.PC_IMSG;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.block.PC_Block;
@@ -16,16 +15,14 @@ import powercraft.management.registry.PC_ItemRegistry;
 import powercraft.management.registry.PC_MSGRegistry;
 import codechicken.nei.ItemList;
 import codechicken.nei.api.API;
-import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.api.ItemInfo;
 
-public class NEIPowerCraftConfig implements IConfigureNEI, PC_IMSG {
+public class PC_NEIPowerCraftConfig implements PC_IMSG {
 
-	public NEIPowerCraftConfig(){
+	public PC_NEIPowerCraftConfig(){
 		 PC_MSGRegistry.registerMSGObject(this);
 	}
 	
-	@Override
 	public void loadConfig() {
 		PC_Logger.enterSection("Loading NEI configuration");
 		
@@ -42,16 +39,6 @@ public class NEIPowerCraftConfig implements IConfigureNEI, PC_IMSG {
 		registerNEIItems();
 		
 		PC_Logger.exitSection();
-	}
-
-	@Override
-	public String getName() {
-		return mod_PowerCraft.getInstance().getModMetadata().name;
-	}
-
-	@Override
-	public String getVersion() {
-		return mod_PowerCraft.getInstance().getModMetadata().version;
 	}
 
 	private void registerNEIItems(){

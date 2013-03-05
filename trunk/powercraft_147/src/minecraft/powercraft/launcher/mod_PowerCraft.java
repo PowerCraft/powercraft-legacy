@@ -2,8 +2,6 @@ package powercraft.launcher;
 
 import java.util.List;
 
-import powercraft.management.PC_ClientPacketHandler;
-import powercraft.management.PC_PacketHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -22,12 +20,10 @@ import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "PowerCraft" }, packetHandler = PC_PacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "PowerCraft" }, packetHandler = PC_PacketHandler.class))
 public class mod_PowerCraft{
 	
-	@SidedProxy(clientSide = "powercraft.launcher.PC_ClientProxy", serverSide = "powercraft.launcher.PC_CommonProxy")
-	public static PC_CommonProxy proxy;
+	@SidedProxy(clientSide = "powercraft.launcher.PC_LauncherClientUtils", serverSide = "powercraft.launcher.PC_LauncherUtils")
+	public static PC_LauncherUtils proxy;
 
 	private static mod_PowerCraft instance;
-	
-	private static PC_Launcher launcher = new PC_Launcher();
 	
 	public static mod_PowerCraft getInstance(){
 		return instance;
@@ -39,18 +35,17 @@ public class mod_PowerCraft{
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {
-		proxy.initUtils();
-		launcher.preInit();
+		PC_Launcher.preInit();
 	}
 
 	@Init
 	public void init(FMLInitializationEvent event) {
-		launcher.init();
+		PC_Launcher.init();
 	}
 
 	@PostInit
 	public void postInit(FMLPostInitializationEvent event) {
-		launcher.postInit();
+		PC_Launcher.postInit();
 	}
 
  	public ModContainer getModContainer()
