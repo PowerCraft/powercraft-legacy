@@ -103,15 +103,17 @@ public class PC_ManagementModule {
 			for(PC_ModuleObject module:modules){
 				List<String> l = module.loadTextureFiles(new ArrayList<String>());
 				if(l!=null){
-					PC_TextureRegistry.registerTextureFiles(l.toArray(new String[0]));
+					for(String file:l){
+						PC_TextureRegistry.registerTexture(PC_TextureRegistry.getTextureDirectory(module)+file);
+					}
 				}
 			}
-			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getPowerCraftLoaderImageDir() + "PowerCraft.png");
-			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getGresImgDir() + "button.png");
-			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getGresImgDir() + "dialog.png");
-			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getGresImgDir() + "frame.png");
-			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getGresImgDir() + "scrollbar_handle.png");
-			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getGresImgDir() + "widgets.png");
+			PC_TextureRegistry.registerTexture(PC_TextureRegistry.getPowerCraftLoaderImageDir() + "PowerCraft.png");
+			PC_TextureRegistry.registerTexture(PC_TextureRegistry.getGresImgDir() + "button.png");
+			PC_TextureRegistry.registerTexture(PC_TextureRegistry.getGresImgDir() + "dialog.png");
+			PC_TextureRegistry.registerTexture(PC_TextureRegistry.getGresImgDir() + "frame.png");
+			PC_TextureRegistry.registerTexture(PC_TextureRegistry.getGresImgDir() + "scrollbar_handle.png");
+			PC_TextureRegistry.registerTexture(PC_TextureRegistry.getGresImgDir() + "widgets.png");
 			PC_Logger.exitSection();
 		}
 		PC_Logger.exitSection();
@@ -123,7 +125,7 @@ public class PC_ManagementModule {
 		GameRegistry.registerWorldGenerator(new PC_WorldOreGenerator());
 		GameRegistry.registerFuelHandler(new PC_FuelHandler());
 		PC_ThreadManager.init();
-		List<PC_ModuleObject> modules = PC_ModuleRegistry.getModules();
+		List<PC_ModuleObject> modules = PC_ModuleRegistry.getModuleList();
 		proxy.init();
 		creativeTab = new PC_CreativeTab();
 		PC_Logger.enterSection("Module Init");
@@ -179,7 +181,6 @@ public class PC_ManagementModule {
 				}
 			}
 		}
-		PC_GresRegistry.registerGres("UpdateNotification", PC_GuiUpdateNotification.class);
 		PC_Logger.exitSection();
 		if(GameInfo.isClient()){
 			PC_Logger.enterSection("Module Splashes Init");

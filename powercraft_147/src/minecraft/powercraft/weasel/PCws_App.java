@@ -5,7 +5,14 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import powercraft.launcher.PC_Module;
+import powercraft.launcher.PC_Module.PC_InitDataHandlers;
+import powercraft.launcher.PC_Module.PC_InitPacketHandlers;
+import powercraft.launcher.PC_Module.PC_InitProperties;
+import powercraft.launcher.PC_Module.PC_InitRecipes;
+import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.launcher.PC_Property;
+import powercraft.launcher.PC_Module.PC_PreInit;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
@@ -19,7 +26,8 @@ import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.recipes.PC_SmeltRecipe;
 import powercraft.management.registry.PC_BlockRegistry;
 
-public class PCws_App implements PC_IModule {
+@PC_Module(name="Weasel", version="1.1.0")
+public class PCws_App {
 
 	@PC_FieldObject(clazz=PCws_WeaselManager.class)
 	public static PCws_WeaselManager weaselManager;
@@ -36,17 +44,7 @@ public class PCws_App implements PC_IModule {
 	@PC_FieldObject(clazz=PCws_ItemSilicon.class)
 	public static PC_Item ingotSilicon;
 	
-	@Override
-	public String getName() {
-		return "Weasel";
-	}
-
-	@Override
-	public String getVersion() {
-		return "1.0.2";
-	}
-
-	@Override
+	@PC_PreInit
 	public void preInit() {
 		PCws_WeaselManager.registerPluginInfo(new PCws_WeaselPluginInfoCore(), 0);
 		PCws_WeaselManager.registerPluginInfo(new PCws_WeaselPluginInfoPort(), 1);
@@ -57,23 +55,12 @@ public class PCws_App implements PC_IModule {
 		PCws_WeaselManager.registerPluginInfo(new PCws_WeaselPluginInfoDiskDrive(), 6);
 	}
 
-	@Override
-	public void init() {}
-
-	@Override
-	public void postInit() {}
-
-	@Override
+	@PC_InitProperties
 	public void initProperties(PC_Property config) {
 		PCws_WeaselHighlightHelper.checkConfigFile(config);
 	}
 
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities){
-		return null;
-	}
-
-	@Override
+	@PC_InitRecipes
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselTransistor, 2),
@@ -140,21 +127,21 @@ public class PCws_App implements PC_IModule {
 		return recipes;
 	}
 
-	@Override
+	@PC_InitDataHandlers
 	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
 			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
 		dataHandlers.add(new PC_Struct2<String, PC_IDataHandler>("Weasel", weaselManager));
 		return dataHandlers;
 	}
 
-	@Override
+	@PC_InitPacketHandlers
 	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
 			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
 		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("WeaselDiskDrive", (PC_IPacketHandler)weaselDiskManager));
 		return packetHandlers;
 	}
 	
-	@Override
+	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("WeaselDiskManager", PCws_ContainerWeaselDiskManager.class));
 		guis.add(new PC_Struct2<String, Class>("WeaselDiskDrive", PCws_ContainerWeaselDiskDrive.class));

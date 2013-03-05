@@ -4,6 +4,10 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import powercraft.launcher.PC_Module;
+import powercraft.launcher.PC_Module.PC_InitPacketHandlers;
+import powercraft.launcher.PC_Module.PC_InitRecipes;
+import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.launcher.PC_Property;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IModule;
@@ -18,41 +22,15 @@ import powercraft.management.recipes.PC_I3DRecipeHandler;
 import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 
-public class PCis_App implements PC_IModule {
+@PC_Module(name="Itemstorage", version="1.1.0")
+public class PCis_App {
 
 	@PC_FieldObject(clazz=PCis_BlockBigChest.class)
 	public static PC_Block bigChest;
 	@PC_FieldObject(clazz=PCis_ItemCompressor.class)
 	public static PC_Item compressor;
 	
-	@Override
-	public String getName() {
-		return "Itemstorage";
-	}
-
-	@Override
-	public String getVersion() {
-		return "1.0.1";
-	}
-
-	@Override
-	public void preInit() {}
-
-	@Override
-	public void init() {}
-
-	@Override
-	public void postInit() {}
-
-	@Override
-	public void initProperties(PC_Property config) {}
-
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities){
-		return null;
-	}
-
-	@Override
+	@PC_InitRecipes
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_3DRecipe((PC_I3DRecipeHandler)bigChest, 
 				new String[]{
@@ -114,18 +92,13 @@ public class PCis_App implements PC_IModule {
 		return recipes;
 	}
 
-	@Override
-	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
-		return null;
-	}
-
-	@Override
+	@PC_InitPacketHandlers
 	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
 		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("ItemCompressor", (PC_IPacketHandler)compressor));
 		return packetHandlers;
 	}
 
-	@Override
+	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("Compressor", PCis_ContainerCompressor.class));
 		return guis;

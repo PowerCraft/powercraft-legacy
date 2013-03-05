@@ -12,7 +12,6 @@ import powercraft.launcher.PC_ModuleObject;
 import powercraft.launcher.PC_Property;
 import powercraft.launcher.mod_PowerCraft;
 import powercraft.management.PC_GlobalVariables;
-import powercraft.management.PC_IModule;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_BlockInfo;
@@ -26,6 +25,7 @@ import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.tileentity.PC_ITileEntityRenderer;
 import powercraft.management.tileentity.PC_TileEntity;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class PC_BlockRegistry {
 
@@ -67,10 +67,10 @@ public final class PC_BlockRegistry {
 						PC_Shining.OFF.class, blockOff);
 				blockOff.setBlockName(blockClass.getSimpleName());
 				blockOff.setModule(module);
-				blockOff.setTextureFile(PC_TextureRegistry.getTerrainFile(module));
+				blockOff.setTextureFile(PC_TextureRegistry.getTextureDirectory(module)+"tiles.png");
 				PC_MSGRegistry.registerMSGObject(blockOff);
 				blocks.put(blockClass.getSimpleName() + ".Off", blockOff);
-				mod_PowerCraft.registerBlock(blockOff, null);
+				registerBlock(blockOff, null);
 				ItemBlock itemBlock = (ItemBlock) Item.itemsList[blockOff.blockID];
 				blockOff.setItemBlock(itemBlock);
 			} else {
@@ -89,7 +89,7 @@ public final class PC_BlockRegistry {
 			blocks.put(blockClass.getSimpleName(), block);
 			block.setBlockName(blockClass.getSimpleName());
 			block.setModule(module);
-			block.setTextureFile(PC_TextureRegistry.getTerrainFile(module));
+			block.setTextureFile(PC_TextureRegistry.getTextureDirectory(module)+"tiles.png");
 
 			if(block instanceof PC_BlockOre){
 				PC_BlockOre blockOre = (PC_BlockOre)block;
@@ -132,7 +132,7 @@ public final class PC_BlockRegistry {
 			});
 			block.msg(PC_MSGRegistry.MSG_LOAD_FROM_CONFIG, config);
 
-			mod_PowerCraft.registerBlock(block, itemBlockClass);
+			registerBlock(block, itemBlockClass);
 
 			ItemBlock itemBlock = (ItemBlock) Item.itemsList[block.blockID];
 
@@ -157,7 +157,7 @@ public final class PC_BlockRegistry {
 			}
 
 			if (tileEntityClass != null) {
-				mod_PowerCraft.registerTileEntity(tileEntityClass);
+				GameRegistry.registerTileEntity(tileEntityClass, tileEntityClass.getName());
 				if (PC_ITileEntityRenderer.class.isAssignableFrom(tileEntityClass))
 					PC_RegistryServer.getInstance().tileEntitySpecialRenderer(tileEntityClass);
 			}
@@ -170,7 +170,14 @@ public final class PC_BlockRegistry {
 		return null;
 	}
 	
-	public static <T extends PC_Block> T register(PC_IModule module, Class<T> blockClass){
+	private static void registerBlock(PC_Block block, Class<? extends ItemBlock> itemBlock) {
+		if(itemBlock==null)
+			GameRegistry.registerBlock(block);
+		else
+			GameRegistry.registerBlock(block, itemBlock);
+	}
+	
+	public static <T extends PC_Block> T register(PC_ModuleObject module, Class<T> blockClass){
 		
 		Class<? extends PC_ItemBlock> itemBlockClass = null;
 		Class<? extends PC_TileEntity> tileEntityClass = null;

@@ -6,9 +6,9 @@ import java.util.TreeMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.launcher.PC_Property;
 import powercraft.management.PC_GlobalVariables;
-import powercraft.management.PC_IModule;
 import powercraft.management.item.PC_Item;
 import powercraft.management.item.PC_ItemArmor;
 import powercraft.management.reflect.PC_ReflectHelper;
@@ -19,7 +19,7 @@ public final class PC_ItemRegistry {
 	private static TreeMap<String, PC_Item> items = new TreeMap<String, PC_Item>();
 	private static TreeMap<String, PC_ItemArmor> itemArmors = new TreeMap<String, PC_ItemArmor>();
 	
-	public static <T extends Item> T register(PC_IModule module, Class<T> c){
+	public static <T extends Item> T register(PC_ModuleObject module, Class<T> c){
 		if(PC_Item.class.isAssignableFrom(c)){
 			return (T)registerItem(module, (Class<? extends PC_Item>)c);
 		}else if(PC_ItemArmor.class.isAssignableFrom(c)){
@@ -29,8 +29,8 @@ public final class PC_ItemRegistry {
 		}
 	}
 	
-	public static PC_Item registerItem(PC_IModule module, Class<? extends PC_Item> itemClass){
-		PC_Property config = PC_ModuleRegistry.getConfig(module).getProperty(itemClass.getSimpleName(), null, null);
+	public static PC_Item registerItem(PC_ModuleObject module, Class<? extends PC_Item> itemClass){
+		PC_Property config = module.getConfig().getProperty(itemClass.getSimpleName(), null, null);
 		try {
 			if(!config.getBoolean("enabled", true)){
 				return null;
@@ -49,7 +49,7 @@ public final class PC_ItemRegistry {
 			items.put(itemClass.getSimpleName(), item);
 			item.setItemName(itemClass.getSimpleName());
 			item.setModule(module);
-			item.setTextureFile(PC_TextureRegistry.getTerrainFile(module));
+			item.setTextureFile(PC_TextureRegistry.getTextureDirectory(module)+"tiles.png");
 
 			item.msg(PC_MSGRegistry.MSG_LOAD_FROM_CONFIG, config);
 
@@ -66,8 +66,8 @@ public final class PC_ItemRegistry {
 		return null;
 	}
 	
-	public static PC_ItemArmor registerItemArmor(PC_IModule module, Class<? extends PC_ItemArmor> itemArmorClass){
-		PC_Property config = PC_ModuleRegistry.getConfig(module).getProperty(itemArmorClass.getSimpleName(), null, null);
+	public static PC_ItemArmor registerItemArmor(PC_ModuleObject module, Class<? extends PC_ItemArmor> itemArmorClass){
+		PC_Property config = module.getConfig().getProperty(itemArmorClass.getSimpleName(), null, null);
 		try {
 			if(!config.getBoolean("enabled", true)){
 				return null;
@@ -86,7 +86,7 @@ public final class PC_ItemRegistry {
 					itemArmor);
 			itemArmor.setItemName(itemArmorClass.getSimpleName());
 			itemArmor.setModule(module);
-			itemArmor.setTextureFile(PC_TextureRegistry.getTerrainFile(module));
+			itemArmor.setTextureFile(PC_TextureRegistry.getTextureDirectory(module)+"tiles.png");
 
 			itemArmor.msg(PC_MSGRegistry.MSG_LOAD_FROM_CONFIG, config);
 

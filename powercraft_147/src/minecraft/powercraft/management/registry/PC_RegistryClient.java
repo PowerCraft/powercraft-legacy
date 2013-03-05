@@ -15,10 +15,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import powercraft.launcher.PC_Logger;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.launcher.PC_Property;
-import powercraft.launcher.mod_PowerCraft;
 import powercraft.management.PC_ClientUtils;
-import powercraft.management.PC_IModule;
 import powercraft.management.PC_KeyHandler;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct3;
@@ -34,6 +33,7 @@ import powercraft.management.renderer.PC_TileEntitySpecialRenderer;
 import powercraft.management.tileentity.PC_TileEntity;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class PC_RegistryClient extends PC_RegistryServer {
 
@@ -52,10 +52,10 @@ public class PC_RegistryClient extends PC_RegistryServer {
 	}
 	
 	
-	private HashMap<PC_IModule, HashMap<String, PC_Property>> moduleTranslation = new HashMap<PC_IModule, HashMap<String, PC_Property>>();
+	private HashMap<PC_ModuleObject, HashMap<String, PC_Property>> moduleTranslation = new HashMap<PC_ModuleObject, HashMap<String, PC_Property>>();
 
 	@Override
-	protected void registerLanguage(PC_IModule module, String lang,
+	protected void registerLanguage(PC_ModuleObject module, String lang,
 			LangEntry[] translations) {
 		HashMap<String, PC_Property> langs;
 		if (moduleTranslation.containsKey(module))
@@ -75,15 +75,15 @@ public class PC_RegistryClient extends PC_RegistryServer {
 				}
 			}
 
-			mod_PowerCraft.addStringLocalization(trans.a, lang,
+			LanguageRegistry.instance().addStringLocalization(trans.a, lang,
 					translation.getString(trans.a, trans.b, trans.c));
 
 		}
 	}
 
 	@Override
-	protected void loadLanguage(PC_IModule module) {
-		final PC_IModule m = module;
+	protected void loadLanguage(PC_ModuleObject module) {
+		final PC_ModuleObject m = module;
 		File folder = new File(Minecraft.getMinecraftDir(),
 				GameInfo.getPowerCraftFile() + "lang/");
 
@@ -160,12 +160,12 @@ public class PC_RegistryClient extends PC_RegistryServer {
 				}
 			}
 		} else {
-			mod_PowerCraft.addStringLocalization(key, lang, prop.getString());
+			LanguageRegistry.instance().addStringLocalization(key, lang, prop.getString());
 		}
 	}
 
 	@Override
-	protected void saveLanguage(PC_IModule module) {
+	protected void saveLanguage(PC_ModuleObject module) {
 		if (!moduleTranslation.containsKey(module))
 			return;
 		Set<Entry<String, PC_Property>> langs = moduleTranslation.get(module)

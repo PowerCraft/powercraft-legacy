@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import powercraft.management.PC_IModule;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.gres.PC_GresBaseWithInventory;
@@ -37,14 +37,14 @@ public class PC_RegistryServer implements PC_IPacketHandler {
 		return instance;
 	}
 	
-	protected void registerLanguage(PC_IModule module, String lang,
+	protected void registerLanguage(PC_ModuleObject module, String lang,
 			LangEntry[] translations) {
 	}
 
-	protected void loadLanguage(PC_IModule module) {
+	protected void loadLanguage(PC_ModuleObject module) {
 	}
 
-	protected void saveLanguage(PC_IModule module) {
+	protected void saveLanguage(PC_ModuleObject module) {
 	}
 	
 	protected void tileEntitySpecialRenderer(

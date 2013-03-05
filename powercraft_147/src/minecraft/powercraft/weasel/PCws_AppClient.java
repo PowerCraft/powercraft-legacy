@@ -4,14 +4,19 @@ import java.util.List;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import powercraft.launcher.PC_ClientModule;
+import powercraft.launcher.PC_ClientModule.PC_InitLanguage;
+import powercraft.launcher.PC_ClientModule.PC_LoadTextureFiles;
+import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_Struct2;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_TextureRegistry;
 
-public class PCws_AppClient extends PCws_App implements PC_IClientModule {
+@PC_ClientModule
+public class PCws_AppClient extends PCws_App {
 
-	@Override
+	@PC_InitLanguage
 	public List<LangEntry> initLanguage(List<LangEntry> lang) {
 		lang.add(new LangEntry("pc.gui.weasel.device.name", "device name:"));
 		lang.add(new LangEntry("pc.gui.weasel.device.rename", "rename device"));
@@ -71,19 +76,14 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		return lang;
 	}
 
-	@Override
+	@PC_LoadTextureFiles
 	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add(PC_TextureRegistry.getTerrainFile(this));
-		textures.add(PC_TextureRegistry.getTextureDirectory(this) + "block_chip.png");
+		textures.add("tiles.png");
+		textures.add("block_chip.png");
 		return textures;
 	}
 	
-	@Override
-	public List<String> addSplashes(List<String> list) {
-		return null;
-	}
-	
-	@Override
+	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("WeaselCore", PCws_GuiWeaselCore.class));
 		guis.add(new PC_Struct2<String, Class>("WeaselOnlyNet", PCws_GuiWeaselOnlyNet.class));
@@ -92,12 +92,6 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		guis.add(new PC_Struct2<String, Class>("WeaselDiskManager", PCws_GuiWeaselDiskManager.class));
 		guis.add(new PC_Struct2<String, Class>("WeaselDiskDrive", PCws_GuiWeaselDiskDrive.class));
 		return guis;
-	}
-
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(
-			List<PC_Struct2<Class<? extends Entity>, Render>> list) {
-		return null;
 	}
 
 }

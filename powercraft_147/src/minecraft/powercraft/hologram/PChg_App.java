@@ -6,6 +6,9 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import powercraft.launcher.PC_Module;
+import powercraft.launcher.PC_Module.PC_InitRecipes;
+import powercraft.launcher.PC_Module.PC_Instance;
 import powercraft.launcher.PC_Property;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IModule;
@@ -21,7 +24,8 @@ import powercraft.management.recipes.PC_ShapelessRecipes;
 import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_ItemRegistry;
 
-public class PChg_App implements PC_IModule {
+@PC_Module(name="Hologram", version="1.1.0")
+public class PChg_App {
 
 	@PC_FieldObject(clazz=PChg_BlockHologramBlockEmpty.class)
 	public static PC_Block hologramBlockEmpty;
@@ -31,44 +35,14 @@ public class PChg_App implements PC_IModule {
 	public static PC_Block hologramField;
 	@PC_FieldObject(clazz=PChg_ItemArmorHologramGlasses.class)
 	public static PC_ItemArmor hologramGlasses;
+	@PC_Instance
 	private static PChg_App instance;
 	
 	public static PChg_App getInstance(){
 		return instance;
 	}
-	
-	public PChg_App(){
-		instance = this;
-	}
-	
-	@Override
-	public String getName() {
-		return "Hologram";
-	}
 
-	@Override
-	public String getVersion() {
-		return "1.0.1";
-	}
-
-	@Override
-	public void preInit() {}
-
-	@Override
-	public void init() {}
-
-	@Override
-	public void postInit() {}
-
-	@Override
-	public void initProperties(PC_Property config) {}
-
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Integer>> initEntities(List<PC_Struct2<Class<? extends Entity>, Integer>> entities){
-		return null;
-	}
-
-	@Override
+	@PC_InitRecipes
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_ShapelessRecipes(new PC_ItemStack(hologramBlock), new PC_ItemStack(hologramBlockEmpty), getAllAccepptedBlocksForHologramBlock()));
 		recipes.add(new PChg_HologramBackRecipe());
@@ -89,24 +63,6 @@ public class PChg_App implements PC_IModule {
 		return recipes;
 	}
 
-	@Override
-	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
-			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
-		return null;
-	}
-
-	@Override
-	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
-			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
-		return null;
-	}
-
-	@Override
-	public List<PC_Struct2<String, Class>> registerGuis(
-			List<PC_Struct2<String, Class>> guis) {
-		return null;
-	}
-	
 	public List<PC_ItemStack> getAllAccepptedBlocksForHologramBlock(){
 		List<PC_ItemStack>l = new ArrayList<PC_ItemStack>();
 		for(int i=1; i<Block.blocksList.length; i++){

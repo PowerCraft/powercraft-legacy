@@ -4,22 +4,27 @@ import java.util.List;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import powercraft.launcher.PC_ClientModule;
+import powercraft.launcher.PC_ClientModule.PC_InitLanguage;
+import powercraft.launcher.PC_ClientModule.PC_LoadTextureFiles;
+import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_Struct2;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_TextureRegistry;
 
-public class PCtr_AppClient extends PCtr_App implements PC_IClientModule {
+@PC_ClientModule
+public class PCtr_AppClient extends PCtr_App {
 
-    @Override
+    @PC_LoadTextureFiles
 	public List<String> loadTextureFiles(List<String> textures)
     {
-		textures.add(PC_TextureRegistry.getTerrainFile(this));
-		textures.add(PC_TextureRegistry.getTextureDirectory(this)+"slimeboots.png");
+		textures.add("tiles.png");
+		textures.add("slimeboots.png");
 		return textures;
     }
 
-	@Override
+	@PC_InitLanguage
 	public List<LangEntry> initLanguage(List<LangEntry> lang) {
 		lang.add(new LangEntry("pc.gui.separationBelt.group", "Ignore subtypes of"));
 		lang.add(new LangEntry("pc.gui.separationBelt.groupLogs", "Logs"));
@@ -35,25 +40,13 @@ public class PCtr_AppClient extends PCtr_App implements PC_IClientModule {
 		lang.add(new LangEntry("pc.gui.ejector.modeSelectRandom", "Random slot"));
         return lang;
 	}
-
-	@Override
-	public List<String> addSplashes(List<String> list) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
-	@Override
+	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("SeperationBelt", PCtr_GuiSeparationBelt.class));
 		guis.add(new PC_Struct2<String, Class>("EjectionBelt", PCtr_GuiEjectionBelt.class));
 		guis.add(new PC_Struct2<String, Class>("Splitter", PCtr_GuiSplitter.class));
 		return guis;
-	}
-
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(
-			List<PC_Struct2<Class<? extends Entity>, Render>> list) {
-		return null;
 	}
 	
 }

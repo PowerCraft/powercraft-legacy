@@ -4,40 +4,21 @@ import java.util.List;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import powercraft.launcher.PC_ClientModule;
+import powercraft.launcher.PC_ClientModule.PC_LoadTextureFiles;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_Struct2;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_TextureRegistry;
 
-public class PCde_AppClient extends PCde_App implements PC_IClientModule {
+@PC_ClientModule
+public class PCde_AppClient extends PCde_App {
 
-	@Override
+	@PC_LoadTextureFiles
 	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add(PC_TextureRegistry.getTerrainFile(this));
-		textures.add(PC_TextureRegistry.getTextureDirectory(this)+"block_deco.png");
+		textures.add("tiles.png");
+		textures.add("block_deco.png");
 		return textures;
-	}
-
-	@Override
-	public List<PC_Struct2<String, Class>> registerGuis(
-			List<PC_Struct2<String, Class>> guis) {
-		return null;
-	}
-
-	@Override
-	public List<LangEntry> initLanguage(List<LangEntry> lang) {
-		return null;
-	}
-
-	@Override
-	public List<String> addSplashes(List<String> list) {
-		return null;
-	}
-
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(
-			List<PC_Struct2<Class<? extends Entity>, Render>> list) {
-		return null;
 	}
 
 }

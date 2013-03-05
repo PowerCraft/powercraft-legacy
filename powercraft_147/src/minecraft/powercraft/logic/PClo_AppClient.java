@@ -4,21 +4,27 @@ import java.util.List;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import powercraft.launcher.PC_ClientModule;
+import powercraft.launcher.PC_ClientModule.PC_AddSplashes;
+import powercraft.launcher.PC_ClientModule.PC_InitLanguage;
+import powercraft.launcher.PC_ClientModule.PC_LoadTextureFiles;
+import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_Struct2;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_TextureRegistry;
 
-public class PClo_AppClient extends PClo_App implements PC_IClientModule {
+@PC_ClientModule
+public class PClo_AppClient extends PClo_App {
 
-	@Override
+	@PC_LoadTextureFiles
     public List<String> loadTextureFiles(List<String> textures)
     {
-        textures.add(PC_TextureRegistry.getTerrainFile(this));
+        textures.add("tiles.png");
         return textures;
     }
 	
-	@Override
+	@PC_InitLanguage
 	public List<LangEntry> initLanguage(List<LangEntry> lang) {
 		lang.add(new LangEntry("pc.pulsar.clickMsg", "Period %s ticks (%s s)"));
 		lang.add(new LangEntry("pc.pulsar.clickMsgTime", "Period %s ticks (%s s), remains %s"));
@@ -64,14 +70,14 @@ public class PClo_AppClient extends PClo_App implements PC_IClientModule {
 		return lang;
 	}
 
-	@Override
+	@PC_AddSplashes
     public List<String> addSplashes(List<String> list)
     {
         list.add("Adjustable clock pulse!");
         return list;
     }
 
-	@Override
+	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class>> registerGuis(
 			List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("Delayer", PClo_GuiDelayer.class));
@@ -79,12 +85,5 @@ public class PClo_AppClient extends PClo_App implements PC_IClientModule {
 		guis.add(new PC_Struct2<String, Class>("Special", PClo_GuiSpecial.class));
 		return guis;
 	}
-
-	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(
-			List<PC_Struct2<Class<? extends Entity>, Render>> list) {
-		return null;
-	}
-	
 	
 }

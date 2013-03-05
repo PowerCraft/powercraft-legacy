@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.launcher.PC_ModuleObject;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.block.PC_Block;
 import powercraft.management.item.PC_Item;
@@ -16,7 +17,6 @@ import powercraft.management.item.PC_ItemArmor;
 import powercraft.management.reflect.PC_ReflectHelper;
 import powercraft.management.registry.PC_BlockRegistry;
 import powercraft.management.registry.PC_ItemRegistry;
-import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.registry.PC_RecipeRegistry;
 
 public class PC_IDResolver {
@@ -181,7 +181,7 @@ public class PC_IDResolver {
 	}
 	
 	public static int defaultID(PC_Block block) {
-		PC_IModule module = block.getModule();
+		PC_ModuleObject module = block.getModule();
 		Class<?> c = block.getClass();
 		int id = -1;
 		if(PC_ReflectHelper.getAnnotation(c, PC_Shining.class)!=null){
@@ -190,14 +190,14 @@ public class PC_IDResolver {
 			List<Object> off = PC_ReflectHelper.getFieldsWithAnnotation(c, block,
 							PC_Shining.OFF.class);
 			if (on != null && on.size() > 0 && on.get(0) == block) {
-				id = PC_ModuleRegistry.getConfig(module).getInt(
+				id = module.getConfig().getInt(
 						c.getSimpleName() + ".defaultID.on");
 			} else {
-				id = PC_ModuleRegistry.getConfig(module).getInt(
+				id = module.getConfig().getInt(
 						c.getSimpleName() + ".defaultID.off");
 			}
 		}else{
-			id = PC_ModuleRegistry.getConfig(module).getInt(c.getSimpleName() + ".defaultID");
+			id = module.getConfig().getInt(c.getSimpleName() + ".defaultID");
 		}
 		if (!PC_BlockRegistry.isBlockIDFree(id))
 			id = PC_BlockRegistry.getFreeBlockID();
@@ -205,16 +205,16 @@ public class PC_IDResolver {
 	}
 	
 	public static int defaultID(PC_Item item) {
-		PC_IModule module = item.getModule();
-		int id = PC_ModuleRegistry.getConfig(module).getInt(item.getClass().getSimpleName() + ".defaultID");
+		PC_ModuleObject module = item.getModule();
+		int id = module.getConfig().getInt(item.getClass().getSimpleName() + ".defaultID");
 		if (!PC_ItemRegistry.isItemIDFree(id))
 			id = PC_ItemRegistry.getFreeItemID();
 		return id;
 	}
 	
 	public static int defaultID(PC_ItemArmor itemArmor) {
-		PC_IModule module = itemArmor.getModule();
-		int id = PC_ModuleRegistry.getConfig(module).getInt(itemArmor.getClass().getSimpleName() + ".defaultID");
+		PC_ModuleObject module = itemArmor.getModule();
+		int id = module.getConfig().getInt(itemArmor.getClass().getSimpleName() + ".defaultID");
 		if (!PC_ItemRegistry.isItemIDFree(id))
 			id = PC_ItemRegistry.getFreeItemID();
 		return id;
