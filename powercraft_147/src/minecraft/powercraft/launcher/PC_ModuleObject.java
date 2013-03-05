@@ -7,8 +7,10 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PC_ModuleObject {
@@ -238,6 +240,34 @@ public class PC_ModuleObject {
 	
 	public List registerEntityRender(List arrayList) {
 		return (List)callMethod(PC_ClientModule.PC_RegisterEntityRender.class, new Object[]{arrayList});
+	}
+
+	public void resolveInstances(HashMap<String, PC_ModuleObject> modules) {
+		Class<?> c = moduleClass;
+		while(c!=null){
+			Field fa[] = c.getDeclaredFields();
+			for (Field f : fa) {
+				if (f.isAnnotationPresent(PC_Module.PC_Instance.class)) {
+					String modulename = f.getAnnotation(PC_Module.PC_Instance.class).module();
+					PC_ModuleObject module;
+					if(modulename.equals("")){
+						module = this;
+					}else{
+						module= modules.get(modulename);
+					}
+					if(module!=null){
+						f.setAccessible(true);
+						try {
+							f.set(this.module, module.module);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+	
+			c = c.getSuperclass();
+		}
 	}
 	
 }

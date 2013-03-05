@@ -66,6 +66,18 @@ public class PC_ManagementModule {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		try {
+			Class<?>c;
+			if(PC_LauncherUtils.isClient()){
+				c = Class.forName("powercraft.management.PC_ClientPacketHandler");
+			}else{
+				c = Class.forName("powercraft.management.PC_PacketHandler");
+			}
+			PC_PacketHandler packetHandler = (PC_PacketHandler) c.newInstance();
+			powercraft.launcher.PC_PacketHandler.handler = packetHandler;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@PC_PreInit
