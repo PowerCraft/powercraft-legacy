@@ -235,6 +235,9 @@ public class PC_ModuleDiscovery {
 				module.load();
 			}
 		}
+		for(Entry<String, PC_ModuleObject>module:modules.entrySet()){
+			module.getValue().resolveInstances(modules);
+		}
 	}
 	
 	public PC_ModuleObject getManagement() {

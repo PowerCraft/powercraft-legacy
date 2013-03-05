@@ -19,7 +19,7 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
-public class PC_PacketHandler implements IPacketHandler
+public class PC_PacketHandler extends powercraft.launcher.PC_PacketHandler
 {
     public static final int PACKETTILEENTITY = 0, PACKETPACKETHANDLER = 1, PACKETGUI = 2, PACKETIDS = 3;
 
