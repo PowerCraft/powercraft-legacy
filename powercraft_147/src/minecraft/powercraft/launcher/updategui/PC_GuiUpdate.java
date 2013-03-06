@@ -82,7 +82,7 @@ public class PC_GuiUpdate extends GuiScreen {
     public void drawScreen(int par1, int par2, float par3){
 		scroll.drawScreen(par1, par2, par3);
 		download.enabled=false;
-		download.drawButton=true;
+		download.drawButton = true;
 		activate.drawButton = false;
 		delete.drawButton = false;
 		if(scroll.getActiveElement() instanceof PC_GuiScrollElementModule){
@@ -91,9 +91,9 @@ public class PC_GuiUpdate extends GuiScreen {
 			if(element.scroll.getActiveElement() instanceof PC_GuiScrollElementModuleVersionInfo){
 				PC_GuiScrollElementModuleVersionInfo versionInfo = (PC_GuiScrollElementModuleVersionInfo)element.scroll.getActiveElement();
 				versionInfo.scroll.drawScreen(par1, par2, par3);
-				if(element.getUpdateInfo().versions.contains(versionInfo.getVersion().getVersion())){
-					if(!element.getUpdateInfo().oldVersion.equals(versionInfo.getVersion().getVersion())){
-						download.drawButton=false;
+				if(element.getUpdateInfo().versions.contains(versionInfo.getVersion())){
+					if(!element.getUpdateInfo().oldVersion.equals(versionInfo.getVersion())){
+						download.drawButton = false;
 						activate.drawButton = true;
 						delete.drawButton = true;
 					}
@@ -186,7 +186,7 @@ public class PC_GuiUpdate extends GuiScreen {
 				PC_GuiScrollElementModule element = (PC_GuiScrollElementModule)scroll.getActiveElement();
 				if(element.scroll.getActiveElement() instanceof PC_GuiScrollElementModuleVersionInfo){
 					PC_GuiScrollElementModuleVersionInfo versionInfo = (PC_GuiScrollElementModuleVersionInfo)element.scroll.getActiveElement();
-					PC_UpdateManager.download(versionInfo.getVersion());
+					PC_UpdateManager.download(versionInfo.getVersionXML());
 				}
 			}else if(scroll.getActiveElement() instanceof PC_GuiScrollElementPack){
 				PC_GuiScrollElementPack pack = (PC_GuiScrollElementPack)scroll.getActiveElement();
@@ -202,7 +202,7 @@ public class PC_GuiUpdate extends GuiScreen {
 				PC_GuiScrollElementModule element = (PC_GuiScrollElementModule)scroll.getActiveElement();
 				if(element.scroll.getActiveElement() instanceof PC_GuiScrollElementModuleVersionInfo){
 					PC_GuiScrollElementModuleVersionInfo versionInfo = (PC_GuiScrollElementModuleVersionInfo)element.scroll.getActiveElement();
-					element.getUpdateInfo().module.getConfig().setString("loader.usingVersion", versionInfo.getVersion().getVersion().toString());
+					element.getUpdateInfo().module.getConfig().setString("loader.usingVersion", versionInfo.getVersion().toString());
 					element.getUpdateInfo().module.saveConfig();
 				}
 			}
