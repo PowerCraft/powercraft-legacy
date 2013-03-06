@@ -100,6 +100,10 @@ public class PC_UpdateManager {
 		if(modules.size()>0){
 			try {
 				Files.move(file.toPath(), new File(PC_LauncherUtils.getPowerCraftModuleFile(), file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+				for(PC_ModuleObject module:modules.values()){
+					module.getConfig().setString("loader.usingVersion", module.getNewest().toString());
+					module.saveConfig();
+				}
 				System.out.println("Found Module Pack "+file);
 			} catch (IOException e) {
 				e.printStackTrace();

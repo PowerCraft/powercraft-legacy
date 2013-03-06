@@ -17,6 +17,7 @@ import java.util.zip.ZipFile;
 
 import org.objectweb.asm.ClassReader;
 
+import cpw.mods.fml.relauncher.IClassTransformer;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 import powercraft.launcher.asm.PC_ClassVisitor;
@@ -27,6 +28,7 @@ public class PC_ModuleLoader extends ClassLoader {
 	private static HashMap<String, File> packetFile = new HashMap<String, File>();
 	private static HashMap<String, Class> classes = new HashMap<String, Class>();
 	private static PC_ModuleLoader moduleLoader = new PC_ModuleLoader(PC_ModuleLoader.class.getClassLoader());
+	private static RelaunchClassLoader rcl = (RelaunchClassLoader)PC_ModuleLoader.class.getClassLoader();
 	
 	public PC_ModuleLoader(ClassLoader parent){
 		super(parent);
@@ -135,6 +137,9 @@ public class PC_ModuleLoader extends ClassLoader {
 			if(name.startsWith(e.getKey())){
 				byte[] b = searchResourceInDir(e.getValue(), name);
 				if(b!=null){
+					for(IClassTransformer trans : rcl.getTransformers()){
+						b = trans.transform(name, b);
+					}
 					c = defineClass(name, b, 0, b.length);
 					classes.put(name, c);
 					Field f = RelaunchClassLoader.class.getDeclaredFields()[3];
