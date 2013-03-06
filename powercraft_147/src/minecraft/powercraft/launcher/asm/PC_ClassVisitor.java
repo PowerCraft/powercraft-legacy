@@ -40,10 +40,10 @@ public class PC_ClassVisitor extends ClassVisitor{
 
 	@Override
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-		if(desc.equals("Lpowercraft/launcher/PC_Module;")){
+		if(desc.equals("Lpowercraft/launcher/loader/PC_Module;")){
 			classInfo.annotationVisitor = new PC_AnnotationVisitor();
 			return classInfo.annotationVisitor;
-		}else if(desc.equals("Lpowercraft/launcher/PC_ClientModule;")){
+		}else if(desc.equals("Lpowercraft/launcher/loader/PC_ClientModule;")){
 			classInfo.isClient = true;
 		}
 		return null;

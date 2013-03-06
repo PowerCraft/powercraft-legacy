@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_ClientServerSync;

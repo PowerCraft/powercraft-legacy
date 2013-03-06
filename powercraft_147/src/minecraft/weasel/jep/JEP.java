@@ -16,12 +16,10 @@ import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.Vector;
 
-import powercraft.management.PC_Utils.ModuleInfo;
-import powercraft.management.registry.PC_BlockRegistry;
-import powercraft.management.registry.PC_ItemRegistry;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import powercraft.management.registry.PC_BlockRegistry;
+import powercraft.management.registry.PC_ItemRegistry;
 import weasel.Calc;
 import weasel.jep.function.Abs;
 import weasel.jep.function.ArcCosine;
