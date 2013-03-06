@@ -1,10 +1,12 @@
 package powercraft.launcher;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CallableMinecraftVersion;
+import net.minecraft.server.MinecraftServer;
 import powercraft.launcher.loader.PC_ModLoader;
+import powercraft.launcher.loader.PC_ModuleDiscovery;
 
 public class PC_LauncherUtils {
 
@@ -12,6 +14,10 @@ public class PC_LauncherUtils {
 	
 	public PC_LauncherUtils(){
 		instance = this;
+	}
+	
+	public static MinecraftServer mcs(){
+		return MinecraftServer.getServer();
 	}
 	
 	public static boolean isClient(){
@@ -26,7 +32,7 @@ public class PC_LauncherUtils {
 	}
 
 	public static File getMCDirectory() {
-		return Minecraft.getMinecraftDir();
+		return instance.pGetMCDirectory();
 	}
 	
 	public static File getPowerCraftFile() {
@@ -60,10 +66,6 @@ public class PC_LauncherUtils {
 	public static void addCredit(String name){
 		mod_PowerCraft.getInstance().getModMetadata().credits += ", "+name;
 	}
-	
-	protected boolean pIsClient(){
-		return false;
-	}
 
 	public static boolean usingModLoader(PC_ModLoader modLoader) {
 		if(modLoader==PC_ModLoader.ALL)
@@ -73,6 +75,37 @@ public class PC_LauncherUtils {
 	
 	public static PC_ModLoader getModLoader() {
 		return PC_ModLoader.FORGE_MODLOADER;
+	}
+
+	public static PC_ModuleDiscovery searchModules(boolean addAny){
+		File modules = getPowerCraftModuleFile();
+		File mods = new File(getMCDirectory(), "mods");
+		File res = null;
+		try {
+			res = new File(mod_PowerCraft.class.getResource("../../").toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		
+		PC_ModuleDiscovery moduleDiscovery = new PC_ModuleDiscovery();
+		if(res==null){
+			moduleDiscovery.search(modules, addAny, mods, false);
+		}else{
+			moduleDiscovery.search(modules, addAny, mods, false, res, false);
+		}
+		return moduleDiscovery;
+	}
+	
+	public void updatePowerCraft() {
+		
+	}
+	
+	protected boolean pIsClient(){
+		return false;
+	}
+	
+	protected File pGetMCDirectory() {
+		return mcs().getFile("");
 	}
 	
 }

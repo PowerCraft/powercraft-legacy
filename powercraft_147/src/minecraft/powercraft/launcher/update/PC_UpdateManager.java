@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import powercraft.launcher.PC_Launcher;
 import powercraft.launcher.PC_LauncherUtils;
 import powercraft.launcher.PC_Version;
 import powercraft.launcher.loader.PC_ModuleDiscovery;
 import powercraft.launcher.loader.PC_ModuleObject;
+import powercraft.launcher.loader.PC_ModuleVersion;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLInfoTag;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLModuleTag;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLVersionTag;
@@ -38,27 +40,34 @@ public class PC_UpdateManager {
 	
 	public static void moduleInfos(HashMap<String, PC_ModuleObject> modules){
 		XMLInfoTag updateInfo = updateChecker.getUpdateInfo();
-		List<ModuleUpdateInfo> forUpdate = new ArrayList<ModuleUpdateInfo>();
+		boolean showUpdate = PC_Launcher.openAlwaysUpdateScreen();
+		List<ModuleUpdateInfo> moduleList = new ArrayList<ModuleUpdateInfo>();
 		for(XMLModuleTag xmlModule:updateInfo.getModules()){
 			ModuleUpdateInfo mui = new ModuleUpdateInfo();
 			mui.xmlModule = xmlModule;
 			mui.newVersion = mui.xmlModule.getNewestVersion();
 			mui.module = modules.get(xmlModule.getName());
 			if(mui.module==null){
-				forUpdate.add(mui);
+				showUpdate |= true;
 			}else{
-				mui.oldVersion = mui.module.getNewest().getModuleVersion();
+				mui.versions = new ArrayList<PC_Version>();
+				for(PC_ModuleVersion v:mui.module.getVersions()){
+					mui.versions.add(v.getVersion());
+				}
+				mui.oldVersion = mui.module.getStandartVersion().getVersion();
 				if(mui.newVersion.getVersion().compareTo(mui.oldVersion)>0){
-					forUpdate.add(mui);
+					showUpdate |= true;
 				}
 			}
+			moduleList.add(mui);
 		}
-		if(forUpdate.size()>0){
-			PC_GuiUpdate.show(forUpdate, updateInfo);
+		if(showUpdate){
+			PC_GuiUpdate.show(moduleList, updateInfo);
 		}
 	}
 	
 	public static class ModuleUpdateInfo{
+		public List<PC_Version> versions;
 		public PC_Version oldVersion;
 		public XMLVersionTag newVersion;
 		public PC_ModuleObject module;
