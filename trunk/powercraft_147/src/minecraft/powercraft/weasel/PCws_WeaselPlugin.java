@@ -9,11 +9,11 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
-import weasel.Calc;
-import weasel.WeaselFunctionManager;
-import weasel.obj.WeaselBoolean;
-import weasel.obj.WeaselObject;
-import weasel.obj.WeaselString;
+import powercraft.weasel.engine.Calc;
+import powercraft.weasel.engine.WeaselFunctionManager;
+import powercraft.weasel.obj.WeaselBoolean;
+import powercraft.weasel.obj.WeaselObject;
+import powercraft.weasel.obj.WeaselString;
 
 public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, PCws_IWeaselNetworkDevice {
 

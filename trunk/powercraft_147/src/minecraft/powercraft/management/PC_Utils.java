@@ -55,6 +55,7 @@ import net.minecraft.world.storage.WorldInfo;
 import powercraft.launcher.PC_LauncherUtils;
 import powercraft.launcher.PC_Logger;
 import powercraft.launcher.PC_Property;
+import powercraft.launcher.loader.PC_ModLoader;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.block.PC_Block;
 import powercraft.management.block.PC_ItemBlock;
@@ -526,7 +527,7 @@ public class PC_Utils implements PC_IPacketHandler {
 	public static class GameInfo {
 
 		public static String getMinecraftVersion(){
-    		return new CallableMinecraftVersion(null).minecraftVersion();
+    		return PC_LauncherUtils.getMinecraftVersion();
     	}
 		
 		public static CreativeTabs getCreativeTab(CreativeTabs _default) {
@@ -785,7 +786,7 @@ public class PC_Utils implements PC_IPacketHandler {
 		}
 
 		public static boolean usingForge() {
-			return true;
+			return PC_LauncherUtils.usingModLoader(PC_ModLoader.FORGE_MODLOADER);
 		}
 
 		public static float giveConductorValueFor(Block b) {
@@ -976,8 +977,8 @@ public class PC_Utils implements PC_IPacketHandler {
 
 	public static class SaveHandler {
 
-		public static PC_INBT loadFromNBT(NBTTagCompound nbttagcompound,
-				String string, PC_INBT nbt) {
+		public static <T extends PC_INBT<T>>T loadFromNBT(NBTTagCompound nbttagcompound,
+				String string, T nbt) {
 			NBTTagCompound nbttag = nbttagcompound.getCompoundTag(string);
 			return nbt.readFromNBT(nbttag);
 		}

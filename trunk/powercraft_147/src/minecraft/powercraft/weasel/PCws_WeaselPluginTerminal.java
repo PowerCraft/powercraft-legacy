@@ -6,8 +6,8 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.registry.PC_GresRegistry;
-import weasel.WeaselFunctionManager;
-import weasel.obj.WeaselString;
+import powercraft.weasel.engine.WeaselFunctionManager;
+import powercraft.weasel.obj.WeaselString;
 
 public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 

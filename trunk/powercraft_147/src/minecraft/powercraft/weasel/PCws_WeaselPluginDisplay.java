@@ -4,9 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Color;
 import powercraft.management.registry.PC_GresRegistry;
-import weasel.Calc;
-import weasel.WeaselFunctionManager;
-import weasel.exception.WeaselRuntimeException;
+import powercraft.weasel.engine.Calc;
+import powercraft.weasel.engine.WeaselFunctionManager;
+import powercraft.weasel.exception.WeaselRuntimeException;
 
 public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 

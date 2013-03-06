@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 
 import powercraft.launcher.PC_LauncherUtils;
 import powercraft.launcher.PC_Version;
+import powercraft.launcher.loader.PC_ModLoader;
 
 public class PC_UpdateXMLFile {
 
@@ -303,7 +304,7 @@ public class PC_UpdateXMLFile {
 
 		@Override
 		protected void readChild(String childName, Node childNode) {
-			if(childName.equalsIgnoreCase(PC_LauncherUtils.isForge()?"Forge":"ModLoader")){
+			if(childName.equalsIgnoreCase(PC_LauncherUtils.getModLoader().getName())){
 				NodeList childNods = childNode.getChildNodes();
 				for (int i = 0; i < childNods.getLength(); i++){
 					Node childNode2 = childNods.item(i);

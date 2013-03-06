@@ -4,6 +4,7 @@ import java.io.File;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CallableMinecraftVersion;
+import powercraft.launcher.loader.PC_ModLoader;
 
 public class PC_LauncherUtils {
 
@@ -60,12 +61,18 @@ public class PC_LauncherUtils {
 		mod_PowerCraft.getInstance().getModMetadata().credits += ", "+name;
 	}
 	
-	public static boolean isForge() {
-		return true;
-	}
-	
 	protected boolean pIsClient(){
 		return false;
+	}
+
+	public static boolean usingModLoader(PC_ModLoader modLoader) {
+		if(modLoader==PC_ModLoader.ALL)
+			return true;
+		return modLoader==getModLoader();
+	}
+	
+	public static PC_ModLoader getModLoader() {
+		return PC_ModLoader.FORGE_MODLOADER;
 	}
 	
 }

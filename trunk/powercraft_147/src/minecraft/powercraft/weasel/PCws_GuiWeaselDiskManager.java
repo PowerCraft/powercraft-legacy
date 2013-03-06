@@ -40,10 +40,10 @@ import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_TextureRegistry;
 import powercraft.management.tileentity.PC_TileEntity;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
-import weasel.WeaselEngine;
-import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselObject;
-import weasel.obj.WeaselString;
+import powercraft.weasel.engine.WeaselEngine;
+import powercraft.weasel.obj.WeaselDouble;
+import powercraft.weasel.obj.WeaselObject;
+import powercraft.weasel.obj.WeaselString;
 
 public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager implements PC_IGresClient {
 

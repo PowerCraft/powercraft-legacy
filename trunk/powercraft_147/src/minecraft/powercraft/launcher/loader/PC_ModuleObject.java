@@ -103,7 +103,7 @@ public class PC_ModuleObject {
 					if(moduleVersion.getClient()!=null)
 						classInfo = moduleVersion.getClient();
 				}
-				moduleClass = Class.forName(classInfo.className.replace('/', '.'));
+				moduleClass = PC_ModuleLoader.load(classInfo.className.replace('/', '.'), classInfo.file);
 				module = moduleClass.newInstance();
 			} catch (Exception e) {
 				e.printStackTrace();

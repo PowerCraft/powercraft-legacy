@@ -8,14 +8,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import powercraft.management.registry.PC_GresRegistry;
-import weasel.Calc;
-import weasel.WeaselEngine;
-import weasel.WeaselFunctionManager;
-import weasel.exception.WeaselRuntimeException;
-import weasel.lang.Instruction;
-import weasel.lang.InstructionFunction;
-import weasel.obj.WeaselObject;
-import weasel.obj.WeaselString;
+import powercraft.weasel.engine.Calc;
+import powercraft.weasel.engine.WeaselEngine;
+import powercraft.weasel.engine.WeaselFunctionManager;
+import powercraft.weasel.exception.WeaselRuntimeException;
+import powercraft.weasel.lang.Instruction;
+import powercraft.weasel.lang.InstructionFunction;
+import powercraft.weasel.obj.WeaselObject;
+import powercraft.weasel.obj.WeaselString;
 
 public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCws_IWeaselInventory {
 

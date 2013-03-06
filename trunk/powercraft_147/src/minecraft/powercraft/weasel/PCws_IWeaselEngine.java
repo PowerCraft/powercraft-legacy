@@ -1,6 +1,6 @@
 package powercraft.weasel;
 
-import weasel.WeaselEngine;
+import powercraft.weasel.engine.WeaselEngine;
 
 public interface PCws_IWeaselEngine {
 

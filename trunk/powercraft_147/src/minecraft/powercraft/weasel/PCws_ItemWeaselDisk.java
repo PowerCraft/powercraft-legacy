@@ -17,15 +17,15 @@ import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
-import weasel.Calc;
-import weasel.WeaselEngine;
-import weasel.exception.WeaselRuntimeException;
-import weasel.lang.Instruction;
-import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselFunctionCall;
-import weasel.obj.WeaselObject;
-import weasel.obj.WeaselString;
-import weasel.obj.WeaselVariableMap;
+import powercraft.weasel.engine.Calc;
+import powercraft.weasel.engine.WeaselEngine;
+import powercraft.weasel.exception.WeaselRuntimeException;
+import powercraft.weasel.lang.Instruction;
+import powercraft.weasel.obj.WeaselDouble;
+import powercraft.weasel.obj.WeaselFunctionCall;
+import powercraft.weasel.obj.WeaselObject;
+import powercraft.weasel.obj.WeaselString;
+import powercraft.weasel.obj.WeaselVariableMap;
 
 public class PCws_ItemWeaselDisk extends PC_Item {
 

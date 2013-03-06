@@ -18,6 +18,7 @@ import java.util.zip.ZipFile;
 
 import org.objectweb.asm.ClassReader;
 
+import powercraft.launcher.PC_LauncherUtils;
 import powercraft.launcher.PC_Version;
 import powercraft.launcher.asm.PC_ClassVisitor;
 
@@ -41,6 +42,10 @@ public class PC_ModuleDiscovery {
 			String moduleName = classInfo.annotationVisitor.getModuleName();
 			String moduleDependencies = classInfo.annotationVisitor.getDependencies();
 			PC_Version moduleVersion = classInfo.annotationVisitor.getVersion();
+			PC_ModLoader modLoader = classInfo.annotationVisitor.getModLoader();
+			if(!PC_LauncherUtils.usingModLoader(modLoader)){
+				return;
+			}
 			PC_ModuleObject moduleObject;
 			if(modules.containsKey(moduleName)){
 				moduleObject = modules.get(moduleName);
