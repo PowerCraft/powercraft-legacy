@@ -11,8 +11,6 @@ import powercraft.launcher.PC_Module.PC_InitRecipes;
 import powercraft.launcher.PC_Module.PC_PreInit;
 import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.launcher.PC_Property;
-import powercraft.management.PC_IDataHandler;
-import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.recipes.PC_3DRecipe;

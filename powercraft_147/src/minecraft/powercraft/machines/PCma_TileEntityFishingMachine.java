@@ -125,7 +125,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 
 		for (int i = 0; i < outputs.length; i++) {
 			Block b = GameInfo.getBlock(worldObj, getCoord().offset(outputs[i]));
-			if (b instanceof PC_Block && ((PC_Block)b).getModule().getName().equals("Transport")) {
+			if (b instanceof PC_Block && ((PC_Block)b).getModule().getModuleName().equals("Transport")) {
 				ejectFish_do(getCoord().offset(outputs[i]), false);
 				return;
 			}

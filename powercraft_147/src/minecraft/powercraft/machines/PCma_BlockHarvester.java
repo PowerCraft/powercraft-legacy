@@ -501,7 +501,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 		Block b = GameInfo.getBlock(world, devPos.offset(dispIncX, 0, dispIncZ));
 		String module = null;
 		if(b instanceof PC_Block){
-			module = ((PC_Block) b).getModule().getName();
+			module = ((PC_Block) b).getModule().getModuleName();
 		}
 		
 		if (module!=null && module.equalsIgnoreCase("Transport")) {
