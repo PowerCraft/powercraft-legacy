@@ -196,8 +196,9 @@ public class PC_ModuleObject {
 	}
 
 	public void saveConfig() {
-		File f = new File(PC_LauncherUtils.getMCDirectory(), "config/PowerCraft-"+moduleName+".cfg");
+		File f = new File(PC_LauncherUtils.getMCDirectory(), "config");
 		f.mkdirs();
+		f = new File("PowerCraft-"+moduleName+".cfg");
 		try {
 			OutputStream os = new FileOutputStream(f);
 			config.save(os);

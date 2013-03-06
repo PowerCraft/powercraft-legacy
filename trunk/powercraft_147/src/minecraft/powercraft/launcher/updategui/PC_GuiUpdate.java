@@ -15,6 +15,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.GLU;
 
 import powercraft.launcher.PC_Launcher;
 import powercraft.launcher.PC_LauncherClientUtils;
@@ -35,6 +36,8 @@ public class PC_GuiUpdate extends GuiScreen {
 	private PC_GuiScroll defaultVersionList;
 	private PC_GuiScroll defaultInfoList;
 	private GuiButton download;
+	private GuiButton activate;
+	private GuiButton delete;
 	
 	private File downloadTarget;
 	
@@ -69,19 +72,34 @@ public class PC_GuiUpdate extends GuiScreen {
 		controlList.add(new GuiButton(1, 10, height - 28, 190, 20, StringTranslate.getInstance().translateKey("gui.done")));
 		controlList.add(download = new GuiButton(2, 220, height - 58, width-240, 20, StringTranslate.getInstance().translateKey("Download")));
 		controlList.add(new GuiButton(3, 220, height - 28, width-240, 20, StringTranslate.getInstance().translateKey("Where to watch for downloads")));
+		controlList.add(activate = new GuiButton(4, 220, height - 58, (width-240)/2, 20, StringTranslate.getInstance().translateKey("Activate")));
+		controlList.add(delete = new GuiButton(5, 220+(width-240)/2, height - 58, (width-240)/2, 20, StringTranslate.getInstance().translateKey("Delete")));
+		activate.drawButton = false;
+		delete.drawButton = false;
 	}
 
 	@Override
     public void drawScreen(int par1, int par2, float par3){
 		scroll.drawScreen(par1, par2, par3);
 		download.enabled=false;
+		download.drawButton=true;
+		activate.drawButton = false;
+		delete.drawButton = false;
 		if(scroll.getActiveElement() instanceof PC_GuiScrollElementModule){
 			PC_GuiScrollElementModule element = (PC_GuiScrollElementModule)scroll.getActiveElement();
 			element.scroll.drawScreen(par1, par2, par3);
 			if(element.scroll.getActiveElement() instanceof PC_GuiScrollElementModuleVersionInfo){
 				PC_GuiScrollElementModuleVersionInfo versionInfo = (PC_GuiScrollElementModuleVersionInfo)element.scroll.getActiveElement();
 				versionInfo.scroll.drawScreen(par1, par2, par3);
-				download.enabled=true;
+				if(element.getUpdateInfo().versions.contains(versionInfo.getVersion().getVersion())){
+					if(!element.getUpdateInfo().oldVersion.equals(versionInfo.getVersion().getVersion())){
+						download.drawButton=false;
+						activate.drawButton = true;
+						delete.drawButton = true;
+					}
+				}else{
+					download.enabled=true;
+				}
 			}else{
 				defaultInfoList.drawScreen(par1, par2, par3);
 			}
@@ -179,6 +197,17 @@ public class PC_GuiUpdate extends GuiScreen {
 			}
 		}else if(par1GuiButton.id==3){
 			new PC_FileRequestThread(this, downloadTarget);
+		}else if(par1GuiButton.id==4){
+			if(scroll.getActiveElement() instanceof PC_GuiScrollElementModule){
+				PC_GuiScrollElementModule element = (PC_GuiScrollElementModule)scroll.getActiveElement();
+				if(element.scroll.getActiveElement() instanceof PC_GuiScrollElementModuleVersionInfo){
+					PC_GuiScrollElementModuleVersionInfo versionInfo = (PC_GuiScrollElementModuleVersionInfo)element.scroll.getActiveElement();
+					element.getUpdateInfo().module.getConfig().setString("loader.usingVersion", versionInfo.getVersion().getVersion().toString());
+					element.getUpdateInfo().module.saveConfig();
+				}
+			}
+		}else if(par1GuiButton.id==5){
+			
 		}
 	}
 	
@@ -288,13 +317,13 @@ public class PC_GuiUpdate extends GuiScreen {
 				stop =true;
 			}
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			checkGLError("post gui render");
 		}
 		PC_UpdateManager.stopWatchDirectory();
-		ScaledResolution var1 = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        GL11.glClear(16640);
+		resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glOrtho(0.0D, var1.getScaledWidth_double(), var1.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);
+        GL11.glOrtho(0.0D, resolution.getScaledWidth_double(), resolution.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
         GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
@@ -316,7 +345,7 @@ public class PC_GuiUpdate extends GuiScreen {
         var2.setColorOpaque_I(16777215);
         short var3 = 256;
         short var4 = 256;
-        mc.scaledTessellator((var1.getScaledWidth() - var3) / 2, (var1.getScaledHeight() - var4) / 2, 0, 0, var3, var4);
+        mc.scaledTessellator((resolution.getScaledWidth() - var3) / 2, (resolution.getScaledHeight() - var4) / 2, 0, 0, var3, var4);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -327,5 +356,18 @@ public class PC_GuiUpdate extends GuiScreen {
 			e.printStackTrace();
 		}
 	}
+	
+	private static void checkGLError(String par1Str)
+    {
+        int var2 = GL11.glGetError();
+
+        if (var2 != 0)
+        {
+            String var3 = GLU.gluErrorString(var2);
+            System.out.println("########## GL ERROR ##########");
+            System.out.println("@ " + par1Str);
+            System.out.println(var2 + ": " + var3);
+        }
+    }
 	
 }

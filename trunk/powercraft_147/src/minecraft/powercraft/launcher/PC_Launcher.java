@@ -7,17 +7,16 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import powercraft.launcher.loader.PC_ModuleDiscovery;
 import powercraft.launcher.loader.PC_ModuleObject;
-import powercraft.launcher.update.PC_UpdateManager;
 
 public class PC_Launcher {
 	
 	private static PC_Property config;
 	private static boolean autoUpdate;
+	private static boolean openAlwaysUpdateScreen;
 	private static PC_ModuleDiscovery modules;
 	
 	public static void loadConfig(){
@@ -35,6 +34,9 @@ public class PC_Launcher {
 		}
 		
 		autoUpdate = config.getBoolean("updater.autoUpdate", true, "Should PowerCraft look for updates");
+		openAlwaysUpdateScreen = config.getBoolean("updater.openAlwaysUpdateScreen", false, "Should PowerCraft show always the update screen");
+		
+		saveConfig();
 		
 	}
 	
@@ -49,34 +51,8 @@ public class PC_Launcher {
 		}
 	}
 	
-	public static PC_ModuleDiscovery searchModules(boolean addAny){
-		File modules = PC_LauncherUtils.getPowerCraftModuleFile();
-		File mods = new File(PC_LauncherUtils.getMCDirectory(), "mods");
-		File res = null;
-		try {
-			res = new File(mod_PowerCraft.class.getResource("../../").toURI());
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		
-		PC_ModuleDiscovery moduleDiscovery = new PC_ModuleDiscovery();
-		if(res==null){
-			moduleDiscovery.search(modules, addAny, mods, false);
-		}else{
-			moduleDiscovery.search(modules, addAny, mods, false, res, false);
-		}
-		return moduleDiscovery;
-	}
-	
-	private static void updatePowerCraft(){
-		PC_UpdateManager.startUpdateInfoDownload();
-		File moduleFiles = PC_LauncherUtils.getPowerCraftModuleFile();
-		HashMap<String, PC_ModuleObject> modules = searchModules(false).getModules();
-		PC_UpdateManager.moduleInfos(modules);
-	}
-	
 	private static void loadModules(){
-		(modules = searchModules(true)).loadModules();
+		(modules = PC_LauncherUtils.searchModules(true)).loadModules();
 	}
 	
 	public static void preInit(){
@@ -86,7 +62,7 @@ public class PC_Launcher {
 		loadConfig();
 		
 		if(autoUpdate){
-			updatePowerCraft();
+			mod_PowerCraft.getInstance().proxy.updatePowerCraft();
 		}
 		
 		loadModules();
@@ -131,6 +107,10 @@ public class PC_Launcher {
 	
 	public static PC_Property getConfig(){
 		return config;
+	}
+	
+	public static boolean openAlwaysUpdateScreen(){
+		return openAlwaysUpdateScreen;
 	}
 	
 }

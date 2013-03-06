@@ -157,8 +157,10 @@ public class PC_GuiScroll {
         			w = (height - drawY-4)*scale;
         			bottom += (elementHeight-(height - drawY - 4))*scale;
         		}
-        		GL11.glScissor((x + 4) * scale, bottom, (elementWidth - 8) * scale, w);
-        		scrollElement.drawScreen(par1-x, par2-y-drawY, par3);
+        		if(elementWidth>8 && w>0){
+	        		GL11.glScissor((x + 4) * scale, bottom, (elementWidth - 8) * scale, w);
+	        		scrollElement.drawScreen(par1-x, par2-y-drawY, par3);
+        		}
         		GL11.glDisable(GL11.GL_SCISSOR_TEST);
         		GL11.glPopMatrix();
         	}

@@ -34,6 +34,16 @@ public class PC_Version implements Comparable<PC_Version>{
 		}
 		return 0;
 	}	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof PC_Version){
+			return compareTo((PC_Version)obj)==0;
+		}else if(obj instanceof String){
+			return compareTo(new PC_Version((String)obj))==0;
+		}
+		return false;
+	}
 
 	public static class VersionsNode implements Comparable<VersionsNode>{
 
