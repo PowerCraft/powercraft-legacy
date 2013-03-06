@@ -7,8 +7,8 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import powercraft.launcher.PC_ModuleClassInfo;
-import powercraft.launcher.PC_ModuleDiscovery;
+import powercraft.launcher.loader.PC_ModuleClassInfo;
+import powercraft.launcher.loader.PC_ModuleDiscovery;
 
 public class PC_ClassVisitor extends ClassVisitor{
 

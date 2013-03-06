@@ -15,9 +15,9 @@ import net.minecraft.world.ChunkCache;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.launcher.PC_ClientModule;
-import powercraft.launcher.PC_ClientModule.PC_LoadTextureFiles;
-import powercraft.launcher.PC_Module.PC_Init;
+import powercraft.launcher.loader.PC_ClientModule;
+import powercraft.launcher.loader.PC_ClientModule.PC_LoadTextureFiles;
+import powercraft.launcher.loader.PC_Module.PC_Init;
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_FieldObject;

@@ -1,6 +1,8 @@
-package powercraft.launcher;
+package powercraft.launcher.loader;
 
 import java.io.File;
+
+import powercraft.launcher.PC_Version;
 
 public class PC_ModuleVersion {
 	

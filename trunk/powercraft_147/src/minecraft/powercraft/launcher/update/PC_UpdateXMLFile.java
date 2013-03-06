@@ -1,4 +1,4 @@
-package powercraft.launcher;
+package powercraft.launcher.update;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,9 @@ import java.util.List;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import powercraft.launcher.PC_LauncherUtils;
+import powercraft.launcher.PC_Version;
 
 public class PC_UpdateXMLFile {
 

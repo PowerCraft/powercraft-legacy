@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import powercraft.launcher.PC_ModuleObject;
+import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.gres.PC_GresBaseWithInventory;

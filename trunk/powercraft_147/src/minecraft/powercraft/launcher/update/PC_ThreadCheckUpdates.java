@@ -1,4 +1,4 @@
-package powercraft.launcher;
+package powercraft.launcher.update;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -13,7 +13,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import powercraft.launcher.PC_UpdateXMLFile.XMLInfoTag;
+import powercraft.launcher.PC_Logger;
+import powercraft.launcher.update.PC_UpdateXMLFile.XMLInfoTag;
 
 
 public class PC_ThreadCheckUpdates extends Thread{

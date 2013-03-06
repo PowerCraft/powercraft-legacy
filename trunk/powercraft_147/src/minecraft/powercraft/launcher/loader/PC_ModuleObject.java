@@ -1,4 +1,4 @@
-package powercraft.launcher;
+package powercraft.launcher.loader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +12,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import powercraft.launcher.PC_LauncherUtils;
+import powercraft.launcher.PC_Logger;
+import powercraft.launcher.PC_Property;
+import powercraft.launcher.PC_Version;
 
 public class PC_ModuleObject {
 

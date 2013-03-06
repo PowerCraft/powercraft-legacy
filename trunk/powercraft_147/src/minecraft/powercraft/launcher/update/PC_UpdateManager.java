@@ -1,4 +1,4 @@
-package powercraft.launcher;
+package powercraft.launcher.update;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -16,9 +16,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import powercraft.launcher.PC_UpdateXMLFile.XMLInfoTag;
-import powercraft.launcher.PC_UpdateXMLFile.XMLModuleTag;
-import powercraft.launcher.PC_UpdateXMLFile.XMLVersionTag;
+import powercraft.launcher.PC_LauncherUtils;
+import powercraft.launcher.PC_Version;
+import powercraft.launcher.loader.PC_ModuleDiscovery;
+import powercraft.launcher.loader.PC_ModuleObject;
+import powercraft.launcher.update.PC_UpdateXMLFile.XMLInfoTag;
+import powercraft.launcher.update.PC_UpdateXMLFile.XMLModuleTag;
+import powercraft.launcher.update.PC_UpdateXMLFile.XMLVersionTag;
 import powercraft.launcher.updategui.PC_GuiUpdate;
 
 public class PC_UpdateManager {

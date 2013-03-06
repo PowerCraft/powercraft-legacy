@@ -3,7 +3,7 @@ package powercraft.management.item;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import powercraft.launcher.PC_ModuleObject;
+import powercraft.launcher.loader.PC_ModuleObject;
 
 public interface PC_IItemInfo {
 

@@ -4,11 +4,11 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import powercraft.launcher.PC_Module;
-import powercraft.launcher.PC_Module.PC_InitPacketHandlers;
-import powercraft.launcher.PC_Module.PC_InitProperties;
-import powercraft.launcher.PC_Module.PC_InitRecipes;
-import powercraft.launcher.PC_Module.PC_RegisterGuis;
+import powercraft.launcher.loader.PC_Module;
+import powercraft.launcher.loader.PC_Module.PC_InitPacketHandlers;
+import powercraft.launcher.loader.PC_Module.PC_InitProperties;
+import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module.PC_RegisterGuis;
 import powercraft.launcher.PC_Property;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IPacketHandler;

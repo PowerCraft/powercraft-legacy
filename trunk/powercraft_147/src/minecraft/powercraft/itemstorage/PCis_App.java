@@ -3,10 +3,10 @@ package powercraft.itemstorage;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import powercraft.launcher.PC_Module;
-import powercraft.launcher.PC_Module.PC_InitPacketHandlers;
-import powercraft.launcher.PC_Module.PC_InitRecipes;
-import powercraft.launcher.PC_Module.PC_RegisterGuis;
+import powercraft.launcher.loader.PC_Module;
+import powercraft.launcher.loader.PC_Module.PC_InitPacketHandlers;
+import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module.PC_RegisterGuis;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.annotation.PC_FieldObject;

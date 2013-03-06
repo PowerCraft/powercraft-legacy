@@ -1,4 +1,4 @@
-package powercraft.launcher;
+package powercraft.launcher.loader;
 
 public enum PC_ModLoader {
 

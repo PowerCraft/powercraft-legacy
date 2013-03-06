@@ -1,4 +1,4 @@
-package powercraft.launcher;
+package powercraft.launcher.loader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +18,7 @@ import java.util.zip.ZipFile;
 
 import org.objectweb.asm.ClassReader;
 
+import powercraft.launcher.PC_Version;
 import powercraft.launcher.asm.PC_ClassVisitor;
 
 public class PC_ModuleDiscovery {

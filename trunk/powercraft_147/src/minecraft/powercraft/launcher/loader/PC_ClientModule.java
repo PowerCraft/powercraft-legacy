@@ -1,4 +1,4 @@
-package powercraft.launcher;
+package powercraft.launcher.loader;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

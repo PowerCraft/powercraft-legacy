@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import powercraft.launcher.PC_Launcher;
-import powercraft.launcher.PC_ModuleObject;
+import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.management.item.PC_IItemInfo;
 
 public final class PC_ModuleRegistry {
