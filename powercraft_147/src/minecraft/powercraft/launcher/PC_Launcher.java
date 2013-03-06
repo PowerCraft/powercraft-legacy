@@ -10,6 +10,10 @@ import java.lang.annotation.Annotation;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
+import powercraft.launcher.loader.PC_ModuleDiscovery;
+import powercraft.launcher.loader.PC_ModuleObject;
+import powercraft.launcher.update.PC_UpdateManager;
+
 public class PC_Launcher {
 	
 	private static PC_Property config;

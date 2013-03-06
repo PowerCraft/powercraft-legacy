@@ -7,7 +7,7 @@ import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import powercraft.launcher.PC_Logger;
-import powercraft.launcher.PC_ModuleObject;
+import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.management.entity.PC_EntityFanFX;
 import powercraft.management.entity.PC_EntityLaserFX;
 import powercraft.management.entity.PC_EntityLaserParticleFX;

@@ -1,9 +1,9 @@
 package powercraft.management.registry;
 
 import net.minecraft.entity.Entity;
-import powercraft.launcher.PC_ModuleObject;
 import powercraft.launcher.PC_Property;
 import powercraft.launcher.mod_PowerCraft;
+import powercraft.launcher.loader.PC_ModuleObject;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class PC_EntityRegistry {

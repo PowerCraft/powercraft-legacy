@@ -3,7 +3,7 @@ package powercraft.launcher.updategui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import powercraft.launcher.PC_LauncherClientUtils;
-import powercraft.launcher.PC_UpdateXMLFile.XMLVersionTag;
+import powercraft.launcher.update.PC_UpdateXMLFile.XMLVersionTag;
 import powercraft.launcher.updategui.PC_GuiScroll.ScrollElement;
 
 public class PC_GuiScrollElementModuleVersionInfo extends ScrollElement{

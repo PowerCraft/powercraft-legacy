@@ -1,4 +1,4 @@
-package powercraft.launcher;
+package powercraft.launcher.loader;
 
 import java.io.File;
 

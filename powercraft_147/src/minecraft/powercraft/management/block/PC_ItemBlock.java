@@ -11,7 +11,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import powercraft.launcher.PC_ModuleObject;
+import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;

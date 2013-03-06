@@ -6,8 +6,8 @@ import java.util.TreeMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import powercraft.launcher.PC_ModuleObject;
 import powercraft.launcher.PC_Property;
+import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.item.PC_Item;
 import powercraft.management.item.PC_ItemArmor;

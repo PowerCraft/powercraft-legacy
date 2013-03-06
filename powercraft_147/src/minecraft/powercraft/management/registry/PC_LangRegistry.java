@@ -1,7 +1,7 @@
 package powercraft.management.registry;
 
 import net.minecraft.util.StringTranslate;
-import powercraft.launcher.PC_ModuleObject;
+import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.management.PC_Struct3;
 
 public final class PC_LangRegistry {

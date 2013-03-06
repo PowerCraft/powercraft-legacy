@@ -2,8 +2,8 @@ package powercraft.deco;
 
 import java.util.List;
 
-import powercraft.launcher.PC_ClientModule;
-import powercraft.launcher.PC_ClientModule.PC_LoadTextureFiles;
+import powercraft.launcher.loader.PC_ClientModule;
+import powercraft.launcher.loader.PC_ClientModule.PC_LoadTextureFiles;
 
 @PC_ClientModule
 public class PCde_AppClient extends PCde_App {

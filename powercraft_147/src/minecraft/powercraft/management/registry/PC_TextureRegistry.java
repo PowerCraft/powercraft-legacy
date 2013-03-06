@@ -1,6 +1,6 @@
 package powercraft.management.registry;
 
-import powercraft.launcher.PC_ModuleObject;
+import powercraft.launcher.loader.PC_ModuleObject;
 
 public final class PC_TextureRegistry {
 

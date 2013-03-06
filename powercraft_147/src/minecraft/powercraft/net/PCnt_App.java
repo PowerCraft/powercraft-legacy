@@ -4,9 +4,9 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import powercraft.launcher.PC_Module;
-import powercraft.launcher.PC_Module.PC_InitDataHandlers;
-import powercraft.launcher.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module;
+import powercraft.launcher.loader.PC_Module.PC_InitDataHandlers;
+import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.annotation.PC_FieldObject;

@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.launcher.PC_ModuleObject;
+import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.management.annotation.PC_Shining;
 import powercraft.management.block.PC_Block;
 import powercraft.management.item.PC_Item;

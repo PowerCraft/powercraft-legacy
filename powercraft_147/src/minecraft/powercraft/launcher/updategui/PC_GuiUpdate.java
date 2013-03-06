@@ -18,10 +18,10 @@ import org.lwjgl.opengl.GL11;
 
 import powercraft.launcher.PC_Launcher;
 import powercraft.launcher.PC_LauncherClientUtils;
-import powercraft.launcher.PC_UpdateManager;
-import powercraft.launcher.PC_UpdateManager.ModuleUpdateInfo;
-import powercraft.launcher.PC_UpdateXMLFile.XMLInfoTag;
-import powercraft.launcher.PC_UpdateXMLFile.XMLPackTag;
+import powercraft.launcher.update.PC_UpdateManager;
+import powercraft.launcher.update.PC_UpdateManager.ModuleUpdateInfo;
+import powercraft.launcher.update.PC_UpdateXMLFile.XMLInfoTag;
+import powercraft.launcher.update.PC_UpdateXMLFile.XMLPackTag;
 
 public class PC_GuiUpdate extends GuiScreen {
 

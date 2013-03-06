@@ -2,11 +2,11 @@ package powercraft.logic;
 
 import java.util.List;
 
-import powercraft.launcher.PC_ClientModule;
-import powercraft.launcher.PC_ClientModule.PC_AddSplashes;
-import powercraft.launcher.PC_ClientModule.PC_InitLanguage;
-import powercraft.launcher.PC_ClientModule.PC_LoadTextureFiles;
-import powercraft.launcher.PC_Module.PC_RegisterGuis;
+import powercraft.launcher.loader.PC_ClientModule;
+import powercraft.launcher.loader.PC_ClientModule.PC_AddSplashes;
+import powercraft.launcher.loader.PC_ClientModule.PC_InitLanguage;
+import powercraft.launcher.loader.PC_ClientModule.PC_LoadTextureFiles;
+import powercraft.launcher.loader.PC_Module.PC_RegisterGuis;
 import powercraft.management.PC_Struct2;
 import powercraft.management.registry.PC_LangRegistry.LangEntry;
 

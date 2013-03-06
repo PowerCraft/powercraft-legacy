@@ -5,9 +5,9 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import powercraft.launcher.PC_Module;
-import powercraft.launcher.PC_Module.PC_InitRecipes;
-import powercraft.launcher.PC_Module.PC_Instance;
+import powercraft.launcher.loader.PC_Module;
+import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module.PC_Instance;
 import powercraft.management.annotation.PC_FieldObject;
 import powercraft.management.block.PC_Block;
 import powercraft.management.item.PC_ItemArmor;
