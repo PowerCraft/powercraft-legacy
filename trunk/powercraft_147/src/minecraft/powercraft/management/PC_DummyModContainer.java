@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import powercraft.launcher.mod_PowerCraft;
+import powercraft.launcher.loader.PC_ModuleObject;
 
 import com.google.common.eventbus.EventBus;
 
@@ -18,14 +19,14 @@ import cpw.mods.fml.common.versioning.VersionRange;
 
 public class PC_DummyModContainer implements ModContainer {
 
-	private PC_IModule module;
+	private PC_ModuleObject module;
 	private ModMetadata modMeta = new ModMetadata();
 	
-	public PC_DummyModContainer(PC_IModule module){
+	public PC_DummyModContainer(PC_ModuleObject module){
 		this.module = module;
-		modMeta.version = module.getVersion();
-		modMeta.modId = "PowerCraft-"+module.getName();
-		modMeta.name = module.getName();
+		modMeta.version = module.getStandartVersion().getVersion().toString();
+		modMeta.modId = "PowerCraft-"+module.getModuleName();
+		modMeta.name = module.getModuleName();
 		ModContainer md = mod_PowerCraft.getInstance().getModContainer();
 		modMeta.parent = md.getModId();
 	}

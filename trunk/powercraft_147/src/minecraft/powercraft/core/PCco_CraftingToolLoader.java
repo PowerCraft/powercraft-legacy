@@ -10,7 +10,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.management.PC_IMSG;
-import powercraft.management.PC_IModule;
 import powercraft.management.item.PC_IItemInfo;
 import powercraft.management.item.PC_ItemStack;
 import powercraft.management.registry.PC_MSGRegistry;

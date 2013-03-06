@@ -52,6 +52,7 @@ import net.minecraft.world.EnumGameType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
+import powercraft.launcher.PC_LauncherUtils;
 import powercraft.launcher.PC_Logger;
 import powercraft.launcher.PC_Property;
 import powercraft.management.annotation.PC_Shining;
@@ -95,320 +96,9 @@ public class PC_Utils implements PC_IPacketHandler {
 			HARVEST_STOP = "HARVEST_STOP", NO_BUILD = "NO_BUILD",
 			SMOKE = "SMOKE", NO_PICKUP = "NO_PICKUP",
 			BEAMTRACER_STOP = "BEAMTRACER_STOP", PASSIVE = "PASSIVE";
-
-	@Deprecated
-	public static final int MSG_DEFAULT_NAME = 1, MSG_BLOCK_FLAGS = 2,
-			MSG_ITEM_FLAGS = 3, MSG_RENDER_INVENTORY_BLOCK = 4,
-			MSG_RENDER_WORLD_BLOCK = 5, MSG_SPAWNS_IN_CHUNK = 6,
-			MSG_BLOCKS_ON_SPAWN_POINT = 7, MSG_SPAWN_POINT = 8,
-			MSG_SPAWN_POINT_METADATA = 9, MSG_LOAD_FROM_CONFIG = 10,
-			MSG_ON_HIT_BY_BEAM_TRACER = 11, MSG_BURN_TIME = 12,
-			MSG_RECIVE_POWER = 13, MSG_CAN_RECIVE_POWER = 14,
-			MSG_ON_ACTIVATOR_USED_ON_BLOCK = 15,
-			MSG_DONT_SHOW_IN_CRAFTING_TOOL = 16, MSG_STR_MSG = 17,
-			MSG_RENDER_ITEM_HORIZONTAL = 18, MSG_ROTATION = 19,
-			MSG_RATING = 20, MSG_CONDUCTIVITY = 21, MSG_TICK_EVENT = 22,
-			MSG_LOAD_WORLD = 23, MSG_GET_PROVIDET_GLOBAL_FUNCTIONS = 24,
-			MSG_RENDER_OVERLAY = 25, MSG_OPEN_GUI_OR_PLACE_BLOCK = 26,
-			MGS_DOES_SMOKE = 27;
-
+	
 	protected PC_Utils() {
 		PC_PacketHandler.registerPackethandler("PacketUtils", this);
-	}
-
-	//ALphaI
-	@Deprecated
-	public static class Lang {
-
-		@Deprecated
-		public static void registerLanguageForLang(PC_IModule module,
-				String lang,
-				PC_Struct3<String, String, String[]>... translations) {
-		}
-
-		@Deprecated
-		public static void registerLanguage(PC_IModule module,
-				PC_Struct3<String, String, String[]>... translations) {
-			registerLanguageForLang(module, "en_US", translations);
-		}
-
-		@Deprecated
-		public static void loadLanguage(PC_IModule module) {
-		}
-
-		@Deprecated
-		public static void saveLanguage(PC_IModule module) {
-		}
-
-		@Deprecated
-		public static String tr(String identifier) {
-			return PC_LangRegistry.tr(identifier);
-		}
-
-		@Deprecated
-		public static String tr(String identifier, String... replacements) {
-			return PC_LangRegistry.tr(identifier, replacements);
-		}
-
-	}
-
-	public static class ModuleLoader {
-
-		//AlphaI
-		@Deprecated
-		public static String isIDAvailable(int id, Class c) {
-			if (id < 0) {
-				return "Out of bounds";
-			}
-
-			if (id < Block.blocksList.length) {
-				if (Block.blocksList[id] != null) {
-					return Block.blocksList[id].getBlockName();
-				}
-			} else if (Block.class.isAssignableFrom(c)) {
-				return "Out of bounds";
-			}
-
-			if (id < Item.itemsList.length) {
-				if (Item.itemsList[id] != null) {
-					return Item.itemsList[id].getItemName();
-				}
-
-				return null;
-			}
-
-			return "Out of bounds";
-		}
-
-		//AlphaI
-		@Deprecated
-		public static boolean isIDAvailable(int id, Class c, boolean throwError)
-				throws Exception {
-			String name = PC_Utils.ModuleLoader.isIDAvailable(id, c);
-
-			if (!throwError || name == null) {
-				return name == null;
-			}
-
-			String error = "ID " + id + " for class \"" + c.getName()
-					+ "\" already used by \"" + name + "\"";
-			PC_Logger.severe(error);
-			throw new Exception(error);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static PC_Block registerBlock(PC_IModule module, Class<? extends PC_Block> blockClass){
-			return null;
-		}
-		
-		//AlphaI
-		@Deprecated
-		public static PC_Item registerItem(PC_IModule module, Class<? extends PC_Item> itemClass){
-			return null;
-		}
-		
-		//AlphaI
-		@Deprecated
-		public static PC_ItemArmor registerItemArmor(PC_IModule module, Class<? extends PC_ItemArmor> itemArmorClass){
-			return null;
-		}
-		
-		//AlphaI
-		@Deprecated
-		public static <t> t register(PC_IModule module, Class<t> c) {
-			if (PC_Block.class.isAssignableFrom(c)) {
-				return (t) registerBlock(module, (Class<? extends PC_Block>) c);
-			} else if (PC_Item.class.isAssignableFrom(c)) {
-				return (t) registerItem(module, (Class<? extends PC_Item>) c);
-			} else if (PC_ItemArmor.class.isAssignableFrom(c)) {
-				return (t) registerItemArmor(module, (Class<? extends PC_ItemArmor>) c);
-			}
-			throw new IllegalArgumentException(
-					"3th parameter need to be a class witch extends PC_Block or PC_Item or PC_ItemArmor");
-		}
-
-		//AlphaI
-		@Deprecated
-		public static <t extends PC_Block> t register(PC_IModule module,
-				Class<t> blockClass, Class c) {
-			if (PC_ItemBlock.class.isAssignableFrom(c)) {
-				return ModuleLoader.register(module, blockClass,
-						(Class<PC_ItemBlock>) c, null);
-			} else if (PC_TileEntity.class.isAssignableFrom(c)) {
-				return ModuleLoader.register(module, blockClass, null,
-						(Class<PC_TileEntity>) c);
-			}
-
-			throw new IllegalArgumentException(
-					"4th parameter need to be a class witch extends PC_ItemBlock or PC_TileEntity");
-		}
-
-		//AlphaI
-		@Deprecated
-		public static <t extends PC_Block> t register(PC_IModule module,
-				Class<t> blockClass,
-				Class<? extends PC_ItemBlock> itemBlockClass,
-				Class<? extends PC_TileEntity> tileEntityClass) {
-			return null;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void registerTextureFiles(String... textureFiles) {
-		}
-
-		//AlphaI
-		@Deprecated
-		public static int defaultID(Object o) {
-			if (o instanceof PC_Item) {
-				return PC_IDResolver.defaultID((PC_Item)o);
-			} else if (o instanceof PC_Block) {
-				return PC_IDResolver.defaultID((PC_Block)o);
-			} else if (o instanceof PC_ItemArmor) {
-				return PC_IDResolver.defaultID((PC_ItemArmor)o);
-			}
-			return -1;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void resetPCObjectsIDs() {
-			PC_IDResolver.resetPCObjectsIDs();
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void savePCObjectsIDs(File worldDirectory) {
-			PC_IDResolver.savePCObjectsIDs(worldDirectory);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void setPCObjectID(Object o, int id) {
-			if (!PC_GlobalVariables.idResolve)
-				return;
-			if (o instanceof PC_Item) {
-				((PC_Item) o).setID(id);
-			} else if (o instanceof PC_Block) {
-				((PC_Block) o).setID(id);
-			} else if (o instanceof PC_ItemArmor) {
-				((PC_ItemArmor) o).setID(id);
-			}
-		}
-
-		//AlphaI
-		@Deprecated
-		public static int getFreeBlockID() {
-			return PC_BlockRegistry.getFreeBlockID();
-		}
-
-		//AlphaI
-		@Deprecated
-		public static int getFreeItemID() {
-			return PC_ItemRegistry.getFreeItemID();
-		}
-
-		//AlphaI
-		@Deprecated
-		public static boolean isItemIDFree(int id) {
-			return PC_ItemRegistry.isItemIDFree(id);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void registerModule(PC_IModule module) {
-		}
-
-		//AlphaI
-		@Deprecated
-		public static boolean isBlockIDFree(int id) {
-			return PC_BlockRegistry.isBlockIDFree(id);
-		}
-
-		public static boolean isVersionNewer(String nVersion, String oVersion) {
-			String saVersion[], saNewVersion[];
-			saVersion = oVersion.split("\\.");
-			saNewVersion = nVersion.split("\\.");
-
-			for (int i = 0; i < saVersion.length; i++) {
-				if (i >= saNewVersion.length) {
-					return false;
-				}
-
-				int version = 0, newVersion = 0;
-				String sVersion = "", sNewVersion = "";
-
-				for (int j = 0; j < saVersion[i].length(); j++) {
-					char c = saVersion[i].charAt(j);
-					boolean num = true;
-
-					if (Character.isDigit(c) && num) {
-						version *= 10;
-						version += c - '0';
-					} else {
-						num = false;
-						sVersion += c;
-					}
-				}
-
-				for (int j = 0; j < saNewVersion[i].length(); j++) {
-					char c = saNewVersion[i].charAt(j);
-					boolean num = true;
-
-					if (Character.isDigit(c) && num) {
-						newVersion *= 10;
-						newVersion += c - '0';
-					} else {
-						num = false;
-						sNewVersion += c;
-					}
-				}
-
-				if (newVersion > version) {
-					return true;
-				} else if (newVersion < version) {
-					return false;
-				} else {
-					int comp = sNewVersion.compareToIgnoreCase(sVersion);
-
-					if (comp > 0) {
-						return false;
-					} else if (comp < 0) {
-						return true;
-					}
-				}
-			}
-
-			return false;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static int addArmor(String name) {
-			return PC_Utils.instance.iAddArmor(name);
-		}
-
-		public static File createFile(File pfile, String name) {
-			File file = new File(pfile, name);
-			if (!file.exists())
-				file.mkdirs();
-			return file;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void regsterDataHandler(String name,
-				PC_IDataHandler dataHandler) {
-			PC_DataHandlerRegistry.regsterDataHandler(name, dataHandler);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void registerEntity(Class<? extends Entity> c,
-				int entityID) {
-		}
-
 	}
 
 	public static class ValueWriting {
@@ -463,91 +153,6 @@ public class PC_Utils implements PC_IPacketHandler {
 				double z, double width, double height, double depht) {
 			block.setBlockBounds((float) x, (float) y, (float) z,
 					(float) width, (float) height, (float) depht);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void setFieldsWithAnnotationTo(Class c,
-				Class<? extends Annotation> annotationClass, Object obj,
-				Object value) {
-			Field fa[] = c.getDeclaredFields();
-
-			for (Field f : fa) {
-				if (f.isAnnotationPresent(annotationClass)) {
-					f.setAccessible(true);
-
-					try {
-						f.set(obj, value);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-
-		//AlphaI
-		@Deprecated
-		public static Object[] getFieldsWithAnnotation(Class c,
-				Class<? extends Annotation> annotationClass, Object obj) {
-			List<Object> l = new ArrayList<Object>();
-			Field fa[] = c.getDeclaredFields();
-
-			for (Field f : fa) {
-				if (f.isAnnotationPresent(annotationClass)) {
-					f.setAccessible(true);
-
-					try {
-						l.add(f.get(obj));
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-
-			return l.toArray(new Object[0]);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static Object getPrivateValue(Class c, Object o, int i) {
-			try {
-				Field f = c.getDeclaredFields()[i];
-				f.setAccessible(true);
-				return f.get(o);
-			} catch (IllegalAccessException e) {
-				return null;
-			}
-		}
-
-		//AlphaI
-		@Deprecated
-		public static boolean setPrivateValue(Class c, Object o, int i, Object v) {
-			try {
-				Field f = c.getDeclaredFields()[i];
-				f.setAccessible(true);
-				Field field_modifiers = Field.class
-						.getDeclaredField("modifiers");
-				field_modifiers.setAccessible(true);
-				int modifier = field_modifiers.getInt(f);
-
-				if ((modifier & Modifier.FINAL) != 0) {
-					field_modifiers.setInt(f, modifier & ~Modifier.FINAL);
-				}
-
-				f.set(o, v);
-
-				if ((modifier & Modifier.FINAL) != 0) {
-					field_modifiers.setInt(f, modifier);
-				}
-
-				return true;
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				PC_Logger.severe("setPrivateValue failed with " + c + ":" + o
-						+ ":" + i);
-				return false;
-			}
 		}
 
 		public static void setBlockState(World world, int x, int y, int z,
@@ -758,12 +363,6 @@ public class PC_Utils implements PC_IPacketHandler {
 			}
 		}
 
-		//AlphaI
-		@Deprecated
-		public static void setReverseKey(PC_Property config) {
-			PC_KeyRegistry.setReverseKey(config);
-		}
-
 		public static boolean setBID(World world, int x, int y, int z, int id,
 				int meta) {
 			return world.setBlockAndMetadataWithNotify(x, y, z, id, meta);
@@ -841,23 +440,6 @@ public class PC_Utils implements PC_IPacketHandler {
 			PC_Utils.instance.iSpawnParticle(name, o);
 		}
 
-		//AlphaI
-		@Deprecated
-		public static <t> t createClass(Class<t> c, Class[] param,
-				Object[] objects) throws InstantiationException,
-				IllegalAccessException, IllegalArgumentException,
-				InvocationTargetException, NoSuchMethodException,
-				SecurityException {
-			return c.getConstructor(param).newInstance(objects);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void playSound(double x, double y, double z,
-				String sound, float soundVolume, float pitch) {
-			PC_SoundRegistry.playSound(x, y, z, sound, soundVolume, pitch);
-		}
-
 		public static void notifyBlockOfNeighborChange(World world, int x,
 				int y, int z, int blockId) {
 			Block block = Block.blocksList[world.getBlockId(x, y, z)];
@@ -919,41 +501,6 @@ public class PC_Utils implements PC_IPacketHandler {
 			}
 		}
 
-		//AlphaI
-		@Deprecated
-		public static void removeSmeltingRecipes(ItemStack is) {}
-
-		//AlphaI
-		@Deprecated
-		public static void addSmeltingRecipes(ItemStack isInput,
-				ItemStack isOutput, float experience) {
-			PC_RecipeRegistry.register(new PC_SmeltRecipe(new PC_ItemStack(isInput), new PC_ItemStack(isOutput), experience));
-		}
-	}
-
-	//AlphaI
-	@Deprecated
-	public static class Gres {
-
-		//AlphaI
-		@Deprecated
-		public static void registerGres(String name, Class gui) {
-			PC_GresRegistry.registerGres(name, gui);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void registerGresArray(Object[] o) {
-			PC_GresRegistry.registerGresArray(o);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void openGres(String name, EntityPlayer player,
-				PC_TileEntity te, Object... o) {
-			PC_GresRegistry.openGres(name, player, te, o);
-		}
-
 	}
 
 	public static class Converter {
@@ -1008,20 +555,8 @@ public class PC_Utils implements PC_IPacketHandler {
 			return !PC_Utils.instance.client();
 		}
 
-		//AlphaI
-		@Deprecated
-		public static boolean isSoundEnabled() {
-			return PC_SoundRegistry.isSoundEnabled();
-		}
-
 		public static int getWorldDimension(World worldObj) {
 			return worldObj.provider.dimensionId;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static List<IRecipe> getRecipesForProduct(ItemStack prod) {
-			return PC_RecipeRegistry.getRecipesForProduct(prod);
 		}
 
 		public static EnumGameType getGameTypeFor(EntityPlayer player) {
@@ -1032,24 +567,6 @@ public class PC_Utils implements PC_IPacketHandler {
 			return PC_Utils.GameInfo.getGameTypeFor(player).isCreative();
 		}
 		
-		//AlphaI
-		@Deprecated
-		public static boolean isFuel(ItemStack itemstack) {
-			return PC_RecipeRegistry.isFuel(itemstack);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static boolean isSmeltable(ItemStack itemstack) {
-			return PC_RecipeRegistry.isSmeltable(itemstack);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static List<ItemStack> getFeedstock(ItemStack itemstack) {
-			return PC_RecipeRegistry.getFeedstock(itemstack);
-		}
-
 		public static <t extends TileEntity> t getTE(IBlockAccess world, int x,
 				int y, int z) {
 			if (world != null) {
@@ -1245,8 +762,7 @@ public class PC_Utils implements PC_IPacketHandler {
 		}
 
 		public static File getPowerCraftFile() {
-			return ModuleLoader.createFile(PC_Utils.GameInfo.getMCDirectory(),
-					"PowerCraft");
+			return PC_LauncherUtils.getPowerCraftFile();
 		}
 
 		public static boolean isPoweredDirectly(World world, int x, int y, int z) {
@@ -1270,12 +786,6 @@ public class PC_Utils implements PC_IPacketHandler {
 
 		public static boolean usingForge() {
 			return true;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static boolean isBlock(IBlockAccess world, PC_VecI pos, String... names) {
-			return PC_BlockRegistry.isBlock(world, pos, names);
 		}
 
 		public static float giveConductorValueFor(Block b) {
@@ -1302,12 +812,6 @@ public class PC_Utils implements PC_IPacketHandler {
 
 		public static Block getBlock(IBlockAccess world, int x, int y, int z) {
 			return Block.blocksList[PC_Utils.GameInfo.getBID(world, x, y, z)];
-		}
-
-		//AlphaI
-		@Deprecated
-		public static boolean isPlacingReversed(EntityPlayer player) {
-			return PC_KeyRegistry.isPlacingReversed(player);
 		}
 
 		public static boolean poweredFromInput(World world, int x, int y,
@@ -1460,125 +964,12 @@ public class PC_Utils implements PC_IPacketHandler {
 			return receivers;
 		}
 
-		//AlphaI
-		@Deprecated
-		public static boolean hasFlag(World world, PC_VecI pos, String flag) {
-			return PC_MSGRegistry.hasFlag(world, pos, flag);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static boolean hasFlag(ItemStack is, String flag) {
-			return PC_MSGRegistry.hasFlag(is, flag);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static List<PC_ItemStack>[][] getExpectedInput(IRecipe recipe,
-				int width, int hight) {
-			return PC_RecipeRegistry.getExpectedInput(recipe, width, hight);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static int getFuelValue(ItemStack itemstack, double strength) {
-			return (int)(PC_RecipeRegistry.getFuelValue(itemstack)*strength);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static ItemStack getSmeltingResult(ItemStack item) {
-			return PC_RecipeRegistry.getSmeltingResult(item);
-		}
-
 		public static ItemStack getContainerItemStack(ItemStack itemStack) {
 			return itemStack.getItem().getContainerItemStack(itemStack);
 		}
 
 		public static World getWorldForDimension(int dimension) {
 			return instance.iGetWorldForDimension(dimension);
-		}
-
-	}
-
-	//AlphaI
-	@Deprecated
-	public static class ModuleInfo {
-
-		//AlphaI
-		@Deprecated
-		public static PC_Block getPCBlockByName(String name) {
-			return PC_BlockRegistry.getPCBlockByName(name);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static PC_Item getPCItemByName(String name) {
-			return PC_ItemRegistry.getPCItemByName(name);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static int getPCObjectIDByName(String name) {
-			PC_Block block = PC_BlockRegistry.getPCBlockByName(name);
-			if(block!=null)
-				return block.blockID;
-			PC_Item item = PC_ItemRegistry.getPCItemByName(name);
-			if(item!=null)
-				return item.itemID;
-			PC_ItemArmor itemArmor = PC_ItemRegistry.getPCItemArmorByName(name);
-			if(itemArmor!=null)
-				return itemArmor.itemID;
-
-			return 0;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static PC_IModule getModule(Object o) {
-			return null;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static List<PC_IModule> getModules() {
-			return null;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static String getPowerCraftLoaderImageDir() {
-			return PC_TextureRegistry.getPowerCraftLoaderImageDir();
-		}
-		
-		//AlphaI
-		@Deprecated
-		public static PC_IModule getModule(String name) {
-			return null;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static List<Object> getRegisterdObjects() {
-			return null;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static String getGresImgDir() {
-			return PC_TextureRegistry.getGresImgDir();
-		}
-
-		//AlphaI
-		@Deprecated
-		public static String getTextureDirectory(PC_IModule module) {
-			return null;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static String getTerrainFile(PC_IModule module) {
-			return null;
 		}
 
 	}
@@ -1596,48 +987,6 @@ public class PC_Utils implements PC_IPacketHandler {
 			NBTTagCompound nbttag = nbt.writeToNBT(new NBTTagCompound());
 			if (nbttag != null)
 				nbttagcompound.setCompoundTag(string, nbttag);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static boolean loadPCObjectsIDs(File worldDirectory) {
-			return PC_IDResolver.loadPCObjectsIDs(worldDirectory);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static NBTTagCompound makeIDTagCompound() {
-			return PC_IDResolver.makeIDTagCompound();
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void loadIDFromTagCompound(NBTTagCompound nbttag) {
-			PC_IDResolver.loadIDFromTagCompound(nbttag, true);
-		}
-
-		public static void saveConfig(PC_IModule module) {
-			
-		}
-
-		//AlphaI
-		@Deprecated
-		public static PC_Property getConfig(PC_IModule module) {
-			return null;
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void savePowerCraftData(WorldInfo worldInfo,
-				File worldDirectory) {
-			PC_DataHandlerRegistry.savePowerCraftData(worldInfo, worldDirectory);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void loadPowerCraftData(WorldInfo worldInfo,
-				File worldDirectory) {
-			PC_DataHandlerRegistry.loadPowerCraftData(worldInfo, worldDirectory);
 		}
 
 		public static void saveToNBT(NBTTagCompound nbtTag, String key,
@@ -1758,26 +1107,6 @@ public class PC_Utils implements PC_IPacketHandler {
 			PC_Utils.instance.iChatMsg(msg, clear);
 		}
 
-		//AlphaI
-		@Deprecated
-		public static boolean isKeyPressed(EntityPlayer player, String key) {
-			
-			return PC_KeyRegistry.isKeyPressed(player, key);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static void watchForKey(String name, int key) {
-			PC_KeyRegistry.watchForKey(name, key);
-		}
-
-		//AlphaI
-		@Deprecated
-		public static int watchForKey(PC_Property config, String name, int key,
-				String... info) {
-			return PC_KeyRegistry.watchForKey(config, name, key, info);
-		}
-
 	}
 
 	public static class Coding {
@@ -1843,50 +1172,6 @@ public class PC_Utils implements PC_IPacketHandler {
 				}
 			}
 			return -1;
-		}
-
-	}
-
-	//AlphaI
-	@Deprecated
-	public static class MSG {
-
-		@Deprecated
-		public static List<PC_IMSG> getMSGObjects() {
-			return PC_MSGRegistry.getMSGObjects();
-		}
-
-		@Deprecated
-		public static void registerMSGObject(PC_IMSG obj) {
-			PC_MSGRegistry.registerMSGObject(obj);
-		}
-
-		@Deprecated
-		public static Object callBlockMSG(IBlockAccess world, PC_VecI pos,
-				int msg, Object... o) {
-			return PC_MSGRegistry.callBlockMSG(world, pos, msg, o);
-		}
-
-		@Deprecated
-		public static Object callBlockMSG(IBlockAccess world, int x, int y,
-				int z, int msg, Object... o) {
-			return PC_MSGRegistry.callBlockMSG(world, x, y, z, msg, o);
-		}
-
-		@Deprecated
-		public static List<Object> callAllMSG(int msg, Object... o) {
-			return PC_MSGRegistry.callAllMSG(msg, o);
-		}
-
-		@Deprecated
-		public static interface MSGIterator extends powercraft.management.registry.PC_MSGRegistry.MSGIterator {
-
-		}
-
-		@Deprecated
-		public static Object callAllMSG(MSGIterator iterator, int msg,
-				Object... o) {
-			return PC_MSGRegistry.callAllMSG(iterator, msg, o);
 		}
 
 	}
