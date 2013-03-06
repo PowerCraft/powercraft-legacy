@@ -24,10 +24,10 @@ import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.registry.PC_SoundRegistry;
 import powercraft.management.renderer.PC_Renderer;
 import powercraft.management.tileentity.PC_TileEntity;
-import weasel.WeaselEngine;
-import weasel.lang.Instruction;
-import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselString;
+import powercraft.weasel.engine.WeaselEngine;
+import powercraft.weasel.lang.Instruction;
+import powercraft.weasel.obj.WeaselDouble;
+import powercraft.weasel.obj.WeaselString;
 
 @PC_BlockInfo(tileEntity=PCws_TileEntityWeaselDiskManager.class)
 public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketHandler, PC_IItemInfo {

@@ -12,7 +12,7 @@ import powercraft.launcher.loader.PC_ModuleDiscovery;
 
 public class PC_ClassVisitor extends ClassVisitor{
 
-	private PC_ModuleClassInfo classInfo;
+	public PC_ModuleClassInfo classInfo;
 	private PC_ModuleDiscovery discovery;
 	
 	public PC_ClassVisitor(PC_ModuleDiscovery discovery) {
@@ -69,8 +69,10 @@ public class PC_ClassVisitor extends ClassVisitor{
 
     @Override
     public void visitEnd() {
-    	if(classInfo.isClient || classInfo.annotationVisitor!=null){
-    		discovery.add(classInfo);
+    	if(discovery!=null){
+    		if(classInfo.isClient || classInfo.annotationVisitor!=null){
+    			discovery.add(classInfo);
+    		}
     	}
     }
 	

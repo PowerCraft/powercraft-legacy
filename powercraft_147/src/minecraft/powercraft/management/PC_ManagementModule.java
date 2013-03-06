@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.src.ModLoader;
 import powercraft.launcher.PC_LauncherUtils;
 import powercraft.launcher.PC_Logger;
+import powercraft.launcher.loader.PC_ModLoader;
 import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.launcher.loader.PC_Module.PC_Init;
@@ -43,7 +44,7 @@ import powercraft.management.thread.PC_ThreadManager;
 import powercraft.management.tick.PC_ITickHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@PC_Module(name="management", version="1.0.0")
+@PC_Module(name="management", version="1.0.0", modLoader=PC_ModLoader.FORGE_MODLOADER)
 public class PC_ManagementModule {
 
 	public static PC_CreativeTab creativeTab;
@@ -57,9 +58,9 @@ public class PC_ManagementModule {
 		try {
 			Class<?>c;
 			if(PC_LauncherUtils.isClient()){
-				c = Class.forName("powercraft.management.PC_ClientProxy");
+				c = Class.forName("powercraft.management.PC_ClientProxy", true, PC_ManagementModule.class.getClassLoader());
 			}else{
-				c = Class.forName("powercraft.management.PC_CommonProxy");
+				c = Class.forName("powercraft.management.PC_CommonProxy", true, PC_ManagementModule.class.getClassLoader());
 			}
 			proxy = (PC_CommonProxy) c.newInstance();
 		} catch (Exception e) {
@@ -68,9 +69,9 @@ public class PC_ManagementModule {
 		try {
 			Class<?>c;
 			if(PC_LauncherUtils.isClient()){
-				c = Class.forName("powercraft.management.PC_ClientPacketHandler");
+				c = Class.forName("powercraft.management.PC_ClientPacketHandler", true, PC_ManagementModule.class.getClassLoader());
 			}else{
-				c = Class.forName("powercraft.management.PC_PacketHandler");
+				c = Class.forName("powercraft.management.PC_PacketHandler", true, PC_ManagementModule.class.getClassLoader());
 			}
 			PC_PacketHandler packetHandler = (PC_PacketHandler) c.newInstance();
 			powercraft.launcher.PC_PacketHandler.handler = packetHandler;

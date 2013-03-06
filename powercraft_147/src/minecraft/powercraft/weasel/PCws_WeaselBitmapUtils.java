@@ -8,12 +8,12 @@ import java.util.Stack;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_VecI;
 import powercraft.management.renderer.PC_Renderer;
-import weasel.Calc;
-import weasel.WeaselEngine;
-import weasel.WeaselFunctionManager;
-import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselObject;
+import powercraft.weasel.engine.Calc;
+import powercraft.weasel.engine.WeaselEngine;
+import powercraft.weasel.engine.WeaselFunctionManager;
+import powercraft.weasel.exception.WeaselRuntimeException;
+import powercraft.weasel.obj.WeaselDouble;
+import powercraft.weasel.obj.WeaselObject;
 
 /**
  * Class for bitmap manipulation

@@ -1,8 +1,8 @@
 package powercraft.weasel;
 
 import powercraft.management.PC_Color;
-import weasel.WeaselFunctionManager;
-import weasel.obj.WeaselObject;
+import powercraft.weasel.engine.WeaselFunctionManager;
+import powercraft.weasel.obj.WeaselObject;
 
 public interface PCws_IWeaselNetworkDevice {
 

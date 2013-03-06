@@ -14,13 +14,13 @@ import powercraft.management.registry.PC_ModuleRegistry;
 import powercraft.management.thread.PC_IThreadJob;
 import powercraft.management.thread.PC_ThreadJob;
 import powercraft.management.thread.PC_ThreadManager;
-import weasel.WeaselEngine;
-import weasel.WeaselFunctionManager;
-import weasel.exception.SyntaxError;
-import weasel.exception.WeaselRuntimeException;
-import weasel.exception.WeaselRuntimeExceptionFunctionNotExist;
-import weasel.lang.Instruction;
-import weasel.obj.WeaselObject;
+import powercraft.weasel.engine.WeaselEngine;
+import powercraft.weasel.engine.WeaselFunctionManager;
+import powercraft.weasel.exception.SyntaxError;
+import powercraft.weasel.exception.WeaselRuntimeException;
+import powercraft.weasel.exception.WeaselRuntimeExceptionFunctionNotExist;
+import powercraft.weasel.lang.Instruction;
+import powercraft.weasel.obj.WeaselObject;
 
 public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWeaselEngine, PC_IThreadJob {
 	

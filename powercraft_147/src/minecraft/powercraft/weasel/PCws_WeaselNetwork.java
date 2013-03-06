@@ -8,11 +8,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_INBT;
 import powercraft.management.PC_Utils.SaveHandler;
-import weasel.Calc;
-import weasel.WeaselFunctionManager;
-import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselObject;
-import weasel.obj.WeaselVariableMap;
+import powercraft.weasel.engine.Calc;
+import powercraft.weasel.engine.WeaselFunctionManager;
+import powercraft.weasel.exception.WeaselRuntimeException;
+import powercraft.weasel.obj.WeaselObject;
+import powercraft.weasel.obj.WeaselVariableMap;
 
 public final class PCws_WeaselNetwork implements Iterable<PCws_IWeaselNetworkDevice>, PC_INBT<PCws_WeaselNetwork> {
 

@@ -4,12 +4,14 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Opcodes;
 
 import powercraft.launcher.PC_Version;
+import powercraft.launcher.loader.PC_ModLoader;
 
 public class PC_AnnotationVisitor extends AnnotationVisitor {
 
 	private String name;
 	private PC_Version version;
 	private String dependencies = "";
+	private PC_ModLoader modLoader = PC_ModLoader.ALL;
 	
 	public PC_AnnotationVisitor() {
 		super(Opcodes.ASM4);
@@ -28,12 +30,15 @@ public class PC_AnnotationVisitor extends AnnotationVisitor {
 
 	@Override
     public void visitEnum(String name, String desc, String value) {
-        
+        if(name.equals("modLoader")){
+        	if(desc.equals("Lpowercraft/launcher/loader/PC_ModLoader;")){
+        		modLoader = PC_ModLoader.valueOf(value);
+        	}
+        }
     }
 
 	@Override
     public AnnotationVisitor visitAnnotation(String name, String desc) {
-        
         return null;
     }
 
@@ -58,6 +63,10 @@ public class PC_AnnotationVisitor extends AnnotationVisitor {
 
 	public PC_Version getVersion() {
 		return version;
+	}
+	
+	public PC_ModLoader getModLoader() {
+		return modLoader;
 	}
 	
 }

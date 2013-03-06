@@ -14,9 +14,9 @@ import powercraft.management.registry.PC_GresRegistry;
 import powercraft.management.registry.PC_KeyRegistry;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapAdapter;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
-import weasel.WeaselFunctionManager;
-import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselString;
+import powercraft.weasel.engine.WeaselFunctionManager;
+import powercraft.weasel.obj.WeaselDouble;
+import powercraft.weasel.obj.WeaselString;
 
 public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements WeaselBitmapProvider {
 

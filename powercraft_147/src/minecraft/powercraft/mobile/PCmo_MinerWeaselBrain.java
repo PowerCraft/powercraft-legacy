@@ -23,15 +23,15 @@ import powercraft.weasel.PCws_IWeaselNetworkDevice;
 import powercraft.weasel.PCws_WeaselHighlightHelper;
 import powercraft.weasel.PCws_WeaselManager;
 import powercraft.weasel.PCws_WeaselNetwork;
-import weasel.Calc;
-import weasel.WeaselEngine;
-import weasel.WeaselFunctionManager;
-import weasel.exception.WeaselRuntimeException;
-import weasel.exception.WeaselRuntimeExceptionFunctionNotExist;
-import weasel.lang.Instruction;
-import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselObject;
-import weasel.obj.WeaselString;
+import powercraft.weasel.engine.Calc;
+import powercraft.weasel.engine.WeaselEngine;
+import powercraft.weasel.engine.WeaselFunctionManager;
+import powercraft.weasel.exception.WeaselRuntimeException;
+import powercraft.weasel.exception.WeaselRuntimeExceptionFunctionNotExist;
+import powercraft.weasel.lang.Instruction;
+import powercraft.weasel.obj.WeaselDouble;
+import powercraft.weasel.obj.WeaselObject;
+import powercraft.weasel.obj.WeaselString;
 
 
 public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNetworkDevice, PCws_IWeaselEngine {

@@ -1,6 +1,7 @@
 package powercraft.launcher.nei;
 
 import powercraft.launcher.PC_LauncherUtils;
+import powercraft.launcher.loader.PC_ModuleLoader;
 import codechicken.nei.api.IConfigureNEI;
 
 public class NEIPowerCraftConfig implements IConfigureNEI {
@@ -10,7 +11,7 @@ public class NEIPowerCraftConfig implements IConfigureNEI {
 	public NEIPowerCraftConfig(){
 		Class<?> c;
 		try {
-			c = Class.forName("powercraft.management.nei.PC_NEIPowerCraftConfig");
+			c = PC_ModuleLoader.load("powercraft.management.nei.PC_NEIPowerCraftConfig", null);
 			neiHandler = c.newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();

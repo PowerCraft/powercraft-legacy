@@ -19,7 +19,7 @@ import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.registry.PC_LangRegistry;
 import powercraft.management.registry.PC_TextureRegistry;
 import powercraft.management.tileentity.PC_TileEntity;
-import weasel.WeaselEngine;
+import powercraft.weasel.engine.WeaselEngine;
 
 public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 

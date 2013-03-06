@@ -52,9 +52,9 @@ import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.registry.PC_RecipeRegistry;
 import powercraft.management.registry.PC_SoundRegistry;
 import powercraft.mobile.PCmo_Command.ParseException;
-import weasel.Calc;
-import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselObject;
+import powercraft.weasel.engine.Calc;
+import powercraft.weasel.obj.WeaselDouble;
+import powercraft.weasel.obj.WeaselObject;
 
 public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 

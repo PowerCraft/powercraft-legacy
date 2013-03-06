@@ -13,10 +13,10 @@ import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.registry.PC_MSGRegistry;
 import powercraft.management.tick.PC_ITickHandler;
-import weasel.WeaselFunctionManager;
-import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselObject;
-import weasel.obj.WeaselVariableMap;
+import powercraft.weasel.engine.WeaselFunctionManager;
+import powercraft.weasel.exception.WeaselRuntimeException;
+import powercraft.weasel.obj.WeaselObject;
+import powercraft.weasel.obj.WeaselVariableMap;
 
 public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG, PC_ITickHandler {
 

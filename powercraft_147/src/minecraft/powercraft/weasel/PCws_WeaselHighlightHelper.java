@@ -9,9 +9,9 @@ import powercraft.management.gres.PC_GresTextEditMultiline;
 import powercraft.management.gres.PC_GresTextEditMultiline.AutoAdd;
 import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
 import powercraft.management.gres.PC_GresTextEditMultiline.StringAdd;
-import weasel.Compiler;
-import weasel.IWeaselHardware;
-import weasel.WeaselEngine;
+import powercraft.weasel.engine.Compiler;
+import powercraft.weasel.engine.IWeaselHardware;
+import powercraft.weasel.engine.WeaselEngine;
 
 /**
  * Highlighting helper
