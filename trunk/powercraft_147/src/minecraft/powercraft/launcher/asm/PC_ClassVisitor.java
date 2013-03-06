@@ -1,4 +1,4 @@
-package powercraft.launcher;
+package powercraft.launcher.asm;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
@@ -7,32 +7,27 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import powercraft.launcher.PC_ModuleClassInfo;
+import powercraft.launcher.PC_ModuleDiscovery;
 
-public class PC_ModuleClassReader extends ClassVisitor {
-	
-	private int access;
-	private String name;
-	private String signature;
-	private String superName;
-	private String[] interfaces;
-	private PC_AnnotationVisitor annotationVisitor;
-	private boolean isClient;
+public class PC_ClassVisitor extends ClassVisitor{
+
+	private PC_ModuleClassInfo classInfo;
 	private PC_ModuleDiscovery discovery;
 	
-	public PC_ModuleClassReader(PC_ModuleDiscovery discovery) {
+	public PC_ClassVisitor(PC_ModuleDiscovery discovery) {
 		super(Opcodes.ASM4);
 		this.discovery = discovery;
 	}
 
 	@Override
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-		this.access = access;
-		this.name = name;
-		this.signature = signature;
-		this.superName = superName;
-		this.interfaces = interfaces;
-		annotationVisitor = null;
-		isClient=false;
+		classInfo = new PC_ModuleClassInfo();
+		classInfo.className = name;
+		classInfo.superName = superName;
+		classInfo.interfaces = interfaces;
+		classInfo.annotationVisitor = null;
+		classInfo.isClient=false;
     }
 	
 	@Override
@@ -46,10 +41,10 @@ public class PC_ModuleClassReader extends ClassVisitor {
 	@Override
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
 		if(desc.equals("Lpowercraft/launcher/PC_Module;")){
-			annotationVisitor = new PC_AnnotationVisitor();
-			return annotationVisitor;
+			classInfo.annotationVisitor = new PC_AnnotationVisitor();
+			return classInfo.annotationVisitor;
 		}else if(desc.equals("Lpowercraft/launcher/PC_ClientModule;")){
-			isClient = true;
+			classInfo.isClient = true;
 		}
 		return null;
     }
@@ -74,11 +69,9 @@ public class PC_ModuleClassReader extends ClassVisitor {
 
     @Override
     public void visitEnd() {
-    	if(isClient){
-    		discovery.addClient(access, name, signature, superName, interfaces, annotationVisitor);
-    	}else if(annotationVisitor!=null){
-    		discovery.addCommon(access, name, signature, superName, interfaces, annotationVisitor);
+    	if(classInfo.isClient || classInfo.annotationVisitor!=null){
+    		discovery.add(classInfo);
     	}
     }
-    
+	
 }

@@ -17,7 +17,7 @@ public final class PC_TextureRegistry {
 	}
 
 	public static String getTextureDirectory(PC_ModuleObject module) {
-		return "/powercraft/" + module.getName().toLowerCase()
+		return "/powercraft/" + module.getModuleName().toLowerCase()
 				+ "/textures/";
 	}
 

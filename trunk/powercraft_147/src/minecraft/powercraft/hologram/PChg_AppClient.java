@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.entity.Entity;
@@ -20,12 +19,8 @@ import powercraft.launcher.PC_ClientModule;
 import powercraft.launcher.PC_ClientModule.PC_LoadTextureFiles;
 import powercraft.launcher.PC_Module.PC_Init;
 import powercraft.management.PC_ClientUtils;
-import powercraft.management.PC_IClientModule;
-import powercraft.management.PC_Struct2;
 import powercraft.management.PC_VecI;
 import powercraft.management.annotation.PC_FieldObject;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
-import powercraft.management.registry.PC_TextureRegistry;
 import powercraft.management.renderer.PC_Renderer;
 
 @PC_ClientModule

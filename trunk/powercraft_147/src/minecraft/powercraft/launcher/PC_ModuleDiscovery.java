@@ -18,70 +18,61 @@ import java.util.zip.ZipFile;
 
 import org.objectweb.asm.ClassReader;
 
+import powercraft.launcher.asm.PC_ClassVisitor;
+
 public class PC_ModuleDiscovery {
 	
-	private List<PC_ModuleObject> clinetModules = new ArrayList<PC_ModuleObject>();
-	private List<PC_ModuleObject> commonModules = new ArrayList<PC_ModuleObject>();
+	private HashMap<String, PC_ModuleClassInfo> unresolvedClients = new HashMap<String, PC_ModuleClassInfo>();
 	private HashMap<String, PC_ModuleObject> modules = new HashMap<String, PC_ModuleObject>();
+	private HashMap<String, PC_Version> moduleVersion = new HashMap<String, PC_Version>();
 	private PC_ModuleObject management;
 	private List<PC_ModuleObject> startList[] = new List[]{new ArrayList<PC_ModuleObject>(), new ArrayList<PC_ModuleObject>(), new ArrayList<PC_ModuleObject>()};
 	private ClassLoader moduleLoader = PC_ModuleDiscovery.class.getClassLoader();
 	private boolean addFile;
-	private PC_ModuleClassReader classReader = new PC_ModuleClassReader(this);
+	private PC_ClassVisitor classVisitor = new PC_ClassVisitor(this);
 	private File loadFile;
 	private File startFile;
 	
-	public void addClient(int access, String name, String signature, String superName, String[] interfaces, PC_AnnotationVisitor annotationVisitor) {
-		if(PC_LauncherUtils.isClient()){
-			if(getClientClassWithName(name)!=null){
-				return;
-			}
-			PC_ModuleObject module = getCommonClassWithName(superName);
-			if(module==null){
-				clinetModules.add(new PC_ModuleObject(access, name, signature, superName, interfaces, annotationVisitor, loadFile, startFile));
+	public void add(PC_ModuleClassInfo classInfo) {
+		classInfo.file = loadFile;
+		classInfo.startFile = startFile;
+		if(classInfo.annotationVisitor!=null){
+			String moduleName = classInfo.annotationVisitor.getModuleName();
+			String moduleDependencies = classInfo.annotationVisitor.getDependencies();
+			PC_Version moduleVersion = classInfo.annotationVisitor.getVersion();
+			PC_ModuleObject moduleObject;
+			if(modules.containsKey(moduleName)){
+				moduleObject = modules.get(moduleName);
 			}else{
-				clinetModules.add(new PC_ModuleObject(access, name, signature, superName, interfaces, module.getAnnotationVisitor(), loadFile, startFile));
-				commonModules.remove(module);
+				modules.put(moduleName, moduleObject = new PC_ModuleObject(moduleName));
+			}
+			if(moduleObject.getVersion(moduleVersion)==null){
+				PC_ModuleVersion moduleV = new PC_ModuleVersion(moduleVersion, moduleDependencies, classInfo);
+				if(unresolvedClients.containsKey(classInfo.className)){
+					moduleV.setClient(unresolvedClients.get(classInfo.className));
+					unresolvedClients.remove(classInfo.className);
+				}
+				moduleObject.addModule(moduleV);
+				this.moduleVersion.put(moduleName, moduleVersion);
+			}
+		}else if(classInfo.isClient){
+			PC_ModuleVersion version = getModuleVersionForClass(classInfo.superName);
+			if(version==null){
+				unresolvedClients.put(classInfo.superName, classInfo);
+			}else{
+				version.setClient(classInfo);
+				moduleVersion.remove(version.getModule().getModuleName());
 			}
 		}
 	}
 	
-	public void addCommon(int access, String name, String signature, String superName, String[] interfaces, PC_AnnotationVisitor annotationVisitor) {
-		PC_ModuleObject module = getClientClassWithSuperClass(name);
-		if(module==null){
-			if(getCommonClassWithName(name)!=null){
-				return;
-			}
-			commonModules.add(new PC_ModuleObject(access, name, signature, superName, interfaces, annotationVisitor, loadFile, startFile));
-		}else{
-			if(module.getAnnotationVisitor()==null){
-				module.setAnnotationVisitor(annotationVisitor);
-			}
-		}
-	}
-	
-	private PC_ModuleObject getClientClassWithSuperClass(String superClass){
-		for(PC_ModuleObject module:clinetModules){
-			if(superClass.equals(module.getSuperClassName())){
-				return module;
-			}
-		}
-		return null;
-	}
-	
-	private PC_ModuleObject getClientClassWithName(String name){
-		for(PC_ModuleObject module:clinetModules){
-			if(name.equals(module.getClassName())){
-				return module;
-			}
-		}
-		return null;
-	}
-	
-	private PC_ModuleObject getCommonClassWithName(String name){
-		for(PC_ModuleObject module:commonModules){
-			if(name.equals(module.getClassName())){
-				return module;
+	public PC_ModuleVersion getModuleVersionForClass(String className){
+		for(Entry<String, PC_ModuleObject>module:modules.entrySet()){
+			if(moduleVersion.containsKey(module.getKey())){
+				PC_ModuleVersion version = module.getValue().getVersion(moduleVersion.get(module.getKey()));
+				if(version.getClassName().equals(className)){
+					return version;
+				}
 			}
 		}
 		return null;
@@ -94,11 +85,11 @@ public class PC_ModuleDiscovery {
 	private void sortModules(){
 		for(Entry<String, PC_ModuleObject>e:modules.entrySet()){
 			PC_ModuleObject module = e.getValue();
-			if(module.getName().equals("management")){
+			if(module.getModuleName().equals("management")){
 				management = module;
 				startList[0].add(management);
 			}else{
-				String dependencies = module.getDependencies();
+				String dependencies = module.getStandartVersion().getDependencies();
 				String[] dependenciesList = dependencies.split(":", 2);
 				dependenciesList[0] = dependenciesList[0].trim();
 				if(dependenciesList.length>1 && dependenciesList[1]!=null){
@@ -149,15 +140,11 @@ public class PC_ModuleDiscovery {
 				if(file.exists()){
 					this.addFile = addFile;
 					startFile = file;
+					unresolvedClients.clear();
+					moduleVersion.clear();
 					searchDir(file);
 				}
 			}
-		}
-		for(PC_ModuleObject module:clinetModules){
-			modules.put(module.getName(), module);
-		}
-		for(PC_ModuleObject module:commonModules){
-			modules.put(module.getName(), module);
 		}
 	}
 
@@ -224,7 +211,7 @@ public class PC_ModuleDiscovery {
 			return;
 		}
 		ClassReader cr = new ClassReader(b);
-		cr.accept(classReader, 0);
+		cr.accept(classVisitor, 0);
 	}
 	
 	public void loadModules() {

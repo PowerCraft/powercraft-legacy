@@ -1,7 +1,9 @@
-package powercraft.launcher;
+package powercraft.launcher.asm;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Opcodes;
+
+import powercraft.launcher.PC_Version;
 
 public class PC_AnnotationVisitor extends AnnotationVisitor {
 

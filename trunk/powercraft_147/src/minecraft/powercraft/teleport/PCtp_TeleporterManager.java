@@ -162,7 +162,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 			
 			if(b instanceof PC_Block){
 				PC_Block pcb = (PC_Block)b;
-				if("Transport".equalsIgnoreCase(pcb.getModule().getName())){
+				if("Transport".equalsIgnoreCase(pcb.getModule().getModuleName())){
 					meta = GameInfo.getMD(world, tmp);
 					rotation = 0;
 					switch (meta)
@@ -195,7 +195,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 
 			if(b instanceof PC_Block){
 				PC_Block pcb = (PC_Block)b;
-				if("Teleport".equalsIgnoreCase(pcb.getModule().getName())){
+				if("Teleport".equalsIgnoreCase(pcb.getModule().getModuleName())){
 					good = 0;
 				}
 			}

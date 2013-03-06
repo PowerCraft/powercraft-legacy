@@ -50,13 +50,13 @@ public class PCco_CraftingToolLoader extends Thread implements PC_IMSG{
 
                     if(module!=null){
                     
-	                    if (moduleList.containsKey(module.getName()))
+	                    if (moduleList.containsKey(module.getModuleName()))
 	                    {
-	                        ls = moduleList.get(module.getName());
+	                        ls = moduleList.get(module.getModuleName());
 	                    }
 	                    else
 	                    {
-	                        moduleList.put(module.getName(), ls = new ArrayList<PC_ItemStack>());
+	                        moduleList.put(module.getModuleName(), ls = new ArrayList<PC_ItemStack>());
 	                    }
 	
 	                    for (ItemStack is: l)
@@ -85,13 +85,13 @@ public class PCco_CraftingToolLoader extends Thread implements PC_IMSG{
                         }
                         List<PC_ItemStack> ls;
 
-                        if (moduleList.containsKey(module.getName()))
+                        if (moduleList.containsKey(module.getModuleName()))
                         {
-                            ls = moduleList.get(module.getName());
+                            ls = moduleList.get(module.getModuleName());
                         }
                         else
                         {
-                            moduleList.put(module.getName(), ls = new ArrayList<PC_ItemStack>());
+                            moduleList.put(module.getModuleName(), ls = new ArrayList<PC_ItemStack>());
                         }
 
                         for (ItemStack is: l)

@@ -41,7 +41,6 @@ import powercraft.management.registry.PC_TextureRegistry;
 import powercraft.management.registry.PC_TickRegistry;
 import powercraft.management.thread.PC_ThreadManager;
 import powercraft.management.tick.PC_ITickHandler;
-import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @PC_Module(name="management", version="1.0.0")

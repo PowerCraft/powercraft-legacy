@@ -3,7 +3,6 @@ package powercraft.machines;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import powercraft.launcher.PC_Module;
 import powercraft.launcher.PC_Module.PC_Init;
@@ -12,9 +11,6 @@ import powercraft.launcher.PC_Module.PC_InitRecipes;
 import powercraft.launcher.PC_Module.PC_PostInit;
 import powercraft.launcher.PC_Module.PC_RegisterGuis;
 import powercraft.launcher.PC_Property;
-import powercraft.management.PC_IDataHandler;
-import powercraft.management.PC_IModule;
-import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.annotation.PC_FieldObject;

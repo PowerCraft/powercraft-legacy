@@ -15,33 +15,74 @@ import java.util.List;
 
 public class PC_ModuleObject {
 
-	private int access;
-	private String name;
-	private String signature;
-	private String superName;
-	private String[] interfaces;
-	private PC_AnnotationVisitor annotationVisitor;
+	private String moduleName;
+	
+	private List<PC_ModuleVersion> moduleVersions = new ArrayList<PC_ModuleVersion>();
+	
+	private PC_Version usingVersion;
 	private Class<?> moduleClass;
 	private Object module;
 	private boolean isLoaded=false;
 	private List<PC_ModuleObject> after = new ArrayList<PC_ModuleObject>();
-	private File file;
-	private File startFile;
 	private PC_Property config;
 	
-	public PC_ModuleObject(int access, String name, String signature, String superName, String[] interfaces, PC_AnnotationVisitor annotationVisitor, File file, File startFile){
-		this.access = access;
-		this.name = name;
-		this.signature = signature;
-		this.superName = superName;
-		this.interfaces = interfaces;
-		this.annotationVisitor = annotationVisitor;
-		this.file = file;
-		this.startFile = startFile;
+	public PC_ModuleObject(String moduleName){
+		String version = getConfig().getString("loader.usingVersion");
+		if(!version.equals("")){
+			usingVersion = new PC_Version(version);
+		}
+		this.moduleName = moduleName;
+	}
+	
+	public String getModuleName() {
+		return moduleName;
+	}
+	
+	public void addModule(PC_ModuleVersion module){
+		module.setModule(this);
+		moduleVersions.add(module);
 	}
 	
 	public void addModuleLoadBevore(PC_ModuleObject bevore){
 		after.add(bevore);
+	}
+	
+	public List<PC_ModuleVersion> getVersions() {
+		return new ArrayList<PC_ModuleVersion>(moduleVersions);
+	}
+	
+	public PC_ModuleVersion getVersion(PC_Version version){
+		for(PC_ModuleVersion moduleVersion:moduleVersions){
+			if(moduleVersion.getVersion().compareTo(version)==0){
+				return moduleVersion;
+			}
+		}
+		return null;
+	}
+	
+	public PC_ModuleVersion getNewest(){
+		PC_ModuleVersion newest = moduleVersions.get(0);
+		for(PC_ModuleVersion module:moduleVersions){
+			if(module.getVersion().compareTo(newest.getVersion())>0){
+				newest = module;
+			}
+		}
+		return newest;
+	}
+	
+	public PC_ModuleVersion getStandartVersion(){
+		PC_ModuleVersion version;
+		if(usingVersion!=null){
+			version = getVersion(usingVersion);
+			if(version!=null){
+				return version;
+			}
+		}
+		version = getNewest();
+		usingVersion = version.getModuleVersion();
+		getConfig().setString("loader.usingVersion", usingVersion.toString());
+		saveConfig();
+		return version;
 	}
 	
 	public void load(){
@@ -51,7 +92,13 @@ public class PC_ModuleObject {
 				module.load();
 			}
 			try {
-				moduleClass = Class.forName(name.replace('/', '.'));
+				PC_ModuleVersion moduleVersion = getStandartVersion();
+				PC_ModuleClassInfo classInfo = moduleVersion.getCommon();
+				if(PC_LauncherUtils.isClient()){
+					if(moduleVersion.getClient()!=null)
+						classInfo = moduleVersion.getClient();
+				}
+				moduleClass = Class.forName(classInfo.className.replace('/', '.'));
 				module = moduleClass.newInstance();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -63,32 +110,12 @@ public class PC_ModuleObject {
 		return moduleClass;
 	}
 	
-	public String getName(){
-		return annotationVisitor.getModuleName();
-	}
-	
-	public PC_Version getVersion() {
-		return annotationVisitor.getVersion();
-	}
-	
-	public String getDependencies() {
-		return annotationVisitor.getDependencies();
-	}
-	
-	public File getFile() {
-		return file;
-	}
-
-	public File getStartFile() {
-		return startFile;
-	}
-	
 	public Object getModule(){
 		return module;
 	}
 	
 	public Object callMethod(String name, Class<?>[] classes, Object[] objects) {
-		Class<?> c = module.getClass();
+		Class<?> c = moduleClass;
 		
 		while(c!=null){
 			
@@ -116,7 +143,7 @@ public class PC_ModuleObject {
 	}
 
 	public Object callMethod(Class<? extends Annotation> annontation, Object[] objects) {
-		Class<?> c = module.getClass();
+		Class<?> c = moduleClass;
 		
 		while(c!=null){
 			
@@ -124,6 +151,7 @@ public class PC_ModuleObject {
 			for(Method m:ma){
 				if(m.isAnnotationPresent(annontation)){
 					try {
+						m.setAccessible(true);
 						return m.invoke(module, objects);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -134,28 +162,11 @@ public class PC_ModuleObject {
 			
 			c=c.getSuperclass();
 		}
-		
 		return null;
-	}
-
-	public String getClassName() {
-		return name;
-	}
-	
-	public String getSuperClassName() {
-		return superName;
-	}
-
-	public PC_AnnotationVisitor getAnnotationVisitor() {
-		return annotationVisitor;
-	}
-	
-	public void setAnnotationVisitor(PC_AnnotationVisitor annotationVisitor) {
-		this.annotationVisitor = annotationVisitor;
 	}
 	
 	public void loadConfig(){
-		File f = new File(PC_LauncherUtils.getMCDirectory(), "config/PowerCraft-"+annotationVisitor.getModuleName()+".cfg");
+		File f = new File(PC_LauncherUtils.getMCDirectory(), "config/PowerCraft-"+moduleName+".cfg");
 		if(f.exists()){
 			try {
 				InputStream is = new FileInputStream(f);
@@ -180,7 +191,7 @@ public class PC_ModuleObject {
 	}
 
 	public void saveConfig() {
-		File f = new File(PC_LauncherUtils.getMCDirectory(), "config/PowerCraft-"+annotationVisitor.getModuleName()+".cfg");
+		File f = new File(PC_LauncherUtils.getMCDirectory(), "config/PowerCraft-"+moduleName+".cfg");
 		f.mkdirs();
 		try {
 			OutputStream os = new FileOutputStream(f);

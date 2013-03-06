@@ -91,7 +91,7 @@ public class PC_RegistryClient extends PC_RegistryServer {
 
 			@Override
 			public boolean accept(File arg0, String arg1) {
-				return arg1.matches("[a-z]{2,3}_[A-Z]{2,3}-" + m.getName()
+				return arg1.matches("[a-z]{2,3}_[A-Z]{2,3}-" + m.getModuleName()
 						+ "[.]lang");
 			}
 
@@ -176,7 +176,7 @@ public class PC_RegistryClient extends PC_RegistryServer {
 				File f = new File(GameInfo.getPowerCraftFile(), "lang");
 				if (!f.exists())
 					f.mkdirs();
-				f = new File(f, langEntry.getKey() + "-" + module.getName()
+				f = new File(f, langEntry.getKey() + "-" + module.getModuleName()
 						+ ".lang");
 				if (!f.exists())
 					f.createNewFile();

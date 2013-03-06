@@ -43,8 +43,14 @@ public @interface PC_Module {
 	public String dependencies() default "";
 	
 	/**
+	 * get the allowed modloaders
+	 * @return the modloader
+	 */
+	public PC_ModLoader modLoader() default PC_ModLoader.ALL;
+	
+	/**
 	 * 
-	 * used on a field to get the refereces to modules
+	 * used on a field to get the references to modules
 	 * 
 	 * @author XOR
 	 *

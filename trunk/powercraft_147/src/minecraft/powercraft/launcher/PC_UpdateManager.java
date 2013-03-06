@@ -43,7 +43,7 @@ public class PC_UpdateManager {
 			if(mui.module==null){
 				forUpdate.add(mui);
 			}else{
-				mui.oldVersion = mui.module.getVersion();
+				mui.oldVersion = mui.module.getNewest().getModuleVersion();
 				if(mui.newVersion.getVersion().compareTo(mui.oldVersion)>0){
 					forUpdate.add(mui);
 				}
