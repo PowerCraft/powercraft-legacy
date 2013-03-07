@@ -207,6 +207,7 @@ public class PC_GuiUpdate extends GuiScreen {
 			gui.drawDefaultBackground();
 			gui.drawScreen(Mouse.getX()*width/mc.displayWidth, height-Mouse.getY()*height/mc.displayHeight-1, 0.0f);
 			Display.update();
+			Display.sync(60);
 			if(Display.isCloseRequested()){
 				stop =true;
 			}
@@ -217,6 +218,7 @@ public class PC_GuiUpdate extends GuiScreen {
 				PC_UpdateManager.requestDownloadTarget();
 			}
 		}
+		Display.sync(-1);
 		gui = null;
 		PC_UpdateManager.stopWatchDirectory();
 		resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
