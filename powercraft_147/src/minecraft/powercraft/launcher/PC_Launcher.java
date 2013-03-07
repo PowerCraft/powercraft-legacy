@@ -97,7 +97,7 @@ public class PC_Launcher {
 	
 	public static HashMap<String, PC_ModuleObject> getModules(){
 		HashMap<String, PC_ModuleObject> hm = modules.getModules();
-		hm.remove("api");
+		hm.remove("Api");
 		return hm;
 	}
 	

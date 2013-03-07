@@ -91,7 +91,7 @@ public class PC_ModuleDiscovery {
 	private void sortModules(){
 		for(Entry<String, PC_ModuleObject>e:modules.entrySet()){
 			PC_ModuleObject module = e.getValue();
-			if(module.getModuleName().equals("api")){
+			if(module.getModuleName().equals("Api")){
 				api = module;
 				startList[0].add(api);
 			}else{
