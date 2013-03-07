@@ -19,7 +19,6 @@ public class PC_GlobalVariables {
 
 	public static List<String> splashes = new ArrayList<String>();
 	public static boolean hackSplashes = true;
-	public static boolean showUpdateWindow = false;
 	public static String useUserName = "";
 	public static int blockStartIndex = 3000;
 	public static int itemStartIndex = 17000;
