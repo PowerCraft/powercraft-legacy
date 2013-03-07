@@ -73,6 +73,9 @@ public class PC_GuiScrollVersions extends PC_GuiScroll {
 			ret = "v"+ ((XMLPackTag)obj).getVersions().get(element).getVersion();
 			if(element==activeElement){
 				guiUpdate.download.enabled = true;
+				if(((XMLPackTag)obj).getVersions().get(element).getDownloadLink()==null || ((XMLPackTag)obj).getVersions().get(element).getDownloadLink().equals("")){
+					guiUpdate.download.enabled = false;
+				}
 				guiUpdate.download.drawButton = true;
 				guiUpdate.activate.drawButton = false;
 				guiUpdate.delete.drawButton = false;
@@ -85,6 +88,9 @@ public class PC_GuiScrollVersions extends PC_GuiScroll {
 					guiUpdate.download.enabled = ui.module.getVersion(ui.versions[element])==null;
 				}else{
 					guiUpdate.download.enabled = true;
+				}
+				if(ui.versions[element].getDownloadLink()==null || ui.versions[element].getDownloadLink().equals("")){
+					guiUpdate.download.enabled = false;
 				}
 				guiUpdate.download.drawButton = true;
 				guiUpdate.activate.drawButton = false;
