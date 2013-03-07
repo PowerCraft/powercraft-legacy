@@ -4,12 +4,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
-import powercraft.management.gres.PC_GresBaseWithInventory;
-import powercraft.management.inventory.PC_ISpecialAccessInventory;
-import powercraft.management.inventory.PC_Slot;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecI;
+import powercraft.api.gres.PC_GresBaseWithInventory;
+import powercraft.api.inventory.PC_ISpecialAccessInventory;
+import powercraft.api.inventory.PC_Slot;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory<PC_TileEntity> {
 	

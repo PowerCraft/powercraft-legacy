@@ -9,12 +9,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
-import powercraft.management.item.PC_Item;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecI;
+import powercraft.api.item.PC_Item;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.registry.PC_MSGRegistry;
 
 public class PCco_ItemBlockSaver extends PC_Item {
 

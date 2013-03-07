@@ -11,17 +11,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.launcher.PC_Property;
-import powercraft.management.PC_BeamTracer.BeamSettings;
-import powercraft.management.PC_BeamTracer.result;
-import powercraft.management.PC_Color;
-import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
-import powercraft.management.annotation.PC_BlockInfo;
-import powercraft.management.block.PC_BlockOre;
-import powercraft.management.registry.PC_MSGRegistry;
-import powercraft.management.registry.PC_SoundRegistry;
-import powercraft.management.renderer.PC_Renderer;
+import powercraft.api.PC_BeamTracer.BeamSettings;
+import powercraft.api.PC_BeamTracer.result;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_MathHelper;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecI;
+import powercraft.api.annotation.PC_BlockInfo;
+import powercraft.api.block.PC_BlockOre;
+import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.registry.PC_SoundRegistry;
+import powercraft.api.renderer.PC_Renderer;
 
 @PC_BlockInfo(itemBlock=PCco_ItemBlockPowerCrystal.class)
 public class PCco_BlockPowerCrystal extends PC_BlockOre

@@ -22,8 +22,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import powercraft.launcher.PC_Logger;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Inventory;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.Inventory;
 
 /**
  * Custom Crops manager

@@ -27,7 +27,7 @@ public class PC_ModuleDiscovery {
 	private HashMap<String, PC_ModuleClassInfo> unresolvedClients = new HashMap<String, PC_ModuleClassInfo>();
 	private HashMap<String, PC_ModuleObject> modules = new HashMap<String, PC_ModuleObject>();
 	private HashMap<String, PC_Version> moduleVersion = new HashMap<String, PC_Version>();
-	private PC_ModuleObject management;
+	private PC_ModuleObject api;
 	private List<PC_ModuleObject> startList[] = new List[]{new ArrayList<PC_ModuleObject>(), new ArrayList<PC_ModuleObject>(), new ArrayList<PC_ModuleObject>()};
 	private ClassLoader moduleLoader = PC_ModuleDiscovery.class.getClassLoader();
 	private boolean addFile;
@@ -91,9 +91,9 @@ public class PC_ModuleDiscovery {
 	private void sortModules(){
 		for(Entry<String, PC_ModuleObject>e:modules.entrySet()){
 			PC_ModuleObject module = e.getValue();
-			if(module.getModuleName().equals("management")){
-				management = module;
-				startList[0].add(management);
+			if(module.getModuleName().equals("api")){
+				api = module;
+				startList[0].add(api);
 			}else{
 				String dependencies = module.getStandartVersion().getDependencies();
 				String[] dependenciesList = dependencies.split(":", 2);
@@ -222,7 +222,7 @@ public class PC_ModuleDiscovery {
 	
 	public void loadModules() {
 		sortModules();
-		management.load();
+		api.load();
 		for(int i=0; i<3; i++){
 			for(PC_ModuleObject module:startList[i]){
 				module.load();
@@ -233,8 +233,8 @@ public class PC_ModuleDiscovery {
 		}
 	}
 	
-	public PC_ModuleObject getManagement() {
-		return management;
+	public PC_ModuleObject getAPI() {
+		return api;
 	}
 	
 }

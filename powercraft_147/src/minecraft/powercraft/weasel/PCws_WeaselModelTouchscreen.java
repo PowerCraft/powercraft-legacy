@@ -2,7 +2,7 @@ package powercraft.weasel;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelRenderer;
-import powercraft.management.renderer.PC_Renderer;
+import powercraft.api.renderer.PC_Renderer;
 
 public class PCws_WeaselModelTouchscreen extends PCws_WeaselModelBase {
 

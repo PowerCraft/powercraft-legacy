@@ -4,9 +4,9 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import powercraft.management.block.PC_ItemBlock;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.block.PC_ItemBlock;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.registry.PC_MSGRegistry;
 
 public class PCnt_ItemBlockRadio extends PC_ItemBlock {
 

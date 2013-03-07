@@ -12,17 +12,17 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import powercraft.management.PC_Color;
-import powercraft.management.PC_Entry;
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecF;
-import powercraft.management.PC_VecI;
-import powercraft.management.inventory.PC_IInventoryWrapper;
-import powercraft.management.recipes.PC_3DRecipe;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_Entry;
+import powercraft.api.PC_Struct2;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecF;
+import powercraft.api.PC_VecI;
+import powercraft.api.inventory.PC_IInventoryWrapper;
+import powercraft.api.recipes.PC_3DRecipe;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInventoryWrapper {
 

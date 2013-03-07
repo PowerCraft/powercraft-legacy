@@ -3,17 +3,17 @@ package powercraft.machines;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_ClientUtils;
-import powercraft.management.gres.PC_GresButton;
-import powercraft.management.gres.PC_GresLabel;
-import powercraft.management.gres.PC_GresLayoutH;
-import powercraft.management.gres.PC_GresSeparatorH;
-import powercraft.management.gres.PC_GresWidget;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
-import powercraft.management.gres.PC_GresWindow;
-import powercraft.management.gres.PC_IGresClient;
-import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_ClientUtils;
+import powercraft.api.gres.PC_GresButton;
+import powercraft.api.gres.PC_GresLabel;
+import powercraft.api.gres.PC_GresLayoutH;
+import powercraft.api.gres.PC_GresSeparatorH;
+import powercraft.api.gres.PC_GresWidget;
+import powercraft.api.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.api.gres.PC_GresWindow;
+import powercraft.api.gres.PC_IGresClient;
+import powercraft.api.gres.PC_IGresGui;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCma_GuiXPBank implements PC_IGresClient {
 

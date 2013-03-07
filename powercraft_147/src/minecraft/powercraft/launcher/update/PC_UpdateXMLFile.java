@@ -103,6 +103,7 @@ public class PC_UpdateXMLFile {
             }else if (childName.equalsIgnoreCase("main")){
             	main = new XMLMainTag(this, childNode);
             	main.read();
+            	modules.add(main);
             }
 		}
 		
@@ -299,7 +300,7 @@ public class PC_UpdateXMLFile {
 
 		@Override
 		public String getName() {
-			return "management";
+			return "Api";
 		}
 
 		@Override
@@ -308,7 +309,7 @@ public class PC_UpdateXMLFile {
 				NodeList childNods = childNode.getChildNodes();
 				for (int i = 0; i < childNods.getLength(); i++){
 					Node childNode2 = childNods.item(i);
-					String childName2 = childNode.getNodeName();
+					String childName2 = childNode2.getNodeName();
 					super.readChild(childName2, childNode2);
 				}
 			}

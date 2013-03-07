@@ -12,19 +12,19 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.gres.PC_GresLayoutV;
-import powercraft.management.gres.PC_GresRadioButton;
-import powercraft.management.gres.PC_GresRadioButton.PC_GresRadioGroup;
-import powercraft.management.gres.PC_GresScrollArea;
-import powercraft.management.gres.PC_GresWidget;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
-import powercraft.management.gres.PC_GresWindow;
-import powercraft.management.gres.PC_IGresClient;
-import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.reflect.PC_ReflectHelper;
-import powercraft.management.registry.PC_LangRegistry;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_PacketHandler;
+import powercraft.api.gres.PC_GresLayoutV;
+import powercraft.api.gres.PC_GresRadioButton;
+import powercraft.api.gres.PC_GresRadioButton.PC_GresRadioGroup;
+import powercraft.api.gres.PC_GresScrollArea;
+import powercraft.api.gres.PC_GresWidget;
+import powercraft.api.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.api.gres.PC_GresWindow;
+import powercraft.api.gres.PC_IGresClient;
+import powercraft.api.gres.PC_IGresGui;
+import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.registry.PC_LangRegistry;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 

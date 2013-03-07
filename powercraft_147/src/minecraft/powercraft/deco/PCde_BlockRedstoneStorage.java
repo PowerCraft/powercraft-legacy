@@ -9,11 +9,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_VecI;
-import powercraft.management.block.PC_Block;
-import powercraft.management.item.PC_IItemInfo;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_Utils;
+import powercraft.api.PC_VecI;
+import powercraft.api.block.PC_Block;
+import powercraft.api.item.PC_IItemInfo;
+import powercraft.api.registry.PC_MSGRegistry;
 
 public class PCde_BlockRedstoneStorage extends PC_Block implements PC_IItemInfo {
 	private boolean wiresProvidePower = true;

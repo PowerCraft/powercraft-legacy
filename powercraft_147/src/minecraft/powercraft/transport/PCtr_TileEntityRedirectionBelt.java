@@ -1,9 +1,9 @@
 package powercraft.transport;
 
 import net.minecraft.entity.Entity;
-import powercraft.management.PC_Direction;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_VecI;
+import powercraft.api.PC_Direction;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_VecI;
 
 public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBeltBase
 {

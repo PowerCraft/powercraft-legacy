@@ -1,14 +1,14 @@
 package powercraft.logic;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_Utils.Communication;
-import powercraft.management.PC_Utils.Converter;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.annotation.PC_ClientServerSync;
-import powercraft.management.registry.PC_LangRegistry;
-import powercraft.management.registry.PC_SoundRegistry;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Utils.Communication;
+import powercraft.api.PC_Utils.Converter;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.registry.PC_LangRegistry;
+import powercraft.api.registry.PC_SoundRegistry;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PClo_TileEntityPulsar extends PC_TileEntity{
 	

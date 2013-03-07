@@ -4,14 +4,14 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import powercraft.management.PC_BeamTracer;
-import powercraft.management.PC_Color;
-import powercraft.management.PC_IBeamHandler;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecF;
-import powercraft.management.PC_VecI;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_BeamTracer;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_IBeamHandler;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecF;
+import powercraft.api.PC_VecI;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCma_TileEntityChunkLoader extends PC_TileEntity implements PC_IBeamHandler {
 

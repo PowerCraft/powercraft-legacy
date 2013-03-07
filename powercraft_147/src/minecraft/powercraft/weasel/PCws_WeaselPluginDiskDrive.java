@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import powercraft.management.registry.PC_GresRegistry;
+import powercraft.api.registry.PC_GresRegistry;
 import powercraft.weasel.engine.Calc;
 import powercraft.weasel.engine.WeaselEngine;
 import powercraft.weasel.engine.WeaselFunctionManager;

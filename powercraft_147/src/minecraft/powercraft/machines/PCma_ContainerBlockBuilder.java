@@ -1,8 +1,8 @@
 package powercraft.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.gres.PC_GresBaseWithInventory;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.gres.PC_GresBaseWithInventory;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCma_ContainerBlockBuilder extends PC_GresBaseWithInventory<PCma_TileEntityBlockBuilder> {
 	

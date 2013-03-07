@@ -2,14 +2,14 @@ package powercraft.light;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.management.PC_Color;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.annotation.PC_ClientServerSync;
-import powercraft.management.registry.PC_ModuleRegistry;
-import powercraft.management.registry.PC_TextureRegistry;
-import powercraft.management.renderer.PC_Renderer;
-import powercraft.management.tileentity.PC_ITileEntityRenderer;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.registry.PC_ModuleRegistry;
+import powercraft.api.registry.PC_TextureRegistry;
+import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.tileentity.PC_ITileEntityRenderer;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntityRenderer{
 	

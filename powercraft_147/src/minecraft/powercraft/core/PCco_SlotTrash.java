@@ -2,7 +2,7 @@ package powercraft.core;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import powercraft.management.inventory.PC_Slot;
+import powercraft.api.inventory.PC_Slot;
 
 
 public class PCco_SlotTrash extends PC_Slot {

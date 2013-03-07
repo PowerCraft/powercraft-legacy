@@ -4,9 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_VecI;
-import powercraft.management.inventory.PC_IInventoryClickHandler;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.PC_VecI;
+import powercraft.api.inventory.PC_IInventoryClickHandler;
 
 public class PCis_HightCompressorInventory extends PCis_NormalCompressorInventory implements PC_IInventoryClickHandler {
 	

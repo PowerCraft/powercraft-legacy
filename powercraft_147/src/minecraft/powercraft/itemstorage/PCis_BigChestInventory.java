@@ -10,12 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.management.PC_Entry;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_VecF;
-import powercraft.management.PC_VecI;
+import powercraft.api.PC_Entry;
+import powercraft.api.PC_PacketHandler;
+import powercraft.api.PC_Struct2;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.PC_VecF;
+import powercraft.api.PC_VecI;
 
 public class PCis_BigChestInventory implements IInventory {
 

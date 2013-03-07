@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Struct3;
+import powercraft.api.PC_Struct2;
+import powercraft.api.PC_Struct3;
 import powercraft.weasel.exception.WeaselRuntimeException;
 import powercraft.weasel.exception.WeaselRuntimeExceptionFunctionNotExist;
 import powercraft.weasel.obj.WeaselBoolean;

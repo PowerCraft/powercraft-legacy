@@ -7,7 +7,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
-import powercraft.management.inventory.PC_Slot;
+import powercraft.api.inventory.PC_Slot;
 
 public class PCma_SlotAutomaticWorkbenchResult extends PC_Slot
 {

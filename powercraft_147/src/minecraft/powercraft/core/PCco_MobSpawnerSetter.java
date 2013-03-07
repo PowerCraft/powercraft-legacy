@@ -4,13 +4,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
-import powercraft.management.PC_IMSG;
-import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_VecI;
-import powercraft.management.reflect.PC_ReflectHelper;
-import powercraft.management.registry.PC_GresRegistry;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_IMSG;
+import powercraft.api.PC_IPacketHandler;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_VecI;
+import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.registry.PC_GresRegistry;
+import powercraft.api.registry.PC_MSGRegistry;
 
 public class PCco_MobSpawnerSetter implements PC_IPacketHandler, PC_IMSG
 {

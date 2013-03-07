@@ -3,19 +3,19 @@ package powercraft.mobile;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_Color;
-import powercraft.management.gres.PC_GresButton;
-import powercraft.management.gres.PC_GresColorPicker;
-import powercraft.management.gres.PC_GresLabel;
-import powercraft.management.gres.PC_GresLayoutH;
-import powercraft.management.gres.PC_GresLayoutV;
-import powercraft.management.gres.PC_GresTab;
-import powercraft.management.gres.PC_GresTextEdit;
-import powercraft.management.gres.PC_GresTextEditMultiline;
-import powercraft.management.gres.PC_GresWidget;
-import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.registry.PC_LangRegistry;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Color;
+import powercraft.api.gres.PC_GresButton;
+import powercraft.api.gres.PC_GresColorPicker;
+import powercraft.api.gres.PC_GresLabel;
+import powercraft.api.gres.PC_GresLayoutH;
+import powercraft.api.gres.PC_GresLayoutV;
+import powercraft.api.gres.PC_GresTab;
+import powercraft.api.gres.PC_GresTextEdit;
+import powercraft.api.gres.PC_GresTextEditMultiline;
+import powercraft.api.gres.PC_GresWidget;
+import powercraft.api.gres.PC_IGresGui;
+import powercraft.api.registry.PC_LangRegistry;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCmo_GuiWeaselMiner extends PCmo_GuiMiner {
 

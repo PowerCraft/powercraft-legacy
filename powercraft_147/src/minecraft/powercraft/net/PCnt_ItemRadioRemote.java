@@ -8,11 +8,11 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.management.PC_Utils.Communication;
-import powercraft.management.item.PC_Item;
-import powercraft.management.registry.PC_LangRegistry;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_Utils.Communication;
+import powercraft.api.item.PC_Item;
+import powercraft.api.registry.PC_LangRegistry;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.registry.PC_MSGRegistry;
 
 public class PCnt_ItemRadioRemote extends PC_Item {
 	

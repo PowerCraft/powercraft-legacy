@@ -3,10 +3,10 @@ package powercraft.logic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.annotation.PC_ClientServerSync;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Utils;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PClo_TileEntityDelayer extends PC_TileEntity
 {

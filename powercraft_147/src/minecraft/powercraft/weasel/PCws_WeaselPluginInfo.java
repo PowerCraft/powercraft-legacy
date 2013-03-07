@@ -1,12 +1,12 @@
 package powercraft.weasel;
 
 import net.minecraft.block.Block;
-import powercraft.management.PC_Color;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.reflect.PC_ReflectHelper;
-import powercraft.management.registry.PC_ModuleRegistry;
-import powercraft.management.registry.PC_TextureRegistry;
-import powercraft.management.renderer.PC_Renderer;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.registry.PC_ModuleRegistry;
+import powercraft.api.registry.PC_TextureRegistry;
+import powercraft.api.renderer.PC_Renderer;
 
 public abstract class PCws_WeaselPluginInfo {
 

@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.texturefx.TextureFX;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.management.registry.PC_ModuleRegistry;
-import powercraft.management.registry.PC_TextureRegistry;
+import powercraft.api.registry.PC_ModuleRegistry;
+import powercraft.api.registry.PC_TextureRegistry;
 
 public class PChg_HologramTextureFX extends TextureFX {
 

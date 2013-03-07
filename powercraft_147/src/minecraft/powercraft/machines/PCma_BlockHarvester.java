@@ -26,22 +26,22 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.machines.PCma_CropHarvestingManager.PC_CropEntry;
-import powercraft.management.PC_BeamTracer;
-import powercraft.management.PC_Color;
-import powercraft.management.PC_IBeamHandler;
-import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
-import powercraft.management.block.PC_Block;
-import powercraft.management.inventory.PC_ISpecialInventoryTextures;
-import powercraft.management.item.PC_IItemInfo;
-import powercraft.management.registry.PC_KeyRegistry;
-import powercraft.management.registry.PC_MSGRegistry;
-import powercraft.management.registry.PC_SoundRegistry;
+import powercraft.api.PC_BeamTracer;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_IBeamHandler;
+import powercraft.api.PC_IPacketHandler;
+import powercraft.api.PC_PacketHandler;
+import powercraft.api.PC_Utils;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecI;
+import powercraft.api.block.PC_Block;
+import powercraft.api.inventory.PC_ISpecialInventoryTextures;
+import powercraft.api.item.PC_IItemInfo;
+import powercraft.api.registry.PC_KeyRegistry;
+import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.registry.PC_SoundRegistry;
 
 public class PCma_BlockHarvester extends PC_Block implements
 		PC_ISpecialInventoryTextures, PC_IBeamHandler, PC_IItemInfo, PC_IPacketHandler {

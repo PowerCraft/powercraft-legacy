@@ -1,26 +1,26 @@
 package powercraft.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_VecI;
-import powercraft.management.gres.PC_GresButton;
-import powercraft.management.gres.PC_GresButtonImage;
-import powercraft.management.gres.PC_GresCheckBox;
-import powercraft.management.gres.PC_GresGap;
-import powercraft.management.gres.PC_GresInventory;
-import powercraft.management.gres.PC_GresInventoryPlayer;
-import powercraft.management.gres.PC_GresLabel;
-import powercraft.management.gres.PC_GresLayoutH;
-import powercraft.management.gres.PC_GresLayoutV;
-import powercraft.management.gres.PC_GresTextEdit;
-import powercraft.management.gres.PC_GresTextEdit.PC_GresInputType;
-import powercraft.management.gres.PC_GresWidget;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
-import powercraft.management.gres.PC_GresWindow;
-import powercraft.management.gres.PC_IGresClient;
-import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.registry.PC_LangRegistry;
-import powercraft.management.registry.PC_TextureRegistry;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_VecI;
+import powercraft.api.gres.PC_GresButton;
+import powercraft.api.gres.PC_GresButtonImage;
+import powercraft.api.gres.PC_GresCheckBox;
+import powercraft.api.gres.PC_GresGap;
+import powercraft.api.gres.PC_GresInventory;
+import powercraft.api.gres.PC_GresInventoryPlayer;
+import powercraft.api.gres.PC_GresLabel;
+import powercraft.api.gres.PC_GresLayoutH;
+import powercraft.api.gres.PC_GresLayoutV;
+import powercraft.api.gres.PC_GresTextEdit;
+import powercraft.api.gres.PC_GresTextEdit.PC_GresInputType;
+import powercraft.api.gres.PC_GresWidget;
+import powercraft.api.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.api.gres.PC_GresWindow;
+import powercraft.api.gres.PC_IGresClient;
+import powercraft.api.gres.PC_IGresGui;
+import powercraft.api.registry.PC_LangRegistry;
+import powercraft.api.registry.PC_TextureRegistry;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGresClient {
 

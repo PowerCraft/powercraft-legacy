@@ -22,13 +22,13 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import powercraft.launcher.PC_Logger;
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Struct3;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
-import powercraft.management.registry.PC_SoundRegistry;
+import powercraft.api.PC_Struct2;
+import powercraft.api.PC_Struct3;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecI;
+import powercraft.api.registry.PC_SoundRegistry;
 
 public class PCma_TreeHarvestingManager {
 

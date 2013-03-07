@@ -13,18 +13,21 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import powercraft.launcher.PC_Launcher;
 import powercraft.launcher.PC_LauncherUtils;
 import powercraft.launcher.PC_Version;
+import powercraft.launcher.loader.PC_ModuleClassInfo;
 import powercraft.launcher.loader.PC_ModuleDiscovery;
 import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.launcher.loader.PC_ModuleVersion;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLInfoTag;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLModuleTag;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLVersionTag;
+import powercraft.launcher.updategui.PC_FileRequestThread;
 import powercraft.launcher.updategui.PC_GuiUpdate;
 
 public class PC_UpdateManager {
@@ -34,40 +37,79 @@ public class PC_UpdateManager {
 	private static WatchService watcher;
 	private static Path dir;
 	
+	public static List<ModuleUpdateInfo> moduleList;
+	public static XMLInfoTag updateInfo;
+	public static File downloadTarget;
+	
 	public static void startUpdateInfoDownload(){
 		updateChecker = new PC_ThreadCheckUpdates();
 	}
 	
 	public static void moduleInfos(HashMap<String, PC_ModuleObject> modules){
-		XMLInfoTag updateInfo = updateChecker.getUpdateInfo();
+		updateInfo = updateChecker.getUpdateInfo();
 		boolean showUpdate = PC_Launcher.openAlwaysUpdateScreen();
-		List<ModuleUpdateInfo> moduleList = new ArrayList<ModuleUpdateInfo>();
+		moduleList = new ArrayList<ModuleUpdateInfo>();
 		for(XMLModuleTag xmlModule:updateInfo.getModules()){
 			ModuleUpdateInfo mui = new ModuleUpdateInfo();
 			mui.xmlModule = xmlModule;
 			mui.newVersion = mui.xmlModule.getNewestVersion();
 			mui.module = modules.get(xmlModule.getName());
+			List<PC_Version> versionList = new ArrayList<PC_Version>();
+			for(XMLVersionTag v:xmlModule.getVersions()){
+				if(!versionList.contains(v.getVersion()))
+					versionList.add(v.getVersion());
+			}
 			if(mui.module==null){
-				showUpdate |= true;
+				String ignoreVersion = PC_Launcher.getConfig().getString("updater.ignore."+mui.xmlModule.getName());
+				if(ignoreVersion.equals("")){
+					showUpdate |= true;
+				}else{
+					if(new PC_Version(ignoreVersion).compareTo(mui.newVersion.getVersion())>0){
+						showUpdate |= true;
+					}
+				}
 			}else{
-				mui.versions = new ArrayList<PC_Version>();
 				for(PC_ModuleVersion v:mui.module.getVersions()){
-					mui.versions.add(v.getVersion());
+					if(!versionList.contains(v.getVersion()))
+						versionList.add(v.getVersion());
 				}
 				mui.oldVersion = mui.module.getStandartVersion().getVersion();
 				if(mui.newVersion.getVersion().compareTo(mui.oldVersion)>0){
-					showUpdate |= true;
+					String ignoreVersion = PC_Launcher.getConfig().getString("updater.ignore."+mui.xmlModule.getName());
+					if(ignoreVersion.equals("")){
+						showUpdate |= true;
+					}else{
+						if(new PC_Version(ignoreVersion).compareTo(mui.newVersion.getVersion())>0){
+							showUpdate |= true;
+						}
+					}
 				}
+			}
+			PC_Version[] versionArray = versionList.toArray(new PC_Version[0]);
+			Arrays.sort(versionArray);
+			mui.versions = new PC_Version[versionArray.length];
+			for(int i=0; i<versionArray.length; i++){
+				mui.versions[i] = versionArray[versionArray.length-i-1];
 			}
 			moduleList.add(mui);
 		}
 		if(showUpdate){
-			PC_GuiUpdate.show(moduleList, updateInfo);
+			boolean requestDownloadTarget = false;
+			if(PC_Launcher.getConfig().getString("updater.source").equals("")){
+				downloadTarget = new File(System.getProperty("user.home"));
+				requestDownloadTarget = true;
+			}else{
+				downloadTarget = new File(PC_Launcher.getConfig().getString("updater.source"));
+			}
+			PC_Launcher.saveConfig();
+			watchDirectory(downloadTarget);
+			PC_GuiUpdate.show(requestDownloadTarget);
+			stopWatchDirectory();
 		}
 	}
 	
 	public static class ModuleUpdateInfo{
-		public List<PC_Version> versions;
+		public PC_Version[] versions;
 		public PC_Version oldVersion;
 		public XMLVersionTag newVersion;
 		public PC_ModuleObject module;
@@ -108,10 +150,13 @@ public class PC_UpdateManager {
 		HashMap<String, PC_ModuleObject>modules = discovery.getModules();
 		if(modules.size()>0){
 			try {
-				Files.move(file.toPath(), new File(PC_LauncherUtils.getPowerCraftModuleFile(), file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+				File to = new File(PC_LauncherUtils.getPowerCraftModuleFile(), file.getName());
+				Files.move(file.toPath(), to.toPath(), StandardCopyOption.REPLACE_EXISTING);
+				discovery = new PC_ModuleDiscovery();
+				discovery.search(to);
+				modules = discovery.getModules();
 				for(PC_ModuleObject module:modules.values()){
-					module.getConfig().setString("loader.usingVersion", module.getNewest().toString());
-					module.saveConfig();
+					addModule(module);
 				}
 				System.out.println("Found Module Pack "+file);
 			} catch (IOException e) {
@@ -119,7 +164,7 @@ public class PC_UpdateManager {
 			}
 		}
 	}
-	
+
 	public static void lookForDirectoryChange(){
 		if(key!=null){
 			 for (WatchEvent<?> event: key.pollEvents()) {
@@ -131,6 +176,121 @@ public class PC_UpdateManager {
 		        Path filename = dir.resolve(ev.context());
 		        tryToUseFile(filename.toFile());
 		    }
+		}
+	}
+
+	private static void delete(File file){
+		for(ModuleUpdateInfo ui:moduleList){
+			if(ui.module!=null){
+				for(PC_ModuleVersion mv:ui.module.getVersions()){
+					boolean delete=false;
+					if(mv.getClient()!=null){
+						if(mv.getClient().file.equals(file)){
+							delete=true;
+						}
+					}
+					if(mv.getCommon()!=null){
+						if(mv.getCommon().file.equals(file)){
+							delete=true;
+						}
+					}
+					if(delete){
+						if(ui.xmlModule.getVersion(mv.getVersion())==null){
+							List<PC_Version> versionList = Arrays.asList(ui.versions);
+							versionList.remove(mv.getVersion());
+							versionList.add(mv.getVersion());
+							PC_Version[] versionArray = versionList.toArray(new PC_Version[0]);
+							Arrays.sort(versionArray);
+							ui.versions = new PC_Version[versionArray.length];
+							for(int i=0; i<versionArray.length; i++){
+								ui.versions[i] = versionArray[versionArray.length-i-1];
+							}
+						}
+						ui.module.removeModule(mv);
+					}
+				}
+			}
+		}
+	}
+	
+	public static void delete(PC_ModuleVersion moduleVersion) {
+		PC_ModuleClassInfo mci = moduleVersion.getClient();
+		if(mci!=null){
+			delete(mci.file);
+			mci.file.delete();
+		}
+		mci = moduleVersion.getCommon();
+		if(mci!=null){
+			delete(mci.file);
+			mci.file.delete();
+		}
+		
+	}
+	
+	public static void requestDownloadTarget(){
+		new PC_FileRequestThread();
+	}
+
+	public static void setDownloadTarget(File selectedFile) {
+		PC_Launcher.getConfig().setString("updater.source", selectedFile.getAbsolutePath());
+		PC_Launcher.saveConfig();
+		downloadTarget = selectedFile;
+		PC_UpdateManager.stopWatchDirectory();
+		PC_UpdateManager.watchDirectory(downloadTarget);
+	}
+
+	private static void addModule(PC_ModuleObject module) {
+		for(ModuleUpdateInfo mui:moduleList){
+			if(mui.module==null){
+				if(mui.xmlModule.getName().equals(module.getModuleName())){
+					mui.module = module;
+					for(PC_ModuleVersion mv:module.getVersions()){
+						List<PC_Version> versionList = Arrays.asList(mui.versions);
+						if(!versionList.contains(mv.getVersion())){
+							versionList.add(mv.getVersion());
+							PC_Version[] versionArray = versionList.toArray(new PC_Version[0]);
+							Arrays.sort(versionArray);
+							mui.versions = new PC_Version[versionArray.length];
+							for(int i=0; i<versionArray.length; i++){
+								mui.versions[i] = versionArray[versionArray.length-i-1];
+							}
+						}
+					}
+					activateModule(module.getNewest());
+					return;
+				}
+			}else{
+				if(mui.module.getModuleName().equals(module.getModuleName())){
+					for(PC_ModuleVersion mv:module.getVersions()){
+						if(mui.module.getVersion(mv.getVersion())==null){
+							mui.module.addModule(mv);
+							List<PC_Version> versionList = Arrays.asList(mui.versions);
+							if(!versionList.contains(mv.getVersion())){
+								versionList.add(mv.getVersion());
+								PC_Version[] versionArray = versionList.toArray(new PC_Version[0]);
+								Arrays.sort(versionArray);
+								mui.versions = new PC_Version[versionArray.length];
+								for(int i=0; i<versionArray.length; i++){
+									mui.versions[i] = versionArray[versionArray.length-i-1];
+								}
+							}
+						}
+					}
+					activateModule(module.getNewest());
+					return;
+				}
+			}
+		}
+	}
+	
+	public static void activateModule(PC_ModuleVersion activeModuleVersion) {
+		PC_ModuleObject module = activeModuleVersion.getModule();
+		module.getConfig().setString("loader.usingVersion", activeModuleVersion.getVersion().toString());
+		module.saveConfig();
+		for(ModuleUpdateInfo mui:moduleList){
+			if(mui.module==module){
+				mui.oldVersion = activeModuleVersion.getVersion();
+			}
 		}
 	}
 	

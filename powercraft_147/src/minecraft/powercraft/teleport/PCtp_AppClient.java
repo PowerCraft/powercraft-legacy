@@ -5,8 +5,8 @@ import java.util.List;
 import powercraft.launcher.loader.PC_ClientModule;
 import powercraft.launcher.loader.PC_ClientModule.PC_InitLanguage;
 import powercraft.launcher.loader.PC_Module.PC_RegisterGuis;
-import powercraft.management.PC_Struct2;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.PC_Struct2;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
 
 @PC_ClientModule
 public class PCtp_AppClient extends PCtp_App {

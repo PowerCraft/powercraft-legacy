@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.gres.PC_GresButton;
-import powercraft.management.gres.PC_GresLabel;
-import powercraft.management.gres.PC_GresLayoutV;
-import powercraft.management.gres.PC_GresScrollArea;
-import powercraft.management.gres.PC_GresTextEdit;
-import powercraft.management.gres.PC_GresWidget;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
-import powercraft.management.gres.PC_IGresClient;
-import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_PacketHandler;
+import powercraft.api.gres.PC_GresButton;
+import powercraft.api.gres.PC_GresLabel;
+import powercraft.api.gres.PC_GresLayoutV;
+import powercraft.api.gres.PC_GresScrollArea;
+import powercraft.api.gres.PC_GresTextEdit;
+import powercraft.api.gres.PC_GresWidget;
+import powercraft.api.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.api.gres.PC_IGresClient;
+import powercraft.api.gres.PC_IGresGui;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCtp_GuiPlayerTeleport implements PC_IGresClient {
 

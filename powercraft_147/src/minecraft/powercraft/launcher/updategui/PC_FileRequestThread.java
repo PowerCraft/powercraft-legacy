@@ -4,25 +4,23 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
-public class PC_FileRequestThread extends Thread {
+import powercraft.launcher.PC_Launcher;
+import powercraft.launcher.update.PC_UpdateManager;
 
-	private PC_GuiUpdate gui;
-	private File downloadTarget;
+public class PC_FileRequestThread extends Thread {
 	
-	public PC_FileRequestThread(PC_GuiUpdate gui, File downloadTarget){
-		this.gui = gui;
-		this.downloadTarget = downloadTarget;
+	public PC_FileRequestThread(){
 		setDaemon(true);
 		start();
 	}
 	
 	@Override
 	public void run(){
-		JFileChooser chooser = new JFileChooser(downloadTarget);
+		JFileChooser chooser = new JFileChooser(PC_UpdateManager.downloadTarget);
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		int returnVal = chooser.showDialog(null, "Select Download Directory");
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
-			gui.setDownloadTarget(chooser.getSelectedFile());
+			PC_UpdateManager.setDownloadTarget(chooser.getSelectedFile());
 		}
 	}
 	

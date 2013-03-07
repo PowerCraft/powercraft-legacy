@@ -15,18 +15,18 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.launcher.PC_Property;
-import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
-import powercraft.management.annotation.PC_BlockInfo;
-import powercraft.management.annotation.PC_Shining;
-import powercraft.management.annotation.PC_Shining.OFF;
-import powercraft.management.annotation.PC_Shining.ON;
-import powercraft.management.block.PC_Block;
-import powercraft.management.registry.PC_KeyRegistry;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_MathHelper;
+import powercraft.api.PC_Utils;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecI;
+import powercraft.api.annotation.PC_BlockInfo;
+import powercraft.api.annotation.PC_Shining;
+import powercraft.api.annotation.PC_Shining.OFF;
+import powercraft.api.annotation.PC_Shining.ON;
+import powercraft.api.block.PC_Block;
+import powercraft.api.registry.PC_KeyRegistry;
+import powercraft.api.registry.PC_MSGRegistry;
 
 @PC_Shining
 @PC_BlockInfo(itemBlock=PClo_ItemBlockGate.class, tileEntity=PClo_TileEntityGate.class)

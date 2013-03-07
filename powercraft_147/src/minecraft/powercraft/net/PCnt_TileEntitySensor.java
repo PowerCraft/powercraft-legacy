@@ -10,14 +10,14 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import powercraft.management.PC_Utils.Communication;
-import powercraft.management.annotation.PC_ClientServerSync;
-import powercraft.management.registry.PC_LangRegistry;
-import powercraft.management.registry.PC_ModuleRegistry;
-import powercraft.management.registry.PC_TextureRegistry;
-import powercraft.management.renderer.PC_Renderer;
-import powercraft.management.tileentity.PC_ITileEntityRenderer;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Utils.Communication;
+import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.registry.PC_LangRegistry;
+import powercraft.api.registry.PC_ModuleRegistry;
+import powercraft.api.registry.PC_TextureRegistry;
+import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.tileentity.PC_ITileEntityRenderer;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEntityRenderer {
 	

@@ -12,18 +12,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.Communication;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_VecI;
-import powercraft.management.annotation.PC_BlockInfo;
-import powercraft.management.block.PC_Block;
-import powercraft.management.item.PC_IItemInfo;
-import powercraft.management.registry.PC_GresRegistry;
-import powercraft.management.registry.PC_LangRegistry;
-import powercraft.management.registry.PC_MSGRegistry;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Utils;
+import powercraft.api.PC_Utils.Communication;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.PC_VecI;
+import powercraft.api.annotation.PC_BlockInfo;
+import powercraft.api.block.PC_Block;
+import powercraft.api.item.PC_IItemInfo;
+import powercraft.api.registry.PC_GresRegistry;
+import powercraft.api.registry.PC_LangRegistry;
+import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.tileentity.PC_TileEntity;
 
 @PC_BlockInfo(tileEntity=PCcp_TileEntityCheckpoint.class)
 public class PCcp_BlockCheckpoint extends PC_Block implements PC_IItemInfo {

@@ -9,11 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.block.PC_ItemBlock;
-import powercraft.management.registry.PC_KeyRegistry;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.block.PC_ItemBlock;
+import powercraft.api.registry.PC_KeyRegistry;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.registry.PC_MSGRegistry;
 
 public class PCde_ItemBlockStairs extends PC_ItemBlock {
 

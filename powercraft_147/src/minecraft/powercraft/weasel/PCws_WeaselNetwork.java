@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_Color;
-import powercraft.management.PC_INBT;
-import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_INBT;
+import powercraft.api.PC_Utils.SaveHandler;
 import powercraft.weasel.engine.Calc;
 import powercraft.weasel.engine.WeaselFunctionManager;
 import powercraft.weasel.exception.WeaselRuntimeException;

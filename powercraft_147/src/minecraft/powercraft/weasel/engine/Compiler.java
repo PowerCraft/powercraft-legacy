@@ -14,8 +14,8 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import powercraft.management.PC_Color;
-import powercraft.management.PC_Struct2;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_Struct2;
 import powercraft.weasel.exception.SyntaxError;
 import powercraft.weasel.exception.WeaselRuntimeException;
 import powercraft.weasel.jep.JEP;

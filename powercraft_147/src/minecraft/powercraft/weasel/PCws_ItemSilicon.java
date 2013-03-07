@@ -3,11 +3,11 @@ package powercraft.weasel;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
-import powercraft.management.PC_OreDictionary;
-import powercraft.management.item.PC_Item;
-import powercraft.management.item.PC_ItemStack;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_OreDictionary;
+import powercraft.api.item.PC_Item;
+import powercraft.api.item.PC_ItemStack;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.registry.PC_MSGRegistry;
 
 public class PCws_ItemSilicon extends PC_Item {
 

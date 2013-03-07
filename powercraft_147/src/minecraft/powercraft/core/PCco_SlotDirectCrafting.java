@@ -6,12 +6,12 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import powercraft.management.PC_GlobalVariables;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.inventory.PC_Slot;
-import powercraft.management.item.PC_ItemStack;
-import powercraft.management.registry.PC_KeyRegistry;
-import powercraft.management.registry.PC_RecipeRegistry;
+import powercraft.api.PC_GlobalVariables;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.inventory.PC_Slot;
+import powercraft.api.item.PC_ItemStack;
+import powercraft.api.registry.PC_KeyRegistry;
+import powercraft.api.registry.PC_RecipeRegistry;
 
 
 public class PCco_SlotDirectCrafting extends PC_Slot {

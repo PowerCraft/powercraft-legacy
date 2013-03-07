@@ -1,8 +1,8 @@
 package powercraft.weasel;
 
 import net.minecraft.block.Block;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.renderer.PC_Renderer;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.renderer.PC_Renderer;
 
 public class PCws_WeaselPluginInfoDiskDrive extends PCws_WeaselPluginInfo {
 	

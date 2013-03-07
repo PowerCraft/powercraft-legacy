@@ -1,14 +1,14 @@
 package powercraft.checkpoints;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.gres.PC_GresCheckBox;
-import powercraft.management.gres.PC_GresInventory;
-import powercraft.management.gres.PC_GresInventoryPlayer;
-import powercraft.management.gres.PC_GresWidget;
-import powercraft.management.gres.PC_GresWindow;
-import powercraft.management.gres.PC_IGresClient;
-import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.gres.PC_GresCheckBox;
+import powercraft.api.gres.PC_GresInventory;
+import powercraft.api.gres.PC_GresInventoryPlayer;
+import powercraft.api.gres.PC_GresWidget;
+import powercraft.api.gres.PC_GresWindow;
+import powercraft.api.gres.PC_IGresClient;
+import powercraft.api.gres.PC_IGresGui;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCcp_GuiCheckpoint extends PCcp_ContainerCheckpoint implements PC_IGresClient {
 
