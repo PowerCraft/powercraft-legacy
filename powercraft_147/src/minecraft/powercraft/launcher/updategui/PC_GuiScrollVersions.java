@@ -89,8 +89,12 @@ public class PC_GuiScrollVersions extends PC_GuiScroll {
 				}else{
 					guiUpdate.download.enabled = true;
 				}
-				if(ui.versions[element].getDownloadLink()==null || ui.versions[element].getDownloadLink().equals("")){
+				if(ui.xmlModule==null){
 					guiUpdate.download.enabled = false;
+				}else{
+					if(ui.xmlModule.getVersion(ui.versions[element]).getDownloadLink()==null || ui.xmlModule.getVersion(ui.versions[element]).getDownloadLink().equals("")){
+						guiUpdate.download.enabled = false;
+					}
 				}
 				guiUpdate.download.drawButton = true;
 				guiUpdate.activate.drawButton = false;
