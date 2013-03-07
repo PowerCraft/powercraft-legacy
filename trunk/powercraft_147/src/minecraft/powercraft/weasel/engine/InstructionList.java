@@ -8,7 +8,7 @@ import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import powercraft.management.PC_INBT;
+import powercraft.api.PC_INBT;
 import powercraft.weasel.exception.EndOfProgramException;
 import powercraft.weasel.exception.WeaselRuntimeException;
 import powercraft.weasel.lang.Instruction;

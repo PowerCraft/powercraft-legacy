@@ -10,16 +10,16 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
-import powercraft.management.annotation.PC_BlockInfo;
-import powercraft.management.block.PC_Block;
-import powercraft.management.recipes.PC_I3DRecipeHandler;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_Struct2;
+import powercraft.api.PC_Utils;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecI;
+import powercraft.api.annotation.PC_BlockInfo;
+import powercraft.api.block.PC_Block;
+import powercraft.api.recipes.PC_I3DRecipeHandler;
+import powercraft.api.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(tileEntity=PCis_TileEntityBigChest.class)
 public class PCis_BlockBigChest extends PC_Block implements PC_I3DRecipeHandler {

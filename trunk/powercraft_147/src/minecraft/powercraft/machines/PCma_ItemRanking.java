@@ -16,17 +16,17 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import powercraft.launcher.PC_Property;
-import powercraft.management.PC_Struct3;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.block.PC_Block;
-import powercraft.management.item.PC_IItemInfo;
-import powercraft.management.item.PC_Item;
-import powercraft.management.item.PC_ItemArmor;
-import powercraft.management.item.PC_ItemStack;
-import powercraft.management.registry.PC_BlockRegistry;
-import powercraft.management.registry.PC_ItemRegistry;
-import powercraft.management.registry.PC_MSGRegistry;
-import powercraft.management.registry.PC_RecipeRegistry;
+import powercraft.api.PC_Struct3;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.block.PC_Block;
+import powercraft.api.item.PC_IItemInfo;
+import powercraft.api.item.PC_Item;
+import powercraft.api.item.PC_ItemArmor;
+import powercraft.api.item.PC_ItemStack;
+import powercraft.api.registry.PC_BlockRegistry;
+import powercraft.api.registry.PC_ItemRegistry;
+import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.registry.PC_RecipeRegistry;
 
 public class PCma_ItemRanking {
 	

@@ -48,6 +48,10 @@ public class PC_ModuleObject {
 		moduleVersions.add(module);
 	}
 	
+	public void removeModule(PC_ModuleVersion module) {
+		moduleVersions.remove(module);
+	}
+	
 	public void addModuleLoadBevore(PC_ModuleObject bevore){
 		after.add(bevore);
 	}

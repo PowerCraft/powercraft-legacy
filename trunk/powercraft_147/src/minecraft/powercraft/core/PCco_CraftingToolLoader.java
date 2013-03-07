@@ -9,11 +9,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import powercraft.launcher.loader.PC_ModuleObject;
-import powercraft.management.PC_IMSG;
-import powercraft.management.item.PC_IItemInfo;
-import powercraft.management.item.PC_ItemStack;
-import powercraft.management.registry.PC_MSGRegistry;
-import powercraft.management.registry.PC_RecipeRegistry;
+import powercraft.api.PC_IMSG;
+import powercraft.api.item.PC_IItemInfo;
+import powercraft.api.item.PC_ItemStack;
+import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.registry.PC_RecipeRegistry;
 
 public class PCco_CraftingToolLoader extends Thread implements PC_IMSG{
 

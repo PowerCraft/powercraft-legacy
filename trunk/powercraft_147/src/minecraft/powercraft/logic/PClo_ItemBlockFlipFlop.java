@@ -4,11 +4,11 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import powercraft.management.PC_MathHelper;
-import powercraft.management.block.PC_ItemBlock;
-import powercraft.management.registry.PC_LangRegistry;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_MathHelper;
+import powercraft.api.block.PC_ItemBlock;
+import powercraft.api.registry.PC_LangRegistry;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.registry.PC_MSGRegistry;
 
 public class PClo_ItemBlockFlipFlop extends PC_ItemBlock
 {

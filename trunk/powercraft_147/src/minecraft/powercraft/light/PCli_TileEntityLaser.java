@@ -2,21 +2,21 @@ package powercraft.light;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import powercraft.management.PC_BeamTracer;
-import powercraft.management.PC_Color;
-import powercraft.management.PC_IBeamHandler;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
-import powercraft.management.annotation.PC_ClientServerSync;
-import powercraft.management.item.PC_ItemStack;
-import powercraft.management.registry.PC_BlockRegistry;
-import powercraft.management.registry.PC_MSGRegistry;
-import powercraft.management.registry.PC_ModuleRegistry;
-import powercraft.management.registry.PC_TextureRegistry;
-import powercraft.management.renderer.PC_Renderer;
-import powercraft.management.tileentity.PC_ITileEntityRenderer;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_BeamTracer;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_IBeamHandler;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecI;
+import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.item.PC_ItemStack;
+import powercraft.api.registry.PC_BlockRegistry;
+import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.registry.PC_ModuleRegistry;
+import powercraft.api.registry.PC_TextureRegistry;
+import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.tileentity.PC_ITileEntityRenderer;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandler, PC_ITileEntityRenderer{
 	

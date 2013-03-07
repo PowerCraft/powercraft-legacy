@@ -3,12 +3,12 @@ package powercraft.deco;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
-import powercraft.management.block.PC_Block;
-import powercraft.management.registry.PC_MSGRegistry;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecI;
+import powercraft.api.block.PC_Block;
+import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCde_TileEntityChimney extends PC_TileEntity {
 

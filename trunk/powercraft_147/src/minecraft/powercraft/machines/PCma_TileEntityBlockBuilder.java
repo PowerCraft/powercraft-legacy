@@ -15,15 +15,15 @@ import net.minecraft.item.ItemReed;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Facing;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_VecI;
-import powercraft.management.entity.PC_FakePlayer;
-import powercraft.management.registry.PC_BlockRegistry;
-import powercraft.management.registry.PC_MSGRegistry;
-import powercraft.management.registry.PC_SoundRegistry;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Utils;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.PC_VecI;
+import powercraft.api.entity.PC_FakePlayer;
+import powercraft.api.registry.PC_BlockRegistry;
+import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.registry.PC_SoundRegistry;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInventory {
 

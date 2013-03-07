@@ -7,12 +7,12 @@ import net.minecraft.item.Item;
 import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_RegisterGuis;
-import powercraft.management.PC_Struct2;
-import powercraft.management.annotation.PC_FieldObject;
-import powercraft.management.block.PC_Block;
-import powercraft.management.item.PC_ItemStack;
-import powercraft.management.recipes.PC_IRecipe;
-import powercraft.management.recipes.PC_ShapedRecipes;
+import powercraft.api.PC_Struct2;
+import powercraft.api.annotation.PC_FieldObject;
+import powercraft.api.block.PC_Block;
+import powercraft.api.item.PC_ItemStack;
+import powercraft.api.recipes.PC_IRecipe;
+import powercraft.api.recipes.PC_ShapedRecipes;
 
 @PC_Module(name="Logic", version="1.1.0")
 public class PClo_App{

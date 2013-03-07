@@ -1,7 +1,7 @@
 package powercraft.weasel;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.registry.PC_GresRegistry;
+import powercraft.api.registry.PC_GresRegistry;
 import powercraft.weasel.engine.WeaselFunctionManager;
 
 public class PCws_WeaselPluginPort extends PCws_WeaselPlugin {

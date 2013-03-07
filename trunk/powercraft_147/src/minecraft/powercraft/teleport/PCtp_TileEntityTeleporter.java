@@ -6,11 +6,11 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.management.PC_Entry;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_VecI;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Entry;
+import powercraft.api.PC_PacketHandler;
+import powercraft.api.PC_Struct2;
+import powercraft.api.PC_VecI;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCtp_TileEntityTeleporter extends PC_TileEntity {
 

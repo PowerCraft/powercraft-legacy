@@ -2,7 +2,7 @@ package powercraft.weasel.obj;
 
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_INBT;
+import powercraft.api.PC_INBT;
 
 
 /**

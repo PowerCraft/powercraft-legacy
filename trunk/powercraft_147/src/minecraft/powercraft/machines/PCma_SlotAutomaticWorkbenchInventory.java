@@ -2,7 +2,7 @@ package powercraft.machines;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import powercraft.management.inventory.PC_Slot;
+import powercraft.api.inventory.PC_Slot;
 
 public class PCma_SlotAutomaticWorkbenchInventory extends PC_Slot
 {

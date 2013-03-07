@@ -11,12 +11,12 @@ import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_PreInit;
 import powercraft.launcher.loader.PC_Module.PC_RegisterGuis;
 import powercraft.launcher.PC_Property;
-import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_Struct2;
-import powercraft.management.recipes.PC_3DRecipe;
-import powercraft.management.recipes.PC_IRecipe;
-import powercraft.management.registry.PC_KeyRegistry;
-import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.api.PC_IPacketHandler;
+import powercraft.api.PC_Struct2;
+import powercraft.api.recipes.PC_3DRecipe;
+import powercraft.api.recipes.PC_IRecipe;
+import powercraft.api.registry.PC_KeyRegistry;
+import powercraft.api.registry.PC_ModuleRegistry;
 
 @PC_Module(name="Mobile", version="1.1.0")
 public class PCmo_App {

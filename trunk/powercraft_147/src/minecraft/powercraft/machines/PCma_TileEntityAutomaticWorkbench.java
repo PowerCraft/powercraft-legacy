@@ -11,13 +11,13 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.annotation.PC_ClientServerSync;
-import powercraft.management.inventory.PC_ISpecialAccessInventory;
-import powercraft.management.inventory.PC_IStateReportingInventory;
-import powercraft.management.registry.PC_SoundRegistry;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.inventory.PC_ISpecialAccessInventory;
+import powercraft.api.inventory.PC_IStateReportingInventory;
+import powercraft.api.registry.PC_SoundRegistry;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory
 {

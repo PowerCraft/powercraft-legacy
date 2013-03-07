@@ -19,12 +19,12 @@ import net.minecraft.world.ChunkCache;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-import powercraft.management.PC_ClientUtils;
-import powercraft.management.PC_IMSG;
-import powercraft.management.PC_VecI;
-import powercraft.management.registry.PC_MSGRegistry;
-import powercraft.management.renderer.PC_Renderer;
-import powercraft.management.tick.PC_ITickHandler;
+import powercraft.api.PC_ClientUtils;
+import powercraft.api.PC_IMSG;
+import powercraft.api.PC_VecI;
+import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.tick.PC_ITickHandler;
 
 public class PChg_HologramGlassesOverlay implements PC_IMSG, PC_ITickHandler {
 

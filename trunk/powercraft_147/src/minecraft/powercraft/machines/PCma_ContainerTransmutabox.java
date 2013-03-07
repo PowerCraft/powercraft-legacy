@@ -1,10 +1,10 @@
 package powercraft.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.gres.PC_GresBaseWithInventory;
-import powercraft.management.inventory.PC_Slot;
-import powercraft.management.inventory.PC_SlotNoPickup;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.gres.PC_GresBaseWithInventory;
+import powercraft.api.inventory.PC_Slot;
+import powercraft.api.inventory.PC_SlotNoPickup;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCma_ContainerTransmutabox extends PC_GresBaseWithInventory<PCma_TileEntityTransmutabox>
 {

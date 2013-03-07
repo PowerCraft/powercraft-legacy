@@ -4,9 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.annotation.PC_ClientServerSync;
-import powercraft.management.inventory.PC_ISpecialAccessInventory;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.inventory.PC_ISpecialAccessInventory;
 
 public abstract class PCtr_TileEntitySeparationBeltBase extends
 		PCtr_TileEntityRedirectionBeltBase implements IInventory, PC_ISpecialAccessInventory{

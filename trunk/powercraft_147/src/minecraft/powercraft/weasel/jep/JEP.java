@@ -18,8 +18,8 @@ import java.util.Vector;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import powercraft.management.registry.PC_BlockRegistry;
-import powercraft.management.registry.PC_ItemRegistry;
+import powercraft.api.registry.PC_BlockRegistry;
+import powercraft.api.registry.PC_ItemRegistry;
 import powercraft.weasel.engine.Calc;
 import powercraft.weasel.jep.function.Abs;
 import powercraft.weasel.jep.function.ArcCosine;

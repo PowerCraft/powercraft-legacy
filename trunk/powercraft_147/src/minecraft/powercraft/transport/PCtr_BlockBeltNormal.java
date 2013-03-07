@@ -4,10 +4,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_VecI;
-import powercraft.management.annotation.PC_BlockInfo;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_VecI;
+import powercraft.api.annotation.PC_BlockInfo;
+import powercraft.api.registry.PC_MSGRegistry;
 
 @PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class)
 public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase

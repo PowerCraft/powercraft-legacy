@@ -1,6 +1,6 @@
 package powercraft.weasel;
 
-import powercraft.management.PC_Color;
+import powercraft.api.PC_Color;
 import powercraft.weasel.engine.WeaselFunctionManager;
 import powercraft.weasel.obj.WeaselObject;
 

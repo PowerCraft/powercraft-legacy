@@ -13,40 +13,37 @@ import org.lwjgl.opengl.GL11;
 
 import powercraft.launcher.PC_LauncherClientUtils;
 
-public class PC_GuiScroll {
+public abstract class PC_GuiScroll extends GuiScreen{
 
-	private List<ScrollElement> elements = new ArrayList<ScrollElement>();
-	private int x;
-	private int y;
-	private int width;
-	private int height;
-	private ScrollElement activeElement;
-	private float scroll;
-	private Minecraft mc = PC_LauncherClientUtils.mc();
-	private int my=-1;
-	private boolean bar;
+	protected int x;
+	protected int y;
+	protected int width;
+	protected int height;
+	protected float scroll;
+	protected int my=-1;
+	protected boolean bar;
 	
 	public PC_GuiScroll(int x, int y, int width, int height){
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-	}
-	
-	public ScrollElement getActiveElement(){
-		return activeElement;
-	}
-	
-	public void add(ScrollElement element){
+		mc = PC_LauncherClientUtils.mc();
 		ScaledResolution resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-		element.setWorldAndResolution(mc, resolution.getScaledWidth(), resolution.getScaledHeight());
-		elements.add(element);
+		setWorldAndResolution(mc, resolution.getScaledWidth(), resolution.getScaledHeight());
 	}
+	
+	public abstract int getElementCount();
+	public abstract int getElementHeight(int element);
+	public abstract boolean isElementActive(int element);
+	public abstract void drawElement(int element, int par1, int par2, float par3);
+	public abstract void clickElement(int element, int par1, int par2, int par3);
 	
 	public int getTotalHeight(){
 		int height=0;
-		for(ScrollElement scrollElement:elements){
-			height += scrollElement.getHeight() + 4;
+		int count = getElementCount();
+		for(int i=0; i<count; i++){
+			height += getElementHeight(i) + 4;
 		}
 		return height;
 	}
@@ -61,7 +58,7 @@ public class PC_GuiScroll {
 
         if (var1 < 0)
         {
-            var1 /= 2;
+            var1 = 0;
         }
 
         if (this.scroll < 0.0F)
@@ -106,9 +103,9 @@ public class PC_GuiScroll {
 				scrollMultiplier = -1;
 			}
 			scroll += (nmy-my)*scrollMultiplier;
-			bindAmountScrolled();
 			my = nmy;
 		}
+		bindAmountScrolled();
 		GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
         Tessellator tessellator = Tessellator.instance;
@@ -126,15 +123,15 @@ public class PC_GuiScroll {
         int drawY=-(int)scroll;
         int elementWidth=width-8;
         
-        for(ScrollElement scrollElement:elements){
-        	scrollElement.setElementWidth(elementWidth-8);
-        	int elementHeight = scrollElement.getHeight();
+        int count = getElementCount();
+        for(int i=0; i<count; i++){
+        	int elementHeight = getElementHeight(i);
         	if(drawY+elementHeight>0){
         		GL11.glPushMatrix();
         		GL11.glTranslatef(x + 4, y + drawY + 4, 0);
         		GL11.glEnable(GL11.GL_SCISSOR_TEST);
         		GL11.glScissor(x * scale, mc.displayHeight - (y + height) * scale, width * scale, height * scale);
-        		if(activeElement == scrollElement && activeElement.showSelection()){
+        		if(isElementActive(i)){
                      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                      GL11.glDisable(GL11.GL_TEXTURE_2D);
                      tessellator.startDrawingQuads();
@@ -159,7 +156,7 @@ public class PC_GuiScroll {
         		}
         		if(elementWidth>8 && w>0){
 	        		GL11.glScissor((x + 4) * scale, bottom, (elementWidth - 8) * scale, w);
-	        		scrollElement.drawScreen(par1-x, par2-y-drawY, par3);
+	        		drawElement(i, par1-x, par2-y-drawY, par3);
         		}
         		GL11.glDisable(GL11.GL_SCISSOR_TEST);
         		GL11.glPopMatrix();
@@ -257,9 +254,7 @@ public class PC_GuiScroll {
 	}
 	
 	public void keyTyped(char par1, int par2){
-		if(activeElement!=null){
-			activeElement.keyTyped(par1, par2);
-		}
+		
 	}
 	
 	public void mouseClicked(int par1, int par2, int par3){
@@ -278,63 +273,32 @@ public class PC_GuiScroll {
 		}
 		par1 -= 4;
 		par2 -= 2;
-		activeElement = null;
 		int elementWidth=width-8;
 		if(par1<0 && par1>elementWidth-8){
+			clickElement(-1, -1, -1, -1);
 			return;
 		}
 		int cY=-(int)scroll;
-		for(ScrollElement scrollElement:elements){
-			if(cY<par2 && cY+scrollElement.getHeight()+4>par2){
-				activeElement = scrollElement;
-				break;
+		int count=getElementCount();
+		for(int i=0; i<count; i++){
+			int height = getElementHeight(i);
+			if(cY<par2 && cY+height+4>par2){
+				clickElement(i, par1, par2-cY, par3);
+				return;
 			}
-			cY += scrollElement.getHeight() + 4;
+			cY += height + 4;
 		}
-		if(activeElement!=null){
-			activeElement.mouseClicked(par1, par2, par3);
-		}
+		clickElement(-1, -1, -1, -1);
+		return;
 	}
 	
 	public void mouseMovedOrUp(int par1, int par2, int par3){
 		if(my!=-1){
 			my = -1;
-			return;
-		}
-		if(activeElement!=null){
-			activeElement.mouseMovedOrUp(par1, par2, par3);
 		}
 	}
 	
 	public void updateScreen() {
-		for(ScrollElement scrollElement:elements){
-			scrollElement.updateScreen();
-		}
-	}
-	
-	public static abstract class ScrollElement extends GuiScreen{
-		
-		protected int elementWidth;
-		
-		public void setElementWidth(int elementWidth){
-			this.elementWidth = elementWidth;
-		}
-		
-		public void keyTyped(char par1, int par2){
-			super.keyTyped(par1, par2);
-		}
-		
-		public void mouseClicked(int par1, int par2, int par3){
-			super.mouseClicked(par1, par2, par3);
-		}
-		
-		public void mouseMovedOrUp(int par1, int par2, int par3){
-			super.mouseMovedOrUp(par1, par2, par3);
-		}
-		
-		public abstract boolean showSelection();
-		
-		public abstract int getHeight();
 		
 	}
 	

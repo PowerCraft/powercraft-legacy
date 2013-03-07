@@ -7,10 +7,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.management.PC_Color;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecF;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecF;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCli_TileEntityLightningConductor extends PC_TileEntity
 {

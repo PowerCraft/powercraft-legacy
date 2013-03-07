@@ -9,10 +9,10 @@ import java.util.List;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 
-import powercraft.management.PC_LangEntry;
-import powercraft.management.PC_Struct2;
-import powercraft.management.registry.PC_LangRegistry;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.PC_LangEntry;
+import powercraft.api.PC_Struct2;
+import powercraft.api.registry.PC_LangRegistry;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
 
 /**
  * 

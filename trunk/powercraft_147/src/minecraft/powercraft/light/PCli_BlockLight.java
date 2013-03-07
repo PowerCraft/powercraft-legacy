@@ -16,20 +16,20 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.launcher.PC_Property;
-import powercraft.management.PC_Color;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
-import powercraft.management.annotation.PC_BlockInfo;
-import powercraft.management.annotation.PC_Shining;
-import powercraft.management.annotation.PC_Shining.OFF;
-import powercraft.management.annotation.PC_Shining.ON;
-import powercraft.management.block.PC_Block;
-import powercraft.management.item.PC_IItemInfo;
-import powercraft.management.registry.PC_GresRegistry;
-import powercraft.management.registry.PC_MSGRegistry;
-import powercraft.management.renderer.PC_Renderer;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_Utils;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecI;
+import powercraft.api.annotation.PC_BlockInfo;
+import powercraft.api.annotation.PC_Shining;
+import powercraft.api.annotation.PC_Shining.OFF;
+import powercraft.api.annotation.PC_Shining.ON;
+import powercraft.api.block.PC_Block;
+import powercraft.api.item.PC_IItemInfo;
+import powercraft.api.registry.PC_GresRegistry;
+import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.renderer.PC_Renderer;
 
 @PC_Shining
 @PC_BlockInfo(tileEntity=PCli_TileEntityLight.class)

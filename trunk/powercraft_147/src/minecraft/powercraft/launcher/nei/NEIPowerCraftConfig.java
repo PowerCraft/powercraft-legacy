@@ -11,7 +11,7 @@ public class NEIPowerCraftConfig implements IConfigureNEI {
 	public NEIPowerCraftConfig(){
 		Class<?> c;
 		try {
-			c = PC_ModuleLoader.load("powercraft.management.nei.PC_NEIPowerCraftConfig", null);
+			c = PC_ModuleLoader.load("powercraft.api.nei.PC_NEIPowerCraftConfig", null);
 			neiHandler = c.newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();

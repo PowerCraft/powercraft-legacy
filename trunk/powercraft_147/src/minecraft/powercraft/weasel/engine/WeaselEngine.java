@@ -7,8 +7,8 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_Color;
-import powercraft.management.PC_INBT;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_INBT;
 import powercraft.weasel.exception.EndOfProgramException;
 import powercraft.weasel.exception.SyntaxError;
 import powercraft.weasel.exception.WeaselRuntimeException;

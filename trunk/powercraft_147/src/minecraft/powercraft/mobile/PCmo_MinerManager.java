@@ -11,16 +11,16 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.Communication;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
-import powercraft.management.recipes.PC_I3DRecipeHandler;
-import powercraft.management.reflect.PC_ReflectHelper;
-import powercraft.management.registry.PC_LangRegistry;
+import powercraft.api.PC_IPacketHandler;
+import powercraft.api.PC_Struct2;
+import powercraft.api.PC_Utils.Communication;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecI;
+import powercraft.api.recipes.PC_I3DRecipeHandler;
+import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.registry.PC_LangRegistry;
 
 public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler {
 	

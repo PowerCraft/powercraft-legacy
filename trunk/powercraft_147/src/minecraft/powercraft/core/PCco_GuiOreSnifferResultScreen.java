@@ -5,22 +5,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_VecI;
-import powercraft.management.gres.PC_GresBaseWithInventory;
-import powercraft.management.gres.PC_GresInventory;
-import powercraft.management.gres.PC_GresLabel;
-import powercraft.management.gres.PC_GresLayoutV;
-import powercraft.management.gres.PC_GresProgressBar;
-import powercraft.management.gres.PC_GresWidget;
-import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
-import powercraft.management.gres.PC_GresWindow;
-import powercraft.management.gres.PC_IGresClient;
-import powercraft.management.gres.PC_IGresGui;
-import powercraft.management.inventory.PC_Slot;
-import powercraft.management.inventory.PC_SlotNoPickup;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_MathHelper;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_VecI;
+import powercraft.api.gres.PC_GresBaseWithInventory;
+import powercraft.api.gres.PC_GresInventory;
+import powercraft.api.gres.PC_GresLabel;
+import powercraft.api.gres.PC_GresLayoutV;
+import powercraft.api.gres.PC_GresProgressBar;
+import powercraft.api.gres.PC_GresWidget;
+import powercraft.api.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.api.gres.PC_GresWindow;
+import powercraft.api.gres.PC_IGresClient;
+import powercraft.api.gres.PC_IGresGui;
+import powercraft.api.inventory.PC_Slot;
+import powercraft.api.inventory.PC_SlotNoPickup;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_TileEntity> implements PC_IGresClient {
 

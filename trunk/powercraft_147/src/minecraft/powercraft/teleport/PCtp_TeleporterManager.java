@@ -9,16 +9,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.management.PC_IDataHandler;
-import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.SaveHandler;
-import powercraft.management.PC_VecF;
-import powercraft.management.PC_VecI;
-import powercraft.management.block.PC_Block;
-import powercraft.management.registry.PC_GresRegistry;
+import powercraft.api.PC_IDataHandler;
+import powercraft.api.PC_IPacketHandler;
+import powercraft.api.PC_PacketHandler;
+import powercraft.api.PC_Struct2;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.SaveHandler;
+import powercraft.api.PC_VecF;
+import powercraft.api.PC_VecI;
+import powercraft.api.block.PC_Block;
+import powercraft.api.registry.PC_GresRegistry;
 
 public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandler {
 

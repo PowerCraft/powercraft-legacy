@@ -19,56 +19,32 @@ import org.lwjgl.util.glu.GLU;
 
 import powercraft.launcher.PC_Launcher;
 import powercraft.launcher.PC_LauncherClientUtils;
+import powercraft.launcher.loader.PC_ModuleObject;
+import powercraft.launcher.loader.PC_ModuleVersion;
 import powercraft.launcher.update.PC_UpdateManager;
 import powercraft.launcher.update.PC_UpdateManager.ModuleUpdateInfo;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLInfoTag;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLPackTag;
+import powercraft.launcher.updategui.PC_GuiElementScroll.ScrollElement;
 
 public class PC_GuiUpdate extends GuiScreen {
 
 	private static Minecraft mc = PC_LauncherClientUtils.mc();
 	private static boolean stop;
+	private static PC_GuiUpdate gui;
 	
-	private List<ModuleUpdateInfo> forUpdate;
-	private XMLInfoTag updateInfo;
-	
-	private PC_GuiScroll scroll;
-	private PC_GuiScroll defaultVersionList;
-	private PC_GuiScroll defaultInfoList;
-	private GuiButton download;
-	private GuiButton activate;
-	private GuiButton delete;
-	
-	private File downloadTarget;
-	
-	public PC_GuiUpdate(List<ModuleUpdateInfo> forUpdate, XMLInfoTag updateInfo) {
-		if(PC_Launcher.getConfig().getString("updater.source").equals("")){
-			downloadTarget = new File(System.getProperty("user.home"));
-			new PC_FileRequestThread(this, downloadTarget);
-		}else{
-			downloadTarget = new File(PC_Launcher.getConfig().getString("updater.source"));
-			
-		}
-		PC_UpdateManager.watchDirectory(downloadTarget);
-		this.forUpdate = forUpdate;
-		this.updateInfo = updateInfo;
-	}
+	private PC_GuiScrollModuleAndPackScroll scroll;
+	private PC_GuiScrollVersions versionList;
+	private PC_GuiScrollVersionInfo infoList;
+	public GuiButton download;
+	public GuiButton activate;
+	public GuiButton delete;
 
 	@Override
 	public void initGui() {
-		scroll = new PC_GuiScroll(10, 20, 100, height-50);
-		defaultVersionList = new PC_GuiScroll(110, 20, 100, height-50);
-		defaultVersionList.add(new PC_GuiScrollElementText("Select module or pack"));
-		defaultInfoList = new PC_GuiScroll(210, 20, width-220, height-80);
-		defaultInfoList.add(new PC_GuiScrollElementText("Select version"));
-		scroll.add(new PC_GuiScrollElementHorizontalLine("\u2193 Packs \u2193"));
-		for(XMLPackTag updatePackInfo:updateInfo.getPacks()){
-			scroll.add(new PC_GuiScrollElementPack(updatePackInfo));
-		}
-		scroll.add(new PC_GuiScrollElementHorizontalLine("\u2193 Modules \u2193"));
-		for(ModuleUpdateInfo updateModuleInfo:forUpdate){
-			scroll.add(new PC_GuiScrollElementModule(updateModuleInfo));
-		}
+		scroll = new PC_GuiScrollModuleAndPackScroll(10, 20, 100, height-50);
+		versionList = new PC_GuiScrollVersions(110, 20, 100, height-50, scroll, this);
+		infoList = new PC_GuiScrollVersionInfo(210, 20, width-220, height-80, versionList);
 		controlList.add(new GuiButton(1, 10, height - 28, 190, 20, StringTranslate.getInstance().translateKey("gui.done")));
 		controlList.add(download = new GuiButton(2, 220, height - 58, width-240, 20, StringTranslate.getInstance().translateKey("Download")));
 		controlList.add(new GuiButton(3, 220, height - 28, width-240, 20, StringTranslate.getInstance().translateKey("Where to watch for downloads")));
@@ -81,46 +57,18 @@ public class PC_GuiUpdate extends GuiScreen {
 	@Override
     public void drawScreen(int par1, int par2, float par3){
 		scroll.drawScreen(par1, par2, par3);
-		download.enabled=false;
-		download.drawButton = true;
-		activate.drawButton = false;
-		delete.drawButton = false;
-		if(scroll.getActiveElement() instanceof PC_GuiScrollElementModule){
-			PC_GuiScrollElementModule element = (PC_GuiScrollElementModule)scroll.getActiveElement();
-			element.scroll.drawScreen(par1, par2, par3);
-			if(element.scroll.getActiveElement() instanceof PC_GuiScrollElementModuleVersionInfo){
-				PC_GuiScrollElementModuleVersionInfo versionInfo = (PC_GuiScrollElementModuleVersionInfo)element.scroll.getActiveElement();
-				versionInfo.scroll.drawScreen(par1, par2, par3);
-				if(element.getUpdateInfo().versions.contains(versionInfo.getVersion())){
-					if(!element.getUpdateInfo().oldVersion.equals(versionInfo.getVersion())){
-						download.drawButton = false;
-						activate.drawButton = true;
-						delete.drawButton = true;
-					}
-				}else{
-					download.enabled=true;
-				}
-			}else{
-				defaultInfoList.drawScreen(par1, par2, par3);
-			}
-		}else if(scroll.getActiveElement() instanceof PC_GuiScrollElementPack){
-			PC_GuiScrollElementPack pack = (PC_GuiScrollElementPack)scroll.getActiveElement();
-			pack.scroll.drawScreen(par1, par2, par3);
-			if(pack.scroll.getActiveElement() instanceof PC_GuiScrollElementPackVersionInfo){
-				PC_GuiScrollElementPackVersionInfo versionInfo = (PC_GuiScrollElementPackVersionInfo)pack.scroll.getActiveElement();
-				versionInfo.scroll.drawScreen(par1, par2, par3);
-				download.enabled=true;
-			}else{
-				defaultInfoList.drawScreen(par1, par2, par3);
-			}
-		}else{
-			defaultVersionList.drawScreen(par1, par2, par3);
-			defaultInfoList.drawScreen(par1, par2, par3);
-		}
+		versionList.drawScreen(par1, par2, par3);
+		infoList.drawScreen(par1, par2, par3);
 		drawCenteredString(fontRenderer, "PowerCraft Update Screen", width / 2, 4, 0xffffff);
         super.drawScreen(par1, par2, par3);
 		
-        List list = null;
+        drawTooltip(par1, par2, par3);
+        
+        PC_UpdateManager.lookForDirectoryChange();
+    }
+	
+	private void drawTooltip(int par1, int par2, float par3){
+		List list = null;
         
         if(par1>220 && par1<width-20 && par2>height - 28 && par2<height - 8){
         	list = Arrays.asList("Browser Download", "Directory");
@@ -174,110 +122,56 @@ public class PC_GuiUpdate extends GuiScreen {
 
 			zLevel = 0.0F;
 		}
-        PC_UpdateManager.lookForDirectoryChange();
-    }
+	}
 	
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if(par1GuiButton.id==1){
 			stop=true;
 		}else if(par1GuiButton.id==2){
-			if(scroll.getActiveElement() instanceof PC_GuiScrollElementModule){
-				PC_GuiScrollElementModule element = (PC_GuiScrollElementModule)scroll.getActiveElement();
-				if(element.scroll.getActiveElement() instanceof PC_GuiScrollElementModuleVersionInfo){
-					PC_GuiScrollElementModuleVersionInfo versionInfo = (PC_GuiScrollElementModuleVersionInfo)element.scroll.getActiveElement();
-					PC_UpdateManager.download(versionInfo.getVersionXML());
-				}
-			}else if(scroll.getActiveElement() instanceof PC_GuiScrollElementPack){
-				PC_GuiScrollElementPack pack = (PC_GuiScrollElementPack)scroll.getActiveElement();
-				if(pack.scroll.getActiveElement() instanceof PC_GuiScrollElementPackVersionInfo){
-					PC_GuiScrollElementPackVersionInfo versionInfo = (PC_GuiScrollElementPackVersionInfo)pack.scroll.getActiveElement();
-					PC_UpdateManager.download(versionInfo.getVersion());
-				}
-			}
+			PC_UpdateManager.download(versionList.getActiveVersionDownload());
 		}else if(par1GuiButton.id==3){
-			new PC_FileRequestThread(this, downloadTarget);
+			PC_UpdateManager.requestDownloadTarget();
 		}else if(par1GuiButton.id==4){
-			if(scroll.getActiveElement() instanceof PC_GuiScrollElementModule){
+			PC_UpdateManager.activateModule(versionList.getActiveModuleVersion());
+		}else if(par1GuiButton.id==5){
+			/*if(scroll.getActiveElement() instanceof PC_GuiScrollElementModule){
 				PC_GuiScrollElementModule element = (PC_GuiScrollElementModule)scroll.getActiveElement();
 				if(element.scroll.getActiveElement() instanceof PC_GuiScrollElementModuleVersionInfo){
 					PC_GuiScrollElementModuleVersionInfo versionInfo = (PC_GuiScrollElementModuleVersionInfo)element.scroll.getActiveElement();
-					element.getUpdateInfo().module.getConfig().setString("loader.usingVersion", versionInfo.getVersion().toString());
-					element.getUpdateInfo().module.saveConfig();
+					PC_UpdateManager.delete(versionInfo.getModuleVersion());
+					element.scroll.remove(element.scroll.getActiveElement());
 				}
-			}
-		}else if(par1GuiButton.id==5){
-			
+			}*/
 		}
 	}
 	
 	@Override
 	protected void keyTyped(char par1, int par2) {
 		scroll.keyTyped(par1, par2);
-		if(scroll.getActiveElement() instanceof PC_GuiScrollElementModule){
-			PC_GuiScrollElementModule element = (PC_GuiScrollElementModule)scroll.getActiveElement();
-			element.scroll.keyTyped(par1, par2);
-			if(element.scroll.getActiveElement() instanceof PC_GuiScrollElementModuleVersionInfo){
-				((PC_GuiScrollElementModuleVersionInfo)element.scroll.getActiveElement()).scroll.keyTyped(par1, par2);
-			}
-		}else if(scroll.getActiveElement() instanceof PC_GuiScrollElementPack){
-			PC_GuiScrollElementPack pack = (PC_GuiScrollElementPack)scroll.getActiveElement();
-			pack.scroll.keyTyped(par1, par2);
-			if(pack.scroll.getActiveElement() instanceof PC_GuiScrollElementPackVersionInfo){
-				((PC_GuiScrollElementPackVersionInfo)pack.scroll.getActiveElement()).scroll.keyTyped(par1, par2);
-			}
-		}
+		versionList.keyTyped(par1, par2);
+		infoList.keyTyped(par1, par2);
 		super.keyTyped(par1, par2);
 	}
 
 	@Override
 	protected void mouseClicked(int par1, int par2, int par3) {
 		scroll.mouseClicked(par1, par2, par3);
-		if(scroll.getActiveElement() instanceof PC_GuiScrollElementModule){
-			PC_GuiScrollElementModule element = (PC_GuiScrollElementModule)scroll.getActiveElement();
-			element.scroll.mouseClicked(par1, par2, par3);
-			if(element.scroll.getActiveElement() instanceof PC_GuiScrollElementModuleVersionInfo){
-				((PC_GuiScrollElementModuleVersionInfo)element.scroll.getActiveElement()).scroll.mouseClicked(par1, par2, par3);
-			}
-		}else if(scroll.getActiveElement() instanceof PC_GuiScrollElementPack){
-			PC_GuiScrollElementPack pack = (PC_GuiScrollElementPack)scroll.getActiveElement();
-			pack.scroll.mouseClicked(par1, par2, par3);
-			if(pack.scroll.getActiveElement() instanceof PC_GuiScrollElementPackVersionInfo){
-				((PC_GuiScrollElementPackVersionInfo)pack.scroll.getActiveElement()).scroll.mouseClicked(par1, par2, par3);
-			}
-		}
+		versionList.mouseClicked(par1, par2, par3);
+		infoList.mouseClicked(par1, par2, par3);
 		super.mouseClicked(par1, par2, par3);
 	}
 	
 	@Override
 	protected void mouseMovedOrUp(int par1, int par2, int par3) {
 		scroll.mouseMovedOrUp(par1, par2, par3);
-		if(scroll.getActiveElement() instanceof PC_GuiScrollElementModule){
-			PC_GuiScrollElementModule element = (PC_GuiScrollElementModule)scroll.getActiveElement();
-			element.scroll.mouseMovedOrUp(par1, par2, par3);
-			if(element.scroll.getActiveElement() instanceof PC_GuiScrollElementModuleVersionInfo){
-				((PC_GuiScrollElementModuleVersionInfo)element.scroll.getActiveElement()).scroll.mouseMovedOrUp(par1, par2, par3);
-			}
-		}else if(scroll.getActiveElement() instanceof PC_GuiScrollElementPack){
-			PC_GuiScrollElementPack pack = (PC_GuiScrollElementPack)scroll.getActiveElement();
-			pack.scroll.mouseMovedOrUp(par1, par2, par3);
-			if(pack.scroll.getActiveElement() instanceof PC_GuiScrollElementPackVersionInfo){
-				((PC_GuiScrollElementPackVersionInfo)pack.scroll.getActiveElement()).scroll.mouseMovedOrUp(par1, par2, par3);
-			}
-		}
+		versionList.mouseMovedOrUp(par1, par2, par3);
+		infoList.mouseMovedOrUp(par1, par2, par3);
 		super.mouseMovedOrUp(par1, par2, par3);
 	}
-
-	public synchronized void setDownloadTarget(File file){
-		PC_Launcher.getConfig().setString("updater.source", file.getAbsolutePath());
-		PC_Launcher.saveConfig();
-		this.downloadTarget = file;
-		PC_UpdateManager.stopWatchDirectory();
-		PC_UpdateManager.watchDirectory(downloadTarget);
-	}
 	
-	public static void show(List<ModuleUpdateInfo> forUpdate, XMLInfoTag updateInfo) {
-		PC_GuiUpdate gui = new PC_GuiUpdate(forUpdate, updateInfo);
+	public static void show(boolean requestDownloadTarget) {
+		gui = new PC_GuiUpdate();
 		ScaledResolution resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
 		int width = resolution.getScaledWidth();
 		int height = resolution.getScaledHeight();
@@ -318,7 +212,12 @@ public class PC_GuiUpdate extends GuiScreen {
 			}
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			checkGLError("post gui render");
+			if(requestDownloadTarget){
+				requestDownloadTarget = false;
+				PC_UpdateManager.requestDownloadTarget();
+			}
 		}
+		gui = null;
 		PC_UpdateManager.stopWatchDirectory();
 		resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         GL11.glMatrixMode(GL11.GL_PROJECTION);

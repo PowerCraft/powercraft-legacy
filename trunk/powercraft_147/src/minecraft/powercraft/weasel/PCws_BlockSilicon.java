@@ -4,9 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.IBlockAccess;
-import powercraft.management.PC_VecI;
-import powercraft.management.block.PC_BlockOre;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_VecI;
+import powercraft.api.block.PC_BlockOre;
+import powercraft.api.registry.PC_MSGRegistry;
 
 public class PCws_BlockSilicon extends PC_BlockOre {
 	

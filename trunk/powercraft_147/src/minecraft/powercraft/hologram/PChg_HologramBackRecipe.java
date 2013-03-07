@@ -6,11 +6,11 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.management.block.PC_ItemBlock;
-import powercraft.management.item.PC_Item;
-import powercraft.management.item.PC_ItemStack;
-import powercraft.management.recipes.PC_ShapelessRecipes;
-import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.api.block.PC_ItemBlock;
+import powercraft.api.item.PC_Item;
+import powercraft.api.item.PC_ItemStack;
+import powercraft.api.recipes.PC_ShapelessRecipes;
+import powercraft.api.reflect.PC_ReflectHelper;
 
 public class PChg_HologramBackRecipe extends PC_ShapelessRecipes {
 

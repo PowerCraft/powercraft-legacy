@@ -36,16 +36,16 @@ import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import powercraft.management.PC_Direction;
-import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
-import powercraft.management.inventory.PC_IInventoryWrapper;
-import powercraft.management.inventory.PC_ISpecialAccessInventory;
-import powercraft.management.registry.PC_KeyRegistry;
-import powercraft.management.registry.PC_SoundRegistry;
+import powercraft.api.PC_Direction;
+import powercraft.api.PC_MathHelper;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.PC_VecI;
+import powercraft.api.inventory.PC_IInventoryWrapper;
+import powercraft.api.inventory.PC_ISpecialAccessInventory;
+import powercraft.api.registry.PC_KeyRegistry;
+import powercraft.api.registry.PC_SoundRegistry;
 
 public class PCtr_BeltHelper
 {

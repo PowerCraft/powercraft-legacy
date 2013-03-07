@@ -69,40 +69,40 @@ public class PC_Launcher {
 		
 		PC_Logger.exitSection();
 		
-		getManagement().preInit();
+		getAPI().preInit();
 
 		
 	}
 	
 	public static void init(){
 		
-		getManagement().initProperties(config);
-		getManagement().init();
+		getAPI().initProperties(config);
+		getAPI().init();
 
 	}
 	
 	public static void postInit(){
 		
-		getManagement().postInit();
+		getAPI().postInit();
 		
 	}
 
-	public static Object callManagementMethod(String name, Class<?>[] classes, Object[] objects) {
-		return getManagement().callMethod(name, classes, objects);
+	public static Object callapiMethod(String name, Class<?>[] classes, Object[] objects) {
+		return getAPI().callMethod(name, classes, objects);
 	}
 
-	public static Object callManagementMethod(Class<? extends Annotation> annontation, Object[] objects) {
-		return getManagement().callMethod(annontation, objects);
+	public static Object callapiMethod(Class<? extends Annotation> annontation, Object[] objects) {
+		return getAPI().callMethod(annontation, objects);
 	}
 	
 	public static HashMap<String, PC_ModuleObject> getModules(){
 		HashMap<String, PC_ModuleObject> hm = modules.getModules();
-		hm.remove("management");
+		hm.remove("api");
 		return hm;
 	}
 	
-	public static PC_ModuleObject getManagement(){
-		return modules.getManagement();
+	public static PC_ModuleObject getAPI(){
+		return modules.getAPI();
 	}
 	
 	public static PC_Property getConfig(){

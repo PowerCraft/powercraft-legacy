@@ -13,19 +13,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import powercraft.management.PC_BeamTracer;
-import powercraft.management.PC_Color;
-import powercraft.management.PC_GlobalVariables;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_VecI;
-import powercraft.management.item.PC_Item;
-import powercraft.management.item.PC_ItemStack;
-import powercraft.management.reflect.PC_ReflectHelper;
-import powercraft.management.registry.PC_BlockRegistry;
-import powercraft.management.registry.PC_LangRegistry;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_BeamTracer;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_GlobalVariables;
+import powercraft.api.PC_Utils;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_VecI;
+import powercraft.api.item.PC_Item;
+import powercraft.api.item.PC_ItemStack;
+import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.registry.PC_BlockRegistry;
+import powercraft.api.registry.PC_LangRegistry;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.registry.PC_MSGRegistry;
 
 public class PCli_ItemLaserComposition extends PC_Item
 {

@@ -6,10 +6,10 @@ import java.util.Random;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.annotation.PC_ClientServerSync;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_Struct2;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PCma_TileEntityXPBank extends PC_TileEntity
 {

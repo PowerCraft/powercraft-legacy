@@ -3,8 +3,8 @@ package powercraft.weasel;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_Struct4;
-import powercraft.management.registry.PC_GresRegistry;
+import powercraft.api.PC_Struct4;
+import powercraft.api.registry.PC_GresRegistry;
 import powercraft.weasel.engine.WeaselFunctionManager;
 
 public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {

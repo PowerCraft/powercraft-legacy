@@ -8,13 +8,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_VecI;
-import powercraft.management.item.PC_Item;
-import powercraft.management.registry.PC_GresRegistry;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
-import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.api.PC_IPacketHandler;
+import powercraft.api.PC_PacketHandler;
+import powercraft.api.PC_VecI;
+import powercraft.api.item.PC_Item;
+import powercraft.api.registry.PC_GresRegistry;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.registry.PC_MSGRegistry;
 
 public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
 	

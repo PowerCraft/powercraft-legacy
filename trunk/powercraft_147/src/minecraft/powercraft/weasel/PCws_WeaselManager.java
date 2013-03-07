@@ -7,12 +7,12 @@ import java.util.TreeMap;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.management.PC_IDataHandler;
-import powercraft.management.PC_IMSG;
-import powercraft.management.PC_Struct3;
-import powercraft.management.PC_Utils.SaveHandler;
-import powercraft.management.registry.PC_MSGRegistry;
-import powercraft.management.tick.PC_ITickHandler;
+import powercraft.api.PC_IDataHandler;
+import powercraft.api.PC_IMSG;
+import powercraft.api.PC_Struct3;
+import powercraft.api.PC_Utils.SaveHandler;
+import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.tick.PC_ITickHandler;
 import powercraft.weasel.engine.WeaselFunctionManager;
 import powercraft.weasel.exception.WeaselRuntimeException;
 import powercraft.weasel.obj.WeaselObject;

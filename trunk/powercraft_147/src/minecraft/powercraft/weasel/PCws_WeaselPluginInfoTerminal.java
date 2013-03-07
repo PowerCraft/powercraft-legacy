@@ -1,9 +1,9 @@
 package powercraft.weasel;
 
 import net.minecraft.block.Block;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.registry.PC_SoundRegistry;
-import powercraft.management.renderer.PC_Renderer;
+import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.registry.PC_SoundRegistry;
+import powercraft.api.renderer.PC_Renderer;
 
 public class PCws_WeaselPluginInfoTerminal extends PCws_WeaselPluginInfo {
 

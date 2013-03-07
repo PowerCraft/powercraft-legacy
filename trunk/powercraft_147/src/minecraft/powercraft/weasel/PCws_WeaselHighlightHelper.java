@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import powercraft.launcher.PC_Property;
-import powercraft.management.gres.PC_GresTextEditMultiline;
-import powercraft.management.gres.PC_GresTextEditMultiline.AutoAdd;
-import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
-import powercraft.management.gres.PC_GresTextEditMultiline.StringAdd;
+import powercraft.api.gres.PC_GresTextEditMultiline;
+import powercraft.api.gres.PC_GresTextEditMultiline.AutoAdd;
+import powercraft.api.gres.PC_GresTextEditMultiline.Keyword;
+import powercraft.api.gres.PC_GresTextEditMultiline.StringAdd;
 import powercraft.weasel.engine.Compiler;
 import powercraft.weasel.engine.IWeaselHardware;
 import powercraft.weasel.engine.WeaselEngine;

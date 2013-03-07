@@ -3,9 +3,9 @@ package powercraft.itemstorage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.SaveHandler;
-import powercraft.management.PC_VecI;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.PC_Utils.SaveHandler;
+import powercraft.api.PC_VecI;
 
 public class PCis_NormalCompressorInventory extends PCis_CompressorInventory {
 

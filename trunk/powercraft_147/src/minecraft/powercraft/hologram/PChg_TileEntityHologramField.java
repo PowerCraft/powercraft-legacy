@@ -3,10 +3,10 @@ package powercraft.hologram;
 import java.util.ArrayList;
 import java.util.List;
 
-import powercraft.management.PC_VecI;
-import powercraft.management.annotation.PC_ClientServerSync;
-import powercraft.management.tileentity.PC_ITileEntityRenderer;
-import powercraft.management.tileentity.PC_TileEntity;
+import powercraft.api.PC_VecI;
+import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.tileentity.PC_ITileEntityRenderer;
+import powercraft.api.tileentity.PC_TileEntity;
 
 public class PChg_TileEntityHologramField extends PC_TileEntity implements PC_ITileEntityRenderer{
 	

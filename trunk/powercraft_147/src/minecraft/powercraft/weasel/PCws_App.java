@@ -12,17 +12,17 @@ import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_PreInit;
 import powercraft.launcher.loader.PC_Module.PC_RegisterGuis;
 import powercraft.launcher.PC_Property;
-import powercraft.management.PC_IDataHandler;
-import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_Struct2;
-import powercraft.management.annotation.PC_FieldObject;
-import powercraft.management.block.PC_Block;
-import powercraft.management.item.PC_Item;
-import powercraft.management.item.PC_ItemStack;
-import powercraft.management.recipes.PC_IRecipe;
-import powercraft.management.recipes.PC_ShapedRecipes;
-import powercraft.management.recipes.PC_SmeltRecipe;
-import powercraft.management.registry.PC_BlockRegistry;
+import powercraft.api.PC_IDataHandler;
+import powercraft.api.PC_IPacketHandler;
+import powercraft.api.PC_Struct2;
+import powercraft.api.annotation.PC_FieldObject;
+import powercraft.api.block.PC_Block;
+import powercraft.api.item.PC_Item;
+import powercraft.api.item.PC_ItemStack;
+import powercraft.api.recipes.PC_IRecipe;
+import powercraft.api.recipes.PC_ShapedRecipes;
+import powercraft.api.recipes.PC_SmeltRecipe;
+import powercraft.api.registry.PC_BlockRegistry;
 
 @PC_Module(name="Weasel", version="1.1.0")
 public class PCws_App {

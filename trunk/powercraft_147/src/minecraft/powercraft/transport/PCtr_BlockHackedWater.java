@@ -9,8 +9,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.World;
 import powercraft.launcher.PC_Logger;
-import powercraft.management.PC_VecI;
-import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.api.PC_VecI;
+import powercraft.api.reflect.PC_ReflectHelper;
 
 public class PCtr_BlockHackedWater extends BlockStationary
 {

@@ -8,9 +8,9 @@ import powercraft.launcher.loader.PC_ClientModule;
 import powercraft.launcher.loader.PC_ClientModule.PC_InitLanguage;
 import powercraft.launcher.loader.PC_ClientModule.PC_LoadTextureFiles;
 import powercraft.launcher.loader.PC_ClientModule.PC_RegisterEntityRender;
-import powercraft.management.PC_Struct2;
-import powercraft.management.registry.PC_LangRegistry.LangEntry;
-import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.api.PC_Struct2;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.registry.PC_ModuleRegistry;
 
 @PC_ClientModule
 public class PCmo_AppClient extends PCmo_App {

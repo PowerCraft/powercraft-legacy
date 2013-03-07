@@ -7,9 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.registry.PC_ItemRegistry;
+import powercraft.api.PC_IPacketHandler;
+import powercraft.api.PC_Utils.Inventory;
+import powercraft.api.registry.PC_ItemRegistry;
 
 public class PCco_DeleteAllPlayerStacks implements PC_IPacketHandler
 {

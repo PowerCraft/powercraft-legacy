@@ -18,10 +18,10 @@ import org.lwjgl.opengl.GL11;
 import powercraft.launcher.loader.PC_ClientModule;
 import powercraft.launcher.loader.PC_ClientModule.PC_LoadTextureFiles;
 import powercraft.launcher.loader.PC_Module.PC_Init;
-import powercraft.management.PC_ClientUtils;
-import powercraft.management.PC_VecI;
-import powercraft.management.annotation.PC_FieldObject;
-import powercraft.management.renderer.PC_Renderer;
+import powercraft.api.PC_ClientUtils;
+import powercraft.api.PC_VecI;
+import powercraft.api.annotation.PC_FieldObject;
+import powercraft.api.renderer.PC_Renderer;
 
 @PC_ClientModule
 public class PChg_AppClient extends PChg_App {
