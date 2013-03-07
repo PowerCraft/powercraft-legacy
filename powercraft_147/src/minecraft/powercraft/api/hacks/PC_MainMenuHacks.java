@@ -23,7 +23,6 @@ import cpw.mods.fml.common.TickType;
 public class PC_MainMenuHacks implements ITickHandler {
 
 	private static GuiMainMenu lastHacked = null;
-	private static boolean updateWindowShowed = false;
 	private static boolean usernameHacked = false;
 	private static boolean ingameGuiHacked = false;
 	private static Random rand = new Random();
@@ -62,10 +61,6 @@ public class PC_MainMenuHacks implements ITickHandler {
 		if(gs instanceof GuiMainMenu){
 			if(PC_GlobalVariables.hackSplashes)
 				hackSplashes((GuiMainMenu)gs);
-			if(PC_GlobalVariables.showUpdateWindow && !updateWindowShowed){
-				PC_GresRegistry.openGres("UpdateNotification", null, null, gs);
-				updateWindowShowed = true;
-			}
 		}
 		if(!(usernameHacked)){
 			String useUserName = PC_GlobalVariables.useUserName;
