@@ -57,35 +57,45 @@ public class PC_Launcher {
 	}
 	
 	public static void preInit(){
-		PC_Logger.init(PC_LauncherUtils.getPowerCraftFile());
-		PC_Logger.enterSection("Loading");
-		
-		loadConfig();
-		
-		if(autoUpdate){
-			mod_PowerCraft.getInstance().proxy.updatePowerCraft();
+		try{
+			PC_Logger.init(PC_LauncherUtils.getPowerCraftFile());
+			PC_Logger.enterSection("Loading");
+			
+			loadConfig();
+			
+			if(autoUpdate){
+				mod_PowerCraft.getInstance().proxy.updatePowerCraft();
+			}
+			
+			loadModules();
+			
+			PC_Logger.exitSection();
+			
+			getAPI().preInit();
+		}catch(Throwable e){
+			PC_Logger.severe(e.getMessage());
+			PC_Logger.severe(e.toString());
 		}
-		
-		loadModules();
-		
-		PC_Logger.exitSection();
-		
-		getAPI().preInit();
-
-		
 	}
 	
 	public static void init(){
-		
-		getAPI().initProperties(config);
-		getAPI().init();
+		try{
+			getAPI().initProperties(config);
+			getAPI().init();
+		}catch(Throwable e){
+			PC_Logger.severe(e.getMessage());
+			PC_Logger.severe(e.toString());
+		}
 
 	}
 	
 	public static void postInit(){
-		
-		getAPI().postInit();
-		
+		try{
+			getAPI().postInit();
+		}catch(Throwable e){
+			PC_Logger.severe(e.getMessage());
+			PC_Logger.severe(e.toString());
+		}
 	}
 
 	public static Object callapiMethod(String name, Class<?>[] classes, Object[] objects) {
