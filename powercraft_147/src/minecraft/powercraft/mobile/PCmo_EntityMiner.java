@@ -3571,7 +3571,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	
 	public void doInfoSet(String key, Object...obj){
 		if(worldObj.isRemote){
-			PC_PacketHandler.sendToPacketHandler(worldObj, "MinerManager", entityId, "doInfoSet", key, obj);
+			PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "doInfoSet", key, obj);
 		}else{
 			if(key.equalsIgnoreCase("set")){
 				setInfo((String)obj[0], obj[1]);

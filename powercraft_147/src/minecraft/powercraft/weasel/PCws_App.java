@@ -67,7 +67,7 @@ public class PCws_App {
 				'I', new PC_ItemStack(Item.ingotIron), 'U', new PC_ItemStack(ingotSilicon)));
 		
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 0),
-				"TPT ", 
+				"TPT", 
 				"RCR", 
 				"SSS",
 					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'C', new PC_ItemStack(PC_BlockRegistry.getPCBlockByName("PCco_BlockPowerCrystal"),1,-1),

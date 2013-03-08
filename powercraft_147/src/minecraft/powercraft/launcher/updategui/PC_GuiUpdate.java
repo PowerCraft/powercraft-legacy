@@ -39,17 +39,18 @@ public class PC_GuiUpdate extends GuiScreen {
 	public GuiButton download;
 	public GuiButton activate;
 	public GuiButton delete;
-
+	
 	@Override
 	public void initGui() {
-		scroll = new PC_GuiScrollModuleAndPackScroll(10, 20, 100, height-50);
-		versionList = new PC_GuiScrollVersions(110, 20, 100, height-50, scroll, this);
+		scroll = new PC_GuiScrollModuleAndPackScroll(10, 20, 100, height-80);
+		versionList = new PC_GuiScrollVersions(110, 20, 100, height-80, scroll, this);
 		infoList = new PC_GuiScrollVersionInfo(210, 20, width-220, height-80, versionList);
 		controlList.add(new GuiButton(1, 10, height - 28, 190, 20, StringTranslate.getInstance().translateKey("gui.done")));
 		controlList.add(download = new GuiButton(2, 220, height - 58, width-240, 20, StringTranslate.getInstance().translateKey("Download")));
 		controlList.add(new GuiButton(3, 220, height - 28, width-240, 20, StringTranslate.getInstance().translateKey("Where to watch for downloads")));
 		controlList.add(activate = new GuiButton(4, 220, height - 58, (width-240)/2, 20, StringTranslate.getInstance().translateKey("Activate")));
 		controlList.add(delete = new GuiButton(5, 220+(width-240)/2, height - 58, (width-240)/2, 20, StringTranslate.getInstance().translateKey("Delete")));
+		controlList.add(new GuiButton(6, 10, height - 58, 190, 20, StringTranslate.getInstance().translateKey("ignore")));
 		activate.drawButton = false;
 		delete.drawButton = false;
 	}
@@ -135,14 +136,9 @@ public class PC_GuiUpdate extends GuiScreen {
 		}else if(par1GuiButton.id==4){
 			PC_UpdateManager.activateModule(versionList.getActiveModuleVersion());
 		}else if(par1GuiButton.id==5){
-			/*if(scroll.getActiveElement() instanceof PC_GuiScrollElementModule){
-				PC_GuiScrollElementModule element = (PC_GuiScrollElementModule)scroll.getActiveElement();
-				if(element.scroll.getActiveElement() instanceof PC_GuiScrollElementModuleVersionInfo){
-					PC_GuiScrollElementModuleVersionInfo versionInfo = (PC_GuiScrollElementModuleVersionInfo)element.scroll.getActiveElement();
-					PC_UpdateManager.delete(versionInfo.getModuleVersion());
-					element.scroll.remove(element.scroll.getActiveElement());
-				}
-			}*/
+			PC_UpdateManager.delete(versionList.getActiveModuleVersion());
+		}else if(par1GuiButton.id==6){
+			PC_UpdateManager.ignoreUpdates();
 		}
 	}
 	
