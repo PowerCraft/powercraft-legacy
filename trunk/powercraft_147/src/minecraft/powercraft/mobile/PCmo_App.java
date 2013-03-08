@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_InitEntities;
+import powercraft.launcher.loader.PC_Module.PC_InitPacketHandlers;
 import powercraft.launcher.loader.PC_Module.PC_InitProperties;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_PreInit;
@@ -116,7 +117,7 @@ public class PCmo_App {
 		return recipes;
 	}
 
-	@PC_InitProperties
+	@PC_InitPacketHandlers
 	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
 			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
 		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("MinerManager", minerManager));

@@ -73,8 +73,8 @@ public class PC_Launcher {
 			
 			getAPI().preInit();
 		}catch(Throwable e){
-			PC_Logger.severe(e.getMessage());
 			PC_Logger.severe(e.toString());
+			e.printStackTrace();
 		}
 	}
 	
@@ -83,8 +83,8 @@ public class PC_Launcher {
 			getAPI().initProperties(config);
 			getAPI().init();
 		}catch(Throwable e){
-			PC_Logger.severe(e.getMessage());
 			PC_Logger.severe(e.toString());
+			e.printStackTrace();
 		}
 
 	}
@@ -93,8 +93,8 @@ public class PC_Launcher {
 		try{
 			getAPI().postInit();
 		}catch(Throwable e){
-			PC_Logger.severe(e.getMessage());
 			PC_Logger.severe(e.toString());
+			e.printStackTrace();
 		}
 	}
 

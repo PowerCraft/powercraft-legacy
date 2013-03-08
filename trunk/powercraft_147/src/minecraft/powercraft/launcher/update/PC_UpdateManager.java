@@ -19,6 +19,7 @@ import java.util.List;
 
 import powercraft.launcher.PC_Launcher;
 import powercraft.launcher.PC_LauncherUtils;
+import powercraft.launcher.PC_Property;
 import powercraft.launcher.PC_Version;
 import powercraft.launcher.loader.PC_ModuleClassInfo;
 import powercraft.launcher.loader.PC_ModuleDiscovery;
@@ -292,6 +293,14 @@ public class PC_UpdateManager {
 				mui.oldVersion = activeModuleVersion.getVersion();
 			}
 		}
+	}
+
+	public static void ignoreUpdates() {
+		PC_Property config = PC_Launcher.getConfig();
+		for(ModuleUpdateInfo mui:moduleList){
+			config.setString("updater.ignore."+mui.xmlModule.getName(), mui.newVersion.getVersion().toString());
+		}
+		PC_Launcher.saveConfig();
 	}
 	
 }
