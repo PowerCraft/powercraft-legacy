@@ -1,9 +1,9 @@
 package powercraft.hologram;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -48,7 +48,7 @@ public class PChg_BlockHologramBlockEmpty extends PC_Block {
 	}
 	
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
-    	final Map<Integer, Integer> map = new TreeMap<Integer, Integer>();
+    	final Map<Integer, Integer> map = new HashMap<Integer, Integer>();
     	for(int xOff=-1;xOff<2;xOff++){
     		for(int yOff=-1;yOff<2;yOff++){
     			for(int zOff=-1;zOff<2;zOff++){
@@ -73,7 +73,7 @@ public class PChg_BlockHologramBlockEmpty extends PC_Block {
 
     	Block renderingBlock = Block.blocksList[fittingID];
     	PC_Renderer.tessellatorDraw();
-    	if(fittingID==PChg_App.hologramBlockEmpty.blockID||(PC_ClientUtils.mc().thePlayer.getCurrentEquippedItem()!=null && PC_ClientUtils.mc().thePlayer.getCurrentEquippedItem().itemID==Item.stick.itemID)){
+    	if(fittingID==PChg_App.hologramBlockEmpty.blockID||fittingID==PChg_App.hologramBlock.blockID||(PC_ClientUtils.mc().thePlayer.getCurrentEquippedItem()!=null && PC_ClientUtils.mc().thePlayer.getCurrentEquippedItem().itemID==Item.stick.itemID)){
     		PC_Renderer.swapTerrain(this);
         	PC_Renderer.tessellatorStartDrawingQuads();
     		PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
