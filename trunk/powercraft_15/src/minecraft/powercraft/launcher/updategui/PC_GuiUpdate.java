@@ -45,12 +45,12 @@ public class PC_GuiUpdate extends GuiScreen {
 		scroll = new PC_GuiScrollModuleAndPackScroll(10, 20, 100, height-80);
 		versionList = new PC_GuiScrollVersions(110, 20, 100, height-80, scroll, this);
 		infoList = new PC_GuiScrollVersionInfo(210, 20, width-220, height-80, versionList);
-		controlList.add(new GuiButton(1, 10, height - 28, 190, 20, StringTranslate.getInstance().translateKey("gui.done")));
-		controlList.add(download = new GuiButton(2, 220, height - 58, width-240, 20, StringTranslate.getInstance().translateKey("Download")));
-		controlList.add(new GuiButton(3, 220, height - 28, width-240, 20, StringTranslate.getInstance().translateKey("Where to watch for downloads")));
-		controlList.add(activate = new GuiButton(4, 220, height - 58, (width-240)/2, 20, StringTranslate.getInstance().translateKey("Activate")));
-		controlList.add(delete = new GuiButton(5, 220+(width-240)/2, height - 58, (width-240)/2, 20, StringTranslate.getInstance().translateKey("Delete")));
-		controlList.add(new GuiButton(6, 10, height - 58, 190, 20, StringTranslate.getInstance().translateKey("ignore")));
+		buttonList.add(new GuiButton(1, 10, height - 28, 190, 20, StringTranslate.getInstance().translateKey("gui.done")));
+		buttonList.add(download = new GuiButton(2, 220, height - 58, width-240, 20, StringTranslate.getInstance().translateKey("Download")));
+		buttonList.add(new GuiButton(3, 220, height - 28, width-240, 20, StringTranslate.getInstance().translateKey("Where to watch for downloads")));
+		buttonList.add(activate = new GuiButton(4, 220, height - 58, (width-240)/2, 20, StringTranslate.getInstance().translateKey("Activate")));
+		buttonList.add(delete = new GuiButton(5, 220+(width-240)/2, height - 58, (width-240)/2, 20, StringTranslate.getInstance().translateKey("Delete")));
+		buttonList.add(new GuiButton(6, 10, height - 58, 190, 20, StringTranslate.getInstance().translateKey("ignore")));
 		activate.drawButton = false;
 		delete.drawButton = false;
 	}

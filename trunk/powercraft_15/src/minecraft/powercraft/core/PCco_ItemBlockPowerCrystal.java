@@ -26,10 +26,9 @@ public class PCco_ItemBlockPowerCrystal extends PC_ItemBlock {
     }
 
     @Override
-    public String getItemNameIS(ItemStack itemstack)
-    {
-        return super.getItemName() + ".color" + Integer.toString(itemstack.getItemDamage());
-    }
+	public String getUnlocalizedName(ItemStack itemstack) {
+    	return super.getUnlocalizedName() + ".color" + Integer.toString(itemstack.getItemDamage());
+	}
 
     @Override
     public int getColorFromItemStack(ItemStack itemStack, int pass)
@@ -65,14 +64,14 @@ public class PCco_ItemBlockPowerCrystal extends PC_ItemBlock {
 		switch(msg){
 		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getItemName() + ".color0", "Orange Power Crystal"));
-            names.add(new LangEntry(getItemName() + ".color1", "Red Power Crystal"));
-            names.add(new LangEntry(getItemName() + ".color2", "Green Power Crystal"));
-            names.add(new LangEntry(getItemName() + ".color3", "Darkblue Power Crystal"));
-            names.add(new LangEntry(getItemName() + ".color4", "Lightblue Power Crystal"));
-            names.add(new LangEntry(getItemName() + ".color5", "Purple Power Crystal"));
-            names.add(new LangEntry(getItemName() + ".color6", "Cyan Power Crystal"));
-            names.add(new LangEntry(getItemName() + ".color7", "Yellow Power Crystal"));
+			names.add(new LangEntry(getUnlocalizedName() + ".color0", "Orange Power Crystal"));
+            names.add(new LangEntry(getUnlocalizedName() + ".color1", "Red Power Crystal"));
+            names.add(new LangEntry(getUnlocalizedName() + ".color2", "Green Power Crystal"));
+            names.add(new LangEntry(getUnlocalizedName() + ".color3", "Darkblue Power Crystal"));
+            names.add(new LangEntry(getUnlocalizedName() + ".color4", "Lightblue Power Crystal"));
+            names.add(new LangEntry(getUnlocalizedName() + ".color5", "Purple Power Crystal"));
+            names.add(new LangEntry(getUnlocalizedName() + ".color6", "Cyan Power Crystal"));
+            names.add(new LangEntry(getUnlocalizedName() + ".color7", "Yellow Power Crystal"));
             return names;
 		}
 		return null;

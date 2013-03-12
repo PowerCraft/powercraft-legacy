@@ -138,7 +138,7 @@ public class PC_ModuleLoader extends ClassLoader {
 				byte[] b = searchResourceInDir(e.getValue(), name);
 				if(b!=null){
 					for(IClassTransformer trans : rcl.getTransformers()){
-						b = trans.transform(name, b);
+						b = trans.transform(name, name, b);
 					}
 					c = defineClass(name, b, 0, b.length);
 					classes.put(name, c);

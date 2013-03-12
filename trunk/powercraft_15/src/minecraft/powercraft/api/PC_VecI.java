@@ -2,38 +2,38 @@ package powercraft.api;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-public class PC_VecI implements PC_Vec<Integer, PC_VecI>{
+public class PC_VecI implements PC_Vec<Integer, PC_VecI> {
 
 	public static final long serialVersionUID = 1745800961264333413L;
-	
+
 	public int x;
 	public int y;
 	public int z;
-	
-	public PC_VecI(){
+
+	public PC_VecI() {
 		this(0, 0, 0);
 	}
-	
-	public PC_VecI(int x){
+
+	public PC_VecI(int x) {
 		this(x, 0, 0);
 	}
-	
-	public PC_VecI(int x, int y){
+
+	public PC_VecI(int x, int y) {
 		this(x, y, 0);
 	}
-	
-	public PC_VecI(int x, int y, int z){
+
+	public PC_VecI(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
-	
-	public PC_VecI(PC_Vec vec){
+
+	public PC_VecI(PC_Vec vec) {
 		x = vec.getX().intValue();
 		y = vec.getY().intValue();
 		z = vec.getZ().intValue();
 	}
-	
+
 	@Override
 	public Integer getX() {
 		return x;
@@ -102,17 +102,17 @@ public class PC_VecI implements PC_Vec<Integer, PC_VecI>{
 	public PC_VecI offset(PC_Vec vec) {
 		return copy().add(vec);
 	}
-	
+
 	@Override
 	public PC_VecI offset(Number n) {
 		return copy().add(n);
 	}
-	
+
 	@Override
 	public PC_VecI offset(Number x, Number y, Number z) {
 		return copy().add(x, y, z);
 	}
-	
+
 	@Override
 	public PC_VecI sub(PC_Vec vec) {
 		return sub(vec.getX(), vec.getY(), vec.getZ());
@@ -143,9 +143,9 @@ public class PC_VecI implements PC_Vec<Integer, PC_VecI>{
 
 	@Override
 	public PC_VecI mul(Number x, Number y, Number z) {
-		this.x = (int)(this.x * x.doubleValue());
-		this.y = (int)(this.y * y.doubleValue());
-		this.z = (int)(this.z * z.doubleValue());
+		this.x = (int) (this.x * x.doubleValue());
+		this.y = (int) (this.y * y.doubleValue());
+		this.z = (int) (this.z * z.doubleValue());
 		return this;
 	}
 
@@ -169,19 +169,19 @@ public class PC_VecI implements PC_Vec<Integer, PC_VecI>{
 
 	@Override
 	public double length() {
-		return Math.sqrt(x*x + y*y + z*z);
+		return Math.sqrt(x * x + y * y + z * z);
 	}
 
 	@Override
-	public double distanceTo(PC_Vec vec){
+	public double distanceTo(PC_Vec vec) {
 		return copy().sub(vec).length();
 	}
-	
+
 	@Override
-	public double distanceTo(Number x, Number y, Number z){
+	public double distanceTo(Number x, Number y, Number z) {
 		return copy().sub(x, y, z).length();
 	}
-	
+
 	@Override
 	public PC_VecI normalize() {
 		double length = length();
@@ -196,26 +196,26 @@ public class PC_VecI implements PC_Vec<Integer, PC_VecI>{
 		int minVal, maxVal;
 		minVal = min.getX().intValue();
 		maxVal = max.getX().intValue();
-		if(minVal>maxVal){
-			if(x<minVal)
+		if (minVal > maxVal) {
+			if (x < minVal)
 				x = minVal;
-			else if(x>maxVal)
+			else if (x > maxVal)
 				x = maxVal;
 		}
 		minVal = min.getY().intValue();
 		maxVal = max.getY().intValue();
-		if(minVal>maxVal){
-			if(y<minVal)
+		if (minVal > maxVal) {
+			if (y < minVal)
 				y = minVal;
-			else if(y>maxVal)
+			else if (y > maxVal)
 				y = maxVal;
 		}
 		minVal = min.getZ().intValue();
 		maxVal = max.getZ().intValue();
-		if(minVal>maxVal){
-			if(z<minVal)
+		if (minVal > maxVal) {
+			if (z < minVal)
 				z = minVal;
-			else if(z>maxVal)
+			else if (z > maxVal)
 				z = maxVal;
 		}
 		return this;
@@ -240,24 +240,24 @@ public class PC_VecI implements PC_Vec<Integer, PC_VecI>{
 	public PC_VecI max(PC_Vec max) {
 		int maxVal;
 		maxVal = max.getX().intValue();
-		if(x>maxVal)
+		if (x > maxVal)
 			x = maxVal;
 		maxVal = max.getY().intValue();
-		if(y>maxVal)
+		if (y > maxVal)
 			y = maxVal;
 		maxVal = max.getZ().intValue();
-		if(z>maxVal)
+		if (z > maxVal)
 			z = maxVal;
 		return this;
 	}
 
 	@Override
 	public PC_VecI max(Integer max) {
-		if(x>max)
+		if (x > max)
 			x = max;
-		if(y>max)
+		if (y > max)
 			y = max;
-		if(z>max)
+		if (z > max)
 			z = max;
 		return this;
 	}
@@ -266,24 +266,24 @@ public class PC_VecI implements PC_Vec<Integer, PC_VecI>{
 	public PC_VecI min(PC_Vec min) {
 		int minVal;
 		minVal = min.getX().intValue();
-		if(x<minVal)
+		if (x < minVal)
 			x = minVal;
 		minVal = min.getY().intValue();
-		if(y<minVal)
+		if (y < minVal)
 			y = minVal;
 		minVal = min.getZ().intValue();
-		if(z<minVal)
+		if (z < minVal)
 			z = minVal;
 		return this;
 	}
 
 	@Override
 	public PC_VecI min(Integer min) {
-		if(x<min)
+		if (x < min)
 			x = min;
-		if(y<min)
+		if (y < min)
 			y = min;
-		if(z<min)
+		if (z < min)
 			z = min;
 		return this;
 	}
@@ -295,19 +295,19 @@ public class PC_VecI implements PC_Vec<Integer, PC_VecI>{
 
 	@Override
 	public boolean equals(Object o) {
-		if(!(o instanceof PC_Vec)){
+		if (!(o instanceof PC_Vec)) {
 			return false;
 		}
-		PC_Vec vec = (PC_Vec)o;
-		if(x != vec.getX().intValue())
+		PC_Vec vec = (PC_Vec) o;
+		if (x != vec.getX().intValue())
 			return false;
-		if(y != vec.getY().intValue())
+		if (y != vec.getY().intValue())
 			return false;
-		if(z != vec.getZ().intValue())
+		if (z != vec.getZ().intValue())
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public PC_VecI readFromNBT(NBTTagCompound nbttag) {
 		x = nbttag.getInteger("x");
@@ -326,7 +326,7 @@ public class PC_VecI implements PC_Vec<Integer, PC_VecI>{
 
 	@Override
 	public String toString() {
-		return "Vec["+x+", "+y+", "+z+"]";
+		return "Vec[" + x + ", " + y + ", " + z + "]";
 	}
-	
+
 }

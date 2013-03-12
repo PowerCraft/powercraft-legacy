@@ -9,10 +9,14 @@ import powercraft.api.PC_Utils.Coding;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * @param <T1> 1st object class
- * @param <T2> 2nd object class
- * @param <T3> 3rd object class
- * @param <T4> 4th object class
+ * @param <T1>
+ *            1st object class
+ * @param <T2>
+ *            2nd object class
+ * @param <T3>
+ *            3rd object class
+ * @param <T4>
+ *            4th object class
  */
 public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
 	/**
@@ -38,10 +42,14 @@ public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
 	/**
 	 * Make structure of 4 objects
 	 * 
-	 * @param objA 1st object
-	 * @param objB 2nd object
-	 * @param objC 3rd object
-	 * @param objD 4th object
+	 * @param objA
+	 *            1st object
+	 * @param objB
+	 *            2nd object
+	 * @param objC
+	 *            3rd object
+	 * @param objD
+	 *            4th object
 	 */
 	public PC_Struct4(T1 objA, T2 objB, T3 objC, T4 objD) {
 		a = objA;
@@ -109,7 +117,8 @@ public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
 	/**
 	 * Set 1st object
 	 * 
-	 * @param obj 1st object
+	 * @param obj
+	 *            1st object
 	 */
 	public void setA(T1 obj) {
 		a = obj;
@@ -118,7 +127,8 @@ public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
 	/**
 	 * Set 2nd object
 	 * 
-	 * @param obj 2nd object
+	 * @param obj
+	 *            2nd object
 	 */
 	public void setB(T2 obj) {
 		b = obj;
@@ -127,7 +137,8 @@ public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
 	/**
 	 * Set 3rd object
 	 * 
-	 * @param obj 3rd object
+	 * @param obj
+	 *            3rd object
 	 */
 	public void setC(T3 obj) {
 		c = obj;
@@ -136,7 +147,8 @@ public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
 	/**
 	 * Set 4th object
 	 * 
-	 * @param obj 4th object
+	 * @param obj
+	 *            4th object
 	 */
 	public void setD(T4 obj) {
 		d = obj;
@@ -145,7 +157,8 @@ public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
 	/**
 	 * Set 1st object
 	 * 
-	 * @param obj 1st object
+	 * @param obj
+	 *            1st object
 	 */
 	public void set1(T1 obj) {
 		a = obj;
@@ -154,7 +167,8 @@ public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
 	/**
 	 * Set 2nd object
 	 * 
-	 * @param obj 2nd object
+	 * @param obj
+	 *            2nd object
 	 */
 	public void set2(T2 obj) {
 		b = obj;
@@ -163,7 +177,8 @@ public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
 	/**
 	 * Set 3rd object
 	 * 
-	 * @param obj 3rd object
+	 * @param obj
+	 *            3rd object
 	 */
 	public void set3(T3 obj) {
 		c = obj;
@@ -172,12 +187,12 @@ public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
 	/**
 	 * Set 4th object
 	 * 
-	 * @param obj 4th object
+	 * @param obj
+	 *            4th object
 	 */
 	public void set4(T4 obj) {
 		d = obj;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -191,7 +206,8 @@ public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
 
 		PC_Struct4<?, ?, ?, ?> t = (PC_Struct4<?, ?, ?, ?>) obj;
 
-		return Coding.areObjectsEqual(a, t.a) && Coding.areObjectsEqual(b, t.b) && Coding.areObjectsEqual(c, t.c)
+		return Coding.areObjectsEqual(a, t.a) && Coding.areObjectsEqual(b, t.b)
+				&& Coding.areObjectsEqual(c, t.c)
 				&& Coding.areObjectsEqual(d, t.d);
 
 	}

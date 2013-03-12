@@ -4,12 +4,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import powercraft.launcher.loader.PC_Module;
-import powercraft.launcher.loader.PC_Module.PC_InitPacketHandlers;
-import powercraft.launcher.loader.PC_Module.PC_InitProperties;
-import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
-import powercraft.launcher.loader.PC_Module.PC_RegisterGuis;
-import powercraft.launcher.PC_Property;
 import powercraft.api.PC_GlobalVariables;
 import powercraft.api.PC_IPacketHandler;
 import powercraft.api.PC_Struct2;
@@ -20,6 +14,12 @@ import powercraft.api.item.PC_ItemStack;
 import powercraft.api.recipes.PC_IRecipe;
 import powercraft.api.recipes.PC_ShapedRecipes;
 import powercraft.api.recipes.PC_ShapelessRecipes;
+import powercraft.launcher.PC_Property;
+import powercraft.launcher.loader.PC_Module;
+import powercraft.launcher.loader.PC_Module.PC_InitPacketHandlers;
+import powercraft.launcher.loader.PC_Module.PC_InitProperties;
+import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module.PC_RegisterGuis;
 
 @PC_Module(name="Core", version="1.1.0")
 public class PCco_App {
@@ -77,7 +77,7 @@ public class PCco_App {
 		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Item.stick, 2), Block.ladder));
 		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Block.planks, 6), Item.sign));
 		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Item.ingotIron, 6), Item.doorSteel));
-		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Block.cobblestone, 8), Block.stoneOvenIdle));
+		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Block.cobblestone, 8), Block.furnaceIdle));
 		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Item.ingotIron, 5), Item.minecartEmpty));
 		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Item.ingotIron, 3), Item.bucketEmpty));
 		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Block.planks, 5), Item.boat));

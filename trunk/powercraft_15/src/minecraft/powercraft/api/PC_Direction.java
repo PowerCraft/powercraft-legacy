@@ -7,30 +7,31 @@ import net.minecraft.nbt.NBTTagCompound;
 public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 
 	public static final long serialVersionUID = 1522073818686692234L;
-	
-	public static final PC_Direction BACK = new PC_Direction(0), LEFT = new PC_Direction(1), 
-			RIGHT = new PC_Direction(2), FRONT = new PC_Direction(3), BOTTOM = new PC_Direction(4), 
+
+	public static final PC_Direction BACK = new PC_Direction(0),
+			LEFT = new PC_Direction(1), RIGHT = new PC_Direction(2),
+			FRONT = new PC_Direction(3), BOTTOM = new PC_Direction(4),
 			TOP = new PC_Direction(5);
-	
+
 	private int mcDir;
 	private boolean lock;
-	
-	public PC_Direction(){
+
+	public PC_Direction() {
 		lock = false;
 		mcDir = 0;
 	}
-	
-	public PC_Direction(int dir){
+
+	public PC_Direction(int dir) {
 		lock = true;
 		mcDir = dir;
 	}
-	
-	public int getMCDir(){
+
+	public int getMCDir() {
 		return mcDir;
 	}
-	
-	public PC_VecI getDir(){
-		switch(mcDir){
+
+	public PC_VecI getDir() {
+		switch (mcDir) {
 		case 0:
 			return new PC_VecI(0, 0, -1);
 		case 1:
@@ -46,9 +47,9 @@ public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 		}
 		return null;
 	}
-	
-	public PC_Direction rotateRight(){
-		switch(mcDir){
+
+	public PC_Direction rotateRight() {
+		switch (mcDir) {
 		case 0:
 			return LEFT;
 		case 1:
@@ -64,9 +65,9 @@ public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 		}
 		return null;
 	}
-	
-	public PC_Direction rotateLeft(){
-		switch(mcDir){
+
+	public PC_Direction rotateLeft() {
+		switch (mcDir) {
 		case 0:
 			return RIGHT;
 		case 1:
@@ -82,9 +83,9 @@ public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 		}
 		return null;
 	}
-	
-	public PC_Direction mirror(){
-		switch(mcDir){
+
+	public PC_Direction mirror() {
+		switch (mcDir) {
 		case 0:
 			return FRONT;
 		case 1:
@@ -100,9 +101,9 @@ public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 		}
 		return null;
 	}
-	
-	public static PC_Direction getFormMCDir(int dir){
-		switch(dir){
+
+	public static PC_Direction getFormMCDir(int dir) {
+		switch (dir) {
 		case 0:
 			return BACK;
 		case 1:
@@ -121,7 +122,7 @@ public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 
 	@Override
 	public PC_Direction readFromNBT(NBTTagCompound nbttag) {
-		if(!lock){
+		if (!lock) {
 			mcDir = nbttag.getInteger("dir");
 			lock = true;
 		}
@@ -136,11 +137,11 @@ public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 
 	@Override
 	public String toString() {
-		return "Direction: "+getDirName();
+		return "Direction: " + getDirName();
 	}
-	
-	public String getDirName(){
-		switch(mcDir){
+
+	public String getDirName() {
+		switch (mcDir) {
 		case 0:
 			return "BACK";
 		case 1:
@@ -156,5 +157,5 @@ public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 		}
 		return "";
 	}
-	
+
 }

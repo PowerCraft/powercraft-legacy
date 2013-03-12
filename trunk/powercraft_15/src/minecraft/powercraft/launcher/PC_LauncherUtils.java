@@ -1,12 +1,10 @@
 package powercraft.launcher;
 
 import java.io.File;
-import java.net.URISyntaxException;
 
 import net.minecraft.crash.CallableMinecraftVersion;
 import net.minecraft.server.MinecraftServer;
 import powercraft.launcher.loader.PC_ModLoader;
-import powercraft.launcher.loader.PC_ModuleDiscovery;
 
 public class PC_LauncherUtils {
 

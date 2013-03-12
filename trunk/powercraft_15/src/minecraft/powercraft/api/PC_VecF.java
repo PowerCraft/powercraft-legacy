@@ -3,32 +3,32 @@ package powercraft.api;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class PC_VecF implements PC_Vec<Float, PC_VecF> {
-	
+
 	public static final long serialVersionUID = 1745800961264333414L;
-	
+
 	public float x;
 	public float y;
 	public float z;
-	
-	public PC_VecF(){
+
+	public PC_VecF() {
 		this(0.0f, 0.0f, 0.0f);
 	}
-	
-	public PC_VecF(float x){
+
+	public PC_VecF(float x) {
 		this(x, 0.0f, 0.0f);
 	}
-	
-	public PC_VecF(float x, float y){
+
+	public PC_VecF(float x, float y) {
 		this(x, y, 0.0f);
 	}
-	
-	public PC_VecF(float x, float y, float z){
+
+	public PC_VecF(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
-	
-	public PC_VecF(PC_Vec vec){
+
+	public PC_VecF(PC_Vec vec) {
 		x = vec.getX().floatValue();
 		y = vec.getY().floatValue();
 		z = vec.getZ().floatValue();
@@ -105,17 +105,17 @@ public class PC_VecF implements PC_Vec<Float, PC_VecF> {
 	public PC_VecF offset(PC_Vec vec) {
 		return copy().add(vec);
 	}
-	
+
 	@Override
 	public PC_VecF offset(Number n) {
 		return copy().add(n);
 	}
-	
+
 	@Override
 	public PC_VecF offset(Number x, Number y, Number z) {
 		return copy().add(x, y, z);
 	}
-	
+
 	@Override
 	public PC_VecF sub(PC_Vec vec) {
 		return sub(vec.getX(), vec.getY(), vec.getZ());
@@ -172,19 +172,19 @@ public class PC_VecF implements PC_Vec<Float, PC_VecF> {
 
 	@Override
 	public double length() {
-		return Math.sqrt(x*x + y*y + z*z);
+		return Math.sqrt(x * x + y * y + z * z);
 	}
 
 	@Override
-	public double distanceTo(PC_Vec vec){
+	public double distanceTo(PC_Vec vec) {
 		return copy().sub(vec).length();
 	}
-	
+
 	@Override
-	public double distanceTo(Number x, Number y, Number z){
+	public double distanceTo(Number x, Number y, Number z) {
 		return copy().sub(x, y, z).length();
 	}
-	
+
 	@Override
 	public PC_VecF normalize() {
 		double length = length();
@@ -199,26 +199,26 @@ public class PC_VecF implements PC_Vec<Float, PC_VecF> {
 		float minVal, maxVal;
 		minVal = min.getX().floatValue();
 		maxVal = max.getX().floatValue();
-		if(minVal>maxVal){
-			if(x<minVal)
+		if (minVal > maxVal) {
+			if (x < minVal)
 				x = minVal;
-			else if(x>maxVal)
+			else if (x > maxVal)
 				x = maxVal;
 		}
 		minVal = min.getY().floatValue();
 		maxVal = max.getY().floatValue();
-		if(minVal>maxVal){
-			if(y<minVal)
+		if (minVal > maxVal) {
+			if (y < minVal)
 				y = minVal;
-			else if(y>maxVal)
+			else if (y > maxVal)
 				y = maxVal;
 		}
 		minVal = min.getZ().floatValue();
 		maxVal = max.getZ().floatValue();
-		if(minVal>maxVal){
-			if(z<minVal)
+		if (minVal > maxVal) {
+			if (z < minVal)
 				z = minVal;
-			else if(z>maxVal)
+			else if (z > maxVal)
 				z = maxVal;
 		}
 		return this;
@@ -243,24 +243,24 @@ public class PC_VecF implements PC_Vec<Float, PC_VecF> {
 	public PC_VecF max(PC_Vec max) {
 		float maxVal;
 		maxVal = max.getX().floatValue();
-		if(x>maxVal)
+		if (x > maxVal)
 			x = maxVal;
 		maxVal = max.getY().floatValue();
-		if(y>maxVal)
+		if (y > maxVal)
 			y = maxVal;
 		maxVal = max.getZ().floatValue();
-		if(z>maxVal)
+		if (z > maxVal)
 			z = maxVal;
 		return this;
 	}
 
 	@Override
 	public PC_VecF max(Float max) {
-		if(x>max)
+		if (x > max)
 			x = max;
-		if(y>max)
+		if (y > max)
 			y = max;
-		if(z>max)
+		if (z > max)
 			z = max;
 		return this;
 	}
@@ -269,24 +269,24 @@ public class PC_VecF implements PC_Vec<Float, PC_VecF> {
 	public PC_VecF min(PC_Vec min) {
 		float minVal;
 		minVal = min.getX().floatValue();
-		if(x<minVal)
+		if (x < minVal)
 			x = minVal;
 		minVal = min.getY().floatValue();
-		if(y<minVal)
+		if (y < minVal)
 			y = minVal;
 		minVal = min.getZ().floatValue();
-		if(z<minVal)
+		if (z < minVal)
 			z = minVal;
 		return this;
 	}
 
 	@Override
 	public PC_VecF min(Float min) {
-		if(x<min)
+		if (x < min)
 			x = min;
-		if(y<min)
+		if (y < min)
 			y = min;
-		if(z<min)
+		if (z < min)
 			z = min;
 		return this;
 	}
@@ -295,18 +295,18 @@ public class PC_VecF implements PC_Vec<Float, PC_VecF> {
 	public PC_VecF copy() {
 		return new PC_VecF(this);
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		if(!(o instanceof PC_Vec)){
+		if (!(o instanceof PC_Vec)) {
 			return false;
 		}
-		PC_Vec vec = (PC_Vec)o;
-		if(x != vec.getX().floatValue())
+		PC_Vec vec = (PC_Vec) o;
+		if (x != vec.getX().floatValue())
 			return false;
-		if(y != vec.getY().floatValue())
+		if (y != vec.getY().floatValue())
 			return false;
-		if(z != vec.getZ().floatValue())
+		if (z != vec.getZ().floatValue())
 			return false;
 		return true;
 	}
@@ -326,5 +326,5 @@ public class PC_VecF implements PC_Vec<Float, PC_VecF> {
 		nbttag.setFloat("z", z);
 		return nbttag;
 	}
-	
+
 }

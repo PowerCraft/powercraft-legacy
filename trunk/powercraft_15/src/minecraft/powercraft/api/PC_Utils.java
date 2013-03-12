@@ -89,17 +89,19 @@ public class PC_Utils implements PC_IPacketHandler {
 
 	protected static final int SPAWNPARTICLEONBLOCKS = 1;
 
-	public static final int BLOCK_NOTIFY=1, BLOCK_UPDATE=2, BLOCK_ONLY_SERVERSIDE=4;
-	
-	//protected static HashMap<String, Object> objects = new HashMap<String, Object>();
+	public static final int BLOCK_NOTIFY = 1, BLOCK_UPDATE = 2,
+			BLOCK_ONLY_SERVERSIDE = 4;
+
+	// protected static HashMap<String, Object> objects = new HashMap<String,
+	// Object>();
 
 	private static Random rand = new Random();
-	
+
 	public static String NO_HARVEST = "NO_HARVEST",
 			HARVEST_STOP = "HARVEST_STOP", NO_BUILD = "NO_BUILD",
-			SMOKE = "SMOKE", NO_PICKUP = "NO_PICKUP",
-			BEAMTRACER_STOP = "BEAMTRACER_STOP", PASSIVE = "PASSIVE";
-	
+			NO_PICKUP = "NO_PICKUP", BEAMTRACER_STOP = "BEAMTRACER_STOP",
+			PASSIVE = "PASSIVE";
+
 	protected PC_Utils() {
 		PC_PacketHandler.registerPackethandler("PacketUtils", this);
 	}
@@ -168,10 +170,12 @@ public class PC_Utils implements PC_IPacketHandler {
 				Class c = b.getClass();
 
 				if (c.isAnnotationPresent(PC_Shining.class)) {
-					Block bon = (Block) PC_ReflectHelper.getFieldsWithAnnotation(c, c,
-							PC_Shining.ON.class).get(0);
-					Block boff = (Block) PC_ReflectHelper.getFieldsWithAnnotation(c, c,
-							PC_Shining.OFF.class).get(0);
+					Block bon = (Block) PC_ReflectHelper
+							.getFieldsWithAnnotation(c, c, PC_Shining.ON.class)
+							.get(0);
+					Block boff = (Block) PC_ReflectHelper
+							.getFieldsWithAnnotation(c, c, PC_Shining.OFF.class)
+							.get(0);
 
 					if ((b == bon && !on) || (b == boff && on)) {
 						if (on) {
@@ -182,7 +186,8 @@ public class PC_Utils implements PC_IPacketHandler {
 
 						PC_GlobalVariables.tileEntity = te;
 
-						world.setBlockAndMetadataWithNotify(x, y, z, b.blockID, meta, BLOCK_NOTIFY);
+						world.setBlockAndMetadataWithNotify(x, y, z, b.blockID,
+								meta, BLOCK_NOTIFY);
 
 						PC_GlobalVariables.tileEntity = null;
 
@@ -236,7 +241,7 @@ public class PC_Utils implements PC_IPacketHandler {
 		}
 
 		public static int reverseSide(int l) {
-			l=(l+2)%4;
+			l = (l + 2) % 4;
 
 			return l;
 		}
@@ -316,7 +321,8 @@ public class PC_Utils implements PC_IPacketHandler {
 					z + 0.5D, 16D) != null;
 
 			for (int q = 0; q < count; q++) {
-				EntityLiving entityliving = (EntityLiving) EntityList.createEntityByName(type, world);
+				EntityLiving entityliving = (EntityLiving) EntityList
+						.createEntityByName(type, world);
 
 				if (entityliving == null) {
 					return;
@@ -366,7 +372,8 @@ public class PC_Utils implements PC_IPacketHandler {
 
 		public static boolean setBID(World world, int x, int y, int z, int id,
 				int meta) {
-			return world.setBlockAndMetadataWithNotify(x, y, z, id, meta, BLOCK_NOTIFY);
+			return world.setBlockAndMetadataWithNotify(x, y, z, id, meta,
+					BLOCK_NOTIFY);
 		}
 
 		public static ItemStack extractAndRemoveChest(World world, PC_VecI pos) {
@@ -380,7 +387,8 @@ public class PC_Utils implements PC_IPacketHandler {
 				return null;
 			}
 
-			ItemStack stack = new ItemStack(PC_ItemRegistry.getPCItemByName("PCco_ItemBlockSaver"));
+			ItemStack stack = new ItemStack(
+					PC_ItemRegistry.getPCItemByName("PCco_ItemBlockSaver"));
 			NBTTagCompound blocktag = new NBTTagCompound();
 			PC_Utils.GameInfo.getTE(world, pos).writeToNBT(blocktag);
 			int dmg = PC_Utils.GameInfo.getBID(world, pos);
@@ -457,9 +465,9 @@ public class PC_Utils implements PC_IPacketHandler {
 			float receivers = powerReceivers.size();
 
 			for (PC_Struct3<PC_VecI, PC_IMSG, Float> receiver : powerReceivers) {
-				receiver.b.msg(PC_MSGRegistry.MSG_RECIVE_POWER, world, receiver.a.x,
-						receiver.a.y, receiver.a.z, power / receivers
-								* receiver.c);
+				receiver.b.msg(PC_MSGRegistry.MSG_RECIVE_POWER, world,
+						receiver.a.x, receiver.a.y, receiver.a.z, power
+								/ receivers * receiver.c);
 			}
 		}
 
@@ -526,16 +534,17 @@ public class PC_Utils implements PC_IPacketHandler {
 
 	public static class GameInfo {
 
-		public static String getMinecraftVersion(){
-    		return PC_LauncherUtils.getMinecraftVersion();
-    	}
-		
+		public static String getMinecraftVersion() {
+			return PC_LauncherUtils.getMinecraftVersion();
+		}
+
 		public static CreativeTabs getCreativeTab(CreativeTabs _default) {
 			return PC_APIModule.getInstance().creativeTab;
 		}
 
 		public static boolean isPlayerOPOrOwner(EntityPlayer player) {
-			if (mcs().getConfigurationManager().getOps().contains(player.username.trim().toLowerCase()))
+			if (mcs().getConfigurationManager().getOps()
+					.contains(player.username.trim().toLowerCase()))
 				return true;
 			return GameInfo.mcs().getServerOwner() == player.getEntityName();
 		}
@@ -567,7 +576,7 @@ public class PC_Utils implements PC_IPacketHandler {
 		public static boolean isCreative(EntityPlayer player) {
 			return PC_Utils.GameInfo.getGameTypeFor(player).isCreative();
 		}
-		
+
 		public static <t extends TileEntity> t getTE(IBlockAccess world, int x,
 				int y, int z) {
 			if (world != null) {
@@ -631,7 +640,7 @@ public class PC_Utils implements PC_IPacketHandler {
 			return PC_Utils.GameInfo.getMD(world, vec.x, vec.y, vec.z);
 		}
 
-		public static boolean isChestEmpty(World world, int x, int y, int z,
+		/*public static boolean isChestEmpty(World world, int x, int y, int z,
 				ItemStack itemStack) {
 			IInventory invAt = Inventory.getCompositeInventoryAt(world,
 					new PC_VecI(x, y, z));
@@ -722,7 +731,7 @@ public class PC_Utils implements PC_IPacketHandler {
 			}
 
 			return false;
-		}
+		}*/
 
 		public static String getMobID(TileEntityMobSpawner te) {
 			return te.func_98049_a().func_98276_e();
@@ -767,14 +776,16 @@ public class PC_Utils implements PC_IPacketHandler {
 		}
 
 		public static boolean isPoweredDirectly(World world, int x, int y, int z) {
-			return world.func_94577_B(x, y, z)>0;
+			return world.func_94577_B(x, y, z) > 0;
 		}
-		
-		public static int getPoweredDirectlyValue(World world, int x, int y, int z) {
+
+		public static int getPoweredDirectlyValue(World world, int x, int y,
+				int z) {
 			return world.func_94577_B(x, y, z);
 		}
 
-		public static boolean isPoweredIndirectly(World world, int x, int y,int z) {
+		public static boolean isPoweredIndirectly(World world, int x, int y,
+				int z) {
 			return world.isBlockIndirectlyGettingPowered(x, y, z);
 		}
 
@@ -789,7 +800,8 @@ public class PC_Utils implements PC_IPacketHandler {
 		}
 
 		public static boolean usingForge() {
-			return PC_LauncherUtils.usingModLoader(PC_ModLoader.FORGE_MODLOADER);
+			return PC_LauncherUtils
+					.usingModLoader(PC_ModLoader.FORGE_MODLOADER);
 		}
 
 		public static float giveConductorValueFor(Block b) {
@@ -831,14 +843,14 @@ public class PC_Utils implements PC_IPacketHandler {
 
 			if (inp == 4) {
 				boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(
-						x, y - 1, z, 0)>0 || (world.getBlockId(x, y - 1, z) == Block.redstoneWire.blockID && world
+						x, y - 1, z, 0) > 0 || (world.getBlockId(x, y - 1, z) == Block.redstoneWire.blockID && world
 						.getBlockMetadata(x, y - 1, z) > 0));
 				return isProviding;
 			}
 
 			if (inp == 5) {
 				boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(
-						x, y + 1, z, 1)>0 || (world.getBlockId(x, y + 1, z) == Block.redstoneWire.blockID && world
+						x, y + 1, z, 1) > 0 || (world.getBlockId(x, y + 1, z) == Block.redstoneWire.blockID && world
 						.getBlockMetadata(x, y + 1, z) > 0));
 				return isProviding;
 			}
@@ -870,25 +882,25 @@ public class PC_Utils implements PC_IPacketHandler {
 			}
 
 			if (rotation == N0) {
-				return (world.isBlockIndirectlyProvidingPowerTo(x, y, z + 1, 3)>0 || world
+				return (world.isBlockIndirectlyProvidingPowerTo(x, y, z + 1, 3) > 0 || world
 						.getBlockId(x, y, z + 1) == Block.redstoneWire.blockID
 						&& world.getBlockMetadata(x, y, z + 1) > 0);
 			}
 
 			if (rotation == N1) {
-				return (world.isBlockIndirectlyProvidingPowerTo(x - 1, y, z, 4)>0 || world
+				return (world.isBlockIndirectlyProvidingPowerTo(x - 1, y, z, 4) > 0 || world
 						.getBlockId(x - 1, y, z) == Block.redstoneWire.blockID
 						&& world.getBlockMetadata(x - 1, y, z) > 0);
 			}
 
 			if (rotation == N2) {
-				return (world.isBlockIndirectlyProvidingPowerTo(x, y, z - 1, 2)>0 || world
+				return (world.isBlockIndirectlyProvidingPowerTo(x, y, z - 1, 2) > 0 || world
 						.getBlockId(x, y, z - 1) == Block.redstoneWire.blockID
 						&& world.getBlockMetadata(x, y, z - 1) > 0);
 			}
 
 			if (rotation == N3) {
-				return (world.isBlockIndirectlyProvidingPowerTo(x + 1, y, z, 5)>0 || world
+				return (world.isBlockIndirectlyProvidingPowerTo(x + 1, y, z, 5) > 0 || world
 						.getBlockId(x + 1, y, z) == Block.redstoneWire.blockID
 						&& world.getBlockMetadata(x + 1, y, z) > 0);
 			}
@@ -912,7 +924,8 @@ public class PC_Utils implements PC_IPacketHandler {
 			}
 
 			if (b instanceof PC_IMSG) {
-				Object o = ((PC_IMSG) b).msg(PC_MSGRegistry.MSG_CAN_RECIVE_POWER, b);
+				Object o = ((PC_IMSG) b).msg(
+						PC_MSGRegistry.MSG_CAN_RECIVE_POWER, b);
 				if (o instanceof Boolean && ((Boolean) o) == true) {
 					if (oldStruct == null) {
 						receivers.add(new PC_Struct3<PC_VecI, PC_IMSG, Float>(
@@ -980,8 +993,8 @@ public class PC_Utils implements PC_IPacketHandler {
 
 	public static class SaveHandler {
 
-		public static <T extends PC_INBT<T>>T loadFromNBT(NBTTagCompound nbttagcompound,
-				String string, T nbt) {
+		public static <T extends PC_INBT<T>> T loadFromNBT(
+				NBTTagCompound nbttagcompound, String string, T nbt) {
 			NBTTagCompound nbttag = nbttagcompound.getCompoundTag(string);
 			return nbt.readFromNBT(nbttag);
 		}
@@ -1056,9 +1069,11 @@ public class PC_Utils implements PC_IPacketHandler {
 					Class c = Class.forName(nbtTag2.getString("type"));
 					if (c.isArray()) {
 						int size = nbtTag2.getInteger("count");
-						Object a = Array.newInstance(c.getComponentType(), size);
+						Object a = Array
+								.newInstance(c.getComponentType(), size);
 						for (int i = 0; i < size; i++) {
-							Array.set(a, i, loadFromNBT(nbtTag2, "value[" + i + "]"));
+							Array.set(a, i,
+									loadFromNBT(nbtTag2, "value[" + i + "]"));
 						}
 						return a;
 					} else if (c == ItemStack.class) {
@@ -1070,13 +1085,13 @@ public class PC_Utils implements PC_IPacketHandler {
 							Object o = c.newInstance();
 							if (o instanceof PC_INBT) {
 								loadFromNBT(nbtTag2, "value", (PC_INBT) o);
-							}else if (o instanceof List) {
+							} else if (o instanceof List) {
 								int size = nbtTag2.getInteger("count");
 								for (int i = 0; i < size; i++) {
 									((List) o).add(loadFromNBT(nbtTag2,
 											"value[" + i + "]"));
 								}
-							} 
+							}
 							return o;
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -1180,7 +1195,7 @@ public class PC_Utils implements PC_IPacketHandler {
 
 	}
 
-	public static class Inventory {
+	/*public static class Inventory {
 
 		public static IInventory getCompositeInventoryAt(IBlockAccess world,
 				PC_VecI pos) {
@@ -1806,7 +1821,7 @@ public class PC_Utils implements PC_IPacketHandler {
 			return 0;
 		}
 
-	}
+	}*/
 
 	public static boolean create() {
 		if (instance == null) {

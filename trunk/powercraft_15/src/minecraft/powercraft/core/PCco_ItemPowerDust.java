@@ -12,7 +12,6 @@ public class PCco_ItemPowerDust extends PC_Item {
 
 	public PCco_ItemPowerDust(int id) {
 		super(id, false);
-	    setIconCoord(13, 9);
 	    setCreativeTab(CreativeTabs.tabMaterials);
 	}
 
@@ -33,7 +32,7 @@ public class PCco_ItemPowerDust extends PC_Item {
 		switch(msg){
 		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getItemName(), "Power Dust"));
+			names.add(new LangEntry(getUnlocalizedName(), "Power Dust"));
             return names;
 		case PC_MSGRegistry.MSG_BURN_TIME:
 			 return 3600;

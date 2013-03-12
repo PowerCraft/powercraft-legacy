@@ -17,7 +17,6 @@ public class PC_WorldOreGenerator implements IWorldGenerator {
 	@Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
     {
-
         for(PC_Block block:PC_BlockRegistry.getPCBlocks().values()){
         	if(block instanceof PC_BlockOre){
         		PC_BlockOre blockOre = (PC_BlockOre)block;

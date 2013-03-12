@@ -20,7 +20,6 @@ public class PCco_ItemBlockSaver extends PC_Item {
 
 	public PCco_ItemBlockSaver(int id) {
 		super(id);
-		setIconIndex(3);
 	}
 	
 	@Override
@@ -159,7 +158,7 @@ public class PCco_ItemBlockSaver extends PC_Item {
 		switch(msg){
 		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getItemName(), "Block Saver"));
+			names.add(new LangEntry(getUnlocalizedName(), "Block Saver"));
             return names;
 		}
 		return null;

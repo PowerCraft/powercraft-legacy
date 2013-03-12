@@ -10,7 +10,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import powercraft.api.PC_PacketHandler;
-import powercraft.api.PC_Utils.Inventory;
 import powercraft.api.PC_VecI;
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresInventory;
@@ -24,6 +23,7 @@ import powercraft.api.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.api.gres.PC_GresWindow;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
+import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.registry.PC_ItemRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
 
@@ -267,7 +267,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 
 			if (stacks.size() == 0) return;
 
-			Inventory.groupStacks(stacks);
+			PC_InventoryUtils.groupStacks(stacks);
 
 			List<ItemStack> sorted = new ArrayList<ItemStack>();
 

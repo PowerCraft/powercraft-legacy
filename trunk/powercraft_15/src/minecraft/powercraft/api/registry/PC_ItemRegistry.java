@@ -9,8 +9,11 @@ import net.minecraft.item.Item;
 import powercraft.launcher.PC_Property;
 import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.api.PC_GlobalVariables;
+import powercraft.api.annotation.PC_Config;
 import powercraft.api.item.PC_Item;
 import powercraft.api.item.PC_ItemArmor;
+import powercraft.api.reflect.PC_FieldWithAnnotation;
+import powercraft.api.reflect.PC_IFieldAnnotationIterator;
 import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 
@@ -30,7 +33,7 @@ public final class PC_ItemRegistry {
 	}
 	
 	public static PC_Item registerItem(PC_ModuleObject module, Class<? extends PC_Item> itemClass){
-		PC_Property config = module.getConfig().getProperty(itemClass.getSimpleName(), null, null);
+		final PC_Property config = module.getConfig().getProperty(itemClass.getSimpleName(), null, null);
 		try {
 			if(!config.getBoolean("enabled", true)){
 				return null;
@@ -49,6 +52,37 @@ public final class PC_ItemRegistry {
 			items.put(itemClass.getSimpleName(), item);
 			item.setUnlocalizedName(itemClass.getSimpleName());
 			item.setModule(module);
+
+			PC_ReflectHelper.getAllFieldsWithAnnotation(itemClass, item, PC_Config.class, new PC_IFieldAnnotationIterator<PC_Config>() {
+
+				@Override
+				public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_Config> fieldWithAnnotation) {
+					Class<?> c = fieldWithAnnotation.getFieldClass();
+					String name = fieldWithAnnotation.getAnnotation().name();
+					if(name.equals("")){
+						name = fieldWithAnnotation.getFieldName();
+					}
+					String[] comment = fieldWithAnnotation.getAnnotation().comment();
+					if(c == String.class){
+						String data = (String)fieldWithAnnotation.getValue();
+						data = config.getString(name, data, comment);
+						fieldWithAnnotation.setValue(data);
+					}else if(c == Integer.class||c==int.class){
+						int data = (Integer)fieldWithAnnotation.getValue();
+						data = config.getInt(name, data, comment);
+						fieldWithAnnotation.setValue(data);
+					}else if(c == Float.class||c==float.class){
+						float data = (Float)fieldWithAnnotation.getValue();
+						data = config.getFloat(name, data, comment);
+						fieldWithAnnotation.setValue(data);
+					}else if(c == Boolean.class||c==boolean.class){
+						boolean data = (Boolean)fieldWithAnnotation.getValue();
+						data = config.getBoolean(name, data, comment);
+						fieldWithAnnotation.setValue(data);
+					}
+					return false;
+				}
+			});
 			
 			item.msg(PC_MSGRegistry.MSG_LOAD_FROM_CONFIG, config);
 
@@ -66,7 +100,7 @@ public final class PC_ItemRegistry {
 	}
 	
 	public static PC_ItemArmor registerItemArmor(PC_ModuleObject module, Class<? extends PC_ItemArmor> itemArmorClass){
-		PC_Property config = module.getConfig().getProperty(itemArmorClass.getSimpleName(), null, null);
+		final PC_Property config = module.getConfig().getProperty(itemArmorClass.getSimpleName(), null, null);
 		try {
 			if(!config.getBoolean("enabled", true)){
 				return null;
@@ -88,6 +122,37 @@ public final class PC_ItemRegistry {
 			
 			itemArmor.msg(PC_MSGRegistry.MSG_LOAD_FROM_CONFIG, config);
 
+			PC_ReflectHelper.getAllFieldsWithAnnotation(itemArmorClass, itemArmor, PC_Config.class, new PC_IFieldAnnotationIterator<PC_Config>() {
+
+				@Override
+				public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_Config> fieldWithAnnotation) {
+					Class<?> c = fieldWithAnnotation.getFieldClass();
+					String name = fieldWithAnnotation.getAnnotation().name();
+					if(name.equals("")){
+						name = fieldWithAnnotation.getFieldName();
+					}
+					String[] comment = fieldWithAnnotation.getAnnotation().comment();
+					if(c == String.class){
+						String data = (String)fieldWithAnnotation.getValue();
+						data = config.getString(name, data, comment);
+						fieldWithAnnotation.setValue(data);
+					}else if(c == Integer.class||c==int.class){
+						int data = (Integer)fieldWithAnnotation.getValue();
+						data = config.getInt(name, data, comment);
+						fieldWithAnnotation.setValue(data);
+					}else if(c == Float.class||c==float.class){
+						float data = (Float)fieldWithAnnotation.getValue();
+						data = config.getFloat(name, data, comment);
+						fieldWithAnnotation.setValue(data);
+					}else if(c == Boolean.class||c==boolean.class){
+						boolean data = (Boolean)fieldWithAnnotation.getValue();
+						data = config.getBoolean(name, data, comment);
+						fieldWithAnnotation.setValue(data);
+					}
+					return false;
+				}
+			});
+			
 			List<LangEntry> l = (List<LangEntry>) itemArmor
 					.msg(PC_MSGRegistry.MSG_DEFAULT_NAME,
 							new ArrayList<LangEntry>());

@@ -19,7 +19,6 @@ public class PCco_ItemCraftingTool extends PC_Item
         setMaxDamage(0);
         setMaxStackSize(1);
         setCreativeTab(CreativeTabs.tabTools);
-        setIconIndex(0);
     }
 
     @Override
@@ -38,7 +37,7 @@ public class PCco_ItemCraftingTool extends PC_Item
 		switch(msg){
 		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getItemName(), "Crafting Tool"));
+			names.add(new LangEntry(getUnlocalizedName(), "Crafting Tool"));
             return names;
 		}
 		return null;
