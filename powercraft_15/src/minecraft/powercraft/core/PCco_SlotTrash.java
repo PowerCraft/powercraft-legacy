@@ -2,6 +2,7 @@ package powercraft.core;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import powercraft.api.inventory.PC_Slot;
 
 
@@ -55,9 +56,9 @@ public class PCco_SlotTrash extends PC_Slot {
     }
 
     @Override
-    public int getBackgroundIconIndex()
+    public Icon getBackgroundIconIndex()
     {
-        return -1;
+        return null;
     }
 
     @Override

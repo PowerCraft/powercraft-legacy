@@ -19,9 +19,10 @@ public class PC_CommonProxy {
 
 	public void init() {
 		new PC_Renderer(true);
-        new PC_Renderer(false);
-        NetworkRegistry.instance().registerConnectionHandler(new PC_ConnectionHandler());
-        TickRegistry.registerTickHandler(new PC_TickHandler(), Side.SERVER);
+		new PC_Renderer(false);
+		NetworkRegistry.instance().registerConnectionHandler(
+				new PC_ConnectionHandler());
+		TickRegistry.registerTickHandler(new PC_TickHandler(), Side.SERVER);
 	}
-	
+
 }

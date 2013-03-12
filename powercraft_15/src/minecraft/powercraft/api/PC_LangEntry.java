@@ -6,10 +6,10 @@ import powercraft.api.registry.PC_LangRegistry.LangEntry;
 @Deprecated
 public class PC_LangEntry extends LangEntry {
 
-	//AlphaI
+	// AlphaI
 	@Deprecated
 	public PC_LangEntry(String key, String trans, String... desc) {
 		super(key, trans, desc);
 	}
-	
+
 }

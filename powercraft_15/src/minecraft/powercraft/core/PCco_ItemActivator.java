@@ -24,7 +24,6 @@ public class PCco_ItemActivator extends PC_Item{
 		super(id);
         setMaxDamage(100);
         setMaxStackSize(1);
-        setIconIndex(2);
         setCreativeTab(CreativeTabs.tabTools);
     }
 
@@ -84,7 +83,7 @@ public class PCco_ItemActivator extends PC_Item{
 		switch(msg){
 		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getItemName(), "Activation Crystal"));
+			names.add(new LangEntry(getUnlocalizedName(), "Activation Crystal"));
             return names;
 		}
 		return null;

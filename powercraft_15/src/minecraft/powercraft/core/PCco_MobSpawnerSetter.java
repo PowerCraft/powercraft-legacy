@@ -2,6 +2,7 @@ package powercraft.core;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
 import powercraft.api.PC_IMSG;
@@ -18,8 +19,9 @@ public class PCco_MobSpawnerSetter implements PC_IPacketHandler, PC_IMSG
     public boolean handleIncomingPacket(EntityPlayer player, Object[] o)
     {
         TileEntityMobSpawner tems = (TileEntityMobSpawner)player.worldObj.getBlockTileEntity((Integer)o[0], (Integer)o[1], (Integer)o[2]);
-        tems.setMobID((String)o[3]);
-        PC_ReflectHelper.setValue(TileEntityMobSpawner.class, tems, 9, null, Entity.class);
+        MobSpawnerBaseLogic msbl = tems.func_98049_a();
+		msbl.func_98272_a((String)o[3]);
+        PC_ReflectHelper.setValue(MobSpawnerBaseLogic.class, msbl, 9, null, Entity.class);
         return true;
     }
 

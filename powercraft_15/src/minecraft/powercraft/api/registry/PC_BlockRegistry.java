@@ -15,6 +15,7 @@ import powercraft.api.PC_GlobalVariables;
 import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
+import powercraft.api.annotation.PC_Config;
 import powercraft.api.annotation.PC_Shining;
 import powercraft.api.block.PC_Block;
 import powercraft.api.block.PC_BlockOre;
@@ -91,6 +92,39 @@ public final class PC_BlockRegistry {
 			block.setModule(module);
 			block.setTextureFile(PC_TextureRegistry.getTextureDirectory(module)+"tiles.png");
 
+			
+			
+			PC_ReflectHelper.getAllFieldsWithAnnotation(blockClass, blocks, PC_Config.class, new PC_IFieldAnnotationIterator<PC_Config>() {
+
+				@Override
+				public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_Config> fieldWithAnnotation) {
+					Class<?> c = fieldWithAnnotation.getFieldClass();
+					String name = fieldWithAnnotation.getAnnotation().name();
+					if(name.equals("")){
+						name = fieldWithAnnotation.getFieldName();
+					}
+					String[] comment = fieldWithAnnotation.getAnnotation().comment();
+					if(c == String.class){
+						String data = (String)fieldWithAnnotation.getValue();
+						data = config.getString(name, data, comment);
+						fieldWithAnnotation.setValue(data);
+					}else if(c == Integer.class||c==int.class){
+						int data = (Integer)fieldWithAnnotation.getValue();
+						data = config.getInt(name, data, comment);
+						fieldWithAnnotation.setValue(data);
+					}else if(c == Float.class||c==float.class){
+						float data = (Float)fieldWithAnnotation.getValue();
+						data = config.getFloat(name, data, comment);
+						fieldWithAnnotation.setValue(data);
+					}else if(c == Boolean.class||c==boolean.class){
+						boolean data = (Boolean)fieldWithAnnotation.getValue();
+						data = config.getBoolean(name, data, comment);
+						fieldWithAnnotation.setValue(data);
+					}
+					return false;
+				}
+			});
+			
 			if(block instanceof PC_BlockOre){
 				PC_BlockOre blockOre = (PC_BlockOre)block;
 				blockOre.setGenOresInChunk(config.getInt("spawn.in_chunk", blockOre.getGenOresInChunk(), "Number of deposits in each 16x16 chunk."));

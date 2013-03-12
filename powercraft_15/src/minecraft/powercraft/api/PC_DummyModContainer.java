@@ -21,16 +21,16 @@ public class PC_DummyModContainer implements ModContainer {
 
 	private PC_ModuleObject module;
 	private ModMetadata modMeta = new ModMetadata();
-	
-	public PC_DummyModContainer(PC_ModuleObject module){
+
+	public PC_DummyModContainer(PC_ModuleObject module) {
 		this.module = module;
 		modMeta.version = module.getStandartVersion().getVersion().toString();
-		modMeta.modId = "PowerCraft-"+module.getModuleName();
+		modMeta.modId = "PowerCraft-" + module.getModuleName();
 		modMeta.name = module.getModuleName();
 		ModContainer md = mod_PowerCraft.getInstance().getModContainer();
 		modMeta.parent = md.getModId();
 	}
-	
+
 	@Override
 	public String getModId() {
 		return modMeta.modId;

@@ -21,114 +21,119 @@ import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class PC_ClientUtils extends PC_Utils {
-	
+
 	private HashMap<String, Class<? extends EntityFX>> entityFX = new HashMap<String, Class<? extends EntityFX>>();
 	private PC_KeyHandler keyHandler;
-	
-	private PC_ClientUtils(){
+
+	private PC_ClientUtils() {
 		KeyBindingRegistry.registerKeyBinding(keyHandler = new PC_KeyHandler());
 	}
-	
-	public static boolean create()
-    {
-        if (instance == null)
-        {
-        	instance = new PC_ClientUtils();
-        	PC_RegistryClient.create();
-            return true;
-        }
 
-        return false;
-    }
-	
-	public static Minecraft mc(){
+	public static boolean create() {
+		if (instance == null) {
+			instance = new PC_ClientUtils();
+			PC_RegistryClient.create();
+			return true;
+		}
+
+		return false;
+	}
+
+	public static Minecraft mc() {
 		return Minecraft.getMinecraft();
 	}
-	
+
 	@Override
 	protected World iGetWorldForDimension(int dimension) {
 		IntegratedServer server = mc().getIntegratedServer();
-		if(server!=null){
+		if (server != null) {
 			return server.worldServerForDimension(dimension);
 		}
 		return mc().theWorld;
 	}
-	
+
 	@Override
-	protected boolean client(){return true;}
-	
-	@Override
-	protected EnumGameType iGetGameTypeFor(EntityPlayer player){
-		return PC_ReflectHelper.getValue(PlayerControllerMP.class, mc().playerController, 11, EnumGameType.class);
+	protected boolean client() {
+		return true;
 	}
-	
+
 	@Override
-	protected void iChatMsg(String msg, boolean clear){
+	protected EnumGameType iGetGameTypeFor(EntityPlayer player) {
+		return PC_ReflectHelper.getValue(PlayerControllerMP.class,
+				mc().playerController, 11, EnumGameType.class);
+	}
+
+	@Override
+	protected void iChatMsg(String msg, boolean clear) {
 		if (clear) {
-			 mc().ingameGUI.getChatGUI().clearChatMessages();
+			mc().ingameGUI.getChatGUI().clearChatMessages();
 		}
 		mc().thePlayer.addChatMessage(msg);
 	}
-	
+
 	@Override
-	protected File iGetMCDirectory(){
+	protected File iGetMCDirectory() {
 		return Minecraft.getMinecraftDir();
 	}
-	
+
 	@Override
 	protected int iAddArmor(String name) {
 		return RenderingRegistry.addNewArmourRendererPrefix(name);
 	}
-	
+
 	@Override
 	protected boolean iIsEntityFX(Entity entity) {
 		return entity instanceof EntityFX;
 	}
-	
-	public static void bindTileEntitySpecialRenderer(Class <? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer specialRenderer){
-		ClientRegistry.bindTileEntitySpecialRenderer(tileEntityClass, specialRenderer);
+
+	public static void bindTileEntitySpecialRenderer(
+			Class<? extends TileEntity> tileEntityClass,
+			TileEntitySpecialRenderer specialRenderer) {
+		ClientRegistry.bindTileEntitySpecialRenderer(tileEntityClass,
+				specialRenderer);
 	}
-	
-	public static void registerEnitiyFX(Class<? extends EntityFX> fx){
+
+	public static void registerEnitiyFX(Class<? extends EntityFX> fx) {
 		registerEnitiyFX(fx.getSimpleName(), fx);
 	}
-	
-	public static void registerEnitiyFX(String name, Class<? extends EntityFX> fx){
-		((PC_ClientUtils)instance).entityFX.put(name, fx);
+
+	public static void registerEnitiyFX(String name,
+			Class<? extends EntityFX> fx) {
+		((PC_ClientUtils) instance).entityFX.put(name, fx);
 	}
-	
+
 	@Override
-	protected void iSpawnParticle(String name, Object[] o){
-		
-		if(!entityFX.containsKey(name)){
-			System.err.println("no particle for \""+name+"\"");
+	protected void iSpawnParticle(String name, Object[] o) {
+
+		if (!entityFX.containsKey(name)) {
+			System.err.println("no particle for \"" + name + "\"");
 			return;
 		}
-		
+
 		Class c = entityFX.get(name);
-		
+
 		Class cp[] = new Class[o.length];
-		for(int i=0; i<o.length; i++)
+		for (int i = 0; i < o.length; i++)
 			cp[i] = o[i].getClass();
-		
+
 		Constructor cons = Coding.findBestConstructor(c, cp);
-		if(cons==null){
-			System.err.println("no best constructor for \""+name+"\"");
+		if (cons == null) {
+			System.err.println("no best constructor for \"" + name + "\"");
 			return;
 		}
-		
-		EntityFX fx=null;
-		
+
+		EntityFX fx = null;
+
 		try {
-			fx = (EntityFX)cons.newInstance(o);
+			fx = (EntityFX) cons.newInstance(o);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		if(fx!=null){
+
+		if (fx != null) {
 			mc().effectRenderer.addEffect(fx);
 		}
-		
+
 	}
-	
+
 }

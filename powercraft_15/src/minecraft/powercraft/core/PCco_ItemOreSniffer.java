@@ -19,7 +19,6 @@ public class PCco_ItemOreSniffer extends PC_Item
     	super(id);
         setMaxStackSize(1);
         setMaxDamage(500);
-        setIconIndex(1);
         setCreativeTab(CreativeTabs.tabTools);
     }
 
@@ -46,7 +45,7 @@ public class PCco_ItemOreSniffer extends PC_Item
 		switch(msg){
 		case PC_MSGRegistry.MSG_DEFAULT_NAME:
 			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getItemName(), "Ore Sniffer"));
+			names.add(new LangEntry(getUnlocalizedName(), "Ore Sniffer"));
             return names;
 		}
 		return null;

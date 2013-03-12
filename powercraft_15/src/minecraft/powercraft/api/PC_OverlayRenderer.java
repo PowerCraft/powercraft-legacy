@@ -18,7 +18,8 @@ public class PC_OverlayRenderer extends GuiIngame {
 		PC_ClientUtils.mc().entityRenderer.setupOverlayRendering();
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		PC_MSGRegistry.callAllMSG(PC_MSGRegistry.MSG_RENDER_OVERLAY, this, ts, screen, mx, my);
+		PC_MSGRegistry.callAllMSG(PC_MSGRegistry.MSG_RENDER_OVERLAY, this, ts,
+				screen, mx, my);
 		super.renderGameOverlay(ts, screen, mx, my);
 	}
 

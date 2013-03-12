@@ -30,45 +30,44 @@ public class PC_GlobalVariables {
 	public static HashMap<String, Object> oldConsts = null;
 	public static boolean idResolve;
 	public static boolean soundEnabled;
-	
+
 	public static PC_Property config;
-	
-	public static void loadConfig(){
+
+	public static void loadConfig() {
 		File f = new File(GameInfo.getMCDirectory(), "config/PowerCraft.cfg");
-		if(f.exists()){
+		if (f.exists()) {
 			try {
 				InputStream is = new FileInputStream(f);
 				config = PC_Property.loadFromFile(is);
 			} catch (FileNotFoundException e) {
-				PC_Logger.severe("Can't find File "+f);
+				PC_Logger.severe("Can't find File " + f);
 			}
 		}
-		if(config==null){
+		if (config == null) {
 			config = new PC_Property(null);
 		}
-		
+
 		hackSplashes = config.getBoolean("hacks.splash", true);
 		useUserName = config.getString("hacks.userName", "");
-		idResolve = config.getBoolean("hacks.idResolve", true, "Resolve and change PowerCraft item IDs");
+		idResolve = config.getBoolean("hacks.idResolve", true,
+				"Resolve and change PowerCraft item IDs");
 		config.getBoolean("cheats.survivalCheating", false);
-		
-		if(GameInfo.isClient())
+
+		if (GameInfo.isClient())
 			soundEnabled = config.getBoolean("sound.enabled", true);
-		
-		
-		
+
 	}
-	
-	public static void saveConfig(){
+
+	public static void saveConfig() {
 		File f = new File(GameInfo.getMCDirectory(), "config/PowerCraft.cfg");
-		if(config!=null){
+		if (config != null) {
 			try {
 				OutputStream os = new FileOutputStream(f);
 				config.save(os);
 			} catch (FileNotFoundException e) {
-				PC_Logger.severe("Can't find File "+f);
+				PC_Logger.severe("Can't find File " + f);
 			}
 		}
 	}
-	
+
 }
