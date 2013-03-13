@@ -21,6 +21,10 @@ public final class PC_TextureRegistry {
 				+ "/textures";
 	}
 
+	public static String getItemAndBlockTextureDirectory(PC_ModuleObject module) {
+		return "powercraft/" + module.getModuleName().toLowerCase();
+	}
+	
 	public static String getTerrainFile() {
 		return "tiles.png";
 	}

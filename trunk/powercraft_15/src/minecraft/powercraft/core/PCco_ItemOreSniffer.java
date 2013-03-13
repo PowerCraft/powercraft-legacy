@@ -16,7 +16,7 @@ public class PCco_ItemOreSniffer extends PC_Item
 {
     public PCco_ItemOreSniffer(int id)
     {
-    	super(id);
+    	super(id, "oresniffer");
         setMaxStackSize(1);
         setMaxDamage(500);
         setCreativeTab(CreativeTabs.tabTools);

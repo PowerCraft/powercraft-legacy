@@ -15,7 +15,7 @@ public class PCco_ItemCraftingTool extends PC_Item
 {
     public PCco_ItemCraftingTool(int id)
     {
-    	super(id);
+    	super(id, "craftingtool");
         setMaxDamage(0);
         setMaxStackSize(1);
         setCreativeTab(CreativeTabs.tabTools);

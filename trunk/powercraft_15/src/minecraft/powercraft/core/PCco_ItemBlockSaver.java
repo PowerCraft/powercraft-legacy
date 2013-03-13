@@ -19,7 +19,7 @@ import powercraft.api.registry.PC_MSGRegistry;
 public class PCco_ItemBlockSaver extends PC_Item {
 
 	public PCco_ItemBlockSaver(int id) {
-		super(id);
+		super(id, "lockedchest");
 	}
 	
 	@Override
@@ -75,19 +75,21 @@ public class PCco_ItemBlockSaver extends PC_Item {
 			return true;
 		}
 
+		ItemStack setItem = new ItemStack(placedID, 0, placedMeta);
+		
 		if (y == 255 && Block.blocksList[placedID].blockMaterial.isSolid()) {
 			return false;
 		}
 
 		PC_VecI pos = new PC_VecI(x, y, z);
 
-		if (world.canPlaceEntityOnSide(placedID, x, y, z, false, face, entityplayer)) {
+		if (world.canPlaceEntityOnSide(placedID, x, y, z, false, face, entityplayer, setItem)) {
 			Block block = Block.blocksList[placedID];
 
 			if (ValueWriting.setBID(world, pos, placedID, placedMeta)) {
 				if (GameInfo.getBID(world, pos) == placedID) {
 					/** @todo onBlockPlacedBy*/
-					Block.blocksList[placedID].onBlockPlacedBy(world, x, y, z, entityplayer);
+					Block.blocksList[placedID].onBlockPlacedBy(world, x, y, z, entityplayer, setItem);
 
 					world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
 							block.stepSound.getPitch() * 0.8F);
@@ -110,7 +112,7 @@ public class PCco_ItemBlockSaver extends PC_Item {
 						}
 					}
 
-					Block.blocksList[placedID].onBlockPlacedBy(world, x, y, z, entityplayer);
+					Block.blocksList[placedID].onBlockPlacedBy(world, x, y, z, entityplayer, setItem);
 
 				}
 
