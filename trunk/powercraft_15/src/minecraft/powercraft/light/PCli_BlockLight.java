@@ -13,9 +13,9 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.launcher.PC_Property;
 import powercraft.api.PC_Color;
 import powercraft.api.PC_Utils;
 import powercraft.api.PC_Utils.GameInfo;
@@ -30,6 +30,7 @@ import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.launcher.PC_Property;
 
 @PC_Shining
 @PC_BlockInfo(tileEntity=PCli_TileEntityLight.class)
@@ -42,7 +43,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 
     public PCli_BlockLight(int id, boolean on)
     {
-        super(id, 66, Material.glass);
+        super(id, Material.glass, "lightsmall", "lighthuge");
         setHardness(0.3F);
         setResistance(20F);
         setStepSound(Block.soundStoneFootstep);
@@ -66,17 +67,17 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public int getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
+    public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
     {
         PCli_TileEntityLight te = GameInfo.getTE(par1iBlockAccess, par2, par3, par4);
 
         if (te == null) return
                     super.getBlockTexture(par1iBlockAccess, par2, par3, par4, par5);
 
-        if (!te.isHuge()) return
-                    66;
+        if (!te.isHuge()) 
+        	return icons[0];
 
-        return 117;
+        return icons[1];
     }
 
     @Override
@@ -115,7 +116,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     }
     
 	@Override
-    public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving player)
+    public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving player, ItemStack itemStack)
     {
         PCli_TileEntityLight tileentity = GameInfo.getTE(world, i, j, k);
 
@@ -170,7 +171,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
             return;
         }
 
-        boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k)||world.isBlockGettingPowered(i, j, k) ;
+        boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k)||world.func_94577_B(i, j, k)>0 ;
 
         if (tileentity.isActive() != powered)
         {
@@ -188,7 +189,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
             return;
         }
 
-        boolean powered = world.isBlockGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j, k);
+        boolean powered = world.func_94577_B(i, j, k)>0 || world.isBlockIndirectlyGettingPowered(i, j, k);
 
         if (tileentity.isActive() != powered)
         {
@@ -200,32 +201,32 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     {
         if (side == 0)
         {
-            return world.isBlockGettingPowered(x, y - 1, z) && world.getBlockId(x, y - 1, x) != 0;
+            return world.func_94577_B(x, y - 1, z)>0 && world.getBlockId(x, y - 1, x) != 0;
         }
 
         if (side == 1)
         {
-            return world.isBlockGettingPowered(x, y, z + 1) && world.getBlockId(x, y, x + 1) != 0;
+            return world.func_94577_B(x, y, z + 1)>0 && world.getBlockId(x, y, x + 1) != 0;
         }
 
         if (side == 2)
         {
-            return world.isBlockGettingPowered(x, y, z - 1) && world.getBlockId(x, y, x - 1) != 0;
+            return world.func_94577_B(x, y, z - 1)>0 && world.getBlockId(x, y, x - 1) != 0;
         }
 
         if (side == 3)
         {
-            return world.isBlockGettingPowered(x + 1, y, z) && world.getBlockId(x + 1, y, x) != 0;
+            return world.func_94577_B(x + 1, y, z)>0 && world.getBlockId(x + 1, y, x) != 0;
         }
 
         if (side == 4)
         {
-            return world.isBlockGettingPowered(x - 1, y, z) && world.getBlockId(x - 1, y, x) != 0;
+            return world.func_94577_B(x - 1, y, z)>0 && world.getBlockId(x - 1, y, x) != 0;
         }
 
         if (side == 5)
         {
-            return world.isBlockGettingPowered(x, y + 1, z) && world.getBlockId(x, y + 1, x) != 0;
+            return world.func_94577_B(x, y + 1, z)>0 && world.getBlockId(x, y + 1, x) != 0;
         }
 
         return false;
@@ -402,7 +403,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
         float height = 0.15F;
         PC_Renderer.glColor3f(1.0f, 1.0f, 1.0f);
         ValueWriting.setBlockBounds(block, 0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
-        PC_Renderer.renderInvBoxWithTexture(renderer, block, 66);
+        PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
         PC_Renderer.resetTerrain(true);
     }
 

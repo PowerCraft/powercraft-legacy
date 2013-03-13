@@ -26,7 +26,7 @@ import powercraft.api.renderer.PC_Renderer;
 public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 
 	public PCli_BlockLaserSensor(int id) {
-		super(id, 0, Material.ground, false);
+		super(id, Material.ground, null);
 		setStepSound(Block.soundMetalFootstep);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHardness(0.7F);
@@ -64,12 +64,12 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
     }
 
     @Override
-	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-    	return ((PCli_TileEntityLaserSensor) GameInfo.getTE(world, x, y, z)).isActive();
+	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
+    	return ((PCli_TileEntityLaserSensor) GameInfo.getTE(world, x, y, z)).isActive()?15:0;
 	}
 
 	@Override
-	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
+	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
 		return isProvidingWeakPower(world, x, y, z, s);
 	}
 
