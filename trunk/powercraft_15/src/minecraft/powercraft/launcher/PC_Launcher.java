@@ -43,8 +43,7 @@ public class PC_Launcher {
 	}
 	
 	public static void saveConfig(){
-		File f = new File(PC_LauncherUtils.getMCDirectory(), "config");
-		f.mkdirs();
+		File f = PC_LauncherUtils.createFile(PC_LauncherUtils.getMCDirectory(), "config");
 		f = new File(f, "PowerCraft.cfg");
 		try {
 			OutputStream os = new FileOutputStream(f);

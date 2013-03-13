@@ -17,7 +17,7 @@ public class PC_WorldOreGenerator implements IWorldGenerator {
 	@Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
     {
-        for(PC_Block block:PC_BlockRegistry.getPCBlocks().values()){
+		for(PC_Block block:PC_BlockRegistry.getPCBlocks().values()){
         	if(block instanceof PC_BlockOre){
         		PC_BlockOre blockOre = (PC_BlockOre)block;
         		int num = blockOre.getGenOresSpawnsInChunk(random, world, chunkX, chunkZ);
@@ -26,6 +26,7 @@ public class PC_WorldOreGenerator implements IWorldGenerator {
         			PC_VecI pos = blockOre.getGenOresSpawnPoint(random, world, chunkX, chunkZ);
         			pos.y = PC_MathHelper.clamp_int(pos.y, 1, world.getHeight());
         			int metadata = blockOre.getGenOresSpawnMetadata(random, world, chunkX, chunkZ);
+        			pos.add(chunkX*16, 0, chunkZ*16);
         			new PC_WorldGenMinableMetadata(block.blockID, metadata, blocksCount).generate(world, random, pos.x, pos.y, pos.z);
         		}
         	}
