@@ -74,7 +74,7 @@ public class PC_PacketHandler extends powercraft.launcher.PC_PacketHandler {
 
 		if (te instanceof PC_TileEntity) {
 
-			((PC_TileEntity) te).setData(o);
+			((PC_TileEntity) te).setData(player, o);
 
 			if (!player.worldObj.isRemote) {
 				setTileEntity(te, o);

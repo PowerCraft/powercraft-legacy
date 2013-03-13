@@ -32,7 +32,7 @@ public class PC_GresInventory extends PC_GresWidget {
 	
 	protected int slotHeight = 0;
 	
-	public int slotOverIndex=-1;
+	public Slot slotOver=null;
 	
 	/**
 	 * Inventory widget, with empty slot grid. To be filled using setSlot()
@@ -124,7 +124,7 @@ public class PC_GresInventory extends PC_GresWidget {
 					Slot slot = slots[x][y];
 					drawSlotInventory(xp, yp, slot);
 		
-					if (slot.slotNumber == slotOverIndex && isMouseOver) {
+					if (slot == slotOver && isMouseOver) {
 						GL11.glDisable(GL11.GL_LIGHTING);
 						GL11.glDisable(GL11.GL_DEPTH_TEST);
 						drawGradientRect(xp, yp, xp + 16, yp + 16, 0x80ffffff, 0x80ffffff);
@@ -157,9 +157,9 @@ public class PC_GresInventory extends PC_GresWidget {
 		isMouseOver = true;
 		Slot slot = getSlotUnderMouse(mousePos);
 		if(slot==null){
-			slotOverIndex = -1;
+			slotOver = null;
 		}else{
-			slotOverIndex = slot.slotNumber;
+			slotOver = slot;
 		}
 	}
 

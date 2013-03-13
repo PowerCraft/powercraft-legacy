@@ -455,17 +455,6 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 	}
 
 	@Override
-	public void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
-    {
-        if (par1Slot != null)
-        {
-            par2 = par1Slot.slotNumber;
-        }
-
-        this.mc.playerController.windowClick(this.inventorySlots.windowId, par2, par3, par4, this.mc.thePlayer);
-    }
-
-	@Override
 	public PC_VecI getSize() {
 		return new PC_VecI(width, height);
 	}
