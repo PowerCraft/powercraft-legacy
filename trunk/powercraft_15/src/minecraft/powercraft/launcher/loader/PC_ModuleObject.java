@@ -243,8 +243,8 @@ public class PC_ModuleObject {
 		return (List)callMethod(PC_Module.PC_InitPacketHandlers.class, new Object[]{packetHandlers});
 	}
 	
-	public List registerGuis(List guis){
-		return (List)callMethod(PC_Module.PC_RegisterGuis.class, new Object[]{guis});
+	public List registerContainers(List containers){
+		return (List)callMethod(PC_Module.PC_RegisterContainers.class, new Object[]{containers});
 	}
 
 	public List initLanguage(List arrayList) {
@@ -263,6 +263,10 @@ public class PC_ModuleObject {
 		return (List)callMethod(PC_ClientModule.PC_RegisterEntityRender.class, new Object[]{arrayList});
 	}
 
+	public List registerGuis(List guis){
+		return (List)callMethod(PC_ClientModule.PC_RegisterGuis.class, new Object[]{guis});
+	}
+	
 	public void resolveInstances(HashMap<String, PC_ModuleObject> modules) {
 		Class<?> c = moduleClass;
 		while(c!=null){

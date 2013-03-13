@@ -17,7 +17,7 @@ public class PC_ServerHacks {
 	
 	private static void hackMinecraftSaver(){
 		MinecraftServer ms = GameInfo.mcs();
-		File file = PC_ReflectHelper.getValue(MinecraftServer.class, ms, 4, File.class);
+		File file = PC_ReflectHelper.getValue(MinecraftServer.class, ms, 3, File.class);
 		PC_ReflectHelper.setValue(MinecraftServer.class, ms, 1, new PC_HackedSaveConverter(file), ISaveFormat.class);
 	}
 	

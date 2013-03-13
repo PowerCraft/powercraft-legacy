@@ -84,18 +84,16 @@ public class PC_RegistryServer implements PC_IPacketHandler {
 
 		PC_PacketHandler.sendToPlayer(player, data);
 
-		Class c = PC_GresRegistry.getGui(name);
+		Class<? extends PC_GresBaseWithInventory> c = PC_GresRegistry.getContainer(name);
 		
 		if (c!=null) {
 
 			if (PC_GresBaseWithInventory.class.isAssignableFrom(c)) {
 				try {
-					PC_GresBaseWithInventory bwi = PC_ReflectHelper.create(
-							(Class<PC_GresBaseWithInventory>) c, player, te, o );
+					PC_GresBaseWithInventory bwi = PC_ReflectHelper.create(c, player, te, o );
 					player.openContainer = bwi;
 					player.openContainer.windowId = guiID;
-					player.openContainer
-							.addCraftingToCrafters((EntityPlayerMP) player);
+					player.openContainer.addCraftingToCrafters((EntityPlayerMP) player);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

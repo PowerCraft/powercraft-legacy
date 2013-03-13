@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import powercraft.api.PC_PacketHandler;
 import powercraft.api.gres.PC_GresLayoutV;
@@ -88,6 +90,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 		int id = widget.getId()-1;
 		if(id>=0){
 			PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "MobSpawner", tems.xCoord, tems.yCoord, tems.zCoord, entityIds.get(id));
+			new PCco_ClientMobSpawnerSetter().handleIncomingPacket(thePlayer, new Object[]{tems.xCoord, tems.yCoord, tems.zCoord, entityIds.get(id)});
 		}
 		
 	}

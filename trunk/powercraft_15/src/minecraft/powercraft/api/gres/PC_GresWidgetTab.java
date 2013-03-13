@@ -134,7 +134,7 @@ public class PC_GresWidgetTab extends PC_GresWidget {
 	@Override
 	protected PC_RectI render(PC_VecI posOffset, PC_RectI scissorOld, double scale) {
 		renderTextureSlicedColored(posOffset, imgdir + "frame.png", getSize(), new PC_VecI(0, 0), new PC_VecI(256, 256), new PC_RectI(1, 1, 1, 1));
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
+		mc.renderEngine.func_98187_b(texture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

@@ -9,7 +9,7 @@ public final class PC_TextureRegistry {
 	}
 	
 	public static String getPowerCraftLoaderImageDir() {
-		return "/powercraft/api/textures/";
+		return "/mods/powercraft/api/textures/";
 	}
 
 	public static String getGresImgDir() {
@@ -17,8 +17,8 @@ public final class PC_TextureRegistry {
 	}
 
 	public static String getTextureDirectory(PC_ModuleObject module) {
-		return "powercraft/" + module.getModuleName().toLowerCase()
-				+ "/textures";
+		return "/mods/powercraft/" + module.getModuleName().toLowerCase()
+				+ "/textures/";
 	}
 
 	public static String getItemAndBlockTextureDirectory(PC_ModuleObject module) {

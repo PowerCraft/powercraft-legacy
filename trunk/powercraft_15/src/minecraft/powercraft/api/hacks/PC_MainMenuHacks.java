@@ -75,13 +75,13 @@ public class PC_MainMenuHacks implements ITickHandler {
 		}
 		MinecraftServer mcs = mc.getIntegratedServer();
 		if(mcs!=null){
-			if(!(PC_ReflectHelper.getValue(MinecraftServer.class, mcs, 2, ISaveFormat.class) instanceof PC_HackedSaveConverter)){
-				File file = PC_ReflectHelper.getValue(MinecraftServer.class, mcs, 4, File.class);
+			if(!(PC_ReflectHelper.getValue(MinecraftServer.class, mcs, 1, ISaveFormat.class) instanceof PC_HackedSaveConverter)){
+				File file = PC_ReflectHelper.getValue(MinecraftServer.class, mcs, 3, File.class);
 				PC_HackedSaveConverter saveConverter = new PC_HackedSaveConverter(file); 
-				PC_ReflectHelper.setValue(MinecraftServer.class, mcs, 2, saveConverter, ISaveFormat.class);
+				PC_ReflectHelper.setValue(MinecraftServer.class, mcs, 1, saveConverter, ISaveFormat.class);
 				ISaveHandler saveHandler = saveConverter.getSaveLoader(mcs.getFolderName(), true);
 				for(World world:mcs.worldServers){
-					PC_ReflectHelper.setValue(World.class, world, 25, saveHandler, ISaveHandler.class);
+					PC_ReflectHelper.setValue(World.class, world, 24, saveHandler, ISaveHandler.class);
 				}
 			}
 		}

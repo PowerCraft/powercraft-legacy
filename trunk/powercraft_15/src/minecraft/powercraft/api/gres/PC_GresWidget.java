@@ -1026,7 +1026,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	 */
 	protected static void renderImage_static(Gui gui, String texture, PC_VecI startPos, PC_VecI rectSize, PC_VecI imgOffset) {
 
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
+		mc.renderEngine.func_98187_b(texture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -1101,7 +1101,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 		
 	
 	protected static void renderTextureSliced_static(Gui gui, PC_VecI startPos, String texture, PC_VecI rectSize, PC_VecI imgOffset, PC_VecI imgSize, PC_RectI frame, int color) {
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
+		mc.renderEngine.func_98187_b(texture);
 		GL11.glColor4f(PC_Color.red(color), PC_Color.green(color), PC_Color.blue(color), 1.0f);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

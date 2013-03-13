@@ -68,7 +68,6 @@ public final class PC_BlockRegistry {
 						PC_Shining.OFF.class, blockOff);
 				blockOff.setUnlocalizedName(blockClass.getSimpleName());
 				blockOff.setModule(module);
-				blockOff.setTextureFile(PC_TextureRegistry.getTextureDirectory(module)+"tiles.png");
 				PC_MSGRegistry.registerMSGObject(blockOff);
 				blocks.put(blockClass.getSimpleName() + ".Off", blockOff);
 				registerBlock(blockOff, null);
@@ -90,8 +89,7 @@ public final class PC_BlockRegistry {
 			blocks.put(blockClass.getSimpleName(), block);
 			block.setUnlocalizedName(blockClass.getSimpleName());
 			block.setModule(module);
-			block.setTextureFile(PC_TextureRegistry.getTextureDirectory(module)+"tiles.png");
-
+			
 			
 			
 			PC_ReflectHelper.getAllFieldsWithAnnotation(blockClass, blocks, PC_Config.class, new PC_IFieldAnnotationIterator<PC_Config>() {

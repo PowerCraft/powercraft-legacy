@@ -73,4 +73,16 @@ public @interface PC_ClientModule {
 	@Target(ElementType.METHOD)
 	public @interface PC_RegisterEntityRender{}
 	
+	/**
+	 * 
+	 * Function for register guis
+	 * @param list Function input param: {@link List}<{@link PC_Struct2}<{@link String}, {@link Class}< ? extends {@link PC_IGresClient}>>>
+	 * @return Function output param: {@link List}<{@link PC_Struct2}<{@link String}, {@link Class}< ? extends {@link PC_IGresClient}>>>
+	 * @author XOR
+	 *
+	 */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.METHOD)
+	public @interface PC_RegisterGuis{}
+	
 }

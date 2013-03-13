@@ -161,14 +161,14 @@ public @interface PC_Module {
 	
 	/**
 	 * 
-	 * Function for register guis
-	 * @param list Function input param: {@link List}<{@link PC_Struct2}<{@link String}, {@link Class}>>
-	 * @return Function output param: {@link List}<{@link PC_Struct2}<{@link String}, {@link Class}>>
+	 * Function for register containers
+	 * @param list Function input param: {@link List}<{@link PC_Struct2}<{@link String}, {@link Class}< ? extends {@link PC_GresBaseWithInventory}>>>
+	 * @return Function output param: {@link List}<{@link PC_Struct2}<{@link String}, {@link Class}< ? extends {@link PC_GresBaseWithInventory}>>>
 	 * @author XOR
 	 *
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.METHOD)
-	public @interface PC_RegisterGuis{}
+	public @interface PC_RegisterContainers{}
 	
 }

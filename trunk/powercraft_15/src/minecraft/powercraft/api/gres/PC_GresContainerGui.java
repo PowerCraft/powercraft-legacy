@@ -384,7 +384,7 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 	 */
 	@Override
 	protected void drawSlotInventory(Slot slot) {
-		int x = slot.xDisplayPosition;
+		/*int x = slot.xDisplayPosition;
 		int y = slot.yDisplayPosition;
 		ItemStack itemstack = slot.getStack();
 		boolean isNull = false;
@@ -446,7 +446,7 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 		}
 
 		itemRenderer.zLevel = 0.0F;
-		zLevel = 0.0F;
+		zLevel = 0.0F;*/
 	}
 
 	@Override

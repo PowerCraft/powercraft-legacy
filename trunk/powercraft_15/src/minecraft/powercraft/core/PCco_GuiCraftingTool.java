@@ -5,12 +5,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import powercraft.api.PC_GlobalVariables;
 import powercraft.api.PC_PacketHandler;
 import powercraft.api.PC_VecI;
+import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresInventory;
 import powercraft.api.gres.PC_GresLabel;
@@ -45,6 +48,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 	private Page searchPage;
 	private PC_GresButton trashAll;
 	private PC_GresButton sort;
+	private PC_GresTab tab;
 	
 	public PCco_GuiCraftingTool(EntityPlayer player, PC_TileEntity te, Object[] o) {
 		super(player, te, o);
@@ -157,7 +161,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		PC_GresWindow w = new PC_GresWindow("pc.gui.craftingTool.title");
 		w.setAlignH(PC_GresAlign.STRETCH);
 		
-		PC_GresTab t = new PC_GresTab();
+		tab = new PC_GresTab();
 		
 		String[] keys = moduleList.keySet().toArray(new String[0]);
 		
@@ -170,11 +174,11 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 			pages.add(page);
 			if(key.equalsIgnoreCase("core"))
 				td = page.widget;
-			t.addTab(page.widget, page.tabWidget);
+			tab.addTab(page.widget, page.tabWidget);
 		}
 		
 		searchPage = addPageSearch();
-		t.addTab(searchPage.widget, searchPage.tabWidget);
+		tab.addTab(searchPage.widget, searchPage.tabWidget);
 		
 		PC_GresLayoutV lv = new PC_GresLayoutV();
 		lv.setAlignH(PC_GresAlign.CENTER);
@@ -199,12 +203,12 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		lv1.add(inv);
 		lv.add(lv1);
 		
-		t.addTab(lv, new PC_GresLabel("container.inventory"));
+		tab.addTab(lv, new PC_GresLabel("container.inventory"));
 		
 		if(td!=null)
-			t.makeTabVisible(td);
+			tab.makeTabVisible(td);
 		
-		w.add(t);
+		w.add(tab);
 		
 		PC_GresLayoutH lh = new PC_GresLayoutH();
 		lh.setAlignH(PC_GresAlign.CENTER);
@@ -329,4 +333,26 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 	@Override
 	public void keyChange(String key, Object value) {}
 
+	@Override
+	public ItemStack slotClick(int id, int par2, int par3, EntityPlayer player) {
+		if(!(GameInfo.isCreative(player) || PC_GlobalVariables.config.getBoolean("cheats.survivalCheating"))){
+			PC_GresWidget w = tab.getActiveTab();
+			if(w==searchPage.widget){
+				for(PCco_SlotDirectCrafting slot:searchPage.slots){
+					slot.updateAvailable();
+				}
+			}else{
+				for(Page page:pages){
+					if(page.widget==w){
+						for(PCco_SlotDirectCrafting slot:page.slots){
+							slot.updateAvailable();
+						}
+						break;
+					}
+				}
+			}
+		}
+		return super.slotClick(id, par2, par3, player);
+	}
+	
 }

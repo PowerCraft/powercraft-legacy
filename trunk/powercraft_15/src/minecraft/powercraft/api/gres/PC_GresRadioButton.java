@@ -114,7 +114,7 @@ public class PC_GresRadioButton extends PC_GresWidget {
 	@Override
 	protected PC_RectI render(PC_VecI offsetPos, PC_RectI scissorOld, double scale) {
 		String texture = imgdir + "widgets.png";
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
+		mc.renderEngine.func_98187_b(texture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		int state = 0;

@@ -217,14 +217,14 @@ public class PC_RegistryClient extends PC_RegistryServer {
 			}
 		}
 
-        Class c = PC_GresRegistry.getGui(name);
+        Class<? extends PC_IGresClient> c = PC_GresRegistry.getGui(name);
 
 		try {
 			if(PC_GresBaseWithInventory.class.isAssignableFrom(c)){
 				PC_ClientUtils.mc().displayGuiScreen(new PC_GresContainerGui(te, (PC_GresBaseWithInventory)PC_ReflectHelper.create(c, player, te, o)));
 				player.openContainer.windowId = guiID;
 			}else{
-				PC_ClientUtils.mc().displayGuiScreen(new PC_GresGui(te, (PC_IGresClient)PC_ReflectHelper.create(c, player, te, o)));
+				PC_ClientUtils.mc().displayGuiScreen(new PC_GresGui(te, PC_ReflectHelper.create(c, player, te, o)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

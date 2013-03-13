@@ -3,6 +3,7 @@ package powercraft.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -162,6 +163,7 @@ public class PCco_SlotDirectCrafting extends PC_Slot {
     			return i;
     		i++;
     	}
+    	i=0;
     	for(PC_ItemStack stack:get){
     		int need = testItem(stack, is);
     		ItemStack[] isc = setTo(null, is);
