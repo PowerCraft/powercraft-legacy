@@ -74,13 +74,13 @@ public class PCis_App {
 				"ccc",
 				'c', new PC_ItemStack(compressor, 1, PCis_ItemCompressor.NORMAL)));
 		
-		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(compressor, 1, PCis_ItemCompressor.HIGHT),
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(compressor, 1, PCis_ItemCompressor.HEIGHT),
 				"lcl",
 				"lcl",
 				"lcl",
 				'c', Block.chest, 'l', Block.lever));
 		
-		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(compressor, 1, PCis_ItemCompressor.HIGHT),
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(compressor, 1, PCis_ItemCompressor.HEIGHT),
 				"c",
 				"c",
 				"c",

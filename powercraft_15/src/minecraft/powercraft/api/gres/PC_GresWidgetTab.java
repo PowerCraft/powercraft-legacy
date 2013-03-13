@@ -1,5 +1,7 @@
 package powercraft.api.gres;
 
+import net.minecraft.util.Icon;
+
 import org.lwjgl.opengl.GL11;
 
 import powercraft.api.PC_RectI;
@@ -10,16 +12,14 @@ public class PC_GresWidgetTab extends PC_GresWidget {
 	protected static PC_GresWidgetTab selectTab;
 	protected boolean isClicked = false;
 	protected double count = 0;
-	private PC_VecI imgSize = new PC_VecI(0, 0);
-	private PC_VecI imgOffset = new PC_VecI(0, 0);
+	private Icon icon;
 	private String texture;
 	
-	public PC_GresWidgetTab(int color, String texture, int offsetX, int offsetY, int imgW, int imgH){
-		super(imgW+5, imgH+4);
-		setMinSize(new PC_VecI(imgW+5, imgH+4));
+	public PC_GresWidgetTab(int color, String texture, Icon icon){
+		super(21, 20);
 		this.color = new int[]{color, color, color, color, color, color};
-		imgSize.setTo(imgW, imgH, 0);
-		imgOffset.setTo(offsetX, offsetY, 0);
+		this.icon=icon;
+		setMinSize(new PC_VecI(21, 20));
 		this.texture = texture;
 	}
 	
@@ -138,8 +138,8 @@ public class PC_GresWidgetTab extends PC_GresWidget {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-		drawTexturedModalRect(pos.x + posOffset.x + 3, pos.y + posOffset.y + 2, imgOffset.x, imgOffset.y, imgSize.x, imgSize.y);
+		
+		drawTexturedModalRectWithIcon(pos.x + posOffset.x + 3, pos.y + posOffset.y + 2, 16, 16, icon);
 
 		GL11.glDisable(GL11.GL_BLEND);
 		return null;

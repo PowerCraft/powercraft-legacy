@@ -1,6 +1,7 @@
 package powercraft.itemstorage;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import powercraft.api.gres.PC_GresCheckBox;
 import powercraft.api.gres.PC_GresInventory;
 import powercraft.api.gres.PC_GresInventoryPlayer;
@@ -29,14 +30,14 @@ public class PCis_GuiCompressor extends PCis_ContainerCompressor
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(PCis_App.compressor.getUnlocalizedName(thePlayer.getCurrentEquippedItem())+".name");
 		
-		PC_GresWidgetTab wt = new PC_GresWidgetTab(0xBBBBBB, "/gui/items.png", 160, 48, 16, 16);
+		PC_GresWidgetTab wt = new PC_GresWidgetTab(0xBBBBBB, "/gui/items.png", Item.paper.getIconFromDamage(0));
 		
 		wt.add(new PC_GresLabel("pc.gui.compressor.name"));
 		wt.add(name = new PC_GresTextEdit(PCis_ItemCompressor.getName(getItem()), 10));
 		
 		w.add(wt);
 		
-		wt = new PC_GresWidgetTab(0x684E1E, "/gui/items.png", 80, 64, 16, 16);
+		wt = new PC_GresWidgetTab(0x684E1E, "/gui/items.png", Item.fishingRod.getIconFromDamage(0));
 		
 		wt.add(takeStacks = new PC_GresCheckBox("pc.gui.compressor.takeStacks"));
 		takeStacks.check(PCis_ItemCompressor.isTakeStacks(getItem()));
