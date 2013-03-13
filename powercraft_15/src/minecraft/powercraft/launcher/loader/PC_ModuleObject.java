@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
@@ -200,15 +201,14 @@ public class PC_ModuleObject {
 	}
 
 	public void saveConfig() {
-		File f = new File(PC_LauncherUtils.getMCDirectory(), "config");
-		f.mkdirs();
-		f = new File("PowerCraft-"+moduleName+".cfg");
+		File f = PC_LauncherUtils.createFile(PC_LauncherUtils.getMCDirectory(), "config");
+		f = new File(f, "PowerCraft-"+moduleName+".cfg");
 		try {
 			OutputStream os = new FileOutputStream(f);
 			config.save(os);
 		} catch (FileNotFoundException e) {
 			PC_Logger.severe("Can't find File "+f);
-		}
+		} 
 	}
 	
 	public void preInit() {

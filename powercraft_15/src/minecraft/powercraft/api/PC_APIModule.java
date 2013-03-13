@@ -346,6 +346,7 @@ public class PC_APIModule {
 		}
 		PC_Logger.enterSection("Module Config Saving");
 		for (PC_ModuleObject module : modules) {
+			
 			module.saveConfig();
 		}
 		PC_GlobalVariables.saveConfig();
