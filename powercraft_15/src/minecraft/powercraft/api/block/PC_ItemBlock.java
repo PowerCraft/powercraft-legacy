@@ -22,8 +22,7 @@ public abstract class PC_ItemBlock extends ItemBlock implements PC_IItemInfo, PC
 {
     private PC_ModuleObject module;
 
-    protected PC_ItemBlock(int id)
-    {
+    protected PC_ItemBlock(int id){
         super(id);
     }
 

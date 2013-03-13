@@ -77,7 +77,7 @@ public class PC_PacketHandler extends powercraft.launcher.PC_PacketHandler {
 			((PC_TileEntity) te).setData(o);
 
 			if (!player.worldObj.isRemote) {
-				setTileEntityArray(te, o);
+				setTileEntity(te, o);
 			}
 		} else {
 			throw new IllegalArgumentException("Not a PC_TileEntity");
@@ -89,10 +89,10 @@ public class PC_PacketHandler extends powercraft.launcher.PC_PacketHandler {
 		String name = (String) input.readObject();
 		Object[] o = (Object[]) input.readObject();
 		PC_IPacketHandler ph = packetHandler.get(name);
-
+		
 		if (ph != null) {
 			if (ph.handleIncomingPacket(player, o)) {
-				sendToPacketHandlerArray(player.worldObj, name, o);
+				sendToPacketHandler(player.worldObj, name, o);
 			}
 		}
 	}

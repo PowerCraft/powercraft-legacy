@@ -315,14 +315,6 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory<PC_Tile
 		}else{
 			is = super.slotClick(id, par2, par3, player);
 		}
-		for(PCco_SlotDirectCrafting slot:allMcSlots){
-			slot.updateAvailable();
-		}
-		for(List<PCco_SlotDirectCrafting> slots:moduleList.values()){
-			for(PCco_SlotDirectCrafting slot:slots){
-				slot.updateAvailable();
-			}
-		}
 		return is;
 	}
     

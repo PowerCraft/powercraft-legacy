@@ -23,8 +23,8 @@ public class PC_GlobalVariables {
 	public static int blockStartIndex = 3000;
 	public static int itemStartIndex = 17000;
 	public static int indexRecentlyHit = 46;
-	public static int indexItemSthiftedIndex = 163;
-	public static int indexBlockID = 170;
+	public static int indexItemSthiftedIndex = 168;
+	public static int indexBlockID = 181;
 	public static TileEntity tileEntity;
 	public static HashMap<String, Object> consts = new HashMap<String, Object>();
 	public static HashMap<String, Object> oldConsts = null;

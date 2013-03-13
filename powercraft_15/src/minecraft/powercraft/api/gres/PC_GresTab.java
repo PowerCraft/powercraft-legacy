@@ -33,6 +33,15 @@ public class PC_GresTab extends PC_GresWidget {
 		return this;
 	}
 	
+	public PC_GresWidget getActiveTab(){
+		for(PC_GresWidget w:childs){
+			if(w.isVisible()){
+				return w;
+			}
+		}
+		return null;
+	}
+	
 	@Override
 	public PC_GresWidget add(PC_GresWidget w){
 		addTab(w, new PC_GresLabel(w.getText()));

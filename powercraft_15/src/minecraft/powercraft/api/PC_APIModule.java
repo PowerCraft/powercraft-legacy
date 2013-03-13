@@ -21,6 +21,8 @@ import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
 import powercraft.api.block.PC_WorldOreGenerator;
+import powercraft.api.gres.PC_GresBaseWithInventory;
+import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.item.PC_Item;
 import powercraft.api.item.PC_ItemArmor;
 import powercraft.api.recipes.PC_IRecipe;
@@ -206,18 +208,27 @@ public class PC_APIModule {
 			}
 		}
 		PC_Logger.exitSection();
-		PC_Logger.enterSection("Module Gui Init");
+		PC_Logger.enterSection("Module Container Init");
 		for (PC_ModuleObject module : modules) {
-			List<PC_Struct2<String, Class>> l = module
-					.registerGuis(new ArrayList<PC_Struct2<String, Class>>());
+			List<PC_Struct2<String, Class<PC_GresBaseWithInventory>>> l = module.registerContainers(new ArrayList<PC_Struct2<String, Class<PC_GresBaseWithInventory>>>());
 			if (l != null) {
-				for (PC_Struct2<String, Class> g : l) {
-					PC_GresRegistry.registerGres(g.a, g.b);
+				for (PC_Struct2<String, Class<PC_GresBaseWithInventory>> g : l) {
+					PC_GresRegistry.registerGresContainer(g.a, g.b);
 				}
 			}
 		}
 		PC_Logger.exitSection();
 		if (GameInfo.isClient()) {
+			PC_Logger.enterSection("Module Gui Init");
+			for (PC_ModuleObject module : modules) {
+				List<PC_Struct2<String, Class<PC_IGresClient>>> l = module.registerGuis(new ArrayList<PC_Struct2<String, Class<PC_IGresClient>>>());
+				if (l != null) {
+					for (PC_Struct2<String, Class<PC_IGresClient>> g : l) {
+						PC_GresRegistry.registerGresGui(g.a, g.b);
+					}
+				}
+			}
+			PC_Logger.exitSection();
 			PC_Logger.enterSection("Module Splashes Init");
 			for (PC_ModuleObject module : modules) {
 				List<String> l = module.addSplashes(new ArrayList<String>());

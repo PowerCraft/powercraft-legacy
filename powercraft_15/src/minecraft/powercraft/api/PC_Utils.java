@@ -1,24 +1,15 @@
 package powercraft.api;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.crash.CallableMinecraftVersion;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -27,60 +18,32 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryLargeChest;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityBrewingStand;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumGameType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.WorldInfo;
-import powercraft.launcher.PC_LauncherUtils;
-import powercraft.launcher.PC_Logger;
-import powercraft.launcher.PC_Property;
-import powercraft.launcher.loader.PC_ModLoader;
 import powercraft.api.annotation.PC_Shining;
 import powercraft.api.block.PC_Block;
-import powercraft.api.block.PC_ItemBlock;
-import powercraft.api.inventory.PC_IInventoryWrapper;
-import powercraft.api.inventory.PC_ISpecialAccessInventory;
-import powercraft.api.inventory.PC_IStateReportingInventory;
-import powercraft.api.item.PC_Item;
-import powercraft.api.item.PC_ItemArmor;
-import powercraft.api.item.PC_ItemStack;
-import powercraft.api.recipes.PC_SmeltRecipe;
 import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.registry.PC_BlockRegistry;
-import powercraft.api.registry.PC_DataHandlerRegistry;
-import powercraft.api.registry.PC_GresRegistry;
-import powercraft.api.registry.PC_ItemRegistry;
-import powercraft.api.registry.PC_KeyRegistry;
-import powercraft.api.registry.PC_LangRegistry;
-import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
-import powercraft.api.registry.PC_ModuleRegistry;
-import powercraft.api.registry.PC_RecipeRegistry;
 import powercraft.api.registry.PC_RegistryServer;
-import powercraft.api.registry.PC_SoundRegistry;
-import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.launcher.PC_LauncherUtils;
+import powercraft.launcher.loader.PC_ModLoader;
 
 public class PC_Utils implements PC_IPacketHandler {
 	protected static PC_Utils instance;
@@ -373,7 +336,7 @@ public class PC_Utils implements PC_IPacketHandler {
 		public static boolean setBID(World world, int x, int y, int z, int id,
 				int meta) {
 			return world.setBlockAndMetadataWithNotify(x, y, z, id, meta,
-					BLOCK_NOTIFY);
+					BLOCK_NOTIFY | BLOCK_UPDATE);
 		}
 
 		public static ItemStack extractAndRemoveChest(World world, PC_VecI pos) {
@@ -381,20 +344,19 @@ public class PC_Utils implements PC_IPacketHandler {
 				return null;
 			}
 
-			TileEntity tec = PC_Utils.GameInfo.getTE(world, pos);
+			TileEntity tec = GameInfo.getTE(world, pos);
 
 			if (tec == null) {
 				return null;
 			}
 
 			ItemStack stack = new ItemStack(
-					PC_ItemRegistry.getPCItemByName("PCco_ItemBlockSaver"));
+					PC_BlockRegistry.getPCBlockByName("PCco_BlockBlockSaver"));
 			NBTTagCompound blocktag = new NBTTagCompound();
-			PC_Utils.GameInfo.getTE(world, pos).writeToNBT(blocktag);
-			int dmg = PC_Utils.GameInfo.getBID(world, pos);
+			tec.writeToNBT(blocktag);
+			int dmg = GameInfo.getBID(world, pos);
 			stack.setItemDamage(dmg);
-			blocktag.setInteger("BlockMeta",
-					PC_Utils.GameInfo.getMD(world, pos));
+			blocktag.setInteger("BlockMeta", GameInfo.getMD(world, pos));
 			stack.setTagCompound(blocktag);
 
 			if (tec instanceof IInventory) {
@@ -411,17 +373,16 @@ public class PC_Utils implements PC_IPacketHandler {
 		}
 
 		public static boolean setBID(World world, PC_VecI pos, int id, int meta) {
-			return PC_Utils.ValueWriting.setBID(world, pos.x, pos.y, pos.z, id,
-					meta);
+			return ValueWriting.setBID(world, pos.x, pos.y, pos.z, id, meta);
 		}
 
 		public static void notifyNeighbour(World world, int x, int y, int z) {
 			world.notifyBlocksOfNeighborChange(x, y, z,
-					PC_Utils.GameInfo.getBID(world, x, y, z));
+					GameInfo.getBID(world, x, y, z));
 		}
 
 		public static void notifyNeighbour(World world, PC_VecI pos) {
-			PC_Utils.ValueWriting.notifyNeighbour(world, pos.x, pos.y, pos.z);
+			ValueWriting.notifyNeighbour(world, pos.x, pos.y, pos.z);
 		}
 
 		public static boolean setBIDNoNotify(World world, int x, int y, int z,

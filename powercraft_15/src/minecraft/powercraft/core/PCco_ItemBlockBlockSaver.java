@@ -12,14 +12,14 @@ import net.minecraft.world.World;
 import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.PC_VecI;
-import powercraft.api.item.PC_Item;
+import powercraft.api.block.PC_ItemBlock;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
 
-public class PCco_ItemBlockSaver extends PC_Item {
+public class PCco_ItemBlockBlockSaver extends PC_ItemBlock {
 
-	public PCco_ItemBlockSaver(int id) {
-		super(id, "lockedchest");
+	public PCco_ItemBlockBlockSaver(int id) {
+		super(id);
 	}
 	
 	@Override

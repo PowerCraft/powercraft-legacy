@@ -119,7 +119,6 @@ public class PC_RecipeRegistry {
 				if (recipe.getRecipeOutput().isItemEqual(prod)
 						|| (recipe.getRecipeOutput().itemID == prod.itemID && prod
 								.getItemDamage() == -1)) {
-
 					if (recipe instanceof ShapedOreRecipe
 							|| recipe instanceof ShapelessOreRecipe) {
 						ret.add(resolveForgeRecipe(recipe));

@@ -46,7 +46,6 @@ public class PC_InventoryUtils {
 
 	public static void saveInventoryToNBT(NBTTagCompound outerTag, String invTagName, IInventory inventory) {
 		NBTTagList nbttaglist = new NBTTagList();
-
 		for (int i = 0; i < inventory.getSizeInventory(); i++) {
 			if (inventory.getStackInSlot(i) != null) {
 				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
@@ -246,7 +245,7 @@ public class PC_InventoryUtils {
 	}
 	
 	public static int getInventoryFullSlots(IInventory inv, int side){
-		return getInventoryFreeSlots(inv, getInvStartIndexForSide(inv, side), getInvSizeForSide(inv, side));
+		return getInventoryFullSlots(inv, getInvStartIndexForSide(inv, side), getInvSizeForSide(inv, side));
 	}
 	
 	public static int getInventoryFullSlots(IInventory inv, int startIndex, int size){

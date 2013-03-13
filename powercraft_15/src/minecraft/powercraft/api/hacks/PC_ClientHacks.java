@@ -18,7 +18,7 @@ public class PC_ClientHacks {
 	private static void hackMinecraftSaver(){
 		Minecraft mc = PC_ClientUtils.mc();
 		
-		PC_ReflectHelper.setValue(Minecraft.class, mc, 42, new PC_HackedSaveConverter(new File(mc.mcDataDir, "saves")), ISaveFormat.class);
+		PC_ReflectHelper.setValue(Minecraft.class, mc, 44, new PC_HackedSaveConverter(new File(mc.mcDataDir, "saves")), ISaveFormat.class);
 	}
 	
 }

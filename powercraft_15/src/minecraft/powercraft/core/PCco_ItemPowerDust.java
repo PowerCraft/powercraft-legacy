@@ -14,13 +14,7 @@ public class PCco_ItemPowerDust extends PC_Item {
 		super(id, "powerdust");
 	    setCreativeTab(CreativeTabs.tabMaterials);
 	}
-
-	@Override
-    public int getColorFromItemStack(ItemStack itemStack, int pass)
-    {
-        return 0xFF3333;
-    }
-
+	
     @Override
     public boolean hasEffect(ItemStack itemstack)
     {

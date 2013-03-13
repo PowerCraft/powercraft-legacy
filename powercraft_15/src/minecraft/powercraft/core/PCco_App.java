@@ -9,6 +9,7 @@ import powercraft.api.PC_IPacketHandler;
 import powercraft.api.PC_Struct2;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
+import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.item.PC_Item;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.recipes.PC_IRecipe;
@@ -19,19 +20,19 @@ import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_InitPacketHandlers;
 import powercraft.launcher.loader.PC_Module.PC_InitProperties;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
-import powercraft.launcher.loader.PC_Module.PC_RegisterGuis;
+import powercraft.launcher.loader.PC_Module.PC_RegisterContainers;
 
 @PC_Module(name="Core", version="1.1.0")
 public class PCco_App {
 
 	@PC_FieldObject(clazz=PCco_BlockPowerCrystal.class)
 	public static PC_Block powerCrystal;
+	@PC_FieldObject(clazz=PCco_BlockBlockSaver.class)
+	public static PC_Block blockSaver;
 	@PC_FieldObject(clazz=PCco_ItemPowerDust.class)
 	public static PC_Item powerDust;
 	@PC_FieldObject(clazz=PCco_ItemActivator.class)
 	public static PC_Item activator;
-	@PC_FieldObject(clazz=PCco_ItemBlockSaver.class)
-	public static PC_Item blockSaver;
 	@PC_FieldObject(clazz=PCco_ItemCraftingTool.class)
 	public static PC_Item craftingTool;
 	@PC_FieldObject(clazz=PCco_ItemOreSniffer.class)
@@ -107,9 +108,9 @@ public class PCco_App {
 		return packetHandlers;
 	}
 	
-	@PC_RegisterGuis
-	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
-		guis.add(new PC_Struct2<String, Class>("CraftingTool", PCco_ContainerCraftingTool.class));
+	@PC_RegisterContainers
+	public List<PC_Struct2<String, Class<? extends PC_GresBaseWithInventory>>> registerContainers(List<PC_Struct2<String, Class<? extends PC_GresBaseWithInventory>>> guis) {
+		guis.add(new PC_Struct2<String, Class<? extends PC_GresBaseWithInventory>>("CraftingTool", PCco_ContainerCraftingTool.class));
 		return guis;
 	}
 

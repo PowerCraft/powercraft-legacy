@@ -30,21 +30,6 @@ import powercraft.launcher.PC_Logger;
 public abstract class PC_TileEntity extends TileEntity {
 
 	private List<PC_ITileEntityWatcher> watcher = new ArrayList<PC_ITileEntityWatcher>();
-	protected String inventoryTitle;
-	protected int slotsCount;
-	protected ItemStack inventoryContents[];
-	
-	protected PC_TileEntity() {
-		inventoryTitle = "";
-		slotsCount = 0;
-		inventoryContents = null;
-	}
-	
-	protected PC_TileEntity(String title, int size) {
-		inventoryTitle = title;
-		slotsCount = size;
-		inventoryContents = new ItemStack[slotsCount];
-	}
 	
 	@Override
 	public Packet getDescriptionPacket() {
@@ -222,9 +207,6 @@ public abstract class PC_TileEntity extends TileEntity {
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
-		if(this instanceof IInventory){
-			PC_InventoryUtils.saveInventoryToNBT(nbtTagCompound, "inventory", (IInventory)this);
-		}
 		final NBTTagCompound nbtTag = nbtTagCompound.getCompoundTag("map");
 		PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), this,
 				PC_ClientServerSync.class,
@@ -251,9 +233,6 @@ public abstract class PC_TileEntity extends TileEntity {
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 		super.writeToNBT(nbtTagCompound);
-		if(this instanceof IInventory){
-			PC_InventoryUtils.loadInventoryFromNBT(nbtTagCompound, "inventory", (IInventory)this);
-		}
 		final NBTTagCompound nbtTag = new NBTTagCompound();
 		PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), this,
 				PC_ClientServerSync.class,
@@ -282,129 +261,13 @@ public abstract class PC_TileEntity extends TileEntity {
 	}
 
 
-	
-	//////////////////////////////////////////////////////////////
-	////// INVENTORY
-	//////////////////////////////////////////////////////////////
-	
-
-	public int getSizeInventory() {
-		return slotsCount;
-	}
-
-	public ItemStack getStackInSlot(int i) {
-		return inventoryContents[i];
-	}
-
-	public ItemStack decrStackSize(int i, int j) {
-		if (this.inventoryContents[i] != null) {
-			ItemStack itemstack;
-
-			if (this.inventoryContents[i].stackSize <= j) {
-				itemstack = this.inventoryContents[i];
-				this.inventoryContents[i] = null;
-				this.onInventoryChanged();
-				return itemstack;
-			} else {
-				itemstack = this.inventoryContents[i].splitStack(j);
-
-				if (this.inventoryContents[i].stackSize == 0) {
-					this.inventoryContents[i] = null;
-				}
-
-				this.onInventoryChanged();
-				return itemstack;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	public ItemStack getStackInSlotOnClosing(int i) {
-		if (this.inventoryContents[i] != null) {
-			ItemStack itemstack = this.inventoryContents[i];
-			this.inventoryContents[i] = null;
-			return itemstack;
-		} else {
-			return null;
-		}
-	}
-
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		this.inventoryContents[i] = itemstack;
-
-		if (itemstack != null
-				&& itemstack.stackSize > this.getInventoryStackLimit()) {
-			itemstack.stackSize = this.getInventoryStackLimit();
-		}
-
-		this.onInventoryChanged();
-	}
-
-	public String getInvName() {
-		return inventoryTitle;
-	}
-
-	public boolean func_94042_c() {
-		return false;
-	}
-
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return true;
-	}
-
-	public void openChest() {
-	}
-
-	public void closeChest() {
-	}
-	
-	public boolean func_94041_b(int i, ItemStack itemstack) {
-		return true;
-	}
-
-	public int func_94127_c(int side) {
-		return 0;
-	}
-
-	public int func_94128_d(int side) {
-		return getSizeInventory();
-	}
-
-	public boolean canPlayerTakeStack(int i, EntityPlayer entityPlayer) {
-		return true;
-	}
-
-	public boolean canMachineInsertStackTo(int i, ItemStack itemstack) {
-		return true;
-	}
-
-	public boolean canDispenseStackFrom(int i) {
-		return true;
-	}
-
-	public boolean canDropStackFrom(int i) {
-		return true;
-	}
-
-	public int getSlotStackLimit(int i) {
-		return getInventoryStackLimit();
-	}
-
-	
-	
 	//////////////////////////////////////////////////////////////
 	////// BLOCK METHODS
 	//////////////////////////////////////////////////////////////
 	
 	
 	public void onBreakBlock() {
-		if(this instanceof IInventory)
-			PC_InventoryUtils.dropInventoryContents((IInventory)this, worldObj, getCoord());
+		
 	}
 	
 	

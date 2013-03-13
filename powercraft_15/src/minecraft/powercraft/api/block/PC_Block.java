@@ -35,7 +35,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IIDChangeAble {
-	private boolean canSetTextureFile = true;
 	private PC_ModuleObject module;
 	protected Icon[] icons;
 	private String[] textureNames;
@@ -82,7 +81,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 
 	public TileEntity newTileEntity(World world, int metadata) {
 		PC_BlockInfo blockInfo = getClass().getAnnotation(PC_BlockInfo.class);
-		if(blockInfo==null || blockInfo.tileEntity()==null){
+		if(blockInfo==null || blockInfo.tileEntity()==null || blockInfo.tileEntity()==PC_BlockInfo.PC_FakeTileEntity.class){
 			return null;
 		}else{
 			return PC_ReflectHelper.create(blockInfo.tileEntity());
@@ -116,15 +115,6 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 	@Override
 	public int getRenderType() {
 		return PC_Renderer.getRendererID(true);
-	}
-
-	@Override
-	public Block setTextureFile(String texture) {
-		if (canSetTextureFile) {
-			super.setTextureFile(texture);
-		}
-
-		return this;
 	}
 
 	@Override
@@ -189,7 +179,8 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 		PC_TileEntity te = GameInfo.getTE(world, x, y, z);
 		if (PC_GlobalVariables.tileEntity == null) {
-			te.onBreakBlock();
+			if(te!=null)
+				te.onBreakBlock();
 			super.breakBlock(world, x, y, z, par5, par6);
 		}
 	}

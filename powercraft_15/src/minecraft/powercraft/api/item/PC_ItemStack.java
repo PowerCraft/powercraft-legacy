@@ -44,6 +44,8 @@ public class PC_ItemStack implements Externalizable, PC_INBT<PC_ItemStack>
     	} 
     	count = is.stackSize;
         meta = is.getItemDamage();
+        if(meta==32767)
+        	meta = -1;
         if(is.stackTagCompound!=null){
         	nbtTag = (NBTTagCompound)is.stackTagCompound.copy();
         }
@@ -132,6 +134,8 @@ public class PC_ItemStack implements Externalizable, PC_INBT<PC_ItemStack>
             {
                 otherID = ((ItemStack)obj).itemID;
                 otherMeta = ((ItemStack)obj).getItemDamage();
+                if(otherMeta==32767)
+                	otherMeta = -1;
                 otherNbtTag = ((ItemStack)obj).stackTagCompound;
             }
             else

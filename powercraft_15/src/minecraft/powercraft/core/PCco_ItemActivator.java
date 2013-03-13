@@ -52,10 +52,6 @@ public class PCco_ItemActivator extends PC_Item{
         
     	int dir = ((PC_MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
-//		if (PC_Utils.isPlacingReversed()) {
-//			dir = PC_Utils.reverseSide(dir);
-//		}
-
 		for (int i = 0; i < 3; i++) {
 
 			PC_VecI pos = new PC_VecI(x-Direction.offsetX[dir], y+i, z-Direction.offsetZ[dir]);
