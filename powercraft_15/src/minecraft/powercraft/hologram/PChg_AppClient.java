@@ -31,7 +31,6 @@ public class PChg_AppClient extends PChg_App {
 
 	@PC_LoadTextureFiles
 	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add("tiles.png");
 		textures.add("glasses.png");
 		return textures;
 	}

@@ -31,7 +31,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 {
     public PCli_BlockLaser(int id)
     {
-        super(id, 2, Material.ground);
+        super(id, Material.ground, "laser");
         setStepSound(Block.soundMetalFootstep);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHardness(0.7F);

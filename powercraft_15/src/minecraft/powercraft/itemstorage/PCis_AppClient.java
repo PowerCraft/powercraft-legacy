@@ -21,12 +21,6 @@ public class PCis_AppClient extends PCis_App {
 		return lang;
 	}
 
-	@PC_LoadTextureFiles
-	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add("tiles.png");
-		return textures;
-	}
-
 	@PC_RegisterGuis
 	public List<PC_Struct2<String, Class<? extends PC_IGresClient>>> registerGuis(List<PC_Struct2<String, Class<? extends PC_IGresClient>>> guis) {
 		guis.add(new PC_Struct2<String, Class<? extends PC_IGresClient>>("Compressor", PCis_GuiCompressor.class));

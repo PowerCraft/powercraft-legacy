@@ -22,7 +22,7 @@ public class PCli_BlockLightningConductor extends PC_Block
 {
     public PCli_BlockLightningConductor(int id)
     {
-        super(id, 22, Material.rock);
+        super(id, Material.rock, "lightingconductor");
         setHardness(1.5F);
         setResistance(50.0F);
         setStepSound(Block.soundMetalFootstep);
@@ -44,11 +44,11 @@ public class PCli_BlockLightningConductor extends PC_Block
     {
         if (metadata == 0)
         {
-            world.setBlockWithNotify(x, y + 1, z, 0);
+        	ValueWriting.setBID(world, x, y + 1, z, 0, 1);
         }
         else
         {
-            world.setBlockWithNotify(x, y - 1, z, 0);
+        	ValueWriting.setBID(world, x, y - 1, z, 0, 0);
         }
 
         super.breakBlock(world, x, y, z, id, metadata);

@@ -16,7 +16,6 @@ public class PCli_AppClient extends PCli_App {
 	@PC_LoadTextureFiles
     public List<String> loadTextureFiles(List<String> textures)
     {
-        textures.add("tiles.png");
         textures.add("block_light.png");
         textures.add("mirror.png");
         return textures;
