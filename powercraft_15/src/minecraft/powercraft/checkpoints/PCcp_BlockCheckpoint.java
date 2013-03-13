@@ -30,7 +30,7 @@ import powercraft.api.tileentity.PC_TileEntity;
 public class PCcp_BlockCheckpoint extends PC_Block implements PC_IItemInfo {
 	
 	public PCcp_BlockCheckpoint(int id) {
-		super(id, Material.air, "checkpoint_top", "checkpoint_bottom", "checkpoint_side");
+		super(id, Material.air, "checkpoint_bottom", "checkpoint_top", "checkpoint_side");
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F/16.0F, 1.0F);
         setHardness(1.0F);
         setResistance(8.0F);
