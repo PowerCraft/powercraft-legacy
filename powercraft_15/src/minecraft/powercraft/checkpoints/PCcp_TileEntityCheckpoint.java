@@ -14,6 +14,7 @@ public class PCcp_TileEntityCheckpoint extends PC_TileEntityWithInventory {
 	
 	public PCcp_TileEntityCheckpoint() {
 		super("Checkpoint", 36);
+		isWhiteList=true;
 	}
 	
 	public void setCollideTriggerd(boolean b){

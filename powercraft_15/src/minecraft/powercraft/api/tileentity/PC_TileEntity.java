@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import powercraft.api.PC_Entry;
 import powercraft.api.PC_PacketHandler;
 import powercraft.api.PC_Struct2;
+import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.PC_Utils.SaveHandler;
 import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_ClientServerSync;
@@ -29,7 +30,10 @@ import powercraft.launcher.PC_Logger;
 
 public abstract class PC_TileEntity extends TileEntity {
 
-	private List<PC_ITileEntityWatcher> watcher = new ArrayList<PC_ITileEntityWatcher>();
+	protected List<PC_ITileEntityWatcher> watcher = new ArrayList<PC_ITileEntityWatcher>();
+	protected List<String> users = new ArrayList<String>();
+	protected boolean isWhiteList = false;
+	protected List<Long> allowedKeys = new ArrayList<Long>();
 	
 	@Override
 	public Packet getDescriptionPacket() {
@@ -61,7 +65,23 @@ public abstract class PC_TileEntity extends TileEntity {
 		return new PC_VecI(xCoord, yCoord, zCoord);
 	}
 
-	public Field getSyncFieldWithName(final String name) {
+	public boolean canPlayerSetField(String fieldName, PC_FieldWithAnnotation<PC_ClientServerSync> fieldWithAnnotation, EntityPlayer player){
+		if(!worldObj.isRemote){
+			if(isWhiteList){
+				if(users.contains(player.username))
+					return true;
+			}else{
+				if(!users.contains(player.username))
+					return true;
+			}
+			if(GameInfo.isPlayerOPOrOwner(player))
+				return true;
+			return false;
+		}
+		return true;
+	}
+	
+	public Field getSyncFieldWithName(final String name, final EntityPlayer player) {
 		List<Field> l = PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(),
 				this, PC_ClientServerSync.class,
 				new PC_IFieldAnnotationIterator<PC_ClientServerSync>() {
@@ -73,13 +93,13 @@ public abstract class PC_TileEntity extends TileEntity {
 								&& !fieldWithAnnotation.getAnnotation()
 										.clientChangeAble())
 							return false;
-						String fieldName = fieldWithAnnotation.getAnnotation()
-								.name();
+						String fieldName = fieldWithAnnotation.getAnnotation().name();
 						if (fieldName.equals("")) {
 							fieldName = fieldWithAnnotation.getFieldName();
 						}
-						if (fieldName.equals(name))
-							return true;
+						if(canPlayerSetField(fieldName, fieldWithAnnotation, player))
+							if (fieldName.equals(name))
+								return true;
 						return false;
 					}
 				});
@@ -88,15 +108,15 @@ public abstract class PC_TileEntity extends TileEntity {
 		}
 		return null;
 	}
-
-	public void setData(PC_Struct2<String, Object>[] o) {
+	
+	public void setData(EntityPlayer player, PC_Struct2<String, Object>[] o) {
 		for (int i = 0; i < o.length; i++) {
 			if (o[i].a.equals("call")) {
 				PC_Struct2<String, Object> s = (PC_Struct2<String, Object>) o[i].b;
 				onCall(s.a, s.b);
 			} else {
 				dataChange(o[i].a, o[i].b);
-				Field f = getSyncFieldWithName(o[i].a);
+				Field f = getSyncFieldWithName(o[i].a, player);
 				if (f != null) {
 					f.setAccessible(true);
 					try {

@@ -22,7 +22,7 @@ import powercraft.api.inventory.PC_Slot;
 import powercraft.api.inventory.PC_SlotNoPickup;
 import powercraft.api.tileentity.PC_TileEntity;
 
-public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_TileEntity> implements PC_IGresClient {
+public class PCco_GuiOreSnifferResultScreen implements PC_IGresClient {
 
 	private PC_GresProgressBar slider;
 	private PC_GresInventory inv;
@@ -46,7 +46,7 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_
 	}
 	
 	public PCco_GuiOreSnifferResultScreen(EntityPlayer player, PC_TileEntity te, Object[]o){
-		super(player, te, o);
+		//super(player, te, o);
 		int[] offsetX = { 0, 0, 0, 0, 1, -1 };
 		int[] offsetZ = { 0, 0, 1, -1, 0, 0 };
 		int[] offsetY = { 1, -1, 0, 0, 0, 0 };
@@ -166,7 +166,7 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_
 		w.add(inv = new PC_GresInventory(3, 3));
 		for (int x = 0; x < 3; x++) {
 			for (int y = 0; y < 3; y++) {
-				inv.setSlot(x, y, invSlots[x+y*3]);
+				inv.setSlot(x, y, new PC_SlotNoPickup());
 			}
 		}
 		gui.add(w);
@@ -224,20 +224,6 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_
 	@Override
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2, float par3) {
 		return false;
-	}
-
-	@Override
-	protected void init(Object[] o) {}
-	
-	@Override
-	protected PC_Slot[] getAllSlots() {
-		invSlots = new PC_Slot[9];
-		for (int x = 0; x < 3; x++) {
-			for (int y = 0; y < 3; y++) {
-				invSlots[y*3+x] = new PC_SlotNoPickup();
-			}
-		}
-		return invSlots;
 	}
 
 	@Override
