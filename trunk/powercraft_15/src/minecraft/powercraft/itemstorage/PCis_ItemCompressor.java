@@ -18,11 +18,11 @@ import powercraft.api.registry.PC_MSGRegistry;
 
 public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
 	
-	public static final int NORMAL = 0, ENDERACCESS = 1, HIGHT = 2, BIG = 3;
-	public static final String id2Name[] = {"normal", "enderaccess", "hight", "big"};
+	public static final int NORMAL = 0, ENDERACCESS = 1, HEIGHT = 2, BIG = 3;
+	public static final String id2Name[] = {"normal", "enderaccess", "height", "big"};
 	
 	public PCis_ItemCompressor(int id) {
-		super(id, id2Name[NORMAL]+"compressor", id2Name[ENDERACCESS]+"compressor", id2Name[HIGHT]+"compressor", id2Name[BIG]+"compressor");
+		super(id, id2Name[NORMAL]+"compressor", id2Name[ENDERACCESS]+"compressor", id2Name[HEIGHT]+"compressor", id2Name[BIG]+"compressor");
 		setMaxDamage(0);
         setMaxStackSize(1);
         setHasSubtypes(true);
@@ -42,7 +42,7 @@ public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this, 1, NORMAL));
 		arrayList.add(new ItemStack(this, 1, ENDERACCESS));
-		arrayList.add(new ItemStack(this, 1, HIGHT));
+		arrayList.add(new ItemStack(this, 1, HEIGHT));
 		arrayList.add(new ItemStack(this, 1, BIG));
 		return arrayList;
 	}
@@ -159,7 +159,7 @@ public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
 			List<LangEntry> names = (List<LangEntry>)obj[0];
 			names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[NORMAL], "compressor"));
 			names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[ENDERACCESS], "ender compressor"));
-			names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[HIGHT], "high stack compressor"));
+			names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[HEIGHT], "high stack compressor"));
 			names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[BIG], "big compressor"));
 			return names;
 		}
@@ -175,7 +175,7 @@ public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
 			return new PCis_NormalCompressorInventory(player, equipment);
 		case ENDERACCESS:
 			return new PCis_EnderCompressorInventory(player, equipment);
-		case HIGHT:
+		case HEIGHT:
 			return new PCis_HightCompressorInventory(player, equipment);
 		case BIG:
 			return new PCis_NormalCompressorInventory(player, equipment, new PC_VecI(9, 6));

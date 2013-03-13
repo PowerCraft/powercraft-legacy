@@ -7,7 +7,9 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Slot;
+import net.minecraft.util.Icon;
 
 import org.lwjgl.opengl.GL11;
 
@@ -1149,6 +1151,20 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 
 	}
 
+	protected static void drawTexturedModalRectWithIcon(int x, int y, int sizeX, int sizeY, Icon icon) {
+		Tessellator tessellator = Tessellator.instance;
+		float f3 = icon.func_94209_e();
+        float f4 = icon.func_94212_f();
+        float f5 = icon.func_94206_g();
+        float f6 = icon.func_94210_h();
+		tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, 1.0F, 0.0F);
+        tessellator.addVertexWithUV(x, y+sizeY, 0.0D, (double)f3, (double)f6);
+        tessellator.addVertexWithUV(x+sizeX, y+sizeY, 0.0D, (double)f4, (double)f6);
+        tessellator.addVertexWithUV(x+sizeX, y, 0.0D, (double)f4, (double)f5);
+        tessellator.addVertexWithUV(x, y, 0.0D, (double)f3, (double)f5);
+        tessellator.draw();
+	}
 
 	/**
 	 * Check if mouse is over widget.<br>
