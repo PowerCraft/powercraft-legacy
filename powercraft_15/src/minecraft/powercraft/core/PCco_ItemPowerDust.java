@@ -11,7 +11,7 @@ import powercraft.api.registry.PC_MSGRegistry;
 public class PCco_ItemPowerDust extends PC_Item {
 
 	public PCco_ItemPowerDust(int id) {
-		super(id, false);
+		super(id, "powerdust");
 	    setCreativeTab(CreativeTabs.tabMaterials);
 	}
 

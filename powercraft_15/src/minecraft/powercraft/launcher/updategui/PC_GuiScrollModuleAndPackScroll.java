@@ -68,9 +68,9 @@ public class PC_GuiScrollModuleAndPackScroll extends PC_GuiScroll{
 		int i=0;
 		while(element>=0){
 			if(PC_UpdateManager.moduleList.get(i).module==null){
-				if(PC_UpdateManager.moduleList.get(i).module.getModuleName().equals("Api")){
-					element++;
-				}
+				//if(PC_UpdateManager.moduleList.get(i).module.getModuleName().equals("Api")){
+					//element++;
+				//}
 			}else{
 				if(PC_UpdateManager.moduleList.get(i).xmlModule.getName().equals("Api")){
 					element++;

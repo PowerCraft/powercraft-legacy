@@ -268,7 +268,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 	@SideOnly(Side.CLIENT)
 	public void func_94332_a(IconRegister par1IconRegister) {
 		for (int i = 0; i < textureNames.length; i++) {
-			icons[i] = par1IconRegister.func_94245_a(PC_TextureRegistry.getTextureDirectory(module) + ":" + textureNames[i]);
+			icons[i] = par1IconRegister.func_94245_a(PC_TextureRegistry.getItemAndBlockTextureDirectory(module) + ":" + textureNames[i]);
 		}
 	}
 

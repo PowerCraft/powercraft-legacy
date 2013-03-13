@@ -128,8 +128,6 @@ public class PC_APIModule {
 				}
 			}
 			PC_TextureRegistry.registerTexture(PC_TextureRegistry
-					.getPowerCraftLoaderImageDir() + "PowerCraft.png");
-			PC_TextureRegistry.registerTexture(PC_TextureRegistry
 					.getGresImgDir() + "button.png");
 			PC_TextureRegistry.registerTexture(PC_TextureRegistry
 					.getGresImgDir() + "dialog.png");

@@ -33,13 +33,6 @@ public class PCco_AppClient extends PCco_App {
 		return lang;
 	}
 	
-	@PC_LoadTextureFiles
-	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add("tiles.png");
-		return textures;
-	}
-
-	
 	@PC_AddSplashes
 	public List<String> addSplashes(List<String> list) {
 		list.add("Sniffing diamonds!");

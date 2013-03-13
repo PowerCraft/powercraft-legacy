@@ -15,7 +15,7 @@ public abstract class PC_BlockOre extends PC_Block{
 	private int genOresMaxY;
 	private int genOresMinY;
 	
-	protected PC_BlockOre(int id, String oreName, int genOresInChunk, int genOresDepositMaxCount, int genOresMinY, int genOresMaxY, Material material, String textureName, String[] textureNames){
+	protected PC_BlockOre(int id, String oreName, int genOresInChunk, int genOresDepositMaxCount, int genOresMinY, int genOresMaxY, Material material, String textureName, String... textureNames){
 		super(id, material, textureName);
 		this.genOresInChunk = genOresInChunk;
         this.genOresDepositMaxCount = genOresDepositMaxCount;

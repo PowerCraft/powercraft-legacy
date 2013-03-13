@@ -30,7 +30,7 @@ public class PCco_BlockPowerCrystal extends PC_BlockOre
 
     public PCco_BlockPowerCrystal(int id)
     {
-        super(id, "Power Crystal", 3, 4, 5, 15, 4, Material.glass);
+        super(id, "Power Crystal", 3, 4, 5, 15, Material.glass, "powercrystal");
         setHardness(0.5F);
         setResistance(0.5F);
         setStepSound(Block.soundGlassFootstep);
@@ -143,7 +143,7 @@ public class PCco_BlockPowerCrystal extends PC_BlockOre
 
         if (meta == 8)
         {
-            world.setBlockMetadataWithNotify(i, j, k, 0);
+        	ValueWriting.setMD(world, i, j, k, 0);
             meta = 0;
         }
 

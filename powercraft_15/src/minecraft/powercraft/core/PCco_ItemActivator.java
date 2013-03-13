@@ -21,7 +21,7 @@ import powercraft.api.registry.PC_RecipeRegistry;
 public class PCco_ItemActivator extends PC_Item{
     
 	public PCco_ItemActivator(int id){
-		super(id);
+		super(id, "activator");
         setMaxDamage(100);
         setMaxStackSize(1);
         setCreativeTab(CreativeTabs.tabTools);
