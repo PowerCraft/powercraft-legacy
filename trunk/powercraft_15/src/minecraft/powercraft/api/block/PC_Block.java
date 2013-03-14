@@ -117,15 +117,6 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 		return PC_Renderer.getRendererID(true);
 	}
 
-	@Override
-	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
-		if (side == 1 && getRenderType() == PC_Renderer.getRendererID(true) && msg(PC_MSGRegistry.MSG_ROTATION, GameInfo.getMD(world, x, y, z)) != null) {
-			return false;
-		}
-
-		return super.shouldSideBeRendered(world, x, y, z, side);
-	}
-
 	public static boolean canSilkHarvest(Block block) {
 		return block.renderAsNormalBlock() && !block.hasTileEntity();
 	}
