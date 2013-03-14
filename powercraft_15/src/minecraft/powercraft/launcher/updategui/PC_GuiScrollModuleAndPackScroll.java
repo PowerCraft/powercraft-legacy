@@ -94,7 +94,7 @@ public class PC_GuiScrollModuleAndPackScroll extends PC_GuiScroll{
 	public Object getSelection(){
 		if(activeElement==0){
 			for(ModuleUpdateInfo module:PC_UpdateManager.moduleList){
-				if(module.module==null){
+				if(module.module!=null){
 					if(module.module.getModuleName().equals("Api")){
 						return module;
 					}

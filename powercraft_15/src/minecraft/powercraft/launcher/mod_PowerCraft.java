@@ -148,7 +148,7 @@ public class mod_PowerCraft {
 		mm.authorList.add("Rapus");
 		mm.credits = "MightyPork, RxD, LOLerul2";
 		mm.description = "";
-		mm.logoFile = "/powercraft/launcher/textures/PowerCraft.png";
+		mm.logoFile = "/mods/powercraft/launcher/textures/PowerCraft.png";
 		mm.url = "http://powercrafting.net/";
 	}
 

@@ -100,7 +100,7 @@ public class PC_GuiScrollVersions extends PC_GuiScroll {
 				guiUpdate.activate.drawButton = false;
 				guiUpdate.delete.drawButton = false;
 			}
-			if(ui.oldVersion.equals(ui.versions[element])){
+			if(ui.oldVersion!=null&&ui.oldVersion.equals(ui.versions[element])){
 				ret += " (ACTIVE)";
 			}else if(ui.module==null || ui.module.getNewest().getVersion().compareTo(ui.versions[element])<0){
 				ret += " *NEW*";
