@@ -20,17 +20,47 @@ public class PClo_RepeaterType
     }
 
     public static String[] getTextures(){
-    	String[] textures = new String[1+2*TOTAL_REPEATER_COUNT];
-    	textures[0] = "sideplate";
-    	for(int i=0; i<TOTAL_REPEATER_COUNT; i++){
-    		textures[i+1] = names[i]+"_off";
-    	}
-    	for(int i=0; i<TOTAL_REPEATER_COUNT; i++){
-    		textures[i+1+TOTAL_REPEATER_COUNT] = names[i]+"_on";
-    	}
+    	String[] textures = new String[18];
+    	int n=0;
+    	textures[n++] = "sideplate";
+    	textures[n++] = "crossing0";
+    	textures[n++] = "crossing1";
+    	textures[n++] = "crossing2";
+    	textures[n++] = "crossing3";
+    	textures[n++] = "splitter_2_s";
+    	textures[n++] = "splitter_2_l";
+    	textures[n++] = "splitter_3";
+    	textures[n++] = "splitter_2_r";
+    	textures[n++] = "repeaterStraight_on";
+    	textures[n++] = "repeaterStraight_off";
+    	textures[n++] = "repeaterCorner_on_l";
+    	textures[n++] = "repeaterCorner_on_r";
+    	textures[n++] = "repeaterCorner_off_l";
+    	textures[n++] = "repeaterCorner_off_r";
+    	textures[n++] = "repeaterStraightInstant";
+    	textures[n++] = "repeaterCornerInstant_l";
+    	textures[n++] = "repeaterCornerInstant_r";
     	return textures;
     }
 
+    public static int getTextureIndex(int type, boolean on){
+    	switch(type){
+    	case CROSSING:
+    		return 2;
+    	case SPLITTER_I:
+    		return 6;
+    	case REPEATER_STRAIGHT:
+    		return 10+(on?0:1);
+    	case REPEATER_CORNER:
+    		return 12+(on?0:2);
+    	case REPEATER_STRAIGHT_I:
+    		return 16;
+    	case REPEATER_CORNER_I:
+    		return 17;
+    	}
+    	return 0;
+    }
+    
     public static boolean[] canBeOn = new boolean[TOTAL_REPEATER_COUNT];
     static
     {

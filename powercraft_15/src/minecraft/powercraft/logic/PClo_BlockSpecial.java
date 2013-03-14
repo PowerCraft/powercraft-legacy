@@ -247,7 +247,7 @@ public class PClo_BlockSpecial extends PC_Block
     {
         if (side == 1)
         {
-            return icons[getType(iblockaccess, x, y, z)+2+(isActive(iblockaccess, x, y, z) ? PClo_SpecialType.TOTAL_SPECIAL_COUNT : 0)];
+            return icons[getType(iblockaccess, x, y, z)+2+(isActive(iblockaccess, x, y, z) ? 0 : PClo_SpecialType.TOTAL_SPECIAL_COUNT)];
         }
 
         if (side == 0)

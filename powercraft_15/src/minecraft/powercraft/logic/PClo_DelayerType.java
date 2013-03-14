@@ -19,10 +19,10 @@ public class PClo_DelayerType
     	String[] textures = new String[1+2*TOTAL_DELAYER_COUNT];
     	textures[0] = "sideplate";
     	for(int i=0; i<TOTAL_DELAYER_COUNT; i++){
-    		textures[i+1] = names[i]+"_off";
+    		textures[i+1+TOTAL_DELAYER_COUNT] = names[i]+"_on";
     	}
     	for(int i=0; i<TOTAL_DELAYER_COUNT; i++){
-    		textures[i+1+TOTAL_DELAYER_COUNT] = names[i]+"_on";
+    		textures[i+1] = names[i]+"_off";
     	}
     	return textures;
     }

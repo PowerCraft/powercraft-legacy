@@ -202,7 +202,7 @@ public class PClo_BlockDelayer extends PC_Block
     {
         if (side == 1)
         {
-            return icons[getType(iblockaccess, x, y, z)+2+(isActive(iblockaccess, x, y, z) ? PClo_DelayerType.TOTAL_DELAYER_COUNT : 0)];
+            return icons[getType(iblockaccess, x, y, z)+2+(isActive(iblockaccess, x, y, z) ? 0 : PClo_DelayerType.TOTAL_DELAYER_COUNT)];
         }
 
         if (side == 0)

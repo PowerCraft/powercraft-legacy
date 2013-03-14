@@ -171,21 +171,15 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public int getRenderColor(int i)
-    {
-        return 0xff3333;
-    }
-
-    @Override
     public int colorMultiplier(IBlockAccess iblockaccess, int i, int j, int k)
     {
         if (isActive(iblockaccess, i, j, k))
         {
-            return 0xff3333;
+            return 0xffffff;
         }
         else
         {
-            return 0x771111;
+            return 0x777777;
         }
     }
 
