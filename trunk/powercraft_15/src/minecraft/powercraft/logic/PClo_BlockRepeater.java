@@ -374,7 +374,7 @@ public class PClo_BlockRepeater extends PC_Block
     {
         if (side == 1)
         {
-            return icons[getType(iblockaccess, x, y, z)+2+(isActive(iblockaccess, x, y, z) ? PClo_RepeaterType.TOTAL_REPEATER_COUNT : 0)];
+            return icons[PClo_RepeaterType.getTextureIndex(getType(iblockaccess, x, y, z), isActive(iblockaccess, x, y, z))+getInp(iblockaccess, x, y, z)];
         }
 
         if (side == 0)
@@ -395,7 +395,7 @@ public class PClo_BlockRepeater extends PC_Block
 
         if (side == 1)
         {
-            return icons[meta+2];
+            return icons[PClo_RepeaterType.getTextureIndex(meta, true)];
         }
         else
         {

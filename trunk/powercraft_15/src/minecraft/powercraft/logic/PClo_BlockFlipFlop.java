@@ -248,7 +248,7 @@ public class PClo_BlockFlipFlop extends PC_Block
     {
         if (side == 1)
         {
-            return icons[getType(iblockaccess, x, y, z)+2+(isActive(iblockaccess, x, y, z) ? PClo_FlipFlopType.TOTAL_FLIPFLOP_COUNT : 0)];
+            return icons[getType(iblockaccess, x, y, z)+2+(isActive(iblockaccess, x, y, z) ? 0 : PClo_FlipFlopType.TOTAL_FLIPFLOP_COUNT)];
         }
 
         if (side == 0)

@@ -32,7 +32,7 @@ public class PClo_TileEntityGate extends PC_TileEntity
 
     public void rotInp()
     {
-    	inp = PClo_RepeaterType.change(type, inp);
+    	inp = PClo_GateType.rotateCornerSides(type, inp);
     	notifyChanges("inp");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         ValueWriting.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));

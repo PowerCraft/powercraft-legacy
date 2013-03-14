@@ -23,10 +23,10 @@ public class PClo_SpecialType
     	String[] textures = new String[1+2*TOTAL_SPECIAL_COUNT];
     	textures[0] = "sideplate";
     	for(int i=0; i<TOTAL_SPECIAL_COUNT; i++){
-    		textures[i+1] = names[i]+"_off";
+    		textures[i+1+TOTAL_SPECIAL_COUNT] = names[i]+"_on";
     	}
     	for(int i=0; i<TOTAL_SPECIAL_COUNT; i++){
-    		textures[i+1+TOTAL_SPECIAL_COUNT] = names[i]+"_on";
+    		textures[i+1] = names[i]+"_off";
     	}
     	return textures;
     }

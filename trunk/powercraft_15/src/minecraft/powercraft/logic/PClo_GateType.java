@@ -23,13 +23,22 @@ public class PClo_GateType
     }
 
     public static String[] getTextures(){
-    	String[] textures = new String[1+2*TOTAL_GATE_COUNT];
-    	textures[0] = "sideplate";
-    	for(int i=0; i<TOTAL_GATE_COUNT; i++){
-    		textures[i+1] = names[i]+"_off";
+    	String[] textures = new String[1+8*TOTAL_GATE_COUNT-6];
+    	int n=0;
+    	textures[n++] = "sideplate";
+    	textures[n++] = "not_on";
+    	for(int i=1; i<TOTAL_GATE_COUNT; i++){
+    		textures[n++] = names[i]+"_on_2_s";
+    		textures[n++] = names[i]+"_on_2_l";
+    		textures[n++] = names[i]+"_on_3";
+    		textures[n++] = names[i]+"_on_2_r";
     	}
-    	for(int i=0; i<TOTAL_GATE_COUNT; i++){
-    		textures[i+1+TOTAL_GATE_COUNT] = names[i]+"_on";
+    	textures[n++] = "not_off";
+    	for(int i=1; i<TOTAL_GATE_COUNT; i++){
+    		textures[n++] = names[i]+"_off_2_s";
+    		textures[n++] = names[i]+"_off_2_l";
+    		textures[n++] = names[i]+"_off_3";
+    		textures[n++] = names[i]+"_off_2_r";
     	}
     	return textures;
     }
@@ -169,4 +178,5 @@ public class PClo_GateType
 
         return false;
     }
+
 }

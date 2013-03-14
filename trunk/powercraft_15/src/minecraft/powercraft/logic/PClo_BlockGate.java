@@ -176,7 +176,17 @@ public class PClo_BlockGate extends PC_Block
     {
         if (side == 1)
         {
-            return icons[getType(iblockaccess, x, y, z)+2+(isActive(iblockaccess, x, y, z) ? PClo_GateType.TOTAL_GATE_COUNT : 0)];
+        	int i = getType(iblockaccess, x, y, z);
+        	if(i!=0){
+        		i*=4;
+        		i-=3;
+        	}
+        	i+=2;
+        	if(!isActive(iblockaccess, x, y, z)){
+        		i+=PClo_GateType.TOTAL_GATE_COUNT*4-3;
+        	}
+        	i += getInp(iblockaccess, x, y, z);
+            return icons[i];
         }
 
         if (side == 0)
@@ -197,6 +207,10 @@ public class PClo_BlockGate extends PC_Block
 
         if (side == 1)
         {
+        	if(meta!=0){
+        		meta*=4;
+        		meta-=3;
+        	}
             return icons[meta+2];
         }
         else
