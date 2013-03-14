@@ -12,6 +12,7 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 import powercraft.api.PC_ClientUtils;
+import powercraft.api.PC_Direction;
 import powercraft.api.PC_IMSG;
 import powercraft.api.PC_VecF;
 import powercraft.api.PC_VecI;
@@ -178,55 +179,17 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
 			Object o=((PC_IMSG) block).msg(PC_MSGRegistry.MSG_ROTATION, metaAt);
 			if(o instanceof Integer){
-				boolean swapped = swapTerrain(block);
-				int l = (Integer)o;
-				((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
-	
-				tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
-				tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
-				tessellator.setNormal(0.0F, 1F, 0.0F);
-				Icon icon = block.getBlockTexture(world, x, y, z, 1);
-				int l1 = 0;
-				int i2 = 0;
-				double d5 = l1 / 256F;
-				double d6 = (l1 + 15.99F) / 256F;
-				double d7 = i2 / 256F;
-				double d8 = (i2 + 15.99F) / 256F;
-				double d9 = (block.getBlockBoundsMaxY());
-				double d10 = x + block.getBlockBoundsMaxX();
-				double d11 = x + block.getBlockBoundsMaxX();
-				double d12 = x + block.getBlockBoundsMinY();
-				double d13 = x + block.getBlockBoundsMinY();
-				double d14 = z + block.getBlockBoundsMinZ();
-				double d15 = z + block.getBlockBoundsMaxZ();
-				double d16 = z + block.getBlockBoundsMaxZ();
-				double d17 = z + block.getBlockBoundsMinZ();
-				double d18 = y + d9;
-				if (l == 2) {
-					d10 = d11 = x + block.getBlockBoundsMinY();
-					d12 = d13 = x + block.getBlockBoundsMaxX();
-					d14 = d17 = z + block.getBlockBoundsMaxZ();
-					d15 = d16 = z + block.getBlockBoundsMinZ();
-				} else if (l == 3) {
-					d10 = d13 = x + block.getBlockBoundsMinY();
-					d11 = d12 = x + block.getBlockBoundsMaxX();
-					d14 = d15 = z + block.getBlockBoundsMinZ();
-					d16 = d17 = z + block.getBlockBoundsMaxZ();
-				} else if (l == 1) {
-					d10 = d13 = x + block.getBlockBoundsMaxX();
-					d11 = d12 = x + block.getBlockBoundsMinY();
-					d14 = d15 = z + block.getBlockBoundsMaxZ();
-					d16 = d17 = z + block.getBlockBoundsMinZ();
+				PC_Direction d = PC_Direction.BACK;
+				for(int i=0; i<(Integer)o; i++){
+					d = d.rotateRight();
 				}
-	
-				tessellator.addVertexWithUV(d13, d18, d17, d5, d7);
-				tessellator.addVertexWithUV(d12, d18, d16, d5, d8);
-				tessellator.addVertexWithUV(d11, d18, d15, d6, d8);
-				tessellator.addVertexWithUV(d10, d18, d14, d6, d7);
-	
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				((RenderBlocks)renderer).unlockBlockBounds();
+				o = d;
+			}
+			if(o instanceof PC_Direction){
+				boolean swapped = swapTerrain(block);
+				((RenderBlocks)renderer).uvRotateTop = ((PC_Direction)o).getMCDir();
+				((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
+				((RenderBlocks)renderer).uvRotateTop = 0;
 				resetTerrain(swapped);
 			}else{
 				iRenderBlock(world, x, y, z, block, modelId, (RenderBlocks)renderer);
