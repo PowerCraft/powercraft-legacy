@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_Utils.GameInfo;
@@ -58,7 +59,7 @@ public class PC_InventoryUtils {
 		outerTag.setTag(invTagName, nbttaglist);
 	}
 
-	public static IInventory getInventoryAt(IBlockAccess world, PC_VecI pos) {
+	public static IInventory getBlockInventoryAt(IBlockAccess world, PC_VecI pos) {
 		TileEntity te = GameInfo.getTE(world, pos);
 
 		if (te == null) {
@@ -93,10 +94,38 @@ public class PC_InventoryUtils {
 				inv = new InventoryLargeChest("Large chest", inv, (IInventory) GameInfo.getTE(world, pos.offset(0, 0, 1)));
 			}
 		}
-
+		
 		return inv;
 	}
 
+	public static IInventory getInventoryAt(World world, int x, int y, int z) {
+		IInventory invAt = getBlockInventoryAt(world, new PC_VecI(x, y, z));
+
+		if (invAt != null) {
+			return invAt;
+		}
+
+		List<IInventory> list = world.getEntitiesWithinAABB(
+				IInventory.class,
+				AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1)
+						.expand(0.6D, 0.6D, 0.6D));
+
+		if (list.size() >= 1) {
+			return list.get(0);
+		}
+
+		List<PC_IInventoryWrapper> list2 = world.getEntitiesWithinAABB(
+				PC_IInventoryWrapper.class,
+				AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1)
+						.expand(0.6D, 0.6D, 0.6D));
+
+		if (list2.size() >= 1) {
+			return list2.get(0).getInventory();
+		}
+
+		return null;
+	}
+	
 	public static int getInvStartIndexForSide(IInventory inv, int side){
 		if(inv instanceof ISidedInventory && side>=0){
 			return ((ISidedInventory) inv).func_94127_c(side);
@@ -196,17 +225,23 @@ public class PC_InventoryUtils {
 		for (int i = startIndex; i < size; i++) {
 			ItemStack slot = inv.getStackInSlot(i);
 			int slotStackLimit = getSlotStackLimit(inv, i);
-			if(slotStackLimit>itemstack.getMaxStackSize()){
-				slotStackLimit = itemstack.getMaxStackSize();
-			}
-			if (slot != null) {
-				if(slot.isItemEqual(itemstack) && slotStackLimit>slot.stackSize){
-					if(inv.func_94041_b(i, itemstack)){
-						space += slotStackLimit-slot.stackSize;
-					}
+			if(itemstack==null){
+				if (slot == null) {
+					space += slotStackLimit;
 				}
 			}else{
-				space += slotStackLimit;
+				if(slotStackLimit>itemstack.getMaxStackSize()){
+					slotStackLimit = itemstack.getMaxStackSize();
+				}
+				if (slot != null) {
+					if(slot.isItemEqual(itemstack) && slotStackLimit>slot.stackSize){
+						if(inv.func_94041_b(i, itemstack)){
+							space += slotStackLimit-slot.stackSize;
+						}
+					}
+				}else{
+					space += slotStackLimit;
+				}
 			}
 		}
 		return space;
@@ -221,15 +256,19 @@ public class PC_InventoryUtils {
 		for (int i = startIndex; i < size; i++) {
 			ItemStack slot = inv.getStackInSlot(i);
 			if (slot != null) {
-				if(slot.isItemEqual(itemstack)){
+				if(itemstack==null){
 					count += slot.stackSize;
+				}else{
+					if(slot.isItemEqual(itemstack)){
+						count += slot.stackSize;
+					}
 				}
 			}
 		}
 		return count;
 	}
 	
-	public static int getInventoryCountOf(IInventory inv, int side){
+	public static int getInventoryFreeSlots(IInventory inv, int side){
 		return getInventoryFreeSlots(inv, getInvStartIndexForSide(inv, side), getInvSizeForSide(inv, side));
 	}
 	

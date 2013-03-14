@@ -737,7 +737,7 @@ public class PC_Utils implements PC_IPacketHandler {
 		}
 
 		public static boolean isPoweredDirectly(World world, int x, int y, int z) {
-			return world.func_94577_B(x, y, z) > 0;
+			return getPoweredDirectlyValue(world, x, y, z) > 0;
 		}
 
 		public static int getPoweredDirectlyValue(World world, int x, int y,
@@ -751,12 +751,12 @@ public class PC_Utils implements PC_IPacketHandler {
 		}
 
 		public static boolean isPoweredIndirectly(World world, PC_VecI pos) {
-			return PC_Utils.GameInfo.isPoweredIndirectly(world, pos.x, pos.y,
+			return isPoweredIndirectly(world, pos.x, pos.y,
 					pos.z);
 		}
 
 		public static boolean isPoweredDirectly(World world, PC_VecI pos) {
-			return PC_Utils.GameInfo.isPoweredDirectly(world, pos.x, pos.y,
+			return isPoweredDirectly(world, pos.x, pos.y,
 					pos.z);
 		}
 
