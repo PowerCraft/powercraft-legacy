@@ -32,11 +32,11 @@ import powercraft.api.tileentity.PC_TileEntity;
 @PC_BlockInfo(tileEntity=PCma_TileEntityAutomaticWorkbench.class)
 public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo
 {
-    private static final int TXDOWN = 0, TXTOP = 1, TXSIDE = 2, TXFRONT = 3;
+    private static final int TXTOP = 0, TXSIDE = 1, TXFRONT = 2;
 
     public PCma_BlockAutomaticWorkbench(int id)
     {
-        super(id, Material.ground, "down", "workbench_top", "side", "workbench_front");
+        super(id, Material.ground, "workbench_top", "side", "workbench_front");
         setHardness(0.7F);
         setResistance(10.0F);
         setStepSound(Block.soundMetalFootstep);
@@ -96,7 +96,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
 
         if (s == 0)
         {
-            return icons[TXDOWN];
+            return icons[TXSIDE];
         }
         else
         {
@@ -124,7 +124,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
 
         if (i == 0)
         {
-            return icons[TXDOWN];
+            return icons[TXSIDE];
         }
 
         if (i == 3)

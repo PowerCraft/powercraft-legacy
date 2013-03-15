@@ -32,11 +32,11 @@ import powercraft.api.registry.PC_MSGRegistry;
 @PC_BlockInfo(tileEntity=PCma_TileEntityReplacer.class) //this is an Annotation; it can contain Data; here it references to the Blocks TileEntity
 public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 {
-    private static final int TXDOWN = 2, TXTOP = 1, TXSIDE = 0; //These are the sides and their IDs in the texture file
+    private static final int TXTOP = 1, TXSIDE = 0; //These are the sides and their IDs in the texture file
 
     public PCma_BlockReplacer(int id)
     {
-        super(id, Material.ground, "replacer_side", "replacer_top", "replacer_down");
+        super(id, Material.ground, "replacer_side", "replacer_top");
         setHardness(0.7F);
         setResistance(10.0F);
         setStepSound(Block.soundStoneFootstep);
@@ -59,7 +59,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
         if (s == 0)
         {
-            return icons[TXDOWN];
+            return icons[TXSIDE];
         }
         else
         {
