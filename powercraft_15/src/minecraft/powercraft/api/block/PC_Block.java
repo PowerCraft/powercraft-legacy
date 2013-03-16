@@ -40,6 +40,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 	private String[] textureNames;
 	private BlockInfo replaced = new BlockInfo();
 	private BlockInfo thisBlock;
+	private Object iconRegistry;
 	
 	protected PC_Block(int id, Material material, String textureName, String... textureNames) {
 		super(id, material);
@@ -254,6 +255,9 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 				icons[i] = par1IconRegister.func_94245_a(PC_TextureRegistry.getItemAndBlockTextureDirectory(module) + ":" + textureNames[i]);
 			}
 		}
+		iconRegistry = par1IconRegister;
+		onIconLoading();
+		iconRegistry = null;
 	}
 
 	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
@@ -261,6 +265,17 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 			par2 = icons.length - 1;
 		}
 		return icons[par2];
+	}
+
+	public void onIconLoading(){
+		
+	}
+	
+	public Icon loadIcon(String file) {
+		if(iconRegistry!=null){
+			return ((IconRegister)iconRegistry).func_94245_a(PC_TextureRegistry.getItemAndBlockTextureDirectory(module) + ":" + file);
+		}
+		return null;
 	}
 
 }
