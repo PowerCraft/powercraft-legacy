@@ -346,30 +346,42 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		
 		block.setBlockBoundsForItemRender();
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, -1F, 0.0F);
-		renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, icon[0]);
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, icon[1]);
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, 0.0F, -1F);
-		renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, icon[2]);
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, icon[3]);
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(-1F, 0.0F, 0.0F);
-		renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, icon[4]);
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(1.0F, 0.0F, 0.0F);
-		renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, icon[5]);
-		tessellator.draw();
+		if(icon[0]!=null){
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(0.0F, -1F, 0.0F);
+			renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, icon[0]);
+			tessellator.draw();
+		}
+		if(icon[1]!=null){
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(0.0F, 1.0F, 0.0F);
+			renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, icon[1]);
+			tessellator.draw();
+		}
+		if(icon[2]!=null){
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(0.0F, 0.0F, -1F);
+			renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, icon[2]);
+			tessellator.draw();
+		}
+		if(icon[3]!=null){
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(0.0F, 0.0F, 1.0F);
+			renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, icon[3]);
+			tessellator.draw();
+		}
+		if(icon[4]!=null){
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(-1F, 0.0F, 0.0F);
+			renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, icon[4]);
+			tessellator.draw();
+		}
+		if(icon[5]!=null){
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(1.0F, 0.0F, 0.0F);
+			renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, icon[5]);
+			tessellator.draw();
+		}
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		
 		((RenderBlocks)renderer).unlockBlockBounds();
