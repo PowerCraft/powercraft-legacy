@@ -6,7 +6,8 @@ import net.minecraft.item.ItemStack;
 public class InventoryCrafting implements IInventory
 {
     /** List of the stacks in the crafting matrix. */
-    private ItemStack[] stackList;
+	//BY NEI
+    protected ItemStack[] stackList;
 
     /** the width of the crafting inventory */
     private int inventoryWidth;

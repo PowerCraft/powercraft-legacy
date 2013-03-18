@@ -6,7 +6,8 @@ import net.minecraft.item.ItemStack;
 public class ContainerChest extends Container
 {
     private IInventory lowerChestInventory;
-    private int numRows;
+    //BY NEI
+    public int numRows;
 
     public ContainerChest(IInventory par1IInventory, IInventory par2IInventory)
     {
