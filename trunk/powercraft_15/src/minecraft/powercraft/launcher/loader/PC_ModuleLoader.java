@@ -95,7 +95,7 @@ public class PC_ModuleLoader extends ClassLoader {
 		ClassReader cr = new ClassReader(b);
 		PC_ClassVisitor cv = new PC_ClassVisitor(null);
 		cr.accept(cv, 0);
-		if(cv.classInfo.className.replace('/', '.').equals(resource))
+		if(cv.classInfo.className!=null && cv.classInfo.className.replace('/', '.').equals(resource))
 			return b;
 		return null;
 	}

@@ -35,7 +35,6 @@ public class PCma_AppClient extends PCma_App {
 
 	@PC_LoadTextureFiles
 	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add("tiles.png");
 		textures.add("fisher.png");
 		return textures;
 	}
