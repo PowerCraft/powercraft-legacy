@@ -11,7 +11,7 @@ import powercraft.api.registry.PC_MSGRegistry;
 public class PCws_BlockSilicon extends PC_BlockOre {
 	
 	public PCws_BlockSilicon(int id) {
-		super(id, "Silicon", 10, 10, 30, 2, Material.rock, "siliconore");
+		super(id, "Silicon", 1, 10, 10, 30, Material.rock, "siliconore");
 		setHardness(0.7F);
 		setResistance(10.0F);
 		setStepSound(Block.soundStoneFootstep);

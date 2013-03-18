@@ -74,7 +74,8 @@ public class EntityList
     public static Map IDtoClassMapping = new HashMap();
 
     /** provides a mapping between an Entity Class and an entity ID */
-    private static Map classToIDMapping = new HashMap();
+  	//BY NEI
+    public static Map classToIDMapping = new HashMap();
 
     /** Maps entity names to their numeric identifiers */
     private static Map stringToIDMapping = new HashMap();
