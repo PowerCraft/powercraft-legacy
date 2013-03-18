@@ -124,8 +124,7 @@ public class PC_APIModule {
 						.loadTextureFiles(new ArrayList<String>());
 				if (l != null) {
 					for (String file : l) {
-						PC_TextureRegistry.registerTexture(PC_TextureRegistry
-								.getTextureDirectory(module) + file);
+						PC_TextureRegistry.registerTexture(PC_TextureRegistry.getPowerCraftImageDir() + file);
 					}
 				}
 			}

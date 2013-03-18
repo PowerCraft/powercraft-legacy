@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 
 import powercraft.launcher.loader.PC_ModuleDiscovery;
@@ -58,7 +59,10 @@ public class PC_Launcher {
 		File mods = new File(PC_LauncherUtils.getMCDirectory(), "mods");
 		File res = null;
 		try {
-			res = new File(mod_PowerCraft.class.getResource("../../").toURI());
+			URL url = mod_PowerCraft.class.getResource("../../");
+			if(url!=null){
+				res = new File(url.toURI());
+			}
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

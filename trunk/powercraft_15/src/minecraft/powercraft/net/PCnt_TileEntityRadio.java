@@ -187,7 +187,7 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
 		
-		PC_Renderer.bindTexture(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Net")) + "block_radio.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir() + "block_radio.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);

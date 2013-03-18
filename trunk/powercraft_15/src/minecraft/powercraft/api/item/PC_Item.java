@@ -116,7 +116,7 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG, PC_
 	@SideOnly(Side.CLIENT)
 	public void func_94581_a(IconRegister par1IconRegister){
 		for(int i=0; i<textureNames.length; i++){
-			icons[i] = par1IconRegister.func_94245_a(PC_TextureRegistry.getItemAndBlockTextureDirectory(module)+":"+textureNames[i]);
+			icons[i] = par1IconRegister.func_94245_a(textureNames[i]);
 		}
 	}
 

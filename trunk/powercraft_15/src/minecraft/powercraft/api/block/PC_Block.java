@@ -252,7 +252,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 	public void func_94332_a(IconRegister par1IconRegister) {
 		for (int i = 0; i < textureNames.length; i++) {
 			if(textureNames[i]!=null){
-				icons[i] = par1IconRegister.func_94245_a(PC_TextureRegistry.getItemAndBlockTextureDirectory(module) + ":" + textureNames[i]);
+				icons[i] = par1IconRegister.func_94245_a(textureNames[i]);
 			}
 		}
 		iconRegistry = par1IconRegister;
@@ -273,7 +273,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 	
 	public Icon loadIcon(String file) {
 		if(iconRegistry!=null){
-			return ((IconRegister)iconRegistry).func_94245_a(PC_TextureRegistry.getItemAndBlockTextureDirectory(module) + ":" + file);
+			return ((IconRegister)iconRegistry).func_94245_a(file);
 		}
 		return null;
 	}

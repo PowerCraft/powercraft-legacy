@@ -146,9 +146,10 @@ public class mod_PowerCraft {
 		mm.authorList = new ArrayList<String>();
 		mm.authorList.add("XOR");
 		mm.authorList.add("Rapus");
+		mm.authorList.add("wolfhowl42");
 		mm.credits = "MightyPork, RxD, LOLerul2";
 		mm.description = "";
-		mm.logoFile = "/mods/powercraft/launcher/textures/PowerCraft.png";
+		mm.logoFile = "/textures/PowerCraft.png";
 		mm.url = "http://powercrafting.net/";
 	}
 
