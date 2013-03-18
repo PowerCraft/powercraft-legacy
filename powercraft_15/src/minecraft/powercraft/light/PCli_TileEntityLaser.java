@@ -149,7 +149,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 		float f1 = meta2angle[getBlockMetadata()];
 
-		PC_Renderer.bindTexture(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Light")) + "laser.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir() + "laser.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);

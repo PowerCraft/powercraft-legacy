@@ -14,7 +14,7 @@ public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor{
     
 	public PCtr_ItemArmorStickyBoots(int id){
         super(id, EnumArmorMaterial.IRON, FEET, "stickyboots");
-        setArmorTextureFile(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Transport"))+"slimeboots.png");
+        setArmorTextureFile(PC_TextureRegistry.getPowerCraftImageDir()+"slimeboots.png");
     }
 
 	@Override

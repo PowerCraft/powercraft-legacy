@@ -15,7 +15,7 @@ public class PChg_ItemArmorHologramGlasses extends PC_ItemArmor {
 
 	public PChg_ItemArmorHologramGlasses(int id) {
 		super(id, EnumArmorMaterial.IRON, HEAD, "glasses");
-		setArmorTextureFile(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Hologram"))+"glasses.png");
+		setArmorTextureFile(PC_TextureRegistry.getPowerCraftImageDir()+"glasses.png");
 	}
 
 	@Override

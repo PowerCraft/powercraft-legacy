@@ -68,7 +68,7 @@ public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntit
 
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 		
-		PC_Renderer.bindTexture(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Light")) + "block_light.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir() + "block_light.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);

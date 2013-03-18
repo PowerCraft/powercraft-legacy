@@ -19,7 +19,7 @@ public class PCws_TileEntityWeaselDiskManager extends PC_TileEntity implements P
 		
 		PC_Renderer.glTranslatef((float) x + 0.5F, ((float) y), (float) z + 0.5F);
 
-		PC_Renderer.bindTexture(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Weasel")) + "block_chip.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir() + "block_chip.png");
 
 		// push 2
 		PC_Renderer.glPushMatrix();

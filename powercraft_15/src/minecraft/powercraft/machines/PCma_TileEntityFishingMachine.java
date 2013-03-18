@@ -192,7 +192,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glTranslatef((float) x + 0.5f, (float) y, (float) z + 0.5f);
 		float f4 = 0.75F;
-		PC_Renderer.bindTexture(PC_TextureRegistry.getTextureDirectory(PC_ModuleRegistry.getModule("Machines")) + "fisher.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir() + "fisher.png");
 		int rota = GameInfo.getMD(worldObj, getCoord().offset(0, 1, 0));
 		if (rota == 2){
 			rota = 270;
