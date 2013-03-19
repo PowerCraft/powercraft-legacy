@@ -1,5 +1,6 @@
 package powercraft.launcher.loader;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,10 +18,9 @@ import java.util.zip.ZipFile;
 
 import org.objectweb.asm.ClassReader;
 
+import powercraft.launcher.asm.PC_ClassVisitor;
 import cpw.mods.fml.relauncher.IClassTransformer;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
-
-import powercraft.launcher.asm.PC_ClassVisitor;
 
 
 public class PC_ModuleLoader extends ClassLoader {
@@ -83,15 +83,19 @@ public class PC_ModuleLoader extends ClassLoader {
 	}
 	
 	private byte[] loadClass(InputStream is, String resource) {
-		byte[] b;
+		byte[] b = new byte[1024];
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		try {
-			b = new byte[is.available()];
-			is.read(b);
+			int length = 0;
+			while((length=is.read(b))!=-1){
+				buffer.write(b, 0, length);
+			}
 			is.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
+		b = buffer.toByteArray();
 		ClassReader cr = new ClassReader(b);
 		PC_ClassVisitor cv = new PC_ClassVisitor(null);
 		cr.accept(cv, 0);
