@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_Instance;
+import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_ItemArmor;
@@ -30,10 +31,10 @@ public class PChg_App {
 	@PC_FieldObject(clazz=PChg_ItemArmorHologramGlasses.class)
 	public static PC_ItemArmor hologramGlasses;
 	@PC_Instance
-	private static PChg_App instance;
+	private static PC_ModuleObject instance;
 	
 	public static PChg_App getInstance(){
-		return instance;
+		return (PChg_App)instance.getModule();
 	}
 
 	@PC_InitRecipes

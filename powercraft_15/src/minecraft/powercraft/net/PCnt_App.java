@@ -7,6 +7,8 @@ import net.minecraft.item.Item;
 import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_InitDataHandlers;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module.PC_Instance;
+import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.api.PC_IDataHandler;
 import powercraft.api.PC_Struct2;
 import powercraft.api.annotation.PC_FieldObject;
@@ -27,6 +29,8 @@ public class PCnt_App {
 	public static PC_Item portableTx;
 	@PC_FieldObject(clazz=PCnt_RadioManager.class)
 	public static PCnt_RadioManager radioManager;
+	@PC_Instance
+	public static PC_ModuleObject instance;
 
 	@PC_InitRecipes
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {

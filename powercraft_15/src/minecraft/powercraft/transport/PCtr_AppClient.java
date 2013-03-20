@@ -16,7 +16,6 @@ public class PCtr_AppClient extends PCtr_App {
     @PC_LoadTextureFiles
 	public List<String> loadTextureFiles(List<String> textures)
     {
-		textures.add("tiles.png");
 		textures.add("slimeboots.png");
 		return textures;
     }

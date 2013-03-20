@@ -1,5 +1,7 @@
 package powercraft.api.registry;
 
+import powercraft.launcher.loader.PC_ModuleObject;
+
 
 public final class PC_TextureRegistry {
 
@@ -12,7 +14,11 @@ public final class PC_TextureRegistry {
 	}
 
 	public static String getGresImgDir() {
-		return getPowerCraftImageDir() + "gres/";
+		return getPowerCraftImageDir() + "PowerCraft-Api-gres/";
+	}
+	
+	public static String getTextureName(PC_ModuleObject module, String texuteName){
+		return "PowerCraft-"+module.getModuleName()+"-"+texuteName;
 	}
 	
 }

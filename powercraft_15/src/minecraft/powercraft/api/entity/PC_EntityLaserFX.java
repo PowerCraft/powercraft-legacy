@@ -61,7 +61,7 @@ public class PC_EntityLaserFX extends EntityFX {
         GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
         GL11.glDepthMask(false);
         int tex = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_ClientUtils.mc().renderEngine.getTexture(PC_TextureRegistry.getPowerCraftImageDir() + "laser.png"));
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_ClientUtils.mc().renderEngine.getTexture(PC_TextureRegistry.getPowerCraftImageDir() + "PowerCraft-Api-laser.png"));
         tessellator.startDrawingQuads();
         tessellator.setBrightness(128);
         tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, 1.0F);

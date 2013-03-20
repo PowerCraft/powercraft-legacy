@@ -79,7 +79,7 @@ public abstract class PCws_WeaselPluginInfo {
 		
 		PC_Renderer.glTranslatef((float) x + 0.5F, ((float) y), (float) z + 0.5F);
 
-		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir() + "block_chip.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir() + PC_TextureRegistry.getTextureName(PCws_App.instance, "block_chip.png"));
 
 		// push 2
 		PC_Renderer.glPushMatrix();

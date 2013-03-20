@@ -12,7 +12,6 @@ import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
-import powercraft.api.registry.PC_ModuleRegistry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
@@ -149,7 +148,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 		float f1 = meta2angle[getBlockMetadata()];
 
-		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir() + "laser.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCli_App.instance, "laser.png"));
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);

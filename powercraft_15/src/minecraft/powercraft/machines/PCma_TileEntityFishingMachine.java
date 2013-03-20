@@ -14,7 +14,6 @@ import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.block.PC_Block;
-import powercraft.api.registry.PC_ModuleRegistry;
 import powercraft.api.registry.PC_RecipeRegistry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.renderer.PC_Renderer;
@@ -192,7 +191,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glTranslatef((float) x + 0.5f, (float) y, (float) z + 0.5f);
 		float f4 = 0.75F;
-		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir() + "fisher.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCma_App.instance, "fisher.png"));
 		int rota = GameInfo.getMD(worldObj, getCoord().offset(0, 1, 0));
 		if (rota == 2){
 			rota = 270;

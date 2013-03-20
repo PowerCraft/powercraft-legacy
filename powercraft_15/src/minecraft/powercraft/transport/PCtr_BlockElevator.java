@@ -228,18 +228,6 @@ public class PCtr_BlockElevator extends PC_Block
     }
 
     @Override
-    public int getBlockColor()
-    {
-        return 0xffffff;
-    }
-
-    @Override
-    public int getRenderColor(int i)
-    {
-        return i == 0 ? 0xffffff : 0xff9999;
-    }
-
-    @Override
     public int colorMultiplier(IBlockAccess world, int i, int j, int k)
     {
         return getRenderColor(world.getBlockMetadata(i, j, k));

@@ -6,7 +6,6 @@ import net.minecraft.world.World;
 import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.PC_VecF;
 import powercraft.api.annotation.PC_ClientServerSync;
-import powercraft.api.registry.PC_ModuleRegistry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
@@ -187,7 +186,7 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
 		
-		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir() + "block_radio.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCnt_App.instance, "block_radio.png"));
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);

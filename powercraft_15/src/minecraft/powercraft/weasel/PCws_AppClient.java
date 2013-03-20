@@ -74,8 +74,7 @@ public class PCws_AppClient extends PCws_App {
 	}
 
 	@PC_LoadTextureFiles
-	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add("tiles.png");
+	public List<String> loadTextureFiles(List<String> textures) {;
 		textures.add("block_chip.png");
 		return textures;
 	}
