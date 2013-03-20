@@ -18,7 +18,7 @@ public class PC_FileRequestThread extends Thread {
 	public void run(){
 		JFileChooser chooser = new JFileChooser(PC_UpdateManager.downloadTarget);
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		int returnVal = chooser.showDialog(null, "Select Download Directory");
+		int returnVal = chooser.showDialog(null, "Select directory of downloaded files");
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
 			PC_UpdateManager.setDownloadTarget(chooser.getSelectedFile());
 		}
