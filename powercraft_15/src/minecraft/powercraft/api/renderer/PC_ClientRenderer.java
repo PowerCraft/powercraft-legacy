@@ -415,7 +415,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	@Override
 	protected boolean iSwapTerrain(Block block) {
 		if (block instanceof PC_Block && !block.getTextureFile().equalsIgnoreCase("/terrain.png")) {
-			swapTerrain(block.getTextureFile());
+			swapTerrain(((PC_Block)block).getTextureFile());
 			return true;
 		}
 		return false;
