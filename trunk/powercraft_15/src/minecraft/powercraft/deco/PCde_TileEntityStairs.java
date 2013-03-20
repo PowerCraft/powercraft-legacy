@@ -19,7 +19,7 @@ public class PCde_TileEntityStairs extends PC_TileEntity implements PC_ITileEnti
 
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
-		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir() + "block_deco.png");
+		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCde_App.instance, "block_deco.png"));
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);

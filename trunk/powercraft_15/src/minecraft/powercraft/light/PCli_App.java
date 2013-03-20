@@ -8,6 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module.PC_Instance;
+import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_Item;
@@ -34,6 +36,8 @@ public class PCli_App{
     public static PC_Block laserSensor;
 	@PC_FieldObject(clazz=PCli_ItemLaserComposition.class)
     public static PC_Item laserComposition;
+	@PC_Instance
+	public static PC_ModuleObject instance;
 
 	@PC_InitRecipes
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {

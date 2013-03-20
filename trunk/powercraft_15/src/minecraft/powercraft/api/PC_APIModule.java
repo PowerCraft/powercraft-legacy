@@ -6,17 +6,6 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.src.ModLoader;
-import powercraft.launcher.PC_LauncherUtils;
-import powercraft.launcher.PC_Logger;
-import powercraft.launcher.loader.PC_ModLoader;
-import powercraft.launcher.loader.PC_Module;
-import powercraft.launcher.loader.PC_ModuleObject;
-import powercraft.launcher.loader.PC_Module.PC_Init;
-import powercraft.launcher.loader.PC_Module.PC_InitProperties;
-import powercraft.launcher.loader.PC_Module.PC_Instance;
-import powercraft.launcher.loader.PC_Module.PC_PostInit;
-import powercraft.launcher.loader.PC_Module.PC_PreInit;
-import powercraft.launcher.PC_Property;
 import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
@@ -44,6 +33,17 @@ import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.registry.PC_TickRegistry;
 import powercraft.api.thread.PC_ThreadManager;
 import powercraft.api.tick.PC_ITickHandler;
+import powercraft.launcher.PC_LauncherUtils;
+import powercraft.launcher.PC_Logger;
+import powercraft.launcher.PC_Property;
+import powercraft.launcher.loader.PC_ModLoader;
+import powercraft.launcher.loader.PC_Module;
+import powercraft.launcher.loader.PC_Module.PC_Init;
+import powercraft.launcher.loader.PC_Module.PC_InitProperties;
+import powercraft.launcher.loader.PC_Module.PC_Instance;
+import powercraft.launcher.loader.PC_Module.PC_PostInit;
+import powercraft.launcher.loader.PC_Module.PC_PreInit;
+import powercraft.launcher.loader.PC_ModuleObject;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @PC_Module(name = "Api", version = "3.5.0", modLoader = PC_ModLoader.FORGE_MODLOADER)
@@ -54,7 +54,7 @@ public class PC_APIModule {
 	private static PC_CommonProxy proxy;
 
 	@PC_Instance
-	private static PC_APIModule instance;
+	private static PC_ModuleObject instance;
 
 	static {
 		try {
@@ -124,7 +124,7 @@ public class PC_APIModule {
 						.loadTextureFiles(new ArrayList<String>());
 				if (l != null) {
 					for (String file : l) {
-						PC_TextureRegistry.registerTexture(PC_TextureRegistry.getPowerCraftImageDir() + file);
+						PC_TextureRegistry.registerTexture(PC_TextureRegistry.getPowerCraftImageDir() + PC_TextureRegistry.getTextureName(module, file));
 					}
 				}
 			}
@@ -359,7 +359,7 @@ public class PC_APIModule {
 	}
 
 	public static PC_APIModule getInstance() {
-		return instance;
+		return (PC_APIModule)instance.getModule();
 	}
 
 }

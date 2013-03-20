@@ -103,7 +103,7 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
     
     @Override
 	public String getArmorTextureFile(ItemStack itemstack) {
-		return armorTexture;
+		return PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(module, armorTexture);
 	}
     
     @Override
@@ -115,7 +115,7 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
 	@SideOnly(Side.CLIENT)
 	public void func_94581_a(IconRegister par1IconRegister){
 		for(int i=0; i<textureNames.length; i++){
-			icons[i] = par1IconRegister.func_94245_a(textureNames[i]);
+			icons[i] = par1IconRegister.func_94245_a(PC_TextureRegistry.getTextureName(module, textureNames[i]));
 		}
 	}
 

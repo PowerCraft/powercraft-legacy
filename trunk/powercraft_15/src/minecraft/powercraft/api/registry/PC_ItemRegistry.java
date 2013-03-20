@@ -117,8 +117,8 @@ public final class PC_ItemRegistry {
 			PC_MSGRegistry.registerMSGObject(itemArmor);
 			itemArmors.put(itemArmorClass.getSimpleName(),
 					itemArmor);
-			itemArmor.setUnlocalizedName(itemArmorClass.getSimpleName());
 			itemArmor.setModule(module);
+			itemArmor.setUnlocalizedName(itemArmorClass.getSimpleName());
 			
 			itemArmor.msg(PC_MSGRegistry.MSG_LOAD_FROM_CONFIG, config);
 

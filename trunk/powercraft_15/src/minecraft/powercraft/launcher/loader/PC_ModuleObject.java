@@ -283,7 +283,7 @@ public class PC_ModuleObject {
 					if(module!=null){
 						f.setAccessible(true);
 						try {
-							f.set(this.module, module.module);
+							f.set(this.module, module);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

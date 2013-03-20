@@ -22,8 +22,10 @@ import powercraft.launcher.loader.PC_Module.PC_InitDataHandlers;
 import powercraft.launcher.loader.PC_Module.PC_InitPacketHandlers;
 import powercraft.launcher.loader.PC_Module.PC_InitProperties;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module.PC_Instance;
 import powercraft.launcher.loader.PC_Module.PC_PreInit;
 import powercraft.launcher.loader.PC_Module.PC_RegisterContainers;
+import powercraft.launcher.loader.PC_ModuleObject;
 
 @PC_Module(name="Weasel", version="1.1.0")
 public class PCws_App {
@@ -42,6 +44,8 @@ public class PCws_App {
 	public static PC_Item weaselTransistor;
 	@PC_FieldObject(clazz=PCws_ItemSilicon.class)
 	public static PC_Item ingotSilicon;
+	@PC_Instance
+	public static PC_ModuleObject instance;
 	
 	@PC_PreInit
 	public void preInit() {

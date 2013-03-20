@@ -19,8 +19,10 @@ import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_Init;
 import powercraft.launcher.loader.PC_Module.PC_InitProperties;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module.PC_Instance;
 import powercraft.launcher.loader.PC_Module.PC_PostInit;
 import powercraft.launcher.loader.PC_Module.PC_RegisterContainers;
+import powercraft.launcher.loader.PC_ModuleObject;
 
 @PC_Module(name="Machines", version="1.1.0")
 public class PCma_App{
@@ -45,6 +47,8 @@ public class PCma_App{
     public static PC_Block chunkLoader;
     
     public static List<Integer> roasterIgnoreBlockIDs;
+    @PC_Instance
+	public static PC_ModuleObject instance;
 
 	@PC_Init
 	public void init() {

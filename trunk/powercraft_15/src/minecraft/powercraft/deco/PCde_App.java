@@ -6,6 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module.PC_Instance;
+import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_ItemStack;
@@ -26,6 +28,8 @@ public class PCde_App {
 	public static PC_Block platform;
 	@PC_FieldObject(clazz=PCde_BlockStairs.class)
 	public static PC_Block stairs;
+	@PC_Instance
+	public static PC_ModuleObject instance;
 	
 	@PC_InitRecipes
 	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
