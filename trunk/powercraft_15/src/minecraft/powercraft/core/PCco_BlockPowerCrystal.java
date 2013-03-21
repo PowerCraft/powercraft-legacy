@@ -160,7 +160,6 @@ public class PCco_BlockPowerCrystal extends PC_BlockOre
     }
 
     public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer){
-        PC_Renderer.swapTerrain(block);
         Random posRand = new Random(metadata);
 
         for (int q = 3 + posRand.nextInt(3); q > 0; q--)
@@ -177,12 +176,10 @@ public class PCco_BlockPowerCrystal extends PC_BlockOre
         }
 
         ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
-        PC_Renderer.resetTerrain(true);
     }
 
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
         PC_Renderer.tessellatorDraw();
-        PC_Renderer.swapTerrain(block);
         PC_Renderer.tessellatorStartDrawingQuads();
         Random posRand = new Random(x + x * y * z + z + world.getBlockMetadata(x, y, z));
 
@@ -201,7 +198,6 @@ public class PCco_BlockPowerCrystal extends PC_BlockOre
 
         ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
         PC_Renderer.tessellatorDraw();
-        PC_Renderer.resetTerrain(true);
         PC_Renderer.tessellatorStartDrawingQuads();
     }
     

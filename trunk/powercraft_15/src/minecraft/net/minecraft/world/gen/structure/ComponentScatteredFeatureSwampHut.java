@@ -48,10 +48,10 @@ public class ComponentScatteredFeatureSwampHut extends ComponentScatteredFeature
             this.placeBlockAtCurrentPosition(par1World, Block.cauldron.blockID, 0, 4, 2, 6, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, 1, 2, 1, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, 5, 2, 1, par3StructureBoundingBox);
-            int i = this.getMetadataWithOffset(Block.stairCompactPlanks.blockID, 3);
-            int j = this.getMetadataWithOffset(Block.stairCompactPlanks.blockID, 1);
-            int k = this.getMetadataWithOffset(Block.stairCompactPlanks.blockID, 0);
-            int l = this.getMetadataWithOffset(Block.stairCompactPlanks.blockID, 2);
+            int i = this.getMetadataWithOffset(Block.stairsWoodOak.blockID, 3);
+            int j = this.getMetadataWithOffset(Block.stairsWoodOak.blockID, 1);
+            int k = this.getMetadataWithOffset(Block.stairsWoodOak.blockID, 0);
+            int l = this.getMetadataWithOffset(Block.stairsWoodOak.blockID, 2);
             this.fillWithMetadataBlocks(par1World, par3StructureBoundingBox, 0, 4, 1, 6, 4, 1, Block.stairsWoodSpruce.blockID, i, Block.stairsWoodSpruce.blockID, i, false);
             this.fillWithMetadataBlocks(par1World, par3StructureBoundingBox, 0, 4, 2, 0, 4, 7, Block.stairsWoodSpruce.blockID, k, Block.stairsWoodSpruce.blockID, k, false);
             this.fillWithMetadataBlocks(par1World, par3StructureBoundingBox, 6, 4, 2, 6, 4, 7, Block.stairsWoodSpruce.blockID, j, Block.stairsWoodSpruce.blockID, j, false);

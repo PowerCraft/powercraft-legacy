@@ -26,7 +26,7 @@ public class BlockLeaves extends BlockLeavesBase implements IShearable
     public static final String[][] field_94396_b = new String[][] {{"leaves", "leaves_spruce", "leaves", "leaves_jungle"}, {"leaves_opaque", "leaves_spruce_opaque", "leaves_opaque", "leaves_jungle_opaque"}};
     @SideOnly(Side.CLIENT)
     private int field_94394_cP;
-    private Icon[][] field_94395_cQ = new Icon[2][];
+    private Icon[][] iconArray = new Icon[2][];
     int[] adjacentTreeBlocks;
 
     protected BlockLeaves(int par1)
@@ -256,7 +256,7 @@ public class BlockLeaves extends BlockLeavesBase implements IShearable
     private void removeLeaves(World par1World, int par2, int par3, int par4)
     {
         this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-        par1World.func_94571_i(par2, par3, par4);
+        par1World.setBlockToAir(par2, par3, par4);
     }
 
     /**
@@ -357,7 +357,7 @@ public class BlockLeaves extends BlockLeavesBase implements IShearable
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return (par2 & 3) == 1 ? this.field_94395_cQ[this.field_94394_cP][1] : ((par2 & 3) == 3 ? this.field_94395_cQ[this.field_94394_cP][3] : this.field_94395_cQ[this.field_94394_cP][0]);
+        return (par2 & 3) == 1 ? this.iconArray[this.field_94394_cP][1] : ((par2 & 3) == 3 ? this.iconArray[this.field_94394_cP][3] : this.iconArray[this.field_94394_cP][0]);
     }
 
     @SideOnly(Side.CLIENT)
@@ -394,15 +394,20 @@ public class BlockLeaves extends BlockLeavesBase implements IShearable
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
         for (int i = 0; i < field_94396_b.length; ++i)
         {
-            this.field_94395_cQ[i] = new Icon[field_94396_b[i].length];
+            this.iconArray[i] = new Icon[field_94396_b[i].length];
 
             for (int j = 0; j < field_94396_b[i].length; ++j)
             {
-                this.field_94395_cQ[i][j] = par1IconRegister.func_94245_a(field_94396_b[i][j]);
+                this.iconArray[i][j] = par1IconRegister.registerIcon(field_94396_b[i][j]);
             }
         }
     }

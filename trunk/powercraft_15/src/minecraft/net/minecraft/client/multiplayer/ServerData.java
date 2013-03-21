@@ -27,7 +27,7 @@ public class ServerData
     public int field_82821_f = 60;
 
     /** Game version for this server. */
-    public String gameVersion = "1.5";
+    public String gameVersion = "1.5.1";
     public boolean field_78841_f = false;
     private boolean field_78842_g = true;
     private boolean acceptsTextures = false;

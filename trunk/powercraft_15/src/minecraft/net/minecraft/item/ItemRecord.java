@@ -107,8 +107,8 @@ public class ItemRecord extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.func_94245_a("record_" + this.recordName);
+        this.iconIndex = par1IconRegister.registerIcon("record_" + this.recordName);
     }
 }

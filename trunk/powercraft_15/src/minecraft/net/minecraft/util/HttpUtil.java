@@ -196,7 +196,7 @@ public class HttpUtil
                 }
                 else
                 {
-                    par0ILogAgent.func_98236_b("Failed to authenticae: " + s2);
+                    par0ILogAgent.logWarning("Failed to authenticae: " + s2);
                 }
 
                 return null;
@@ -215,7 +215,7 @@ public class HttpUtil
             }
             else
             {
-                par0ILogAgent.func_98236_b("Failed to authenticate: Can\'t connect to minecraft.net");
+                par0ILogAgent.logWarning("Failed to authenticate: Can\'t connect to minecraft.net");
             }
 
             return null;

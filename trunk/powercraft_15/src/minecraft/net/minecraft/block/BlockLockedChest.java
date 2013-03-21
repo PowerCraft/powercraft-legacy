@@ -27,9 +27,14 @@ public class BlockLockedChest extends Block
      */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        par1World.func_94571_i(par2, par3, par4);
+        par1World.setBlockToAir(par2, par3, par4);
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister) {}
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister) {}
 }

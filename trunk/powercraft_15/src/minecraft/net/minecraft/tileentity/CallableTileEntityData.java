@@ -4,16 +4,16 @@ import java.util.concurrent.Callable;
 
 class CallableTileEntityData implements Callable
 {
-    final TileEntity field_94612_a;
+    final TileEntity theTileEntity;
 
     CallableTileEntityData(TileEntity par1TileEntity)
     {
-        this.field_94612_a = par1TileEntity;
+        this.theTileEntity = par1TileEntity;
     }
 
-    public String func_94611_a()
+    public String callTileEntityDataInfo()
     {
-        int i = this.field_94612_a.worldObj.getBlockMetadata(this.field_94612_a.xCoord, this.field_94612_a.yCoord, this.field_94612_a.zCoord);
+        int i = this.theTileEntity.worldObj.getBlockMetadata(this.theTileEntity.xCoord, this.theTileEntity.yCoord, this.theTileEntity.zCoord);
 
         if (i < 0)
         {
@@ -28,6 +28,6 @@ class CallableTileEntityData implements Callable
 
     public Object call()
     {
-        return this.func_94611_a();
+        return this.callTileEntityDataInfo();
     }
 }

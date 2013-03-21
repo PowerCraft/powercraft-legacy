@@ -7,20 +7,20 @@ import java.util.concurrent.Callable;
 @SideOnly(Side.CLIENT)
 class CallableScreenName implements Callable
 {
-    final EntityRenderer field_90032_a;
+    final EntityRenderer entityRender;
 
     CallableScreenName(EntityRenderer par1EntityRenderer)
     {
-        this.field_90032_a = par1EntityRenderer;
+        this.entityRender = par1EntityRenderer;
     }
 
-    public String func_90031_a()
+    public String callScreenName()
     {
-        return EntityRenderer.getRendererMinecraft(this.field_90032_a).currentScreen.getClass().getCanonicalName();
+        return EntityRenderer.getRendererMinecraft(this.entityRender).currentScreen.getClass().getCanonicalName();
     }
 
     public Object call()
     {
-        return this.func_90031_a();
+        return this.callScreenName();
     }
 }

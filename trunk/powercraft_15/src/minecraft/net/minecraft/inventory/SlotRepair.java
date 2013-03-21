@@ -83,7 +83,7 @@ class SlotRepair extends Slot
 
             if (k > 2)
             {
-                this.theWorld.func_94571_i(this.blockPosX, this.blockPosY, this.blockPosZ);
+                this.theWorld.setBlockToAir(this.blockPosX, this.blockPosY, this.blockPosZ);
                 this.theWorld.playAuxSFX(1020, this.blockPosX, this.blockPosY, this.blockPosZ, 0);
             }
             else

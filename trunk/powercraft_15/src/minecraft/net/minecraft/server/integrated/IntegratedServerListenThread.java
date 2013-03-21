@@ -25,7 +25,7 @@ public class IntegratedServerListenThread extends NetworkListenThread
     public IntegratedServerListenThread(IntegratedServer par1IntegratedServer) throws IOException
     {
         super(par1IntegratedServer);
-        this.netMemoryConnection = new MemoryConnection(par1IntegratedServer.func_98033_al(), (NetHandler)null);
+        this.netMemoryConnection = new MemoryConnection(par1IntegratedServer.getLogAgent(), (NetHandler)null);
     }
 
     public void func_71754_a(MemoryConnection par1MemoryConnection, String par2Str)
@@ -74,7 +74,7 @@ public class IntegratedServerListenThread extends NetworkListenThread
 
         if (this.myServerListenThread != null)
         {
-            this.getIntegratedServer().func_98033_al().func_98233_a("Stopping server connection");
+            this.getIntegratedServer().getLogAgent().logInfo("Stopping server connection");
             this.myServerListenThread.func_71768_b();
             this.myServerListenThread.interrupt();
             this.myServerListenThread = null;

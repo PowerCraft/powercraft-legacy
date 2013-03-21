@@ -11,13 +11,13 @@ class CallableLevelSeed implements Callable
         this.worldInfoInstance = par1WorldInfo;
     }
 
-    public String func_85142_a()
+    public String callLevelSeed()
     {
         return String.valueOf(this.worldInfoInstance.getSeed());
     }
 
     public Object call()
     {
-        return this.func_85142_a();
+        return this.callLevelSeed();
     }
 }

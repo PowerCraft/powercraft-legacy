@@ -118,21 +118,19 @@ public class MappedInventoryAccess implements IInventory
         accessors.add(accessor);
         reset();
     }
-    
-    @Override
-    public boolean func_94041_b(int slot, ItemStack stack)
-    {
-        return inv.func_94041_b(slotMap.get(slot), stack);
-    }
-    
-    @Override
-    public boolean func_94042_c()
-    {
-        return true;
-    }
 
     public List<InventoryAccessor> accessors()
     {
         return accessors;
     }
+
+	@Override
+	public boolean isInvNameLocalized() {
+		return true;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return inv.isStackValidForSlot(i, itemstack);
+	}
 }

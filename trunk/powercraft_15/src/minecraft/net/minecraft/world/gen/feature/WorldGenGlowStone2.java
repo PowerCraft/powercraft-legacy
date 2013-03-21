@@ -18,7 +18,7 @@ public class WorldGenGlowStone2 extends WorldGenerator
         }
         else
         {
-            par1World.setBlockAndMetadataWithNotify(par3, par4, par5, Block.glowStone.blockID, 0, 2);
+            par1World.setBlock(par3, par4, par5, Block.glowStone.blockID, 0, 2);
 
             for (int l = 0; l < 1500; ++l)
             {
@@ -72,7 +72,7 @@ public class WorldGenGlowStone2 extends WorldGenerator
 
                     if (l1 == 1)
                     {
-                        par1World.setBlockAndMetadataWithNotify(i1, j1, k1, Block.glowStone.blockID, 0, 2);
+                        par1World.setBlock(i1, j1, k1, Block.glowStone.blockID, 0, 2);
                     }
                 }
             }

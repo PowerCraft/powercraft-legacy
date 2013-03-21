@@ -16,16 +16,11 @@ import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.inventory.PC_ISpecialAccessInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.tileentity.PC_TileEntityWithInventory;
 
-public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
-{
+public class PCma_TileEntityReplacer extends PC_TileEntityWithInventory{
 	
 	private static Random rand = new Random();
-	
-    public ItemStack buildBlock;
-
-    private static final int MAXSTACK = 1;
-    private static final int SIZE = 1;
 
     @PC_ClientServerSync
     private PC_VecI coordOffset = new PC_VecI(0, 1, 0);
@@ -39,6 +34,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
     public int extraMeta = -1;
     
     public PCma_TileEntityReplacer(){
+    	super("Block Replacer", 1);
     	float used = 2.0f;
         float r = rand.nextFloat();
         used -= r;
@@ -191,77 +187,16 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
     }
 
     @Override
-    public int getSizeInventory()
-    {
-        return SIZE;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int i)
-    {
-        return buildBlock;
-    }
-
-    @Override
-    public ItemStack decrStackSize(int i, int j)
-    {
-        if (j > 0)
-        {
-            ItemStack itemStack = buildBlock;
-            buildBlock = null;
-            return itemStack;
-        }
-
-        return null;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int i)
-    {
-        if (buildBlock != null)
-        {
-            ItemStack itemstack = buildBlock;
-            buildBlock = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
     public void setInventorySlotContents(int i, ItemStack itemstack)
     {
     	extraMeta = -1;
-        buildBlock = itemstack;
-
-        if (itemstack != null && itemstack.stackSize > getInventoryStackLimit())
-        {
-            itemstack.stackSize = getInventoryStackLimit();
-        }
-
-        onInventoryChanged();
-    }
-
-    @Override
-    public String getInvName()
-    {
-        return "Block Replacer";
+        super.setInventorySlotContents(i, itemstack);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbttagcompound)
     {
         super.readFromNBT(nbttagcompound);
-        NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
-
-        if (nbttaglist.tagCount() > 0)
-        {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(0);
-            buildBlock = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-        }
-        
         extraMeta = nbttagcompound.getInteger("extraMeta");
 
     }
@@ -270,94 +205,19 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
     public void writeToNBT(NBTTagCompound nbttagcompound)
     {
         super.writeToNBT(nbttagcompound);
-        NBTTagList nbttaglist = new NBTTagList();
-
-        if (buildBlock != null)
-        {
-            NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-            buildBlock.writeToNBT(nbttagcompound1);
-            nbttaglist.appendTag(nbttagcompound1);
-        }
-
-        nbttagcompound.setTag("Items", nbttaglist);
         nbttagcompound.setInteger("extraMeta", extraMeta);
     }
 
     @Override
     public int getInventoryStackLimit()
     {
-        return MAXSTACK;
+        return 1;
     }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer entityplayer)
-    {
-        return false;
-    }
-
-    @Override
-    public void openChest()
-    {
-    }
-
-    @Override
-    public void closeChest()
-    {
-    }
-
-    @Override
-    public boolean insertStackIntoInventory(ItemStack stack)
-    {
-        return PC_InventoryUtils.storeItemStackToInventoryFrom(this, stack, -1);
-    }
-
-    @Override
-    public boolean canDispenseStackFrom(int slot)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean needsSpecialInserter()
-    {
-        return false;
-    }
-
+    
     @Override
     public boolean canUpdate()
     {
         return true;
     }
-
-    @Override
-    public boolean canMachineInsertStackTo(int slot, ItemStack stack)
-    {
-        return canPlayerInsertStackTo(slot, stack);
-    }
-    
-    @Override
-	public boolean canDropStackFrom(int slot) {
-		return true;
-	}
-
-	@Override
-	public int getSlotStackLimit(int slotIndex) {
-		return getInventoryStackLimit();
-	}
-
-	@Override
-	public boolean canPlayerTakeStack(int slotIndex, EntityPlayer entityPlayer) {
-		return true;
-	}
-
-	@Override
-	public boolean func_94042_c() {
-		return false;
-	}
-
-	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack) {
-		return false;
-	}
     
 }

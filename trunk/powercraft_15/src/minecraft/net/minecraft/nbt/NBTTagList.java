@@ -12,8 +12,8 @@ import java.util.List;
 public class NBTTagList extends NBTBase
 {
     /** The array list containing the tags encapsulated in this list. */
-	//BY NEI
-    public List tagList = new ArrayList();
+	//NEI
+	public List tagList = new ArrayList();
 
     /**
      * The type byte for the tags in the list - they must all be of the same type.

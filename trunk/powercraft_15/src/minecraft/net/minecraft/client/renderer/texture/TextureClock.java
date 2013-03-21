@@ -15,7 +15,7 @@ public class TextureClock extends TextureStitched
         super("compass");
     }
 
-    public void func_94219_l()
+    public void updateAnimation()
     {
         Minecraft minecraft = Minecraft.getMinecraft();
         double d0 = 0.0D;
@@ -58,15 +58,15 @@ public class TextureClock extends TextureStitched
         this.field_94239_h += this.field_94240_i;
         int i;
 
-        for (i = (int)((this.field_94239_h + 1.0D) * (double)this.field_94226_b.size()) % this.field_94226_b.size(); i < 0; i = (i + this.field_94226_b.size()) % this.field_94226_b.size())
+        for (i = (int)((this.field_94239_h + 1.0D) * (double)this.textureList.size()) % this.textureList.size(); i < 0; i = (i + this.textureList.size()) % this.textureList.size())
         {
             ;
         }
 
-        if (i != this.field_94222_f)
+        if (i != this.frameCounter)
         {
-            this.field_94222_f = i;
-            this.field_94228_a.func_94281_a(this.field_94224_d, this.field_94225_e, (Texture)this.field_94226_b.get(this.field_94222_f), this.field_94227_c);
+            this.frameCounter = i;
+            this.textureSheet.copyFrom(this.originX, this.originY, (Texture)this.textureList.get(this.frameCounter), this.rotated);
         }
     }
 }

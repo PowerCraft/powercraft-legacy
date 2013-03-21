@@ -5,11 +5,11 @@ import net.minecraft.entity.Entity;
 
 class EntityAIAvoidEntitySelector implements IEntitySelector
 {
-    final EntityAIAvoidEntity field_98219_c;
+    final EntityAIAvoidEntity entityAvoiderAI;
 
     EntityAIAvoidEntitySelector(EntityAIAvoidEntity par1EntityAIAvoidEntity)
     {
-        this.field_98219_c = par1EntityAIAvoidEntity;
+        this.entityAvoiderAI = par1EntityAIAvoidEntity;
     }
 
     /**
@@ -17,6 +17,6 @@ class EntityAIAvoidEntitySelector implements IEntitySelector
      */
     public boolean isEntityApplicable(Entity par1Entity)
     {
-        return par1Entity.isEntityAlive() && EntityAIAvoidEntity.func_98217_a(this.field_98219_c).getEntitySenses().canSee(par1Entity);
+        return par1Entity.isEntityAlive() && EntityAIAvoidEntity.func_98217_a(this.entityAvoiderAI).getEntitySenses().canSee(par1Entity);
     }
 }

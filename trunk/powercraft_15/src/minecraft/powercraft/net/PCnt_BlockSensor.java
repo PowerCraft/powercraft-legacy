@@ -163,7 +163,6 @@ public class PCnt_BlockSensor extends PC_Block {
 	}
 
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer){
-		PC_Renderer.swapTerrain(getTextureFile());
 
 		float px = 0.0625F;
 
@@ -176,8 +175,6 @@ public class PCnt_BlockSensor extends PC_Block {
 		ValueWriting.setBlockBounds(block, 5 * px, 8 * px, 5 * px, 11 * px, 14 * px, 11 * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
 		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
-		
-		PC_Renderer.resetTerrain(true);
 	}
 	
 	@Override

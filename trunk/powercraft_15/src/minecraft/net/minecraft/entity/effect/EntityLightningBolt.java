@@ -44,7 +44,7 @@ public class EntityLightningBolt extends EntityWeatherEffect
 
             if (par1World.getBlockId(i, j, k) == 0 && Block.fire.canPlaceBlockAt(par1World, i, j, k))
             {
-                par1World.func_94575_c(i, j, k, Block.fire.blockID);
+                par1World.setBlock(i, j, k, Block.fire.blockID);
             }
 
             for (i = 0; i < 4; ++i)
@@ -55,7 +55,7 @@ public class EntityLightningBolt extends EntityWeatherEffect
 
                 if (par1World.getBlockId(j, k, l) == 0 && Block.fire.canPlaceBlockAt(par1World, j, k, l))
                 {
-                    par1World.func_94575_c(j, k, l, Block.fire.blockID);
+                    par1World.setBlock(j, k, l, Block.fire.blockID);
                 }
             }
         }
@@ -96,7 +96,7 @@ public class EntityLightningBolt extends EntityWeatherEffect
 
                     if (this.worldObj.getBlockId(i, j, k) == 0 && Block.fire.canPlaceBlockAt(this.worldObj, i, j, k))
                     {
-                        this.worldObj.func_94575_c(i, j, k, Block.fire.blockID);
+                        this.worldObj.setBlock(i, j, k, Block.fire.blockID);
                     }
                 }
             }

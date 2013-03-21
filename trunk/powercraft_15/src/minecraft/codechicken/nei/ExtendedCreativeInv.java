@@ -113,17 +113,15 @@ public class ExtendedCreativeInv implements IInventory
 	public void closeChest()
 	{
 	}
-	
+
 	@Override
-	public boolean func_94041_b(int slot, ItemStack stack)
-	{
-	    return true;
+	public boolean isInvNameLocalized() {
+		return true;
 	}
-	
+
 	@Override
-	public boolean func_94042_c()
-	{
-	    return true;
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return true;
 	}
 
 }

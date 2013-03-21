@@ -79,36 +79,35 @@ class GuiSlotOnlineServerList extends GuiSlot
     {
         McoServer mcoserver = (McoServer)GuiScreenOnlineServers.func_98094_c(this.field_96294_a).get(par1);
         this.field_96294_a.drawString(GuiScreenOnlineServers.func_98091_h(this.field_96294_a), mcoserver.func_96398_b(), par2 + 2, par3 + 1, 16777215);
+        short short1 = 207;
+        byte b0 = 1;
 
         if (mcoserver.field_98166_h)
         {
-            GuiScreenOnlineServers.func_98070_a(this.field_96294_a, par2 + 2, par3 + 12);
+            GuiScreenOnlineServers.func_101003_a(this.field_96294_a, par2 + short1, par3 + b0, this.mouseX, this.mouseY);
         }
         else if (mcoserver.field_96404_d.equals("CLOSED"))
         {
-            GuiScreenOnlineServers.func_98083_b(this.field_96294_a, par2 + 2, par3 + 12);
+            GuiScreenOnlineServers.func_101012_b(this.field_96294_a, par2 + short1, par3 + b0, this.mouseX, this.mouseY);
         }
         else
         {
-            GuiScreenOnlineServers.func_98077_c(this.field_96294_a, par2 + 2, par3 + 12);
-            this.func_96293_a(par1, par2, par3, mcoserver);
+            GuiScreenOnlineServers.func_101009_c(this.field_96294_a, par2 + short1, par3 + b0, this.mouseX, this.mouseY);
+            this.func_96293_a(par1, par2 - 14, par3, mcoserver);
         }
 
-        this.field_96294_a.drawString(GuiScreenOnlineServers.func_98084_i(this.field_96294_a), mcoserver.func_96397_a(), par2 + 2, par3 + 12 + 11, 3158064);
+        this.field_96294_a.drawString(GuiScreenOnlineServers.func_98084_i(this.field_96294_a), mcoserver.func_96397_a(), par2 + 2, par3 + 12, 7105644);
+        this.field_96294_a.drawString(GuiScreenOnlineServers.func_101005_j(this.field_96294_a), mcoserver.field_96405_e, par2 + 2, par3 + 12 + 11, 5000268);
     }
 
     private void func_96293_a(int par1, int par2, int par3, McoServer par4McoServer)
     {
         if (par4McoServer.field_96403_g != null)
         {
-            synchronized (GuiScreenOnlineServers.func_96170_h())
+            synchronized (GuiScreenOnlineServers.func_101007_h())
             {
-                if (GuiScreenOnlineServers.func_98082_i() < 5 && !par4McoServer.field_96411_l)
+                if (GuiScreenOnlineServers.func_101010_i() < 5 && (!par4McoServer.field_96411_l || par4McoServer.field_102022_m))
                 {
-                    par4McoServer.field_96411_l = true;
-                    par4McoServer.field_96412_m = -2L;
-                    par4McoServer.field_96414_k = "";
-                    GuiScreenOnlineServers.func_98093_j();
                     (new ThreadConnectToOnlineServer(this, par4McoServer)).start();
                 }
             }
@@ -119,17 +118,17 @@ class GuiSlotOnlineServerList extends GuiSlot
 
             if (par4McoServer.field_96414_k != null)
             {
-                this.field_96294_a.drawString(GuiScreenOnlineServers.func_96182_l(this.field_96294_a), par4McoServer.field_96414_k, par2 + 215 - GuiScreenOnlineServers.func_98079_k(this.field_96294_a).getStringWidth(par4McoServer.field_96414_k), par3 + 12, 8421504);
+                this.field_96294_a.drawString(GuiScreenOnlineServers.func_98079_k(this.field_96294_a), par4McoServer.field_96414_k, par2 + 215 - GuiScreenOnlineServers.func_98087_l(this.field_96294_a).getStringWidth(par4McoServer.field_96414_k), par3 + 12, 8421504);
             }
 
             if (flag2)
             {
                 String s = EnumChatFormatting.DARK_RED + par4McoServer.field_96413_j;
-                this.field_96294_a.drawString(GuiScreenOnlineServers.func_98087_l(this.field_96294_a), s, par2 + 200 - GuiScreenOnlineServers.func_98074_m(this.field_96294_a).getStringWidth(s), par3 + 1, 8421504);
+                this.field_96294_a.drawString(GuiScreenOnlineServers.func_98074_m(this.field_96294_a), s, par2 + 200 - GuiScreenOnlineServers.func_101000_n(this.field_96294_a).getStringWidth(s), par3 + 1, 8421504);
             }
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GuiScreenOnlineServers.func_98071_n(this.field_96294_a).renderEngine.func_98187_b("/gui/icons.png");
+            GuiScreenOnlineServers.func_101004_o(this.field_96294_a).renderEngine.bindTexture("/gui/icons.png");
             byte b0 = 0;
             boolean flag3 = false;
             String s1 = "";
@@ -170,6 +169,7 @@ class GuiSlotOnlineServerList extends GuiSlot
                 if (par4McoServer.field_96412_m < 0L)
                 {
                     s1 = "(no connection)";
+                    par4McoServer.field_96411_l = false;
                 }
                 else
                 {
@@ -189,12 +189,12 @@ class GuiSlotOnlineServerList extends GuiSlot
                 s1 = "Polling..";
             }
 
-            this.field_96294_a.drawTexturedModalRect(par2 + 205, par3, 0 + b0 * 10, 176 + l * 8, 10, 8);
+            this.field_96294_a.drawTexturedModalRect(par2 + 205, par3, b0 * 10, 176 + l * 8, 10, 8);
             byte b1 = 4;
 
             if (this.mouseX >= par2 + 205 - b1 && this.mouseY >= par3 - b1 && this.mouseX <= par2 + 205 + 10 + b1 && this.mouseY <= par3 + 8 + b1)
             {
-                GuiScreenOnlineServers.func_98085_a(this.field_96294_a, s1);
+                GuiScreenOnlineServers.func_101011_a(this.field_96294_a, s1);
             }
         }
     }

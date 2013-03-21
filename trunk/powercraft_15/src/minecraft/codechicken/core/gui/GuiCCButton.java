@@ -46,7 +46,7 @@ public class GuiCCButton extends GuiWidget
         if(!drawButton)
             return;
         
-        renderEngine.func_98187_b("/gui/gui.png");
+        renderEngine.bindTexture("/gui/gui.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         boolean mouseover = pointInside(mousex, mousey);
         int state = !isEnabled ? 0 : mouseover ? 2 : 1;

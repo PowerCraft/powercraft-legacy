@@ -61,7 +61,7 @@ public abstract class NetworkListenThread
                 }
 
                 FMLLog.log(Level.SEVERE, exception, "A critical server error occured handling a packet, kicking %s", netserverhandler.getPlayer().entityId);
-                this.mcServer.func_98033_al().func_98235_b("Failed to handle packet for " + netserverhandler.playerEntity.getEntityName() + "/" + netserverhandler.playerEntity.getPlayerIP() + ": " + exception, exception);
+                this.mcServer.getLogAgent().func_98235_b("Failed to handle packet for " + netserverhandler.playerEntity.getEntityName() + "/" + netserverhandler.playerEntity.getPlayerIP() + ": " + exception, exception);
                 netserverhandler.kickPlayerFromServer("Internal server error");
             }
 

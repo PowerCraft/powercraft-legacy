@@ -107,16 +107,14 @@ public class InventoryCopy implements IInventory
     public void onInventoryChanged()
     {
     }
-    
-    @Override
-    public boolean func_94041_b(int i, ItemStack itemstack)
-    {
-        return inv.func_94041_b(i, itemstack);
-    }
-    
-    @Override
-    public boolean func_94042_c()
-    {
-        return true;
-    }
+
+	@Override
+	public boolean isInvNameLocalized() {
+		return true;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return inv.isStackValidForSlot(i, itemstack);
+	}
 }

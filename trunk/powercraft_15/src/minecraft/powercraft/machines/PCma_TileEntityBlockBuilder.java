@@ -25,49 +25,23 @@ import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_SoundRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.tileentity.PC_TileEntityWithInventory;
 
-public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInventory {
+public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 
 	private static Random rand = new Random();
-	private ItemStack stacks[] = new ItemStack[9];
 	private PC_FakePlayer fakeplayer;
 
+	public PCma_TileEntityBlockBuilder() {
+		super("Block Builder", 9);
+	}
+	
 	/**
 	 * @return forge - can update; false
 	 */
 	@Override
 	public boolean canUpdate() {
 		return false;
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 9;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		return stacks[i];
-	}
-
-	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if (stacks[i] != null) {
-			if (stacks[i].stackSize <= j) {
-				ItemStack itemstack = stacks[i];
-				stacks[i] = null;
-				onInventoryChanged();
-				return itemstack;
-			}
-			ItemStack itemstack1 = stacks[i].splitStack(j);
-			if (stacks[i].stackSize == 0) {
-				stacks[i] = null;
-			}
-			onInventoryChanged();
-			return itemstack1;
-		} else {
-			return null;
-		}
 	}
 
 	/**
@@ -85,8 +59,8 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 		}
 		int i = -1;
 		int j = 1;
-		for (int k = 0; k < stacks.length; k++) {
-			if (stacks[k] != null && rand.nextInt(j++) == 0) {
+		for (int k = 0; k < inventoryContents.length; k++) {
+			if (inventoryContents[k] != null && rand.nextInt(j++) == 0) {
 				i = k;
 			}
 		}
@@ -268,75 +242,6 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 
 	private boolean isEmptyBlock(int id) {
 		return (id == 0 || id == 8 || id == 9 || id == 10 || id == 11 || id == Block.snow.blockID);
-	}
-
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		stacks[i] = itemstack;
-		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
-			itemstack.stackSize = getInventoryStackLimit();
-		}
-		onInventoryChanged();
-	}
-
-	@Override
-	public String getInvName() {
-		return "Block Dispenser";
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-
-		PC_InventoryUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
-
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-
-		PC_InventoryUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		}
-		return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
-	}
-
-	@Override
-	public void openChest() {}
-
-	@Override
-	public void closeChest() {}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) {
-		if (stacks[par1] != null) {
-			ItemStack itemstack = stacks[par1];
-			stacks[par1] = null;
-			return itemstack;
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	public boolean func_94042_c() {
-		return false;
-	}
-
-	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack) {
-		return true;
 	}
 
 }

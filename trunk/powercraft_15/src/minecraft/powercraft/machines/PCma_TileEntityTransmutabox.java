@@ -11,11 +11,10 @@ import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.registry.PC_RecipeRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.tileentity.PC_TileEntityWithInventory;
 
-public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IStateReportingInventory
-{
-	
-    private ItemStack[] itemStacks = new ItemStack[35];
+public class PCma_TileEntityTransmutabox extends PC_TileEntityWithInventory{
+
     private int burnTime = 0;
     @PC_ClientServerSync(clientChangeAble=false)
     private int loadTime = 0;
@@ -24,6 +23,10 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     private int needLoadTime = 0;
     @PC_ClientServerSync
     private boolean timeCritical = false;
+    
+    public PCma_TileEntityTransmutabox() {
+		super("Transmutabox Inventory", 35);
+	}
     
     public void setTimeCritical(boolean state) {
     	if(timeCritical!=state){
@@ -40,18 +43,6 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     }
 
     @Override
-    public boolean insertStackIntoInventory(ItemStack stack)
-    {
-        return PC_InventoryUtils.storeItemStackToInventoryFrom(this, stack, 11, 23);
-    }
-
-    @Override
-    public boolean needsSpecialInserter()
-    {
-        return true;
-    }
-
-    @Override
     public boolean canPlayerInsertStackTo(int slot, ItemStack stack)
     {
     	if (slot >= 1 && slot < 9)
@@ -64,7 +55,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     }
 
     @Override
-    public boolean canMachineInsertStackTo(int slot, ItemStack stack)
+    public boolean isStackValidForSlot(int slot, ItemStack stack)
     {
         if (slot == 0)
             return false;
@@ -95,183 +86,11 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     }
 
     @Override
-    public ItemStack getStackInSlot(int var1)
-    {
-        return itemStacks[var1];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int i, int j)
-    {
-    	if(i==9||i==10)
-    		return null;
-    	
-        if (itemStacks[i] != null)
-        {
-            if (itemStacks[i].stackSize <= j)
-            {
-                ItemStack itemstack = itemStacks[i];
-                itemStacks[i] = null;
-                onInventoryChanged();
-                return itemstack;
-            }
-
-            ItemStack itemstack1 = itemStacks[i].splitStack(j);
-
-            if (itemStacks[i].stackSize == 0)
-            {
-                itemStacks[i] = null;
-            }
-
-            onInventoryChanged();
-            return itemstack1;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int var1)
-    {
-        if (itemStacks[var1] != null)
-        {
-            ItemStack itemstack = itemStacks[var1];
-            itemStacks[var1] = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int var1, ItemStack var2)
-    {
-        itemStacks[var1] = var2;
-
-        if (var2 != null && var2.stackSize > getInventoryStackLimit())
-        {
-            var2.stackSize = getInventoryStackLimit();
-        }
-
-        onInventoryChanged();
-    }
-
-	@Override
-    public String getInvName()
-    {
-        return "Transmutabox Inventory";
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    @Override
 	public int getSlotStackLimit(int slot) {
 		if(slot==0)
 			return 1;
 		return 64;
 	}
-    
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer var1)
-    {
-        return true;
-    }
-
-    @Override
-    public void openChest() {}
-
-    @Override
-    public void closeChest() {}
-
-    @Override
-    public boolean isContainerEmpty()
-    {
-        for (int i = 1; i < 23; i++){
-        	if(i==9)
-        		i=11;
-            if (getStackInSlot(i) != null)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean isContainerFull()
-    {
-    	 for (int i = 1; i < 23; i++){
-         	if(i==9)
-         		i=11;
-            if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null)
-            {
-                return false;
-            }
-            else if (getStackInSlot(i) != null && getStackInSlot(i + 9) != null)
-            {
-                if (getStackInSlot(i).stackSize < Math.min(getStackInSlot(i).getMaxStackSize(), getInventoryStackLimit()))
-                {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean hasContainerNoFreeSlots()
-    {
-    	 for (int i = 1; i < 23; i++){
-         	if(i==9)
-         		i=11;
-            if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean hasInventoryPlaceFor(ItemStack itemStack)
-    {
-    	 for (int i = 1; i < 23; i++){
-         	if(i==9)
-         		i=11;
-            if (getStackInSlot(i) == null || (getStackInSlot(i).isItemEqual(itemStack) && getStackInSlot(i).stackSize < Math.min(getInventoryStackLimit(), getStackInSlot(i).getMaxStackSize())))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean isContainerEmptyOf(ItemStack itemStack)
-    {
-    	 for (int i = 1; i < 23; i++){
-         	if(i==9)
-         		i=11;
-            if (getStackInSlot(i) != null && !getStackInSlot(i).isItemEqual(itemStack))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
     
     private ItemStack getItemStackForConvertation(){
     	for(int i=11; i<23; i++){
@@ -292,60 +111,60 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
         if (!worldObj.isRemote)
         {
         	if(finished){
-        		if(itemStacks[0] != null){
+        		if(inventoryContents[0] != null){
         			
         			int free=0;
         			for(int i=23; i<35; i++){
-        				if(itemStacks[i] == null){
-        					free += Math.min(itemStacks[0].getMaxStackSize(), getInventoryStackLimit());
-        				}else if(itemStacks[i].isItemEqual(itemStacks[0])){
-        					free += Math.min(itemStacks[i].getMaxStackSize(), getInventoryStackLimit())-itemStacks[i].stackSize;
+        				if(inventoryContents[i] == null){
+        					free += Math.min(inventoryContents[0].getMaxStackSize(), getInventoryStackLimit());
+        				}else if(inventoryContents[i].isItemEqual(inventoryContents[0])){
+        					free += Math.min(inventoryContents[i].getMaxStackSize(), getInventoryStackLimit())-inventoryContents[i].stackSize;
         				}
         			}
         			
         			if(free>0){
         			
-        				float outRank = PCma_ItemRanking.getRank(new PC_ItemStack(itemStacks[0]));
+        				float outRank = PCma_ItemRanking.getRank(new PC_ItemStack(inventoryContents[0]));
         				if(outRank>0){
 		        			for(int i=11; i<23; i++){
-		        				if(itemStacks[i] != null){
-		        					if(itemStacks[i].isItemEqual(itemStacks[0])){
-		        						sendToOutput(itemStacks[i]);
-		        						itemStacks[i] = null;
+		        				if(inventoryContents[i] != null){
+		        					if(inventoryContents[i].isItemEqual(inventoryContents[0])){
+		        						sendToOutput(inventoryContents[i]);
+		        						inventoryContents[i] = null;
 		        					}else{
-		        						if(PCma_ItemRanking.getRank(new PC_ItemStack(itemStacks[i]))>0){
+		        						if(PCma_ItemRanking.getRank(new PC_ItemStack(inventoryContents[i]))>0){
 			        						if(timeCritical){
-				        						itemStacks[9] = itemStacks[i].copy();
-				        						itemStacks[i] = null;
+				        						inventoryContents[9] = inventoryContents[i].copy();
+				        						inventoryContents[i] = null;
 			        						}else{
-			        							itemStacks[9] = decrStackSize(i, 1);
+			        							inventoryContents[9] = decrStackSize(i, 1);
 			        						}
 		        						}
-				        	    		if(itemStacks[9]!=null)
+				        	    		if(inventoryContents[9]!=null)
 				        	    			break;
 		        					}
 		        				}
 		        	    	}
 		        			
-		        			if(itemStacks[9] != null){
+		        			if(inventoryContents[9] != null){
 		        				
-		        				float inRank = PCma_ItemRanking.getRank(new PC_ItemStack(itemStacks[9]));
+		        				float inRank = PCma_ItemRanking.getRank(new PC_ItemStack(inventoryContents[9]));
 		        				
 		        				if(outRank<=0 || inRank<=0)
 		        					return;
 		        				
-			        			itemStacks[10] = itemStacks[0].copy();
-		        				inRank *= itemStacks[9].stackSize;
+			        			inventoryContents[10] = inventoryContents[0].copy();
+		        				inRank *= inventoryContents[9].stackSize;
 		        				
 			        			if(!timeCritical){
 			        				
 			        				if(inRank>outRank){
 			        					int num = (int)(inRank/outRank);
-			        					int maxStack = Math.min(itemStacks[10].getMaxStackSize(), getInventoryStackLimit());
+			        					int maxStack = Math.min(inventoryContents[10].getMaxStackSize(), getInventoryStackLimit());
 			        					maxStack = Math.min(free, maxStack);
 			        					if(num>maxStack)
 			        						num = maxStack;
-			        					itemStacks[10].stackSize = num;
+			        					inventoryContents[10].stackSize = num;
 			        					outRank *= num;
 			        				}
 			        				
@@ -373,9 +192,9 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
 	            {
 	            	addToLoadTime(-needLoadTime);
 	                finished = true;
-	                sendToOutput(itemStacks[10]);
-	                itemStacks[9] = null;
-	                itemStacks[10] = null;
+	                sendToOutput(inventoryContents[10]);
+	                inventoryContents[9] = null;
+	                inventoryContents[10] = null;
 	            }
         	}
         }
@@ -400,7 +219,6 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     public void readFromNBT(NBTTagCompound nbttagcompound)
     {
         super.readFromNBT(nbttagcompound);
-        PC_InventoryUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
         burnTime = nbttagcompound.getInteger("burnTime");
         finished = nbttagcompound.getBoolean("finished");
     }
@@ -409,24 +227,8 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     public void writeToNBT(NBTTagCompound nbttagcompound)
     {
         super.writeToNBT(nbttagcompound);
-        PC_InventoryUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
         nbttagcompound.setInteger("burnTime", burnTime);
         nbttagcompound.setBoolean("finished", finished);
     }
-
-	@Override
-	public boolean canPlayerTakeStack(int slotIndex, EntityPlayer entityPlayer) {
-		return true;
-	}
-
-	@Override
-	public boolean func_94042_c() {
-		return false;
-	}
-
-	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack) {
-		return false;
-	}
     
 }

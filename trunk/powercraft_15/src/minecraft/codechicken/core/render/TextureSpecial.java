@@ -50,23 +50,23 @@ public class TextureSpecial extends TextureStitched implements IIconRegister
     }
     
     @Override
-    public void func_94218_a(Texture par1Texture, List par2List, int originX, int originY, int width, int height, boolean par7)
+    public void init(Texture par1Texture, List par2List, int originX, int originY, int width, int height, boolean par7)
     {
-        super.func_94218_a(par1Texture, par2List, originX, originY, width, height, par7);
+        super.init(par1Texture, par2List, originX, originY, width, height, par7);
         if(textureFX != null)
             textureFX.onTextureDimensionsUpdate(width, height);
     }
     
     @Override
-    public void func_94219_l()
+    public void updateAnimation()
     {
-        super.func_94219_l();
+        super.updateAnimation();
         
         if(textureFX != null)
         {
             textureFX.update();
             if(textureFX.changed())
-                TextureUtils.write(textureFX.imageData, textureFX.tileSizeBase, textureFX.tileSizeBase, field_94228_a, field_94224_d, field_94225_e);
+                TextureUtils.write(textureFX.imageData, textureFX.tileSizeBase, textureFX.tileSizeBase, textureSheet, originX, originY);
         }
     }
     
@@ -87,7 +87,7 @@ public class TextureSpecial extends TextureStitched implements IIconRegister
                 throw new RuntimeException("TextureFX with no base sprite: "+name);
             Texture base = (Texture) textures.get(0);
             //add 2 so we get the update call
-            textures.add(TextureUtils.createTextureObject(name+"$2", base.func_94275_d(), base.func_94276_e()));
+            textures.add(TextureUtils.createTextureObject(name+"$2", base.getWidth(), base.getHeight()));
         }
         
         if(!textures.isEmpty())
@@ -120,7 +120,7 @@ public class TextureSpecial extends TextureStitched implements IIconRegister
     {
         if(selfRegister)
         {
-            ((TextureMap)register).setTextureEntry(func_94215_i(), this);
+            ((TextureMap)register).setTextureEntry(getIconName(), this);
         }
     }
 }

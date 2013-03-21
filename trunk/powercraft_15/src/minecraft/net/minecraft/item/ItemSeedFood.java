@@ -39,7 +39,7 @@ public class ItemSeedFood extends ItemFood implements IPlantable
 
             if (soil != null && soil.canSustainPlant(par3World, par4, par5, par6, ForgeDirection.UP, this) && par3World.isAirBlock(par4, par5 + 1, par6))
             {
-                par3World.func_94575_c(par4, par5 + 1, par6, this.cropId);
+                par3World.setBlock(par4, par5 + 1, par6, this.cropId);
                 --par1ItemStack.stackSize;
                 return true;
             }

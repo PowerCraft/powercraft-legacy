@@ -270,7 +270,6 @@ public class PCnt_BlockRadio extends PC_Block {
 	}
 	
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer){
-		PC_Renderer.swapTerrain(this);
 
 		Icon icon = metadata == 0 ? icons[3]: icons[2];
 
@@ -288,8 +287,6 @@ public class PCnt_BlockRadio extends PC_Block {
 		ValueWriting.setBlockBounds(block, 7F * px, 12F * px, 7F * px, 9F * px, 14F * px, 9F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
 		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
-		
-		PC_Renderer.resetTerrain(true);
 
 	}
 	

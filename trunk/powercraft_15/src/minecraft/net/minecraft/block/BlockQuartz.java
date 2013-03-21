@@ -12,18 +12,18 @@ import net.minecraft.world.World;
 
 public class BlockQuartz extends Block
 {
-    public static final String[] field_94420_a = new String[] {"default", "chiseled", "lines"};
-    private static final String[] field_94418_b = new String[] {"quartzblock_side", "quartzblock_chiseled", "quartzblock_lines", null, null};
+    public static final String[] quartzBlockTypes = new String[] {"default", "chiseled", "lines"};
+    private static final String[] quartzBlockTextureTypes = new String[] {"quartzblock_side", "quartzblock_chiseled", "quartzblock_lines", null, null};
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94419_c;
+    private Icon[] quartzblockIcons;
     @SideOnly(Side.CLIENT)
-    private Icon field_94414_cO;
+    private Icon quartzblock_chiseled_top;
     @SideOnly(Side.CLIENT)
-    private Icon field_94415_cP;
+    private Icon quartzblock_lines_top;
     @SideOnly(Side.CLIENT)
-    private Icon field_94416_cQ;
+    private Icon quartzblock_top;
     @SideOnly(Side.CLIENT)
-    private Icon field_94417_cR;
+    private Icon quartzblock_bottom;
 
     public BlockQuartz(int par1)
     {
@@ -44,26 +44,26 @@ public class BlockQuartz extends Block
             {
                 if (par1 == 0)
                 {
-                    return this.field_94417_cR;
+                    return this.quartzblock_bottom;
                 }
                 else
                 {
-                    if (par2 < 0 || par2 >= this.field_94419_c.length)
+                    if (par2 < 0 || par2 >= this.quartzblockIcons.length)
                     {
                         par2 = 0;
                     }
 
-                    return this.field_94419_c[par2];
+                    return this.quartzblockIcons[par2];
                 }
             }
             else
             {
-                return par2 == 1 ? this.field_94414_cO : this.field_94416_cQ;
+                return par2 == 1 ? this.quartzblock_chiseled_top : this.quartzblock_top;
             }
         }
         else
         {
-            return par2 == 2 && (par1 == 1 || par1 == 0) ? this.field_94415_cP : (par2 == 3 && (par1 == 5 || par1 == 4) ? this.field_94415_cP : (par2 == 4 && (par1 == 2 || par1 == 3) ? this.field_94415_cP : this.field_94419_c[par2]));
+            return par2 == 2 && (par1 == 1 || par1 == 0) ? this.quartzblock_lines_top : (par2 == 3 && (par1 == 5 || par1 == 4) ? this.quartzblock_lines_top : (par2 == 4 && (par1 == 2 || par1 == 3) ? this.quartzblock_lines_top : this.quartzblockIcons[par2]));
         }
     }
 
@@ -131,25 +131,30 @@ public class BlockQuartz extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
-    {
-        this.field_94419_c = new Icon[field_94418_b.length];
 
-        for (int i = 0; i < this.field_94419_c.length; ++i)
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.quartzblockIcons = new Icon[quartzBlockTextureTypes.length];
+
+        for (int i = 0; i < this.quartzblockIcons.length; ++i)
         {
-            if (field_94418_b[i] == null)
+            if (quartzBlockTextureTypes[i] == null)
             {
-                this.field_94419_c[i] = this.field_94419_c[i - 1];
+                this.quartzblockIcons[i] = this.quartzblockIcons[i - 1];
             }
             else
             {
-                this.field_94419_c[i] = par1IconRegister.func_94245_a(field_94418_b[i]);
+                this.quartzblockIcons[i] = par1IconRegister.registerIcon(quartzBlockTextureTypes[i]);
             }
         }
 
-        this.field_94416_cQ = par1IconRegister.func_94245_a("quartzblock_top");
-        this.field_94414_cO = par1IconRegister.func_94245_a("quartzblock_chiseled_top");
-        this.field_94415_cP = par1IconRegister.func_94245_a("quartzblock_lines_top");
-        this.field_94417_cR = par1IconRegister.func_94245_a("quartzblock_bottom");
+        this.quartzblock_top = par1IconRegister.registerIcon("quartzblock_top");
+        this.quartzblock_chiseled_top = par1IconRegister.registerIcon("quartzblock_chiseled_top");
+        this.quartzblock_lines_top = par1IconRegister.registerIcon("quartzblock_lines_top");
+        this.quartzblock_bottom = par1IconRegister.registerIcon("quartzblock_bottom");
     }
 }

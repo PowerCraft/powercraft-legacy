@@ -35,7 +35,7 @@ public class TextureUtils
         }
         
         @Override
-        public void func_94143_a(IconRegister par1IconRegister)
+        public void updateIcons(IconRegister par1IconRegister)
         {
             for(IIconRegister r : iconRegistrars)
                 r.registerIcons(par1IconRegister);
@@ -118,11 +118,11 @@ public class TextureUtils
 
     public static void copySubImg(Texture fromTex, int fromX, int fromY, int width, int height, Texture toTex, int toX, int toY)
     {        
-        int fromWidth = fromTex.func_94275_d();        
-        int toWidth = toTex.func_94275_d();
+        int fromWidth = fromTex.getWidth();        
+        int toWidth = toTex.getHeight();
         
-        ByteBuffer from = fromTex.func_94273_h();
-        ByteBuffer to = toTex.func_94273_h();
+        ByteBuffer from = fromTex.getTextureData();
+        ByteBuffer to = toTex.getTextureData();
         from.position(0);
         to.position(0);
         
@@ -137,14 +137,14 @@ public class TextureUtils
                 to.put(tp+2, from.get(fp+2));
                 to.put(tp+3, from.get(fp+3));
             }
-        toTex.func_94272_a(new Rect2i(0, 0, 0, 0), 0);//set not generated
+        toTex.fillRect(new Rect2i(0, 0, 0, 0), 0);//set not generated
     }
 
     public static void write(byte[] data, int width, int height, Texture toTex, int toX, int toY)
     {    
-        int toWidth = toTex.func_94275_d();
+        int toWidth = toTex.getWidth();
         
-        ByteBuffer to = toTex.func_94273_h();
+        ByteBuffer to = toTex.getTextureData();
         to.position(0);
         
         for(int y = 0; y < height; y++)
@@ -158,8 +158,8 @@ public class TextureUtils
                 to.put(tp+2, data[fp+2]);
                 to.put(tp+3, data[fp+3]);
             }
-        toTex.func_94272_a(new Rect2i(0, 0, 0, 0), 0);//set not generated
-        to.position(toWidth * toTex.func_94276_e() * 4);
+        toTex.fillRect(new Rect2i(0, 0, 0, 0), 0);//set not generated
+        to.position(toWidth * toTex.getHeight() * 4);
     }
     
     public static boolean refreshTexture(TextureMap map, String name)
@@ -174,12 +174,12 @@ public class TextureUtils
 
     public static void bindItemTexture(ItemStack stack)
     {
-        engine().func_98187_b(stack.func_94608_d() == 0 ? "/terrain.png" : "/gui/items.png");
+        engine().bindTexture(stack.getItemSpriteNumber() == 0 ? "/terrain.png" : "/gui/items.png");
     }
 
     public static void bindTexture(String string)
     {
-        engine().func_98187_b(string);
+        engine().bindTexture(string);
     }
 
     public static Icon getIconFromTexture(String name, IconRegister iconRegister)

@@ -10,17 +10,17 @@ import net.minecraft.world.World;
 
 final class DispenserBehaviorEmptyBucket extends BehaviorDefaultDispenseItem
 {
-    private final BehaviorDefaultDispenseItem field_96460_b = new BehaviorDefaultDispenseItem();
+    private final BehaviorDefaultDispenseItem defaultDispenserItemBehavior = new BehaviorDefaultDispenseItem();
 
     /**
      * Dispense the specified stack, play the dispense sound and spawn particles.
      */
     public ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
     {
-        EnumFacing enumfacing = BlockDispenser.func_100009_j_(par1IBlockSource.func_82620_h());
+        EnumFacing enumfacing = BlockDispenser.getFacing(par1IBlockSource.getBlockMetadata());
         World world = par1IBlockSource.getWorld();
         int i = par1IBlockSource.getXInt() + enumfacing.getFrontOffsetX();
-        int j = par1IBlockSource.getYInt() + enumfacing.func_96559_d();
+        int j = par1IBlockSource.getYInt() + enumfacing.getFrontOffsetY();
         int k = par1IBlockSource.getZInt() + enumfacing.getFrontOffsetZ();
         Material material = world.getBlockMaterial(i, j, k);
         int l = world.getBlockMetadata(i, j, k);
@@ -40,16 +40,16 @@ final class DispenserBehaviorEmptyBucket extends BehaviorDefaultDispenseItem
             item = Item.bucketLava;
         }
 
-        world.func_94571_i(i, j, k);
+        world.setBlockToAir(i, j, k);
 
         if (--par2ItemStack.stackSize == 0)
         {
             par2ItemStack.itemID = item.itemID;
             par2ItemStack.stackSize = 1;
         }
-        else if (((TileEntityDispenser)par1IBlockSource.func_82619_j()).addItem(new ItemStack(item)) < 0)
+        else if (((TileEntityDispenser)par1IBlockSource.getBlockTileEntity()).addItem(new ItemStack(item)) < 0)
         {
-            this.field_96460_b.dispense(par1IBlockSource, new ItemStack(item));
+            this.defaultDispenserItemBehavior.dispense(par1IBlockSource, new ItemStack(item));
         }
 
         return par2ItemStack;

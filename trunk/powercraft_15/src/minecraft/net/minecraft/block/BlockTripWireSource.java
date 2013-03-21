@@ -160,7 +160,7 @@ public class BlockTripWireSource extends Block
                 if (flag)
                 {
                     this.dropBlockAsItem(par1World, par2, par3, par4, i1, 0);
-                    par1World.func_94571_i(par2, par3, par4);
+                    par1World.setBlockToAir(par2, par3, par4);
                 }
             }
         }
@@ -335,7 +335,7 @@ public class BlockTripWireSource extends Block
         if (!this.canPlaceBlockAt(par1World, par2, par3, par4))
         {
             this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
             return false;
         }
         else

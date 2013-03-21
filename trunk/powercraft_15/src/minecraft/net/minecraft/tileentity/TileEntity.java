@@ -158,7 +158,7 @@ public class TileEntity
         }
         else
         {
-            MinecraftServer.getServer().func_98033_al().func_98236_b("Skipping TileEntity with id " + par0NBTTagCompound.getString("id"));
+            MinecraftServer.getServer().getLogAgent().logWarning("Skipping TileEntity with id " + par0NBTTagCompound.getString("id"));
         }
 
         return tileentity;
@@ -208,7 +208,7 @@ public class TileEntity
     }
 
     @SideOnly(Side.CLIENT)
-    public double func_82115_m()
+    public double getMaxRenderDistanceSquared()
     {
         return 4096.0D;
     }

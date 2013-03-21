@@ -65,7 +65,7 @@ public class ItemHoe extends Item
                 }
                 else
                 {
-                    par3World.func_94575_c(par4, par5, par6, block.blockID);
+                    par3World.setBlock(par4, par5, par6, block.blockID);
                     par1ItemStack.damageItem(1, par2EntityPlayer);
                     return true;
                 }

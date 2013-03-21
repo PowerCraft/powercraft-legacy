@@ -48,5 +48,5 @@ public interface ITexturePack
 
     boolean func_98138_b(String s, boolean flag);
 
-    boolean func_94179_g();
+    boolean isCompatible();
 }

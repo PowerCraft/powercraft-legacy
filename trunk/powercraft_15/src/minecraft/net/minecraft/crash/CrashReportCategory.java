@@ -10,14 +10,14 @@ import net.minecraft.util.MathHelper;
 
 public class CrashReportCategory
 {
-    private final CrashReport field_85078_a;
+    private final CrashReport theCrashReport;
     private final String field_85076_b;
     private final List field_85077_c = new ArrayList();
     private StackTraceElement[] stackTrace = new StackTraceElement[0];
 
     public CrashReportCategory(CrashReport par1CrashReport, String par2Str)
     {
-        this.field_85078_a = par1CrashReport;
+        this.theCrashReport = par1CrashReport;
         this.field_85076_b = par2Str;
     }
 

@@ -11,7 +11,7 @@ final class CallableBlockDataValue implements Callable
         this.field_85063_a = par1;
     }
 
-    public String func_85062_a()
+    public String callBlockDataValue()
     {
         if (this.field_85063_a < 0)
         {
@@ -26,6 +26,6 @@ final class CallableBlockDataValue implements Callable
 
     public Object call()
     {
-        return this.func_85062_a();
+        return this.callBlockDataValue();
     }
 }

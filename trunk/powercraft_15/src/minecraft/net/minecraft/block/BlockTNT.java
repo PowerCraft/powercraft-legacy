@@ -36,7 +36,7 @@ public class BlockTNT extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 0 ? this.field_94392_b : (par1 == 1 ? this.field_94393_a : this.field_94336_cN);
+        return par1 == 0 ? this.field_94392_b : (par1 == 1 ? this.field_94393_a : this.blockIcon);
     }
 
     /**
@@ -49,7 +49,7 @@ public class BlockTNT extends Block
         if (par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
         {
             this.onBlockDestroyedByPlayer(par1World, par2, par3, par4, 1);
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
     }
 
@@ -62,7 +62,7 @@ public class BlockTNT extends Block
         if (par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
         {
             this.onBlockDestroyedByPlayer(par1World, par2, par3, par4, 1);
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
     }
 
@@ -116,7 +116,7 @@ public class BlockTNT extends Block
         if (par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().itemID == Item.flintAndSteel.itemID)
         {
             this.func_94391_a(par1World, par2, par3, par4, 1, par5EntityPlayer);
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
             return true;
         }
         else
@@ -137,7 +137,7 @@ public class BlockTNT extends Block
             if (entityarrow.isBurning())
             {
                 this.func_94391_a(par1World, par2, par3, par4, 1, entityarrow.shootingEntity instanceof EntityLiving ? (EntityLiving)entityarrow.shootingEntity : null);
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
             }
         }
     }
@@ -151,10 +151,15 @@ public class BlockTNT extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("tnt_side");
-        this.field_94393_a = par1IconRegister.func_94245_a("tnt_top");
-        this.field_94392_b = par1IconRegister.func_94245_a("tnt_bottom");
+        this.blockIcon = par1IconRegister.registerIcon("tnt_side");
+        this.field_94393_a = par1IconRegister.registerIcon("tnt_top");
+        this.field_94392_b = par1IconRegister.registerIcon("tnt_bottom");
     }
 }

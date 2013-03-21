@@ -230,7 +230,7 @@ public abstract class Entity
     public int dimension;
     protected int field_82152_aq;
     private boolean invulnerable;
-    private UUID field_96093_i;
+    private UUID entityUniqueID;
     public EnumEntitySize myEntitySize;
     /** Forge: Used to store custom data for each entity. */
     private NBTTagCompound customEntityData;
@@ -273,7 +273,7 @@ public abstract class Entity
         this.addedToChunk = false;
         this.field_82152_aq = 0;
         this.invulnerable = false;
-        this.field_96093_i = UUID.randomUUID();
+        this.entityUniqueID = UUID.randomUUID();
         this.myEntitySize = EnumEntitySize.SIZE_2;
         this.worldObj = par1World;
         this.setPosition(0.0D, 0.0D, 0.0D);
@@ -1544,8 +1544,8 @@ public abstract class Entity
             par1NBTTagCompound.setInteger("Dimension", this.dimension);
             par1NBTTagCompound.setBoolean("Invulnerable", this.invulnerable);
             par1NBTTagCompound.setInteger("PortalCooldown", this.timeUntilPortal);
-            par1NBTTagCompound.setLong("UUIDMost", this.field_96093_i.getMostSignificantBits());
-            par1NBTTagCompound.setLong("UUIDLeast", this.field_96093_i.getLeastSignificantBits());
+            par1NBTTagCompound.setLong("UUIDMost", this.entityUniqueID.getMostSignificantBits());
+            par1NBTTagCompound.setLong("UUIDLeast", this.entityUniqueID.getLeastSignificantBits());
             if (customEntityData != null)
             {
                 par1NBTTagCompound.setCompoundTag("ForgeData", customEntityData);
@@ -1615,7 +1615,7 @@ public abstract class Entity
 
             if (par1NBTTagCompound.hasKey("UUIDMost") && par1NBTTagCompound.hasKey("UUIDLeast"))
             {
-                this.field_96093_i = new UUID(par1NBTTagCompound.getLong("UUIDMost"), par1NBTTagCompound.getLong("UUIDLeast"));
+                this.entityUniqueID = new UUID(par1NBTTagCompound.getLong("UUIDMost"), par1NBTTagCompound.getLong("UUIDLeast"));
             }
 
             this.setPosition(this.posX, this.posY, this.posZ);
@@ -1627,7 +1627,7 @@ public abstract class Entity
             //Rawr, legacy code, Vanilla added a UUID, keep this so older maps will convert properly
             if (par1NBTTagCompound.hasKey("PersistentIDMSB") && par1NBTTagCompound.hasKey("PersistentIDLSB"))
             {
-                this.field_96093_i = new UUID(par1NBTTagCompound.getLong("PersistentIDMSB"), par1NBTTagCompound.getLong("PersistentIDLSB"));
+                this.entityUniqueID = new UUID(par1NBTTagCompound.getLong("PersistentIDMSB"), par1NBTTagCompound.getLong("PersistentIDLSB"));
             }
             this.readEntityFromNBT(par1NBTTagCompound);
         }
@@ -2557,7 +2557,7 @@ public abstract class Entity
 
     public UUID getPersistentID()
     {
-        return field_96093_i;
+        return entityUniqueID;
     }
 
     /**
@@ -2571,5 +2571,16 @@ public abstract class Entity
     public boolean shouldRenderInPass(int pass)
     {
         return pass == 0;
+    }
+
+    /**
+     * Returns true if the entity is of the @link{EnumCreatureType} provided
+     * @param type The EnumCreatureType type this entity is evaluating
+     * @param forSpawnCount If this is being invoked to check spawn count caps.
+     * @return If the creature is of the type provided
+     */
+    public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount)
+    {
+        return type.getCreatureClass().isAssignableFrom(this.getClass());
     }
 }

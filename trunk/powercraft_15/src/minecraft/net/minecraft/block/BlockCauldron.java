@@ -39,16 +39,21 @@ public class BlockCauldron extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94376_b : (par1 == 0 ? this.field_94377_c : this.field_94336_cN);
+        return par1 == 1 ? this.field_94376_b : (par1 == 0 ? this.field_94377_c : this.blockIcon);
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94378_a = par1IconRegister.func_94245_a("cauldron_inner");
-        this.field_94376_b = par1IconRegister.func_94245_a("cauldron_top");
-        this.field_94377_c = par1IconRegister.func_94245_a("cauldron_bottom");
-        this.field_94336_cN = par1IconRegister.func_94245_a("cauldron_side");
+        this.field_94378_a = par1IconRegister.registerIcon("cauldron_inner");
+        this.field_94376_b = par1IconRegister.registerIcon("cauldron_top");
+        this.field_94377_c = par1IconRegister.registerIcon("cauldron_bottom");
+        this.blockIcon = par1IconRegister.registerIcon("cauldron_side");
     }
 
     /**

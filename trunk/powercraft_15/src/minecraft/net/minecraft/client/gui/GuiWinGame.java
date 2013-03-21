@@ -127,7 +127,7 @@ public class GuiWinGame extends GuiScreen
     private void func_73986_b(int par1, int par2, float par3)
     {
         Tessellator tessellator = Tessellator.instance;
-        this.mc.renderEngine.func_98187_b("%blur%/gui/background.png");
+        this.mc.renderEngine.bindTexture("%blur%/gui/background.png");
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
         int k = this.width;
@@ -171,7 +171,7 @@ public class GuiWinGame extends GuiScreen
         float f1 = -((float)this.updateCounter + par3) * this.field_73987_d;
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, f1, 0.0F);
-        this.mc.renderEngine.func_98187_b("/title/mclogo.png");
+        this.mc.renderEngine.bindTexture("/title/mclogo.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(k, l, 0, 0, 155, 44);
         this.drawTexturedModalRect(k + 155, l, 0, 45, 155, 44);
@@ -210,7 +210,7 @@ public class GuiWinGame extends GuiScreen
         }
 
         GL11.glPopMatrix();
-        this.mc.renderEngine.func_98187_b("%blur%/misc/vignette.png");
+        this.mc.renderEngine.bindTexture("%blur%/misc/vignette.png");
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE_MINUS_SRC_COLOR);
         tessellator.startDrawingQuads();

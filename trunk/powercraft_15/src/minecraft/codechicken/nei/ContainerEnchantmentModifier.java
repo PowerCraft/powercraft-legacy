@@ -323,7 +323,7 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
 				}
 			}
 
-			gui.mc.renderEngine.func_98187_b("/gui/enchant.png");
+			gui.mc.renderEngine.bindTexture("/gui/enchant.png");
 			GL11.glColor3f(1, 1, 1);
 			if(hasScrollBar())
 			{

@@ -22,6 +22,10 @@ import net.minecraftforge.common.ForgeDummyContainer;
 
 public class TileEntityFurnace extends TileEntity implements ISidedInventory, net.minecraftforge.common.ISidedInventory
 {
+    private static final int[] field_102010_d = new int[] {0};
+    private static final int[] field_102011_e = new int[] {2, 1};
+    private static final int[] field_102009_f = new int[] {1};
+
     /**
      * The ItemStacks that hold the items currently being used in the furnace
      */
@@ -125,10 +129,14 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory, ne
      */
     public String getInvName()
     {
-        return this.func_94042_c() ? this.field_94130_e : "container.furnace";
+        return this.isInvNameLocalized() ? this.field_94130_e : "container.furnace";
     }
 
-    public boolean func_94042_c()
+    /**
+     * If this returns false, the inventory name will be used as an unlocalized name, and translated into the player's
+     * language. Otherwise it will be used directly.
+     */
+    public boolean isInvNameLocalized()
     {
         return this.field_94130_e != null && this.field_94130_e.length() > 0;
     }
@@ -191,7 +199,7 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory, ne
 
         par1NBTTagCompound.setTag("Items", nbttaglist);
 
-        if (this.func_94042_c())
+        if (this.isInvNameLocalized())
         {
             par1NBTTagCompound.setString("CustomName", this.field_94130_e);
         }
@@ -415,19 +423,30 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory, ne
 
     public void closeChest() {}
 
-    public boolean func_94041_b(int par1, ItemStack par2ItemStack)
+    /**
+     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
+     */
+    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return par1 == 2 ? false : (par1 == 1 ? isItemFuel(par2ItemStack) : true);
     }
 
-    public int func_94127_c(int par1)
+    /**
+     * Get the size of the side inventory.
+     */
+    public int[] getSizeInventorySide(int par1)
     {
-        return par1 == 0 ? 2 : (par1 == 1 ? 0 : 1);
+        return par1 == 0 ? field_102011_e : (par1 == 1 ? field_102010_d : field_102009_f);
     }
 
-    public int func_94128_d(int par1)
+    public boolean func_102007_a(int par1, ItemStack par2ItemStack, int par3)
     {
-        return 1;
+        return this.isStackValidForSlot(par1, par2ItemStack);
+    }
+
+    public boolean func_102008_b(int par1, ItemStack par2ItemStack, int par3)
+    {
+        return par3 != 0 || par1 != 1 || par2ItemStack.itemID == Item.bucketEmpty.itemID;
     }
 
     /***********************************************************************************

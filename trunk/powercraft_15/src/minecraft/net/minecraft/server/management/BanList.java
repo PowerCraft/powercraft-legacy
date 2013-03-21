@@ -122,7 +122,7 @@ public class BanList
             }
             catch (IOException ioexception)
             {
-                MinecraftServer.getServer().func_98033_al().func_98234_c("Could not load ban list", ioexception);
+                MinecraftServer.getServer().getLogAgent().func_98234_c("Could not load ban list", ioexception);
             }
         }
     }
@@ -145,7 +145,7 @@ public class BanList
 
             if (par1)
             {
-                printwriter.println("# Updated " + (new SimpleDateFormat()).format(new Date()) + " by Minecraft " + "1.5");
+                printwriter.println("# Updated " + (new SimpleDateFormat()).format(new Date()) + " by Minecraft " + "1.5.1");
                 printwriter.println("# victim name | ban date | banned by | banned until | reason");
                 printwriter.println();
             }
@@ -162,7 +162,7 @@ public class BanList
         }
         catch (IOException ioexception)
         {
-            MinecraftServer.getServer().func_98033_al().func_98234_c("Could not save ban list", ioexception);
+            MinecraftServer.getServer().getLogAgent().func_98234_c("Could not save ban list", ioexception);
         }
     }
 }

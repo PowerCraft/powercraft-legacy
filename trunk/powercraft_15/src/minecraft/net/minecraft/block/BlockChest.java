@@ -403,6 +403,8 @@ public class BlockChest extends BlockContainer
                     }
                 }
             }
+
+            par1World.func_96440_m(par2, par3, par4, par5);
         }
 
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
@@ -556,19 +558,32 @@ public class BlockChest extends BlockContainer
         return true;
     }
 
-    public boolean func_96468_q_()
+    /**
+     * If this returns true, then comparators facing away from this block will use the value from
+     * getComparatorInputOverride instead of the actual redstone signal strength.
+     */
+    public boolean hasComparatorInputOverride()
     {
         return true;
     }
 
-    public int func_94328_b_(World par1World, int par2, int par3, int par4, int par5)
+    /**
+     * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal
+     * strength when this block inputs to a comparator.
+     */
+    public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
         return Container.func_94526_b(this.func_94442_h_(par1World, par2, par3, par4));
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("wood");
+        this.blockIcon = par1IconRegister.registerIcon("wood");
     }
 }

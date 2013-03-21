@@ -22,7 +22,7 @@ public class BlockAnvil extends BlockSand
     private static final String[] field_94431_cO = new String[] {"anvil_top", "anvil_top_damaged_1", "anvil_top_damaged_2"};
     public int field_82521_b = 0;
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94432_cP;
+    private Icon[] iconArray;
 
     protected BlockAnvil(int par1)
     {
@@ -57,24 +57,29 @@ public class BlockAnvil extends BlockSand
     {
         if (this.field_82521_b == 3 && par1 == 1)
         {
-            int k = (par2 >> 2) % this.field_94432_cP.length;
-            return this.field_94432_cP[k];
+            int k = (par2 >> 2) % this.iconArray.length;
+            return this.iconArray[k];
         }
         else
         {
-            return this.field_94336_cN;
+            return this.blockIcon;
         }
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
-    {
-        this.field_94336_cN = par1IconRegister.func_94245_a("anvil_base");
-        this.field_94432_cP = new Icon[field_94431_cO.length];
 
-        for (int i = 0; i < this.field_94432_cP.length; ++i)
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.blockIcon = par1IconRegister.registerIcon("anvil_base");
+        this.iconArray = new Icon[field_94431_cO.length];
+
+        for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.field_94432_cP[i] = par1IconRegister.func_94245_a(field_94431_cO[i]);
+            this.iconArray[i] = par1IconRegister.registerIcon(field_94431_cO[i]);
         }
     }
 

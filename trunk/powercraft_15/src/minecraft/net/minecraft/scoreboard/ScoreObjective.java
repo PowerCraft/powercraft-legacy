@@ -5,23 +5,25 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ScoreObjective
 {
-    private final Scoreboard field_96686_a;
+    private final Scoreboard theScoreboard;
     private final String field_96684_b;
-    private final ScoreObjectiveCriteria field_96685_c;
+
+    /** The ScoreObjectiveCriteria for this objetive */
+    private final ScoreObjectiveCriteria objectiveCriteria;
     private String field_96683_d;
 
     public ScoreObjective(Scoreboard par1Scoreboard, String par2Str, ScoreObjectiveCriteria par3ScoreObjectiveCriteria)
     {
-        this.field_96686_a = par1Scoreboard;
+        this.theScoreboard = par1Scoreboard;
         this.field_96684_b = par2Str;
-        this.field_96685_c = par3ScoreObjectiveCriteria;
+        this.objectiveCriteria = par3ScoreObjectiveCriteria;
         this.field_96683_d = par2Str;
     }
 
     @SideOnly(Side.CLIENT)
     public Scoreboard func_96682_a()
     {
-        return this.field_96686_a;
+        return this.theScoreboard;
     }
 
     public String func_96679_b()
@@ -31,7 +33,7 @@ public class ScoreObjective
 
     public ScoreObjectiveCriteria func_96680_c()
     {
-        return this.field_96685_c;
+        return this.objectiveCriteria;
     }
 
     public String func_96678_d()
@@ -42,6 +44,6 @@ public class ScoreObjective
     public void func_96681_a(String par1Str)
     {
         this.field_96683_d = par1Str;
-        this.field_96686_a.func_96532_b(this);
+        this.theScoreboard.func_96532_b(this);
     }
 }

@@ -6,14 +6,14 @@ import java.util.List;
 public class Score
 {
     public static final Comparator field_96658_a = new ScoreComparator();
-    private final Scoreboard field_96656_b;
+    private final Scoreboard theScoreboard;
     private final ScoreObjective field_96657_c;
     private final String field_96654_d;
     private int field_96655_e;
 
     public Score(Scoreboard par1Scoreboard, ScoreObjective par2ScoreObjective, String par3Str)
     {
-        this.field_96656_b = par1Scoreboard;
+        this.theScoreboard = par1Scoreboard;
         this.field_96657_c = par2ScoreObjective;
         this.field_96654_d = par3Str;
     }
@@ -82,7 +82,7 @@ public class Score
 
     public Scoreboard func_96650_f()
     {
-        return this.field_96656_b;
+        return this.theScoreboard;
     }
 
     public void func_96651_a(List par1List)

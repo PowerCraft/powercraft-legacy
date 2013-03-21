@@ -197,11 +197,11 @@ public class Item
     public static Item firework = (new ItemFirework(145)).setUnlocalizedName("fireworks");
     public static Item fireworkCharge = (new ItemFireworkCharge(146)).setUnlocalizedName("fireworksCharge").setCreativeTab(CreativeTabs.tabMisc);
     public static ItemEnchantedBook enchantedBook = (ItemEnchantedBook)(new ItemEnchantedBook(147)).setMaxStackSize(1).setUnlocalizedName("enchantedBook");
-    public static Item field_94585_bY = (new ItemReed(148, Block.field_94346_cn)).setUnlocalizedName("comparator").setCreativeTab(CreativeTabs.tabRedstone);
+    public static Item field_94585_bY = (new ItemReed(148, Block.redstoneComparatorIdle)).setUnlocalizedName("comparator").setCreativeTab(CreativeTabs.tabRedstone);
     public static Item field_94584_bZ = (new Item(149)).setUnlocalizedName("netherbrick").setCreativeTab(CreativeTabs.tabMaterials);
     public static Item field_94583_ca = (new Item(150)).setUnlocalizedName("netherquartz").setCreativeTab(CreativeTabs.tabMaterials);
-    public static Item field_94582_cb = (new ItemMinecart(151, 3)).setUnlocalizedName("minecartTnt");
-    public static Item field_96600_cc = (new ItemMinecart(152, 5)).setUnlocalizedName("minecartHopper");
+    public static Item tntMinecart = (new ItemMinecart(151, 3)).setUnlocalizedName("minecartTnt");
+    public static Item hopperMinecart = (new ItemMinecart(152, 5)).setUnlocalizedName("minecartHopper");
     public static Item record13 = (new ItemRecord(2000, "13")).setUnlocalizedName("record");
     public static Item recordCat = (new ItemRecord(2001, "cat")).setUnlocalizedName("record");
     public static Item recordBlocks = (new ItemRecord(2002, "blocks")).setUnlocalizedName("record");
@@ -265,7 +265,11 @@ public class Item
     }
 
     @SideOnly(Side.CLIENT)
-    public int func_94901_k()
+
+    /**
+     * Returns 0 for /terrain.png, 1 for /gui/items.png
+     */
+    public int getSpriteNumber()
     {
         return 1;
     }
@@ -717,9 +721,9 @@ public class Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.func_94245_a(this.unlocalizedName);
+        this.iconIndex = par1IconRegister.registerIcon(this.unlocalizedName);
     }
 
     static

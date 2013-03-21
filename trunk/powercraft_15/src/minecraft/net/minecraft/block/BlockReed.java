@@ -42,7 +42,7 @@ public class BlockReed extends Block implements IPlantable
 
                 if (i1 == 15)
                 {
-                    par1World.func_94575_c(par2, par3 + 1, par4, this.blockID);
+                    par1World.setBlock(par2, par3 + 1, par4, this.blockID);
                     par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 4);
                 }
                 else
@@ -79,7 +79,7 @@ public class BlockReed extends Block implements IPlantable
         if (!this.canBlockStay(par1World, par2, par3, par4))
         {
             this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
     }
 

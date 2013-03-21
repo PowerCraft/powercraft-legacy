@@ -72,7 +72,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
 
             if (this.worldObj.getBlockId(j, k, l) == 0 && this.worldObj.getBiomeGenForCoords(j, l).getFloatTemperature() < 0.8F && Block.snow.canPlaceBlockAt(this.worldObj, j, k, l))
             {
-                this.worldObj.func_94575_c(j, k, l, Block.snow.blockID);
+                this.worldObj.setBlock(j, k, l, Block.snow.blockID);
             }
         }
     }

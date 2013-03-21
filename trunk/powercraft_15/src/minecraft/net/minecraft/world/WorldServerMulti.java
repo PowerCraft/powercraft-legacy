@@ -12,7 +12,7 @@ public class WorldServerMulti extends WorldServer
     {
         super(par1MinecraftServer, par2ISaveHandler, par3Str, par4, par5WorldSettings, par7Profiler, par8ILogAgent);
         this.mapStorage = par6WorldServer.mapStorage;
-        this.field_96442_D = par6WorldServer.func_96441_U();
+        this.worldScoreboard = par6WorldServer.getScoreboard();
         this.worldInfo = new DerivedWorldInfo(par6WorldServer.getWorldInfo());
     }
 

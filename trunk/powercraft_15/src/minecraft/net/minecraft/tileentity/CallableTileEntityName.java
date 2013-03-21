@@ -4,20 +4,20 @@ import java.util.concurrent.Callable;
 
 class CallableTileEntityName implements Callable
 {
-    final TileEntity field_85146_a;
+    final TileEntity theTileEntity;
 
     CallableTileEntityName(TileEntity par1TileEntity)
     {
-        this.field_85146_a = par1TileEntity;
+        this.theTileEntity = par1TileEntity;
     }
 
-    public String func_85145_a()
+    public String callTileEntityName()
     {
-        return (String)TileEntity.getClassToNameMap().get(this.field_85146_a.getClass()) + " // " + this.field_85146_a.getClass().getCanonicalName();
+        return (String)TileEntity.getClassToNameMap().get(this.theTileEntity.getClass()) + " // " + this.theTileEntity.getClass().getCanonicalName();
     }
 
     public Object call()
     {
-        return this.func_85145_a();
+        return this.callTileEntityName();
     }
 }

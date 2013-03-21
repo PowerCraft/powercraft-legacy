@@ -15,11 +15,11 @@ public class BlockLog extends Block
 {
     /** The type of tree this log came from. */
     public static final String[] woodType = new String[] {"oak", "spruce", "birch", "jungle"};
-    public static final String[] field_94389_b = new String[] {"tree_side", "tree_spruce", "tree_birch", "tree_jungle"};
+    public static final String[] treeTextureTypes = new String[] {"tree_side", "tree_spruce", "tree_birch", "tree_jungle"};
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94390_c;
+    private Icon[] iconArray;
     @SideOnly(Side.CLIENT)
-    private Icon field_94388_cO;
+    private Icon tree_top;
 
     protected BlockLog(int par1)
     {
@@ -114,7 +114,7 @@ public class BlockLog extends Block
     {
         int k = par2 & 12;
         int l = par2 & 3;
-        return k == 0 && (par1 == 1 || par1 == 0) ? this.field_94388_cO : (k == 4 && (par1 == 5 || par1 == 4) ? this.field_94388_cO : (k == 8 && (par1 == 2 || par1 == 3) ? this.field_94388_cO : this.field_94390_c[l]));
+        return k == 0 && (par1 == 1 || par1 == 0) ? this.tree_top : (k == 4 && (par1 == 5 || par1 == 4) ? this.tree_top : (k == 8 && (par1 == 2 || par1 == 3) ? this.tree_top : this.iconArray[l]));
     }
 
     /**
@@ -156,14 +156,19 @@ public class BlockLog extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
-    {
-        this.field_94388_cO = par1IconRegister.func_94245_a("tree_top");
-        this.field_94390_c = new Icon[field_94389_b.length];
 
-        for (int i = 0; i < this.field_94390_c.length; ++i)
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.tree_top = par1IconRegister.registerIcon("tree_top");
+        this.iconArray = new Icon[treeTextureTypes.length];
+
+        for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.field_94390_c[i] = par1IconRegister.func_94245_a(field_94389_b[i]);
+            this.iconArray[i] = par1IconRegister.registerIcon(treeTextureTypes[i]);
         }
     }
 

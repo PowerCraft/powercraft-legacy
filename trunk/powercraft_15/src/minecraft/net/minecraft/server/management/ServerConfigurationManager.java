@@ -115,7 +115,7 @@ public abstract class ServerConfigurationManager
             s = par1INetworkManager.getSocketAddress().toString();
         }
 
-        this.mcServer.func_98033_al().func_98233_a(par2EntityPlayerMP.username + "[" + s + "] logged in with entity id " + par2EntityPlayerMP.entityId + " at (" + par2EntityPlayerMP.posX + ", " + par2EntityPlayerMP.posY + ", " + par2EntityPlayerMP.posZ + ")");
+        this.mcServer.getLogAgent().logInfo(par2EntityPlayerMP.username + "[" + s + "] logged in with entity id " + par2EntityPlayerMP.entityId + " at (" + par2EntityPlayerMP.posX + ", " + par2EntityPlayerMP.posY + ", " + par2EntityPlayerMP.posZ + ")");
         WorldServer worldserver = this.mcServer.worldServerForDimension(par2EntityPlayerMP.dimension);
         ChunkCoordinates chunkcoordinates = worldserver.getSpawnPoint();
         this.func_72381_a(par2EntityPlayerMP, (EntityPlayerMP)null, worldserver);
@@ -124,7 +124,7 @@ public abstract class ServerConfigurationManager
         netserverhandler.sendPacketToPlayer(new Packet6SpawnPosition(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ));
         netserverhandler.sendPacketToPlayer(new Packet202PlayerAbilities(par2EntityPlayerMP.capabilities));
         netserverhandler.sendPacketToPlayer(new Packet16BlockItemSwitch(par2EntityPlayerMP.inventory.currentItem));
-        this.func_96456_a((ServerScoreboard)worldserver.func_96441_U(), par2EntityPlayerMP);
+        this.func_96456_a((ServerScoreboard)worldserver.getScoreboard(), par2EntityPlayerMP);
         this.updateTimeAndWeatherForPlayer(par2EntityPlayerMP, worldserver);
         this.sendPacketToAllPlayers(new Packet3Chat(EnumChatFormatting.YELLOW + par2EntityPlayerMP.func_96090_ax() + EnumChatFormatting.YELLOW + " joined the game."));
         this.playerLoggedIn(par2EntityPlayerMP);

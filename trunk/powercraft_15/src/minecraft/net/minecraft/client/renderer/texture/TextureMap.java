@@ -20,37 +20,41 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.texturepacks.ITexturePack;
 import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.common.ForgeDummyContainer;
 
 @SideOnly(Side.CLIENT)
 public class TextureMap implements IconRegister
 {
-    private final int field_94255_a;
-    private final String field_94253_b;
-    private final String field_94254_c;
-    private final String field_94251_d;
-    private final HashMap field_94252_e = new HashMap();
-    private BufferedImage field_94249_f = new BufferedImage(64, 64, 2);
-    private TextureStitched field_94250_g;
-    private Texture field_94257_h;
-    private final List field_94258_i = new ArrayList();
-    private final Map field_94256_j = new HashMap();
+    /** 0 = terrain.png, 1 = items.png */
+    private final int textureType;
+    private final String textureName;
+    private final String basePath;
+    private final String textureExt;
+    private final HashMap mapTexturesStiched = new HashMap();
+    private BufferedImage missingImage = new BufferedImage(64, 64, 2);
+    private TextureStitched missingTextureStiched;
+    private Texture atlasTexture;
+    private final List listTextureStiched = new ArrayList();
+    private final Map textureStichedMap = new HashMap();
 
     public TextureMap(int par1, String par2, String par3Str, BufferedImage par4BufferedImage)
     {
-        this.field_94255_a = par1;
-        this.field_94253_b = par2;
-        this.field_94254_c = par3Str;
-        this.field_94251_d = ".png";
-        this.field_94249_f = par4BufferedImage;
+        this.textureType = par1;
+        this.textureName = par2;
+        this.basePath = par3Str;
+        this.textureExt = ".png";
+        this.missingImage = par4BufferedImage;
     }
 
-    public void func_94247_b()
+    public void refreshTextures()
     {
-        this.field_94256_j.clear();
+        this.textureStichedMap.clear();
+        ForgeHooksClient.onTextureStitchedPre(this);
         int i;
         int j;
 
-        if (this.field_94255_a == 0)
+        if (this.textureType == 0)
         {
             Block[] ablock = Block.blocksList;
             i = ablock.length;
@@ -61,12 +65,12 @@ public class TextureMap implements IconRegister
 
                 if (block != null)
                 {
-                    block.func_94332_a(this);
+                    block.registerIcons(this);
                 }
             }
 
-            Minecraft.getMinecraft().renderGlobal.func_94140_a(this);
-            RenderManager.instance.func_94178_a(this);
+            Minecraft.getMinecraft().renderGlobal.registerDestroyBlockIcons(this);
+            RenderManager.instance.updateIcons(this);
         }
 
         Item[] aitem = Item.itemsList;
@@ -76,108 +80,107 @@ public class TextureMap implements IconRegister
         {
             Item item = aitem[j];
 
-            if (item != null && item.func_94901_k() == this.field_94255_a)
+            if (item != null && item.getSpriteNumber() == this.textureType)
             {
-                item.func_94581_a(this);
+                item.updateIcons(this);
             }
         }
 
         HashMap hashmap = new HashMap();
-        Stitcher stitcher = TextureManager.func_94267_b().func_94262_d(this.field_94253_b);
-        this.field_94252_e.clear();
-        this.field_94258_i.clear();
-        Texture texture = TextureManager.func_94267_b().func_94261_a("missingno", 2, this.field_94249_f.getWidth(), this.field_94249_f.getHeight(), 10496, 6408, 9728, 9728, false, this.field_94249_f);
+        Stitcher stitcher = TextureManager.instance().createStitcher(this.textureName);
+        this.mapTexturesStiched.clear();
+        this.listTextureStiched.clear();
+        Texture texture = TextureManager.instance().makeTexture("missingno", 2, this.missingImage.getWidth(), this.missingImage.getHeight(), 10496, 6408, 9728, 9728, false, this.missingImage);
         StitchHolder stitchholder = new StitchHolder(texture);
-        stitcher.func_94312_a(stitchholder);
+        stitcher.addStitchHolder(stitchholder);
         hashmap.put(stitchholder, Arrays.asList(new Texture[] {texture}));
 
-        for (Map.Entry<String, TextureStitched> entry : ((Map<String, TextureStitched>)field_94256_j).entrySet())
+        for (Map.Entry<String, TextureStitched> entry : ((Map<String, TextureStitched>)textureStichedMap).entrySet())
         {
             String name = entry.getKey();
             String path;
             if (name.indexOf(':') == -1)
             {
-                path = this.field_94254_c + name + this.field_94251_d;
+                path = this.basePath + name + this.textureExt;
             }
             else
             {
-                String domain = name.substring(0,name.indexOf(':'));
-                String file = name.substring(name.indexOf(':')+1);
-                path = "mods/" + domain +"/" + field_94254_c + file + field_94251_d;
+                String domain = name.substring(0, name.indexOf(':'));
+                String file = name.substring(name.indexOf(':') + 1);
+                path = "mods/" + domain +"/" + basePath + file + textureExt;
             }
-            List list = TextureManager.func_94267_b().createNewTexture(name, path, entry.getValue());
-
+            List list = TextureManager.instance().createNewTexture(name, path, entry.getValue());
             if (!list.isEmpty())
             {
                 StitchHolder stitchholder1 = new StitchHolder((Texture)list.get(0));
-                stitcher.func_94312_a(stitchholder1);
+                stitcher.addStitchHolder(stitchholder1);
                 hashmap.put(stitchholder1, list);
             }
         }
 
         try
         {
-            stitcher.func_94305_f();
+            stitcher.doStitch();
         }
         catch (StitcherException stitcherexception)
         {
             throw stitcherexception;
         }
 
-        this.field_94257_h = stitcher.func_94306_e();
-        Iterator iterator = stitcher.func_94309_g().iterator();
+        this.atlasTexture = stitcher.getTexture();
+        Iterator iterator = stitcher.getStichSlots().iterator();
 
         while (iterator.hasNext())
         {
             StitchSlot stitchslot = (StitchSlot)iterator.next();
-            StitchHolder stitchholder2 = stitchslot.func_94183_a();
+            StitchHolder stitchholder2 = stitchslot.getStitchHolder();
             Texture texture1 = stitchholder2.func_98150_a();
-            String s2 = texture1.func_94280_f();
+            String s2 = texture1.getTextureName();
             List list1 = (List)hashmap.get(stitchholder2);
-            TextureStitched texturestitched = (TextureStitched)this.field_94256_j.get(s2);
+            TextureStitched texturestitched = (TextureStitched)this.textureStichedMap.get(s2);
             boolean flag = false;
 
             if (texturestitched == null)
             {
                 flag = true;
-                texturestitched = TextureStitched.func_94220_a(s2);
+                texturestitched = TextureStitched.makeTextureStitched(s2);
 
                 if (!s2.equals("missingno"))
                 {
-                    Minecraft.getMinecraft().func_98033_al().func_98236_b("Couldn\'t find premade icon for " + s2 + " doing " + this.field_94253_b);
+                    Minecraft.getMinecraft().getLogAgent().logWarning("Couldn\'t find premade icon for " + s2 + " doing " + this.textureName);
                 }
             }
 
-            texturestitched.func_94218_a(this.field_94257_h, list1, stitchslot.func_94186_b(), stitchslot.func_94185_c(), stitchholder2.func_98150_a().func_94275_d(), stitchholder2.func_98150_a().func_94276_e(), stitchholder2.func_94195_e());
-            this.field_94252_e.put(s2, texturestitched);
+            texturestitched.init(this.atlasTexture, list1, stitchslot.getOriginX(), stitchslot.getOriginY(), stitchholder2.func_98150_a().getWidth(), stitchholder2.func_98150_a().getHeight(), stitchholder2.isRotated());
+            this.mapTexturesStiched.put(s2, texturestitched);
 
             if (!flag)
             {
-                this.field_94256_j.remove(s2);
+                this.textureStichedMap.remove(s2);
             }
 
             if (list1.size() > 1)
             {
-                this.field_94258_i.add(texturestitched);
+                this.listTextureStiched.add(texturestitched);
                 String s3;
                 if (s2.indexOf(':') == -1)
                 {
-                    s3 = field_94254_c + s2 + ".txt";
+                    s3 = basePath + s2 + ".txt";
                 }
                 else
                 {
                     String domain = s2.substring(0, s2.indexOf(':'));
                     String file = s2.substring(s2.indexOf(':') + 1);
-                    s3 = "mods/" + domain + "/" + field_94254_c + file + ".txt";
+                    s3 = "mods/" + domain + "/" + basePath + file + ".txt";
                 }
                 ITexturePack itexturepack = Minecraft.getMinecraft().texturePackList.getSelectedTexturePack();
-                boolean flag1 = !itexturepack.func_98138_b("/" + this.field_94254_c + s2 + ".png", false);
+                boolean flag1 = !itexturepack.func_98138_b("/" + this.basePath + s2 + ".png", false);
 
                 try
                 {
                     InputStream inputstream = itexturepack.func_98137_a("/" + s3, flag1);
-                    Minecraft.getMinecraft().func_98033_al().func_98233_a("Found animation info for: " + s3);
-                    texturestitched.func_94221_a(new BufferedReader(new InputStreamReader(inputstream)));
+                    Minecraft.getMinecraft().getLogAgent().logInfo("Found animation info for: " + s3);
+                    texturestitched.readAnimationInfo(new BufferedReader(new InputStreamReader(inputstream)));
                 }
                 catch (IOException ioexception)
                 {
@@ -186,56 +189,60 @@ public class TextureMap implements IconRegister
             }
         }
 
-        this.field_94250_g = (TextureStitched)this.field_94252_e.get("missingno");
-        iterator = this.field_94256_j.values().iterator();
+        this.missingTextureStiched = (TextureStitched)this.mapTexturesStiched.get("missingno");
+        iterator = this.textureStichedMap.values().iterator();
 
         while (iterator.hasNext())
         {
             TextureStitched texturestitched1 = (TextureStitched)iterator.next();
-            texturestitched1.func_94217_a(this.field_94250_g);
+            texturestitched1.copyFrom(this.missingTextureStiched);
         }
 
-        this.field_94257_h.func_94279_c("debug.stitched_" + this.field_94253_b + ".png");
-        this.field_94257_h.func_94285_g();
+        if (!ForgeDummyContainer.disableStitchedFileSaving)
+        {
+            this.atlasTexture.writeImage("debug.stitched_" + this.textureName + ".png");
+        }
+        ForgeHooksClient.onTextureStitchedPost(this);
+        this.atlasTexture.createTexture();
     }
 
-    public void func_94248_c()
+    public void updateAnimations()
     {
-        Iterator iterator = this.field_94258_i.iterator();
+        Iterator iterator = this.listTextureStiched.iterator();
 
         while (iterator.hasNext())
         {
             TextureStitched texturestitched = (TextureStitched)iterator.next();
-            texturestitched.func_94219_l();
+            texturestitched.updateAnimation();
         }
     }
 
-    public Texture func_94246_d()
+    public Texture getTexture()
     {
-        return this.field_94257_h;
+        return this.atlasTexture;
     }
 
-    public Icon func_94245_a(String par1Str)
+    public Icon registerIcon(String par1Str)
     {
         if (par1Str == null)
         {
             (new RuntimeException("Don\'t register null!")).printStackTrace();
         }
 
-        TextureStitched texturestitched = (TextureStitched)this.field_94256_j.get(par1Str);
+        TextureStitched texturestitched = (TextureStitched)this.textureStichedMap.get(par1Str);
 
         if (texturestitched == null)
         {
-            texturestitched = TextureStitched.func_94220_a(par1Str);
-            this.field_94256_j.put(par1Str, texturestitched);
+            texturestitched = TextureStitched.makeTextureStitched(par1Str);
+            this.textureStichedMap.put(par1Str, texturestitched);
         }
 
         return texturestitched;
     }
 
-    public Icon func_96455_e()
+    public Icon getMissingIcon()
     {
-        return this.field_94250_g;
+        return this.missingTextureStiched;
     }
 
     //===================================================================================================
@@ -243,14 +250,14 @@ public class TextureMap implements IconRegister
     //===================================================================================================
     /**
      * Grabs the registered entry for the specified name, returning null if there was not a entry. 
-     * Opposed to func_94245_a, this will not instantiate the entry, useful to test if a maping exists.
+     * Opposed to registerIcon, this will not instantiate the entry, useful to test if a maping exists.
      * 
      * @param name The name of the entry to find
      * @return The registered entry, null if nothing was registered.
      */
     public TextureStitched getTextureExtry(String name)
     {
-        return (TextureStitched)field_94256_j.get(name);
+        return (TextureStitched)textureStichedMap.get(name);
     }
 
     /**
@@ -263,9 +270,9 @@ public class TextureMap implements IconRegister
      */
     public boolean setTextureEntry(String name, TextureStitched entry)
     {
-        if (!field_94256_j.containsKey(name))
+        if (!textureStichedMap.containsKey(name))
         {
-            field_94256_j.put(name, entry);
+            textureStichedMap.put(name, entry);
             return true;
         }
         return false;

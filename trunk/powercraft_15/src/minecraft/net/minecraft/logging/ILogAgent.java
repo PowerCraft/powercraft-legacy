@@ -6,12 +6,12 @@ import java.util.logging.Logger;
 
 public interface ILogAgent
 {
-    void func_98233_a(String s);
+    void logInfo(String s);
 
     @SideOnly(Side.SERVER)
     Logger func_98076_a();
 
-    void func_98236_b(String s);
+    void logWarning(String s);
 
     void func_98231_b(String s, Object ... var2);
 

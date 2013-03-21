@@ -114,12 +114,12 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG, PC_
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void func_94581_a(IconRegister par1IconRegister){
+	public void updateIcons(IconRegister par1IconRegister){
 		for(int i=0; i<textureNames.length; i++){
-			icons[i] = par1IconRegister.func_94245_a(PC_TextureRegistry.getTextureName(module, textureNames[i]));
+			icons[i] = par1IconRegister.registerIcon(PC_TextureRegistry.getTextureName(module, textureNames[i]));
 		}
 	}
-
+	
 	public Icon getIconFromDamage(int par1){
 		if(par1>=icons.length){
 			par1 = icons.length-1;

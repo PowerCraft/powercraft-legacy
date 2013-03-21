@@ -32,7 +32,7 @@ public class RenderWitch extends RenderLiving
 
         if (this.field_82414_a.func_82899_a() != this.field_82413_f)
         {
-            Minecraft.getMinecraft().func_98033_al().func_98233_a("Loaded new witch model");
+            Minecraft.getMinecraft().getLogAgent().logInfo("Loaded new witch model");
             this.mainModel = this.field_82414_a = new ModelWitch(0.0F);
             this.field_82413_f = this.field_82414_a.func_82899_a();
         }

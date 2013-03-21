@@ -140,7 +140,7 @@ public class Explosion
                     d2 /= d8;
                     double d9 = (double)this.worldObj.getBlockDensity(vec3, entity.boundingBox);
                     double d10 = (1.0D - d7) * d9;
-                    entity.attackEntityFrom(DamageSource.func_94539_a(this), (int)((d10 * d10 + d10) / 2.0D * 8.0D * (double)this.explosionSize + 1.0D));
+                    entity.attackEntityFrom(DamageSource.setExplosionSource(this), (int)((d10 * d10 + d10) / 2.0D * 8.0D * (double)this.explosionSize + 1.0D));
                     double d11 = EnchantmentProtection.func_92092_a(entity, d10);
                     entity.motionX += d0 * d11;
                     entity.motionY += d1 * d11;
@@ -222,7 +222,7 @@ public class Explosion
                         block.dropBlockAsItemWithChance(this.worldObj, i, j, k, this.worldObj.getBlockMetadata(i, j, k), 1.0F / this.explosionSize, 0);
                     }
 
-                    this.worldObj.setBlockAndMetadataWithNotify(i, j, k, 0, 0, 3);
+                    this.worldObj.setBlock(i, j, k, 0, 0, 3);
                     block.onBlockDestroyedByExplosion(this.worldObj, i, j, k, this);
                 }
             }
@@ -243,7 +243,7 @@ public class Explosion
 
                 if (l == 0 && Block.opaqueCubeLookup[i1] && this.explosionRNG.nextInt(3) == 0)
                 {
-                    this.worldObj.func_94575_c(i, j, k, Block.fire.blockID);
+                    this.worldObj.setBlock(i, j, k, Block.fire.blockID);
                 }
             }
         }

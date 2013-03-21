@@ -24,7 +24,7 @@ public class WorldGenFlowers extends WorldGenerator
 
             if (par1World.isAirBlock(i1, j1, k1) && (!par1World.provider.hasNoSky || j1 < 127) && Block.blocksList[this.plantBlockId].canBlockStay(par1World, i1, j1, k1))
             {
-                par1World.setBlockAndMetadataWithNotify(i1, j1, k1, this.plantBlockId, 0, 2);
+                par1World.setBlock(i1, j1, k1, this.plantBlockId, 0, 2);
             }
         }
 

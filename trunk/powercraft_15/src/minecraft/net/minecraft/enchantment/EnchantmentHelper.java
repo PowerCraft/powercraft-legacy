@@ -282,7 +282,7 @@ public class EnchantmentHelper
 
     public static int func_92098_i(EntityLiving par0EntityLiving)
     {
-        return getMaxEnchantmentLevel(Enchantment.field_92091_k.effectId, par0EntityLiving.getLastActiveItems());
+        return getMaxEnchantmentLevel(Enchantment.thorns.effectId, par0EntityLiving.getLastActiveItems());
     }
 
     public static ItemStack func_92099_a(Enchantment par0Enchantment, EntityLiving par1EntityLiving)

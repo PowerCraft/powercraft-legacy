@@ -50,7 +50,7 @@ public class BlockPistonExtension extends Block
             if (BlockPistonBase.isExtended(par6))
             {
                 Block.blocksList[k1].dropBlockAsItem(par1World, par2, par3, par4, par6, 0);
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
             }
         }
     }
@@ -73,7 +73,12 @@ public class BlockPistonExtension extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister) {}
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister) {}
 
     /**
      * The type of render function that is called for this block
@@ -214,7 +219,7 @@ public class BlockPistonExtension extends Block
 
         if (j1 != Block.pistonBase.blockID && j1 != Block.pistonStickyBase.blockID)
         {
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
         else
         {

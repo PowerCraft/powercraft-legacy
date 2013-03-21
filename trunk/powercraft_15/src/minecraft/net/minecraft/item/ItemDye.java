@@ -129,7 +129,7 @@ public class ItemDye extends Item
                     if (par3World.isAirBlock(par4, par5, par6))
                     {
                         int k1 = Block.blocksList[Block.cocoaPlant.blockID].onBlockPlaced(par3World, par4, par5, par6, par7, par8, par9, par10, 0);
-                        par3World.setBlockAndMetadataWithNotify(par4, par5, par6, Block.cocoaPlant.blockID, k1, 2);
+                        par3World.setBlock(par4, par5, par6, Block.cocoaPlant.blockID, k1, 2);
 
                         if (!par2EntityPlayer.capabilities.isCreativeMode)
                         {
@@ -267,7 +267,7 @@ public class ItemDye extends Item
                                     {
                                         if (Block.tallGrass.canBlockStay(par1World, j1, k1, l1))
                                         {
-                                            par1World.setBlockAndMetadataWithNotify(j1, k1, l1, Block.tallGrass.blockID, 1, 3);
+                                            par1World.setBlock(j1, k1, l1, Block.tallGrass.blockID, 1, 3);
                                         }
                                     }
                                     else
@@ -377,13 +377,13 @@ public class ItemDye extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
         this.field_94594_d = new Icon[field_94595_b.length];
 
         for (int i = 0; i < field_94595_b.length; ++i)
         {
-            this.field_94594_d[i] = par1IconRegister.func_94245_a(field_94595_b[i]);
+            this.field_94594_d[i] = par1IconRegister.registerIcon(field_94595_b[i]);
         }
     }
 }

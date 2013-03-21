@@ -32,7 +32,7 @@ public class TileEntityMobSpawner extends TileEntity
      */
     public void updateEntity()
     {
-        this.field_98050_a.func_98278_g();
+        this.field_98050_a.updateSpawner();
         super.updateEntity();
     }
 

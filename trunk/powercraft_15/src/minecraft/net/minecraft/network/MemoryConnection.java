@@ -91,7 +91,7 @@ public class MemoryConnection implements INetworkManager
 
         if (this.readPacketCache.size() > i)
         {
-            this.field_98214_c.func_98236_b("Memory connection overburdened; after processing 2500 packets, we still have " + this.readPacketCache.size() + " to go!");
+            this.field_98214_c.logWarning("Memory connection overburdened; after processing 2500 packets, we still have " + this.readPacketCache.size() + " to go!");
         }
 
         if (this.shuttingDown && this.readPacketCache.isEmpty())

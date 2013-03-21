@@ -81,7 +81,7 @@ public class ItemSkull extends Item
             }
             else
             {
-                par3World.setBlockAndMetadataWithNotify(par4, par5, par6, Block.skull.blockID, par7, 2);
+                par3World.setBlock(par4, par5, par6, Block.skull.blockID, par7, 2);
                 int i1 = 0;
 
                 if (par7 == 1)
@@ -169,13 +169,13 @@ public class ItemSkull extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
         this.field_94586_c = new Icon[field_94587_a.length];
 
         for (int i = 0; i < field_94587_a.length; ++i)
         {
-            this.field_94586_c[i] = par1IconRegister.func_94245_a(field_94587_a[i]);
+            this.field_94586_c[i] = par1IconRegister.registerIcon(field_94587_a[i]);
         }
     }
 }

@@ -175,7 +175,7 @@ public class BlockLadder extends Block
         if (!flag)
         {
             this.dropBlockAsItem(par1World, par2, par3, par4, i1, 0);
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
 
         super.onNeighborBlockChange(par1World, par2, par3, par4, par5);

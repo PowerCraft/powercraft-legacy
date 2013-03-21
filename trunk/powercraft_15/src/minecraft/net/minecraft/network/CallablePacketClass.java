@@ -5,23 +5,23 @@ import net.minecraft.network.packet.Packet;
 
 class CallablePacketClass implements Callable
 {
-    final Packet field_98227_a;
+    final Packet thePacket;
 
-    final NetServerHandler field_98226_b;
+    final NetServerHandler theNetServerHandler;
 
     CallablePacketClass(NetServerHandler par1NetServerHandler, Packet par2Packet)
     {
-        this.field_98226_b = par1NetServerHandler;
-        this.field_98227_a = par2Packet;
+        this.theNetServerHandler = par1NetServerHandler;
+        this.thePacket = par2Packet;
     }
 
-    public String func_98225_a()
+    public String getPacketClass()
     {
-        return this.field_98227_a.getClass().getCanonicalName();
+        return this.thePacket.getClass().getCanonicalName();
     }
 
     public Object call()
     {
-        return this.func_98225_a();
+        return this.getPacketClass();
     }
 }

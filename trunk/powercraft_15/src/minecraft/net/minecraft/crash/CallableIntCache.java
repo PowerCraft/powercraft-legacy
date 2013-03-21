@@ -5,11 +5,11 @@ import net.minecraft.world.gen.layer.IntCache;
 
 class CallableIntCache implements Callable
 {
-    final CrashReport field_85084_a;
+    final CrashReport theCrashReport;
 
     CallableIntCache(CrashReport par1CrashReport)
     {
-        this.field_85084_a = par1CrashReport;
+        this.theCrashReport = par1CrashReport;
     }
 
     public String func_85083_a()

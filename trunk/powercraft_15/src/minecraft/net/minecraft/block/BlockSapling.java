@@ -134,28 +134,28 @@ public class BlockSapling extends BlockFlower
 
         if (flag)
         {
-            par1World.setBlockAndMetadataWithNotify(par2 + i1, par3, par4 + j1, 0, 0, 4);
-            par1World.setBlockAndMetadataWithNotify(par2 + i1 + 1, par3, par4 + j1, 0, 0, 4);
-            par1World.setBlockAndMetadataWithNotify(par2 + i1, par3, par4 + j1 + 1, 0, 0, 4);
-            par1World.setBlockAndMetadataWithNotify(par2 + i1 + 1, par3, par4 + j1 + 1, 0, 0, 4);
+            par1World.setBlock(par2 + i1, par3, par4 + j1, 0, 0, 4);
+            par1World.setBlock(par2 + i1 + 1, par3, par4 + j1, 0, 0, 4);
+            par1World.setBlock(par2 + i1, par3, par4 + j1 + 1, 0, 0, 4);
+            par1World.setBlock(par2 + i1 + 1, par3, par4 + j1 + 1, 0, 0, 4);
         }
         else
         {
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 4);
+            par1World.setBlock(par2, par3, par4, 0, 0, 4);
         }
 
         if (!((WorldGenerator)object).generate(par1World, par5Random, par2 + i1, par3, par4 + j1))
         {
             if (flag)
             {
-                par1World.setBlockAndMetadataWithNotify(par2 + i1, par3, par4 + j1, this.blockID, l, 4);
-                par1World.setBlockAndMetadataWithNotify(par2 + i1 + 1, par3, par4 + j1, this.blockID, l, 4);
-                par1World.setBlockAndMetadataWithNotify(par2 + i1, par3, par4 + j1 + 1, this.blockID, l, 4);
-                par1World.setBlockAndMetadataWithNotify(par2 + i1 + 1, par3, par4 + j1 + 1, this.blockID, l, 4);
+                par1World.setBlock(par2 + i1, par3, par4 + j1, this.blockID, l, 4);
+                par1World.setBlock(par2 + i1 + 1, par3, par4 + j1, this.blockID, l, 4);
+                par1World.setBlock(par2 + i1, par3, par4 + j1 + 1, this.blockID, l, 4);
+                par1World.setBlock(par2 + i1 + 1, par3, par4 + j1 + 1, this.blockID, l, 4);
             }
             else
             {
-                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, this.blockID, l, 4);
+                par1World.setBlock(par2, par3, par4, this.blockID, l, 4);
             }
         }
     }
@@ -190,13 +190,18 @@ public class BlockSapling extends BlockFlower
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
         this.field_94371_c = new Icon[field_94370_b.length];
 
         for (int i = 0; i < this.field_94371_c.length; ++i)
         {
-            this.field_94371_c[i] = par1IconRegister.func_94245_a(field_94370_b[i]);
+            this.field_94371_c[i] = par1IconRegister.registerIcon(field_94370_b[i]);
         }
     }
 }

@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 public class BlockBeacon extends BlockContainer
 {
     @SideOnly(Side.CLIENT)
-    private Icon field_94447_a;
+    private Icon theIcon;
 
     public BlockBeacon(int par1)
     {
@@ -81,10 +81,15 @@ public class BlockBeacon extends BlockContainer
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        super.func_94332_a(par1IconRegister);
-        this.field_94447_a = par1IconRegister.func_94245_a("beacon");
+        super.registerIcons(par1IconRegister);
+        this.theIcon = par1IconRegister.registerIcon("beacon");
     }
 
     /**
@@ -103,6 +108,6 @@ public class BlockBeacon extends BlockContainer
     @SideOnly(Side.CLIENT)
     public Icon func_94446_i()
     {
-        return this.field_94447_a;
+        return this.theIcon;
     }
 }

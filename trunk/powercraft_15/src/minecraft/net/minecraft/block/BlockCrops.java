@@ -16,7 +16,7 @@ import net.minecraftforge.common.ForgeDirection;
 public class BlockCrops extends BlockFlower
 {
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94363_a;
+    private Icon[] iconArray;
 
     protected BlockCrops(int par1)
     {
@@ -144,7 +144,7 @@ public class BlockCrops extends BlockFlower
             par2 = 7;
         }
 
-        return this.field_94363_a[par2];
+        return this.iconArray[par2];
     }
 
     /**
@@ -225,13 +225,18 @@ public class BlockCrops extends BlockFlower
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
-    {
-        this.field_94363_a = new Icon[8];
 
-        for (int i = 0; i < this.field_94363_a.length; ++i)
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.iconArray = new Icon[8];
+
+        for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.field_94363_a[i] = par1IconRegister.func_94245_a("crops_" + i);
+            this.iconArray[i] = par1IconRegister.registerIcon("crops_" + i);
         }
     }
 }

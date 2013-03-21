@@ -12,7 +12,7 @@ import net.minecraft.util.Icon;
 public class BlockMelon extends Block
 {
     @SideOnly(Side.CLIENT)
-    private Icon field_94423_a;
+    private Icon theIcon;
 
     protected BlockMelon(int par1)
     {
@@ -27,7 +27,7 @@ public class BlockMelon extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 != 1 && par1 != 0 ? this.field_94336_cN : this.field_94423_a;
+        return par1 != 1 && par1 != 0 ? this.blockIcon : this.theIcon;
     }
 
     /**
@@ -62,9 +62,14 @@ public class BlockMelon extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("melon_side");
-        this.field_94423_a = par1IconRegister.func_94245_a("melon_top");
+        this.blockIcon = par1IconRegister.registerIcon("melon_side");
+        this.theIcon = par1IconRegister.registerIcon("melon_top");
     }
 }

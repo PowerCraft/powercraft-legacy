@@ -266,7 +266,7 @@ public class GuiAchievements extends GuiScreen
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-        this.mc.renderEngine.func_98187_b("/terrain.png");
+        this.mc.renderEngine.bindTexture("/terrain.png");
         int i2 = k + 288 >> 4;
         int j2 = l + 288 >> 4;
         int k2 = (k + 288) % 16;
@@ -323,7 +323,7 @@ public class GuiAchievements extends GuiScreen
                     icon = Block.bedrock.getBlockTextureFromSideAndMetadata(0, 0);
                 }
 
-                this.func_94065_a(k1 + k3 * 16 - k2, l1 + i3 * 16 - l2, icon, 16, 16);
+                this.drawTexturedModelRectFromIcon(k1 + k3 * 16 - k2, l1 + i3 * 16 - l2, icon, 16, 16);
             }
         }
 
@@ -399,7 +399,7 @@ public class GuiAchievements extends GuiScreen
                     GL11.glColor4f(f2, f2, f2, 1.0F);
                 }
 
-                this.mc.renderEngine.func_98187_b("/achievement/bg.png");
+                this.mc.renderEngine.bindTexture("/achievement/bg.png");
                 i5 = k1 + j4;
                 l4 = l1 + l3;
 
@@ -416,7 +416,7 @@ public class GuiAchievements extends GuiScreen
                 {
                     float f3 = 0.1F;
                     GL11.glColor4f(f3, f3, f3, 1.0F);
-                    renderitem.field_77024_a = false;
+                    renderitem.renderWithColor = false;
                 }
 
                 GL11.glEnable(GL11.GL_LIGHTING);
@@ -426,7 +426,7 @@ public class GuiAchievements extends GuiScreen
 
                 if (!this.statFileWriter.canUnlockAchievement(achievement2))
                 {
-                    renderitem.field_77024_a = true;
+                    renderitem.renderWithColor = true;
                 }
 
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -441,7 +441,7 @@ public class GuiAchievements extends GuiScreen
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.func_98187_b("/achievement/bg.png");
+        this.mc.renderEngine.bindTexture("/achievement/bg.png");
         this.drawTexturedModalRect(i1, j1, 0, 0, this.achievementsPaneWidth, this.achievementsPaneHeight);
         GL11.glPopMatrix();
         this.zLevel = 0.0F;

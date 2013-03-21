@@ -28,42 +28,46 @@ public class RenderFallingSand extends Render
      */
     public void doRenderFallingSand(EntityFallingSand par1EntityFallingSand, double par2, double par4, double par6, float par8, float par9)
     {
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float)par2, (float)par4, (float)par6);
-        this.loadTexture("/terrain.png");
-        Block block = Block.blocksList[par1EntityFallingSand.blockID];
         World world = par1EntityFallingSand.getWorld();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        Tessellator tessellator;
+        Block block = Block.blocksList[par1EntityFallingSand.blockID];
 
-        if (block instanceof BlockAnvil && block.getRenderType() == 35)
+        if (world.getBlockId(MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ)) != par1EntityFallingSand.blockID)
         {
-            this.sandRenderBlocks.blockAccess = world;
-            tessellator = Tessellator.instance;
-            tessellator.startDrawingQuads();
-            tessellator.setTranslation((double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posX)) - 0.5F), (double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posY)) - 0.5F), (double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posZ)) - 0.5F));
-            this.sandRenderBlocks.renderBlockAnvilMetadata((BlockAnvil)block, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ), par1EntityFallingSand.metadata);
-            tessellator.setTranslation(0.0D, 0.0D, 0.0D);
-            tessellator.draw();
-        }
-        else if (block.getRenderType() == 27)
-        {
-            this.sandRenderBlocks.blockAccess = world;
-            tessellator = Tessellator.instance;
-            tessellator.startDrawingQuads();
-            tessellator.setTranslation((double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posX)) - 0.5F), (double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posY)) - 0.5F), (double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posZ)) - 0.5F));
-            this.sandRenderBlocks.renderBlockDragonEgg((BlockDragonEgg)block, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ));
-            tessellator.setTranslation(0.0D, 0.0D, 0.0D);
-            tessellator.draw();
-        }
-        else if (block != null)
-        {
-            this.sandRenderBlocks.setRenderBoundsFromBlock(block);
-            this.sandRenderBlocks.renderBlockSandFalling(block, world, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ), par1EntityFallingSand.metadata);
-        }
+            GL11.glPushMatrix();
+            GL11.glTranslatef((float)par2, (float)par4, (float)par6);
+            this.loadTexture("/terrain.png");
+            GL11.glDisable(GL11.GL_LIGHTING);
+            Tessellator tessellator;
 
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPopMatrix();
+            if (block instanceof BlockAnvil && block.getRenderType() == 35)
+            {
+                this.sandRenderBlocks.blockAccess = world;
+                tessellator = Tessellator.instance;
+                tessellator.startDrawingQuads();
+                tessellator.setTranslation((double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posX)) - 0.5F), (double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posY)) - 0.5F), (double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posZ)) - 0.5F));
+                this.sandRenderBlocks.renderBlockAnvilMetadata((BlockAnvil)block, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ), par1EntityFallingSand.metadata);
+                tessellator.setTranslation(0.0D, 0.0D, 0.0D);
+                tessellator.draw();
+            }
+            else if (block.getRenderType() == 27)
+            {
+                this.sandRenderBlocks.blockAccess = world;
+                tessellator = Tessellator.instance;
+                tessellator.startDrawingQuads();
+                tessellator.setTranslation((double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posX)) - 0.5F), (double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posY)) - 0.5F), (double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posZ)) - 0.5F));
+                this.sandRenderBlocks.renderBlockDragonEgg((BlockDragonEgg)block, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ));
+                tessellator.setTranslation(0.0D, 0.0D, 0.0D);
+                tessellator.draw();
+            }
+            else if (block != null)
+            {
+                this.sandRenderBlocks.setRenderBoundsFromBlock(block);
+                this.sandRenderBlocks.renderBlockSandFalling(block, world, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ), par1EntityFallingSand.metadata);
+            }
+
+            GL11.glEnable(GL11.GL_LIGHTING);
+            GL11.glPopMatrix();
+        }
     }
 
     /**

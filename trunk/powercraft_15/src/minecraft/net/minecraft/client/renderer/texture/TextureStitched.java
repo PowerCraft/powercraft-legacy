@@ -15,147 +15,189 @@ import net.minecraft.util.Tuple;
 @SideOnly(Side.CLIENT)
 public class TextureStitched implements Icon
 {
-    private final String field_94235_h;
-    protected Texture field_94228_a;
-    protected List field_94226_b;
-    private List field_94236_i;
-    protected boolean field_94227_c;
-    protected int field_94224_d;
-    protected int field_94225_e;
-    private int field_94233_j;
-    private int field_94234_k;
-    private float field_94231_l;
-    private float field_94232_m;
-    private float field_94229_n;
-    private float field_94230_o;
-    private float field_94238_p;
-    private float field_94237_q;
-    protected int field_94222_f = 0;
-    protected int field_94223_g = 0;
+    private final String textureName;
 
-    public static TextureStitched func_94220_a(String par0Str)
+    /** texture sheet containing this texture */
+    protected Texture textureSheet;
+    protected List textureList;
+    private List listAnimationTuples;
+    protected boolean rotated;
+
+    /** x position of this icon on the texture sheet in pixels */
+    protected int originX;
+
+    /** y position of this icon on the texture sheet in pixels */
+    protected int originY;
+
+    /** width of this icon in pixels */
+    private int width;
+
+    /** height of this icon in pixels */
+    private int height;
+    private float minU;
+    private float maxU;
+    private float minV;
+    private float maxV;
+    private float widthNorm;
+    private float heightNorm;
+    protected int frameCounter = 0;
+    protected int tickCounter = 0;
+
+    public static TextureStitched makeTextureStitched(String par0Str)
     {
         return (TextureStitched)("clock".equals(par0Str) ? new TextureClock() : ("compass".equals(par0Str) ? new TextureCompass() : new TextureStitched(par0Str)));
     }
 
     protected TextureStitched(String par1)
     {
-        this.field_94235_h = par1;
+        this.textureName = par1;
     }
 
-    public void func_94218_a(Texture par1Texture, List par2List, int par3, int par4, int par5, int par6, boolean par7)
+    public void init(Texture par1Texture, List par2List, int par3, int par4, int par5, int par6, boolean par7)
     {
-        this.field_94228_a = par1Texture;
-        this.field_94226_b = par2List;
-        this.field_94224_d = par3;
-        this.field_94225_e = par4;
-        this.field_94233_j = par5;
-        this.field_94234_k = par6;
-        this.field_94227_c = par7;
-        this.field_94231_l = (float)par3 / (float)par1Texture.func_94275_d();
-        this.field_94232_m = (float)(par3 + par5) / (float)par1Texture.func_94275_d();
-        this.field_94229_n = (float)par4 / (float)par1Texture.func_94276_e();
-        this.field_94230_o = (float)(par4 + par6) / (float)par1Texture.func_94276_e();
-        this.field_94238_p = (float)par5 / 16.0F;
-        this.field_94237_q = (float)par6 / 16.0F;
+        this.textureSheet = par1Texture;
+        this.textureList = par2List;
+        this.originX = par3;
+        this.originY = par4;
+        this.width = par5;
+        this.height = par6;
+        this.rotated = par7;
+        float f = 0.01F / (float)par1Texture.getWidth();
+        float f1 = 0.01F / (float)par1Texture.getHeight();
+        this.minU = (float)par3 / (float)par1Texture.getWidth() + f;
+        this.maxU = (float)(par3 + par5) / (float)par1Texture.getWidth() - f;
+        this.minV = (float)par4 / (float)par1Texture.getHeight() + f1;
+        this.maxV = (float)(par4 + par6) / (float)par1Texture.getHeight() - f1;
+        this.widthNorm = (float)par5 / 16.0F;
+        this.heightNorm = (float)par6 / 16.0F;
     }
 
-    public void func_94217_a(TextureStitched par1TextureStitched)
+    public void copyFrom(TextureStitched par1TextureStitched)
     {
-        this.func_94218_a(par1TextureStitched.field_94228_a, par1TextureStitched.field_94226_b, par1TextureStitched.field_94224_d, par1TextureStitched.field_94225_e, par1TextureStitched.field_94233_j, par1TextureStitched.field_94234_k, par1TextureStitched.field_94227_c);
+        this.init(par1TextureStitched.textureSheet, par1TextureStitched.textureList, par1TextureStitched.originX, par1TextureStitched.originY, par1TextureStitched.width, par1TextureStitched.height, par1TextureStitched.rotated);
     }
 
-    public int func_94211_a()
+    /**
+     * Returns the X position of this icon on its texture sheet, in pixels.
+     */
+    public int getOriginX()
     {
-        return this.field_94224_d;
+        return this.originX;
     }
 
-    public int func_94216_b()
+    /**
+     * Returns the Y position of this icon on its texture sheet, in pixels.
+     */
+    public int getOriginY()
     {
-        return this.field_94225_e;
+        return this.originY;
     }
 
-    public float func_94209_e()
+    /**
+     * Returns the minimum U coordinate to use when rendering with this icon.
+     */
+    public float getMinU()
     {
-        return this.field_94231_l;
+        return this.minU;
     }
 
-    public float func_94212_f()
+    /**
+     * Returns the maximum U coordinate to use when rendering with this icon.
+     */
+    public float getMaxU()
     {
-        return this.field_94232_m - Float.MIN_VALUE;
+        return this.maxU;
     }
 
-    public float func_94214_a(double par1)
+    /**
+     * Gets a U coordinate on the icon. 0 returns uMin and 16 returns uMax. Other arguments return in-between values.
+     */
+    public float getInterpolatedU(double par1)
     {
-        float f = this.field_94232_m - this.field_94231_l;
-        return this.field_94231_l + f * ((float)par1 / 16.0F) - Float.MIN_VALUE;
+        float f = this.maxU - this.minU;
+        return this.minU + f * ((float)par1 / 16.0F);
     }
 
-    public float func_94206_g()
+    /**
+     * Returns the minimum V coordinate to use when rendering with this icon.
+     */
+    public float getMinV()
     {
-        return this.field_94229_n;
+        return this.minV;
     }
 
-    public float func_94210_h()
+    /**
+     * Returns the maximum V coordinate to use when rendering with this icon.
+     */
+    public float getMaxV()
     {
-        return this.field_94230_o - Float.MIN_VALUE;
+        return this.maxV;
     }
 
-    public float func_94207_b(double par1)
+    /**
+     * Gets a V coordinate on the icon. 0 returns vMin and 16 returns vMax. Other arguments return in-between values.
+     */
+    public float getInterpolatedV(double par1)
     {
-        float f = this.field_94230_o - this.field_94229_n;
-        return this.field_94229_n + f * ((float)par1 / 16.0F) - Float.MIN_VALUE;
+        float f = this.maxV - this.minV;
+        return this.minV + f * ((float)par1 / 16.0F);
     }
 
-    public String func_94215_i()
+    public String getIconName()
     {
-        return this.field_94235_h;
+        return this.textureName;
     }
 
-    public int func_94213_j()
+    /**
+     * Returns the width of the texture sheet this icon is on, in pixels.
+     */
+    public int getSheetWidth()
     {
-        return this.field_94228_a.func_94275_d();
+        return this.textureSheet.getWidth();
     }
 
-    public int func_94208_k()
+    /**
+     * Returns the height of the texture sheet this icon is on, in pixels.
+     */
+    public int getSheetHeight()
     {
-        return this.field_94228_a.func_94276_e();
+        return this.textureSheet.getHeight();
     }
 
-    public void func_94219_l()
+    public void updateAnimation()
     {
-        if (this.field_94236_i != null)
+        if (this.listAnimationTuples != null)
         {
-            Tuple tuple = (Tuple)this.field_94236_i.get(this.field_94222_f);
-            ++this.field_94223_g;
+            Tuple tuple = (Tuple)this.listAnimationTuples.get(this.frameCounter);
+            ++this.tickCounter;
 
-            if (this.field_94223_g >= ((Integer)tuple.getSecond()).intValue())
+            if (this.tickCounter >= ((Integer)tuple.getSecond()).intValue())
             {
                 int i = ((Integer)tuple.getFirst()).intValue();
-                this.field_94222_f = (this.field_94222_f + 1) % this.field_94236_i.size();
-                this.field_94223_g = 0;
-                tuple = (Tuple)this.field_94236_i.get(this.field_94222_f);
+                this.frameCounter = (this.frameCounter + 1) % this.listAnimationTuples.size();
+                this.tickCounter = 0;
+                tuple = (Tuple)this.listAnimationTuples.get(this.frameCounter);
                 int j = ((Integer)tuple.getFirst()).intValue();
 
-                if (i != j && j >= 0 && j < this.field_94226_b.size())
+                if (i != j && j >= 0 && j < this.textureList.size())
                 {
-                    this.field_94228_a.func_94281_a(this.field_94224_d, this.field_94225_e, (Texture)this.field_94226_b.get(j), this.field_94227_c);
+                    this.textureSheet.copyFrom(this.originX, this.originY, (Texture)this.textureList.get(j), this.rotated);
                 }
             }
         }
         else
         {
-            int k = this.field_94222_f;
-            this.field_94222_f = (this.field_94222_f + 1) % this.field_94226_b.size();
+            int k = this.frameCounter;
+            this.frameCounter = (this.frameCounter + 1) % this.textureList.size();
 
-            if (k != this.field_94222_f)
+            if (k != this.frameCounter)
             {
-                this.field_94228_a.func_94281_a(this.field_94224_d, this.field_94225_e, (Texture)this.field_94226_b.get(this.field_94222_f), this.field_94227_c);
+                this.textureSheet.copyFrom(this.originX, this.originY, (Texture)this.textureList.get(this.frameCounter), this.rotated);
             }
         }
     }
 
-    public void func_94221_a(BufferedReader par1BufferedReader)
+    public void readAnimationInfo(BufferedReader par1BufferedReader)
     {
         ArrayList arraylist = new ArrayList();
 
@@ -192,12 +234,12 @@ public class TextureStitched implements Icon
         }
         catch (Exception exception)
         {
-            System.err.println("Failed to read animation info for " + this.field_94235_h + ": " + exception.getMessage());
+            System.err.println("Failed to read animation info for " + this.textureName + ": " + exception.getMessage());
         }
 
         if (!arraylist.isEmpty() && arraylist.size() < 600)
         {
-            this.field_94236_i = arraylist;
+            this.listAnimationTuples = arraylist;
         }
     }
 

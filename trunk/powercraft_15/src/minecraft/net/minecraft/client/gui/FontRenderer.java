@@ -38,7 +38,7 @@ public class FontRenderer
      * drop shadows.
      */
     private int[] colorCode = new int[32];
-    private final String field_98307_f;
+    private final String fontTextureName;
 
     /** The RenderEngine used to load and setup glyph textures. */
     private final RenderEngine renderEngine;
@@ -96,16 +96,16 @@ public class FontRenderer
     FontRenderer()
     {
         this.renderEngine = null;
-        this.field_98307_f = null;
+        this.fontTextureName = null;
     }
 
     public FontRenderer(GameSettings par1GameSettings, String par2Str, RenderEngine par3RenderEngine, boolean par4)
     {
-        this.field_98307_f = par2Str;
+        this.fontTextureName = par2Str;
         this.renderEngine = par3RenderEngine;
         this.unicodeFlag = par4;
-        this.func_98304_a();
-        par3RenderEngine.func_98187_b(par2Str);
+        this.readFontData();
+        par3RenderEngine.bindTexture(par2Str);
 
         for (int i = 0; i < 32; ++i)
         {
@@ -140,13 +140,13 @@ public class FontRenderer
         }
     }
 
-    public void func_98304_a()
+    public void readFontData()
     {
-        this.func_98306_d();
-        this.func_98305_c(this.field_98307_f);
+        this.readGlyphSizes();
+        this.readFontTexture(this.fontTextureName);
     }
 
-    private void func_98305_c(String par1Str)
+    private void readFontTexture(String par1Str)
     {
         BufferedImage bufferedimage;
 
@@ -208,7 +208,7 @@ public class FontRenderer
         }
     }
 
-    private void func_98306_d()
+    private void readGlyphSizes()
     {
         try
         {
@@ -237,7 +237,7 @@ public class FontRenderer
         float f = (float)(par1 % 16 * 8);
         float f1 = (float)(par1 / 16 * 8);
         float f2 = par2 ? 1.0F : 0.0F;
-        this.renderEngine.func_98187_b(this.field_98307_f);
+        this.renderEngine.bindTexture(this.fontTextureName);
         float f3 = (float)this.charWidth[par1] - 0.01F;
         GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
         GL11.glTexCoord2f(f / 128.0F, f1 / 128.0F);
@@ -258,7 +258,7 @@ public class FontRenderer
     private void loadGlyphTexture(int par1)
     {
         String s = String.format("/font/glyph_%02X.png", new Object[] {Integer.valueOf(par1)});
-        this.renderEngine.func_98187_b(s);
+        this.renderEngine.bindTexture(s);
     }
 
     /**

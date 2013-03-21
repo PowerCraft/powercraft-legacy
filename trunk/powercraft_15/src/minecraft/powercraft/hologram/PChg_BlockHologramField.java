@@ -128,7 +128,6 @@ public class PChg_BlockHologramField extends PC_Block implements PC_IItemInfo {
 	
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer){
 		float s = 1.0f/16.0f;
-		PC_Renderer.resetTerrain(true);
 		ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, 0, s*15, s*5, s);
     	PC_Renderer.renderInvBox(renderer, Block.blockSteel, 0);
     	ValueWriting.setBlockBounds(Block.blockSteel, s*15, 0, 0, s*16, s*5, s*15);
@@ -139,8 +138,7 @@ public class PChg_BlockHologramField extends PC_Block implements PC_IItemInfo {
     	PC_Renderer.renderInvBox(renderer, Block.blockSteel, 0);
     	ValueWriting.setBlockBounds(Block.blockSteel, s, 0, s, s*15, s, s*15);
     	PC_Renderer.renderInvBox(renderer, Block.blockSteel, 0);
-    	ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, 0, 1, 1, 1);
-    	PC_Renderer.swapTerrain(block);    	
+    	ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, 0, 1, 1, 1);	
     	ValueWriting.setBlockBounds(block, s*3, s*6, s*3, s*13, s*16, s*13);
     	PC_Renderer.renderInvBox(renderer, block, 0);
     	ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
@@ -149,7 +147,6 @@ public class PChg_BlockHologramField extends PC_Block implements PC_IItemInfo {
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
 		float s = 1.0f/16.0f;
 		PC_Renderer.tessellatorDraw();
-        PC_Renderer.resetTerrain(true);
         PC_Renderer.tessellatorStartDrawingQuads();
 		ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, 0, s*15, s*5, s);
 		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
@@ -163,13 +160,11 @@ public class PChg_BlockHologramField extends PC_Block implements PC_IItemInfo {
     	PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
     	ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, 0, 1, 1, 1);
     	PC_Renderer.tessellatorDraw();
-    	PC_Renderer.swapTerrain(block);
         PC_Renderer.tessellatorStartDrawingQuads();
         ValueWriting.setBlockBounds(block, s*3, s*6, s*3, s*13, s*16, s*13);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
     	ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
     	PC_Renderer.tessellatorDraw();
-    	PC_Renderer.resetTerrain(true);
         PC_Renderer.tessellatorStartDrawingQuads();
     }
 	

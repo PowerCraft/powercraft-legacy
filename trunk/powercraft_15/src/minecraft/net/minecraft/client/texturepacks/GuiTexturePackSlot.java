@@ -85,7 +85,7 @@ class GuiTexturePackSlot extends GuiSlot
         par5Tessellator.draw();
         String s = itexturepack.getTexturePackFileName();
 
-        if (!itexturepack.func_94179_g())
+        if (!itexturepack.isCompatible())
         {
             s = EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("texturePack.incompatible") + " - " + s;
         }

@@ -5,23 +5,23 @@ import net.minecraft.item.ItemStack;
 
 class CallableItemName implements Callable
 {
-    final ItemStack field_96634_a;
+    final ItemStack theItemStack;
 
-    final InventoryPlayer field_96633_b;
+    final InventoryPlayer playerInventory;
 
     CallableItemName(InventoryPlayer par1InventoryPlayer, ItemStack par2ItemStack)
     {
-        this.field_96633_b = par1InventoryPlayer;
-        this.field_96634_a = par2ItemStack;
+        this.playerInventory = par1InventoryPlayer;
+        this.theItemStack = par2ItemStack;
     }
 
-    public String func_96632_a()
+    public String callItemDisplayName()
     {
-        return this.field_96634_a.getDisplayName();
+        return this.theItemStack.getDisplayName();
     }
 
     public Object call()
     {
-        return this.func_96632_a();
+        return this.callItemDisplayName();
     }
 }

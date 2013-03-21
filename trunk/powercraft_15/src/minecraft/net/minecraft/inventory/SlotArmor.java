@@ -8,7 +8,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 
-//BY NEI
+//NEI
 public class SlotArmor extends Slot
 {
     /**
@@ -21,7 +21,7 @@ public class SlotArmor extends Slot
      */
     final ContainerPlayer parent;
 
-    //BY NEI
+    //NEI
     public SlotArmor(ContainerPlayer par1ContainerPlayer, IInventory par2IInventory, int par3, int par4, int par5, int par6)
     {
         super(par2IInventory, par3, par4, par5);

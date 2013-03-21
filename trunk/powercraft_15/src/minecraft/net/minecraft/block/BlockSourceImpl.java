@@ -54,12 +54,12 @@ public class BlockSourceImpl implements IBlockSource
         return this.zPos;
     }
 
-    public int func_82620_h()
+    public int getBlockMetadata()
     {
         return this.worldObj.getBlockMetadata(this.xPos, this.yPos, this.zPos);
     }
 
-    public TileEntity func_82619_j()
+    public TileEntity getBlockTileEntity()
     {
         return this.worldObj.getBlockTileEntity(this.xPos, this.yPos, this.zPos);
     }

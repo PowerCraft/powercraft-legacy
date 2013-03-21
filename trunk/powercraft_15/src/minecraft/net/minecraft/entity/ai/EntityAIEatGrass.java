@@ -84,13 +84,13 @@ public class EntityAIEatGrass extends EntityAIBase
 
             if (this.theWorld.getBlockId(i, j, k) == Block.tallGrass.blockID)
             {
-                this.theWorld.func_94578_a(i, j, k, false);
+                this.theWorld.destroyBlock(i, j, k, false);
                 this.theEntity.eatGrassBonus();
             }
             else if (this.theWorld.getBlockId(i, j - 1, k) == Block.grass.blockID)
             {
                 this.theWorld.playAuxSFX(2001, i, j - 1, k, Block.grass.blockID);
-                this.theWorld.setBlockAndMetadataWithNotify(i, j - 1, k, Block.dirt.blockID, 0, 2);
+                this.theWorld.setBlock(i, j - 1, k, Block.dirt.blockID, 0, 2);
                 this.theEntity.eatGrassBonus();
             }
         }

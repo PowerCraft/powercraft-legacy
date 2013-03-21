@@ -43,11 +43,11 @@ public abstract class WorldGenerator
     {
         if (this.doBlockNotify)
         {
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, par5, par6, 3);
+            par1World.setBlock(par2, par3, par4, par5, par6, 3);
         }
         else
         {
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, par5, par6, 2);
+            par1World.setBlock(par2, par3, par4, par5, par6, 2);
         }
     }
 }

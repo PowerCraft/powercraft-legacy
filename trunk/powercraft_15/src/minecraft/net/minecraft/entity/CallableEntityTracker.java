@@ -6,11 +6,11 @@ class CallableEntityTracker implements Callable
 {
     final int field_96570_a;
 
-    final EntityTracker field_96569_b;
+    final EntityTracker theEntityTracker;
 
     CallableEntityTracker(EntityTracker par1EntityTracker, int par2)
     {
-        this.field_96569_b = par1EntityTracker;
+        this.theEntityTracker = par1EntityTracker;
         this.field_96570_a = par2;
     }
 

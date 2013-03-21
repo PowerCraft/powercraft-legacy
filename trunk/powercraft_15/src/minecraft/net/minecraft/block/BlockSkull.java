@@ -210,13 +210,13 @@ public class BlockSkull extends BlockContainer
                     par1World.setBlockMetadataWithNotify(par2, par3, par4 + i1, 8, 2);
                     par1World.setBlockMetadataWithNotify(par2, par3, par4 + i1 + 1, 8, 2);
                     par1World.setBlockMetadataWithNotify(par2, par3, par4 + i1 + 2, 8, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2, par3, par4 + i1, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2, par3, par4 + i1 + 1, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2, par3, par4 + i1 + 2, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4 + i1, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4 + i1 + 1, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4 + i1 + 2, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2, par3 - 2, par4 + i1 + 1, 0, 0, 2);
+                    par1World.setBlock(par2, par3, par4 + i1, 0, 0, 2);
+                    par1World.setBlock(par2, par3, par4 + i1 + 1, 0, 0, 2);
+                    par1World.setBlock(par2, par3, par4 + i1 + 2, 0, 0, 2);
+                    par1World.setBlock(par2, par3 - 1, par4 + i1, 0, 0, 2);
+                    par1World.setBlock(par2, par3 - 1, par4 + i1 + 1, 0, 0, 2);
+                    par1World.setBlock(par2, par3 - 1, par4 + i1 + 2, 0, 0, 2);
+                    par1World.setBlock(par2, par3 - 2, par4 + i1 + 1, 0, 0, 2);
 
                     if (!par1World.isRemote)
                     {
@@ -250,13 +250,13 @@ public class BlockSkull extends BlockContainer
                     par1World.setBlockMetadataWithNotify(par2 + i1, par3, par4, 8, 2);
                     par1World.setBlockMetadataWithNotify(par2 + i1 + 1, par3, par4, 8, 2);
                     par1World.setBlockMetadataWithNotify(par2 + i1 + 2, par3, par4, 8, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2 + i1, par3, par4, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2 + i1 + 1, par3, par4, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2 + i1 + 2, par3, par4, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2 + i1, par3 - 1, par4, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2 + i1 + 1, par3 - 1, par4, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2 + i1 + 2, par3 - 1, par4, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2 + i1 + 1, par3 - 2, par4, 0, 0, 2);
+                    par1World.setBlock(par2 + i1, par3, par4, 0, 0, 2);
+                    par1World.setBlock(par2 + i1 + 1, par3, par4, 0, 0, 2);
+                    par1World.setBlock(par2 + i1 + 2, par3, par4, 0, 0, 2);
+                    par1World.setBlock(par2 + i1, par3 - 1, par4, 0, 0, 2);
+                    par1World.setBlock(par2 + i1 + 1, par3 - 1, par4, 0, 0, 2);
+                    par1World.setBlock(par2 + i1 + 2, par3 - 1, par4, 0, 0, 2);
+                    par1World.setBlock(par2 + i1 + 1, par3 - 2, par4, 0, 0, 2);
 
                     if (!par1World.isRemote)
                     {
@@ -298,7 +298,12 @@ public class BlockSkull extends BlockContainer
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister) {}
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister) {}
 
     @SideOnly(Side.CLIENT)
 

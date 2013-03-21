@@ -168,9 +168,5 @@ public class McoClient
         {
             throw new ExceptionMcoService(500, "Server not available!");
         }
-        catch (Exception exception)
-        {
-            throw new ExceptionMcoService(500, "Server not available!");
-        }
     }
 }

@@ -22,7 +22,7 @@ public class WorldGenCactus extends WorldGenerator
                 {
                     if (Block.cactus.canBlockStay(par1World, i1, j1 + i2, k1))
                     {
-                        par1World.setBlockAndMetadataWithNotify(i1, j1 + i2, k1, Block.cactus.blockID, 0, 2);
+                        par1World.setBlock(i1, j1 + i2, k1, Block.cactus.blockID, 0, 2);
                     }
                 }
             }

@@ -24,10 +24,10 @@ public class McoServer extends ValueObject
     public String field_96403_g;
     public boolean field_98166_h;
     public int field_96415_h;
-    public int field_96416_i;
     public String field_96413_j = "";
     public String field_96414_k = "";
     public boolean field_96411_l;
+    public boolean field_102022_m = false;
     public long field_96412_m;
     private String field_96409_n = null;
     private String field_96410_o = null;
@@ -82,10 +82,10 @@ public class McoServer extends ValueObject
     {
         this.field_96414_k = par1McoServer.field_96414_k;
         this.field_96413_j = par1McoServer.field_96413_j;
-        this.field_96416_i = par1McoServer.field_96416_i;
         this.field_96412_m = par1McoServer.field_96412_m;
         this.field_96411_l = par1McoServer.field_96411_l;
         this.field_96415_h = par1McoServer.field_96415_h;
+        this.field_102022_m = true;
     }
 
     public static McoServer func_98163_a(JsonNode par0JsonNode)

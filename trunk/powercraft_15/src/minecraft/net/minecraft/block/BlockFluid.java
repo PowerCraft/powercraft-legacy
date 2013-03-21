@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public abstract class BlockFluid extends Block
 {
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94425_a;
+    private Icon[] theIcon;
 
     protected BlockFluid(int par1, Material par2Material)
     {
@@ -90,7 +90,7 @@ public abstract class BlockFluid extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 != 0 && par1 != 1 ? this.field_94425_a[1] : this.field_94425_a[0];
+        return par1 != 0 && par1 != 1 ? this.theIcon[1] : this.theIcon[0];
     }
 
     /**
@@ -603,11 +603,11 @@ public abstract class BlockFluid extends Block
 
                     if (l == 0)
                     {
-                        par1World.func_94575_c(par2, par3, par4, Block.obsidian.blockID);
+                        par1World.setBlock(par2, par3, par4, Block.obsidian.blockID);
                     }
                     else if (l <= 4)
                     {
-                        par1World.func_94575_c(par2, par3, par4, Block.cobblestone.blockID);
+                        par1World.setBlock(par2, par3, par4, Block.cobblestone.blockID);
                     }
 
                     this.triggerLavaMixEffects(par1World, par2, par3, par4);
@@ -630,21 +630,26 @@ public abstract class BlockFluid extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
         if (this.blockMaterial == Material.lava)
         {
-            this.field_94425_a = new Icon[] {par1IconRegister.func_94245_a("lava"), par1IconRegister.func_94245_a("lava_flow")};
+            this.theIcon = new Icon[] {par1IconRegister.registerIcon("lava"), par1IconRegister.registerIcon("lava_flow")};
         }
         else
         {
-            this.field_94425_a = new Icon[] {par1IconRegister.func_94245_a("water"), par1IconRegister.func_94245_a("water_flow")};
+            this.theIcon = new Icon[] {par1IconRegister.registerIcon("water"), par1IconRegister.registerIcon("water_flow")};
         }
     }
 
     @SideOnly(Side.CLIENT)
     public static Icon func_94424_b(String par0Str)
     {
-        return par0Str == "water" ? Block.waterMoving.field_94425_a[0] : (par0Str == "water_flow" ? Block.waterMoving.field_94425_a[1] : (par0Str == "lava" ? Block.lavaMoving.field_94425_a[0] : (par0Str == "lava_flow" ? Block.lavaMoving.field_94425_a[1] : null)));
+        return par0Str == "water" ? Block.waterMoving.theIcon[0] : (par0Str == "water_flow" ? Block.waterMoving.theIcon[1] : (par0Str == "lava" ? Block.lavaMoving.theIcon[0] : (par0Str == "lava_flow" ? Block.lavaMoving.theIcon[1] : null)));
     }
 }

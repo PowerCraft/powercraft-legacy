@@ -190,7 +190,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     {
         if (this.getActiveAnvilConverter().isOldMapFormat(par1Str))
         {
-            this.func_98033_al().func_98233_a("Converting map!");
+            this.getLogAgent().logInfo("Converting map!");
             this.setUserMessage("menu.convertingLevel");
             this.getActiveAnvilConverter().convertMapFormat(par1Str, new ConvertingProgressUpdate(this));
         }
@@ -234,10 +234,10 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
             worldsettings.enableBonusChest();
         }
 
-        WorldServer overWorld = (isDemo() ? new DemoWorldServer(this, isavehandler, par2Str, 0, theProfiler, func_98033_al()) : new WorldServer(this, isavehandler, par2Str, 0, worldsettings, theProfiler, func_98033_al()));
+        WorldServer overWorld = (isDemo() ? new DemoWorldServer(this, isavehandler, par2Str, 0, theProfiler, getLogAgent()) : new WorldServer(this, isavehandler, par2Str, 0, worldsettings, theProfiler, getLogAgent()));
         for (int dim : DimensionManager.getStaticDimensionIDs())
         {
-            WorldServer world = (dim == 0 ? overWorld : new WorldServerMulti(this, isavehandler, par2Str, dim, worldsettings, overWorld, theProfiler, func_98033_al()));
+            WorldServer world = (dim == 0 ? overWorld : new WorldServerMulti(this, isavehandler, par2Str, dim, worldsettings, overWorld, theProfiler, getLogAgent()));
             world.addWorldAccess(new WorldManager(this, world));
 
             if (!this.isSinglePlayer())
@@ -260,7 +260,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         int i = 0;
         this.setUserMessage("menu.generatingTerrain");
         byte b0 = 0;
-        this.func_98033_al().func_98233_a("Preparing start region for level " + b0);
+        this.getLogAgent().logInfo("Preparing start region for level " + b0);
         WorldServer worldserver = this.worldServers[b0];
         ChunkCoordinates chunkcoordinates = worldserver.getSpawnPoint();
         long j = System.currentTimeMillis();
@@ -306,7 +306,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     {
         this.currentTask = par1Str;
         this.percentDone = par2;
-        this.func_98033_al().func_98233_a(par1Str + ": " + par2 + "%");
+        this.getLogAgent().logInfo(par1Str + ": " + par2 + "%");
     }
 
     /**
@@ -336,7 +336,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
                 {
                     if (!par1)
                     {
-                        this.func_98033_al().func_98233_a("Saving chunks for level \'" + worldserver.getWorldInfo().getWorldName() + "\'/" + worldserver.provider.getDimensionName());
+                        this.getLogAgent().logInfo("Saving chunks for level \'" + worldserver.getWorldInfo().getWorldName() + "\'/" + worldserver.provider.getDimensionName());
                     }
 
                     try
@@ -345,7 +345,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
                     }
                     catch (MinecraftException minecraftexception)
                     {
-                        this.func_98033_al().func_98236_b(minecraftexception.getMessage());
+                        this.getLogAgent().logWarning(minecraftexception.getMessage());
                     }
                 }
             }
@@ -359,7 +359,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     {
         if (!this.worldIsBeingDeleted)
         {
-            this.func_98033_al().func_98233_a("Stopping server");
+            this.getLogAgent().logInfo("Stopping server");
 
             if (this.getNetworkThread() != null)
             {
@@ -368,12 +368,12 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
             if (this.serverConfigManager != null)
             {
-                this.func_98033_al().func_98233_a("Saving players");
+                this.getLogAgent().logInfo("Saving players");
                 this.serverConfigManager.saveAllPlayerData();
                 this.serverConfigManager.removeAllPlayers();
             }
 
-            this.func_98033_al().func_98233_a("Saving worlds");
+            this.getLogAgent().logInfo("Saving worlds");
             this.saveAllWorlds(false);
 
             for (int i = 0; i < this.worldServers.length; ++i)
@@ -441,14 +441,14 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
                     if (l > 2000L && i - this.timeOfLastWarning >= 15000L)
                     {
-                        this.func_98033_al().func_98236_b("Can\'t keep up! Did the system time change, or is the server overloaded?");
+                        this.getLogAgent().logWarning("Can\'t keep up! Did the system time change, or is the server overloaded?");
                         l = 2000L;
                         this.timeOfLastWarning = i;
                     }
 
                     if (l < 0L)
                     {
-                        this.func_98033_al().func_98236_b("Time ran backwards! Did the system time change?");
+                        this.getLogAgent().logWarning("Time ran backwards! Did the system time change?");
                         l = 0L;
                     }
 
@@ -485,7 +485,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
                 return;
             }
             throwable.printStackTrace();
-            this.func_98033_al().func_98234_c("Encountered an unexpected exception " + throwable.getClass().getSimpleName(), throwable);
+            this.getLogAgent().func_98234_c("Encountered an unexpected exception " + throwable.getClass().getSimpleName(), throwable);
             CrashReport crashreport = null;
 
             if (throwable instanceof ReportedException)
@@ -499,13 +499,13 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
             File file1 = new File(new File(this.getDataDirectory(), "crash-reports"), "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-server.txt");
 
-            if (crashreport.saveToFile(file1, this.func_98033_al()))
+            if (crashreport.saveToFile(file1, this.getLogAgent()))
             {
-                this.func_98033_al().func_98232_c("This crash report has been saved to: " + file1.getAbsolutePath());
+                this.getLogAgent().func_98232_c("This crash report has been saved to: " + file1.getAbsolutePath());
             }
             else
             {
-                this.func_98033_al().func_98232_c("We were unable to save this crash report to disk.");
+                this.getLogAgent().func_98232_c("We were unable to save this crash report to disk.");
             }
 
             this.finalTick(crashreport);
@@ -707,7 +707,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public void logInfo(String par1Str)
     {
-        this.func_98033_al().func_98233_a(par1Str);
+        this.getLogAgent().logInfo(par1Str);
     }
 
     /**
@@ -715,7 +715,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public void logWarning(String par1Str)
     {
-        this.func_98033_al().func_98236_b(par1Str);
+        this.getLogAgent().logWarning(par1Str);
     }
 
     /**
@@ -767,7 +767,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public String getMinecraftVersion()
     {
-        return "1.5";
+        return "1.5.1";
     }
 
     /**
@@ -822,7 +822,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
      */
     public void logSevere(String par1Str)
     {
-        this.func_98033_al().func_98232_c(par1Str);
+        this.getLogAgent().func_98232_c(par1Str);
     }
 
     /**
@@ -832,7 +832,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     {
         if (this.isDebuggingEnabled())
         {
-            this.func_98033_al().func_98233_a(par1Str);
+            this.getLogAgent().logInfo(par1Str);
         }
     }
 
@@ -934,7 +934,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
 
     public void sendChatToPlayer(String par1Str)
     {
-        this.func_98033_al().func_98233_a(StringUtils.stripControlCodes(par1Str));
+        this.getLogAgent().logInfo(StringUtils.stripControlCodes(par1Str));
     }
 
     /**
@@ -1338,7 +1338,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         return false;
     }
 
-    public abstract ILogAgent func_98033_al();
+    public abstract ILogAgent getLogAgent();
 
     /**
      * Gets the current player count, maximum player count, and player entity list.
@@ -1428,7 +1428,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
             }
 
             DedicatedServer dedicatedserver = new DedicatedServer(new File(s1));
-            ilogagent = dedicatedserver.func_98033_al();
+            ilogagent = dedicatedserver.getLogAgent();
 
             if (s != null)
             {

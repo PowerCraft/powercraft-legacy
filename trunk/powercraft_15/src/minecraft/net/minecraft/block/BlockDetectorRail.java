@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 public class BlockDetectorRail extends BlockRailBase
 {
     @SideOnly(Side.CLIENT)
-    private Icon[] field_100010_b;
+    private Icon[] iconArray;
 
     public BlockDetectorRail(int par1)
     {
@@ -141,12 +141,20 @@ public class BlockDetectorRail extends BlockRailBase
         this.setStateIfMinecartInteractsWithRail(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
     }
 
-    public boolean func_96468_q_()
+    /**
+     * If this returns true, then comparators facing away from this block will use the value from
+     * getComparatorInputOverride instead of the actual redstone signal strength.
+     */
+    public boolean hasComparatorInputOverride()
     {
         return true;
     }
 
-    public int func_94328_b_(World par1World, int par2, int par3, int par4, int par5)
+    /**
+     * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal
+     * strength when this block inputs to a comparator.
+     */
+    public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
         if ((par1World.getBlockMetadata(par2, par3, par4) & 8) > 0)
         {
@@ -163,11 +171,16 @@ public class BlockDetectorRail extends BlockRailBase
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_100010_b = new Icon[2];
-        this.field_100010_b[0] = par1IconRegister.func_94245_a("detectorRail");
-        this.field_100010_b[1] = par1IconRegister.func_94245_a("detectorRail_on");
+        this.iconArray = new Icon[2];
+        this.iconArray[0] = par1IconRegister.registerIcon("detectorRail");
+        this.iconArray[1] = par1IconRegister.registerIcon("detectorRail_on");
     }
 
     @SideOnly(Side.CLIENT)
@@ -177,6 +190,6 @@ public class BlockDetectorRail extends BlockRailBase
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return (par2 & 8) != 0 ? this.field_100010_b[1] : this.field_100010_b[0];
+        return (par2 & 8) != 0 ? this.iconArray[1] : this.iconArray[0];
     }
 }

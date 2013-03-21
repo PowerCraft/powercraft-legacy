@@ -50,7 +50,7 @@ public class LogAgent implements ILogAgent
         }
     }
 
-    public void func_98233_a(String par1Str)
+    public void logInfo(String par1Str)
     {
         this.field_98242_a.log(Level.INFO, par1Str);
     }
@@ -61,7 +61,7 @@ public class LogAgent implements ILogAgent
         return this.field_98242_a;
     }
 
-    public void func_98236_b(String par1Str)
+    public void logWarning(String par1Str)
     {
         this.field_98242_a.log(Level.WARNING, par1Str);
     }

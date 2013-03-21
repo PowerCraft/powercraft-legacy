@@ -104,7 +104,7 @@ public class GuiMultiplayer extends GuiScreen
             }
             catch (Exception exception)
             {
-                this.mc.func_98033_al().func_98236_b("Unable to start LAN server detection: " + exception.getMessage());
+                this.mc.getLogAgent().logWarning("Unable to start LAN server detection: " + exception.getMessage());
             }
 
             this.serverSlotContainer = new GuiSlotServer(this);

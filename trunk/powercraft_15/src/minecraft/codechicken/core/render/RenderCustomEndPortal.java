@@ -43,7 +43,7 @@ public class RenderCustomEndPortal
             float f7 = 1.0F / (f5 + 1.0F);
             if(i == 0)
             {
-                r.func_98187_b("/misc/tunnel.png");
+                r.bindTexture("/misc/tunnel.png");
                 f7 = 0.1F;
                 f5 = 65F;
                 f6 = 0.125F;
@@ -52,7 +52,7 @@ public class RenderCustomEndPortal
             }
             if(i == 1)
             {
-                r.func_98187_b("/misc/particlefield.png");
+                r.bindTexture("/misc/particlefield.png");
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(1, 1);
                 f6 = 0.5F;

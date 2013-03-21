@@ -13,8 +13,8 @@ import net.minecraft.world.World;
 @SideOnly(Side.CLIENT)
 public class EntityFX extends Entity
 {
-    protected int field_94054_b;
-    protected int field_94055_c;
+    protected int particleTextureIndexX;
+    protected int particleTextureIndexY;
     protected float particleTextureJitterX;
     protected float particleTextureJitterY;
     protected int particleAge;
@@ -161,18 +161,18 @@ public class EntityFX extends Entity
 
     public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        float f6 = (float)this.field_94054_b / 16.0F;
+        float f6 = (float)this.particleTextureIndexX / 16.0F;
         float f7 = f6 + 0.0624375F;
-        float f8 = (float)this.field_94055_c / 16.0F;
+        float f8 = (float)this.particleTextureIndexY / 16.0F;
         float f9 = f8 + 0.0624375F;
         float f10 = 0.1F * this.particleScale;
 
         if (this.particleTextureIndex != null)
         {
-            f6 = this.particleTextureIndex.func_94209_e();
-            f7 = this.particleTextureIndex.func_94212_f();
-            f8 = this.particleTextureIndex.func_94206_g();
-            f9 = this.particleTextureIndex.func_94210_h();
+            f6 = this.particleTextureIndex.getMinU();
+            f7 = this.particleTextureIndex.getMaxU();
+            f8 = this.particleTextureIndex.getMinV();
+            f9 = this.particleTextureIndex.getMaxV();
         }
 
         float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)par2 - interpPosX);
@@ -229,14 +229,14 @@ public class EntityFX extends Entity
         }
         else
         {
-            this.field_94054_b = par1 % 16;
-            this.field_94055_c = par1 / 16;
+            this.particleTextureIndexX = par1 % 16;
+            this.particleTextureIndexY = par1 / 16;
         }
     }
 
-    public void func_94053_h()
+    public void nextTextureIndexX()
     {
-        ++this.field_94054_b;
+        ++this.particleTextureIndexX;
     }
 
     /**

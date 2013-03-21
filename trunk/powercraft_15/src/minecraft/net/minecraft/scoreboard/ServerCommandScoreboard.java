@@ -228,7 +228,7 @@ public class ServerCommandScoreboard extends CommandBase
 
     protected Scoreboard func_96334_d()
     {
-        return MinecraftServer.getServer().worldServerForDimension(0).func_96441_U();
+        return MinecraftServer.getServer().worldServerForDimension(0).getScoreboard();
     }
 
     protected ScoreObjective func_96345_a(String par1Str, boolean par2)

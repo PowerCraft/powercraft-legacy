@@ -12,13 +12,13 @@ public class CallableServerMemoryStats implements Callable
         this.mcServer = par1;
     }
 
-    public String func_96556_a()
+    public String callServerMemoryStats()
     {
         return MinecraftServer.getServerConfigurationManager(this.mcServer).getCurrentPlayerCount() + " / " + MinecraftServer.getServerConfigurationManager(this.mcServer).getMaxPlayers() + "; " + MinecraftServer.getServerConfigurationManager(this.mcServer).playerEntityList;
     }
 
     public Object call()
     {
-        return this.func_96556_a();
+        return this.callServerMemoryStats();
     }
 }

@@ -65,7 +65,7 @@ public class GuiScreenDemo extends GuiScreen
     {
         super.drawDefaultBackground();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.func_98187_b("/gui/demo_bg.png");
+        this.mc.renderEngine.bindTexture("/gui/demo_bg.png");
         int i = (this.width - 248) / 2;
         int j = (this.height - 166) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, 248, 166);

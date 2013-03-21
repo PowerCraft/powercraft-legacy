@@ -11,13 +11,13 @@ class CallableLevelStorageVersion implements Callable
         this.worldInfoInstance = par1WorldInfo;
     }
 
-    public String func_85112_a()
+    public String callLevelStorageFormat()
     {
         String s = "Unknown?";
 
         try
         {
-            switch (WorldInfo.func_85121_j(this.worldInfoInstance))
+            switch (WorldInfo.getSaveVersion(this.worldInfoInstance))
             {
                 case 19132:
                     s = "McRegion";
@@ -31,11 +31,11 @@ class CallableLevelStorageVersion implements Callable
             ;
         }
 
-        return String.format("0x%05X - %s", new Object[] {Integer.valueOf(WorldInfo.func_85121_j(this.worldInfoInstance)), s});
+        return String.format("0x%05X - %s", new Object[] {Integer.valueOf(WorldInfo.getSaveVersion(this.worldInfoInstance)), s});
     }
 
     public Object call()
     {
-        return this.func_85112_a();
+        return this.callLevelStorageFormat();
     }
 }

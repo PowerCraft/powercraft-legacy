@@ -15,15 +15,15 @@ final class DispenserBehaviorFire extends BehaviorDefaultDispenseItem
      */
     protected ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
     {
-        EnumFacing enumfacing = BlockDispenser.func_100009_j_(par1IBlockSource.func_82620_h());
+        EnumFacing enumfacing = BlockDispenser.getFacing(par1IBlockSource.getBlockMetadata());
         World world = par1IBlockSource.getWorld();
         int i = par1IBlockSource.getXInt() + enumfacing.getFrontOffsetX();
-        int j = par1IBlockSource.getYInt() + enumfacing.func_96559_d();
+        int j = par1IBlockSource.getYInt() + enumfacing.getFrontOffsetY();
         int k = par1IBlockSource.getZInt() + enumfacing.getFrontOffsetZ();
 
         if (world.isAirBlock(i, j, k))
         {
-            world.func_94575_c(i, j, k, Block.fire.blockID);
+            world.setBlock(i, j, k, Block.fire.blockID);
 
             if (par2ItemStack.func_96631_a(1, world.rand))
             {
@@ -33,7 +33,7 @@ final class DispenserBehaviorFire extends BehaviorDefaultDispenseItem
         else if (world.getBlockId(i, j, k) == Block.tnt.blockID)
         {
             Block.tnt.onBlockDestroyedByPlayer(world, i, j, k, 1);
-            world.func_94571_i(i, j, k);
+            world.setBlockToAir(i, j, k);
         }
         else
         {

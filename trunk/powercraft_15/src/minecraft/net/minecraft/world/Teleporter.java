@@ -56,7 +56,7 @@ public class Teleporter
                         int l1 = j + j1;
                         int i2 = k + i1 * b1 - l * b0;
                         boolean flag = j1 < 0;
-                        this.worldServerInstance.func_94575_c(k1, l1, i2, flag ? Block.obsidian.blockID : 0);
+                        this.worldServerInstance.setBlock(k1, l1, i2, flag ? Block.obsidian.blockID : 0);
                     }
                 }
             }
@@ -441,7 +441,7 @@ public class Teleporter
                         j3 = j5 + l2;
                         i4 = j2 + (i3 - 1) * l5 - k2 * k5;
                         flag = l2 < 0;
-                        this.worldServerInstance.func_94575_c(k3, j3, i4, flag ? Block.obsidian.blockID : 0);
+                        this.worldServerInstance.setBlock(k3, j3, i4, flag ? Block.obsidian.blockID : 0);
                     }
                 }
             }
@@ -457,7 +457,7 @@ public class Teleporter
                     j3 = j5 + l2;
                     i4 = j2 + (i3 - 1) * l5;
                     flag = i3 == 0 || i3 == 3 || l2 == -1 || l2 == 3;
-                    this.worldServerInstance.setBlockAndMetadataWithNotify(k3, j3, i4, flag ? Block.obsidian.blockID : Block.portal.blockID, 0, 2);
+                    this.worldServerInstance.setBlock(k3, j3, i4, flag ? Block.obsidian.blockID : Block.portal.blockID, 0, 2);
                 }
             }
 

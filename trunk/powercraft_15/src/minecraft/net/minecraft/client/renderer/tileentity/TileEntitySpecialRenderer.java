@@ -27,7 +27,7 @@ public abstract class TileEntitySpecialRenderer
 
         if (renderengine != null)
         {
-            renderengine.func_98187_b(par1Str);
+            renderengine.bindTexture(par1Str);
         }
     }
 
@@ -43,7 +43,7 @@ public abstract class TileEntitySpecialRenderer
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderengine.getTextureForDownloadableImage(par1Str, par2Str));
         }
 
-        renderengine.func_98185_a();
+        renderengine.resetBoundTexture();
     }
 
     /**

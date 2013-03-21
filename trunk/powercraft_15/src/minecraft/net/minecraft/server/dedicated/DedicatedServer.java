@@ -59,17 +59,17 @@ public class DedicatedServer extends MinecraftServer implements IServer
         DedicatedServerCommandThread dedicatedservercommandthread = new DedicatedServerCommandThread(this);
         dedicatedservercommandthread.setDaemon(true);
         dedicatedservercommandthread.start();
-        this.func_98033_al().func_98233_a("Starting minecraft server version 1.5");
+        this.getLogAgent().logInfo("Starting minecraft server version 1.5.1");
 
         if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L)
         {
-            this.func_98033_al().func_98236_b("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
+            this.getLogAgent().logWarning("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
         }
 
         FMLCommonHandler.instance().onServerStart(this);
 
-        this.func_98033_al().func_98233_a("Loading properties");
-        this.settings = new PropertyManager(new File("server.properties"), this.func_98033_al());
+        this.getLogAgent().logInfo("Loading properties");
+        this.settings = new PropertyManager(new File("server.properties"), this.getLogAgent());
 
         if (this.isSinglePlayer())
         {
@@ -100,7 +100,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         this.canSpawnStructures = this.settings.getBooleanProperty("generate-structures", true);
         int i = this.settings.getIntProperty("gamemode", EnumGameType.SURVIVAL.getID());
         this.gameType = WorldSettings.getGameTypeById(i);
-        this.func_98033_al().func_98233_a("Default game type: " + this.gameType);
+        this.getLogAgent().logInfo("Default game type: " + this.gameType);
         InetAddress inetaddress = null;
 
         if (this.getServerHostname().length() > 0)
@@ -113,9 +113,9 @@ public class DedicatedServer extends MinecraftServer implements IServer
             this.setServerPort(this.settings.getIntProperty("server-port", 25565));
         }
 
-        this.func_98033_al().func_98233_a("Generating keypair");
+        this.getLogAgent().logInfo("Generating keypair");
         this.setKeyPair(CryptManager.createNewKeyPair());
-        this.func_98033_al().func_98233_a("Starting Minecraft server on " + (this.getServerHostname().length() == 0 ? "*" : this.getServerHostname()) + ":" + this.getServerPort());
+        this.getLogAgent().logInfo("Starting Minecraft server on " + (this.getServerHostname().length() == 0 ? "*" : this.getServerHostname()) + ":" + this.getServerPort());
 
         try
         {
@@ -123,18 +123,18 @@ public class DedicatedServer extends MinecraftServer implements IServer
         }
         catch (IOException ioexception)
         {
-            this.func_98033_al().func_98236_b("**** FAILED TO BIND TO PORT!");
-            this.func_98033_al().func_98231_b("The exception was: {0}", new Object[] {ioexception.toString()});
-            this.func_98033_al().func_98236_b("Perhaps a server is already running on that port?");
+            this.getLogAgent().logWarning("**** FAILED TO BIND TO PORT!");
+            this.getLogAgent().func_98231_b("The exception was: {0}", new Object[] {ioexception.toString()});
+            this.getLogAgent().logWarning("Perhaps a server is already running on that port?");
             return false;
         }
 
         if (!this.isServerInOnlineMode())
         {
-            this.func_98033_al().func_98236_b("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
-            this.func_98033_al().func_98236_b("The server will make no attempt to authenticate usernames. Beware.");
-            this.func_98033_al().func_98236_b("While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.");
-            this.func_98033_al().func_98236_b("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
+            this.getLogAgent().logWarning("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
+            this.getLogAgent().logWarning("The server will make no attempt to authenticate usernames. Beware.");
+            this.getLogAgent().logWarning("While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.");
+            this.getLogAgent().logWarning("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
         }
 
         FMLCommonHandler.instance().onServerStarted();
@@ -181,22 +181,22 @@ public class DedicatedServer extends MinecraftServer implements IServer
         this.setBuildLimit(MathHelper.clamp_int(this.getBuildLimit(), 64, 256));
         this.settings.setProperty("max-build-height", Integer.valueOf(this.getBuildLimit()));
         if (!FMLCommonHandler.instance().handleServerAboutToStart(this)) { return false; }
-        this.func_98033_al().func_98233_a("Preparing level \"" + this.getFolderName() + "\"");
+        this.getLogAgent().logInfo("Preparing level \"" + this.getFolderName() + "\"");
         this.loadAllWorlds(this.getFolderName(), this.getFolderName(), k, worldtype, s2);
         long i1 = System.nanoTime() - j;
         String s3 = String.format("%.3fs", new Object[] {Double.valueOf((double)i1 / 1.0E9D)});
-        this.func_98033_al().func_98233_a("Done (" + s3 + ")! For help, type \"help\" or \"?\"");
+        this.getLogAgent().logInfo("Done (" + s3 + ")! For help, type \"help\" or \"?\"");
 
         if (this.settings.getBooleanProperty("enable-query", false))
         {
-            this.func_98033_al().func_98233_a("Starting GS4 status listener");
+            this.getLogAgent().logInfo("Starting GS4 status listener");
             this.theRConThreadQuery = new RConThreadQuery(this);
             this.theRConThreadQuery.startThread();
         }
 
         if (this.settings.getBooleanProperty("enable-rcon", false))
         {
-            this.func_98033_al().func_98233_a("Starting remote control listener");
+            this.getLogAgent().logInfo("Starting remote control listener");
             this.theRConThreadMain = new RConThreadMain(this);
             this.theRConThreadMain.startThread();
         }
@@ -435,7 +435,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         }
     }
 
-    public ILogAgent func_98033_al()
+    public ILogAgent getLogAgent()
     {
         return this.field_98131_l;
     }

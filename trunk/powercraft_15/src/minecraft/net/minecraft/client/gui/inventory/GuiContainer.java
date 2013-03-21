@@ -229,7 +229,7 @@ public abstract class GuiContainer extends GuiScreen
         this.zLevel = 500.0F;
         itemRenderer.zLevel = 500.0F;
         itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3);
-        itemRenderer.func_94148_a(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3 - (this.draggedStack == null ? 0 : 8), par4Str);
+        itemRenderer.renderItemStack(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3 - (this.draggedStack == null ? 0 : 8), par4Str);
         this.zLevel = 0.0F;
         itemRenderer.zLevel = 0.0F;
     }
@@ -436,8 +436,8 @@ public abstract class GuiContainer extends GuiScreen
             if (icon != null)
             {
                 GL11.glDisable(GL11.GL_LIGHTING);
-                this.mc.renderEngine.func_98187_b("/gui/items.png");
-                this.func_94065_a(i, j, icon, 16, 16);
+                this.mc.renderEngine.bindTexture("/gui/items.png");
+                this.drawTexturedModelRectFromIcon(i, j, icon, 16, 16);
                 GL11.glEnable(GL11.GL_LIGHTING);
                 flag1 = true;
             }
@@ -452,7 +452,7 @@ public abstract class GuiContainer extends GuiScreen
             manager.renderSlotUnderlay(par1Slot);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, itemstack, i, j);
-            itemRenderer.func_94148_a(this.fontRenderer, this.mc.renderEngine, itemstack, i, j, s);
+            itemRenderer.renderItemStack(this.fontRenderer, this.mc.renderEngine, itemstack, i, j, s);
             manager.renderSlotOverlay(par1Slot);
         }
 

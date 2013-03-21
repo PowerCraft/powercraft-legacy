@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public class EntityMinecartTNT extends EntityMinecart
 {
-    private int field_94106_a = -1;
+    private int minecartTNTFuse = -1;
 
     public EntityMinecartTNT(World par1)
     {
@@ -41,12 +41,12 @@ public class EntityMinecartTNT extends EntityMinecart
     {
         super.onUpdate();
 
-        if (this.field_94106_a > 0)
+        if (this.minecartTNTFuse > 0)
         {
-            --this.field_94106_a;
+            --this.minecartTNTFuse;
             this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
         }
-        else if (this.field_94106_a == 0)
+        else if (this.minecartTNTFuse == 0)
         {
             this.func_94103_c(this.motionX * this.motionX + this.motionZ * this.motionZ);
         }
@@ -67,12 +67,12 @@ public class EntityMinecartTNT extends EntityMinecart
         super.func_94095_a(par1DamageSource);
         double d0 = this.motionX * this.motionX + this.motionZ * this.motionZ;
 
-        if (!par1DamageSource.func_94541_c())
+        if (!par1DamageSource.isExplosion())
         {
             this.entityDropItem(new ItemStack(Block.tnt, 1), 0.0F);
         }
 
-        if (par1DamageSource.isFireDamage() || par1DamageSource.func_94541_c() || d0 >= 0.009999999776482582D)
+        if (par1DamageSource.isFireDamage() || par1DamageSource.isExplosion() || d0 >= 0.009999999776482582D)
         {
             this.func_94103_c(d0);
         }
@@ -110,7 +110,7 @@ public class EntityMinecartTNT extends EntityMinecart
 
     public void func_96095_a(int par1, int par2, int par3, boolean par4)
     {
-        if (par4 && this.field_94106_a < 0)
+        if (par4 && this.minecartTNTFuse < 0)
         {
             this.func_94105_c();
         }
@@ -131,7 +131,7 @@ public class EntityMinecartTNT extends EntityMinecart
 
     public void func_94105_c()
     {
-        this.field_94106_a = 80;
+        this.minecartTNTFuse = 80;
 
         if (!this.worldObj.isRemote)
         {
@@ -143,12 +143,12 @@ public class EntityMinecartTNT extends EntityMinecart
     @SideOnly(Side.CLIENT)
     public int func_94104_d()
     {
-        return this.field_94106_a;
+        return this.minecartTNTFuse;
     }
 
     public boolean func_96096_ay()
     {
-        return this.field_94106_a > -1;
+        return this.minecartTNTFuse > -1;
     }
 
     public float func_82146_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, Block par6Block)
@@ -170,7 +170,7 @@ public class EntityMinecartTNT extends EntityMinecart
 
         if (par1NBTTagCompound.hasKey("TNTFuse"))
         {
-            this.field_94106_a = par1NBTTagCompound.getInteger("TNTFuse");
+            this.minecartTNTFuse = par1NBTTagCompound.getInteger("TNTFuse");
         }
     }
 
@@ -180,6 +180,6 @@ public class EntityMinecartTNT extends EntityMinecart
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("TNTFuse", this.field_94106_a);
+        par1NBTTagCompound.setInteger("TNTFuse", this.minecartTNTFuse);
     }
 }

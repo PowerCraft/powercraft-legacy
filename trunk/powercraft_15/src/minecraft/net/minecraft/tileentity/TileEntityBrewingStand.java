@@ -14,6 +14,9 @@ import net.minecraft.potion.PotionHelper;
 
 public class TileEntityBrewingStand extends TileEntity implements ISidedInventory
 {
+    private static final int[] field_102017_a = new int[] {3};
+    private static final int[] field_102016_b = new int[] {0, 1, 2};
+
     /** The itemstacks currently placed in the slots of the brewing stand */
     private ItemStack[] brewingItemStacks = new ItemStack[4];
     private int brewTime;
@@ -30,10 +33,14 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
      */
     public String getInvName()
     {
-        return this.func_94042_c() ? this.field_94132_e : "container.brewing";
+        return this.isInvNameLocalized() ? this.field_94132_e : "container.brewing";
     }
 
-    public boolean func_94042_c()
+    /**
+     * If this returns false, the inventory name will be used as an unlocalized name, and translated into the player's
+     * language. Otherwise it will be used directly.
+     */
+    public boolean isInvNameLocalized()
     {
         return this.field_94132_e != null && this.field_94132_e.length() > 0;
     }
@@ -249,7 +256,7 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
 
         par1NBTTagCompound.setTag("Items", nbttaglist);
 
-        if (this.func_94042_c())
+        if (this.isInvNameLocalized())
         {
             par1NBTTagCompound.setString("CustomName", this.field_94132_e);
         }
@@ -331,7 +338,10 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
 
     public void closeChest() {}
 
-    public boolean func_94041_b(int par1, ItemStack par2ItemStack)
+    /**
+     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
+     */
+    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return par1 == 3 ? Item.itemsList[par2ItemStack.itemID].isPotionIngredient() : par2ItemStack.itemID == Item.potion.itemID || par2ItemStack.itemID == Item.glassBottle.itemID;
     }
@@ -360,13 +370,21 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
         return i;
     }
 
-    public int func_94127_c(int par1)
+    /**
+     * Get the size of the side inventory.
+     */
+    public int[] getSizeInventorySide(int par1)
     {
-        return par1 == 1 ? 3 : 0;
+        return par1 == 1 ? field_102017_a : field_102016_b;
     }
 
-    public int func_94128_d(int par1)
+    public boolean func_102007_a(int par1, ItemStack par2ItemStack, int par3)
     {
-        return par1 == 1 ? 1 : 3;
+        return this.isStackValidForSlot(par1, par2ItemStack);
+    }
+
+    public boolean func_102008_b(int par1, ItemStack par2ItemStack, int par3)
+    {
+        return true;
     }
 }

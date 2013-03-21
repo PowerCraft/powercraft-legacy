@@ -40,7 +40,7 @@ class GuiFlatPresetsListSlot extends GuiSlot
     private void func_82455_b(int par1, int par2, int par3, int par4)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.flatPresetsGui.mc.renderEngine.func_98187_b("/gui/slot.png");
+        this.flatPresetsGui.mc.renderEngine.bindTexture("/gui/slot.png");
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + 18), (double)this.flatPresetsGui.zLevel, (double)((float)(par3 + 0) * 0.0078125F), (double)((float)(par4 + 18) * 0.0078125F));

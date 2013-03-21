@@ -37,17 +37,11 @@ public class TexturePackFolder extends TexturePackImplementation
         return file1.exists() && file1.isFile();
     }
 
-    public boolean func_94180_h()
+    public boolean isCompatible()
     {
         File file1 = new File(this.texturePackFile, "textures/");
         boolean flag = file1.exists() && file1.isDirectory();
         boolean flag1 = this.func_98140_c("terrain.png") || this.func_98140_c("gui/items.png");
         return flag || !flag1;
-    }
-
-    @Override
-    public boolean func_94179_g()
-    {
-        return true;
     }
 }

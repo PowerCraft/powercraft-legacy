@@ -9,20 +9,20 @@ import net.minecraft.world.World;
 
 final class DispenserBehaviorBoat extends BehaviorDefaultDispenseItem
 {
-    private final BehaviorDefaultDispenseItem field_96464_b = new BehaviorDefaultDispenseItem();
+    private final BehaviorDefaultDispenseItem defaultDispenserItemBehavior = new BehaviorDefaultDispenseItem();
 
     /**
      * Dispense the specified stack, play the dispense sound and spawn particles.
      */
     public ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
     {
-        EnumFacing enumfacing = BlockDispenser.func_100009_j_(par1IBlockSource.func_82620_h());
+        EnumFacing enumfacing = BlockDispenser.getFacing(par1IBlockSource.getBlockMetadata());
         World world = par1IBlockSource.getWorld();
         double d0 = par1IBlockSource.getX() + (double)((float)enumfacing.getFrontOffsetX() * 1.125F);
-        double d1 = par1IBlockSource.getY() + (double)((float)enumfacing.func_96559_d() * 1.125F);
+        double d1 = par1IBlockSource.getY() + (double)((float)enumfacing.getFrontOffsetY() * 1.125F);
         double d2 = par1IBlockSource.getZ() + (double)((float)enumfacing.getFrontOffsetZ() * 1.125F);
         int i = par1IBlockSource.getXInt() + enumfacing.getFrontOffsetX();
-        int j = par1IBlockSource.getYInt() + enumfacing.func_96559_d();
+        int j = par1IBlockSource.getYInt() + enumfacing.getFrontOffsetY();
         int k = par1IBlockSource.getZInt() + enumfacing.getFrontOffsetZ();
         Material material = world.getBlockMaterial(i, j, k);
         double d3;
@@ -35,7 +35,7 @@ final class DispenserBehaviorBoat extends BehaviorDefaultDispenseItem
         {
             if (!Material.air.equals(material) || !Material.water.equals(world.getBlockMaterial(i, j - 1, k)))
             {
-                return this.field_96464_b.dispense(par1IBlockSource, par2ItemStack);
+                return this.defaultDispenserItemBehavior.dispense(par1IBlockSource, par2ItemStack);
             }
 
             d3 = 0.0D;

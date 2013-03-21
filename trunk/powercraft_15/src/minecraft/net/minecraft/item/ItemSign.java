@@ -70,11 +70,11 @@ public class ItemSign extends Item
                 if (par7 == 1)
                 {
                     int i1 = MathHelper.floor_double((double)((par2EntityPlayer.rotationYaw + 180.0F) * 16.0F / 360.0F) + 0.5D) & 15;
-                    par3World.setBlockAndMetadataWithNotify(par4, par5, par6, Block.signPost.blockID, i1, 2);
+                    par3World.setBlock(par4, par5, par6, Block.signPost.blockID, i1, 2);
                 }
                 else
                 {
-                    par3World.setBlockAndMetadataWithNotify(par4, par5, par6, Block.signWall.blockID, par7, 2);
+                    par3World.setBlock(par4, par5, par6, Block.signWall.blockID, par7, 2);
                 }
 
                 --par1ItemStack.stackSize;

@@ -9,11 +9,11 @@ public class InventoryLargeChest implements IInventory
     private String name;
 
     /** Inventory object corresponding to double chest upper part */
-    //BY NEI
+    //NEI
     public IInventory upperChest;
 
     /** Inventory object corresponding to double chest lower part */
-    //BY NEI
+    //NEI
     public IInventory lowerChest;
 
     public InventoryLargeChest(String par1Str, IInventory par2IInventory, IInventory par3IInventory)
@@ -55,12 +55,16 @@ public class InventoryLargeChest implements IInventory
      */
     public String getInvName()
     {
-        return this.upperChest.func_94042_c() ? this.upperChest.getInvName() : (this.lowerChest.func_94042_c() ? this.lowerChest.getInvName() : this.name);
+        return this.upperChest.isInvNameLocalized() ? this.upperChest.getInvName() : (this.lowerChest.isInvNameLocalized() ? this.lowerChest.getInvName() : this.name);
     }
 
-    public boolean func_94042_c()
+    /**
+     * If this returns false, the inventory name will be used as an unlocalized name, and translated into the player's
+     * language. Otherwise it will be used directly.
+     */
+    public boolean isInvNameLocalized()
     {
-        return this.upperChest.func_94042_c() || this.lowerChest.func_94042_c();
+        return this.upperChest.isInvNameLocalized() || this.lowerChest.isInvNameLocalized();
     }
 
     /**
@@ -142,7 +146,10 @@ public class InventoryLargeChest implements IInventory
         this.lowerChest.closeChest();
     }
 
-    public boolean func_94041_b(int par1, ItemStack par2ItemStack)
+    /**
+     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
+     */
+    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }

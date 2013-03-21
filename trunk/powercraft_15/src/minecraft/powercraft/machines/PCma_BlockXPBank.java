@@ -134,7 +134,6 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
 
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer)
     {
-        PC_Renderer.swapTerrain(block);
         int xp = ((PCma_TileEntityXPBank) world.getBlockTileEntity(x, y, z)).getXP();
         setBlockBounds(0.15F, 0.29F - 0.2F * calculateHeightMultiplier(xp), 0.15F, 0.85F, 0.71F + 0.2F * calculateHeightMultiplier(xp), 0.85F);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
@@ -150,7 +149,6 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
         ValueWriting.setBlockBounds(Block.obsidian, 0.85F, 0.0F, 0.85F, 1.0F, 0.3F, 1.0F);
         PC_Renderer.renderStandardBlock(renderer, Block.obsidian, x, y, z);
         ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        PC_Renderer.resetTerrain(true);
     }
 
     @Override

@@ -222,13 +222,13 @@ public class PC_GresInventory extends PC_GresWidget {
 
 			if (icon != null) {
 				GL11.glDisable(GL11.GL_LIGHTING);
-				mc.renderEngine.func_98187_b("/gui/items.png");
+				mc.renderEngine.bindTexture("/gui/items.png");
 				Tessellator tessellator = Tessellator.instance;
 		        tessellator.startDrawingQuads();
-		        tessellator.addVertexWithUV(x, y + 16, zLevel, icon.func_94209_e(), icon.func_94210_h());
-		        tessellator.addVertexWithUV(x + 16, y + 16, zLevel, icon.func_94212_f(), icon.func_94210_h());
-		        tessellator.addVertexWithUV(x + 16, y, zLevel, icon.func_94212_f(), icon.func_94206_g());
-		        tessellator.addVertexWithUV(x, y, zLevel, icon.func_94209_e(), icon.func_94206_g());
+		        tessellator.addVertexWithUV(x, y + 16, zLevel, icon.getMinU(), icon.getMaxV());
+		        tessellator.addVertexWithUV(x + 16, y + 16, zLevel, icon.getMaxU(), icon.getMaxV());
+		        tessellator.addVertexWithUV(x + 16, y, zLevel, icon.getMaxU(), icon.getMinV());
+		        tessellator.addVertexWithUV(x, y, zLevel, icon.getMinU(), icon.getMinV());
 		        tessellator.draw();
 				GL11.glEnable(GL11.GL_LIGHTING);
 				isNull = true;

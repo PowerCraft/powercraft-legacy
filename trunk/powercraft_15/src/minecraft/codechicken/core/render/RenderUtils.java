@@ -52,10 +52,10 @@ public class RenderUtils
 	
 	public static void renderLiquidQuad(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, Icon icon, double res)
 	{
-    	double u1 = icon.func_94209_e();
-    	double du = icon.func_94212_f()-icon.func_94209_e();
-    	double v2 = icon.func_94210_h();
-    	double dv = icon.func_94210_h()-icon.func_94206_g();
+    	double u1 = icon.getMinU();
+    	double du = icon.getMaxU()-icon.getMinU();
+    	double v2 = icon.getMinV();
+    	double dv = icon.getMaxV()-icon.getMinV();
 		
 		Vector3 wide = vectors[0].set(point4).subtract(point1);
 		Vector3 high = vectors[1].set(point1).subtract(point2);

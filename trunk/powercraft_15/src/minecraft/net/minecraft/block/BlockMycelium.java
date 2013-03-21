@@ -31,7 +31,7 @@ public class BlockMycelium extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94422_a : (par1 == 0 ? Block.dirt.getBlockTextureFromSide(par1) : this.field_94336_cN);
+        return par1 == 1 ? this.field_94422_a : (par1 == 0 ? Block.dirt.getBlockTextureFromSide(par1) : this.blockIcon);
     }
 
     /**
@@ -43,7 +43,7 @@ public class BlockMycelium extends Block
         {
             if (par1World.getBlockLightValue(par2, par3 + 1, par4) < 4 && par1World.getBlockLightOpacity(par2, par3 + 1, par4) > 2)
             {
-                par1World.func_94575_c(par2, par3, par4, Block.dirt.blockID);
+                par1World.setBlock(par2, par3, par4, Block.dirt.blockID);
             }
             else if (par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9)
             {
@@ -56,7 +56,7 @@ public class BlockMycelium extends Block
 
                     if (par1World.getBlockId(i1, j1, k1) == Block.dirt.blockID && par1World.getBlockLightValue(i1, j1 + 1, k1) >= 4 && par1World.getBlockLightOpacity(i1, j1 + 1, k1) <= 2)
                     {
-                        par1World.func_94575_c(i1, j1, k1, this.blockID);
+                        par1World.setBlock(i1, j1, k1, this.blockID);
                     }
                 }
             }
@@ -89,16 +89,21 @@ public class BlockMycelium extends Block
         else
         {
             Material material = par1IBlockAccess.getBlockMaterial(par2, par3 + 1, par4);
-            return material != Material.snow && material != Material.craftedSnow ? this.field_94336_cN : this.field_94421_b;
+            return material != Material.snow && material != Material.craftedSnow ? this.blockIcon : this.field_94421_b;
         }
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("mycel_side");
-        this.field_94422_a = par1IconRegister.func_94245_a("mycel_top");
-        this.field_94421_b = par1IconRegister.func_94245_a("snow_side");
+        this.blockIcon = par1IconRegister.registerIcon("mycel_side");
+        this.field_94422_a = par1IconRegister.registerIcon("mycel_top");
+        this.field_94421_b = par1IconRegister.registerIcon("snow_side");
     }
 
     @SideOnly(Side.CLIENT)

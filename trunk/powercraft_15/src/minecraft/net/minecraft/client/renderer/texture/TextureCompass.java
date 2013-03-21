@@ -9,31 +9,38 @@ import net.minecraft.world.World;
 @SideOnly(Side.CLIENT)
 public class TextureCompass extends TextureStitched
 {
-    public static TextureCompass field_94243_h;
-    public double field_94244_i;
-    public double field_94242_j;
+    public static TextureCompass compassTexture;
+
+    /** Current compass heading in radians */
+    public double currentAngle;
+
+    /** Speed and direction of compass rotation */
+    public double angleDelta;
 
     public TextureCompass()
     {
         super("compass");
-        field_94243_h = this;
+        compassTexture = this;
     }
 
-    public void func_94219_l()
+    public void updateAnimation()
     {
         Minecraft minecraft = Minecraft.getMinecraft();
 
         if (minecraft.theWorld != null && minecraft.thePlayer != null)
         {
-            this.func_94241_a(minecraft.theWorld, minecraft.thePlayer.posX, minecraft.thePlayer.posZ, (double)minecraft.thePlayer.rotationYaw, false, false);
+            this.updateCompass(minecraft.theWorld, minecraft.thePlayer.posX, minecraft.thePlayer.posZ, (double)minecraft.thePlayer.rotationYaw, false, false);
         }
         else
         {
-            this.func_94241_a((World)null, 0.0D, 0.0D, 0.0D, true, false);
+            this.updateCompass((World)null, 0.0D, 0.0D, 0.0D, true, false);
         }
     }
 
-    public void func_94241_a(World par1World, double par2, double par4, double par6, boolean par8, boolean par9)
+    /**
+     * Updates the compass based on the given x,z coords and camera direction
+     */
+    public void updateCompass(World par1World, double par2, double par4, double par6, boolean par8, boolean par9)
     {
         double d3 = 0.0D;
 
@@ -53,13 +60,13 @@ public class TextureCompass extends TextureStitched
 
         if (par9)
         {
-            this.field_94244_i = d3;
+            this.currentAngle = d3;
         }
         else
         {
             double d6;
 
-            for (d6 = d3 - this.field_94244_i; d6 < -Math.PI; d6 += (Math.PI * 2D))
+            for (d6 = d3 - this.currentAngle; d6 < -Math.PI; d6 += (Math.PI * 2D))
             {
                 ;
             }
@@ -79,22 +86,22 @@ public class TextureCompass extends TextureStitched
                 d6 = 1.0D;
             }
 
-            this.field_94242_j += d6 * 0.1D;
-            this.field_94242_j *= 0.8D;
-            this.field_94244_i += this.field_94242_j;
+            this.angleDelta += d6 * 0.1D;
+            this.angleDelta *= 0.8D;
+            this.currentAngle += this.angleDelta;
         }
 
         int i;
 
-        for (i = (int)((this.field_94244_i / (Math.PI * 2D) + 1.0D) * (double)this.field_94226_b.size()) % this.field_94226_b.size(); i < 0; i = (i + this.field_94226_b.size()) % this.field_94226_b.size())
+        for (i = (int)((this.currentAngle / (Math.PI * 2D) + 1.0D) * (double)this.textureList.size()) % this.textureList.size(); i < 0; i = (i + this.textureList.size()) % this.textureList.size())
         {
             ;
         }
 
-        if (i != this.field_94222_f)
+        if (i != this.frameCounter)
         {
-            this.field_94222_f = i;
-            this.field_94228_a.func_94281_a(this.field_94224_d, this.field_94225_e, (Texture)this.field_94226_b.get(this.field_94222_f), this.field_94227_c);
+            this.frameCounter = i;
+            this.textureSheet.copyFrom(this.originX, this.originY, (Texture)this.textureList.get(this.frameCounter), this.rotated);
         }
     }
 }

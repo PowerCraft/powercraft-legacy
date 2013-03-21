@@ -124,7 +124,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      * The chunk coordinates of the bed the player is in (null if player isn't in a bed).
      */
     public ChunkCoordinates playerLocation;
-    private int sleepTimer;
+    public int sleepTimer;
     public float field_71079_bU;
     @SideOnly(Side.CLIENT)
     public float field_71082_cx;
@@ -2212,7 +2212,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return true;
     }
 
-    public boolean func_98052_bS()
+    public boolean canPickUpLoot()
     {
         return false;
     }
@@ -2365,7 +2365,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
     public Scoreboard func_96123_co()
     {
-        return this.worldObj.func_96441_U();
+        return this.worldObj.getScoreboard();
     }
 
     public ScorePlayerTeam func_96124_cp()

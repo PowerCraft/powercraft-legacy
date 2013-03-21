@@ -118,7 +118,7 @@ public class ThreadDownloadResources extends Thread
                 }
                 catch (Exception exception)
                 {
-                    this.mc.func_98033_al().func_98236_b("Failed to add " + par2Str + afile[i].getName() + " in resources");
+                    this.mc.getLogAgent().logWarning("Failed to add " + par2Str + afile[i].getName() + " in resources");
                 }
             }
         }

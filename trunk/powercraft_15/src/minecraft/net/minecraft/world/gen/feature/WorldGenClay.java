@@ -45,7 +45,7 @@ public class WorldGenClay extends WorldGenerator
 
                             if (j2 == Block.dirt.blockID || j2 == Block.blockClay.blockID)
                             {
-                                par1World.setBlockAndMetadataWithNotify(i1, i2, j1, this.clayBlockId, 0, 2);
+                                par1World.setBlock(i1, i2, j1, this.clayBlockId, 0, 2);
                             }
                         }
                     }

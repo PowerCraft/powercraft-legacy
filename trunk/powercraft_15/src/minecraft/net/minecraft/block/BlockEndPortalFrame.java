@@ -33,15 +33,20 @@ public class BlockEndPortalFrame extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94400_a : (par1 == 0 ? Block.whiteStone.getBlockTextureFromSide(par1) : this.field_94336_cN);
+        return par1 == 1 ? this.field_94400_a : (par1 == 0 ? Block.whiteStone.getBlockTextureFromSide(par1) : this.blockIcon);
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("endframe_side");
-        this.field_94400_a = par1IconRegister.func_94245_a("endframe_top");
-        this.field_94399_b = par1IconRegister.func_94245_a("endframe_eye");
+        this.blockIcon = par1IconRegister.registerIcon("endframe_side");
+        this.field_94400_a = par1IconRegister.registerIcon("endframe_top");
+        this.field_94399_b = par1IconRegister.registerIcon("endframe_eye");
     }
 
     @SideOnly(Side.CLIENT)

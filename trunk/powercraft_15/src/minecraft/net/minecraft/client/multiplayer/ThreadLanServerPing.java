@@ -42,7 +42,7 @@ public class ThreadLanServerPing extends Thread
             }
             catch (IOException ioexception)
             {
-                Minecraft.getMinecraft().func_98033_al().func_98236_b("LanServerPinger: " + ioexception.getMessage());
+                Minecraft.getMinecraft().getLogAgent().logWarning("LanServerPinger: " + ioexception.getMessage());
                 break;
             }
 

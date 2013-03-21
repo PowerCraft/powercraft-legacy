@@ -28,7 +28,7 @@ public class RenderMagmaCube extends RenderLiving
         {
             this.field_77120_a = i;
             this.mainModel = new ModelMagmaCube();
-            Minecraft.getMinecraft().func_98033_al().func_98233_a("Loaded new lava slime model");
+            Minecraft.getMinecraft().getLogAgent().logInfo("Loaded new lava slime model");
         }
 
         super.doRenderLiving(par1EntityMagmaCube, par2, par4, par6, par8, par9);

@@ -64,6 +64,8 @@ public class GuiMainMenu extends GuiScreen
     private int field_92020_v;
     private int field_92019_w;
 
+    private GuiButton fmlModButton = null;
+
     public GuiMainMenu()
     {
         BufferedReader bufferedreader = null;
@@ -175,9 +177,10 @@ public class GuiMainMenu extends GuiScreen
             this.addSingleplayerMultiplayerButtons(i, 24, stringtranslate);
         }
 
-        this.func_96137_a(stringtranslate, i, 24);
+        fmlModButton = new GuiButton(6, this.width / 2 - 100, i + 48, "Mods");
+        this.buttonList.add(fmlModButton);
 
-        this.buttonList.add(new GuiButton(6, this.width / 2 - 100, i + 49, "Mods"));
+        this.func_96137_a(stringtranslate, i, 24);
 
         if (this.mc.hideQuitButton)
         {
@@ -230,7 +233,14 @@ public class GuiMainMenu extends GuiScreen
 
     private void func_98060_b(StringTranslate par1StringTranslate, int par2, int par3)
     {
-        this.buttonList.add(new GuiButton(3, this.width / 2 - 100, par2 + par3 * 2, par1StringTranslate.translateKey("menu.online")));
+        //If Minecraft Realms is enabled, halve the size of both buttons and set them next to eachother.
+        fmlModButton.width = 98;
+        fmlModButton.xPosition = this.width / 2 + 2;
+
+        GuiButton realmButton = new GuiButton(3, this.width / 2 - 100, par2 + par3 * 2, par1StringTranslate.translateKey("menu.online"));
+        realmButton.width = 98;
+        realmButton.xPosition = this.width / 2 - 100;
+        this.buttonList.add(realmButton);
     }
 
     /**
@@ -406,7 +416,7 @@ public class GuiMainMenu extends GuiScreen
                     GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
                 }
 
-                this.mc.renderEngine.func_98187_b(titlePanoramaPaths[l]);
+                this.mc.renderEngine.bindTexture(titlePanoramaPaths[l]);
                 tessellator.startDrawingQuads();
                 tessellator.setColorRGBA_I(16777215, 255 / (k + 1));
                 float f4 = 0.0F;
@@ -440,7 +450,7 @@ public class GuiMainMenu extends GuiScreen
     private void rotateAndBlurSkybox(float par1)
     {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.viewportTexture);
-        this.mc.renderEngine.func_98185_a();
+        this.mc.renderEngine.resetBoundTexture();
         GL11.glCopyTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, 0, 0, 256, 256);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -463,7 +473,7 @@ public class GuiMainMenu extends GuiScreen
 
         tessellator.draw();
         GL11.glColorMask(true, true, true, true);
-        this.mc.renderEngine.func_98185_a();
+        this.mc.renderEngine.resetBoundTexture();
     }
 
     /**
@@ -513,7 +523,7 @@ public class GuiMainMenu extends GuiScreen
         byte b0 = 30;
         this.drawGradientRect(0, 0, this.width, this.height, -2130706433, 16777215);
         this.drawGradientRect(0, 0, this.width, this.height, 0, Integer.MIN_VALUE);
-        this.mc.renderEngine.func_98187_b("/title/mclogo.png");
+        this.mc.renderEngine.bindTexture("/title/mclogo.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         if ((double)this.updateCounter < 1.0E-4D)
@@ -539,7 +549,7 @@ public class GuiMainMenu extends GuiScreen
         GL11.glScalef(f1, f1, f1);
         this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, 16776960);
         GL11.glPopMatrix();
-        String s = "Minecraft 1.5";
+        String s = "Minecraft 1.5.1";
 
         if (this.mc.isDemo())
         {

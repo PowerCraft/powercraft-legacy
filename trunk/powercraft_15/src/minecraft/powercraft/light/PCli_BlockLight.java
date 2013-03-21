@@ -171,7 +171,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
             return;
         }
 
-        boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k)||world.func_94577_B(i, j, k)>0 ;
+        boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k)||GameInfo.isPoweredDirectly(world, i, j, k) ;
 
         if (tileentity.isActive() != powered)
         {
@@ -189,7 +189,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
             return;
         }
 
-        boolean powered = world.func_94577_B(i, j, k)>0 || world.isBlockIndirectlyGettingPowered(i, j, k);
+        boolean powered = GameInfo.isPoweredDirectly(world, i, j, k) || world.isBlockIndirectlyGettingPowered(i, j, k);
 
         if (tileentity.isActive() != powered)
         {
@@ -201,32 +201,32 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     {
         if (side == 0)
         {
-            return world.func_94577_B(x, y - 1, z)>0 && world.getBlockId(x, y - 1, x) != 0;
+            return GameInfo.isPoweredDirectly(world, x, y-1, z) && world.getBlockId(x, y - 1, x) != 0;
         }
 
         if (side == 1)
         {
-            return world.func_94577_B(x, y, z + 1)>0 && world.getBlockId(x, y, x + 1) != 0;
+            return GameInfo.isPoweredDirectly(world, x, y, z+1) && world.getBlockId(x, y, x + 1) != 0;
         }
 
         if (side == 2)
         {
-            return world.func_94577_B(x, y, z - 1)>0 && world.getBlockId(x, y, x - 1) != 0;
+            return GameInfo.isPoweredDirectly(world, x, y, z-1) && world.getBlockId(x, y, x - 1) != 0;
         }
 
         if (side == 3)
         {
-            return world.func_94577_B(x + 1, y, z)>0 && world.getBlockId(x + 1, y, x) != 0;
+            return GameInfo.isPoweredDirectly(world, x+1, y, z) && world.getBlockId(x + 1, y, x) != 0;
         }
 
         if (side == 4)
         {
-            return world.func_94577_B(x - 1, y, z)>0 && world.getBlockId(x - 1, y, x) != 0;
+            return GameInfo.isPoweredDirectly(world, x-1, y, z) && world.getBlockId(x - 1, y, x) != 0;
         }
 
         if (side == 5)
         {
-            return world.func_94577_B(x, y + 1, z)>0 && world.getBlockId(x, y + 1, x) != 0;
+            return GameInfo.isPoweredDirectly(world, x, y+1, z) && world.getBlockId(x, y + 1, x) != 0;
         }
 
         return false;
@@ -398,13 +398,11 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 
     public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer)
     {
-        PC_Renderer.swapTerrain(block);
         float sidehalf = 0.1875F;
         float height = 0.15F;
         PC_Renderer.glColor3f(1.0f, 1.0f, 1.0f);
         ValueWriting.setBlockBounds(block, 0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
-        PC_Renderer.resetTerrain(true);
     }
 
 	@Override

@@ -57,7 +57,7 @@ public class EnchantmentThorns extends Enchantment
     public static void func_92096_a(Entity par0Entity, EntityLiving par1EntityLiving, Random par2Random)
     {
         int i = EnchantmentHelper.func_92098_i(par1EntityLiving);
-        ItemStack itemstack = EnchantmentHelper.func_92099_a(Enchantment.field_92091_k, par1EntityLiving);
+        ItemStack itemstack = EnchantmentHelper.func_92099_a(Enchantment.thorns, par1EntityLiving);
 
         if (func_92094_a(i, par2Random))
         {

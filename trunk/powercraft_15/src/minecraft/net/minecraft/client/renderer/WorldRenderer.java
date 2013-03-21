@@ -160,7 +160,7 @@ public class WorldRenderer
             hashset.addAll(this.tileEntityRenderers);
             this.tileEntityRenderers.clear();
             byte b0 = 1;
-            ChunkCache chunkcache = new ChunkCache(this.worldObj, i - b0, j - b0, k - b0, l + b0, i1 + b0, j1 + b0);
+            ChunkCache chunkcache = new ChunkCache(this.worldObj, i - b0, j - b0, k - b0, l + b0, i1 + b0, j1 + b0, b0);
 
             if (!chunkcache.extendedLevelsInChunkCache())
             {

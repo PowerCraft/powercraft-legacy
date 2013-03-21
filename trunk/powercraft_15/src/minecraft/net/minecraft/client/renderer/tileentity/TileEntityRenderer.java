@@ -147,7 +147,7 @@ public class TileEntityRenderer
      */
     public void renderTileEntity(TileEntity par1TileEntity, float par2)
     {
-        if (par1TileEntity.getDistanceFrom(this.playerX, this.playerY, this.playerZ) < par1TileEntity.func_82115_m())
+        if (par1TileEntity.getDistanceFrom(this.playerX, this.playerY, this.playerZ) < par1TileEntity.getMaxRenderDistanceSquared())
         {
             int i = this.worldObj.getLightBrightnessForSkyBlocks(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord, 0);
             int j = i % 65536;

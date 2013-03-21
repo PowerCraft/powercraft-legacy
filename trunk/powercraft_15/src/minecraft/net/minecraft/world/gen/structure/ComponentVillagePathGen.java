@@ -116,7 +116,7 @@ public class ComponentVillagePathGen extends ComponentVillageRoadPiece
                 if (par3StructureBoundingBox.isVecInside(j, 64, k))
                 {
                     int l = par1World.getTopSolidOrLiquidBlock(j, k) - 1;
-                    par1World.setBlockAndMetadataWithNotify(j, l, k, i, 0, 2);
+                    par1World.setBlock(j, l, k, i, 0, 2);
                 }
             }
         }

@@ -17,22 +17,22 @@ class TileEntityMobSpawnerLogic extends MobSpawnerBaseLogic
         this.field_98295_a.worldObj.addBlockEvent(this.field_98295_a.xCoord, this.field_98295_a.yCoord, this.field_98295_a.zCoord, Block.mobSpawner.blockID, par1, 0);
     }
 
-    public World func_98271_a()
+    public World getSpawnerWorld()
     {
         return this.field_98295_a.worldObj;
     }
 
-    public int func_98275_b()
+    public int getSpawnerX()
     {
         return this.field_98295_a.xCoord;
     }
 
-    public int func_98274_c()
+    public int getSpawnerY()
     {
         return this.field_98295_a.yCoord;
     }
 
-    public int func_98266_d()
+    public int getSpawnerZ()
     {
         return this.field_98295_a.zCoord;
     }
@@ -41,9 +41,9 @@ class TileEntityMobSpawnerLogic extends MobSpawnerBaseLogic
     {
         super.func_98277_a(par1WeightedRandomMinecart);
 
-        if (this.func_98271_a() != null)
+        if (this.getSpawnerWorld() != null)
         {
-            this.func_98271_a().markBlockForUpdate(this.field_98295_a.xCoord, this.field_98295_a.yCoord, this.field_98295_a.zCoord);
+            this.getSpawnerWorld().markBlockForUpdate(this.field_98295_a.xCoord, this.field_98295_a.yCoord, this.field_98295_a.zCoord);
         }
     }
 }

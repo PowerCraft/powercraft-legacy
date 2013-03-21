@@ -46,12 +46,12 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
 
     protected BlockRedstoneLogic func_94485_e()
     {
-        return Block.field_94343_co;
+        return Block.redstoneComparatorActive;
     }
 
     protected BlockRedstoneLogic func_94484_i()
     {
-        return Block.field_94346_cn;
+        return Block.redstoneComparatorIdle;
     }
 
     /**
@@ -70,7 +70,7 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         boolean flag = this.isRepeaterPowered || (par2 & 8) != 0;
-        return par1 == 0 ? (flag ? Block.torchRedstoneActive.getBlockTextureFromSide(par1) : Block.torchRedstoneIdle.getBlockTextureFromSide(par1)) : (par1 == 1 ? (flag ? Block.field_94343_co.field_94336_cN : this.field_94336_cN) : Block.stoneDoubleSlab.getBlockTextureFromSide(1));
+        return par1 == 0 ? (flag ? Block.torchRedstoneActive.getBlockTextureFromSide(par1) : Block.torchRedstoneIdle.getBlockTextureFromSide(par1)) : (par1 == 1 ? (flag ? Block.redstoneComparatorActive.blockIcon : this.blockIcon) : Block.stoneDoubleSlab.getBlockTextureFromSide(1));
     }
 
     protected boolean func_96470_c(int par1)
@@ -85,7 +85,7 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
 
     private int func_94491_m(World par1World, int par2, int par3, int par4, int par5)
     {
-        return !this.func_94490_c(par5) ? this.ignoreTick(par1World, par2, par3, par4, par5) : Math.max(this.ignoreTick(par1World, par2, par3, par4, par5) - this.func_94482_f(par1World, par2, par3, par4, par5), 0);
+        return !this.func_94490_c(par5) ? this.getInputStrength(par1World, par2, par3, par4, par5) : Math.max(this.getInputStrength(par1World, par2, par3, par4, par5) - this.func_94482_f(par1World, par2, par3, par4, par5), 0);
     }
 
     public boolean func_94490_c(int par1)
@@ -95,7 +95,7 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
 
     protected boolean func_94478_d(World par1World, int par2, int par3, int par4, int par5)
     {
-        int i1 = this.ignoreTick(par1World, par2, par3, par4, par5);
+        int i1 = this.getInputStrength(par1World, par2, par3, par4, par5);
 
         if (i1 >= 15)
         {
@@ -112,9 +112,12 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
         }
     }
 
-    protected int ignoreTick(World par1World, int par2, int par3, int par4, int par5)
+    /**
+     * Returns the signal strength at one input of the block. Args: world, X, Y, Z, side
+     */
+    protected int getInputStrength(World par1World, int par2, int par3, int par4, int par5)
     {
-        int i1 = super.ignoreTick(par1World, par2, par3, par4, par5);
+        int i1 = super.getInputStrength(par1World, par2, par3, par4, par5);
         int j1 = getDirection(par5);
         int k1 = par2 + Direction.offsetX[j1];
         int l1 = par4 + Direction.offsetZ[j1];
@@ -122,9 +125,9 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
 
         if (i2 > 0)
         {
-            if (Block.blocksList[i2].func_96468_q_())
+            if (Block.blocksList[i2].hasComparatorInputOverride())
             {
-                i1 = Block.blocksList[i2].func_94328_b_(par1World, k1, par3, l1, Direction.footInvisibleFaceRemap[j1]);
+                i1 = Block.blocksList[i2].getComparatorInputOverride(par1World, k1, par3, l1, Direction.footInvisibleFaceRemap[j1]);
             }
             else if (i1 < 15 && Block.isNormalCube(i2))
             {
@@ -132,9 +135,9 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
                 l1 += Direction.offsetZ[j1];
                 i2 = par1World.getBlockId(k1, par3, l1);
 
-                if (i2 > 0 && Block.blocksList[i2].func_96468_q_())
+                if (i2 > 0 && Block.blocksList[i2].hasComparatorInputOverride())
                 {
-                    i1 = Block.blocksList[i2].func_94328_b_(par1World, k1, par3, l1, Direction.footInvisibleFaceRemap[j1]);
+                    i1 = Block.blocksList[i2].getComparatorInputOverride(par1World, k1, par3, l1, Direction.footInvisibleFaceRemap[j1]);
                 }
             }
         }
@@ -165,7 +168,7 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
 
     protected void func_94479_f(World par1World, int par2, int par3, int par4, int par5)
     {
-        if (!par1World.func_94573_a(par2, par3, par4, this.blockID))
+        if (!par1World.isBlockTickScheduled(par2, par3, par4, this.blockID))
         {
             int i1 = par1World.getBlockMetadata(par2, par3, par4);
             int j1 = this.func_94491_m(par1World, par2, par3, par4, i1);
@@ -218,7 +221,7 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
         if (this.isRepeaterPowered)
         {
             int l = par1World.getBlockMetadata(par2, par3, par4);
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, this.func_94484_i().blockID, l | 8, 4);
+            par1World.setBlock(par2, par3, par4, this.func_94484_i().blockID, l | 8, 4);
         }
 
         this.func_96476_c(par1World, par2, par3, par4, par5Random);
@@ -263,8 +266,13 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a(this.isRepeaterPowered ? "comparator_lit" : "comparator");
+        this.blockIcon = par1IconRegister.registerIcon(this.isRepeaterPowered ? "comparator_lit" : "comparator");
     }
 }

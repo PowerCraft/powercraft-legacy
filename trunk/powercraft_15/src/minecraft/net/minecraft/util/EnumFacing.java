@@ -38,7 +38,7 @@ public enum EnumFacing
         return this.frontOffsetX;
     }
 
-    public int func_96559_d()
+    public int getFrontOffsetY()
     {
         return this.frontOffsetY;
     }

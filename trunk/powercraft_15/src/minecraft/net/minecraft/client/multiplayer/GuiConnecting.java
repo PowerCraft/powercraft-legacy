@@ -37,7 +37,7 @@ public class GuiConnecting extends GuiScreen
 
     private void spawnNewServerThread(String par1Str, int par2)
     {
-        this.mc.func_98033_al().func_98233_a("Connecting to " + par1Str + ", " + par2);
+        this.mc.getLogAgent().logInfo("Connecting to " + par1Str + ", " + par2);
         (new ThreadConnectToServer(this, par1Str, par2)).start();
     }
 

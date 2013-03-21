@@ -5,23 +5,23 @@ import net.minecraft.network.packet.Packet;
 
 class CallablePacketID implements Callable
 {
-    final Packet field_98245_a;
+    final Packet thePacket;
 
-    final NetServerHandler field_98244_b;
+    final NetServerHandler theNetServerHandler;
 
     CallablePacketID(NetServerHandler par1NetServerHandler, Packet par2Packet)
     {
-        this.field_98244_b = par1NetServerHandler;
-        this.field_98245_a = par2Packet;
+        this.theNetServerHandler = par1NetServerHandler;
+        this.thePacket = par2Packet;
     }
 
-    public String func_98243_a()
+    public String callPacketID()
     {
-        return String.valueOf(this.field_98245_a.getPacketId());
+        return String.valueOf(this.thePacket.getPacketId());
     }
 
     public Object call()
     {
-        return this.func_98243_a();
+        return this.callPacketID();
     }
 }

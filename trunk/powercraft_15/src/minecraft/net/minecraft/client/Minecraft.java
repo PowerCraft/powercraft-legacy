@@ -147,7 +147,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     private CrashReport crashReporter;
     public int displayWidth;
     public int displayHeight;
-    //BY NEI
+    //NEI
     public Timer timer = new Timer(20.0F);
 
     /** Instance of PlayerUsageSnooper. */
@@ -163,7 +163,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
      * changing the viewpoint mid-render.
      */
     public EntityLiving renderViewEntity;
-    public EntityLiving field_96291_i;
+    public EntityLiving pointedEntityLiving;
     public EffectRenderer effectRenderer;
     public Session session = null;
     public String minecraftUri;
@@ -201,7 +201,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     private IntegratedServer theIntegratedServer;
 
     /** Gui achievement */
-    public GuiAchievement guiAchievement = new GuiAchievement(this);
+    public GuiAchievement guiAchievement;
     public GuiIngame ingameGUI;
 
     /** Skip render world */
@@ -299,7 +299,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         this.displayHeight = par4;
         this.fullscreen = par5;
         theMinecraft = this;
-        TextureManager.func_94263_a();
+        TextureManager.init();
+        this.guiAchievement = new GuiAchievement(this);
     }
 
     private void startTimerHackThread()
@@ -371,8 +372,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
         }
 
-        Display.setTitle("Minecraft Minecraft 1.5");
-        this.func_98033_al().func_98233_a("LWJGL Version: " + Sys.getVersion());
+        Display.setTitle("Minecraft Minecraft 1.5.1");
+        this.getLogAgent().logInfo("LWJGL Version: " + Sys.getVersion());
 
         try
         {
@@ -437,7 +438,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         this.checkGLError("Startup");
         this.sndManager.loadSoundSettings(this.gameSettings);
         this.renderGlobal = new RenderGlobal(this, this.renderEngine);
-        this.renderEngine.func_94152_c();
+        this.renderEngine.refreshTextureMaps();
         GL11.glViewport(0, 0, this.displayWidth, this.displayHeight);
         this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
 
@@ -481,7 +482,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     private void loadScreen() throws LWJGLException
     {
         ScaledResolution scaledresolution = new ScaledResolution(this.gameSettings, this.displayWidth, this.displayHeight);
-        GL11.glClear(16640);
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         GL11.glOrtho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);
@@ -494,7 +495,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_FOG);
         Tessellator tessellator = Tessellator.instance;
-        this.renderEngine.func_98187_b("/title/mojang.png");
+        this.renderEngine.bindTexture("/title/mojang.png");
         tessellator.startDrawingQuads();
         tessellator.setColorOpaque_I(16777215);
         tessellator.addVertexWithUV(0.0D, (double)this.displayHeight, 0.0D, 0.0D, 0.0D);
@@ -655,9 +656,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         if (i != 0)
         {
             String s1 = GLU.gluErrorString(i);
-            this.func_98033_al().func_98232_c("########## GL ERROR ##########");
-            this.func_98033_al().func_98232_c("@ " + par1Str);
-            this.func_98033_al().func_98232_c(i + ": " + s1);
+            this.getLogAgent().func_98232_c("########## GL ERROR ##########");
+            this.getLogAgent().func_98232_c("@ " + par1Str);
+            this.getLogAgent().func_98232_c(i + ": " + s1);
         }
     }
 
@@ -683,7 +684,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 ;
             }
 
-            this.func_98033_al().func_98233_a("Stopping!");
+            this.getLogAgent().logInfo("Stopping!");
 
             try
             {
@@ -1062,7 +1063,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         {
             List list = this.mcProfiler.getProfilingData(this.debugProfilerName);
             ProfilerResult profilerresult = (ProfilerResult)list.remove(0);
-            GL11.glClear(256);
+            GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
             GL11.glMatrixMode(GL11.GL_PROJECTION);
             GL11.glEnable(GL11.GL_COLOR_MATERIAL);
             GL11.glLoadIdentity();
@@ -1457,7 +1458,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             this.playerController.updateController();
         }
 
-        this.renderEngine.func_98187_b("/terrain.png");
+        this.renderEngine.bindTexture("/terrain.png");
         this.mcProfiler.endStartSection("textures");
 
         if (!this.isGamePaused)
@@ -1906,7 +1907,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
      */
     private void forceReload()
     {
-        this.func_98033_al().func_98233_a("FORCING RELOAD!");
+        this.getLogAgent().logInfo("FORCING RELOAD!");
 
         if (this.sndManager != null)
         {
@@ -2330,7 +2331,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         while (iterator.hasNext())
         {
             String s5 = (String)iterator.next();
-            getMinecraft().func_98033_al().func_98233_a(s5);
+            getMinecraft().getLogAgent().logInfo(s5);
         }
 
         minecraftapplet.start();
@@ -2567,7 +2568,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         return this.fullscreen;
     }
 
-    public ILogAgent func_98033_al()
+    public ILogAgent getLogAgent()
     {
         return this.field_94139_O;
     }

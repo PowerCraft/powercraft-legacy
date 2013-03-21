@@ -6,53 +6,53 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class Rect2i
 {
-    private int field_94164_a;
-    private int field_94162_b;
-    private int field_94163_c;
-    private int field_94161_d;
+    private int rectX;
+    private int rectY;
+    private int rectWidth;
+    private int rectHeight;
 
     public Rect2i(int par1, int par2, int par3, int par4)
     {
-        this.field_94164_a = par1;
-        this.field_94162_b = par2;
-        this.field_94163_c = par3;
-        this.field_94161_d = par4;
+        this.rectX = par1;
+        this.rectY = par2;
+        this.rectWidth = par3;
+        this.rectHeight = par4;
     }
 
-    public Rect2i func_94156_a(Rect2i par1Rect2i)
+    public Rect2i intersection(Rect2i par1Rect2i)
     {
-        int i = this.field_94164_a;
-        int j = this.field_94162_b;
-        int k = this.field_94164_a + this.field_94163_c;
-        int l = this.field_94162_b + this.field_94161_d;
-        int i1 = par1Rect2i.func_94158_a();
-        int j1 = par1Rect2i.func_94160_b();
-        int k1 = i1 + par1Rect2i.func_94159_c();
-        int l1 = j1 + par1Rect2i.func_94157_d();
-        this.field_94164_a = Math.max(i, i1);
-        this.field_94162_b = Math.max(j, j1);
-        this.field_94163_c = Math.max(0, Math.min(k, k1) - this.field_94164_a);
-        this.field_94161_d = Math.max(0, Math.min(l, l1) - this.field_94162_b);
+        int i = this.rectX;
+        int j = this.rectY;
+        int k = this.rectX + this.rectWidth;
+        int l = this.rectY + this.rectHeight;
+        int i1 = par1Rect2i.getRectX();
+        int j1 = par1Rect2i.getRectY();
+        int k1 = i1 + par1Rect2i.getRectWidth();
+        int l1 = j1 + par1Rect2i.getRectHeight();
+        this.rectX = Math.max(i, i1);
+        this.rectY = Math.max(j, j1);
+        this.rectWidth = Math.max(0, Math.min(k, k1) - this.rectX);
+        this.rectHeight = Math.max(0, Math.min(l, l1) - this.rectY);
         return this;
     }
 
-    public int func_94158_a()
+    public int getRectX()
     {
-        return this.field_94164_a;
+        return this.rectX;
     }
 
-    public int func_94160_b()
+    public int getRectY()
     {
-        return this.field_94162_b;
+        return this.rectY;
     }
 
-    public int func_94159_c()
+    public int getRectWidth()
     {
-        return this.field_94163_c;
+        return this.rectWidth;
     }
 
-    public int func_94157_d()
+    public int getRectHeight()
     {
-        return this.field_94161_d;
+        return this.rectHeight;
     }
 }

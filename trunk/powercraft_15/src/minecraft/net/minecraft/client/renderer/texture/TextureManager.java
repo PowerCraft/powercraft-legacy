@@ -16,55 +16,55 @@ import net.minecraft.client.texturepacks.ITexturePack;
 @SideOnly(Side.CLIENT)
 public class TextureManager
 {
-    private static TextureManager field_94271_a;
-    private int field_94269_b = 0;
-    private final HashMap field_94270_c = new HashMap();
-    private final HashMap field_94268_d = new HashMap();
+    private static TextureManager instance;
+    private int nextTextureID = 0;
+    private final HashMap texturesMap = new HashMap();
+    private final HashMap mapNameToId = new HashMap();
 
-    public static void func_94263_a()
+    public static void init()
     {
-        field_94271_a = new TextureManager();
+        instance = new TextureManager();
     }
 
-    public static TextureManager func_94267_b()
+    public static TextureManager instance()
     {
-        return field_94271_a;
+        return instance;
     }
 
-    public int func_94265_c()
+    public int getNextTextureId()
     {
-        return this.field_94269_b++;
+        return this.nextTextureID++;
     }
 
-    public void func_94264_a(String par1Str, Texture par2Texture)
+    public void registerTexture(String par1Str, Texture par2Texture)
     {
-        this.field_94268_d.put(par1Str, Integer.valueOf(par2Texture.func_94284_b()));
+        this.mapNameToId.put(par1Str, Integer.valueOf(par2Texture.getTextureId()));
 
-        if (!this.field_94270_c.containsKey(Integer.valueOf(par2Texture.func_94284_b())))
+        if (!this.texturesMap.containsKey(Integer.valueOf(par2Texture.getTextureId())))
         {
-            this.field_94270_c.put(Integer.valueOf(par2Texture.func_94284_b()), par2Texture);
+            this.texturesMap.put(Integer.valueOf(par2Texture.getTextureId()), par2Texture);
         }
     }
 
-    public void func_94259_a(Texture par1Texture)
+    public void registerTexture(Texture par1Texture)
     {
-        if (this.field_94270_c.containsValue(par1Texture))
+        if (this.texturesMap.containsValue(par1Texture))
         {
-            Minecraft.getMinecraft().func_98033_al().func_98236_b("TextureManager.registerTexture called, but this texture has already been registered. ignoring.");
+            Minecraft.getMinecraft().getLogAgent().logWarning("TextureManager.registerTexture called, but this texture has already been registered. ignoring.");
         }
         else
         {
-            this.field_94270_c.put(Integer.valueOf(par1Texture.func_94284_b()), par1Texture);
+            this.texturesMap.put(Integer.valueOf(par1Texture.getTextureId()), par1Texture);
         }
     }
 
-    public Stitcher func_94262_d(String par1Str)
+    public Stitcher createStitcher(String par1Str)
     {
         int i = Minecraft.getGLMaximumTextureSize();
         return new Stitcher(par1Str, i, i, true);
     }
 
-    public List func_94266_e(String par1Str)
+    public List createTexture(String par1Str)
     {
         return createNewTexture(par1Str, par1Str, null);
     }
@@ -101,7 +101,7 @@ public class TextureManager
             {
                 throw fnfe;
             }
-            else if (this.func_98147_a(par1Str, itexturepack))
+            else if (this.hasAnimationTxt(par1Str, itexturepack))
             {
                 int k = j;
                 int l = j;
@@ -109,55 +109,61 @@ public class TextureManager
 
                 for (int j1 = 0; j1 < i1; ++j1)
                 {
-                    Texture texture = this.func_94261_a(s1, 2, k, l, 10496, 6408, 9728, 9728, false, bufferedimage.getSubimage(0, l * j1, k, l));
+                    Texture texture = this.makeTexture(s1, 2, k, l, 10496, 6408, 9728, 9728, false, bufferedimage.getSubimage(0, l * j1, k, l));
                     arraylist.add(texture);
                 }
             }
             else if (j == i)
             {
-                arraylist.add(this.func_94261_a(s1, 2, j, i, 10496, 6408, 9728, 9728, false, bufferedimage));
+                arraylist.add(this.makeTexture(s1, 2, j, i, 10496, 6408, 9728, 9728, false, bufferedimage));
             }
             else
             {
-                Minecraft.getMinecraft().func_98033_al().func_98236_b("TextureManager.createTexture: Skipping " + par1Str + " because of broken aspect ratio and not animation");
+                Minecraft.getMinecraft().getLogAgent().logWarning("TextureManager.createTexture: Skipping " + par1Str + " because of broken aspect ratio and not animation");
             }
 
             return arraylist;
         }
         catch (FileNotFoundException filenotfoundexception)
         {
-            Minecraft.getMinecraft().func_98033_al().func_98236_b("TextureManager.createTexture called for file " + par1Str + ", but that file does not exist. Ignoring.");
+            Minecraft.getMinecraft().getLogAgent().logWarning("TextureManager.createTexture called for file " + par1Str + ", but that file does not exist. Ignoring.");
         }
         catch (IOException ioexception)
         {
-            Minecraft.getMinecraft().func_98033_al().func_98236_b("TextureManager.createTexture encountered an IOException when trying to read file " + par1Str + ". Ignoring.");
+            Minecraft.getMinecraft().getLogAgent().logWarning("TextureManager.createTexture encountered an IOException when trying to read file " + par1Str + ". Ignoring.");
         }
 
         return arraylist;
     }
 
-    private String func_98146_d(String par1Str)
+    /**
+     * Strips directory and file extension from the specified path, returning only the filename
+     */
+    private String getBasename(String par1Str)
     {
         File file1 = new File(par1Str);
         return file1.getName().substring(0, file1.getName().lastIndexOf(46));
     }
 
-    private boolean func_98147_a(String par1Str, ITexturePack par2ITexturePack)
+    /**
+     * Returns true if specified texture pack contains animation data for the specified texture file
+     */
+    private boolean hasAnimationTxt(String par1Str, ITexturePack par2ITexturePack)
     {
         String s1 = "/" + par1Str.substring(0, par1Str.lastIndexOf(46)) + ".txt";
         boolean flag = par2ITexturePack.func_98138_b("/" + par1Str, false);
         return Minecraft.getMinecraft().texturePackList.getSelectedTexturePack().func_98138_b(s1, !flag);
     }
 
-    public Texture func_94261_a(String par1Str, int par2, int par3, int par4, int par5, int par6, int par7, int par8, boolean par9, BufferedImage par10BufferedImage)
+    public Texture makeTexture(String par1Str, int par2, int par3, int par4, int par5, int par6, int par7, int par8, boolean par9, BufferedImage par10BufferedImage)
     {
         Texture texture = new Texture(par1Str, par2, par3, par4, par5, par6, par7, par8, par10BufferedImage);
-        this.func_94259_a(texture);
+        this.registerTexture(texture);
         return texture;
     }
 
-    public Texture func_98145_a(String par1Str, int par2, int par3, int par4, int par5)
+    public Texture createEmptyTexture(String par1Str, int par2, int par3, int par4, int par5)
     {
-        return this.func_94261_a(par1Str, par2, par3, par4, 10496, par5, 9728, 9728, false, (BufferedImage)null);
+        return this.makeTexture(par1Str, par2, par3, par4, 10496, par5, 9728, 9728, false, (BufferedImage)null);
     }
 }

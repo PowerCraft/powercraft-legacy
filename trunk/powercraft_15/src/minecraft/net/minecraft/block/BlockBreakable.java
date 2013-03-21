@@ -40,8 +40,13 @@ public class BlockBreakable extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a(this.field_94430_b);
+        this.blockIcon = par1IconRegister.registerIcon(this.field_94430_b);
     }
 }

@@ -24,9 +24,9 @@ import net.minecraftforge.common.IShearable;
 
 public class BlockTallGrass extends BlockFlower implements IShearable
 {
-    private static final String[] field_94367_a = new String[] {"deadbush", "tallgrass", "fern"};
+    private static final String[] grassTypes = new String[] {"deadbush", "tallgrass", "fern"};
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94366_b;
+    private Icon[] iconArray;
 
     protected BlockTallGrass(int par1)
     {
@@ -42,12 +42,12 @@ public class BlockTallGrass extends BlockFlower implements IShearable
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        if (par2 >= this.field_94366_b.length)
+        if (par2 >= this.iconArray.length)
         {
             par2 = 0;
         }
 
-        return this.field_94366_b[par2];
+        return this.iconArray[par2];
     }
 
     /**
@@ -127,13 +127,18 @@ public class BlockTallGrass extends BlockFlower implements IShearable
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
-    {
-        this.field_94366_b = new Icon[field_94367_a.length];
 
-        for (int i = 0; i < this.field_94366_b.length; ++i)
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.iconArray = new Icon[grassTypes.length];
+
+        for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.field_94366_b[i] = par1IconRegister.func_94245_a(field_94367_a[i]);
+            this.iconArray[i] = par1IconRegister.registerIcon(grassTypes[i]);
         }
     }
 

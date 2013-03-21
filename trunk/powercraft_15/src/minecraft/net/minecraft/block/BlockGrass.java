@@ -14,11 +14,11 @@ import net.minecraft.world.World;
 public class BlockGrass extends Block
 {
     @SideOnly(Side.CLIENT)
-    private Icon field_94437_a;
+    private Icon iconGrassTop;
     @SideOnly(Side.CLIENT)
-    private Icon field_94435_b;
+    private Icon iconSnowSide;
     @SideOnly(Side.CLIENT)
-    private Icon field_94436_c;
+    private Icon iconGrassSideOverlay;
 
     protected BlockGrass(int par1)
     {
@@ -34,7 +34,7 @@ public class BlockGrass extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94437_a : (par1 == 0 ? Block.dirt.getBlockTextureFromSide(par1) : this.field_94336_cN);
+        return par1 == 1 ? this.iconGrassTop : (par1 == 0 ? Block.dirt.getBlockTextureFromSide(par1) : this.blockIcon);
     }
 
     /**
@@ -46,7 +46,7 @@ public class BlockGrass extends Block
         {
             if (par1World.getBlockLightValue(par2, par3 + 1, par4) < 4 && par1World.getBlockLightOpacity(par2, par3 + 1, par4) > 2)
             {
-                par1World.func_94575_c(par2, par3, par4, Block.dirt.blockID);
+                par1World.setBlock(par2, par3, par4, Block.dirt.blockID);
             }
             else if (par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9)
             {
@@ -59,7 +59,7 @@ public class BlockGrass extends Block
 
                     if (par1World.getBlockId(i1, j1, k1) == Block.dirt.blockID && par1World.getBlockLightValue(i1, j1 + 1, k1) >= 4 && par1World.getBlockLightOpacity(i1, j1 + 1, k1) <= 2)
                     {
-                        par1World.func_94575_c(i1, j1, k1, Block.grass.blockID);
+                        par1World.setBlock(i1, j1, k1, Block.grass.blockID);
                     }
                 }
             }
@@ -83,7 +83,7 @@ public class BlockGrass extends Block
     {
         if (par5 == 1)
         {
-            return this.field_94437_a;
+            return this.iconGrassTop;
         }
         else if (par5 == 0)
         {
@@ -92,17 +92,22 @@ public class BlockGrass extends Block
         else
         {
             Material material = par1IBlockAccess.getBlockMaterial(par2, par3 + 1, par4);
-            return material != Material.snow && material != Material.craftedSnow ? this.field_94336_cN : this.field_94435_b;
+            return material != Material.snow && material != Material.craftedSnow ? this.blockIcon : this.iconSnowSide;
         }
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("grass_side");
-        this.field_94437_a = par1IconRegister.func_94245_a("grass_top");
-        this.field_94435_b = par1IconRegister.func_94245_a("snow_side");
-        this.field_94436_c = par1IconRegister.func_94245_a("grass_side_overlay");
+        this.blockIcon = par1IconRegister.registerIcon("grass_side");
+        this.iconGrassTop = par1IconRegister.registerIcon("grass_top");
+        this.iconSnowSide = par1IconRegister.registerIcon("snow_side");
+        this.iconGrassSideOverlay = par1IconRegister.registerIcon("grass_side_overlay");
     }
 
     @SideOnly(Side.CLIENT)
@@ -150,8 +155,8 @@ public class BlockGrass extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public static Icon func_94434_o()
+    public static Icon getIconSideOverlay()
     {
-        return Block.grass.field_94436_c;
+        return Block.grass.iconGrassSideOverlay;
     }
 }

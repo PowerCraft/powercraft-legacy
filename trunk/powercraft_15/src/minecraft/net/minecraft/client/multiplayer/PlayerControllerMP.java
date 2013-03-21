@@ -353,8 +353,8 @@ public class PlayerControllerMP
         boolean flag = false;
         int i1;
         if (par3ItemStack != null &&
-                par3ItemStack.getItem() != null &&
-                par3ItemStack.getItem().onItemUseFirst(par3ItemStack, par1EntityPlayer, par2World, par4, par5, par6, par7, f, f1, f2))
+            par3ItemStack.getItem() != null &&
+            par3ItemStack.getItem().onItemUseFirst(par3ItemStack, par1EntityPlayer, par2World, par4, par5, par6, par7, f, f1, f2))
         {
                 return true;
         }

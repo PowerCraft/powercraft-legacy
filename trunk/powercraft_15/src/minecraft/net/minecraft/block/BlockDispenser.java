@@ -107,16 +107,21 @@ public class BlockDispenser extends BlockContainer
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         int k = par2 & 7;
-        return par1 == k ? (k != 1 && k != 0 ? this.field_94462_cO : this.field_96473_e) : (k != 1 && k != 0 ? (par1 != 1 && par1 != 0 ? this.field_94336_cN : this.field_94463_c) : this.field_94463_c);
+        return par1 == k ? (k != 1 && k != 0 ? this.field_94462_cO : this.field_96473_e) : (k != 1 && k != 0 ? (par1 != 1 && par1 != 0 ? this.blockIcon : this.field_94463_c) : this.field_94463_c);
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("furnace_side");
-        this.field_94463_c = par1IconRegister.func_94245_a("furnace_top");
-        this.field_94462_cO = par1IconRegister.func_94245_a("dispenser_front");
-        this.field_96473_e = par1IconRegister.func_94245_a("dispenser_front_vertical");
+        this.blockIcon = par1IconRegister.registerIcon("furnace_side");
+        this.field_94463_c = par1IconRegister.registerIcon("furnace_top");
+        this.field_94462_cO = par1IconRegister.registerIcon("dispenser_front");
+        this.field_96473_e = par1IconRegister.registerIcon("dispenser_front_vertical");
     }
 
     /**
@@ -144,7 +149,7 @@ public class BlockDispenser extends BlockContainer
     protected void dispense(World par1World, int par2, int par3, int par4)
     {
         BlockSourceImpl blocksourceimpl = new BlockSourceImpl(par1World, par2, par3, par4);
-        TileEntityDispenser tileentitydispenser = (TileEntityDispenser)blocksourceimpl.func_82619_j();
+        TileEntityDispenser tileentitydispenser = (TileEntityDispenser)blocksourceimpl.getBlockTileEntity();
 
         if (tileentitydispenser != null)
         {
@@ -271,6 +276,8 @@ public class BlockDispenser extends BlockContainer
                     }
                 }
             }
+
+            par1World.func_96440_m(par2, par3, par4, par5);
         }
 
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
@@ -278,24 +285,32 @@ public class BlockDispenser extends BlockContainer
 
     public static IPosition getIPositionFromBlockSource(IBlockSource par0IBlockSource)
     {
-        EnumFacing enumfacing = func_100009_j_(par0IBlockSource.func_82620_h());
+        EnumFacing enumfacing = getFacing(par0IBlockSource.getBlockMetadata());
         double d0 = par0IBlockSource.getX() + 0.7D * (double)enumfacing.getFrontOffsetX();
-        double d1 = par0IBlockSource.getY() + 0.7D * (double)enumfacing.func_96559_d();
+        double d1 = par0IBlockSource.getY() + 0.7D * (double)enumfacing.getFrontOffsetY();
         double d2 = par0IBlockSource.getZ() + 0.7D * (double)enumfacing.getFrontOffsetZ();
         return new PositionImpl(d0, d1, d2);
     }
 
-    public static EnumFacing func_100009_j_(int par0)
+    public static EnumFacing getFacing(int par0)
     {
         return EnumFacing.getFront(par0 & 7);
     }
 
-    public boolean func_96468_q_()
+    /**
+     * If this returns true, then comparators facing away from this block will use the value from
+     * getComparatorInputOverride instead of the actual redstone signal strength.
+     */
+    public boolean hasComparatorInputOverride()
     {
         return true;
     }
 
-    public int func_94328_b_(World par1World, int par2, int par3, int par4, int par5)
+    /**
+     * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal
+     * strength when this block inputs to a comparator.
+     */
+    public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
         return Container.func_94526_b((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
     }

@@ -50,7 +50,7 @@ public class BlockCactus extends Block implements IPlantable
 
                 if (i1 == 15)
                 {
-                    par1World.func_94575_c(par2, par3 + 1, par4, this.blockID);
+                    par1World.setBlock(par2, par3 + 1, par4, this.blockID);
                     par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 4);
                     this.onNeighborBlockChange(par1World, par2, par3 + 1, par4, this.blockID);
                 }
@@ -98,7 +98,7 @@ public class BlockCactus extends Block implements IPlantable
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94380_a : (par1 == 0 ? this.field_94379_b : this.field_94336_cN);
+        return par1 == 1 ? this.field_94380_a : (par1 == 0 ? this.field_94379_b : this.blockIcon);
     }
 
     /**
@@ -134,7 +134,7 @@ public class BlockCactus extends Block implements IPlantable
     {
         if (!this.canBlockStay(par1World, par2, par3, par4))
         {
-            par1World.func_94578_a(par2, par3, par4, true);
+            par1World.destroyBlock(par2, par3, par4, true);
         }
     }
 
@@ -175,11 +175,16 @@ public class BlockCactus extends Block implements IPlantable
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("cactus_side");
-        this.field_94380_a = par1IconRegister.func_94245_a("cactus_top");
-        this.field_94379_b = par1IconRegister.func_94245_a("cactus_bottom");
+        this.blockIcon = par1IconRegister.registerIcon("cactus_side");
+        this.field_94380_a = par1IconRegister.registerIcon("cactus_top");
+        this.field_94379_b = par1IconRegister.registerIcon("cactus_bottom");
     }
 
     @Override

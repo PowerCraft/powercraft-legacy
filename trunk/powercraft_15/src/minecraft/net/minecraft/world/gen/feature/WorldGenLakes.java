@@ -103,7 +103,7 @@ public class WorldGenLakes extends WorldGenerator
                     {
                         if (aboolean[(i1 * 16 + j2) * 8 + i2])
                         {
-                            par1World.setBlockAndMetadataWithNotify(par3 + i1, par4 + i2, par5 + j2, i2 >= 4 ? 0 : this.blockIndex, 0, 2);
+                            par1World.setBlock(par3 + i1, par4 + i2, par5 + j2, i2 >= 4 ? 0 : this.blockIndex, 0, 2);
                         }
                     }
                 }
@@ -121,11 +121,11 @@ public class WorldGenLakes extends WorldGenerator
 
                             if (biomegenbase.topBlock == Block.mycelium.blockID)
                             {
-                                par1World.setBlockAndMetadataWithNotify(par3 + i1, par4 + i2 - 1, par5 + j2, Block.mycelium.blockID, 0, 2);
+                                par1World.setBlock(par3 + i1, par4 + i2 - 1, par5 + j2, Block.mycelium.blockID, 0, 2);
                             }
                             else
                             {
-                                par1World.setBlockAndMetadataWithNotify(par3 + i1, par4 + i2 - 1, par5 + j2, Block.grass.blockID, 0, 2);
+                                par1World.setBlock(par3 + i1, par4 + i2 - 1, par5 + j2, Block.grass.blockID, 0, 2);
                             }
                         }
                     }
@@ -144,7 +144,7 @@ public class WorldGenLakes extends WorldGenerator
 
                             if (flag && (i2 < 4 || par2Random.nextInt(2) != 0) && par1World.getBlockMaterial(par3 + i1, par4 + i2, par5 + j2).isSolid())
                             {
-                                par1World.setBlockAndMetadataWithNotify(par3 + i1, par4 + i2, par5 + j2, Block.stone.blockID, 0, 2);
+                                par1World.setBlock(par3 + i1, par4 + i2, par5 + j2, Block.stone.blockID, 0, 2);
                             }
                         }
                     }
@@ -161,7 +161,7 @@ public class WorldGenLakes extends WorldGenerator
 
                         if (par1World.isBlockFreezable(par3 + i1, par4 + b0, par5 + j2))
                         {
-                            par1World.setBlockAndMetadataWithNotify(par3 + i1, par4 + b0, par5 + j2, Block.ice.blockID, 0, 2);
+                            par1World.setBlock(par3 + i1, par4 + b0, par5 + j2, Block.ice.blockID, 0, 2);
                         }
                     }
                 }

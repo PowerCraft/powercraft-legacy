@@ -40,8 +40,9 @@ public class GuiScreenOnlineServers extends GuiScreen
     private McoServerList field_96194_t;
     private boolean field_96193_u;
     private List field_96192_v = Collections.emptyList();
-    private String field_96191_w = "http://minecraft.net";
+    private String field_96191_w = "http://realms.minecraft.net/";
     private volatile int field_96199_x;
+    private Long field_102019_y;
 
     public GuiScreenOnlineServers(GuiScreen par1)
     {
@@ -109,6 +110,13 @@ public class GuiScreenOnlineServers extends GuiScreen
                     if (mcoserver.field_96408_a == mcoserver1.field_96408_a)
                     {
                         mcoserver.func_96401_a(mcoserver1);
+
+                        if (this.field_102019_y != null && this.field_102019_y.longValue() == mcoserver.field_96408_a)
+                        {
+                            this.field_102019_y = null;
+                            mcoserver.field_96411_l = false;
+                        }
+
                         break;
                     }
                 }
@@ -170,6 +178,12 @@ public class GuiScreenOnlineServers extends GuiScreen
                 this.field_96186_b.actionPerformed(par1GuiButton);
             }
         }
+    }
+
+    public void func_102018_a(long par1)
+    {
+        this.field_96189_n = -1;
+        this.field_102019_y = Long.valueOf(par1);
     }
 
     private McoServer func_98086_a(long par1)
@@ -245,34 +259,49 @@ public class GuiScreenOnlineServers extends GuiScreen
         }
     }
 
-    private void func_98088_b(int par1, int par2)
+    private void func_101008_c(int par1, int par2, int par3, int par4)
     {
-        this.mc.renderEngine.func_98187_b("/gui/gui.png");
+        this.mc.renderEngine.bindTexture("/gui/gui.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glPushMatrix();
         GL11.glScalef(0.5F, 0.5F, 0.5F);
         this.drawTexturedModalRect(par1 * 2, par2 * 2, 191, 0, 16, 15);
         GL11.glPopMatrix();
+
+        if (par3 >= par1 && par3 <= par1 + 9 && par4 >= par2 && par4 <= par2 + 9)
+        {
+            this.field_96195_s = "Expired World";
+        }
     }
 
-    private void func_96175_b(int par1, int par2)
+    private void func_101006_d(int par1, int par2, int par3, int par4)
     {
-        this.mc.renderEngine.func_98187_b("/gui/gui.png");
+        this.mc.renderEngine.bindTexture("/gui/gui.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glPushMatrix();
         GL11.glScalef(0.5F, 0.5F, 0.5F);
         this.drawTexturedModalRect(par1 * 2, par2 * 2, 207, 0, 16, 15);
         GL11.glPopMatrix();
+
+        if (par3 >= par1 && par3 <= par1 + 9 && par4 >= par2 && par4 <= par2 + 9)
+        {
+            this.field_96195_s = "Open World";
+        }
     }
 
-    private void func_96168_c(int par1, int par2)
+    private void func_101001_e(int par1, int par2, int par3, int par4)
     {
-        this.mc.renderEngine.func_98187_b("/gui/gui.png");
+        this.mc.renderEngine.bindTexture("/gui/gui.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glPushMatrix();
         GL11.glScalef(0.5F, 0.5F, 0.5F);
         this.drawTexturedModalRect(par1 * 2, par2 * 2, 223, 0, 16, 15);
         GL11.glPopMatrix();
+
+        if (par3 >= par1 && par3 <= par1 + 9 && par4 >= par2 && par4 <= par2 + 9)
+        {
+            this.field_96195_s = "Closed World";
+        }
     }
 
     protected void func_96165_a(String par1Str, int par2, int par3)
@@ -481,19 +510,19 @@ public class GuiScreenOnlineServers extends GuiScreen
         return par0GuiScreenOnlineServers.fontRenderer;
     }
 
-    static void func_98070_a(GuiScreenOnlineServers par0GuiScreenOnlineServers, int par1, int par2)
+    static void func_101003_a(GuiScreenOnlineServers par0GuiScreenOnlineServers, int par1, int par2, int par3, int par4)
     {
-        par0GuiScreenOnlineServers.func_98088_b(par1, par2);
+        par0GuiScreenOnlineServers.func_101008_c(par1, par2, par3, par4);
     }
 
-    static void func_98083_b(GuiScreenOnlineServers par0GuiScreenOnlineServers, int par1, int par2)
+    static void func_101012_b(GuiScreenOnlineServers par0GuiScreenOnlineServers, int par1, int par2, int par3, int par4)
     {
-        par0GuiScreenOnlineServers.func_96168_c(par1, par2);
+        par0GuiScreenOnlineServers.func_101001_e(par1, par2, par3, par4);
     }
 
-    static void func_98077_c(GuiScreenOnlineServers par0GuiScreenOnlineServers, int par1, int par2)
+    static void func_101009_c(GuiScreenOnlineServers par0GuiScreenOnlineServers, int par1, int par2, int par3, int par4)
     {
-        par0GuiScreenOnlineServers.func_96175_b(par1, par2);
+        par0GuiScreenOnlineServers.func_101006_d(par1, par2, par3, par4);
     }
 
     static FontRenderer func_98084_i(GuiScreenOnlineServers par0GuiScreenOnlineServers)
@@ -501,34 +530,34 @@ public class GuiScreenOnlineServers extends GuiScreen
         return par0GuiScreenOnlineServers.fontRenderer;
     }
 
-    static Object func_96170_h()
+    static FontRenderer func_101005_j(GuiScreenOnlineServers par0GuiScreenOnlineServers)
+    {
+        return par0GuiScreenOnlineServers.fontRenderer;
+    }
+
+    static Object func_101007_h()
     {
         return field_96185_d;
     }
 
-    static int func_98082_i()
+    static int func_101010_i()
     {
         return field_96187_c;
     }
 
-    static int func_98093_j()
+    static int func_101014_j()
     {
         return field_96187_c++;
     }
 
-    static void func_96179_a(GuiScreenOnlineServers par0GuiScreenOnlineServers, McoServer par1McoServer) throws IOException
+    static void func_101002_a(GuiScreenOnlineServers par0GuiScreenOnlineServers, McoServer par1McoServer) throws IOException
     {
         par0GuiScreenOnlineServers.func_96174_a(par1McoServer);
     }
 
-    static int func_96181_k()
+    static int func_101013_k()
     {
         return field_96187_c--;
-    }
-
-    static FontRenderer func_96182_l(GuiScreenOnlineServers par0GuiScreenOnlineServers)
-    {
-        return par0GuiScreenOnlineServers.fontRenderer;
     }
 
     static FontRenderer func_98079_k(GuiScreenOnlineServers par0GuiScreenOnlineServers)
@@ -546,12 +575,17 @@ public class GuiScreenOnlineServers extends GuiScreen
         return par0GuiScreenOnlineServers.fontRenderer;
     }
 
-    static Minecraft func_98071_n(GuiScreenOnlineServers par0GuiScreenOnlineServers)
+    static FontRenderer func_101000_n(GuiScreenOnlineServers par0GuiScreenOnlineServers)
+    {
+        return par0GuiScreenOnlineServers.fontRenderer;
+    }
+
+    static Minecraft func_101004_o(GuiScreenOnlineServers par0GuiScreenOnlineServers)
     {
         return par0GuiScreenOnlineServers.mc;
     }
 
-    static String func_98085_a(GuiScreenOnlineServers par0GuiScreenOnlineServers, String par1Str)
+    static String func_101011_a(GuiScreenOnlineServers par0GuiScreenOnlineServers, String par1Str)
     {
         return par0GuiScreenOnlineServers.field_96195_s = par1Str;
     }

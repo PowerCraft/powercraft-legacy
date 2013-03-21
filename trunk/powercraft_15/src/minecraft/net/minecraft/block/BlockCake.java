@@ -91,16 +91,21 @@ public class BlockCake extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94383_a : (par1 == 0 ? this.field_94381_b : (par2 > 0 && par1 == 4 ? this.field_94382_c : this.field_94336_cN));
+        return par1 == 1 ? this.field_94383_a : (par1 == 0 ? this.field_94381_b : (par2 > 0 && par1 == 4 ? this.field_94382_c : this.blockIcon));
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("cake_side");
-        this.field_94382_c = par1IconRegister.func_94245_a("cake_inner");
-        this.field_94383_a = par1IconRegister.func_94245_a("cake_top");
-        this.field_94381_b = par1IconRegister.func_94245_a("cake_bottom");
+        this.blockIcon = par1IconRegister.registerIcon("cake_side");
+        this.field_94382_c = par1IconRegister.registerIcon("cake_inner");
+        this.field_94383_a = par1IconRegister.registerIcon("cake_top");
+        this.field_94381_b = par1IconRegister.registerIcon("cake_bottom");
     }
 
     /**
@@ -141,7 +146,7 @@ public class BlockCake extends Block
 
             if (l >= 6)
             {
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
             }
             else
             {
@@ -166,7 +171,7 @@ public class BlockCake extends Block
     {
         if (!this.canBlockStay(par1World, par2, par3, par4))
         {
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
     }
 

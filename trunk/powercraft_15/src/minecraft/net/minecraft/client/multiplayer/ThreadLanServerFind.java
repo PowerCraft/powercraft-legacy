@@ -55,7 +55,7 @@ public class ThreadLanServerFind extends Thread
             }
 
             String s = new String(datagrampacket.getData(), datagrampacket.getOffset(), datagrampacket.getLength());
-            Minecraft.getMinecraft().func_98033_al().func_98230_d(datagrampacket.getAddress() + ": " + s);
+            Minecraft.getMinecraft().getLogAgent().func_98230_d(datagrampacket.getAddress() + ": " + s);
             this.localServerList.func_77551_a(s, datagrampacket.getAddress());
         }
 

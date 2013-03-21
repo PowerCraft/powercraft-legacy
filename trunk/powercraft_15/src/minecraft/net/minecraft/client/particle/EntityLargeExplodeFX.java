@@ -33,7 +33,7 @@ public class EntityLargeExplodeFX extends EntityFX
 
         if (i <= 15)
         {
-            this.theRenderEngine.func_98187_b("/misc/explosion.png");
+            this.theRenderEngine.bindTexture("/misc/explosion.png");
             float f6 = (float)(i % 4) / 4.0F;
             float f7 = f6 + 0.24975F;
             float f8 = (float)(i / 4) / 4.0F;

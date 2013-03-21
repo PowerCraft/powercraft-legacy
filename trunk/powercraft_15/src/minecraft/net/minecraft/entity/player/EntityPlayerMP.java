@@ -386,7 +386,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
             }
         }
 
-        Collection collection = this.worldObj.func_96441_U().func_96520_a(ScoreObjectiveCriteria.field_96642_c);
+        Collection collection = this.worldObj.getScoreboard().func_96520_a(ScoreObjectiveCriteria.field_96642_c);
         Iterator iterator = collection.iterator();
 
         while (iterator.hasNext())
@@ -625,7 +625,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         }
 
         this.incrementWindowID();
-        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 0, par1IInventory.getInvName(), par1IInventory.getSizeInventory(), par1IInventory.func_94042_c()));
+        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 0, par1IInventory.getInvName(), par1IInventory.getSizeInventory(), par1IInventory.isInvNameLocalized()));
         this.openContainer = new ContainerChest(this.inventory, par1IInventory);
         this.openContainer.windowId = this.currentWindowId;
         this.openContainer.addCraftingToCrafters(this);
@@ -634,7 +634,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public void func_94064_a(TileEntityHopper par1TileEntityHopper)
     {
         this.incrementWindowID();
-        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 9, par1TileEntityHopper.getInvName(), par1TileEntityHopper.getSizeInventory(), par1TileEntityHopper.func_94042_c()));
+        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 9, par1TileEntityHopper.getInvName(), par1TileEntityHopper.getSizeInventory(), par1TileEntityHopper.isInvNameLocalized()));
         this.openContainer = new ContainerHopper(this.inventory, par1TileEntityHopper);
         this.openContainer.windowId = this.currentWindowId;
         this.openContainer.addCraftingToCrafters(this);
@@ -643,7 +643,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public void func_96125_a(EntityMinecartHopper par1EntityMinecartHopper)
     {
         this.incrementWindowID();
-        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 9, par1EntityMinecartHopper.getInvName(), par1EntityMinecartHopper.getSizeInventory(), par1EntityMinecartHopper.func_94042_c()));
+        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 9, par1EntityMinecartHopper.getInvName(), par1EntityMinecartHopper.getSizeInventory(), par1EntityMinecartHopper.isInvNameLocalized()));
         this.openContainer = new ContainerHopper(this.inventory, par1EntityMinecartHopper);
         this.openContainer.windowId = this.currentWindowId;
         this.openContainer.addCraftingToCrafters(this);
@@ -655,7 +655,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public void displayGUIFurnace(TileEntityFurnace par1TileEntityFurnace)
     {
         this.incrementWindowID();
-        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 2, par1TileEntityFurnace.getInvName(), par1TileEntityFurnace.getSizeInventory(), par1TileEntityFurnace.func_94042_c()));
+        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 2, par1TileEntityFurnace.getInvName(), par1TileEntityFurnace.getSizeInventory(), par1TileEntityFurnace.isInvNameLocalized()));
         this.openContainer = new ContainerFurnace(this.inventory, par1TileEntityFurnace);
         this.openContainer.windowId = this.currentWindowId;
         this.openContainer.addCraftingToCrafters(this);
@@ -667,7 +667,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public void displayGUIDispenser(TileEntityDispenser par1TileEntityDispenser)
     {
         this.incrementWindowID();
-        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, par1TileEntityDispenser instanceof TileEntityDropper ? 10 : 3, par1TileEntityDispenser.getInvName(), par1TileEntityDispenser.getSizeInventory(), par1TileEntityDispenser.func_94042_c()));
+        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, par1TileEntityDispenser instanceof TileEntityDropper ? 10 : 3, par1TileEntityDispenser.getInvName(), par1TileEntityDispenser.getSizeInventory(), par1TileEntityDispenser.isInvNameLocalized()));
         this.openContainer = new ContainerDispenser(this.inventory, par1TileEntityDispenser);
         this.openContainer.windowId = this.currentWindowId;
         this.openContainer.addCraftingToCrafters(this);
@@ -679,7 +679,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public void displayGUIBrewingStand(TileEntityBrewingStand par1TileEntityBrewingStand)
     {
         this.incrementWindowID();
-        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 5, par1TileEntityBrewingStand.getInvName(), par1TileEntityBrewingStand.getSizeInventory(), par1TileEntityBrewingStand.func_94042_c()));
+        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 5, par1TileEntityBrewingStand.getInvName(), par1TileEntityBrewingStand.getSizeInventory(), par1TileEntityBrewingStand.isInvNameLocalized()));
         this.openContainer = new ContainerBrewingStand(this.inventory, par1TileEntityBrewingStand);
         this.openContainer.windowId = this.currentWindowId;
         this.openContainer.addCraftingToCrafters(this);
@@ -691,7 +691,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public void displayGUIBeacon(TileEntityBeacon par1TileEntityBeacon)
     {
         this.incrementWindowID();
-        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 7, par1TileEntityBeacon.getInvName(), par1TileEntityBeacon.getSizeInventory(), par1TileEntityBeacon.func_94042_c()));
+        this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 7, par1TileEntityBeacon.getInvName(), par1TileEntityBeacon.getSizeInventory(), par1TileEntityBeacon.isInvNameLocalized()));
         this.openContainer = new ContainerBeacon(this.inventory, par1TileEntityBeacon);
         this.openContainer.windowId = this.currentWindowId;
         this.openContainer.addCraftingToCrafters(this);

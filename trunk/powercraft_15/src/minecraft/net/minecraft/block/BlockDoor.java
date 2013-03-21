@@ -20,7 +20,7 @@ public class BlockDoor extends Block
     private static final String[] field_94467_a = new String[] {"doorWood_lower", "doorWood_upper", "doorIron_lower", "doorIron_upper"};
     private final int field_94465_b;
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94466_c;
+    private Icon[] iconArray;
 
     protected BlockDoor(int par1, Material par2Material)
     {
@@ -47,7 +47,7 @@ public class BlockDoor extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return this.field_94466_c[this.field_94465_b];
+        return this.iconArray[this.field_94465_b];
     }
 
     @SideOnly(Side.CLIENT)
@@ -109,23 +109,28 @@ public class BlockDoor extends Block
                 }
             }
 
-            return this.field_94466_c[this.field_94465_b + (flag1 ? field_94467_a.length : 0) + (flag2 ? 1 : 0)];
+            return this.iconArray[this.field_94465_b + (flag1 ? field_94467_a.length : 0) + (flag2 ? 1 : 0)];
         }
         else
         {
-            return this.field_94466_c[this.field_94465_b];
+            return this.iconArray[this.field_94465_b];
         }
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94466_c = new Icon[field_94467_a.length * 2];
+        this.iconArray = new Icon[field_94467_a.length * 2];
 
         for (int i = 0; i < field_94467_a.length; ++i)
         {
-            this.field_94466_c[i] = par1IconRegister.func_94245_a(field_94467_a[i]);
-            this.field_94466_c[i + field_94467_a.length] = new IconFlipped(this.field_94466_c[i], true, false);
+            this.iconArray[i] = par1IconRegister.registerIcon(field_94467_a[i]);
+            this.iconArray[i + field_94467_a.length] = new IconFlipped(this.iconArray[i], true, false);
         }
     }
 
@@ -362,18 +367,18 @@ public class BlockDoor extends Block
 
             if (par1World.getBlockId(par2, par3 + 1, par4) != this.blockID)
             {
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
                 flag = true;
             }
 
             if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4))
             {
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
                 flag = true;
 
                 if (par1World.getBlockId(par2, par3 + 1, par4) == this.blockID)
                 {
-                    par1World.func_94571_i(par2, par3 + 1, par4);
+                    par1World.setBlockToAir(par2, par3 + 1, par4);
                 }
             }
 
@@ -398,7 +403,7 @@ public class BlockDoor extends Block
         {
             if (par1World.getBlockId(par2, par3 - 1, par4) != this.blockID)
             {
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
             }
 
             if (par5 > 0 && par5 != this.blockID)
@@ -485,7 +490,7 @@ public class BlockDoor extends Block
     {
         if (par6EntityPlayer.capabilities.isCreativeMode && (par5 & 8) != 0 && par1World.getBlockId(par2, par3 - 1, par4) == this.blockID)
         {
-            par1World.func_94571_i(par2, par3 - 1, par4);
+            par1World.setBlockToAir(par2, par3 - 1, par4);
         }
     }
 }

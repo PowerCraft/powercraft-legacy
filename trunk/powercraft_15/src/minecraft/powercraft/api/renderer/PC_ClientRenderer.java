@@ -19,6 +19,7 @@ import powercraft.api.PC_VecI;
 import powercraft.api.block.PC_Block;
 import powercraft.api.inventory.PC_ISpecialInventoryTextures;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.launcher.PC_Logger;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -108,7 +109,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	@Override
 	protected void iBindTexture(String texture){
 		RenderEngine re = getRenderEngine();
-		re.func_98187_b(texture);
+		re.bindTexture(texture);
 	}
 	
 	@Override
@@ -186,14 +187,14 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 				o = d;
 			}
 			if(o instanceof PC_Direction){
-				boolean swapped = swapTerrain(block);
 				((RenderBlocks)renderer).uvRotateTop = ((PC_Direction)o).getMCDir();
 				((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
 				((RenderBlocks)renderer).uvRotateTop = 0;
-				resetTerrain(swapped);
 			}else{
 				iRenderBlock(world, x, y, z, block, modelId, (RenderBlocks)renderer);
 			}
+		}else{
+			iRenderBlock(world, x, y, z, block, modelId, (RenderBlocks)renderer);
 		}
 
 	}
@@ -204,8 +205,6 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		Tessellator tessellator = Tessellator.instance;
 		
 		if (block instanceof PC_IMSG) {
-
-			boolean swapped = swapTerrain(block);
 
 			Object o=((PC_IMSG) block).msg(PC_MSGRegistry.MSG_RENDER_ITEM_HORIZONTAL);
 			if(o instanceof Boolean){
@@ -248,7 +247,6 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			}else{
 				iRenderInvBox(renderer, block, metadata);
 			}
-			resetTerrain(swapped);
 			return;
 		}
 	}
@@ -256,20 +254,16 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	protected void iRenderBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.draw();
-		boolean swapped = swapTerrain(block);
 		tessellator.startDrawingQuads();
 		block.setBlockBoundsBasedOnState(world, x, y, z);
 		iRenderStandardBlock(renderer, block, x, y, z);
 		tessellator.draw();
 		tessellator.startDrawingQuads();
-		resetTerrain(swapped);
 	}
 	
 	protected void iRenderInvBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		Tessellator tessellator = Tessellator.instance;
-
-		boolean swapped = swapTerrain(block);
 		
 		block.setBlockBoundsForItemRender();
 		((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
@@ -300,7 +294,6 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		((RenderBlocks)renderer).unlockBlockBounds();
-		resetTerrain(swapped);
 
 	}
 	
@@ -392,47 +385,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		renderblocks.renderBlockByRenderType(block, x, y, z);
 	}
-	
-	/**
-	 * Use texture file as terrain.png
-	 * 
-	 * @param filename name of the used texture file (png)
-	 */
-	@Override
-	protected void iSwapTerrain(String filename) {
-		RenderEngine renderengine = PC_ClientUtils.mc().renderEngine;
-		renderengine.func_98187_b(filename);
-	}
 
-	/**
-	 * If block implements ISwapTerrain, set used terrain texture to the one
-	 * from this block
-	 * 
-	 * @param block the block to render
-	 * @return true if terrain was swapped -> call resetTerrain() to re-enable
-	 *         original terrain.png
-	 */
-	@Override
-	protected boolean iSwapTerrain(Block block) {
-		if (block instanceof PC_Block && !((PC_Block)block).getTextureFile().equalsIgnoreCase("/terrain.png")) {
-			swapTerrain(((PC_Block)block).getTextureFile());
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Reset swapped terrain - set the original terrain file back.
-	 * 
-	 * @param do_it false = do nothing
-	 */
-	@Override
-	protected void iResetTerrain(boolean do_it) {
-		if(do_it){
-			RenderEngine renderengine = PC_ClientUtils.mc().renderEngine;
-			renderengine.func_98187_b("/terrain.png");
-		}
-	}
 	
 	@Override
 	protected void iglColor4f(float r, float g, float b, float a) {

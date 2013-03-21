@@ -2,7 +2,6 @@ package net.minecraft.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.io.IOException;
 import net.minecraft.client.mco.ExceptionMcoService;
 import net.minecraft.client.mco.Locations;
 import net.minecraft.client.mco.McoClient;
@@ -35,7 +34,7 @@ class ThreadCreateOnlineWorldScreen extends Thread
         {
             ;
         }
-        catch (IOException ioexception)
+        catch (Exception exception)
         {
             ;
         }

@@ -9,90 +9,90 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class StitchSlot
 {
-    private final int field_94192_a;
-    private final int field_94190_b;
-    private final int field_94191_c;
-    private final int field_94188_d;
-    private List field_94189_e;
-    private StitchHolder field_94187_f;
+    public final int originX;
+    public final int originY;
+    public final int width;
+    public final int height;
+    private List subSlots;
+    private StitchHolder holder;
 
     public StitchSlot(int par1, int par2, int par3, int par4)
     {
-        this.field_94192_a = par1;
-        this.field_94190_b = par2;
-        this.field_94191_c = par3;
-        this.field_94188_d = par4;
+        this.originX = par1;
+        this.originY = par2;
+        this.width = par3;
+        this.height = par4;
     }
 
-    public StitchHolder func_94183_a()
+    public StitchHolder getStitchHolder()
     {
-        return this.field_94187_f;
+        return this.holder;
     }
 
-    public int func_94186_b()
+    public int getOriginX()
     {
-        return this.field_94192_a;
+        return this.originX;
     }
 
-    public int func_94185_c()
+    public int getOriginY()
     {
-        return this.field_94190_b;
+        return this.originY;
     }
 
     public boolean func_94182_a(StitchHolder par1StitchHolder)
     {
-        if (this.field_94187_f != null)
+        if (this.holder != null)
         {
             return false;
         }
         else
         {
-            int i = par1StitchHolder.func_94197_a();
-            int j = par1StitchHolder.func_94199_b();
+            int i = par1StitchHolder.getWidth();
+            int j = par1StitchHolder.getHeight();
 
-            if (i <= this.field_94191_c && j <= this.field_94188_d)
+            if (i <= this.width && j <= this.height)
             {
-                if (i == this.field_94191_c && j == this.field_94188_d)
+                if (i == this.width && j == this.height)
                 {
-                    this.field_94187_f = par1StitchHolder;
+                    this.holder = par1StitchHolder;
                     return true;
                 }
                 else
                 {
-                    if (this.field_94189_e == null)
+                    if (this.subSlots == null)
                     {
-                        this.field_94189_e = new ArrayList(1);
-                        this.field_94189_e.add(new StitchSlot(this.field_94192_a, this.field_94190_b, i, j));
-                        int k = this.field_94191_c - i;
-                        int l = this.field_94188_d - j;
+                        this.subSlots = new ArrayList(1);
+                        this.subSlots.add(new StitchSlot(this.originX, this.originY, i, j));
+                        int k = this.width - i;
+                        int l = this.height - j;
 
                         if (l > 0 && k > 0)
                         {
-                            int i1 = Math.max(this.field_94188_d, k);
-                            int j1 = Math.max(this.field_94191_c, l);
+                            int i1 = Math.max(this.height, k);
+                            int j1 = Math.max(this.width, l);
 
                             if (i1 >= j1)
                             {
-                                this.field_94189_e.add(new StitchSlot(this.field_94192_a, this.field_94190_b + j, i, l));
-                                this.field_94189_e.add(new StitchSlot(this.field_94192_a + i, this.field_94190_b, k, this.field_94188_d));
+                                this.subSlots.add(new StitchSlot(this.originX, this.originY + j, i, l));
+                                this.subSlots.add(new StitchSlot(this.originX + i, this.originY, k, this.height));
                             }
                             else
                             {
-                                this.field_94189_e.add(new StitchSlot(this.field_94192_a + i, this.field_94190_b, k, j));
-                                this.field_94189_e.add(new StitchSlot(this.field_94192_a, this.field_94190_b + j, this.field_94191_c, l));
+                                this.subSlots.add(new StitchSlot(this.originX + i, this.originY, k, j));
+                                this.subSlots.add(new StitchSlot(this.originX, this.originY + j, this.width, l));
                             }
                         }
                         else if (k == 0)
                         {
-                            this.field_94189_e.add(new StitchSlot(this.field_94192_a, this.field_94190_b + j, i, l));
+                            this.subSlots.add(new StitchSlot(this.originX, this.originY + j, i, l));
                         }
                         else if (l == 0)
                         {
-                            this.field_94189_e.add(new StitchSlot(this.field_94192_a + i, this.field_94190_b, k, j));
+                            this.subSlots.add(new StitchSlot(this.originX + i, this.originY, k, j));
                         }
                     }
 
-                    Iterator iterator = this.field_94189_e.iterator();
+                    Iterator iterator = this.subSlots.iterator();
                     StitchSlot stitchslot;
 
                     do
@@ -116,26 +116,29 @@ public class StitchSlot
         }
     }
 
-    public void func_94184_a(List par1List)
+    /**
+     * Gets the slot and all its subslots
+     */
+    public void getAllStitchSlots(List par1List)
     {
-        if (this.field_94187_f != null)
+        if (this.holder != null)
         {
             par1List.add(this);
         }
-        else if (this.field_94189_e != null)
+        else if (this.subSlots != null)
         {
-            Iterator iterator = this.field_94189_e.iterator();
+            Iterator iterator = this.subSlots.iterator();
 
             while (iterator.hasNext())
             {
                 StitchSlot stitchslot = (StitchSlot)iterator.next();
-                stitchslot.func_94184_a(par1List);
+                stitchslot.getAllStitchSlots(par1List);
             }
         }
     }
 
     public String toString()
     {
-        return "Slot{originX=" + this.field_94192_a + ", originY=" + this.field_94190_b + ", width=" + this.field_94191_c + ", height=" + this.field_94188_d + ", texture=" + this.field_94187_f + ", subSlots=" + this.field_94189_e + '}';
+        return "Slot{originX=" + this.originX + ", originY=" + this.originY + ", width=" + this.width + ", height=" + this.height + ", texture=" + this.holder + ", subSlots=" + this.subSlots + '}';
     }
 }

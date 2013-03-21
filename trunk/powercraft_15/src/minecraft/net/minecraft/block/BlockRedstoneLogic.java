@@ -62,11 +62,11 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
 
             if (this.isRepeaterPowered && !flag)
             {
-                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, this.func_94484_i().blockID, l, 2);
+                par1World.setBlock(par2, par3, par4, this.func_94484_i().blockID, l, 2);
             }
             else if (!this.isRepeaterPowered)
             {
-                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, this.func_94485_e().blockID, l, 2);
+                par1World.setBlock(par2, par3, par4, this.func_94485_e().blockID, l, 2);
 
                 if (!flag)
                 {
@@ -83,13 +83,18 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 0 ? (this.isRepeaterPowered ? Block.torchRedstoneActive.getBlockTextureFromSide(par1) : Block.torchRedstoneIdle.getBlockTextureFromSide(par1)) : (par1 == 1 ? this.field_94336_cN : Block.stoneDoubleSlab.getBlockTextureFromSide(1));
+        return par1 == 0 ? (this.isRepeaterPowered ? Block.torchRedstoneActive.getBlockTextureFromSide(par1) : Block.torchRedstoneIdle.getBlockTextureFromSide(par1)) : (par1 == 1 ? this.blockIcon : Block.stoneDoubleSlab.getBlockTextureFromSide(1));
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a(this.isRepeaterPowered ? "repeater_lit" : "repeater");
+        this.blockIcon = par1IconRegister.registerIcon(this.isRepeaterPowered ? "repeater_lit" : "repeater");
     }
 
     @SideOnly(Side.CLIENT)
@@ -154,7 +159,7 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
         if (!this.canBlockStay(par1World, par2, par3, par4))
         {
             this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
             par1World.notifyBlocksOfNeighborChange(par2 + 1, par3, par4, this.blockID);
             par1World.notifyBlocksOfNeighborChange(par2 - 1, par3, par4, this.blockID);
             par1World.notifyBlocksOfNeighborChange(par2, par3, par4 + 1, this.blockID);
@@ -176,7 +181,7 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
         {
             boolean flag = this.func_94478_d(par1World, par2, par3, par4, i1);
 
-            if ((this.isRepeaterPowered && !flag || !this.isRepeaterPowered && flag) && !par1World.func_94573_a(par2, par3, par4, this.blockID))
+            if ((this.isRepeaterPowered && !flag || !this.isRepeaterPowered && flag) && !par1World.isBlockTickScheduled(par2, par3, par4, this.blockID))
             {
                 byte b0 = -1;
 
@@ -201,15 +206,18 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
 
     protected boolean func_94478_d(World par1World, int par2, int par3, int par4, int par5)
     {
-        return this.ignoreTick(par1World, par2, par3, par4, par5) > 0;
+        return this.getInputStrength(par1World, par2, par3, par4, par5) > 0;
     }
 
-    protected int ignoreTick(World par1World, int par2, int par3, int par4, int par5)
+    /**
+     * Returns the signal strength at one input of the block. Args: world, X, Y, Z, side
+     */
+    protected int getInputStrength(World par1World, int par2, int par3, int par4, int par5)
     {
         int i1 = getDirection(par5);
         int j1 = par2 + Direction.offsetX[i1];
         int k1 = par4 + Direction.offsetZ[i1];
-        int l1 = par1World.isBlockIndirectlyProvidingPowerTo(j1, par3, k1, Direction.headInvisibleFace[i1]);
+        int l1 = par1World.getIndirectPowerLevelTo(j1, par3, k1, Direction.headInvisibleFace[i1]);
         return l1 >= 15 ? l1 : Math.max(l1, par1World.getBlockId(j1, par3, k1) == Block.redstoneWire.blockID ? par1World.getBlockMetadata(j1, par3, k1) : 0);
     }
 
@@ -274,25 +282,25 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
         if (l == 1)
         {
             par1World.notifyBlockOfNeighborChange(par2 + 1, par3, par4, this.blockID);
-            par1World.func_96439_d(par2 + 1, par3, par4, this.blockID, 4);
+            par1World.notifyBlocksOfNeighborChange(par2 + 1, par3, par4, this.blockID, 4);
         }
 
         if (l == 3)
         {
             par1World.notifyBlockOfNeighborChange(par2 - 1, par3, par4, this.blockID);
-            par1World.func_96439_d(par2 - 1, par3, par4, this.blockID, 5);
+            par1World.notifyBlocksOfNeighborChange(par2 - 1, par3, par4, this.blockID, 5);
         }
 
         if (l == 2)
         {
             par1World.notifyBlockOfNeighborChange(par2, par3, par4 + 1, this.blockID);
-            par1World.func_96439_d(par2, par3, par4 + 1, this.blockID, 2);
+            par1World.notifyBlocksOfNeighborChange(par2, par3, par4 + 1, this.blockID, 2);
         }
 
         if (l == 0)
         {
             par1World.notifyBlockOfNeighborChange(par2, par3, par4 - 1, this.blockID);
-            par1World.func_96439_d(par2, par3, par4 - 1, this.blockID, 3);
+            par1World.notifyBlocksOfNeighborChange(par2, par3, par4 - 1, this.blockID, 3);
         }
     }
 
@@ -336,7 +344,7 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
 
     public static boolean isRedstoneRepeaterBlockID(int par0)
     {
-        return Block.redstoneRepeaterIdle.func_94487_f(par0) || Block.field_94346_cn.func_94487_f(par0);
+        return Block.redstoneRepeaterIdle.func_94487_f(par0) || Block.redstoneComparatorIdle.func_94487_f(par0);
     }
 
     public boolean func_94487_f(int par1)
@@ -371,7 +379,11 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
 
     protected abstract BlockRedstoneLogic func_94484_i();
 
-    public boolean func_94334_h(int par1)
+    /**
+     * Returns true if the given block ID is equivalent to this one. Example: redstoneTorchOn matches itself and
+     * redstoneTorchOff, and vice versa. Most blocks only match themselves.
+     */
+    public boolean isAssociatedBlockID(int par1)
     {
         return this.func_94487_f(par1);
     }

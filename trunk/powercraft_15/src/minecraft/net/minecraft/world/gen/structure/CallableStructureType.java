@@ -4,20 +4,20 @@ import java.util.concurrent.Callable;
 
 class CallableStructureType implements Callable
 {
-    final MapGenStructure field_85161_a;
+    final MapGenStructure theMapStructureGenerator;
 
     CallableStructureType(MapGenStructure par1MapGenStructure)
     {
-        this.field_85161_a = par1MapGenStructure;
+        this.theMapStructureGenerator = par1MapGenStructure;
     }
 
-    public String func_85160_a()
+    public String callStructureType()
     {
-        return this.field_85161_a.getClass().getCanonicalName();
+        return this.theMapStructureGenerator.getClass().getCanonicalName();
     }
 
     public Object call()
     {
-        return this.func_85160_a();
+        return this.callStructureType();
     }
 }

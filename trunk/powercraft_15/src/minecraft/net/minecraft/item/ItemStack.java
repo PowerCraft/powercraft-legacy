@@ -139,9 +139,9 @@ public final class ItemStack
     }
 
     @SideOnly(Side.CLIENT)
-    public int func_94608_d()
+    public int getItemSpriteNumber()
     {
-        return this.getItem().func_94901_k();
+        return this.getItem().getSpriteNumber();
     }
 
     public boolean tryPlaceItemIntoWorld(EntityPlayer par1EntityPlayer, World par2World, int par3, int par4, int par5, int par6, float par7, float par8, float par9)

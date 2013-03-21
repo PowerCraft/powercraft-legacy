@@ -466,7 +466,7 @@ public abstract class GuiSlot
     protected void overlayBackground(int par1, int par2, int par3, int par4)
     {
         Tessellator tessellator = Tessellator.instance;
-        this.mc.renderEngine.func_98187_b(BACKGROUND_IMAGE);
+        this.mc.renderEngine.bindTexture(BACKGROUND_IMAGE);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float f = 32.0F;
         tessellator.startDrawingQuads();
@@ -481,7 +481,7 @@ public abstract class GuiSlot
 
     protected void drawContainerBackground(Tessellator tess)
     {
-        this.mc.renderEngine.func_98187_b(BACKGROUND_IMAGE);
+        this.mc.renderEngine.bindTexture(BACKGROUND_IMAGE);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float height = 32.0F;
         tess.startDrawingQuads();

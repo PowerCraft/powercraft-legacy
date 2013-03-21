@@ -401,7 +401,7 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 
 			if (icon != null) {
 				GL11.glDisable(GL11.GL_LIGHTING);
-				mc.renderEngine.func_98187_b("/gui/items.png");
+				mc.renderEngine.bindTexture("/gui/items.png");
 				Tessellator tessellator = Tessellator.instance;
 		        tessellator.startDrawingQuads();
 		        tessellator.addVertexWithUV(x, y + 16, zLevel, icon.func_94209_e(), icon.func_94210_h());

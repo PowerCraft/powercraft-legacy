@@ -262,7 +262,7 @@ public class EntityRenderer
         {
             if (this.mc.theWorld != null)
             {
-                this.mc.field_96291_i = null;
+                this.mc.pointedEntityLiving = null;
                 double d0 = (double)this.mc.playerController.getBlockReachDistance();
                 this.mc.objectMouseOver = this.mc.renderViewEntity.rayTrace(d0, par1);
                 double d1 = d0;
@@ -332,7 +332,7 @@ public class EntityRenderer
 
                     if (this.pointedEntity instanceof EntityLiving)
                     {
-                        this.mc.field_96291_i = (EntityLiving)this.pointedEntity;
+                        this.mc.pointedEntityLiving = (EntityLiving)this.pointedEntity;
                     }
                 }
             }
@@ -744,7 +744,7 @@ public class EntityRenderer
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        this.mc.renderEngine.func_98185_a();
+        this.mc.renderEngine.resetBoundTexture();
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
@@ -1014,7 +1014,7 @@ public class EntityRenderer
 
             if (this.mc.currentScreen != null)
             {
-                GL11.glClear(256);
+                GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 
                 try
                 {
@@ -1084,7 +1084,7 @@ public class EntityRenderer
             this.mc.mcProfiler.endStartSection("clear");
             GL11.glViewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);
             this.updateFogColor(par1);
-            GL11.glClear(16640);
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
             GL11.glEnable(GL11.GL_CULL_FACE);
             this.mc.mcProfiler.endStartSection("camera");
             this.setupCameraTransform(par1, j);
@@ -1135,7 +1135,7 @@ public class EntityRenderer
             this.mc.mcProfiler.endStartSection("prepareterrain");
             this.setupFog(0, par1);
             GL11.glEnable(GL11.GL_FOG);
-            this.mc.renderEngine.func_98187_b("/terrain.png");
+            this.mc.renderEngine.bindTexture("/terrain.png");
             RenderHelper.disableStandardItemLighting();
             this.mc.mcProfiler.endStartSection("terrain");
             renderglobal.sortAndRender(entityliving, 0, (double)par1);
@@ -1179,7 +1179,7 @@ public class EntityRenderer
             this.setupFog(0, par1);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_CULL_FACE);
-            this.mc.renderEngine.func_98187_b("/terrain.png");
+            this.mc.renderEngine.bindTexture("/terrain.png");
 
             if (this.mc.gameSettings.fancyGraphics)
             {
@@ -1260,16 +1260,16 @@ public class EntityRenderer
                 this.renderCloudsCheck(renderglobal, par1);
             }
 
+            this.mc.mcProfiler.endStartSection("FRenderLast");
+            ForgeHooksClient.dispatchRenderLast(renderglobal, par1);
+
             this.mc.mcProfiler.endStartSection("hand");
 
             if (this.cameraZoom == 1.0D)
             {
-                GL11.glClear(256);
+                GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
                 this.renderHand(par1, j);
             }
-
-            this.mc.mcProfiler.endStartSection("FRenderLast");
-            ForgeHooksClient.dispatchRenderLast(renderglobal, par1);
 
             if (!this.mc.gameSettings.anaglyph)
             {
@@ -1425,7 +1425,7 @@ public class EntityRenderer
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F);
-            this.mc.renderEngine.func_98187_b("/environment/snow.png");
+            this.mc.renderEngine.bindTexture("/environment/snow.png");
             double d0 = entityliving.lastTickPosX + (entityliving.posX - entityliving.lastTickPosX) * (double)par1;
             double d1 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par1;
             double d2 = entityliving.lastTickPosZ + (entityliving.posZ - entityliving.lastTickPosZ) * (double)par1;
@@ -1499,7 +1499,7 @@ public class EntityRenderer
                                     }
 
                                     b1 = 0;
-                                    this.mc.renderEngine.func_98187_b("/environment/rain.png");
+                                    this.mc.renderEngine.bindTexture("/environment/rain.png");
                                     tessellator.startDrawingQuads();
                                 }
 
@@ -1527,7 +1527,7 @@ public class EntityRenderer
                                     }
 
                                     b1 = 1;
-                                    this.mc.renderEngine.func_98187_b("/environment/snow.png");
+                                    this.mc.renderEngine.bindTexture("/environment/snow.png");
                                     tessellator.startDrawingQuads();
                                 }
 
@@ -1570,7 +1570,7 @@ public class EntityRenderer
     public void setupOverlayRendering()
     {
         ScaledResolution scaledresolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-        GL11.glClear(256);
+        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         GL11.glOrtho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);

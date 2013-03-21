@@ -22,7 +22,7 @@ public class GuiScreen extends Gui
     public static final boolean isMacOs = Minecraft.getOs() == EnumOS.MACOS;
 
     /** Reference to the Minecraft object. */
-    //BY NEI
+    //NEI
     public Minecraft mc;
 
     /** The width of the screen object. */
@@ -32,18 +32,18 @@ public class GuiScreen extends Gui
     public int height;
 
     /** A list of all the buttons in this container. */
-    //BY NEI
+    //NEI
     public List buttonList = new ArrayList();
     public boolean allowUserInput = false;
 
     /** The FontRenderer used by GuiScreen */
-    //BY NEI
+    //NEI
     public FontRenderer fontRenderer;
     public GuiParticle guiParticles;
 
     /** The button that was just pressed. */
     private GuiButton selectedButton = null;
-    private int field_85042_b = 0;
+    private int eventButton = 0;
     private long field_85043_c = 0L;
     private int field_92018_d = 0;
 
@@ -201,9 +201,9 @@ public class GuiScreen extends Gui
                 return;
             }
 
-            this.field_85042_b = Mouse.getEventButton();
+            this.eventButton = Mouse.getEventButton();
             this.field_85043_c = Minecraft.getSystemTime();
-            this.mouseClicked(i, j, this.field_85042_b);
+            this.mouseClicked(i, j, this.eventButton);
         }
         else if (Mouse.getEventButton() != -1)
         {
@@ -212,13 +212,13 @@ public class GuiScreen extends Gui
                 return;
             }
 
-            this.field_85042_b = -1;
+            this.eventButton = -1;
             this.mouseMovedOrUp(i, j, Mouse.getEventButton());
         }
-        else if (this.field_85042_b != -1 && this.field_85043_c > 0L)
+        else if (this.eventButton != -1 && this.field_85043_c > 0L)
         {
             long k = Minecraft.getSystemTime() - this.field_85043_c;
-            this.func_85041_a(i, j, this.field_85042_b, k);
+            this.func_85041_a(i, j, this.eventButton, k);
         }
     }
 
@@ -285,7 +285,7 @@ public class GuiScreen extends Gui
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
         Tessellator tessellator = Tessellator.instance;
-        this.mc.renderEngine.func_98187_b("/gui/background.png");
+        this.mc.renderEngine.bindTexture("/gui/background.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float f = 32.0F;
         tessellator.startDrawingQuads();

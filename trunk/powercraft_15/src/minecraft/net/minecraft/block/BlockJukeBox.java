@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 public class BlockJukeBox extends BlockContainer
 {
     @SideOnly(Side.CLIENT)
-    private Icon field_94450_a;
+    private Icon theIcon;
 
     protected BlockJukeBox(int par1)
     {
@@ -32,7 +32,7 @@ public class BlockJukeBox extends BlockContainer
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94450_a : this.field_94336_cN;
+        return par1 == 1 ? this.theIcon : this.blockIcon;
     }
 
     /**
@@ -129,18 +129,31 @@ public class BlockJukeBox extends BlockContainer
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("musicBlock");
-        this.field_94450_a = par1IconRegister.func_94245_a("jukebox_top");
+        this.blockIcon = par1IconRegister.registerIcon("musicBlock");
+        this.theIcon = par1IconRegister.registerIcon("jukebox_top");
     }
 
-    public boolean func_96468_q_()
+    /**
+     * If this returns true, then comparators facing away from this block will use the value from
+     * getComparatorInputOverride instead of the actual redstone signal strength.
+     */
+    public boolean hasComparatorInputOverride()
     {
         return true;
     }
 
-    public int func_94328_b_(World par1World, int par2, int par3, int par4, int par5)
+    /**
+     * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal
+     * strength when this block inputs to a comparator.
+     */
+    public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
         ItemStack itemstack = ((TileEntityRecordPlayer)par1World.getBlockTileEntity(par2, par3, par4)).func_96097_a();
         return itemstack == null ? 0 : itemstack.itemID + 1 - Item.record13.itemID;

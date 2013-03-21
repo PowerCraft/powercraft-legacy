@@ -29,7 +29,7 @@ public class PCcp_TileEntityCheckpoint extends PC_TileEntityWithInventory {
 	}
 
 	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack) {
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		return false;
 	}
 	

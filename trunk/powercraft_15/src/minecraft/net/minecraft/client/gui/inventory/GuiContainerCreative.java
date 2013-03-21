@@ -34,7 +34,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     private static InventoryBasic inventory = new InventoryBasic("tmp", true, 45);
 
     /** Currently selected creative inventory tab index. */
-    //BY NEI
+    //NEI
     public static int selectedTabIndex = CreativeTabs.tabBlock.getTabIndex();
 
     /** Amount scrolled in Creative mode inventory (0 = top, 1 = bottom) */
@@ -80,8 +80,8 @@ public class GuiContainerCreative extends InventoryEffectRenderer
             this.mc.displayGuiScreen(new GuiInventory(this.mc.thePlayer));
         }
     }
-    
-    //BY NEI
+
+    //NEI
     public void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
     {
         this.field_74234_w = true;
@@ -726,7 +726,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         for (l = start; l < k; ++l)
         {
             CreativeTabs creativetabs1 = acreativetabs[l];
-            this.mc.renderEngine.func_98187_b("/gui/allitems.png");
+            this.mc.renderEngine.bindTexture("/gui/allitems.png");
 
             if (creativetabs1 != null && creativetabs1.getTabIndex() != selectedTabIndex)
             {
@@ -738,24 +738,24 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         {
             if (creativetabs != CreativeTabs.tabAllSearch)
             {
-                mc.renderEngine.func_98187_b("/gui/allitems.png");
+                mc.renderEngine.bindTexture("/gui/allitems.png");
                 renderCreativeTab(CreativeTabs.tabAllSearch);
             }
             if (creativetabs != CreativeTabs.tabInventory)
             {
-                mc.renderEngine.func_98187_b("/gui/allitems.png");
+                mc.renderEngine.bindTexture("/gui/allitems.png");
                 renderCreativeTab(CreativeTabs.tabInventory);
             }
         }
 
-        this.mc.renderEngine.func_98187_b("/gui/creative_inv/" + creativetabs.getBackgroundImageName());
+        this.mc.renderEngine.bindTexture("/gui/creative_inv/" + creativetabs.getBackgroundImageName());
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
         this.searchField.drawTextBox();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int i1 = this.guiLeft + 175;
         k = this.guiTop + 18;
         l = k + 112;
-        this.mc.renderEngine.func_98187_b("/gui/allitems.png");
+        this.mc.renderEngine.bindTexture("/gui/allitems.png");
 
         if (creativetabs.shouldHidePlayerInventory())
         {

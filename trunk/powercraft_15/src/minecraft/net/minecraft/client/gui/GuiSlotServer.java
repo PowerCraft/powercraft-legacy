@@ -172,7 +172,7 @@ class GuiSlotServer extends GuiSlot
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.parentGui.mc.renderEngine.func_98187_b("/gui/icons.png");
+        this.parentGui.mc.renderEngine.bindTexture("/gui/icons.png");
         byte b0 = 0;
         boolean flag3 = false;
         String s1 = "";

@@ -14,8 +14,6 @@ public class PCws_WeaselPluginInfoTouchscreen extends PCws_WeaselPluginInfo {
 
 	@Override
 	public void renderInventoryBlock(Block block, Object renderer) {
-		PC_Renderer.swapTerrain(block);
-
 		float px = 0.0625F;
 		// legs
 		ValueWriting.setBlockBounds(block, 3 * px, 0, 4 * px, 4 * px, 1 * px, 12 * px);
@@ -41,8 +39,6 @@ public class PCws_WeaselPluginInfoTouchscreen extends PCws_WeaselPluginInfo {
 		ValueWriting.setBlockBounds(block, 15 * px, 3 * px, 7.5F * px, 16 * px, 15 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
 		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
-		
-		PC_Renderer.resetTerrain(true);
 	}
 
 	@Override

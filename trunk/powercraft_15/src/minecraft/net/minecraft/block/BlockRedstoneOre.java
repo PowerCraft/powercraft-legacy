@@ -70,7 +70,7 @@ public class BlockRedstoneOre extends Block
 
         if (this.blockID == Block.oreRedstone.blockID)
         {
-            par1World.func_94575_c(par2, par3, par4, Block.oreRedstoneGlowing.blockID);
+            par1World.setBlock(par2, par3, par4, Block.oreRedstoneGlowing.blockID);
         }
     }
 
@@ -81,7 +81,7 @@ public class BlockRedstoneOre extends Block
     {
         if (this.blockID == Block.oreRedstoneGlowing.blockID)
         {
-            par1World.func_94575_c(par2, par3, par4, Block.oreRedstone.blockID);
+            par1World.setBlock(par2, par3, par4, Block.oreRedstone.blockID);
         }
     }
 
