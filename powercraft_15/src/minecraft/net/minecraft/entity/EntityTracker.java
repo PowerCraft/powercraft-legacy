@@ -200,13 +200,11 @@ public class EntityTracker
             {
                 throw new IllegalStateException("Entity is already tracked!");
             }
-            else
-            {
-                EntityTrackerEntry entitytrackerentry = new EntityTrackerEntry(par1Entity, par2, par3, par4);
-                this.trackedEntities.add(entitytrackerentry);
-                this.trackedEntityIDs.addKey(par1Entity.entityId, entitytrackerentry);
-                entitytrackerentry.sendEventsToPlayers(this.theWorld.playerEntities);
-            }
+
+            EntityTrackerEntry entitytrackerentry = new EntityTrackerEntry(par1Entity, par2, par3, par4);
+            this.trackedEntities.add(entitytrackerentry);
+            this.trackedEntityIDs.addKey(par1Entity.entityId, entitytrackerentry);
+            entitytrackerentry.sendEventsToPlayers(this.theWorld.playerEntities);
         }
         catch (Throwable throwable)
         {
@@ -215,7 +213,18 @@ public class EntityTracker
             crashreportcategory.addCrashSection("Tracking range", par2 + " blocks");
             crashreportcategory.addCrashSectionCallable("Update interval", new CallableEntityTracker(this, par3));
             par1Entity.func_85029_a(crashreportcategory);
-            throw new ReportedException(crashreport);
+            CrashReportCategory crashreportcategory1 = crashreport.makeCategory("Entity That Is Already Tracked");
+            ((EntityTrackerEntry)this.trackedEntityIDs.lookup(par1Entity.entityId)).myEntity.func_85029_a(crashreportcategory1);
+
+            try
+            {
+                throw new ReportedException(crashreport);
+            }
+            catch (ReportedException reportedexception)
+            {
+                System.err.println("\"Silently\" catching entity tracking error.");
+                reportedexception.printStackTrace();
+            }
         }
     }
 

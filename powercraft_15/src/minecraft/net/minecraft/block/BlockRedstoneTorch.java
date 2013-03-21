@@ -131,7 +131,7 @@ public class BlockRedstoneTorch extends BlockTorch
     private boolean isIndirectlyPowered(World par1World, int par2, int par3, int par4)
     {
         int l = par1World.getBlockMetadata(par2, par3, par4);
-        return l == 5 && par1World.func_94574_k(par2, par3 - 1, par4, 0) ? true : (l == 3 && par1World.func_94574_k(par2, par3, par4 - 1, 2) ? true : (l == 4 && par1World.func_94574_k(par2, par3, par4 + 1, 3) ? true : (l == 1 && par1World.func_94574_k(par2 - 1, par3, par4, 4) ? true : l == 2 && par1World.func_94574_k(par2 + 1, par3, par4, 5))));
+        return l == 5 && par1World.getIndirectPowerOutput(par2, par3 - 1, par4, 0) ? true : (l == 3 && par1World.getIndirectPowerOutput(par2, par3, par4 - 1, 2) ? true : (l == 4 && par1World.getIndirectPowerOutput(par2, par3, par4 + 1, 3) ? true : (l == 1 && par1World.getIndirectPowerOutput(par2 - 1, par3, par4, 4) ? true : l == 2 && par1World.getIndirectPowerOutput(par2 + 1, par3, par4, 5))));
     }
 
     /**
@@ -151,7 +151,7 @@ public class BlockRedstoneTorch extends BlockTorch
         {
             if (flag)
             {
-                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, Block.torchRedstoneIdle.blockID, par1World.getBlockMetadata(par2, par3, par4), 3);
+                par1World.setBlock(par2, par3, par4, Block.torchRedstoneIdle.blockID, par1World.getBlockMetadata(par2, par3, par4), 3);
 
                 if (this.checkForBurnout(par1World, par2, par3, par4, true))
                 {
@@ -169,7 +169,7 @@ public class BlockRedstoneTorch extends BlockTorch
         }
         else if (!flag && !this.checkForBurnout(par1World, par2, par3, par4, false))
         {
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, Block.torchRedstoneActive.blockID, par1World.getBlockMetadata(par2, par3, par4), 3);
+            par1World.setBlock(par2, par3, par4, Block.torchRedstoneActive.blockID, par1World.getBlockMetadata(par2, par3, par4), 3);
         }
     }
 
@@ -264,21 +264,30 @@ public class BlockRedstoneTorch extends BlockTorch
         return Block.torchRedstoneActive.blockID;
     }
 
-    public boolean func_94334_h(int par1)
+    /**
+     * Returns true if the given block ID is equivalent to this one. Example: redstoneTorchOn matches itself and
+     * redstoneTorchOff, and vice versa. Most blocks only match themselves.
+     */
+    public boolean isAssociatedBlockID(int par1)
     {
         return par1 == Block.torchRedstoneIdle.blockID || par1 == Block.torchRedstoneActive.blockID;
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
         if (this.torchActive)
         {
-            this.field_94336_cN = par1IconRegister.func_94245_a("redtorch_lit");
+            this.blockIcon = par1IconRegister.registerIcon("redtorch_lit");
         }
         else
         {
-            this.field_94336_cN = par1IconRegister.func_94245_a("redtorch");
+            this.blockIcon = par1IconRegister.registerIcon("redtorch");
         }
     }
 }

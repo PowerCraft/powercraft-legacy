@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 public class ItemFishingRod extends Item
 {
     @SideOnly(Side.CLIENT)
-    private Icon field_94598_a;
+    private Icon theIcon;
 
     public ItemFishingRod(int par1)
     {
@@ -70,15 +70,15 @@ public class ItemFishingRod extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
-        super.func_94581_a(par1IconRegister);
-        this.field_94598_a = par1IconRegister.func_94245_a("fishingRod_empty");
+        super.updateIcons(par1IconRegister);
+        this.theIcon = par1IconRegister.registerIcon("fishingRod_empty");
     }
 
     @SideOnly(Side.CLIENT)
     public Icon func_94597_g()
     {
-        return this.field_94598_a;
+        return this.theIcon;
     }
 }

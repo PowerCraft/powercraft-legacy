@@ -588,12 +588,12 @@ public class ChunkProviderGenerate implements IChunkProvider
 
                 if (this.worldObj.isBlockFreezable(k1 + k, i2 - 1, l1 + l))
                 {
-                    this.worldObj.setBlockAndMetadataWithNotify(k1 + k, i2 - 1, l1 + l, Block.ice.blockID, 0, 2);
+                    this.worldObj.setBlock(k1 + k, i2 - 1, l1 + l, Block.ice.blockID, 0, 2);
                 }
 
                 if (this.worldObj.canSnowAt(k1 + k, i2, l1 + l))
                 {
-                    this.worldObj.setBlockAndMetadataWithNotify(k1 + k, i2, l1 + l, Block.snow.blockID, 0, 2);
+                    this.worldObj.setBlock(k1 + k, i2, l1 + l, Block.snow.blockID, 0, 2);
                 }
             }
         }

@@ -59,13 +59,18 @@ public class BlockStoneBrick extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
         this.field_94408_c = new Icon[field_94407_b.length];
 
         for (int i = 0; i < this.field_94408_c.length; ++i)
         {
-            this.field_94408_c[i] = par1IconRegister.func_94245_a(field_94407_b[i]);
+            this.field_94408_c[i] = par1IconRegister.registerIcon(field_94407_b[i]);
         }
     }
 }

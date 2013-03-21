@@ -67,7 +67,7 @@ public class EntityMinecartFurnace extends EntityMinecart
     {
         super.func_94095_a(par1DamageSource);
 
-        if (!par1DamageSource.func_94541_c())
+        if (!par1DamageSource.isExplosion())
         {
             this.entityDropItem(new ItemStack(Block.furnaceIdle, 1), 0.0F);
         }

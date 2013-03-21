@@ -75,7 +75,6 @@ public class PCli_BlockLightningConductor extends PC_Block
     public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer)
     {
         float f = 1.0f / 14.0f / 2.0f;
-        PC_Renderer.swapTerrain(block);
         PC_Renderer.glColor3f(1.0f, 1.0f, 1.0f);
         ValueWriting.setBlockBounds(block, 0.5f - f * 5, 0.0f, 0.5f - f * 5, 0.5f + f * 5, 0.33f, 0.5f + f * 5);
         PC_Renderer.renderInvBox(renderer, block, metadata);
@@ -84,14 +83,12 @@ public class PCli_BlockLightningConductor extends PC_Block
         ValueWriting.setBlockBounds(block, 0.5f - f * 1, 0.66f, 0.5f - f * 1, 0.5f + f * 1, 1.0f, 0.5f + f * 1);
         PC_Renderer.renderInvBox(renderer, block, metadata);
         ValueWriting.setBlockBounds(block, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-        PC_Renderer.resetTerrain(true);
     }
 
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer)
     {
         float f = 1.0f / 14.0f;
         PC_Renderer.tessellatorDraw();
-        PC_Renderer.swapTerrain(block);
         PC_Renderer.tessellatorStartDrawingQuads();
         PC_Renderer.glColor3f(1.0f, 1.0f, 1.0f);
 
@@ -112,7 +109,6 @@ public class PCli_BlockLightningConductor extends PC_Block
 
         ValueWriting.setBlockBounds(block, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         PC_Renderer.tessellatorDraw();
-        PC_Renderer.resetTerrain(true);
         PC_Renderer.tessellatorStartDrawingQuads();
     }
     

@@ -132,7 +132,7 @@ public class GuiModList extends GuiScreen
                 if (!logoFile.isEmpty())
                 {
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                    this.mc.renderEngine.func_98187_b(logoFile);
+                    this.mc.renderEngine.bindTexture(logoFile);
                     Dimension dim = TextureFXManager.instance().getTextureDimensions(logoFile);
                     double scaleX = dim.width / 200.0;
                     double scaleY = dim.height / 65.0;

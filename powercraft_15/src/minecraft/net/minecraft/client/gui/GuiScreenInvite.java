@@ -15,16 +15,17 @@ public class GuiScreenInvite extends GuiScreen
     private GuiTextField field_96227_a;
     private McoServer field_96223_b;
     private final GuiScreen field_96224_c;
-    private final GuiScreen field_96222_d;
+    private final GuiScreenConfigureWorld field_96222_d;
     private final int field_96228_n = 0;
     private final int field_96229_o = 1;
-    private String field_96226_p = "Could not invite the provided name";
+    private String field_101016_p = "Could not invite the provided name";
+    private String field_96226_p;
     private boolean field_96225_q = false;
 
-    public GuiScreenInvite(GuiScreen par1GuiScreen, GuiScreen par2GuiScreen, McoServer par3McoServer)
+    public GuiScreenInvite(GuiScreen par1GuiScreen, GuiScreenConfigureWorld par2GuiScreenConfigureWorld, McoServer par3McoServer)
     {
         this.field_96224_c = par1GuiScreen;
-        this.field_96222_d = par2GuiScreen;
+        this.field_96222_d = par2GuiScreenConfigureWorld;
         this.field_96223_b = par3McoServer;
     }
 
@@ -84,24 +85,25 @@ public class GuiScreenInvite extends GuiScreen
                     }
                     else
                     {
-                        this.func_96221_a();
+                        this.func_101015_a(this.field_101016_p);
                     }
                 }
                 catch (ExceptionMcoService exceptionmcoservice)
                 {
-                    this.func_96221_a();
+                    this.func_101015_a(exceptionmcoservice.field_96391_b);
                 }
                 catch (IOException ioexception)
                 {
-                    this.func_96221_a();
+                    this.func_101015_a(this.field_101016_p);
                 }
             }
         }
     }
 
-    private void func_96221_a()
+    private void func_101015_a(String par1Str)
     {
         this.field_96225_q = true;
+        this.field_96226_p = par1Str;
     }
 
     /**

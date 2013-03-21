@@ -66,7 +66,7 @@ public class CCRenderState
     
     public static void changeTexture(String texture)
     {
-        Minecraft.getMinecraft().renderEngine.func_98187_b(texture);
+        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         if(Tessellator.instance.isDrawing)
             apply();
     }

@@ -156,7 +156,7 @@ public class BlockPortal extends BlockBreakable
             {
                 for (i1 = 0; i1 < 3; ++i1)
                 {
-                    par1World.setBlockAndMetadataWithNotify(par2 + b0 * l, par3 + i1, par4 + b1 * l, Block.portal.blockID, 0, 2);
+                    par1World.setBlock(par2 + b0 * l, par3 + i1, par4 + b1 * l, Block.portal.blockID, 0, 2);
                 }
             }
 
@@ -188,7 +188,7 @@ public class BlockPortal extends BlockBreakable
 
         if (par1World.getBlockId(par2, i1 - 1, par4) != Block.obsidian.blockID)
         {
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
         else
         {
@@ -206,19 +206,19 @@ public class BlockPortal extends BlockBreakable
 
                 if (flag && flag1)
                 {
-                    par1World.func_94571_i(par2, par3, par4);
+                    par1World.setBlockToAir(par2, par3, par4);
                 }
                 else
                 {
                     if ((par1World.getBlockId(par2 + b0, par3, par4 + b1) != Block.obsidian.blockID || par1World.getBlockId(par2 - b0, par3, par4 - b1) != this.blockID) && (par1World.getBlockId(par2 - b0, par3, par4 - b1) != Block.obsidian.blockID || par1World.getBlockId(par2 + b0, par3, par4 + b1) != this.blockID))
                     {
-                        par1World.func_94571_i(par2, par3, par4);
+                        par1World.setBlockToAir(par2, par3, par4);
                     }
                 }
             }
             else
             {
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
             }
         }
     }

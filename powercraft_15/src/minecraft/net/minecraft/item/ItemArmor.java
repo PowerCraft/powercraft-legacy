@@ -196,16 +196,16 @@ public class ItemArmor extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
-        super.func_94581_a(par1IconRegister);
+        super.updateIcons(par1IconRegister);
 
         if (this.material == EnumArmorMaterial.CLOTH)
         {
-            this.field_94605_cw = par1IconRegister.func_94245_a(field_94606_cu[this.armorType]);
+            this.field_94605_cw = par1IconRegister.registerIcon(field_94606_cu[this.armorType]);
         }
 
-        this.field_94604_cx = par1IconRegister.func_94245_a(field_94603_a[this.armorType]);
+        this.field_94604_cx = par1IconRegister.registerIcon(field_94603_a[this.armorType]);
     }
 
     /**
@@ -213,12 +213,12 @@ public class ItemArmor extends Item
      */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-        int i = EntityLiving.func_82159_b(par1ItemStack) - 1;
+        int i = EntityLiving.getArmorPosition(par1ItemStack) - 1;
         ItemStack itemstack1 = par3EntityPlayer.getCurrentArmor(i);
 
         if (itemstack1 == null)
         {
-            par3EntityPlayer.setCurrentItemOrArmor(i, par1ItemStack.copy());
+            par3EntityPlayer.setCurrentItemOrArmor(i + 1, par1ItemStack.copy()); //Forge: Vanilla bug fix associated with fixed setCurrentItemOrArmor indexs for players.
             par1ItemStack.stackSize = 0;
         }
 

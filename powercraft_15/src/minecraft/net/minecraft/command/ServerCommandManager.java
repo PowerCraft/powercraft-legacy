@@ -91,7 +91,7 @@ public class ServerCommandManager extends CommandHandler implements IAdminComman
 
         if (par1ICommandSender != MinecraftServer.getServer())
         {
-            MinecraftServer.getServer().func_98033_al().func_98233_a("[" + par1ICommandSender.getCommandSenderName() + ": " + MinecraftServer.getServer().translateString(par3Str, par4ArrayOfObj) + "]");
+            MinecraftServer.getServer().getLogAgent().logInfo("[" + par1ICommandSender.getCommandSenderName() + ": " + MinecraftServer.getServer().translateString(par3Str, par4ArrayOfObj) + "]");
         }
 
         if ((par2 & 1) != 1)

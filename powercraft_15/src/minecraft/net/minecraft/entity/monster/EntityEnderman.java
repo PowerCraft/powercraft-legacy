@@ -152,7 +152,7 @@ public class EntityEnderman extends EntityMob
                     {
                         this.setCarried(this.worldObj.getBlockId(i, j, k));
                         this.setCarryingData(this.worldObj.getBlockMetadata(i, j, k));
-                        this.worldObj.func_94575_c(i, j, k, 0);
+                        this.worldObj.setBlock(i, j, k, 0);
                     }
                 }
             }
@@ -166,7 +166,7 @@ public class EntityEnderman extends EntityMob
 
                 if (l == 0 && i1 > 0 && Block.blocksList[i1].renderAsNormalBlock())
                 {
-                    this.worldObj.setBlockAndMetadataWithNotify(i, j, k, this.getCarried(), this.getCarryingData(), 3);
+                    this.worldObj.setBlock(i, j, k, this.getCarried(), this.getCarryingData(), 3);
                     this.setCarried(0);
                 }
             }

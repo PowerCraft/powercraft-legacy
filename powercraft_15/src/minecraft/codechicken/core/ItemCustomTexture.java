@@ -22,7 +22,7 @@ public class ItemCustomTexture extends Item
 	}
 
 	@Override
-	public void func_94581_a(IconRegister register)
+	public void updateIcons(IconRegister register)
 	{
 	    spriteSheet.requestIndicies(sprite);
 	    spriteSheet.registerIcons(register);

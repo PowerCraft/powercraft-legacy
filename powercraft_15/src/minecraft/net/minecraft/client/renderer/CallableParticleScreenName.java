@@ -8,20 +8,20 @@ import net.minecraft.client.Minecraft;
 @SideOnly(Side.CLIENT)
 public class CallableParticleScreenName implements Callable
 {
-    final Minecraft field_90053_a;
+    final Minecraft theMinecraft;
 
     public CallableParticleScreenName(Minecraft par1Minecraft)
     {
-        this.field_90053_a = par1Minecraft;
+        this.theMinecraft = par1Minecraft;
     }
 
-    public String func_90052_a()
+    public String callParticleScreenName()
     {
-        return this.field_90053_a.currentScreen.getClass().getCanonicalName();
+        return this.theMinecraft.currentScreen.getClass().getCanonicalName();
     }
 
     public Object call()
     {
-        return this.func_90052_a();
+        return this.callParticleScreenName();
     }
 }

@@ -11,7 +11,7 @@ public class EntityTNTPrimed extends Entity
 {
     /** How long the fuse is */
     public int fuse;
-    private EntityLiving field_94084_b;
+    private EntityLiving tntPlacedBy;
 
     public EntityTNTPrimed(World par1World)
     {
@@ -34,7 +34,7 @@ public class EntityTNTPrimed extends Entity
         this.prevPosX = par2;
         this.prevPosY = par4;
         this.prevPosZ = par6;
-        this.field_94084_b = par8EntityLiving;
+        this.tntPlacedBy = par8EntityLiving;
     }
 
     protected void entityInit() {}
@@ -122,6 +122,6 @@ public class EntityTNTPrimed extends Entity
 
     public EntityLiving func_94083_c()
     {
-        return this.field_94084_b;
+        return this.tntPlacedBy;
     }
 }

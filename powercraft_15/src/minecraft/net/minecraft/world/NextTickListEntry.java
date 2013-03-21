@@ -46,7 +46,7 @@ public class NextTickListEntry implements Comparable
         else
         {
             NextTickListEntry nextticklistentry = (NextTickListEntry)par1Obj;
-            return this.xCoord == nextticklistentry.xCoord && this.yCoord == nextticklistentry.yCoord && this.zCoord == nextticklistentry.zCoord && Block.func_94329_b(this.blockID, nextticklistentry.blockID);
+            return this.xCoord == nextticklistentry.xCoord && this.yCoord == nextticklistentry.yCoord && this.zCoord == nextticklistentry.zCoord && Block.isAssociatedBlockID(this.blockID, nextticklistentry.blockID);
         }
     }
 

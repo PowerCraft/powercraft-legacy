@@ -161,6 +161,11 @@ public class PotionEffect
         }
     }
 
+    public boolean func_102028_d()
+    {
+        return this.isSplashPotion;
+    }
+
     /**
      * Set whether this potion is a splash potion.
      */

@@ -16,7 +16,7 @@ public class WorldGenPumpkin extends WorldGenerator
 
             if (par1World.isAirBlock(i1, j1, k1) && par1World.getBlockId(i1, j1 - 1, k1) == Block.grass.blockID && Block.pumpkin.canPlaceBlockAt(par1World, i1, j1, k1))
             {
-                par1World.setBlockAndMetadataWithNotify(i1, j1, k1, Block.pumpkin.blockID, par2Random.nextInt(4), 2);
+                par1World.setBlock(i1, j1, k1, Block.pumpkin.blockID, par2Random.nextInt(4), 2);
             }
         }
 

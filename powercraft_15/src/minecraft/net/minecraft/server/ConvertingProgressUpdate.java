@@ -30,7 +30,7 @@ public class ConvertingProgressUpdate implements IProgressUpdate
         if (System.currentTimeMillis() - this.field_96245_b >= 1000L)
         {
             this.field_96245_b = System.currentTimeMillis();
-            this.mcServer.func_98033_al().func_98233_a("Converting... " + par1 + "%");
+            this.mcServer.getLogAgent().logInfo("Converting... " + par1 + "%");
         }
     }
 

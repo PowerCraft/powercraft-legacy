@@ -66,16 +66,16 @@ public class ComponentStrongholdPortalRoom extends ComponentStronghold
             this.fillWithBlocks(par1World, par3StructureBoundingBox, i, 3, 15, i, 4, 15, Block.fenceIron.blockID, Block.fenceIron.blockID, false);
         }
 
-        i = this.getMetadataWithOffset(Block.stairsStoneBrickSmooth.blockID, 3);
+        i = this.getMetadataWithOffset(Block.stairsStoneBrick.blockID, 3);
         this.fillWithRandomizedBlocks(par1World, par3StructureBoundingBox, 4, 1, 5, 6, 1, 7, false, par2Random, StructureStrongholdPieces.getStrongholdStones());
         this.fillWithRandomizedBlocks(par1World, par3StructureBoundingBox, 4, 2, 6, 6, 2, 7, false, par2Random, StructureStrongholdPieces.getStrongholdStones());
         this.fillWithRandomizedBlocks(par1World, par3StructureBoundingBox, 4, 3, 7, 6, 3, 7, false, par2Random, StructureStrongholdPieces.getStrongholdStones());
 
         for (int j = 4; j <= 6; ++j)
         {
-            this.placeBlockAtCurrentPosition(par1World, Block.stairsStoneBrickSmooth.blockID, i, j, 1, 4, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, Block.stairsStoneBrickSmooth.blockID, i, j, 2, 5, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, Block.stairsStoneBrickSmooth.blockID, i, j, 3, 6, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, Block.stairsStoneBrick.blockID, i, j, 1, 4, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, Block.stairsStoneBrick.blockID, i, j, 2, 5, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, Block.stairsStoneBrick.blockID, i, j, 3, 6, par3StructureBoundingBox);
         }
 
         byte b1 = 2;
@@ -126,12 +126,12 @@ public class ComponentStrongholdPortalRoom extends ComponentStronghold
             if (par3StructureBoundingBox.isVecInside(l, k, i1))
             {
                 this.hasSpawner = true;
-                par1World.setBlockAndMetadataWithNotify(l, k, i1, Block.mobSpawner.blockID, 0, 2);
+                par1World.setBlock(l, k, i1, Block.mobSpawner.blockID, 0, 2);
                 TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner)par1World.getBlockTileEntity(l, k, i1);
 
                 if (tileentitymobspawner != null)
                 {
-                    tileentitymobspawner.func_98049_a().func_98272_a("Silverfish");
+                    tileentitymobspawner.func_98049_a().setMobID("Silverfish");
                 }
             }
         }

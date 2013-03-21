@@ -407,14 +407,14 @@ public class RenderManager
         return this.fontRenderer;
     }
 
-    public void func_94178_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
         Iterator iterator = this.entityRenderMap.values().iterator();
 
         while (iterator.hasNext())
         {
             Render render = (Render)iterator.next();
-            render.func_94143_a(par1IconRegister);
+            render.updateIcons(par1IconRegister);
         }
     }
 }

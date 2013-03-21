@@ -7,7 +7,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class PC_TileEntityWithInventory extends PC_TileEntity implements PC_IInventory {
+public abstract class PC_TileEntityWithInventory extends PC_TileEntity implements PC_IInventory {
 
 	protected String inventoryTitle;
 	protected int slotsCount;
@@ -83,11 +83,6 @@ public class PC_TileEntityWithInventory extends PC_TileEntity implements PC_IInv
 	}
 
 	@Override
-	public boolean func_94042_c() {
-		return false;
-	}
-
-	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
@@ -103,21 +98,6 @@ public class PC_TileEntityWithInventory extends PC_TileEntity implements PC_IInv
 
 	@Override
 	public void closeChest() {
-	}
-	
-	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack) {
-		return true;
-	}
-
-	@Override
-	public int func_94127_c(int side) {
-		return 0;
-	}
-
-	@Override
-	public int func_94128_d(int side) {
-		return getSizeInventory();
 	}
 	
 	@Override
@@ -148,19 +128,46 @@ public class PC_TileEntityWithInventory extends PC_TileEntity implements PC_IInv
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
-		PC_InventoryUtils.loadInventoryFromNBT(nbtTagCompound, "inventory", this);
+		PC_InventoryUtils.loadInventoryFromNBT(nbtTagCompound, "Items", this);
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 		super.writeToNBT(nbtTagCompound);
-		PC_InventoryUtils.saveInventoryToNBT(nbtTagCompound, "inventory", this);
+		PC_InventoryUtils.saveInventoryToNBT(nbtTagCompound, "Items", this);
 	}
 	
 	@Override
 	public void onBreakBlock() {
 		super.onBreakBlock();
 		PC_InventoryUtils.dropInventoryContents(this, worldObj, getCoord());
+	}
+
+	@Override
+	public boolean isInvNameLocalized() {
+		return false;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return true;
+	}
+
+	@Override
+	public int[] getSizeInventorySide(int var1) {
+		return null;
+	}
+
+	@Override
+	public boolean func_102007_a(int i, ItemStack itemstack, int j) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean func_102008_b(int i, ItemStack itemstack, int j) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

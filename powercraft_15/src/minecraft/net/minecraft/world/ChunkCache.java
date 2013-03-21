@@ -3,8 +3,6 @@ package net.minecraft.world;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHalfSlab;
-import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3Pool;
@@ -23,30 +21,41 @@ public class ChunkCache implements IBlockAccess
     /** Reference to the World object. */
     private World worldObj;
 
-    public ChunkCache(World par1World, int par2, int par3, int par4, int par5, int par6, int par7)
+    public ChunkCache(World par1World, int par2, int par3, int par4, int par5, int par6, int par7, int par8)
     {
         this.worldObj = par1World;
-        this.chunkX = par2 >> 4;
-        this.chunkZ = par4 >> 4;
-        int k1 = par5 >> 4;
-        int l1 = par7 >> 4;
-        this.chunkArray = new Chunk[k1 - this.chunkX + 1][l1 - this.chunkZ + 1];
+        this.chunkX = par2 - par8 >> 4;
+        this.chunkZ = par4 - par8 >> 4;
+        int l1 = par5 + par8 >> 4;
+        int i2 = par7 + par8 >> 4;
+        this.chunkArray = new Chunk[l1 - this.chunkX + 1][i2 - this.chunkZ + 1];
         this.hasExtendedLevels = true;
+        int j2;
+        int k2;
+        Chunk chunk;
 
-        for (int i2 = this.chunkX; i2 <= k1; ++i2)
+        for (j2 = this.chunkX; j2 <= l1; ++j2)
         {
-            for (int j2 = this.chunkZ; j2 <= l1; ++j2)
+            for (k2 = this.chunkZ; k2 <= i2; ++k2)
             {
-                Chunk chunk = par1World.getChunkFromChunkCoords(i2, j2);
+                chunk = par1World.getChunkFromChunkCoords(j2, k2);
 
                 if (chunk != null)
                 {
-                    this.chunkArray[i2 - this.chunkX][j2 - this.chunkZ] = chunk;
+                    this.chunkArray[j2 - this.chunkX][k2 - this.chunkZ] = chunk;
+                }
+            }
+        }
 
-                    if (!chunk.getAreLevelsEmpty(par3, par6))
-                    {
-                        this.hasExtendedLevels = false;
-                    }
+        for (j2 = par2 >> 4; j2 <= par5 >> 4; ++j2)
+        {
+            for (k2 = par4 >> 4; k2 <= par7 >> 4; ++k2)
+            {
+                chunk = this.chunkArray[j2 - this.chunkX][k2 - this.chunkZ];
+
+                if (chunk != null && !chunk.getAreLevelsEmpty(par3, par6))
+                {
+                    this.hasExtendedLevels = false;
                 }
             }
         }
@@ -204,7 +213,7 @@ public class ChunkCache implements IBlockAccess
             {
                 l = this.getBlockId(par1, par2, par3);
 
-                if (l == Block.stoneSingleSlab.blockID || l == Block.woodSingleSlab.blockID || l == Block.tilledField.blockID || l == Block.stairCompactPlanks.blockID || l == Block.stairCompactCobblestone.blockID)
+                if (l == Block.stoneSingleSlab.blockID || l == Block.woodSingleSlab.blockID || l == Block.tilledField.blockID || l == Block.stairsWoodOak.blockID || l == Block.stairsCobblestone.blockID)
                 {
                     i1 = this.getLightValueExt(par1, par2 + 1, par3, false);
                     int j1 = this.getLightValueExt(par1 + 1, par2, par3, false);
@@ -310,8 +319,7 @@ public class ChunkCache implements IBlockAccess
      */
     public boolean doesBlockHaveSolidTopSurface(int par1, int par2, int par3)
     {
-        Block block = Block.blocksList[this.getBlockId(par1, par2, par3)];
-        return block == null ? false : (block.blockMaterial.isOpaque() && block.renderAsNormalBlock() ? true : (block instanceof BlockStairs ? (this.getBlockMetadata(par1, par2, par3) & 4) == 4 : (block instanceof BlockHalfSlab ? (this.getBlockMetadata(par1, par2, par3) & 8) == 8 : false)));
+        return this.worldObj.doesBlockHaveSolidTopSurface(par1, par2, par3);
     }
 
     /**

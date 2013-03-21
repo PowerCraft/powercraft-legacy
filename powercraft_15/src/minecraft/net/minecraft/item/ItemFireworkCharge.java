@@ -14,7 +14,7 @@ import net.minecraft.util.StatCollector;
 public class ItemFireworkCharge extends Item
 {
     @SideOnly(Side.CLIENT)
-    private Icon field_94596_a;
+    private Icon theIcon;
 
     public ItemFireworkCharge(int par1)
     {
@@ -28,7 +28,7 @@ public class ItemFireworkCharge extends Item
      */
     public Icon getIconFromDamageForRenderPass(int par1, int par2)
     {
-        return par2 > 0 ? this.field_94596_a : super.getIconFromDamageForRenderPass(par1, par2);
+        return par2 > 0 ? this.theIcon : super.getIconFromDamageForRenderPass(par1, par2);
     }
 
     @SideOnly(Side.CLIENT)
@@ -232,9 +232,9 @@ public class ItemFireworkCharge extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
-        super.func_94581_a(par1IconRegister);
-        this.field_94596_a = par1IconRegister.func_94245_a("fireworksCharge_overlay");
+        super.updateIcons(par1IconRegister);
+        this.theIcon = par1IconRegister.registerIcon("fireworksCharge_overlay");
     }
 }

@@ -12,13 +12,13 @@ class CallableLevelSpawnLocation implements Callable
         this.worldInfoInstance = par1WorldInfo;
     }
 
-    public String func_85134_a()
+    public String callLevelSpawnLocation()
     {
-        return CrashReportCategory.func_85071_a(WorldInfo.func_85125_d(this.worldInfoInstance), WorldInfo.func_85124_e(this.worldInfoInstance), WorldInfo.func_85123_f(this.worldInfoInstance));
+        return CrashReportCategory.func_85071_a(WorldInfo.getSpawnXCoordinate(this.worldInfoInstance), WorldInfo.getSpawnYCoordinate(this.worldInfoInstance), WorldInfo.getSpawnZCoordinate(this.worldInfoInstance));
     }
 
     public Object call()
     {
-        return this.func_85134_a();
+        return this.callLevelSpawnLocation();
     }
 }

@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 public abstract class MobSpawnerBaseLogic
 {
     public int field_98286_b = 20;
-    private String field_98288_a = "Pig";
+    private String mobID = "Pig";
     private List field_98285_e = null;
     private WeightedRandomMinecart field_98282_f = null;
     public double field_98287_c;
@@ -35,12 +35,12 @@ public abstract class MobSpawnerBaseLogic
     {
         if (this.func_98269_i() == null)
         {
-            if (this.field_98288_a.equals("Minecart"))
+            if (this.mobID.equals("Minecart"))
             {
-                this.field_98288_a = "MinecartRideable";
+                this.mobID = "MinecartRideable";
             }
 
-            return this.field_98288_a;
+            return this.mobID;
         }
         else
         {
@@ -48,29 +48,32 @@ public abstract class MobSpawnerBaseLogic
         }
     }
 
-    public void func_98272_a(String par1Str)
+    public void setMobID(String par1Str)
     {
-        this.field_98288_a = par1Str;
+        this.mobID = par1Str;
     }
 
-    public boolean func_98279_f()
+    /**
+     * Returns true if there's a player close enough to this mob spawner to activate it.
+     */
+    public boolean canRun()
     {
-        return this.func_98271_a().getClosestPlayer((double)this.func_98275_b() + 0.5D, (double)this.func_98274_c() + 0.5D, (double)this.func_98266_d() + 0.5D, (double)this.field_98289_l) != null;
+        return this.getSpawnerWorld().getClosestPlayer((double)this.getSpawnerX() + 0.5D, (double)this.getSpawnerY() + 0.5D, (double)this.getSpawnerZ() + 0.5D, (double)this.field_98289_l) != null;
     }
 
-    public void func_98278_g()
+    public void updateSpawner()
     {
-        if (this.func_98279_f())
+        if (this.canRun())
         {
             double d0;
 
-            if (this.func_98271_a().isRemote)
+            if (this.getSpawnerWorld().isRemote)
             {
-                double d1 = (double)((float)this.func_98275_b() + this.func_98271_a().rand.nextFloat());
-                double d2 = (double)((float)this.func_98274_c() + this.func_98271_a().rand.nextFloat());
-                d0 = (double)((float)this.func_98266_d() + this.func_98271_a().rand.nextFloat());
-                this.func_98271_a().spawnParticle("smoke", d1, d2, d0, 0.0D, 0.0D, 0.0D);
-                this.func_98271_a().spawnParticle("flame", d1, d2, d0, 0.0D, 0.0D, 0.0D);
+                double d1 = (double)((float)this.getSpawnerX() + this.getSpawnerWorld().rand.nextFloat());
+                double d2 = (double)((float)this.getSpawnerY() + this.getSpawnerWorld().rand.nextFloat());
+                d0 = (double)((float)this.getSpawnerZ() + this.getSpawnerWorld().rand.nextFloat());
+                this.getSpawnerWorld().spawnParticle("smoke", d1, d2, d0, 0.0D, 0.0D, 0.0D);
+                this.getSpawnerWorld().spawnParticle("flame", d1, d2, d0, 0.0D, 0.0D, 0.0D);
 
                 if (this.field_98286_b > 0)
                 {
@@ -97,14 +100,14 @@ public abstract class MobSpawnerBaseLogic
 
                 for (int i = 0; i < this.field_98294_i; ++i)
                 {
-                    Entity entity = EntityList.createEntityByName(this.func_98276_e(), this.func_98271_a());
+                    Entity entity = EntityList.createEntityByName(this.func_98276_e(), this.getSpawnerWorld());
 
                     if (entity == null)
                     {
                         return;
                     }
 
-                    int j = this.func_98271_a().getEntitiesWithinAABB(entity.getClass(), AxisAlignedBB.getAABBPool().getAABB((double)this.func_98275_b(), (double)this.func_98274_c(), (double)this.func_98266_d(), (double)(this.func_98275_b() + 1), (double)(this.func_98274_c() + 1), (double)(this.func_98266_d() + 1)).expand((double)(this.field_98290_m * 2), 4.0D, (double)(this.field_98290_m * 2))).size();
+                    int j = this.getSpawnerWorld().getEntitiesWithinAABB(entity.getClass(), AxisAlignedBB.getAABBPool().getAABB((double)this.getSpawnerX(), (double)this.getSpawnerY(), (double)this.getSpawnerZ(), (double)(this.getSpawnerX() + 1), (double)(this.getSpawnerY() + 1), (double)(this.getSpawnerZ() + 1)).expand((double)(this.field_98290_m * 2), 4.0D, (double)(this.field_98290_m * 2))).size();
 
                     if (j >= this.field_98292_k)
                     {
@@ -112,16 +115,16 @@ public abstract class MobSpawnerBaseLogic
                         return;
                     }
 
-                    d0 = (double)this.func_98275_b() + (this.func_98271_a().rand.nextDouble() - this.func_98271_a().rand.nextDouble()) * (double)this.field_98290_m;
-                    double d3 = (double)(this.func_98274_c() + this.func_98271_a().rand.nextInt(3) - 1);
-                    double d4 = (double)this.func_98266_d() + (this.func_98271_a().rand.nextDouble() - this.func_98271_a().rand.nextDouble()) * (double)this.field_98290_m;
+                    d0 = (double)this.getSpawnerX() + (this.getSpawnerWorld().rand.nextDouble() - this.getSpawnerWorld().rand.nextDouble()) * (double)this.field_98290_m;
+                    double d3 = (double)(this.getSpawnerY() + this.getSpawnerWorld().rand.nextInt(3) - 1);
+                    double d4 = (double)this.getSpawnerZ() + (this.getSpawnerWorld().rand.nextDouble() - this.getSpawnerWorld().rand.nextDouble()) * (double)this.field_98290_m;
                     EntityLiving entityliving = entity instanceof EntityLiving ? (EntityLiving)entity : null;
-                    entity.setLocationAndAngles(d0, d3, d4, this.func_98271_a().rand.nextFloat() * 360.0F, 0.0F);
+                    entity.setLocationAndAngles(d0, d3, d4, this.getSpawnerWorld().rand.nextFloat() * 360.0F, 0.0F);
 
                     if (entityliving == null || entityliving.getCanSpawnHere())
                     {
                         this.func_98265_a(entity);
-                        this.func_98271_a().playAuxSFX(2004, this.func_98275_b(), this.func_98274_c(), this.func_98266_d(), 0);
+                        this.getSpawnerWorld().playAuxSFX(2004, this.getSpawnerX(), this.getSpawnerY(), this.getSpawnerZ(), 0);
 
                         if (entityliving != null)
                         {
@@ -166,7 +169,7 @@ public abstract class MobSpawnerBaseLogic
             for (Entity entity1 = par1Entity; nbttagcompound.hasKey("Riding"); nbttagcompound = nbttagcompound1)
             {
                 nbttagcompound1 = nbttagcompound.getCompoundTag("Riding");
-                Entity entity2 = EntityList.createEntityByName(nbttagcompound1.getString("id"), this.func_98271_a());
+                Entity entity2 = EntityList.createEntityByName(nbttagcompound1.getString("id"), this.getSpawnerWorld());
 
                 if (entity2 != null)
                 {
@@ -182,7 +185,7 @@ public abstract class MobSpawnerBaseLogic
 
                     entity2.readFromNBT(nbttagcompound2);
                     entity2.setLocationAndAngles(entity1.posX, entity1.posY, entity1.posZ, entity1.rotationYaw, entity1.rotationPitch);
-                    this.func_98271_a().spawnEntityInWorld(entity2);
+                    this.getSpawnerWorld().spawnEntityInWorld(entity2);
                     entity1.mountEntity(entity2);
                 }
 
@@ -192,7 +195,7 @@ public abstract class MobSpawnerBaseLogic
         else if (par1Entity instanceof EntityLiving && par1Entity.worldObj != null)
         {
             ((EntityLiving)par1Entity).initCreature();
-            this.func_98271_a().spawnEntityInWorld(par1Entity);
+            this.getSpawnerWorld().spawnEntityInWorld(par1Entity);
         }
 
         return par1Entity;
@@ -207,12 +210,12 @@ public abstract class MobSpawnerBaseLogic
         else
         {
             int i = this.field_98293_h - this.field_98283_g;
-            this.field_98286_b = this.field_98283_g + this.func_98271_a().rand.nextInt(i);
+            this.field_98286_b = this.field_98283_g + this.getSpawnerWorld().rand.nextInt(i);
         }
 
         if (this.field_98285_e != null && this.field_98285_e.size() > 0)
         {
-            this.func_98277_a((WeightedRandomMinecart)WeightedRandom.getRandomItem(this.func_98271_a().rand, this.field_98285_e));
+            this.func_98277_a((WeightedRandomMinecart)WeightedRandom.getRandomItem(this.getSpawnerWorld().rand, this.field_98285_e));
         }
 
         this.func_98267_a(1);
@@ -220,7 +223,7 @@ public abstract class MobSpawnerBaseLogic
 
     public void func_98270_a(NBTTagCompound par1NBTTagCompound)
     {
-        this.field_98288_a = par1NBTTagCompound.getString("EntityId");
+        this.mobID = par1NBTTagCompound.getString("EntityId");
         this.field_98286_b = par1NBTTagCompound.getShort("Delay");
 
         if (par1NBTTagCompound.hasKey("SpawnPotentials"))
@@ -240,7 +243,7 @@ public abstract class MobSpawnerBaseLogic
 
         if (par1NBTTagCompound.hasKey("SpawnData"))
         {
-            this.func_98277_a(new WeightedRandomMinecart(this, par1NBTTagCompound.getCompoundTag("SpawnData"), this.field_98288_a));
+            this.func_98277_a(new WeightedRandomMinecart(this, par1NBTTagCompound.getCompoundTag("SpawnData"), this.mobID));
         }
         else
         {
@@ -265,7 +268,7 @@ public abstract class MobSpawnerBaseLogic
             this.field_98290_m = par1NBTTagCompound.getShort("SpawnRange");
         }
 
-        if (this.func_98271_a() != null && this.func_98271_a().isRemote)
+        if (this.getSpawnerWorld() != null && this.getSpawnerWorld().isRemote)
         {
             this.field_98291_j = null;
         }
@@ -312,7 +315,7 @@ public abstract class MobSpawnerBaseLogic
 
     public boolean func_98268_b(int par1)
     {
-        if (par1 == 1 && this.func_98271_a().isRemote)
+        if (par1 == 1 && this.getSpawnerWorld().isRemote)
         {
             this.field_98286_b = this.field_98283_g;
             return true;
@@ -348,11 +351,11 @@ public abstract class MobSpawnerBaseLogic
 
     public abstract void func_98267_a(int i);
 
-    public abstract World func_98271_a();
+    public abstract World getSpawnerWorld();
 
-    public abstract int func_98275_b();
+    public abstract int getSpawnerX();
 
-    public abstract int func_98274_c();
+    public abstract int getSpawnerY();
 
-    public abstract int func_98266_d();
+    public abstract int getSpawnerZ();
 }

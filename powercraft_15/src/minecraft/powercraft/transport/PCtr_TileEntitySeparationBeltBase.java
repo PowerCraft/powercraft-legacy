@@ -5,11 +5,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.inventory.PC_IInventory;
 import powercraft.api.inventory.PC_ISpecialAccessInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
 
 public abstract class PCtr_TileEntitySeparationBeltBase extends
-		PCtr_TileEntityRedirectionBeltBase implements IInventory, PC_ISpecialAccessInventory{
+		PCtr_TileEntityRedirectionBeltBase implements PC_IInventory{
 
 	protected ItemStack separatorContents[];
 
@@ -157,27 +158,9 @@ public abstract class PCtr_TileEntitySeparationBeltBase extends
     }
 
     @Override
-    public boolean insertStackIntoInventory(ItemStack stack)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean needsSpecialInserter()
-    {
-        return true;
-    }
-
-    @Override
     public boolean canPlayerInsertStackTo(int slot, ItemStack stack)
     {
         return true;
-    }
-
-    @Override
-    public boolean canMachineInsertStackTo(int slot, ItemStack stack)
-    {
-        return false;
     }
 
     @Override
@@ -202,12 +185,27 @@ public abstract class PCtr_TileEntitySeparationBeltBase extends
 	}
 
 	@Override
-	public boolean func_94042_c() {
+	public boolean isInvNameLocalized() {
 		return false;
 	}
 
 	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack) {
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return false;
+	}
+	
+	@Override
+	public int[] getSizeInventorySide(int var1) {
+		return null;
+	}
+
+	@Override
+	public boolean func_102007_a(int i, ItemStack itemstack, int j) {
+		return false;
+	}
+
+	@Override
+	public boolean func_102008_b(int i, ItemStack itemstack, int j) {
 		return false;
 	}
 	

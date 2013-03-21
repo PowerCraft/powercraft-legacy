@@ -63,7 +63,7 @@ public class EntityEnderCrystal extends Entity
 
         if (this.worldObj.getBlockId(i, j, k) != Block.fire.blockID)
         {
-            this.worldObj.func_94575_c(i, j, k, Block.fire.blockID);
+            this.worldObj.setBlock(i, j, k, Block.fire.blockID);
         }
     }
 

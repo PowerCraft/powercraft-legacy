@@ -61,7 +61,7 @@ public class ItemRenderer
     public void renderItem(EntityLiving par1EntityLiving, ItemStack par2ItemStack, int par3)
     {
         GL11.glPushMatrix();
-        
+
         Block block = null;
         if (par2ItemStack.getItem() instanceof ItemBlock && par2ItemStack.itemID < Block.blocksList.length)
         {
@@ -72,12 +72,12 @@ public class ItemRenderer
         
         if (customRenderer != null)
         {
-            this.mc.renderEngine.func_98187_b(par2ItemStack.func_94608_d() == 0 ? "/terrain.png" : "/gui/items.png");
+            this.mc.renderEngine.bindTexture(par2ItemStack.getItemSpriteNumber() == 0 ? "/terrain.png" : "/gui/items.png");
             ForgeHooksClient.renderEquippedItem(customRenderer, renderBlocksInstance, par1EntityLiving, par2ItemStack);
         }
-        else if (block != null && par2ItemStack.func_94608_d() == 0 && RenderBlocks.renderItemIn3d(Block.blocksList[par2ItemStack.itemID].getRenderType()))
+        else if (block != null && par2ItemStack.getItemSpriteNumber() == 0 && RenderBlocks.renderItemIn3d(Block.blocksList[par2ItemStack.itemID].getRenderType()))
         {
-            this.mc.renderEngine.func_98187_b("/terrain.png");
+            this.mc.renderEngine.bindTexture("/terrain.png");
             this.renderBlocksInstance.renderBlockAsItem(Block.blocksList[par2ItemStack.itemID], par2ItemStack.getItemDamage(), 1.0F);
         }
         else
@@ -90,20 +90,20 @@ public class ItemRenderer
                 return;
             }
 
-            if (par2ItemStack.func_94608_d() == 0)
+            if (par2ItemStack.getItemSpriteNumber() == 0)
             {
-                this.mc.renderEngine.func_98187_b("/terrain.png");
+                this.mc.renderEngine.bindTexture("/terrain.png");
             }
             else
             {
-                this.mc.renderEngine.func_98187_b("/gui/items.png");
+                this.mc.renderEngine.bindTexture("/gui/items.png");
             }
 
             Tessellator tessellator = Tessellator.instance;
-            float f = icon.func_94209_e();
-            float f1 = icon.func_94212_f();
-            float f2 = icon.func_94206_g();
-            float f3 = icon.func_94210_h();
+            float f = icon.getMinU();
+            float f1 = icon.getMaxU();
+            float f2 = icon.getMinV();
+            float f3 = icon.getMaxV();
             float f4 = 0.0F;
             float f5 = 0.3F;
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -113,13 +113,13 @@ public class ItemRenderer
             GL11.glRotatef(50.0F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(335.0F, 0.0F, 0.0F, 1.0F);
             GL11.glTranslatef(-0.9375F, -0.0625F, 0.0F);
-            renderItemIn2D(tessellator, f1, f2, f, f3, icon.func_94213_j(), icon.func_94208_k(), 0.0625F);
+            renderItemIn2D(tessellator, f1, f2, f, f3, icon.getSheetWidth(), icon.getSheetHeight(), 0.0625F);
 
             if (par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0)
             {
                 GL11.glDepthFunc(GL11.GL_EQUAL);
                 GL11.glDisable(GL11.GL_LIGHTING);
-                this.mc.renderEngine.func_98187_b("%blur%/misc/glint.png");
+                this.mc.renderEngine.bindTexture("%blur%/misc/glint.png");
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
                 float f7 = 0.76F;
@@ -319,7 +319,7 @@ public class ItemRenderer
             GL11.glRotatef(f7 * -85.0F, 0.0F, 0.0F, 1.0F);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getTexture()));
-            this.mc.renderEngine.func_98185_a();
+            this.mc.renderEngine.resetBoundTexture();
 
             for (k = 0; k < 2; ++k)
             {
@@ -351,7 +351,7 @@ public class ItemRenderer
             GL11.glTranslatef(-1.0F, -1.0F, 0.0F);
             f10 = 0.015625F;
             GL11.glScalef(f10, f10, f10);
-            this.mc.renderEngine.func_98187_b("/misc/mapbg.png");
+            this.mc.renderEngine.bindTexture("/misc/mapbg.png");
             Tessellator tessellator = Tessellator.instance;
             GL11.glNormal3f(0.0F, 0.0F, -1.0F);
             tessellator.startDrawingQuads();
@@ -511,7 +511,7 @@ public class ItemRenderer
             GL11.glRotatef(f5 * 70.0F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(-f6 * 20.0F, 0.0F, 0.0F, 1.0F);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getTexture()));
-            this.mc.renderEngine.func_98185_a();
+            this.mc.renderEngine.resetBoundTexture();
             GL11.glTranslatef(-1.0F, 3.6F, 3.5F);
             GL11.glRotatef(120.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(200.0F, 1.0F, 0.0F, 0.0F);
@@ -539,7 +539,7 @@ public class ItemRenderer
 
         if (this.mc.thePlayer.isBurning())
         {
-            this.mc.renderEngine.func_98187_b("/terrain.png");
+            this.mc.renderEngine.bindTexture("/terrain.png");
             this.renderFireInFirstPerson(par1);
         }
 
@@ -548,7 +548,7 @@ public class ItemRenderer
             int i = MathHelper.floor_double(this.mc.thePlayer.posX);
             int j = MathHelper.floor_double(this.mc.thePlayer.posY);
             int k = MathHelper.floor_double(this.mc.thePlayer.posZ);
-            this.mc.renderEngine.func_98187_b("/terrain.png");
+            this.mc.renderEngine.bindTexture("/terrain.png");
             int l = this.mc.theWorld.getBlockId(i, j, k);
 
             if (this.mc.theWorld.isBlockNormalCube(i, j, k))
@@ -581,7 +581,7 @@ public class ItemRenderer
 
         if (this.mc.thePlayer.isInsideOfMaterial(Material.water))
         {
-            this.mc.renderEngine.func_98187_b("/misc/water.png");
+            this.mc.renderEngine.bindTexture("/misc/water.png");
             this.renderWarpedTextureOverlay(par1);
         }
 
@@ -602,10 +602,10 @@ public class ItemRenderer
         float f4 = -1.0F;
         float f5 = 1.0F;
         float f6 = -0.5F;
-        float f7 = par2Icon.func_94209_e();
-        float f8 = par2Icon.func_94212_f();
-        float f9 = par2Icon.func_94206_g();
-        float f10 = par2Icon.func_94210_h();
+        float f7 = par2Icon.getMinU();
+        float f8 = par2Icon.getMaxU();
+        float f9 = par2Icon.getMinV();
+        float f10 = par2Icon.getMaxV();
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV((double)f2, (double)f4, (double)f6, (double)f8, (double)f10);
         tessellator.addVertexWithUV((double)f3, (double)f4, (double)f6, (double)f7, (double)f10);
@@ -662,10 +662,10 @@ public class ItemRenderer
         {
             GL11.glPushMatrix();
             Icon icon = Block.fire.func_94438_c(1);
-            float f2 = icon.func_94209_e();
-            float f3 = icon.func_94212_f();
-            float f4 = icon.func_94206_g();
-            float f5 = icon.func_94210_h();
+            float f2 = icon.getMinU();
+            float f3 = icon.getMaxU();
+            float f4 = icon.getMinV();
+            float f5 = icon.getMaxV();
             float f6 = (0.0F - f1) / 2.0F;
             float f7 = f6 + f1;
             float f8 = 0.0F - f1 / 2.0F;

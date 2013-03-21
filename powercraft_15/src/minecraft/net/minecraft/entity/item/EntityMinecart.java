@@ -190,7 +190,7 @@ public abstract class EntityMinecart extends Entity
                         this.riddenByEntity.mountEntity(this);
                     }
 
-                    if (flag && !this.func_94042_c())
+                    if (flag && !this.isInvNameLocalized())
                     {
                         this.setDead();
                     }
@@ -381,9 +381,9 @@ public abstract class EntityMinecart extends Entity
                 int i1 = rail.getBasicRailMetadata(worldObj, this, j, i, k);
                 this.func_94091_a(j, i, k, maxSpeed, getSlopeAdjustment(), l, i1);
 
-                if (l == Block.field_94337_cv.blockID)
+                if (l == Block.railActivator.blockID)
                 {
-                    this.func_96095_a(j, i, k, (i1 & 8) != 0);
+                    this.func_96095_a(j, i, k, (worldObj.getBlockMetadata(j, i, k) & 8) != 0);
                 }
             }
             else
@@ -1162,7 +1162,11 @@ public abstract class EntityMinecart extends Entity
         return this.field_94102_c != null ? this.field_94102_c : super.getEntityName();
     }
 
-    public boolean func_94042_c()
+    /**
+     * If this returns false, the inventory name will be used as an unlocalized name, and translated into the player's
+     * language. Otherwise it will be used directly.
+     */
+    public boolean isInvNameLocalized()
     {
         return this.field_94102_c != null;
     }
@@ -1243,7 +1247,7 @@ public abstract class EntityMinecart extends Entity
         }
         else if (this instanceof EntityMinecartTNT)
         {
-            return new ItemStack(Item.field_94582_cb);
+            return new ItemStack(Item.tntMinecart);
         }
         else if (this instanceof EntityMinecartFurnace)
         {
@@ -1251,7 +1255,7 @@ public abstract class EntityMinecart extends Entity
         }
         else if (this instanceof EntityMinecartHopper)
         {
-            return new ItemStack(Item.field_96600_cc);
+            return new ItemStack(Item.hopperMinecart);
         }
         return new ItemStack(Item.minecartEmpty);
     }

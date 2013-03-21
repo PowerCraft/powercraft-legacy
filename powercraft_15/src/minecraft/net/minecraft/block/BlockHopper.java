@@ -201,6 +201,8 @@ public class BlockHopper extends BlockContainer
                     }
                 }
             }
+
+            par1World.func_96440_m(par2, par3, par4, par5);
         }
 
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
@@ -262,28 +264,41 @@ public class BlockHopper extends BlockContainer
         return (par0 & 8) != 8;
     }
 
-    public boolean func_96468_q_()
+    /**
+     * If this returns true, then comparators facing away from this block will use the value from
+     * getComparatorInputOverride instead of the actual redstone signal strength.
+     */
+    public boolean hasComparatorInputOverride()
     {
         return true;
     }
 
-    public int func_94328_b_(World par1World, int par2, int par3, int par4, int par5)
+    /**
+     * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal
+     * strength when this block inputs to a comparator.
+     */
+    public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
         return Container.func_94526_b(func_98213_d(par1World, par2, par3, par4));
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94455_b = par1IconRegister.func_94245_a("hopper");
-        this.field_94456_c = par1IconRegister.func_94245_a("hopper_top");
-        this.field_94454_cO = par1IconRegister.func_94245_a("hopper_inside");
+        this.field_94455_b = par1IconRegister.registerIcon("hopper");
+        this.field_94456_c = par1IconRegister.registerIcon("hopper_top");
+        this.field_94454_cO = par1IconRegister.registerIcon("hopper_inside");
     }
 
     @SideOnly(Side.CLIENT)
     public static Icon func_94453_b(String par0Str)
     {
-        return par0Str == "hopper" ? Block.field_94340_cs.field_94455_b : (par0Str == "hopper_inside" ? Block.field_94340_cs.field_94454_cO : null);
+        return par0Str == "hopper" ? Block.hopperBlock.field_94455_b : (par0Str == "hopper_inside" ? Block.hopperBlock.field_94454_cO : null);
     }
 
     @SideOnly(Side.CLIENT)

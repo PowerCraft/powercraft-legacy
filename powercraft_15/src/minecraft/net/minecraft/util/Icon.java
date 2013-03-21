@@ -6,35 +6,75 @@ import cpw.mods.fml.relauncher.SideOnly;
 public interface Icon
 {
     @SideOnly(Side.CLIENT)
-    int func_94211_a();
+
+    /**
+     * Returns the X position of this icon on its texture sheet, in pixels.
+     */
+    int getOriginX();
 
     @SideOnly(Side.CLIENT)
-    int func_94216_b();
+
+    /**
+     * Returns the Y position of this icon on its texture sheet, in pixels.
+     */
+    int getOriginY();
 
     @SideOnly(Side.CLIENT)
-    float func_94209_e();
+
+    /**
+     * Returns the minimum U coordinate to use when rendering with this icon.
+     */
+    float getMinU();
 
     @SideOnly(Side.CLIENT)
-    float func_94212_f();
+
+    /**
+     * Returns the maximum U coordinate to use when rendering with this icon.
+     */
+    float getMaxU();
 
     @SideOnly(Side.CLIENT)
-    float func_94214_a(double d0);
+
+    /**
+     * Gets a U coordinate on the icon. 0 returns uMin and 16 returns uMax. Other arguments return in-between values.
+     */
+    float getInterpolatedU(double d0);
 
     @SideOnly(Side.CLIENT)
-    float func_94206_g();
+
+    /**
+     * Returns the minimum V coordinate to use when rendering with this icon.
+     */
+    float getMinV();
 
     @SideOnly(Side.CLIENT)
-    float func_94210_h();
+
+    /**
+     * Returns the maximum V coordinate to use when rendering with this icon.
+     */
+    float getMaxV();
 
     @SideOnly(Side.CLIENT)
-    float func_94207_b(double d0);
+
+    /**
+     * Gets a V coordinate on the icon. 0 returns vMin and 16 returns vMax. Other arguments return in-between values.
+     */
+    float getInterpolatedV(double d0);
 
     @SideOnly(Side.CLIENT)
-    String func_94215_i();
+    String getIconName();
 
     @SideOnly(Side.CLIENT)
-    int func_94213_j();
+
+    /**
+     * Returns the width of the texture sheet this icon is on, in pixels.
+     */
+    int getSheetWidth();
 
     @SideOnly(Side.CLIENT)
-    int func_94208_k();
+
+    /**
+     * Returns the height of the texture sheet this icon is on, in pixels.
+     */
+    int getSheetHeight();
 }

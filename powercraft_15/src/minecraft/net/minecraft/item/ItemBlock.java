@@ -33,7 +33,11 @@ public class ItemBlock extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public int func_94901_k()
+
+    /**
+     * Returns 0 for /terrain.png, 1 for /gui/items.png
+     */
+    public int getSpriteNumber()
     {
         return Block.blocksList[this.blockID].func_94327_t_() != null ? 1 : 0;
     }
@@ -214,13 +218,13 @@ public class ItemBlock extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
         String s = Block.blocksList[this.blockID].func_94327_t_();
 
         if (s != null)
         {
-            this.field_94588_b = par1IconRegister.func_94245_a(s);
+            this.field_94588_b = par1IconRegister.registerIcon(s);
         }
     }
 
@@ -234,7 +238,7 @@ public class ItemBlock extends Item
      */
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
     {
-       if (!world.setBlockAndMetadataWithNotify(x, y, z, this.blockID, metadata, 3))
+       if (!world.setBlock(x, y, z, this.blockID, metadata, 3))
        {
            return false;
        }

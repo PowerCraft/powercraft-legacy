@@ -4,20 +4,20 @@ import java.util.concurrent.Callable;
 
 class CallableEntityName implements Callable
 {
-    final Entity field_96564_a;
+    final Entity theEntity;
 
     CallableEntityName(Entity par1Entity)
     {
-        this.field_96564_a = par1Entity;
+        this.theEntity = par1Entity;
     }
 
-    public String func_96563_a()
+    public String callEntityName()
     {
-        return this.field_96564_a.getEntityName();
+        return this.theEntity.getEntityName();
     }
 
     public Object call()
     {
-        return this.func_96563_a();
+        return this.callEntityName();
     }
 }

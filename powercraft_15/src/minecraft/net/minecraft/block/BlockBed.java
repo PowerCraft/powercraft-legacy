@@ -118,14 +118,14 @@ public class BlockBed extends BlockDirectional
                 double d0 = (double)par2 + 0.5D;
                 double d1 = (double)par3 + 0.5D;
                 double d2 = (double)par4 + 0.5D;
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
                 int k1 = getDirection(i1);
                 par2 += footBlockToHeadBlockMap[k1][0];
                 par4 += footBlockToHeadBlockMap[k1][1];
 
                 if (par1World.getBlockId(par2, par3, par4) == this.blockID)
                 {
-                    par1World.func_94571_i(par2, par3, par4);
+                    par1World.setBlockToAir(par2, par3, par4);
                     d0 = (d0 + (double)par2 + 0.5D) / 2.0D;
                     d1 = (d1 + (double)par3 + 0.5D) / 2.0D;
                     d2 = (d2 + (double)par4 + 0.5D) / 2.0D;
@@ -158,11 +158,16 @@ public class BlockBed extends BlockDirectional
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94471_cO = new Icon[] {par1IconRegister.func_94245_a("bed_feet_top"), par1IconRegister.func_94245_a("bed_head_top")};
-        this.field_94472_b = new Icon[] {par1IconRegister.func_94245_a("bed_feet_end"), par1IconRegister.func_94245_a("bed_head_end")};
-        this.field_94473_c = new Icon[] {par1IconRegister.func_94245_a("bed_feet_side"), par1IconRegister.func_94245_a("bed_head_side")};
+        this.field_94471_cO = new Icon[] {par1IconRegister.registerIcon("bed_feet_top"), par1IconRegister.registerIcon("bed_head_top")};
+        this.field_94472_b = new Icon[] {par1IconRegister.registerIcon("bed_feet_end"), par1IconRegister.registerIcon("bed_head_end")};
+        this.field_94473_c = new Icon[] {par1IconRegister.registerIcon("bed_feet_side"), par1IconRegister.registerIcon("bed_head_side")};
     }
 
     /**
@@ -211,12 +216,12 @@ public class BlockBed extends BlockDirectional
         {
             if (par1World.getBlockId(par2 - footBlockToHeadBlockMap[j1][0], par3, par4 - footBlockToHeadBlockMap[j1][1]) != this.blockID)
             {
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
             }
         }
         else if (par1World.getBlockId(par2 + footBlockToHeadBlockMap[j1][0], par3, par4 + footBlockToHeadBlockMap[j1][1]) != this.blockID)
         {
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
 
             if (!par1World.isRemote)
             {
@@ -354,7 +359,7 @@ public class BlockBed extends BlockDirectional
 
             if (par1World.getBlockId(par2, par3, par4) == this.blockID)
             {
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
             }
         }
     }

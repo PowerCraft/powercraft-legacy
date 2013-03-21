@@ -5,16 +5,16 @@ import net.minecraft.block.Block;
 
 class CallableTileEntityID implements Callable
 {
-    final TileEntity field_94610_a;
+    final TileEntity theTileEntity;
 
     CallableTileEntityID(TileEntity par1TileEntity)
     {
-        this.field_94610_a = par1TileEntity;
+        this.theTileEntity = par1TileEntity;
     }
 
-    public String func_94609_a()
+    public String callTileEntityID()
     {
-        int i = this.field_94610_a.worldObj.getBlockId(this.field_94610_a.xCoord, this.field_94610_a.yCoord, this.field_94610_a.zCoord);
+        int i = this.theTileEntity.worldObj.getBlockId(this.theTileEntity.xCoord, this.theTileEntity.yCoord, this.theTileEntity.zCoord);
 
         try
         {
@@ -28,6 +28,6 @@ class CallableTileEntityID implements Callable
 
     public Object call()
     {
-        return this.func_94609_a();
+        return this.callTileEntityID();
     }
 }

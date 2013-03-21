@@ -132,35 +132,6 @@ public class PC_Renderer
     public static void renderBlockByRenderType(Object renderer, Block block, int x, int y, int z) {
     	renderer2d.iRenderBlockByRenderType(renderer, block, x, y, z);
 	}
-    
-    protected void iSwapTerrain(String filename) {}
-
-    public static void swapTerrain(String filename)
-    {
-        renderer2d.iSwapTerrain(filename);
-    }
-
-    protected boolean iSwapTerrain(Block block)
-    {
-        if (block instanceof PC_Block && !block.getTextureFile().equalsIgnoreCase("/terrain.png"))
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    public static boolean swapTerrain(Block block)
-    {
-        return renderer2d.iSwapTerrain(block);
-    }
-
-    protected void iResetTerrain(boolean do_it) {}
-
-    public static void resetTerrain(boolean do_it)
-    {
-        renderer2d.iResetTerrain(do_it);
-    }
 
     public static void glColor3f(float r, float g, float b)
     {

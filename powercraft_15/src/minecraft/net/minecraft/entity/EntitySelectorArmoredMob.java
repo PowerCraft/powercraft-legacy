@@ -29,7 +29,7 @@ public class EntitySelectorArmoredMob implements IEntitySelector
         else
         {
             EntityLiving entityliving = (EntityLiving)par1Entity;
-            return entityliving.getCurrentItemOrArmor(EntityLiving.func_82159_b(this.field_96567_c)) != null ? false : entityliving.func_98052_bS() || entityliving instanceof EntityPlayer;
+            return entityliving.getCurrentItemOrArmor(EntityLiving.getArmorPosition(this.field_96567_c)) != null ? false : entityliving.canPickUpLoot() || entityliving instanceof EntityPlayer;
         }
     }
 }

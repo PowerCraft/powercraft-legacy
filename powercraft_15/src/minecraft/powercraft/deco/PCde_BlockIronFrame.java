@@ -46,7 +46,6 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 	}
 
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
-		boolean swapped = PC_Renderer.swapTerrain(block);
 
 		float s = 0.1875F;
 
@@ -80,7 +79,6 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 		PC_Renderer.renderInvBox(renderer, block, 0);
 		ValueWriting.setBlockBounds(block, 1 - s, 1 - s, s, 1, 1, 1 - s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		PC_Renderer.resetTerrain(swapped);
 		
 		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
 		

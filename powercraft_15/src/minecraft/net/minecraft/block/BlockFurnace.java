@@ -105,15 +105,20 @@ public class BlockFurnace extends BlockContainer
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94458_cO : (par1 == 0 ? this.field_94458_cO : (par1 != par2 ? this.field_94336_cN : this.field_94459_cP));
+        return par1 == 1 ? this.field_94458_cO : (par1 == 0 ? this.field_94458_cO : (par1 != par2 ? this.blockIcon : this.field_94459_cP));
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("furnace_side");
-        this.field_94459_cP = par1IconRegister.func_94245_a(this.isActive ? "furnace_front_lit" : "furnace_front");
-        this.field_94458_cO = par1IconRegister.func_94245_a("furnace_top");
+        this.blockIcon = par1IconRegister.registerIcon("furnace_side");
+        this.field_94459_cP = par1IconRegister.registerIcon(this.isActive ? "furnace_front_lit" : "furnace_front");
+        this.field_94458_cO = par1IconRegister.registerIcon("furnace_top");
     }
 
     /**
@@ -149,11 +154,11 @@ public class BlockFurnace extends BlockContainer
 
         if (par0)
         {
-            par1World.func_94575_c(par2, par3, par4, Block.furnaceBurning.blockID);
+            par1World.setBlock(par2, par3, par4, Block.furnaceBurning.blockID);
         }
         else
         {
-            par1World.func_94575_c(par2, par3, par4, Block.furnaceIdle.blockID);
+            par1World.setBlock(par2, par3, par4, Block.furnaceIdle.blockID);
         }
 
         keepFurnaceInventory = false;
@@ -292,18 +297,28 @@ public class BlockFurnace extends BlockContainer
                         }
                     }
                 }
+
+                par1World.func_96440_m(par2, par3, par4, par5);
             }
         }
 
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
-    public boolean func_96468_q_()
+    /**
+     * If this returns true, then comparators facing away from this block will use the value from
+     * getComparatorInputOverride instead of the actual redstone signal strength.
+     */
+    public boolean hasComparatorInputOverride()
     {
         return true;
     }
 
-    public int func_94328_b_(World par1World, int par2, int par3, int par4, int par5)
+    /**
+     * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal
+     * strength when this block inputs to a comparator.
+     */
+    public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
         return Container.func_94526_b((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
     }

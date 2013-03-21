@@ -15,7 +15,7 @@ public class BlockStep extends BlockHalfSlab
     /** The list of the types of step blocks. */
     public static final String[] blockStepTypes = new String[] {"stone", "sand", "wood", "cobble", "brick", "smoothStoneBrick", "netherBrick", "quartz"};
     @SideOnly(Side.CLIENT)
-    private Icon field_94433_b;
+    private Icon theIcon;
 
     public BlockStep(int par1, boolean par2)
     {
@@ -37,14 +37,19 @@ public class BlockStep extends BlockHalfSlab
             par1 = 1;
         }
 
-        return k == 0 ? (par1 != 1 && par1 != 0 ? this.field_94433_b : this.field_94336_cN) : (k == 1 ? Block.sandStone.getBlockTextureFromSide(par1) : (k == 2 ? Block.planks.getBlockTextureFromSide(par1) : (k == 3 ? Block.cobblestone.getBlockTextureFromSide(par1) : (k == 4 ? Block.brick.getBlockTextureFromSide(par1) : (k == 5 ? Block.stoneBrick.getBlockTextureFromSideAndMetadata(par1, 0) : (k == 6 ? Block.netherBrick.getBlockTextureFromSide(1) : (k == 7 ? Block.field_94339_ct.getBlockTextureFromSide(par1) : this.field_94336_cN)))))));
+        return k == 0 ? (par1 != 1 && par1 != 0 ? this.theIcon : this.blockIcon) : (k == 1 ? Block.sandStone.getBlockTextureFromSide(par1) : (k == 2 ? Block.planks.getBlockTextureFromSide(par1) : (k == 3 ? Block.cobblestone.getBlockTextureFromSide(par1) : (k == 4 ? Block.brick.getBlockTextureFromSide(par1) : (k == 5 ? Block.stoneBrick.getBlockTextureFromSideAndMetadata(par1, 0) : (k == 6 ? Block.netherBrick.getBlockTextureFromSide(1) : (k == 7 ? Block.blockNetherQuartz.getBlockTextureFromSide(par1) : this.blockIcon)))))));
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("stoneslab_top");
-        this.field_94433_b = par1IconRegister.func_94245_a("stoneslab_side");
+        this.blockIcon = par1IconRegister.registerIcon("stoneslab_top");
+        this.theIcon = par1IconRegister.registerIcon("stoneslab_side");
     }
 
     /**

@@ -44,7 +44,7 @@ public class PChg_AppClient extends PChg_App {
 		offset = offset.offset(te.getCoord());
 		Minecraft mc = PC_ClientUtils.mc();
 		mc.entityRenderer.disableLightmap(0);
-		ChunkCache cc = new ChunkCache(te.getWorldObj(), offset.x-18, offset.y-18, offset.z-18, offset.x+17, offset.y+17, offset.z+17);
+		ChunkCache cc = new ChunkCache(te.getWorldObj(), offset.x-18, offset.y-18, offset.z-18, offset.x+17, offset.y+17, offset.z+17, 18);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		PC_Renderer.glPushMatrix();
@@ -58,7 +58,6 @@ public class PChg_AppClient extends PChg_App {
 		if(te == PChg_HologramGlassesOverlay.fieldToUpdate){
 			GL11.glNewList(te.glList, GL11.GL_COMPILE_AND_EXECUTE);
 			RenderBlocks renderer = new PChg_HologramRenderBlocks(cc);
-			PC_Renderer.resetTerrain(true);
 			PC_Renderer.tessellatorStartDrawingQuads();
 			for(int yy=-16; yy<16; yy++){
 				for(int xx=-16; xx<16; xx++){

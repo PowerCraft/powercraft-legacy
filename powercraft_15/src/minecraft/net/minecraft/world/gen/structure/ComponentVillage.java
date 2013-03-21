@@ -161,12 +161,12 @@ public abstract class ComponentVillage extends StructureComponent
                 return Block.sandStone.blockID;
             }
 
-            if (par1 == Block.stairCompactPlanks.blockID)
+            if (par1 == Block.stairsWoodOak.blockID)
             {
                 return Block.stairsSandStone.blockID;
             }
 
-            if (par1 == Block.stairCompactCobblestone.blockID)
+            if (par1 == Block.stairsCobblestone.blockID)
             {
                 return Block.stairsSandStone.blockID;
             }

@@ -395,7 +395,7 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
             {
                 if (!this.worldObj.isRemote)
                 {
-                    this.attackEntityFromPart(this.dragonPartHead, DamageSource.func_94539_a((Explosion)null), 10);
+                    this.attackEntityFromPart(this.dragonPartHead, DamageSource.setExplosionSource((Explosion)null), 10);
                 }
 
                 this.healingEnderCrystal = null;
@@ -535,9 +535,9 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 
                     if (block != null)
                     {
-                        if (block.canDragonDestroy(worldObj, k1, l1, i2))
+                        if (block.canDragonDestroy(worldObj, k1, l1, i2) && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
                         {
-                            flag1 = this.worldObj.func_94571_i(k1, l1, i2) || flag1;
+                            flag1 = this.worldObj.setBlockToAir(k1, l1, i2) || flag1;
                         }
                         else
                         {
@@ -574,7 +574,7 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
         this.targetZ = this.posZ - (double)(f2 * 5.0F) + (double)((this.rand.nextFloat() - 0.5F) * 2.0F);
         this.target = null;
 
-        if (par2DamageSource.getEntity() instanceof EntityPlayer || par2DamageSource.func_94541_c())
+        if (par2DamageSource.getEntity() instanceof EntityPlayer || par2DamageSource.isExplosion())
         {
             this.func_82195_e(par2DamageSource, par3);
         }
@@ -677,35 +677,35 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
                         {
                             if (d2 <= ((double)(b1 - 1) - 0.5D) * ((double)(b1 - 1) - 0.5D))
                             {
-                                this.worldObj.func_94575_c(l, k, i1, Block.bedrock.blockID);
+                                this.worldObj.setBlock(l, k, i1, Block.bedrock.blockID);
                             }
                         }
                         else if (k > b0)
                         {
-                            this.worldObj.func_94575_c(l, k, i1, 0);
+                            this.worldObj.setBlock(l, k, i1, 0);
                         }
                         else if (d2 > ((double)(b1 - 1) - 0.5D) * ((double)(b1 - 1) - 0.5D))
                         {
-                            this.worldObj.func_94575_c(l, k, i1, Block.bedrock.blockID);
+                            this.worldObj.setBlock(l, k, i1, Block.bedrock.blockID);
                         }
                         else
                         {
-                            this.worldObj.func_94575_c(l, k, i1, Block.endPortal.blockID);
+                            this.worldObj.setBlock(l, k, i1, Block.endPortal.blockID);
                         }
                     }
                 }
             }
         }
 
-        this.worldObj.func_94575_c(par1, b0 + 0, par2, Block.bedrock.blockID);
-        this.worldObj.func_94575_c(par1, b0 + 1, par2, Block.bedrock.blockID);
-        this.worldObj.func_94575_c(par1, b0 + 2, par2, Block.bedrock.blockID);
-        this.worldObj.func_94575_c(par1 - 1, b0 + 2, par2, Block.torchWood.blockID);
-        this.worldObj.func_94575_c(par1 + 1, b0 + 2, par2, Block.torchWood.blockID);
-        this.worldObj.func_94575_c(par1, b0 + 2, par2 - 1, Block.torchWood.blockID);
-        this.worldObj.func_94575_c(par1, b0 + 2, par2 + 1, Block.torchWood.blockID);
-        this.worldObj.func_94575_c(par1, b0 + 3, par2, Block.bedrock.blockID);
-        this.worldObj.func_94575_c(par1, b0 + 4, par2, Block.dragonEgg.blockID);
+        this.worldObj.setBlock(par1, b0 + 0, par2, Block.bedrock.blockID);
+        this.worldObj.setBlock(par1, b0 + 1, par2, Block.bedrock.blockID);
+        this.worldObj.setBlock(par1, b0 + 2, par2, Block.bedrock.blockID);
+        this.worldObj.setBlock(par1 - 1, b0 + 2, par2, Block.torchWood.blockID);
+        this.worldObj.setBlock(par1 + 1, b0 + 2, par2, Block.torchWood.blockID);
+        this.worldObj.setBlock(par1, b0 + 2, par2 - 1, Block.torchWood.blockID);
+        this.worldObj.setBlock(par1, b0 + 2, par2 + 1, Block.torchWood.blockID);
+        this.worldObj.setBlock(par1, b0 + 3, par2, Block.bedrock.blockID);
+        this.worldObj.setBlock(par1, b0 + 4, par2, Block.dragonEgg.blockID);
         BlockEndPortal.bossDefeated = false;
     }
 

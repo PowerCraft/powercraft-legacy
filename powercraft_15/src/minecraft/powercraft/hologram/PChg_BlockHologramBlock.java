@@ -130,7 +130,6 @@ public class PChg_BlockHologramBlock extends PC_Block {
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
     	Block containingBlock = getContainingBlock(world, x, y, z);
     	PC_Renderer.tessellatorDraw();
-    	PC_Renderer.resetTerrain(true);
     	PC_Renderer.tessellatorStartDrawingQuads();
         PC_Renderer.renderBlockByRenderType(renderer, containingBlock, x, y, z);
         PC_Renderer.tessellatorDraw();

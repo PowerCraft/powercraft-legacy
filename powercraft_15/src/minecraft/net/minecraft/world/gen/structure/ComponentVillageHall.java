@@ -61,8 +61,8 @@ public class ComponentVillageHall extends ComponentVillage
         this.placeBlockAtCurrentPosition(par1World, Block.planks.blockID, 0, 0, 4, 3, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.planks.blockID, 0, 8, 4, 2, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.planks.blockID, 0, 8, 4, 3, par3StructureBoundingBox);
-        int i = this.getMetadataWithOffset(Block.stairCompactPlanks.blockID, 3);
-        int j = this.getMetadataWithOffset(Block.stairCompactPlanks.blockID, 2);
+        int i = this.getMetadataWithOffset(Block.stairsWoodOak.blockID, 3);
+        int j = this.getMetadataWithOffset(Block.stairsWoodOak.blockID, 2);
         int k;
         int l;
 
@@ -70,8 +70,8 @@ public class ComponentVillageHall extends ComponentVillage
         {
             for (l = 0; l <= 8; ++l)
             {
-                this.placeBlockAtCurrentPosition(par1World, Block.stairCompactPlanks.blockID, i, l, 4 + k, k, par3StructureBoundingBox);
-                this.placeBlockAtCurrentPosition(par1World, Block.stairCompactPlanks.blockID, j, l, 4 + k, 5 - k, par3StructureBoundingBox);
+                this.placeBlockAtCurrentPosition(par1World, Block.stairsWoodOak.blockID, i, l, 4 + k, k, par3StructureBoundingBox);
+                this.placeBlockAtCurrentPosition(par1World, Block.stairsWoodOak.blockID, j, l, 4 + k, 5 - k, par3StructureBoundingBox);
             }
         }
 
@@ -90,8 +90,8 @@ public class ComponentVillageHall extends ComponentVillage
         this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, 2, 1, 3, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.pressurePlatePlanks.blockID, 0, 2, 2, 3, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.planks.blockID, 0, 1, 1, 4, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.stairCompactPlanks.blockID, this.getMetadataWithOffset(Block.stairCompactPlanks.blockID, 3), 2, 1, 4, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Block.stairCompactPlanks.blockID, this.getMetadataWithOffset(Block.stairCompactPlanks.blockID, 1), 1, 1, 3, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, Block.stairsWoodOak.blockID, this.getMetadataWithOffset(Block.stairsWoodOak.blockID, 3), 2, 1, 4, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, Block.stairsWoodOak.blockID, this.getMetadataWithOffset(Block.stairsWoodOak.blockID, 1), 1, 1, 3, par3StructureBoundingBox);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 5, 0, 1, 7, 0, 3, Block.stoneDoubleSlab.blockID, Block.stoneDoubleSlab.blockID, false);
         this.placeBlockAtCurrentPosition(par1World, Block.stoneDoubleSlab.blockID, 0, 6, 1, 1, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.stoneDoubleSlab.blockID, 0, 6, 1, 2, par3StructureBoundingBox);
@@ -102,7 +102,7 @@ public class ComponentVillageHall extends ComponentVillage
 
         if (this.getBlockIdAtCurrentPosition(par1World, 2, 0, -1, par3StructureBoundingBox) == 0 && this.getBlockIdAtCurrentPosition(par1World, 2, -1, -1, par3StructureBoundingBox) != 0)
         {
-            this.placeBlockAtCurrentPosition(par1World, Block.stairCompactCobblestone.blockID, this.getMetadataWithOffset(Block.stairCompactCobblestone.blockID, 3), 2, 0, -1, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, Block.stairsCobblestone.blockID, this.getMetadataWithOffset(Block.stairsCobblestone.blockID, 3), 2, 0, -1, par3StructureBoundingBox);
         }
 
         this.placeBlockAtCurrentPosition(par1World, 0, 0, 6, 1, 5, par3StructureBoundingBox);

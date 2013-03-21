@@ -24,12 +24,17 @@ public class BlockDropper extends BlockDispenser
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("furnace_side");
-        this.field_94463_c = par1IconRegister.func_94245_a("furnace_top");
-        this.field_94462_cO = par1IconRegister.func_94245_a("dropper_front");
-        this.field_96473_e = par1IconRegister.func_94245_a("dropper_front_vertical");
+        this.blockIcon = par1IconRegister.registerIcon("furnace_side");
+        this.field_94463_c = par1IconRegister.registerIcon("furnace_top");
+        this.field_94462_cO = par1IconRegister.registerIcon("dropper_front");
+        this.field_96473_e = par1IconRegister.registerIcon("dropper_front_vertical");
     }
 
     protected IBehaviorDispenseItem func_96472_a(ItemStack par1ItemStack)
@@ -48,7 +53,7 @@ public class BlockDropper extends BlockDispenser
     protected void dispense(World par1World, int par2, int par3, int par4)
     {
         BlockSourceImpl blocksourceimpl = new BlockSourceImpl(par1World, par2, par3, par4);
-        TileEntityDispenser tileentitydispenser = (TileEntityDispenser)blocksourceimpl.func_82619_j();
+        TileEntityDispenser tileentitydispenser = (TileEntityDispenser)blocksourceimpl.getBlockTileEntity();
 
         if (tileentitydispenser != null)
         {

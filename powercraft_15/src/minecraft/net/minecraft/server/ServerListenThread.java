@@ -58,7 +58,7 @@ public class ServerListenThread extends Thread
                 {
                     netloginhandler.raiseErrorAndDisconnect("Internal server error");
                     FMLLog.log(Level.SEVERE, exception, "Error handling login related packet - connection from %s refused", netloginhandler.getUsernameAndAddress());
-                    this.myNetworkListenThread.getServer().func_98033_al().func_98235_b("Failed to handle packet for " + netloginhandler.getUsernameAndAddress() + ": " + exception, exception);
+                    this.myNetworkListenThread.getServer().getLogAgent().func_98235_b("Failed to handle packet for " + netloginhandler.getUsernameAndAddress() + ": " + exception, exception);
                 }
 
                 if (netloginhandler.connectionComplete)
@@ -78,22 +78,6 @@ public class ServerListenThread extends Thread
             try
             {
                 Socket socket = this.myServerSocket.accept();
-                InetAddress inetaddress = socket.getInetAddress();
-                long i = System.currentTimeMillis();
-                HashMap hashmap = this.recentConnections;
-
-                synchronized (this.recentConnections)
-                {
-                    if (this.recentConnections.containsKey(inetaddress) && !isLocalHost(inetaddress) && i - ((Long)this.recentConnections.get(inetaddress)).longValue() < 4000L)
-                    {
-                        this.recentConnections.put(inetaddress, Long.valueOf(i));
-                        socket.close();
-                        continue;
-                    }
-
-                    this.recentConnections.put(inetaddress, Long.valueOf(i));
-                }
-
                 NetLoginHandler netloginhandler = new NetLoginHandler(this.myNetworkListenThread.getServer(), socket, "Connection #" + this.connectionCounter++);
                 this.addPendingConnection(netloginhandler);
             }
@@ -103,7 +87,7 @@ public class ServerListenThread extends Thread
             }
         }
 
-        this.myNetworkListenThread.getServer().func_98033_al().func_98233_a("Closing listening thread");
+        this.myNetworkListenThread.getServer().getLogAgent().logInfo("Closing listening thread");
     }
 
     private void addPendingConnection(NetLoginHandler par1NetLoginHandler)
@@ -121,11 +105,6 @@ public class ServerListenThread extends Thread
                 this.pendingConnections.add(par1NetLoginHandler);
             }
         }
-    }
-
-    private static boolean isLocalHost(InetAddress par0InetAddress)
-    {
-        return "127.0.0.1".equals(par0InetAddress.getHostAddress());
     }
 
     public void func_71769_a(InetAddress par1InetAddress)

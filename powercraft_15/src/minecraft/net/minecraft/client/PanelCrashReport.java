@@ -77,7 +77,7 @@ public class PanelCrashReport extends Panel
 
             if (file1 == null)
             {
-                par1CrashReport.saveToFile(new File(new File(Minecraft.getMinecraftDir(), "crash-reports"), "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-client.txt"), Minecraft.getMinecraft().func_98033_al());
+                par1CrashReport.saveToFile(new File(new File(Minecraft.getMinecraftDir(), "crash-reports"), "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-client.txt"), Minecraft.getMinecraft().getLogAgent());
                 file1 = par1CrashReport.getFile();
             }
 

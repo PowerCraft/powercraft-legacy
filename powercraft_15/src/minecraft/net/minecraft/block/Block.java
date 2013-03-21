@@ -54,8 +54,6 @@ public class Block
 {
     protected static int[] blockFireSpreadSpeed = new int[4096];
     protected static int[] blockFlammability = new int[4096];
-    protected String currentTexture = "/terrain.png";
-    public boolean isDefaultTexture = true;
     /**
      * used as foreach item, if item.tab = current tab, display it on the screen
      */
@@ -152,7 +150,7 @@ public class Block
     public static final Block torchWood = (new BlockTorch(50)).setHardness(0.0F).setLightValue(0.9375F).setStepSound(soundWoodFootstep).setUnlocalizedName("torch");
     public static final BlockFire fire = (BlockFire)(new BlockFire(51)).setHardness(0.0F).setLightValue(1.0F).setStepSound(soundWoodFootstep).setUnlocalizedName("fire").disableStats();
     public static final Block mobSpawner = (new BlockMobSpawner(52)).setHardness(5.0F).setStepSound(soundMetalFootstep).setUnlocalizedName("mobSpawner").disableStats();
-    public static final Block stairCompactPlanks = (new BlockStairs(53, planks, 0)).setUnlocalizedName("stairsWood");
+    public static final Block stairsWoodOak = (new BlockStairs(53, planks, 0)).setUnlocalizedName("stairsWood");
     public static final BlockChest chest = (BlockChest)(new BlockChest(54, 0)).setHardness(2.5F).setStepSound(soundWoodFootstep).setUnlocalizedName("chest");
     public static final BlockRedstoneWire redstoneWire = (BlockRedstoneWire)(new BlockRedstoneWire(55)).setHardness(0.0F).setStepSound(soundPowderFootstep).setUnlocalizedName("redstoneDust").disableStats();
     public static final Block oreDiamond = (new BlockOre(56)).setHardness(3.0F).setResistance(5.0F).setStepSound(soundStoneFootstep).setUnlocalizedName("oreDiamond");
@@ -166,7 +164,7 @@ public class Block
     public static final Block doorWood = (new BlockDoor(64, Material.wood)).setHardness(3.0F).setStepSound(soundWoodFootstep).setUnlocalizedName("doorWood").disableStats();
     public static final Block ladder = (new BlockLadder(65)).setHardness(0.4F).setStepSound(soundLadderFootstep).setUnlocalizedName("ladder");
     public static final Block rail = (new BlockRail(66)).setHardness(0.7F).setStepSound(soundMetalFootstep).setUnlocalizedName("rail");
-    public static final Block stairCompactCobblestone = (new BlockStairs(67, cobblestone, 0)).setUnlocalizedName("stairsStone");
+    public static final Block stairsCobblestone = (new BlockStairs(67, cobblestone, 0)).setUnlocalizedName("stairsStone");
     public static final Block signWall = (new BlockSign(68, TileEntitySign.class, false)).setHardness(1.0F).setStepSound(soundWoodFootstep).setUnlocalizedName("sign").disableStats();
     public static final Block lever = (new BlockLever(69)).setHardness(0.5F).setStepSound(soundWoodFootstep).setUnlocalizedName("lever");
     public static final Block pressurePlateStone = (new BlockPressurePlate(70, "stone", Material.rock, EnumMobType.mobs)).setHardness(0.5F).setStepSound(soundStoneFootstep).setUnlocalizedName("pressurePlate");
@@ -214,7 +212,7 @@ public class Block
     public static final Block vine = (new BlockVine(106)).setHardness(0.2F).setStepSound(soundGrassFootstep).setUnlocalizedName("vine");
     public static final Block fenceGate = (new BlockFenceGate(107)).setHardness(2.0F).setResistance(5.0F).setStepSound(soundWoodFootstep).setUnlocalizedName("fenceGate");
     public static final Block stairsBrick = (new BlockStairs(108, brick, 0)).setUnlocalizedName("stairsBrick");
-    public static final Block stairsStoneBrickSmooth = (new BlockStairs(109, stoneBrick, 0)).setUnlocalizedName("stairsStoneBrickSmooth");
+    public static final Block stairsStoneBrick = (new BlockStairs(109, stoneBrick, 0)).setUnlocalizedName("stairsStoneBrickSmooth");
     public static final BlockMycelium mycelium = (BlockMycelium)(new BlockMycelium(110)).setHardness(0.6F).setStepSound(soundGrassFootstep).setUnlocalizedName("mycel");
     public static final Block waterlily = (new BlockLilyPad(111)).setHardness(0.0F).setStepSound(soundGrassFootstep).setUnlocalizedName("waterlily");
     public static final Block netherBrick = (new Block(112, Material.rock)).setHardness(2.0F).setResistance(10.0F).setStepSound(soundStoneFootstep).setUnlocalizedName("netherBrick").setCreativeTab(CreativeTabs.tabBlock);
@@ -253,19 +251,19 @@ public class Block
     public static final Block woodenButton = (new BlockButtonWood(143)).setHardness(0.5F).setStepSound(soundWoodFootstep).setUnlocalizedName("button");
     public static final Block skull = (new BlockSkull(144)).setHardness(1.0F).setStepSound(soundStoneFootstep).setUnlocalizedName("skull");
     public static final Block anvil = (new BlockAnvil(145)).setHardness(5.0F).setStepSound(soundAnvilFootstep).setResistance(2000.0F).setUnlocalizedName("anvil");
-    public static final Block field_94347_ck = (new BlockChest(146, 1)).setHardness(2.5F).setStepSound(soundWoodFootstep).setUnlocalizedName("chestTrap");
-    public static final Block field_94348_cl = (new BlockPressurePlateWeighted(147, "blockGold", Material.iron, 64)).setHardness(0.5F).setStepSound(soundWoodFootstep).setUnlocalizedName("weightedPlate_light");
-    public static final Block field_94345_cm = (new BlockPressurePlateWeighted(148, "blockIron", Material.iron, 640)).setHardness(0.5F).setStepSound(soundWoodFootstep).setUnlocalizedName("weightedPlate_heavy");
-    public static final BlockComparator field_94346_cn = (BlockComparator)(new BlockComparator(149, false)).setHardness(0.0F).setStepSound(soundWoodFootstep).setUnlocalizedName("comparator").disableStats();
-    public static final BlockComparator field_94343_co = (BlockComparator)(new BlockComparator(150, true)).setHardness(0.0F).setLightValue(0.625F).setStepSound(soundWoodFootstep).setUnlocalizedName("comparator").disableStats();
-    public static final BlockDaylightDetector field_94344_cp = (BlockDaylightDetector)(new BlockDaylightDetector(151)).setHardness(0.2F).setStepSound(soundWoodFootstep).setUnlocalizedName("daylightDetector");
-    public static final Block field_94341_cq = (new BlockPoweredOre(152)).setHardness(5.0F).setResistance(10.0F).setStepSound(soundMetalFootstep).setUnlocalizedName("blockRedstone");
-    public static final Block field_94342_cr = (new BlockOre(153)).setHardness(3.0F).setResistance(5.0F).setStepSound(soundStoneFootstep).setUnlocalizedName("netherquartz");
-    public static final BlockHopper field_94340_cs = (BlockHopper)(new BlockHopper(154)).setHardness(3.0F).setResistance(8.0F).setStepSound(soundWoodFootstep).setUnlocalizedName("hopper");
-    public static final Block field_94339_ct = (new BlockQuartz(155)).setStepSound(soundStoneFootstep).setHardness(0.8F).setUnlocalizedName("quartzBlock");
-    public static final Block field_94338_cu = (new BlockStairs(156, field_94339_ct, 0)).setUnlocalizedName("stairsQuartz");
-    public static final Block field_94337_cv = (new BlockRailPowered(157)).setHardness(0.7F).setStepSound(soundMetalFootstep).setUnlocalizedName("activatorRail");
-    public static final Block field_96469_cy = (new BlockDropper(158)).setHardness(3.5F).setStepSound(soundStoneFootstep).setUnlocalizedName("dropper");
+    public static final Block chestTrapped = (new BlockChest(146, 1)).setHardness(2.5F).setStepSound(soundWoodFootstep).setUnlocalizedName("chestTrap");
+    public static final Block pressurePlateGold = (new BlockPressurePlateWeighted(147, "blockGold", Material.iron, 64)).setHardness(0.5F).setStepSound(soundWoodFootstep).setUnlocalizedName("weightedPlate_light");
+    public static final Block pressurePlateIron = (new BlockPressurePlateWeighted(148, "blockIron", Material.iron, 640)).setHardness(0.5F).setStepSound(soundWoodFootstep).setUnlocalizedName("weightedPlate_heavy");
+    public static final BlockComparator redstoneComparatorIdle = (BlockComparator)(new BlockComparator(149, false)).setHardness(0.0F).setStepSound(soundWoodFootstep).setUnlocalizedName("comparator").disableStats();
+    public static final BlockComparator redstoneComparatorActive = (BlockComparator)(new BlockComparator(150, true)).setHardness(0.0F).setLightValue(0.625F).setStepSound(soundWoodFootstep).setUnlocalizedName("comparator").disableStats();
+    public static final BlockDaylightDetector daylightSensor = (BlockDaylightDetector)(new BlockDaylightDetector(151)).setHardness(0.2F).setStepSound(soundWoodFootstep).setUnlocalizedName("daylightDetector");
+    public static final Block blockRedstone = (new BlockPoweredOre(152)).setHardness(5.0F).setResistance(10.0F).setStepSound(soundMetalFootstep).setUnlocalizedName("blockRedstone");
+    public static final Block oreNetherQuartz = (new BlockOre(153)).setHardness(3.0F).setResistance(5.0F).setStepSound(soundStoneFootstep).setUnlocalizedName("netherquartz");
+    public static final BlockHopper hopperBlock = (BlockHopper)(new BlockHopper(154)).setHardness(3.0F).setResistance(8.0F).setStepSound(soundWoodFootstep).setUnlocalizedName("hopper");
+    public static final Block blockNetherQuartz = (new BlockQuartz(155)).setStepSound(soundStoneFootstep).setHardness(0.8F).setUnlocalizedName("quartzBlock");
+    public static final Block stairCompactNetherQuartz = (new BlockStairs(156, blockNetherQuartz, 0)).setUnlocalizedName("stairsQuartz");
+    public static final Block railActivator = (new BlockRailPowered(157)).setHardness(0.7F).setStepSound(soundMetalFootstep).setUnlocalizedName("activatorRail");
+    public static final Block dropper = (new BlockDropper(158)).setHardness(3.5F).setStepSound(soundStoneFootstep).setUnlocalizedName("dropper");
 
     /** ID of the block. */
     public final int blockID;
@@ -328,7 +326,7 @@ public class Block
     /** The unlocalized name of this block. */
     private String unlocalizedName;
     @SideOnly(Side.CLIENT)
-    protected Icon field_94336_cN;
+    protected Icon blockIcon;
 
     public Block(int par1, Material par2Material)
     {
@@ -350,7 +348,6 @@ public class Block
             lightOpacity[par1] = this.isOpaqueCube() ? 255 : 0;
             canBlockGrass[par1] = !par2Material.getCanBlockGrass();
         }
-        isDefaultTexture = (getTextureFile() != null && getTextureFile().equalsIgnoreCase("/terrain.png"));
     }
 
     /**
@@ -549,7 +546,7 @@ public class Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return this.field_94336_cN;
+        return this.blockIcon;
     }
 
     /**
@@ -918,7 +915,7 @@ public class Block
      */
     public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4, Explosion par5Explosion) {}
 
-    public boolean func_94331_a(World par1World, int par2, int par3, int par4, int par5, ItemStack par6ItemStack)
+    public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5, ItemStack par6ItemStack)
     {
         return this.canPlaceBlockOnSide(par1World, par2, par3, par4, par5);
     }
@@ -1174,9 +1171,6 @@ public class Block
      */
     public void onPostBlockPlaced(World par1World, int par2, int par3, int par4, int par5) {}
 
-    /**
-     * Sets the unlocalized name of the block to the string passed as a parameter, prefixed by "tile."
-     */
     public Block setUnlocalizedName(String par1Str)
     {
         this.unlocalizedName = par1Str;
@@ -1200,7 +1194,11 @@ public class Block
     }
 
     @SideOnly(Side.CLIENT)
-    public String func_94330_A()
+
+    /**
+     * Returns the unlocalized name without the tile. prefix. Caution: client-only.
+     */
+    public String getUnlocalizedName2()
     {
         return this.unlocalizedName;
     }
@@ -1336,30 +1334,50 @@ public class Block
         return true;
     }
 
-    public boolean func_94334_h(int par1)
+    /**
+     * Returns true if the given block ID is equivalent to this one. Example: redstoneTorchOn matches itself and
+     * redstoneTorchOff, and vice versa. Most blocks only match themselves.
+     */
+    public boolean isAssociatedBlockID(int par1)
     {
         return this.blockID == par1;
     }
 
-    public static boolean func_94329_b(int par0, int par1)
+    /**
+     * Static version of isAssociatedBlockID.
+     */
+    public static boolean isAssociatedBlockID(int par0, int par1)
     {
-        return par0 == par1 ? true : (par0 != 0 && par1 != 0 && blocksList[par0] != null && blocksList[par1] != null ? blocksList[par0].func_94334_h(par1) : false);
+        return par0 == par1 ? true : (par0 != 0 && par1 != 0 && blocksList[par0] != null && blocksList[par1] != null ? blocksList[par0].isAssociatedBlockID(par1) : false);
     }
 
-    public boolean func_96468_q_()
+    /**
+     * If this returns true, then comparators facing away from this block will use the value from
+     * getComparatorInputOverride instead of the actual redstone signal strength.
+     */
+    public boolean hasComparatorInputOverride()
     {
         return false;
     }
 
-    public int func_94328_b_(World par1World, int par2, int par3, int par4, int par5)
+    /**
+     * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal
+     * strength when this block inputs to a comparator.
+     */
+    public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
         return 0;
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a(this.unlocalizedName);
+        this.blockIcon = par1IconRegister.registerIcon(this.unlocalizedName);
     }
 
     @SideOnly(Side.CLIENT)
@@ -1376,7 +1394,7 @@ public class Block
         Item.itemsList[silverfish.blockID] = (new ItemMultiTextureTile(silverfish.blockID - 256, silverfish, BlockSilverfish.silverfishStoneTypes)).setUnlocalizedName("monsterStoneEgg");
         Item.itemsList[stoneBrick.blockID] = (new ItemMultiTextureTile(stoneBrick.blockID - 256, stoneBrick, BlockStoneBrick.STONE_BRICK_TYPES)).setUnlocalizedName("stonebricksmooth");
         Item.itemsList[sandStone.blockID] = (new ItemMultiTextureTile(sandStone.blockID - 256, sandStone, BlockSandStone.SAND_STONE_TYPES)).setUnlocalizedName("sandStone");
-        Item.itemsList[field_94339_ct.blockID] = (new ItemMultiTextureTile(field_94339_ct.blockID - 256, field_94339_ct, BlockQuartz.field_94420_a)).setUnlocalizedName("quartzBlock");
+        Item.itemsList[blockNetherQuartz.blockID] = (new ItemMultiTextureTile(blockNetherQuartz.blockID - 256, blockNetherQuartz, BlockQuartz.quartzBlockTypes)).setUnlocalizedName("quartzBlock");
         Item.itemsList[stoneSingleSlab.blockID] = (new ItemSlab(stoneSingleSlab.blockID - 256, stoneSingleSlab, stoneDoubleSlab, false)).setUnlocalizedName("stoneSlab");
         Item.itemsList[stoneDoubleSlab.blockID] = (new ItemSlab(stoneDoubleSlab.blockID - 256, stoneSingleSlab, stoneDoubleSlab, true)).setUnlocalizedName("stoneSlab");
         Item.itemsList[woodSingleSlab.blockID] = (new ItemSlab(woodSingleSlab.blockID - 256, woodSingleSlab, woodDoubleSlab, false)).setUnlocalizedName("woodSlab");
@@ -1484,7 +1502,7 @@ public class Block
      */
     public boolean isBlockNormalCube(World world, int x, int y, int z)
     {
-        return blockMaterial.isOpaque() && renderAsNormalBlock();
+        return blockMaterial.isOpaque() && renderAsNormalBlock() && !canProvidePower();
     }
 
     /**
@@ -1514,6 +1532,10 @@ public class Block
             return ((meta & 3) + side.ordinal() == 5) || (side == UP && flipped);
         }
         else if (this instanceof BlockHopper && side == UP)
+        {
+            return true;
+        }
+        else if (this instanceof BlockPoweredOre)
         {
             return true;
         }
@@ -1599,7 +1621,7 @@ public class Block
      */
     public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
     {
-        return world.func_94571_i(x, y, z);
+        return world.setBlockToAir(x, y, z);
     }
 
     /**
@@ -1975,30 +1997,8 @@ public class Block
      */
     public boolean isGenMineableReplaceable(World world, int x, int y, int z, int target)
     {
-        return blockID == stone.blockID;
+        return blockID == target;
     }
-
-    /**
-     * Grabs the current texture file used for this block
-     */
-    public String getTextureFile()
-    {
-        return currentTexture;
-    }
-
-    /**
-     * Sets the current texture file for this block, used when rendering.
-     * Default is "/terrain.png"
-     *
-     * @param texture The texture file
-     */
-    public Block setTextureFile(String texture)
-    {
-        currentTexture = texture;
-        isDefaultTexture = false;
-        return this;
-    }
-
 
     /**
      * Location sensitive version of getExplosionRestance
@@ -2228,7 +2228,7 @@ public class Block
     {
         if (blockID == grass.blockID)
         {
-            world.setBlockAndMetadataWithNotify(x, y, z, dirt.blockID, 0, 2);
+            world.setBlock(x, y, z, dirt.blockID, 0, 2);
         }
     }
 

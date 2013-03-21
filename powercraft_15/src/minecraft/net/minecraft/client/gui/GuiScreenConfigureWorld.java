@@ -28,6 +28,7 @@ public class GuiScreenConfigureWorld extends GuiScreen
     private GuiButton field_98128_v;
     private GuiButton field_98127_w;
     private GuiButton field_98129_x;
+    private boolean field_102020_y;
 
     public GuiScreenConfigureWorld(GuiScreen par1, McoServer par2)
     {
@@ -98,6 +99,11 @@ public class GuiScreenConfigureWorld extends GuiScreen
         {
             if (par1GuiButton.id == 10)
             {
+                if (this.field_102020_y)
+                {
+                    ((GuiScreenOnlineServers)this.field_96285_a).func_102018_a(this.field_96280_b.field_96408_a);
+                }
+
                 this.mc.displayGuiScreen(this.field_96285_a);
             }
             else if (par1GuiButton.id == 5)
@@ -144,6 +150,7 @@ public class GuiScreenConfigureWorld extends GuiScreen
 
             if (obool.booleanValue())
             {
+                this.field_102020_y = true;
                 this.field_96280_b.field_96404_d = "OPEN";
                 this.initGui();
             }
@@ -168,6 +175,7 @@ public class GuiScreenConfigureWorld extends GuiScreen
 
             if (flag)
             {
+                this.field_102020_y = true;
                 this.field_96280_b.field_96404_d = "CLOSED";
                 this.initGui();
             }
@@ -258,6 +266,8 @@ public class GuiScreenConfigureWorld extends GuiScreen
         this.drawString(this.fontRenderer, this.field_96280_b.func_96398_b(), this.field_96277_d, this.func_96264_a(2), 16777215);
         this.drawString(this.fontRenderer, stringtranslate.translateKey("mco.configure.world.description"), this.field_96277_d, this.func_96264_a(4), 10526880);
         this.drawString(this.fontRenderer, this.field_96280_b.func_96397_a(), this.field_96277_d, this.func_96264_a(5), 16777215);
+        this.drawString(this.fontRenderer, stringtranslate.translateKey("mco.configure.world.owner"), this.field_96277_d, this.func_96264_a(7), 10526880);
+        this.drawString(this.fontRenderer, this.field_96280_b.field_96405_e, this.field_96277_d, this.func_96264_a(8), 16777215);
         this.drawString(this.fontRenderer, stringtranslate.translateKey("mco.configure.world.invited"), this.field_96287_o, this.func_96264_a(1), 10526880);
         super.drawScreen(par1, par2, par3);
     }

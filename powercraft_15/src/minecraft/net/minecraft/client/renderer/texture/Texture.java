@@ -8,75 +8,79 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
 
 @SideOnly(Side.CLIENT)
 public class Texture
 {
-    private int field_94293_a;
-    private int field_94291_b;
-    private int field_94292_c;
-    private final int field_94289_d;
-    private final int field_94290_e;
-    private final int field_94287_f;
-    private final int field_94288_g;
-    private final int field_94300_h;
-    private final int field_94301_i;
-    private final int field_94298_j;
-    private final int field_94299_k;
-    private final boolean field_94296_l;
-    private final String field_94297_m;
-    private Rect2i field_94294_n;
-    private boolean field_94295_o;
-    private boolean field_94304_p;
-    private boolean field_94303_q;
-    private ByteBuffer field_94302_r;
+    private int glTextureId;
+    private int textureId;
+    private int textureType;
+
+    /** Width of this texture in pixels. */
+    private final int width;
+
+    /** Height of this texture in pixels. */
+    private final int height;
+    private final int textureDepth;
+    private final int textureFormat;
+    private final int textureTarget;
+    private final int textureMinFilter;
+    private final int textureMagFilter;
+    private final int textureWrap;
+    private final boolean mipmapActive;
+    private final String textureName;
+    private Rect2i textureRect;
+    private boolean transferred;
+    private boolean autoCreate;
+    private boolean textureCreated;
+    private ByteBuffer textureData;
 
     private Texture(String par1Str, int par2, int par3, int par4, int par5, int par6, int par7, int par8, int par9)
     {
-        this.field_94297_m = par1Str;
-        this.field_94292_c = par2;
-        this.field_94289_d = par3;
-        this.field_94290_e = par4;
-        this.field_94287_f = par5;
-        this.field_94288_g = par7;
-        this.field_94301_i = par8;
-        this.field_94298_j = par9;
-        this.field_94299_k = par6;
-        this.field_94294_n = new Rect2i(0, 0, par3, par4);
+        this.textureName = par1Str;
+        this.textureType = par2;
+        this.width = par3;
+        this.height = par4;
+        this.textureDepth = par5;
+        this.textureFormat = par7;
+        this.textureMinFilter = par8;
+        this.textureMagFilter = par9;
+        this.textureWrap = par6;
+        this.textureRect = new Rect2i(0, 0, par3, par4);
 
         if (par4 == 1 && par5 == 1)
         {
-            this.field_94300_h = 3552;
+            this.textureTarget = 3552;
         }
         else if (par5 == 1)
         {
-            this.field_94300_h = 3553;
+            this.textureTarget = 3553;
         }
         else
         {
-            this.field_94300_h = 32879;
+            this.textureTarget = 32879;
         }
 
-        this.field_94296_l = par8 != 9728 && par8 != 9729 || par9 != 9728 && par9 != 9729;
+        this.mipmapActive = par8 != 9728 && par8 != 9729 || par9 != 9728 && par9 != 9729;
 
         if (par2 != 2)
         {
-            this.field_94293_a = GL11.glGenTextures();
-            GL11.glBindTexture(this.field_94300_h, this.field_94293_a);
-            GL11.glTexParameteri(this.field_94300_h, GL11.GL_TEXTURE_MIN_FILTER, par8);
-            GL11.glTexParameteri(this.field_94300_h, GL11.GL_TEXTURE_MAG_FILTER, par9);
-            GL11.glTexParameteri(this.field_94300_h, GL11.GL_TEXTURE_WRAP_S, par6);
-            GL11.glTexParameteri(this.field_94300_h, GL11.GL_TEXTURE_WRAP_T, par6);
+            this.glTextureId = GL11.glGenTextures();
+            GL11.glBindTexture(this.textureTarget, this.glTextureId);
+            GL11.glTexParameteri(this.textureTarget, GL11.GL_TEXTURE_MIN_FILTER, par8);
+            GL11.glTexParameteri(this.textureTarget, GL11.GL_TEXTURE_MAG_FILTER, par9);
+            GL11.glTexParameteri(this.textureTarget, GL11.GL_TEXTURE_WRAP_S, par6);
+            GL11.glTexParameteri(this.textureTarget, GL11.GL_TEXTURE_WRAP_T, par6);
         }
         else
         {
-            this.field_94293_a = -1;
+            this.glTextureId = -1;
         }
 
-        this.field_94291_b = TextureManager.func_94267_b().func_94265_c();
+        this.textureId = TextureManager.instance().getNextTextureId();
     }
 
     public Texture(String par1Str, int par2, int par3, int par4, int par5, int par6, int par7, int par8, BufferedImage par9BufferedImage)
@@ -99,88 +103,88 @@ public class Texture
                     abyte[i2] = 0;
                 }
 
-                this.field_94302_r = ByteBuffer.allocateDirect(abyte.length);
-                this.field_94302_r.clear();
-                this.field_94302_r.put(abyte);
-                this.field_94302_r.position(0).limit(abyte.length);
+                this.textureData = ByteBuffer.allocateDirect(abyte.length);
+                this.textureData.clear();
+                this.textureData.put(abyte);
+                this.textureData.position(0).limit(abyte.length);
 
-                if (this.field_94304_p)
+                if (this.autoCreate)
                 {
-                    this.func_94285_g();
+                    this.createTexture();
                 }
                 else
                 {
-                    this.field_94303_q = false;
+                    this.textureCreated = false;
                 }
             }
             else
             {
-                this.field_94295_o = false;
+                this.transferred = false;
             }
         }
         else
         {
-            this.field_94295_o = true;
-            this.func_94278_a(par10BufferedImage);
+            this.transferred = true;
+            this.transferFromImage(par10BufferedImage);
 
             if (par2 != 2)
             {
-                this.func_94285_g();
-                this.field_94304_p = false;
+                this.createTexture();
+                this.autoCreate = false;
             }
         }
     }
 
-    public final Rect2i func_94274_a()
+    public final Rect2i getTextureRect()
     {
-        return this.field_94294_n;
+        return this.textureRect;
     }
 
-    public void func_94272_a(Rect2i par1Rect2i, int par2)
+    public void fillRect(Rect2i par1Rect2i, int par2)
     {
-        if (this.field_94300_h != 32879)
+        if (this.textureTarget != 32879)
         {
-            Rect2i rect2i1 = new Rect2i(0, 0, this.field_94289_d, this.field_94290_e);
-            rect2i1.func_94156_a(par1Rect2i);
-            this.field_94302_r.position(0);
+            Rect2i rect2i1 = new Rect2i(0, 0, this.width, this.height);
+            rect2i1.intersection(par1Rect2i);
+            this.textureData.position(0);
 
-            for (int j = rect2i1.func_94160_b(); j < rect2i1.func_94160_b() + rect2i1.func_94157_d(); ++j)
+            for (int j = rect2i1.getRectY(); j < rect2i1.getRectY() + rect2i1.getRectHeight(); ++j)
             {
-                int k = j * this.field_94289_d * 4;
+                int k = j * this.width * 4;
 
-                for (int l = rect2i1.func_94158_a(); l < rect2i1.func_94158_a() + rect2i1.func_94159_c(); ++l)
+                for (int l = rect2i1.getRectX(); l < rect2i1.getRectX() + rect2i1.getRectWidth(); ++l)
                 {
-                    this.field_94302_r.put(k + l * 4 + 0, (byte)(par2 >> 24 & 255));
-                    this.field_94302_r.put(k + l * 4 + 1, (byte)(par2 >> 16 & 255));
-                    this.field_94302_r.put(k + l * 4 + 2, (byte)(par2 >> 8 & 255));
-                    this.field_94302_r.put(k + l * 4 + 3, (byte)(par2 >> 0 & 255));
+                    this.textureData.put(k + l * 4 + 0, (byte)(par2 >> 24 & 255));
+                    this.textureData.put(k + l * 4 + 1, (byte)(par2 >> 16 & 255));
+                    this.textureData.put(k + l * 4 + 2, (byte)(par2 >> 8 & 255));
+                    this.textureData.put(k + l * 4 + 3, (byte)(par2 >> 0 & 255));
                 }
             }
 
-            if (this.field_94304_p)
+            if (this.autoCreate)
             {
-                this.func_94285_g();
+                this.createTexture();
             }
             else
             {
-                this.field_94303_q = false;
+                this.textureCreated = false;
             }
         }
     }
 
-    public void func_94279_c(String par1Str)
+    public void writeImage(String par1Str)
     {
-        BufferedImage bufferedimage = new BufferedImage(this.field_94289_d, this.field_94290_e, 2);
-        ByteBuffer bytebuffer = this.func_94273_h();
-        byte[] abyte = new byte[this.field_94289_d * this.field_94290_e * 4];
+        BufferedImage bufferedimage = new BufferedImage(this.width, this.height, 2);
+        ByteBuffer bytebuffer = this.getTextureData();
+        byte[] abyte = new byte[this.width * this.height * 4];
         bytebuffer.position(0);
         bytebuffer.get(abyte);
 
-        for (int i = 0; i < this.field_94289_d; ++i)
+        for (int i = 0; i < this.width; ++i)
         {
-            for (int j = 0; j < this.field_94290_e; ++j)
+            for (int j = 0; j < this.height; ++j)
             {
-                int k = j * this.field_94289_d * 4 + i * 4;
+                int k = j * this.width * 4 + i * 4;
                 byte b0 = 0;
                 int l = b0 | (abyte[k + 2] & 255) << 0;
                 l |= (abyte[k + 1] & 255) << 8;
@@ -190,7 +194,7 @@ public class Texture
             }
         }
 
-        this.field_94302_r.position(this.field_94289_d * this.field_94290_e * 4);
+        this.textureData.position(this.width * this.height * 4);
 
         try
         {
@@ -202,77 +206,77 @@ public class Texture
         }
     }
 
-    public void func_94281_a(int par1, int par2, Texture par3Texture, boolean par4)
+    public void copyFrom(int par1, int par2, Texture par3Texture, boolean par4)
     {
-        if (this.field_94300_h != 32879)
+        if (this.textureTarget != 32879)
         {
-            ByteBuffer bytebuffer = par3Texture.func_94273_h();
-            this.field_94302_r.position(0);
+            ByteBuffer bytebuffer = par3Texture.getTextureData();
+            this.textureData.position(0);
             bytebuffer.position(0);
 
-            for (int k = 0; k < par3Texture.func_94276_e(); ++k)
+            for (int k = 0; k < par3Texture.getHeight(); ++k)
             {
                 int l = par2 + k;
-                int i1 = k * par3Texture.func_94275_d() * 4;
-                int j1 = l * this.field_94289_d * 4;
+                int i1 = k * par3Texture.getWidth() * 4;
+                int j1 = l * this.width * 4;
 
                 if (par4)
                 {
-                    l = par2 + (par3Texture.func_94276_e() - k);
+                    l = par2 + (par3Texture.getHeight() - k);
                 }
 
-                for (int k1 = 0; k1 < par3Texture.func_94275_d(); ++k1)
+                for (int k1 = 0; k1 < par3Texture.getWidth(); ++k1)
                 {
                     int l1 = j1 + (k1 + par1) * 4;
                     int i2 = i1 + k1 * 4;
 
                     if (par4)
                     {
-                        l1 = par1 + k1 * this.field_94289_d * 4 + l * 4;
+                        l1 = par1 + k1 * this.width * 4 + l * 4;
                     }
 
-                    this.field_94302_r.put(l1 + 0, bytebuffer.get(i2 + 0));
-                    this.field_94302_r.put(l1 + 1, bytebuffer.get(i2 + 1));
-                    this.field_94302_r.put(l1 + 2, bytebuffer.get(i2 + 2));
-                    this.field_94302_r.put(l1 + 3, bytebuffer.get(i2 + 3));
+                    this.textureData.put(l1 + 0, bytebuffer.get(i2 + 0));
+                    this.textureData.put(l1 + 1, bytebuffer.get(i2 + 1));
+                    this.textureData.put(l1 + 2, bytebuffer.get(i2 + 2));
+                    this.textureData.put(l1 + 3, bytebuffer.get(i2 + 3));
                 }
             }
 
-            this.field_94302_r.position(this.field_94289_d * this.field_94290_e * 4);
+            this.textureData.position(this.width * this.height * 4);
 
-            if (this.field_94304_p)
+            if (this.autoCreate)
             {
-                this.func_94285_g();
+                this.createTexture();
             }
             else
             {
-                this.field_94303_q = false;
+                this.textureCreated = false;
             }
         }
     }
 
-    public void func_94278_a(BufferedImage par1BufferedImage)
+    public void transferFromImage(BufferedImage par1BufferedImage)
     {
-        if (this.field_94300_h != 32879)
+        if (this.textureTarget != 32879)
         {
             int i = par1BufferedImage.getWidth();
             int j = par1BufferedImage.getHeight();
 
-            if (i <= this.field_94289_d && j <= this.field_94290_e)
+            if (i <= this.width && j <= this.height)
             {
                 int[] aint = new int[] {3, 0, 1, 2};
                 int[] aint1 = new int[] {3, 2, 1, 0};
-                int[] aint2 = this.field_94288_g == 32993 ? aint1 : aint;
-                int[] aint3 = new int[this.field_94289_d * this.field_94290_e];
+                int[] aint2 = this.textureFormat == 32993 ? aint1 : aint;
+                int[] aint3 = new int[this.width * this.height];
                 int k = par1BufferedImage.getTransparency();
-                par1BufferedImage.getRGB(0, 0, this.field_94289_d, this.field_94290_e, aint3, 0, i);
-                byte[] abyte = new byte[this.field_94289_d * this.field_94290_e * 4];
+                par1BufferedImage.getRGB(0, 0, this.width, this.height, aint3, 0, i);
+                byte[] abyte = new byte[this.width * this.height * 4];
 
-                for (int l = 0; l < this.field_94290_e; ++l)
+                for (int l = 0; l < this.height; ++l)
                 {
-                    for (int i1 = 0; i1 < this.field_94289_d; ++i1)
+                    for (int i1 = 0; i1 < this.width; ++i1)
                     {
-                        int j1 = l * this.field_94289_d + i1;
+                        int j1 = l * this.width + i1;
                         int k1 = j1 * 4;
                         abyte[k1 + aint2[0]] = (byte)(aint3[j1] >> 24 & 255);
                         abyte[k1 + aint2[1]] = (byte)(aint3[j1] >> 16 & 255);
@@ -281,55 +285,55 @@ public class Texture
                     }
                 }
 
-                this.field_94302_r = ByteBuffer.allocateDirect(abyte.length);
-                this.field_94302_r.clear();
-                this.field_94302_r.put(abyte);
-                this.field_94302_r.limit(abyte.length);
+                this.textureData = ByteBuffer.allocateDirect(abyte.length);
+                this.textureData.clear();
+                this.textureData.put(abyte);
+                this.textureData.limit(abyte.length);
 
-                if (this.field_94304_p)
+                if (this.autoCreate)
                 {
-                    this.func_94285_g();
+                    this.createTexture();
                 }
                 else
                 {
-                    this.field_94303_q = false;
+                    this.textureCreated = false;
                 }
             }
             else
             {
-                Minecraft.getMinecraft().func_98033_al().func_98236_b("transferFromImage called with a BufferedImage with dimensions (" + i + ", " + j + ") larger than the Texture dimensions (" + this.field_94289_d + ", " + this.field_94290_e + "). Ignoring.");
+                Minecraft.getMinecraft().getLogAgent().logWarning("transferFromImage called with a BufferedImage with dimensions (" + i + ", " + j + ") larger than the Texture dimensions (" + this.width + ", " + this.height + "). Ignoring.");
             }
         }
     }
 
-    public int func_94284_b()
+    public int getTextureId()
     {
-        return this.field_94291_b;
+        return this.textureId;
     }
 
-    public int func_94282_c()
+    public int getGlTextureId()
     {
-        return this.field_94293_a;
+        return this.glTextureId;
     }
 
-    public int func_94275_d()
+    public int getWidth()
     {
-        return this.field_94289_d;
+        return this.width;
     }
 
-    public int func_94276_e()
+    public int getHeight()
     {
-        return this.field_94290_e;
+        return this.height;
     }
 
-    public String func_94280_f()
+    public String getTextureName()
     {
-        return this.field_94297_m;
+        return this.textureName;
     }
 
-    public void func_94277_a(int par1)
+    public void bindTexture(int par1)
     {
-        if (this.field_94287_f == 1)
+        if (this.textureDepth == 1)
         {
             GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
@@ -338,37 +342,37 @@ public class Texture
             GL11.glEnable(GL12.GL_TEXTURE_3D);
         }
 
-        GL13.glActiveTexture(GL13.GL_TEXTURE0 + par1);
-        GL11.glBindTexture(this.field_94300_h, this.field_94293_a);
+        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit + par1);
+        GL11.glBindTexture(this.textureTarget, this.glTextureId);
 
-        if (!this.field_94303_q)
+        if (!this.textureCreated)
         {
-            this.func_94285_g();
+            this.createTexture();
         }
     }
 
-    public void func_94285_g()
+    public void createTexture()
     {
-        this.field_94302_r.flip();
+        this.textureData.flip();
 
-        if (this.field_94290_e != 1 && this.field_94287_f != 1)
+        if (this.height != 1 && this.textureDepth != 1)
         {
-            GL12.glTexImage3D(this.field_94300_h, 0, this.field_94288_g, this.field_94289_d, this.field_94290_e, this.field_94287_f, 0, this.field_94288_g, GL11.GL_UNSIGNED_BYTE, this.field_94302_r);
+            GL12.glTexImage3D(this.textureTarget, 0, this.textureFormat, this.width, this.height, this.textureDepth, 0, this.textureFormat, GL11.GL_UNSIGNED_BYTE, this.textureData);
         }
-        else if (this.field_94290_e != 1)
+        else if (this.height != 1)
         {
-            GL11.glTexImage2D(this.field_94300_h, 0, this.field_94288_g, this.field_94289_d, this.field_94290_e, 0, this.field_94288_g, GL11.GL_UNSIGNED_BYTE, this.field_94302_r);
+            GL11.glTexImage2D(this.textureTarget, 0, this.textureFormat, this.width, this.height, 0, this.textureFormat, GL11.GL_UNSIGNED_BYTE, this.textureData);
         }
         else
         {
-            GL11.glTexImage1D(this.field_94300_h, 0, this.field_94288_g, this.field_94289_d, 0, this.field_94288_g, GL11.GL_UNSIGNED_BYTE, this.field_94302_r);
+            GL11.glTexImage1D(this.textureTarget, 0, this.textureFormat, this.width, 0, this.textureFormat, GL11.GL_UNSIGNED_BYTE, this.textureData);
         }
 
-        this.field_94303_q = true;
+        this.textureCreated = true;
     }
 
-    public ByteBuffer func_94273_h()
+    public ByteBuffer getTextureData()
     {
-        return this.field_94302_r;
+        return this.textureData;
     }
 }

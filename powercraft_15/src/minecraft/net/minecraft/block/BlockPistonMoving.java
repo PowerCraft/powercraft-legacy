@@ -99,7 +99,7 @@ public class BlockPistonMoving extends BlockContainer
     {
         if (!par1World.isRemote && par1World.getBlockTileEntity(par2, par3, par4) == null)
         {
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
             return true;
         }
         else
@@ -279,8 +279,13 @@ public class BlockPistonMoving extends BlockContainer
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("piston_top");
+        this.blockIcon = par1IconRegister.registerIcon("piston_top");
     }
 }

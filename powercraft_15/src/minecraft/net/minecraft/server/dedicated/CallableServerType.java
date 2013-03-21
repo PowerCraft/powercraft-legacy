@@ -4,20 +4,20 @@ import java.util.concurrent.Callable;
 
 class CallableServerType implements Callable
 {
-    final DedicatedServer field_85171_a;
+    final DedicatedServer theDedicatedServer;
 
     CallableServerType(DedicatedServer par1DedicatedServer)
     {
-        this.field_85171_a = par1DedicatedServer;
+        this.theDedicatedServer = par1DedicatedServer;
     }
 
-    public String func_85170_a()
+    public String callServerType()
     {
         return "Dedicated Server (map_server.txt)";
     }
 
     public Object call()
     {
-        return this.func_85170_a();
+        return this.callServerType();
     }
 }

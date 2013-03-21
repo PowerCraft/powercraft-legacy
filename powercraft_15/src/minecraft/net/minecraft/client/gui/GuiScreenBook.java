@@ -379,7 +379,7 @@ public class GuiScreenBook extends GuiScreen
     public void drawScreen(int par1, int par2, float par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.func_98187_b("/gui/book.png");
+        this.mc.renderEngine.bindTexture("/gui/book.png");
         int k = (this.width - this.bookImageWidth) / 2;
         byte b0 = 2;
         this.drawTexturedModalRect(k, b0, 0, 0, this.bookImageWidth, this.bookImageHeight);

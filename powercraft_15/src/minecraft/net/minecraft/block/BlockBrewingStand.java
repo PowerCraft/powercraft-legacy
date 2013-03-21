@@ -24,7 +24,7 @@ public class BlockBrewingStand extends BlockContainer
 {
     private Random rand = new Random();
     @SideOnly(Side.CLIENT)
-    private Icon field_94449_b;
+    private Icon theIcon;
 
     public BlockBrewingStand(int par1)
     {
@@ -193,26 +193,39 @@ public class BlockBrewingStand extends BlockContainer
         return Item.brewingStand.itemID;
     }
 
-    public boolean func_96468_q_()
+    /**
+     * If this returns true, then comparators facing away from this block will use the value from
+     * getComparatorInputOverride instead of the actual redstone signal strength.
+     */
+    public boolean hasComparatorInputOverride()
     {
         return true;
     }
 
-    public int func_94328_b_(World par1World, int par2, int par3, int par4, int par5)
+    /**
+     * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal
+     * strength when this block inputs to a comparator.
+     */
+    public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
         return Container.func_94526_b((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        super.func_94332_a(par1IconRegister);
-        this.field_94449_b = par1IconRegister.func_94245_a("brewingStand_base");
+        super.registerIcons(par1IconRegister);
+        this.theIcon = par1IconRegister.registerIcon("brewingStand_base");
     }
 
     @SideOnly(Side.CLIENT)
     public Icon func_94448_e()
     {
-        return this.field_94449_b;
+        return this.theIcon;
     }
 }

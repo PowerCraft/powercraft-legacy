@@ -199,7 +199,7 @@ public class ComponentMineshaftCorridor extends StructureComponent
 
         if (par2StructureBoundingBox.isVecInside(i1, j1, k1) && par1World.getBlockId(i1, j1, k1) == 0)
         {
-            par1World.setBlockAndMetadataWithNotify(i1, j1, k1, Block.rail.blockID, this.getMetadataWithOffset(Block.rail.blockID, par3Random.nextBoolean() ? 1 : 0), 2);
+            par1World.setBlock(i1, j1, k1, Block.rail.blockID, this.getMetadataWithOffset(Block.rail.blockID, par3Random.nextBoolean() ? 1 : 0), 2);
             EntityMinecartChest entityminecartchest = new EntityMinecartChest(par1World, (double)((float)i1 + 0.5F), (double)((float)j1 + 0.5F), (double)((float)k1 + 0.5F));
             WeightedRandomChestContent.generateChestContents(par3Random, par7ArrayOfWeightedRandomChestContent, entityminecartchest, par8);
             par1World.spawnEntityInWorld(entityminecartchest);
@@ -285,12 +285,12 @@ public class ComponentMineshaftCorridor extends StructureComponent
                     if (par3StructureBoundingBox.isVecInside(j1, l, i1))
                     {
                         this.spawnerPlaced = true;
-                        par1World.setBlockAndMetadataWithNotify(j1, l, i1, Block.mobSpawner.blockID, 0, 2);
+                        par1World.setBlock(j1, l, i1, Block.mobSpawner.blockID, 0, 2);
                         TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner)par1World.getBlockTileEntity(j1, l, i1);
 
                         if (tileentitymobspawner != null)
                         {
-                            tileentitymobspawner.func_98049_a().func_98272_a("CaveSpider");
+                            tileentitymobspawner.func_98049_a().setMobID("CaveSpider");
                         }
                     }
                 }

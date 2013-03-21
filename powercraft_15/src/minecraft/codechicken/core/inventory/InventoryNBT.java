@@ -92,16 +92,14 @@ public class InventoryNBT implements IInventory
     public void closeChest()
     {
     }
-    
-    @Override
-    public boolean func_94041_b(int i, ItemStack itemstack)
-    {
-        return true;
-    }
-    
-    @Override
-    public boolean func_94042_c()
-    {
-        return true;
-    }
+
+	@Override
+	public boolean isInvNameLocalized() {
+		return true;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return true;
+	}
 }

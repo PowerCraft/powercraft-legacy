@@ -196,25 +196,28 @@ public class EntityTrackerEntry
                 boolean flag = Math.abs(j1) >= 4 || Math.abs(k1) >= 4 || Math.abs(l1) >= 4 || this.ticks % 60 == 0;
                 boolean flag1 = Math.abs(l - this.lastYaw) >= 4 || Math.abs(i1 - this.lastPitch) >= 4;
 
-                if (j1 >= -128 && j1 < 128 && k1 >= -128 && k1 < 128 && l1 >= -128 && l1 < 128 && this.ticksSinceLastForcedTeleport <= 400 && !this.ridingEntity)
+                if (this.ticks > 0)
                 {
-                    if (flag && flag1)
+                    if (j1 >= -128 && j1 < 128 && k1 >= -128 && k1 < 128 && l1 >= -128 && l1 < 128 && this.ticksSinceLastForcedTeleport <= 400 && !this.ridingEntity)
                     {
-                        object = new Packet33RelEntityMoveLook(this.myEntity.entityId, (byte)j1, (byte)k1, (byte)l1, (byte)l, (byte)i1);
+                        if (flag && flag1)
+                        {
+                            object = new Packet33RelEntityMoveLook(this.myEntity.entityId, (byte)j1, (byte)k1, (byte)l1, (byte)l, (byte)i1);
+                        }
+                        else if (flag)
+                        {
+                            object = new Packet31RelEntityMove(this.myEntity.entityId, (byte)j1, (byte)k1, (byte)l1);
+                        }
+                        else if (flag1)
+                        {
+                            object = new Packet32EntityLook(this.myEntity.entityId, (byte)l, (byte)i1);
+                        }
                     }
-                    else if (flag)
+                    else
                     {
-                        object = new Packet31RelEntityMove(this.myEntity.entityId, (byte)j1, (byte)k1, (byte)l1);
+                        this.ticksSinceLastForcedTeleport = 0;
+                        object = new Packet34EntityTeleport(this.myEntity.entityId, i, j, k, (byte)l, (byte)i1);
                     }
-                    else if (flag1)
-                    {
-                        object = new Packet32EntityLook(this.myEntity.entityId, (byte)l, (byte)i1);
-                    }
-                }
-                else
-                {
-                    this.ticksSinceLastForcedTeleport = 0;
-                    object = new Packet34EntityTeleport(this.myEntity.entityId, i, j, k, (byte)l, (byte)i1);
                 }
 
                 if (this.sendVelocityUpdates)
@@ -460,7 +463,7 @@ public class EntityTrackerEntry
     {
         if (this.myEntity.isDead)
         {
-            this.myEntity.worldObj.func_98180_V().func_98236_b("Fetching addPacket for removed entity");
+            this.myEntity.worldObj.getWorldLogAgent().logWarning("Fetching addPacket for removed entity");
         }
 
         Packet pkt = FMLNetworkHandler.getEntitySpawningPacket(this.myEntity);

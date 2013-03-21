@@ -136,7 +136,7 @@ public class ItemEnderEye extends Item
                                 k3 = par6 + Direction.offsetZ[j2] * k2;
                                 l2 += Direction.offsetX[k1] * j3;
                                 k3 += Direction.offsetZ[k1] * j3;
-                                par3World.setBlockAndMetadataWithNotify(l2, par5, k3, Block.endPortal.blockID, 0, 2);
+                                par3World.setBlock(l2, par5, k3, Block.endPortal.blockID, 0, 2);
                             }
                         }
                     }

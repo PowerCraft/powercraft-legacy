@@ -5,27 +5,27 @@ import net.minecraft.block.Block;
 
 final class CallableBlockType implements Callable
 {
-    final int field_85080_a;
+    final int blockID;
 
     CallableBlockType(int par1)
     {
-        this.field_85080_a = par1;
+        this.blockID = par1;
     }
 
-    public String func_85079_a()
+    public String callBlockType()
     {
         try
         {
-            return String.format("ID #%d (%s // %s)", new Object[] {Integer.valueOf(this.field_85080_a), Block.blocksList[this.field_85080_a].getUnlocalizedName(), Block.blocksList[this.field_85080_a].getClass().getCanonicalName()});
+            return String.format("ID #%d (%s // %s)", new Object[] {Integer.valueOf(this.blockID), Block.blocksList[this.blockID].getUnlocalizedName(), Block.blocksList[this.blockID].getClass().getCanonicalName()});
         }
         catch (Throwable throwable)
         {
-            return "ID #" + this.field_85080_a;
+            return "ID #" + this.blockID;
         }
     }
 
     public Object call()
     {
-        return this.func_85079_a();
+        return this.callBlockType();
     }
 }

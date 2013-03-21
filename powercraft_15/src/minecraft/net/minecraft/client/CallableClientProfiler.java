@@ -7,20 +7,20 @@ import java.util.concurrent.Callable;
 @SideOnly(Side.CLIENT)
 public class CallableClientProfiler implements Callable
 {
-    final Minecraft field_90046_a;
+    final Minecraft theMinecraft;
 
     public CallableClientProfiler(Minecraft par1Minecraft)
     {
-        this.field_90046_a = par1Minecraft;
+        this.theMinecraft = par1Minecraft;
     }
 
-    public String func_90045_a()
+    public String callClientProfilerInfo()
     {
-        return this.field_90046_a.mcProfiler.profilingEnabled ? this.field_90046_a.mcProfiler.getNameOfLastSection() : "N/A (disabled)";
+        return this.theMinecraft.mcProfiler.profilingEnabled ? this.theMinecraft.mcProfiler.getNameOfLastSection() : "N/A (disabled)";
     }
 
     public Object call()
     {
-        return this.func_90045_a();
+        return this.callClientProfilerInfo();
     }
 }

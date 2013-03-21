@@ -118,7 +118,7 @@ public class NEISPH implements IServerPacketHandler
         TileEntity tile = world.getBlockTileEntity(coord.x, coord.y, coord.z);
         if(tile instanceof TileEntityMobSpawner)
         {
-            ((TileEntityMobSpawner)tile).func_98049_a().func_98272_a(mobtype);
+            ((TileEntityMobSpawner)tile).func_98049_a().setMobID(mobtype);
             tile.onInventoryChanged();
             world.markBlockForUpdate(coord.x, coord.y, coord.z);
         }

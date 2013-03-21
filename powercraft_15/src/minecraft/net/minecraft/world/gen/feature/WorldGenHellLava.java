@@ -84,7 +84,7 @@ public class WorldGenHellLava extends WorldGenerator
 
             if (!this.field_94524_b && l == 4 && i1 == 1 || l == 5)
             {
-                par1World.setBlockAndMetadataWithNotify(par3, par4, par5, this.hellLavaID, 0, 2);
+                par1World.setBlock(par3, par4, par5, this.hellLavaID, 0, 2);
                 par1World.scheduledUpdatesAreImmediate = true;
                 Block.blocksList[this.hellLavaID].updateTick(par1World, par3, par4, par5, par2Random);
                 par1World.scheduledUpdatesAreImmediate = false;

@@ -12,7 +12,7 @@ import net.minecraft.util.Icon;
 public class BlockCloth extends Block
 {
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94349_a;
+    private Icon[] iconArray;
 
     public BlockCloth()
     {
@@ -27,7 +27,7 @@ public class BlockCloth extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return this.field_94349_a[par2];
+        return this.iconArray[par2 % this.iconArray.length];
     }
 
     /**
@@ -68,13 +68,18 @@ public class BlockCloth extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
-    {
-        this.field_94349_a = new Icon[16];
 
-        for (int i = 0; i < this.field_94349_a.length; ++i)
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.iconArray = new Icon[16];
+
+        for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.field_94349_a[i] = par1IconRegister.func_94245_a("cloth_" + i);
+            this.iconArray[i] = par1IconRegister.registerIcon("cloth_" + i);
         }
     }
 }

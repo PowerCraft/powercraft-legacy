@@ -30,7 +30,7 @@ public class GameSettings
 
     /** Limit framerate labels */
     private static final String[] LIMIT_FRAMERATES = new String[] {"performance.max", "performance.balanced", "performance.powersaver"};
-    private static final String[] field_98303_au = new String[] {"options.ao.off", "options.ao.min", "options.ao.max"};
+    private static final String[] AMBIENT_OCCLUSIONS = new String[] {"options.ao.off", "options.ao.min", "options.ao.max"};
     public float musicVolume = 1.0F;
     public float soundVolume = 1.0F;
     public float mouseSensitivity = 0.5F;
@@ -77,10 +77,10 @@ public class GameSettings
     public int overrideWidth = 0;
     public int overrideHeight = 0;
     public boolean heldItemTooltips = true;
-    public float field_96691_E = 1.0F;
-    public float field_96692_F = 1.0F;
-    public float field_96693_G = 0.44366196F;
-    public float field_96694_H = 1.0F;
+    public float chatScale = 1.0F;
+    public float chatWidth = 1.0F;
+    public float chatHeightUnfocused = 0.44366196F;
+    public float chatHeightFocused = 1.0F;
     public KeyBinding keyBindForward = new KeyBinding("key.forward", 17);
     public KeyBinding keyBindLeft = new KeyBinding("key.left", 30);
     public KeyBinding keyBindBack = new KeyBinding("key.back", 31);
@@ -255,25 +255,25 @@ public class GameSettings
 
         if (par1EnumOptions == EnumOptions.CHAT_HEIGHT_FOCUSED)
         {
-            this.field_96694_H = par2;
+            this.chatHeightFocused = par2;
             this.mc.ingameGUI.getChatGUI().func_96132_b();
         }
 
         if (par1EnumOptions == EnumOptions.CHAT_HEIGHT_UNFOCUSED)
         {
-            this.field_96693_G = par2;
+            this.chatHeightUnfocused = par2;
             this.mc.ingameGUI.getChatGUI().func_96132_b();
         }
 
         if (par1EnumOptions == EnumOptions.CHAT_WIDTH)
         {
-            this.field_96692_F = par2;
+            this.chatWidth = par2;
             this.mc.ingameGUI.getChatGUI().func_96132_b();
         }
 
         if (par1EnumOptions == EnumOptions.CHAT_SCALE)
         {
-            this.field_96691_E = par2;
+            this.chatScale = par2;
             this.mc.ingameGUI.getChatGUI().func_96132_b();
         }
     }
@@ -408,7 +408,7 @@ public class GameSettings
 
     public float getOptionFloatValue(EnumOptions par1EnumOptions)
     {
-        return par1EnumOptions == EnumOptions.FOV ? this.fovSetting : (par1EnumOptions == EnumOptions.GAMMA ? this.gammaSetting : (par1EnumOptions == EnumOptions.MUSIC ? this.musicVolume : (par1EnumOptions == EnumOptions.SOUND ? this.soundVolume : (par1EnumOptions == EnumOptions.SENSITIVITY ? this.mouseSensitivity : (par1EnumOptions == EnumOptions.CHAT_OPACITY ? this.chatOpacity : (par1EnumOptions == EnumOptions.CHAT_HEIGHT_FOCUSED ? this.field_96694_H : (par1EnumOptions == EnumOptions.CHAT_HEIGHT_UNFOCUSED ? this.field_96693_G : (par1EnumOptions == EnumOptions.CHAT_SCALE ? this.field_96691_E : (par1EnumOptions == EnumOptions.CHAT_WIDTH ? this.field_96692_F : 0.0F)))))))));
+        return par1EnumOptions == EnumOptions.FOV ? this.fovSetting : (par1EnumOptions == EnumOptions.GAMMA ? this.gammaSetting : (par1EnumOptions == EnumOptions.MUSIC ? this.musicVolume : (par1EnumOptions == EnumOptions.SOUND ? this.soundVolume : (par1EnumOptions == EnumOptions.SENSITIVITY ? this.mouseSensitivity : (par1EnumOptions == EnumOptions.CHAT_OPACITY ? this.chatOpacity : (par1EnumOptions == EnumOptions.CHAT_HEIGHT_FOCUSED ? this.chatHeightFocused : (par1EnumOptions == EnumOptions.CHAT_HEIGHT_UNFOCUSED ? this.chatHeightUnfocused : (par1EnumOptions == EnumOptions.CHAT_SCALE ? this.chatScale : (par1EnumOptions == EnumOptions.CHAT_WIDTH ? this.chatWidth : 0.0F)))))))));
     }
 
     public boolean getOptionOrdinalValue(EnumOptions par1EnumOptions)
@@ -483,7 +483,7 @@ public class GameSettings
         }
         else
         {
-            return par1EnumOptions == EnumOptions.RENDER_DISTANCE ? s + getTranslation(RENDER_DISTANCES, this.renderDistance) : (par1EnumOptions == EnumOptions.DIFFICULTY ? s + getTranslation(DIFFICULTIES, this.difficulty) : (par1EnumOptions == EnumOptions.GUI_SCALE ? s + getTranslation(GUISCALES, this.guiScale) : (par1EnumOptions == EnumOptions.CHAT_VISIBILITY ? s + getTranslation(CHAT_VISIBILITIES, this.chatVisibility) : (par1EnumOptions == EnumOptions.PARTICLES ? s + getTranslation(PARTICLES, this.particleSetting) : (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT ? s + getTranslation(LIMIT_FRAMERATES, this.limitFramerate) : (par1EnumOptions == EnumOptions.AMBIENT_OCCLUSION ? s + getTranslation(field_98303_au, this.ambientOcclusion) : (par1EnumOptions == EnumOptions.GRAPHICS ? (this.fancyGraphics ? s + stringtranslate.translateKey("options.graphics.fancy") : s + stringtranslate.translateKey("options.graphics.fast")) : s)))))));
+            return par1EnumOptions == EnumOptions.RENDER_DISTANCE ? s + getTranslation(RENDER_DISTANCES, this.renderDistance) : (par1EnumOptions == EnumOptions.DIFFICULTY ? s + getTranslation(DIFFICULTIES, this.difficulty) : (par1EnumOptions == EnumOptions.GUI_SCALE ? s + getTranslation(GUISCALES, this.guiScale) : (par1EnumOptions == EnumOptions.CHAT_VISIBILITY ? s + getTranslation(CHAT_VISIBILITIES, this.chatVisibility) : (par1EnumOptions == EnumOptions.PARTICLES ? s + getTranslation(PARTICLES, this.particleSetting) : (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT ? s + getTranslation(LIMIT_FRAMERATES, this.limitFramerate) : (par1EnumOptions == EnumOptions.AMBIENT_OCCLUSION ? s + getTranslation(AMBIENT_OCCLUSIONS, this.ambientOcclusion) : (par1EnumOptions == EnumOptions.GRAPHICS ? (this.fancyGraphics ? s + stringtranslate.translateKey("options.graphics.fancy") : s + stringtranslate.translateKey("options.graphics.fast")) : s)))))));
         }
     }
 
@@ -706,22 +706,22 @@ public class GameSettings
 
                     if (astring[0].equals("chatHeightFocused"))
                     {
-                        this.field_96694_H = this.parseFloat(astring[1]);
+                        this.chatHeightFocused = this.parseFloat(astring[1]);
                     }
 
                     if (astring[0].equals("chatHeightUnfocused"))
                     {
-                        this.field_96693_G = this.parseFloat(astring[1]);
+                        this.chatHeightUnfocused = this.parseFloat(astring[1]);
                     }
 
                     if (astring[0].equals("chatScale"))
                     {
-                        this.field_96691_E = this.parseFloat(astring[1]);
+                        this.chatScale = this.parseFloat(astring[1]);
                     }
 
                     if (astring[0].equals("chatWidth"))
                     {
-                        this.field_96692_F = this.parseFloat(astring[1]);
+                        this.chatWidth = this.parseFloat(astring[1]);
                     }
 
                     for (int i = 0; i < this.keyBindings.length; ++i)
@@ -734,7 +734,7 @@ public class GameSettings
                 }
                 catch (Exception exception)
                 {
-                    this.mc.func_98033_al().func_98236_b("Skipping bad option: " + s);
+                    this.mc.getLogAgent().logWarning("Skipping bad option: " + s);
                 }
             }
 
@@ -743,7 +743,7 @@ public class GameSettings
         }
         catch (Exception exception1)
         {
-            this.mc.func_98033_al().func_98236_b("Failed to load options");
+            this.mc.getLogAgent().logWarning("Failed to load options");
             exception1.printStackTrace();
         }
     }
@@ -802,10 +802,10 @@ public class GameSettings
             printwriter.println("overrideWidth:" + this.overrideWidth);
             printwriter.println("overrideHeight:" + this.overrideHeight);
             printwriter.println("heldItemTooltips:" + this.heldItemTooltips);
-            printwriter.println("chatHeightFocused:" + this.field_96694_H);
-            printwriter.println("chatHeightUnfocused:" + this.field_96693_G);
-            printwriter.println("chatScale:" + this.field_96691_E);
-            printwriter.println("chatWidth:" + this.field_96692_F);
+            printwriter.println("chatHeightFocused:" + this.chatHeightFocused);
+            printwriter.println("chatHeightUnfocused:" + this.chatHeightUnfocused);
+            printwriter.println("chatScale:" + this.chatScale);
+            printwriter.println("chatWidth:" + this.chatWidth);
 
             for (int i = 0; i < this.keyBindings.length; ++i)
             {
@@ -816,7 +816,7 @@ public class GameSettings
         }
         catch (Exception exception)
         {
-            this.mc.func_98033_al().func_98236_b("Failed to save options");
+            this.mc.getLogAgent().logWarning("Failed to save options");
             exception.printStackTrace();
         }
 

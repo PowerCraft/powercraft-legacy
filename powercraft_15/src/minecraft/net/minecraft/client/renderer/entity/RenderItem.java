@@ -28,11 +28,11 @@ public class RenderItem extends Render
 
     /** The RNG used in RenderItem (for bobbing itemstacks on the ground) */
     private Random random = new Random();
-    public boolean field_77024_a = true;
+    public boolean renderWithColor = true;
 
     /** Defines the zLevel of rendering of item on GUI. */
     public float zLevel = 0.0F;
-    public static boolean field_82407_g = false;
+    public static boolean renderInFrame = false;
 
     public RenderItem()
     {
@@ -72,11 +72,11 @@ public class RenderItem extends Render
             {
                 ;
             }
-            else if (itemstack.func_94608_d() == 0 && block != null && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType()))
+            else if (itemstack.getItemSpriteNumber() == 0 && block != null && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderType()))
             {
                 GL11.glRotatef(f3, 0.0F, 1.0F, 0.0F);
 
-                if (field_82407_g)
+                if (renderInFrame)
                 {
                     GL11.glScalef(1.25F, 1.25F, 1.25F);
                     GL11.glTranslatef(0.0F, 0.05F, 0.0F);
@@ -117,7 +117,7 @@ public class RenderItem extends Render
 
                 if (itemstack.getItem().requiresMultipleRenderPasses())
                 {
-                    if (field_82407_g)
+                    if (renderInFrame)
                     {
                         GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
                         GL11.glTranslatef(0.0F, -0.05F, 0.0F);
@@ -129,13 +129,13 @@ public class RenderItem extends Render
 
                     this.loadTexture("/gui/items.png");
 
-                    for (int k = 0; k <= itemstack.getItem().getRenderPasses(itemstack.getItemDamage()); ++k)
+                    for (int k = 0; k < itemstack.getItem().getRenderPasses(itemstack.getItemDamage()); ++k)
                     {
                         this.random.setSeed(187L);
                         Icon icon = itemstack.getItem().getIcon(itemstack, k);
                         f8 = 1.0F;
 
-                        if (this.field_77024_a)
+                        if (this.renderWithColor)
                         {
                             i = Item.itemsList[itemstack.itemID].getColorFromItemStack(itemstack, k);
                             f5 = (float)(i >> 16 & 255) / 255.0F;
@@ -152,7 +152,7 @@ public class RenderItem extends Render
                 }
                 else
                 {
-                    if (field_82407_g)
+                    if (renderInFrame)
                     {
                         GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
                         GL11.glTranslatef(0.0F, -0.05F, 0.0F);
@@ -164,7 +164,7 @@ public class RenderItem extends Render
 
                     Icon icon1 = itemstack.getIconIndex();
 
-                    if (itemstack.func_94608_d() == 0)
+                    if (itemstack.getItemSpriteNumber() == 0)
                     {
                         this.loadTexture("/terrain.png");
                     }
@@ -173,7 +173,7 @@ public class RenderItem extends Render
                         this.loadTexture("/gui/items.png");
                     }
 
-                    if (this.field_77024_a)
+                    if (this.renderWithColor)
                     {
                         int l = Item.itemsList[itemstack.itemID].getColorFromItemStack(itemstack, 0);
                         f8 = (float)(l >> 16 & 255) / 255.0F;
@@ -203,13 +203,13 @@ public class RenderItem extends Render
 
         if (par2Icon == null)
         {
-            par2Icon = this.renderManager.renderEngine.func_96448_c(par1EntityItem.getEntityItem().func_94608_d());
+            par2Icon = this.renderManager.renderEngine.getMissingIcon(par1EntityItem.getEntityItem().getItemSpriteNumber());
         }
 
-        float f4 = par2Icon.func_94209_e();
-        float f5 = par2Icon.func_94212_f();
-        float f6 = par2Icon.func_94206_g();
-        float f7 = par2Icon.func_94210_h();
+        float f4 = par2Icon.getMinU();
+        float f5 = par2Icon.getMaxU();
+        float f6 = par2Icon.getMinV();
+        float f7 = par2Icon.getMaxV();
         float f8 = 1.0F;
         float f9 = 0.5F;
         float f10 = 0.25F;
@@ -219,7 +219,7 @@ public class RenderItem extends Render
         {
             GL11.glPushMatrix();
 
-            if (field_82407_g)
+            if (renderInFrame)
             {
                 GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
             }
@@ -238,6 +238,7 @@ public class RenderItem extends Render
 
             for (int k = 0; k < b0; ++k)
             {
+                GL11.glTranslatef(0.0F, 0.0F, f12 + f11);
                 // Makes items offset when in 3D, like when in 2D, looks much better. Considered a vanilla bug...
                 if (k > 0 && shouldSpreadItems())
                 {
@@ -251,7 +252,7 @@ public class RenderItem extends Render
                     GL11.glTranslatef(0f, 0f, f12 + f11);
                 }
 
-                if (itemstack.func_94608_d() == 0 && itemstack.itemID < Block.blocksList.length && Block.blocksList[itemstack.itemID] != null)
+                if (itemstack.getItemSpriteNumber() == 0)
                 {
                     this.loadTexture("/terrain.png");
                 }
@@ -261,13 +262,13 @@ public class RenderItem extends Render
                 }
 
                 GL11.glColor4f(par5, par6, par7, 1.0F);
-                ItemRenderer.renderItemIn2D(tessellator, f5, f6, f4, f7, par2Icon.func_94213_j(), par2Icon.func_94208_k(), f12);
+                ItemRenderer.renderItemIn2D(tessellator, f5, f6, f4, f7, par2Icon.getSheetWidth(), par2Icon.getSheetHeight(), f12);
 
                 if (itemstack != null && itemstack.hasEffect())
                 {
                     GL11.glDepthFunc(GL11.GL_EQUAL);
                     GL11.glDisable(GL11.GL_LIGHTING);
-                    this.renderManager.renderEngine.func_98187_b("%blur%/misc/glint.png");
+                    this.renderManager.renderEngine.bindTexture("%blur%/misc/glint.png");
                     GL11.glEnable(GL11.GL_BLEND);
                     GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
                     float f13 = 0.76F;
@@ -311,7 +312,7 @@ public class RenderItem extends Render
                     GL11.glTranslatef(f11, f16, f17);
                 }
 
-                if (!field_82407_g)
+                if (!renderInFrame)
                 {
                     GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
                 }
@@ -342,10 +343,9 @@ public class RenderItem extends Render
         float f2;
 
         Block block = (k < Block.blocksList.length ? Block.blocksList[k] : null);
-
-        if (par3ItemStack.func_94608_d() == 0 && block != null && RenderBlocks.renderItemIn3d(Block.blocksList[k].getRenderType()))
+        if (par3ItemStack.getItemSpriteNumber() == 0 && block != null && RenderBlocks.renderItemIn3d(Block.blocksList[k].getRenderType()))
         {
-            par2RenderEngine.func_98187_b("/terrain.png");
+            par2RenderEngine.bindTexture("/terrain.png");
             GL11.glPushMatrix();
             GL11.glTranslatef((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
             GL11.glScalef(10.0F, 10.0F, 10.0F);
@@ -358,13 +358,13 @@ public class RenderItem extends Render
             f = (float)(i1 >> 8 & 255) / 255.0F;
             f1 = (float)(i1 & 255) / 255.0F;
 
-            if (this.field_77024_a)
+            if (this.renderWithColor)
             {
                 GL11.glColor4f(f2, f, f1, 1.0F);
             }
 
             GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-            this.itemRenderBlocks.useInventoryTint = this.field_77024_a;
+            this.itemRenderBlocks.useInventoryTint = this.renderWithColor;
             this.itemRenderBlocks.renderBlockAsItem(block, l, 1.0F);
             this.itemRenderBlocks.useInventoryTint = true;
             GL11.glPopMatrix();
@@ -376,7 +376,7 @@ public class RenderItem extends Render
             if (Item.itemsList[k].requiresMultipleRenderPasses())
             {
                 GL11.glDisable(GL11.GL_LIGHTING);
-                par2RenderEngine.func_98187_b("/gui/items.png");
+                par2RenderEngine.bindTexture(par3ItemStack.getItemSpriteNumber() == 0 ? "/terrain.png" : "/gui/items.png");
 
                 for (j1 = 0; j1 < Item.itemsList[k].getRenderPasses(l); ++j1)
                 {
@@ -386,12 +386,12 @@ public class RenderItem extends Render
                     f1 = (float)(k1 >> 8 & 255) / 255.0F;
                     float f3 = (float)(k1 & 255) / 255.0F;
 
-                    if (this.field_77024_a)
+                    if (this.renderWithColor)
                     {
                         GL11.glColor4f(f, f1, f3, 1.0F);
                     }
 
-                    this.func_94149_a(par4, par5, icon1, 16, 16);
+                    this.renderIcon(par4, par5, icon1, 16, 16);
                 }
 
                 GL11.glEnable(GL11.GL_LIGHTING);
@@ -400,18 +400,18 @@ public class RenderItem extends Render
             {
                 GL11.glDisable(GL11.GL_LIGHTING);
 
-                if (par3ItemStack.func_94608_d() == 0)
+                if (par3ItemStack.getItemSpriteNumber() == 0)
                 {
-                    par2RenderEngine.func_98187_b("/terrain.png");
+                    par2RenderEngine.bindTexture("/terrain.png");
                 }
                 else
                 {
-                    par2RenderEngine.func_98187_b("/gui/items.png");
+                    par2RenderEngine.bindTexture("/gui/items.png");
                 }
 
                 if (icon == null)
                 {
-                    icon = par2RenderEngine.func_96448_c(par3ItemStack.func_94608_d());
+                    icon = par2RenderEngine.getMissingIcon(par3ItemStack.getItemSpriteNumber());
                 }
 
                 j1 = Item.itemsList[k].getColorFromItemStack(par3ItemStack, 0);
@@ -419,12 +419,12 @@ public class RenderItem extends Render
                 f2 = (float)(j1 >> 8 & 255) / 255.0F;
                 f = (float)(j1 & 255) / 255.0F;
 
-                if (this.field_77024_a)
+                if (this.renderWithColor)
                 {
                     GL11.glColor4f(f4, f2, f, 1.0F);
                 }
 
-                this.func_94149_a(par4, par5, icon, 16, 16);
+                this.renderIcon(par4, par5, icon, 16, 16);
                 GL11.glEnable(GL11.GL_LIGHTING);
             }
         }
@@ -439,7 +439,7 @@ public class RenderItem extends Render
     {
         if (par3ItemStack != null)
         {
-            if (!ForgeHooksClient.renderInventoryItem(renderBlocks, par2RenderEngine, par3ItemStack, field_77024_a, zLevel, (float)par4, (float)par5))
+            if (!ForgeHooksClient.renderInventoryItem(renderBlocks, par2RenderEngine, par3ItemStack, renderWithColor, zLevel, (float)par4, (float)par5))
             {
                 this.renderItemIntoGUI(par1FontRenderer, par2RenderEngine, par3ItemStack, par4, par5);
             }
@@ -449,12 +449,12 @@ public class RenderItem extends Render
                 GL11.glDepthFunc(GL11.GL_GREATER);
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDepthMask(false);
-                par2RenderEngine.func_98187_b("%blur%/misc/glint.png");
+                par2RenderEngine.bindTexture("%blur%/misc/glint.png");
                 this.zLevel -= 50.0F;
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_DST_COLOR);
                 GL11.glColor4f(0.5F, 0.25F, 0.8F, 1.0F);
-                this.func_77018_a(par4 * 431278612 + par5 * 32178161, par4 - 2, par5 - 2, 20, 20);
+                this.renderGlint(par4 * 431278612 + par5 * 32178161, par4 - 2, par5 - 2, 20, 20);
                 GL11.glDisable(GL11.GL_BLEND);
                 GL11.glDepthMask(true);
                 this.zLevel += 50.0F;
@@ -464,7 +464,7 @@ public class RenderItem extends Render
         }
     }
 
-    private void func_77018_a(int par1, int par2, int par3, int par4, int par5)
+    private void renderGlint(int par1, int par2, int par3, int par4, int par5)
     {
         for (int j1 = 0; j1 < 2; ++j1)
         {
@@ -505,10 +505,10 @@ public class RenderItem extends Render
      */
     public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5)
     {
-        this.func_94148_a(par1FontRenderer, par2RenderEngine, par3ItemStack, par4, par5, (String)null);
+        this.renderItemStack(par1FontRenderer, par2RenderEngine, par3ItemStack, par4, par5, (String)null);
     }
 
-    public void func_94148_a(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5, String par6Str)
+    public void renderItemStack(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5, String par6Str)
     {
         if (par3ItemStack != null)
         {
@@ -558,14 +558,14 @@ public class RenderItem extends Render
         par1Tessellator.draw();
     }
 
-    public void func_94149_a(int par1, int par2, Icon par3Icon, int par4, int par5)
+    public void renderIcon(int par1, int par2, Icon par3Icon, int par4, int par5)
     {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + par5), (double)this.zLevel, (double)par3Icon.func_94209_e(), (double)par3Icon.func_94210_h());
-        tessellator.addVertexWithUV((double)(par1 + par4), (double)(par2 + par5), (double)this.zLevel, (double)par3Icon.func_94212_f(), (double)par3Icon.func_94210_h());
-        tessellator.addVertexWithUV((double)(par1 + par4), (double)(par2 + 0), (double)this.zLevel, (double)par3Icon.func_94212_f(), (double)par3Icon.func_94206_g());
-        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)this.zLevel, (double)par3Icon.func_94209_e(), (double)par3Icon.func_94206_g());
+        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + par5), (double)this.zLevel, (double)par3Icon.getMinU(), (double)par3Icon.getMaxV());
+        tessellator.addVertexWithUV((double)(par1 + par4), (double)(par2 + par5), (double)this.zLevel, (double)par3Icon.getMaxU(), (double)par3Icon.getMaxV());
+        tessellator.addVertexWithUV((double)(par1 + par4), (double)(par2 + 0), (double)this.zLevel, (double)par3Icon.getMaxU(), (double)par3Icon.getMinV());
+        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)this.zLevel, (double)par3Icon.getMinU(), (double)par3Icon.getMinV());
         tessellator.draw();
     }
 

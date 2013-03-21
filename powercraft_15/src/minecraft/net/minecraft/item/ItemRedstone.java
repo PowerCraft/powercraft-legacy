@@ -66,7 +66,7 @@ public class ItemRedstone extends Item
             if (Block.redstoneWire.canPlaceBlockAt(par3World, par4, par5, par6))
             {
                 --par1ItemStack.stackSize;
-                par3World.func_94575_c(par4, par5, par6, Block.redstoneWire.blockID);
+                par3World.setBlock(par4, par5, par6, Block.redstoneWire.blockID);
             }
 
             return true;

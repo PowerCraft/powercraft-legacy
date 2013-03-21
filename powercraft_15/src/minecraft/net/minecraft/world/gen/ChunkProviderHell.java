@@ -541,7 +541,7 @@ public class ChunkProviderHell implements IChunkProvider
             (new WorldGenFlowers(Block.mushroomRed.blockID)).generate(this.worldObj, this.hellRNG, j1, k1, l1);
         }
 
-        WorldGenMinable worldgenminable = new WorldGenMinable(Block.field_94342_cr.blockID, 13, Block.netherrack.blockID);
+        WorldGenMinable worldgenminable = new WorldGenMinable(Block.oreNetherQuartz.blockID, 13, Block.netherrack.blockID);
         int j2;
 
         for (k1 = 0; k1 < 16; ++k1)

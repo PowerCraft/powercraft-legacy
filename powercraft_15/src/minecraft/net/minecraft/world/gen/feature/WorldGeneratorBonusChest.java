@@ -49,7 +49,7 @@ public class WorldGeneratorBonusChest extends WorldGenerator
 
                 if (par1World.isAirBlock(j1, k1, l1) && par1World.doesBlockHaveSolidTopSurface(j1, k1 - 1, l1))
                 {
-                    par1World.setBlockAndMetadataWithNotify(j1, k1, l1, Block.chest.blockID, 0, 2);
+                    par1World.setBlock(j1, k1, l1, Block.chest.blockID, 0, 2);
                     TileEntityChest tileentitychest = (TileEntityChest)par1World.getBlockTileEntity(j1, k1, l1);
 
                     if (tileentitychest != null && tileentitychest != null)
@@ -59,22 +59,22 @@ public class WorldGeneratorBonusChest extends WorldGenerator
 
                     if (par1World.isAirBlock(j1 - 1, k1, l1) && par1World.doesBlockHaveSolidTopSurface(j1 - 1, k1 - 1, l1))
                     {
-                        par1World.setBlockAndMetadataWithNotify(j1 - 1, k1, l1, Block.torchWood.blockID, 0, 2);
+                        par1World.setBlock(j1 - 1, k1, l1, Block.torchWood.blockID, 0, 2);
                     }
 
                     if (par1World.isAirBlock(j1 + 1, k1, l1) && par1World.doesBlockHaveSolidTopSurface(j1 - 1, k1 - 1, l1))
                     {
-                        par1World.setBlockAndMetadataWithNotify(j1 + 1, k1, l1, Block.torchWood.blockID, 0, 2);
+                        par1World.setBlock(j1 + 1, k1, l1, Block.torchWood.blockID, 0, 2);
                     }
 
                     if (par1World.isAirBlock(j1, k1, l1 - 1) && par1World.doesBlockHaveSolidTopSurface(j1 - 1, k1 - 1, l1))
                     {
-                        par1World.setBlockAndMetadataWithNotify(j1, k1, l1 - 1, Block.torchWood.blockID, 0, 2);
+                        par1World.setBlock(j1, k1, l1 - 1, Block.torchWood.blockID, 0, 2);
                     }
 
                     if (par1World.isAirBlock(j1, k1, l1 + 1) && par1World.doesBlockHaveSolidTopSurface(j1 - 1, k1 - 1, l1))
                     {
-                        par1World.setBlockAndMetadataWithNotify(j1, k1, l1 + 1, Block.torchWood.blockID, 0, 2);
+                        par1World.setBlock(j1, k1, l1 + 1, Block.torchWood.blockID, 0, 2);
                     }
 
                     return true;

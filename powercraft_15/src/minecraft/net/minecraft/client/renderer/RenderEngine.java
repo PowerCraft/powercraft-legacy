@@ -55,9 +55,9 @@ public class RenderEngine
 
     /** Missing texture image */
     private BufferedImage missingTextureImage = new BufferedImage(64, 64, 2);
-    public final TextureMap field_94154_l;
-    public final TextureMap field_94155_m;
-    private int field_94153_n;
+    public final TextureMap textureMapBlocks;
+    public final TextureMap textureMapItems;
+    private int boundTexture;
 
     public static Logger log = FMLLog.getLogger();
 
@@ -85,8 +85,8 @@ public class RenderEngine
         }
 
         graphics.dispose();
-        this.field_94154_l = new TextureMap(0, "terrain", "textures/blocks/", this.missingTextureImage);
-        this.field_94155_m = new TextureMap(1, "items", "textures/items/", this.missingTextureImage);
+        this.textureMapBlocks = new TextureMap(0, "terrain", "textures/blocks/", this.missingTextureImage);
+        this.textureMapItems = new TextureMap(1, "items", "textures/items/", this.missingTextureImage);
     }
 
     public int[] getTextureContents(String par1Str)
@@ -143,36 +143,36 @@ public class RenderEngine
         return par2ArrayOfInteger;
     }
 
-    public void func_98187_b(String par1Str)
+    public void bindTexture(String par1Str)
     {
         this.bindTexture(this.getTexture(par1Str));
     }
 
     private void bindTexture(int par1)
     {
-        if (par1 != this.field_94153_n)
+        if (par1 != this.boundTexture)
         {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1);
-            this.field_94153_n = par1;
+            this.boundTexture = par1;
         }
     }
 
-    public void func_98185_a()
+    public void resetBoundTexture()
     {
-        this.field_94153_n = -1;
+        this.boundTexture = -1;
     }
 
     public int getTexture(String par1Str)
     {
         if (par1Str.equals("/terrain.png"))
         {
-            this.field_94154_l.func_94246_d().func_94277_a(0);
-            return this.field_94154_l.func_94246_d().func_94282_c();
+            this.textureMapBlocks.getTexture().bindTexture(0);
+            return this.textureMapBlocks.getTexture().getGlTextureId();
         }
         else if (par1Str.equals("/gui/items.png"))
         {
-            this.field_94155_m.func_94246_d().func_94277_a(0);
-            return this.field_94155_m.func_94246_d().func_94282_c();
+            this.textureMapItems.getTexture().bindTexture(0);
+            return this.textureMapItems.getTexture().getGlTextureId();
         }
         else
         {
@@ -209,13 +209,13 @@ public class RenderEngine
 
                     if (inputstream == null)
                     {
-                        this.func_98184_a(this.missingTextureImage, i, flag, flag1);
+                        this.setupTextureExt(this.missingTextureImage, i, flag, flag1);
                     }
                     else
                     {
                         BufferedImage bufferedimage = this.readTextureImage(inputstream);
                         TextureFXManager.instance().fixTransparency(bufferedimage, par1Str);
-                        this.func_98184_a(bufferedimage, i, flag, flag1);
+                        this.setupTextureExt(bufferedimage, i, flag, flag1);
                     }
 
                     this.textureMap.put(s1, Integer.valueOf(i));
@@ -250,10 +250,10 @@ public class RenderEngine
      */
     public void setupTexture(BufferedImage par1BufferedImage, int par2)
     {
-        this.func_98184_a(par1BufferedImage, par2, false, false);
+        this.setupTextureExt(par1BufferedImage, par2, false, false);
     }
 
-    public void func_98184_a(BufferedImage par1BufferedImage, int par2, boolean par3, boolean par4)
+    public void setupTextureExt(BufferedImage par1BufferedImage, int par2, boolean par3, boolean par4)
     {
         this.bindTexture(par2);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
@@ -284,7 +284,7 @@ public class RenderEngine
 
         if (this.options != null && this.options.anaglyph)
         {
-            aint = this.func_98186_a(aint);
+            aint = this.colorToAnaglyph(aint);
         }
 
         this.imageData.clear();
@@ -293,7 +293,7 @@ public class RenderEngine
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, j, k, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, this.imageData);
     }
 
-    private int[] func_98186_a(int[] par1ArrayOfInteger)
+    private int[] colorToAnaglyph(int[] par1ArrayOfInteger)
     {
         int[] aint1 = new int[par1ArrayOfInteger.length];
 
@@ -322,7 +322,7 @@ public class RenderEngine
 
         if (this.options != null && this.options.anaglyph)
         {
-            par1ArrayOfInteger = this.func_98186_a(par1ArrayOfInteger);
+            par1ArrayOfInteger = this.colorToAnaglyph(par1ArrayOfInteger);
         }
 
         this.imageData.clear();
@@ -419,8 +419,8 @@ public class RenderEngine
 
     public void updateDynamicTextures()
     {
-        this.field_94154_l.func_94248_c();
-        this.field_94155_m.func_94248_c();
+        this.textureMapBlocks.updateAnimations();
+        this.textureMapItems.updateAnimations();
     }
 
     /**
@@ -429,7 +429,7 @@ public class RenderEngine
     public void refreshTextures()
     {
         ITexturePack itexturepack = this.texturePack.getSelectedTexturePack();
-        this.func_94152_c();
+        this.refreshTextureMaps();
         Iterator iterator = this.textureNameToImageMap.getKeySet().iterator();
         BufferedImage bufferedimage;
 
@@ -473,7 +473,7 @@ public class RenderEngine
 
                 BufferedImage bufferedimage1 = this.readTextureImage(itexturepack.getResourceAsStream(s));
                 TextureFXManager.instance().fixTransparency(bufferedimage1, s);
-                this.func_98184_a(bufferedimage1, j, flag, flag1);
+                this.setupTextureExt(bufferedimage1, j, flag, flag1);
             }
             catch (Exception ioexception)
             {
@@ -501,8 +501,8 @@ public class RenderEngine
             }
         }
 
-        Minecraft.getMinecraft().fontRenderer.func_98304_a();
-        Minecraft.getMinecraft().standardGalacticFontRenderer.func_98304_a();
+        Minecraft.getMinecraft().fontRenderer.readFontData();
+        Minecraft.getMinecraft().standardGalacticFontRenderer.readFontData();
     }
 
     /**
@@ -515,21 +515,21 @@ public class RenderEngine
         return bufferedimage;
     }
 
-    public void func_94152_c()
+    public void refreshTextureMaps()
     {
-        this.field_94154_l.func_94247_b();
-        this.field_94155_m.func_94247_b();
+        this.textureMapBlocks.refreshTextures();
+        this.textureMapItems.refreshTextures();
     }
 
-    public Icon func_96448_c(int par1)
+    public Icon getMissingIcon(int par1)
     {
         switch (par1)
         {
             case 0:
-                return this.field_94154_l.func_96455_e();
+                return this.textureMapBlocks.getMissingIcon();
             case 1:
             default:
-                return this.field_94155_m.func_96455_e();
+                return this.textureMapItems.getMissingIcon();
         }
     }
 }

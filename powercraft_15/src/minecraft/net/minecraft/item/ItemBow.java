@@ -17,9 +17,9 @@ import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
 public class ItemBow extends Item
 {
-    public static final String[] field_94601_a = new String[] {"bow_pull_0", "bow_pull_1", "bow_pull_2"};
+    public static final String[] bowPullIconNameArray = new String[] {"bow_pull_0", "bow_pull_1", "bow_pull_2"};
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94600_b;
+    private Icon[] iconArray;
 
     public ItemBow(int par1)
     {
@@ -156,20 +156,20 @@ public class ItemBow extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
-        super.func_94581_a(par1IconRegister);
-        this.field_94600_b = new Icon[field_94601_a.length];
+        super.updateIcons(par1IconRegister);
+        this.iconArray = new Icon[bowPullIconNameArray.length];
 
-        for (int i = 0; i < this.field_94600_b.length; ++i)
+        for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.field_94600_b[i] = par1IconRegister.func_94245_a(field_94601_a[i]);
+            this.iconArray[i] = par1IconRegister.registerIcon(bowPullIconNameArray[i]);
         }
     }
 
     @SideOnly(Side.CLIENT)
     public Icon func_94599_c(int par1)
     {
-        return this.field_94600_b[par1];
+        return this.iconArray[par1];
     }
 }

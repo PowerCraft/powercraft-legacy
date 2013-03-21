@@ -17,7 +17,7 @@ class TexturePackDownloadSuccess implements IDownloadSuccess
 
     public void onSuccess(File par1File)
     {
-        if (TexturePackList.func_77301_a(this.texturePacks))
+        if (TexturePackList.isDownloading(this.texturePacks))
         {
             TexturePackList.setSelectedTexturePack(this.texturePacks, new TexturePackCustom(TexturePackList.generateTexturePackID(this.texturePacks, par1File), par1File, TexturePackList.func_98143_h()));
             TexturePackList.getMinecraft(this.texturePacks).scheduleTexturePackRefresh();

@@ -390,7 +390,7 @@ public class GuiContainerManager
 
     public void setColouredItemRender(boolean enable)
     {
-        drawItems.field_77024_a = !enable;
+        drawItems.renderWithColor = !enable;
     }
 
     public static void enable3DRender()
@@ -407,7 +407,7 @@ public class GuiContainerManager
 
     public void bindTexture(String s)
     {
-        window.mc.renderEngine.func_98187_b(s);
+        window.mc.renderEngine.bindTexture(s);
     }
 
     public void load()

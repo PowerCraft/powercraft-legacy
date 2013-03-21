@@ -115,7 +115,7 @@ public class AnvilSaveConverter extends SaveFormatOld
         File file1 = new File(this.savesDirectory, par1Str);
         File file2 = new File(file1, "DIM-1");
         File file3 = new File(file1, "DIM1");
-        MinecraftServer.getServer().func_98033_al().func_98233_a("Scanning folders...");
+        MinecraftServer.getServer().getLogAgent().logInfo("Scanning folders...");
         this.addRegionFilesToCollection(file1, arraylist);
 
         if (file2.exists())
@@ -129,7 +129,7 @@ public class AnvilSaveConverter extends SaveFormatOld
         }
 
         int i = arraylist.size() + arraylist1.size() + arraylist2.size();
-        MinecraftServer.getServer().func_98033_al().func_98233_a("Total conversion count is " + i);
+        MinecraftServer.getServer().getLogAgent().logInfo("Total conversion count is " + i);
         WorldInfo worldinfo = this.getWorldInfo(par1Str);
         Object object = null;
 
@@ -226,7 +226,7 @@ public class AnvilSaveConverter extends SaveFormatOld
 
                         if (datainputstream == null)
                         {
-                            MinecraftServer.getServer().func_98033_al().func_98236_b("Failed to fetch input stream");
+                            MinecraftServer.getServer().getLogAgent().logWarning("Failed to fetch input stream");
                         }
                         else
                         {

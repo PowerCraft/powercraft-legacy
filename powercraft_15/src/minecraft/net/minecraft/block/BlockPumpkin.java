@@ -37,7 +37,7 @@ public class BlockPumpkin extends BlockDirectional
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94474_b : (par1 == 0 ? this.field_94474_b : (par2 == 2 && par1 == 2 ? this.field_94475_c : (par2 == 3 && par1 == 5 ? this.field_94475_c : (par2 == 0 && par1 == 3 ? this.field_94475_c : (par2 == 1 && par1 == 4 ? this.field_94475_c : this.field_94336_cN)))));
+        return par1 == 1 ? this.field_94474_b : (par1 == 0 ? this.field_94474_b : (par2 == 2 && par1 == 2 ? this.field_94475_c : (par2 == 3 && par1 == 5 ? this.field_94475_c : (par2 == 0 && par1 == 3 ? this.field_94475_c : (par2 == 1 && par1 == 4 ? this.field_94475_c : this.blockIcon)))));
     }
 
     /**
@@ -51,9 +51,9 @@ public class BlockPumpkin extends BlockDirectional
         {
             if (!par1World.isRemote)
             {
-                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 2);
-                par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4, 0, 0, 2);
-                par1World.setBlockAndMetadataWithNotify(par2, par3 - 2, par4, 0, 0, 2);
+                par1World.setBlock(par2, par3, par4, 0, 0, 2);
+                par1World.setBlock(par2, par3 - 1, par4, 0, 0, 2);
+                par1World.setBlock(par2, par3 - 2, par4, 0, 0, 2);
                 EntitySnowman entitysnowman = new EntitySnowman(par1World);
                 entitysnowman.setLocationAndAngles((double)par2 + 0.5D, (double)par3 - 1.95D, (double)par4 + 0.5D, 0.0F, 0.0F);
                 par1World.spawnEntityInWorld(entitysnowman);
@@ -74,19 +74,19 @@ public class BlockPumpkin extends BlockDirectional
 
             if (flag || flag1)
             {
-                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, 2);
-                par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4, 0, 0, 2);
-                par1World.setBlockAndMetadataWithNotify(par2, par3 - 2, par4, 0, 0, 2);
+                par1World.setBlock(par2, par3, par4, 0, 0, 2);
+                par1World.setBlock(par2, par3 - 1, par4, 0, 0, 2);
+                par1World.setBlock(par2, par3 - 2, par4, 0, 0, 2);
 
                 if (flag)
                 {
-                    par1World.setBlockAndMetadataWithNotify(par2 - 1, par3 - 1, par4, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2 + 1, par3 - 1, par4, 0, 0, 2);
+                    par1World.setBlock(par2 - 1, par3 - 1, par4, 0, 0, 2);
+                    par1World.setBlock(par2 + 1, par3 - 1, par4, 0, 0, 2);
                 }
                 else
                 {
-                    par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4 - 1, 0, 0, 2);
-                    par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4 + 1, 0, 0, 2);
+                    par1World.setBlock(par2, par3 - 1, par4 - 1, 0, 0, 2);
+                    par1World.setBlock(par2, par3 - 1, par4 + 1, 0, 0, 2);
                 }
 
                 EntityIronGolem entityirongolem = new EntityIronGolem(par1World);
@@ -136,10 +136,15 @@ public class BlockPumpkin extends BlockDirectional
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94475_c = par1IconRegister.func_94245_a(this.blockType ? "pumpkin_jack" : "pumpkin_face");
-        this.field_94474_b = par1IconRegister.func_94245_a("pumpkin_top");
-        this.field_94336_cN = par1IconRegister.func_94245_a("pumpkin_side");
+        this.field_94475_c = par1IconRegister.registerIcon(this.blockType ? "pumpkin_jack" : "pumpkin_face");
+        this.field_94474_b = par1IconRegister.registerIcon("pumpkin_top");
+        this.blockIcon = par1IconRegister.registerIcon("pumpkin_side");
     }
 }

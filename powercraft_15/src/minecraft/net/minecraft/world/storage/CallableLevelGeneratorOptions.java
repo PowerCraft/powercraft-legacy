@@ -11,13 +11,13 @@ class CallableLevelGeneratorOptions implements Callable
         this.worldInfoInstance = par1WorldInfo;
     }
 
-    public String func_85140_a()
+    public String callLevelGeneratorOptions()
     {
-        return WorldInfo.func_85130_c(this.worldInfoInstance);
+        return WorldInfo.getWorldGeneratorOptions(this.worldInfoInstance);
     }
 
     public Object call()
     {
-        return this.func_85140_a();
+        return this.callLevelGeneratorOptions();
     }
 }

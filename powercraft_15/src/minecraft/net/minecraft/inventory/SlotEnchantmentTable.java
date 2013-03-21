@@ -31,7 +31,10 @@ class SlotEnchantmentTable extends InventoryBasic
         this.container.onCraftMatrixChanged(this);
     }
 
-    public boolean func_94041_b(int par1, ItemStack par2ItemStack)
+    /**
+     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
+     */
+    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }

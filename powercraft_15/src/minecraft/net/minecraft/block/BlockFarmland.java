@@ -80,7 +80,7 @@ public class BlockFarmland extends Block
             }
             else if (!this.isCropsNearby(par1World, par2, par3, par4))
             {
-                par1World.func_94575_c(par2, par3, par4, Block.dirt.blockID);
+                par1World.setBlock(par2, par3, par4, Block.dirt.blockID);
             }
         }
         else
@@ -101,7 +101,7 @@ public class BlockFarmland extends Block
                 return;
             }
 
-            par1World.func_94575_c(par2, par3, par4, Block.dirt.blockID);
+            par1World.setBlock(par2, par3, par4, Block.dirt.blockID);
         }
     }
 
@@ -162,7 +162,7 @@ public class BlockFarmland extends Block
 
         if (material.isSolid())
         {
-            par1World.func_94575_c(par2, par3, par4, Block.dirt.blockID);
+            par1World.setBlock(par2, par3, par4, Block.dirt.blockID);
         }
     }
 
@@ -185,9 +185,14 @@ public class BlockFarmland extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94441_a = par1IconRegister.func_94245_a("farmland_wet");
-        this.field_94440_b = par1IconRegister.func_94245_a("farmland_dry");
+        this.field_94441_a = par1IconRegister.registerIcon("farmland_wet");
+        this.field_94440_b = par1IconRegister.registerIcon("farmland_dry");
     }
 }

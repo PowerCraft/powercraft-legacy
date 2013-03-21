@@ -35,7 +35,7 @@ public class GuiParticle extends Gui
 
     public void draw(float par1)
     {
-        this.mc.renderEngine.func_98187_b("/gui/particles.png");
+        this.mc.renderEngine.bindTexture("/gui/particles.png");
 
         for (int i = 0; i < this.particles.size(); ++i)
         {

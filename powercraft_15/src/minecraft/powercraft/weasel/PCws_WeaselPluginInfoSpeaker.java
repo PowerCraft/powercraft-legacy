@@ -17,8 +17,6 @@ public class PCws_WeaselPluginInfoSpeaker extends PCws_WeaselPluginInfo {
 
 	@Override
 	public void renderInventoryBlock(Block block, Object renderer) {
-		PC_Renderer.swapTerrain(block);
-
 		float px = 0.0625F;
 		
 		ValueWriting.setBlockBounds(block, 0 * px, 0, 0 * px, 16 * px, 3 * px, 16 * px);
@@ -28,9 +26,6 @@ public class PCws_WeaselPluginInfoSpeaker extends PCws_WeaselPluginInfo {
 		ValueWriting.setBlockBounds(block, 2F * px, 1 * px, 2F * px, 14F * px, 15 * px, 14F * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { null, icons[4], icons[5], icons[5], icons[5], icons[5] });
 		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
-		
-		PC_Renderer.resetTerrain(true);
-
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class GuiExtendedCreativeInv extends GuiContainer implements INEIGuiHandl
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
 	{
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.renderEngine.func_98187_b("/codechicken/nei/inv.png");
+        mc.renderEngine.bindTexture("/codechicken/nei/inv.png");
         
         int x = guiLeft;
         int y = guiTop-4;

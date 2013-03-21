@@ -7,71 +7,101 @@ import net.minecraft.util.Icon;
 @SideOnly(Side.CLIENT)
 public class IconFlipped implements Icon
 {
-    private final Icon field_96454_a;
-    private final boolean field_96452_b;
-    private final boolean field_96453_c;
+    private final Icon baseIcon;
+    private final boolean flipU;
+    private final boolean flipV;
 
     public IconFlipped(Icon par1Icon, boolean par2, boolean par3)
     {
-        this.field_96454_a = par1Icon;
-        this.field_96452_b = par2;
-        this.field_96453_c = par3;
+        this.baseIcon = par1Icon;
+        this.flipU = par2;
+        this.flipV = par3;
     }
 
-    public int func_94211_a()
+    /**
+     * Returns the X position of this icon on its texture sheet, in pixels.
+     */
+    public int getOriginX()
     {
-        return this.field_96454_a.func_94211_a();
+        return this.baseIcon.getOriginX();
     }
 
-    public int func_94216_b()
+    /**
+     * Returns the Y position of this icon on its texture sheet, in pixels.
+     */
+    public int getOriginY()
     {
-        return this.field_96454_a.func_94216_b();
+        return this.baseIcon.getOriginY();
     }
 
-    public float func_94209_e()
+    /**
+     * Returns the minimum U coordinate to use when rendering with this icon.
+     */
+    public float getMinU()
     {
-        return this.field_96452_b ? this.field_96454_a.func_94212_f() : this.field_96454_a.func_94209_e();
+        return this.flipU ? this.baseIcon.getMaxU() : this.baseIcon.getMinU();
     }
 
-    public float func_94212_f()
+    /**
+     * Returns the maximum U coordinate to use when rendering with this icon.
+     */
+    public float getMaxU()
     {
-        return this.field_96452_b ? this.field_96454_a.func_94209_e() : this.field_96454_a.func_94212_f();
+        return this.flipU ? this.baseIcon.getMinU() : this.baseIcon.getMaxU();
     }
 
-    public float func_94214_a(double par1)
+    /**
+     * Gets a U coordinate on the icon. 0 returns uMin and 16 returns uMax. Other arguments return in-between values.
+     */
+    public float getInterpolatedU(double par1)
     {
-        float f = this.func_94212_f() - this.func_94209_e();
-        return this.func_94209_e() + f * ((float)par1 / 16.0F);
+        float f = this.getMaxU() - this.getMinU();
+        return this.getMinU() + f * ((float)par1 / 16.0F);
     }
 
-    public float func_94206_g()
+    /**
+     * Returns the minimum V coordinate to use when rendering with this icon.
+     */
+    public float getMinV()
     {
-        return this.field_96453_c ? this.field_96454_a.func_94206_g() : this.field_96454_a.func_94206_g();
+        return this.flipV ? this.baseIcon.getMinV() : this.baseIcon.getMinV();
     }
 
-    public float func_94210_h()
+    /**
+     * Returns the maximum V coordinate to use when rendering with this icon.
+     */
+    public float getMaxV()
     {
-        return this.field_96453_c ? this.field_96454_a.func_94206_g() : this.field_96454_a.func_94210_h();
+        return this.flipV ? this.baseIcon.getMinV() : this.baseIcon.getMaxV();
     }
 
-    public float func_94207_b(double par1)
+    /**
+     * Gets a V coordinate on the icon. 0 returns vMin and 16 returns vMax. Other arguments return in-between values.
+     */
+    public float getInterpolatedV(double par1)
     {
-        float f = this.func_94210_h() - this.func_94206_g();
-        return this.func_94206_g() + f * ((float)par1 / 16.0F);
+        float f = this.getMaxV() - this.getMinV();
+        return this.getMinV() + f * ((float)par1 / 16.0F);
     }
 
-    public String func_94215_i()
+    public String getIconName()
     {
-        return this.field_96454_a.func_94215_i();
+        return this.baseIcon.getIconName();
     }
 
-    public int func_94213_j()
+    /**
+     * Returns the width of the texture sheet this icon is on, in pixels.
+     */
+    public int getSheetWidth()
     {
-        return this.field_96454_a.func_94213_j();
+        return this.baseIcon.getSheetWidth();
     }
 
-    public int func_94208_k()
+    /**
+     * Returns the height of the texture sheet this icon is on, in pixels.
+     */
+    public int getSheetHeight()
     {
-        return this.field_96454_a.func_94208_k();
+        return this.baseIcon.getSheetHeight();
     }
 }

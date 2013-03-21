@@ -14,23 +14,23 @@ class CallableParticlePositionInfo implements Callable
 
     final double field_85100_c;
 
-    final RenderGlobal field_85098_d;
+    final RenderGlobal globalRenderer;
 
     CallableParticlePositionInfo(RenderGlobal par1RenderGlobal, double par2, double par4, double par6)
     {
-        this.field_85098_d = par1RenderGlobal;
+        this.globalRenderer = par1RenderGlobal;
         this.field_85101_a = par2;
         this.field_85099_b = par4;
         this.field_85100_c = par6;
     }
 
-    public String func_85097_a()
+    public String callParticlePositionInfo()
     {
         return CrashReportCategory.func_85074_a(this.field_85101_a, this.field_85099_b, this.field_85100_c);
     }
 
     public Object call()
     {
-        return this.func_85097_a();
+        return this.callParticlePositionInfo();
     }
 }

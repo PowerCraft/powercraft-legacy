@@ -454,11 +454,11 @@ public class EntityBoat extends Entity
 
                         if (i2 == Block.snow.blockID)
                         {
-                            this.worldObj.func_94571_i(i1, l1, j1);
+                            this.worldObj.setBlockToAir(i1, l1, j1);
                         }
                         else if (i2 == Block.waterlily.blockID)
                         {
-                            this.worldObj.func_94578_a(i1, l1, j1, true);
+                            this.worldObj.destroyBlock(i1, l1, j1, true);
                         }
                     }
                 }

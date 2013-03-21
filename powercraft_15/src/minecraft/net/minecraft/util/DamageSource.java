@@ -87,9 +87,9 @@ public class DamageSource
         return (new EntityDamageSource("thorns", par0Entity)).setMagicDamage();
     }
 
-    public static DamageSource func_94539_a(Explosion par0Explosion)
+    public static DamageSource setExplosionSource(Explosion par0Explosion)
     {
-        return par0Explosion != null && par0Explosion.func_94613_c() != null ? (new EntityDamageSource("explosion.player", par0Explosion.func_94613_c())).setDifficultyScaled().func_94540_d() : (new DamageSource("explosion")).setDifficultyScaled().func_94540_d();
+        return par0Explosion != null && par0Explosion.func_94613_c() != null ? (new EntityDamageSource("explosion.player", par0Explosion.func_94613_c())).setDifficultyScaled().setExplosion() : (new DamageSource("explosion")).setDifficultyScaled().setExplosion();
     }
 
     /**
@@ -109,12 +109,12 @@ public class DamageSource
         return this;
     }
 
-    public boolean func_94541_c()
+    public boolean isExplosion()
     {
         return this.explosion;
     }
 
-    public DamageSource func_94540_d()
+    public DamageSource setExplosion()
     {
         this.explosion = true;
         return this;

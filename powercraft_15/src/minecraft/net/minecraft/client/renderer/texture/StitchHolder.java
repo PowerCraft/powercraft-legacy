@@ -6,84 +6,87 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class StitchHolder implements Comparable
 {
-    private final Texture field_98151_a;
-    private final int field_94204_c;
-    private final int field_94201_d;
-    private boolean field_94202_e;
-    private float field_94205_a = 1.0F;
+    private final Texture theTexture;
+    private final int width;
+    private final int height;
+    private boolean rotated;
+    private float scaleFactor = 1.0F;
 
     public StitchHolder(Texture par1Texture)
     {
-        this.field_98151_a = par1Texture;
-        this.field_94204_c = par1Texture.func_94275_d();
-        this.field_94201_d = par1Texture.func_94276_e();
-        this.field_94202_e = this.func_94193_b(this.field_94201_d) > this.func_94193_b(this.field_94204_c);
+        this.theTexture = par1Texture;
+        this.width = par1Texture.getWidth();
+        this.height = par1Texture.getHeight();
+        this.rotated = this.ceil16(this.height) > this.ceil16(this.width);
     }
 
     public Texture func_98150_a()
     {
-        return this.field_98151_a;
+        return this.theTexture;
     }
 
-    public int func_94197_a()
+    public int getWidth()
     {
-        return this.field_94202_e ? this.func_94193_b((int)((float)this.field_94201_d * this.field_94205_a)) : this.func_94193_b((int)((float)this.field_94204_c * this.field_94205_a));
+        return this.rotated ? this.ceil16((int)((float)this.height * this.scaleFactor)) : this.ceil16((int)((float)this.width * this.scaleFactor));
     }
 
-    public int func_94199_b()
+    public int getHeight()
     {
-        return this.field_94202_e ? this.func_94193_b((int)((float)this.field_94204_c * this.field_94205_a)) : this.func_94193_b((int)((float)this.field_94201_d * this.field_94205_a));
+        return this.rotated ? this.ceil16((int)((float)this.width * this.scaleFactor)) : this.ceil16((int)((float)this.height * this.scaleFactor));
     }
 
-    public void func_94194_d()
+    public void rotate()
     {
-        this.field_94202_e = !this.field_94202_e;
+        this.rotated = !this.rotated;
     }
 
-    public boolean func_94195_e()
+    public boolean isRotated()
     {
-        return this.field_94202_e;
+        return this.rotated;
     }
 
-    private int func_94193_b(int par1)
+    private int ceil16(int par1)
     {
         return (par1 >> 0) + ((par1 & 0) == 0 ? 0 : 1) << 0;
     }
 
-    public void func_94196_a(int par1)
+    public void setNewDimension(int par1)
     {
-        if (this.field_94204_c > par1 && this.field_94201_d > par1)
+        if (this.width > par1 && this.height > par1)
         {
-            this.field_94205_a = (float)par1 / (float)Math.min(this.field_94204_c, this.field_94201_d);
+            this.scaleFactor = (float)par1 / (float)Math.min(this.width, this.height);
         }
     }
 
     public String toString()
     {
-        return "TextureHolder{width=" + this.field_94204_c + ", height=" + this.field_94201_d + '}';
+        return "TextureHolder{width=" + this.width + ", height=" + this.height + '}';
     }
 
-    public int func_94198_a(StitchHolder par1StitchHolder)
+    /**
+     * See Comparable.compareTo.
+     */
+    public int compareToStitchHolder(StitchHolder par1StitchHolder)
     {
         int i;
 
-        if (this.func_94199_b() == par1StitchHolder.func_94199_b())
+        if (this.getHeight() == par1StitchHolder.getHeight())
         {
-            if (this.func_94197_a() == par1StitchHolder.func_94197_a())
+            if (this.getWidth() == par1StitchHolder.getWidth())
             {
-                if (this.field_98151_a.func_94280_f() == null)
+                if (this.theTexture.getTextureName() == null)
                 {
-                    return par1StitchHolder.field_98151_a.func_94280_f() == null ? 0 : -1;
+                    return par1StitchHolder.theTexture.getTextureName() == null ? 0 : -1;
                 }
 
-                return this.field_98151_a.func_94280_f().compareTo(par1StitchHolder.field_98151_a.func_94280_f());
+                return this.theTexture.getTextureName().compareTo(par1StitchHolder.theTexture.getTextureName());
             }
 
-            i = this.func_94197_a() < par1StitchHolder.func_94197_a() ? 1 : -1;
+            i = this.getWidth() < par1StitchHolder.getWidth() ? 1 : -1;
         }
         else
         {
-            i = this.func_94199_b() < par1StitchHolder.func_94199_b() ? 1 : -1;
+            i = this.getHeight() < par1StitchHolder.getHeight() ? 1 : -1;
         }
 
         return i;
@@ -91,6 +94,6 @@ public class StitchHolder implements Comparable
 
     public int compareTo(Object par1Obj)
     {
-        return this.func_94198_a((StitchHolder)par1Obj);
+        return this.compareToStitchHolder((StitchHolder)par1Obj);
     }
 }

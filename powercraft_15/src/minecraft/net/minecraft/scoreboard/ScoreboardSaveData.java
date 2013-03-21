@@ -133,7 +133,7 @@ public class ScoreboardSaveData extends WorldSavedData
     {
         if (this.field_96507_a == null)
         {
-            MinecraftServer.getServer().func_98033_al().func_98236_b("Tried to save scoreboard without having a scoreboard...");
+            MinecraftServer.getServer().getLogAgent().logWarning("Tried to save scoreboard without having a scoreboard...");
         }
         else
         {

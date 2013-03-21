@@ -87,13 +87,13 @@ public class GuiPotionCreator extends GuiContainerWidget
 				effect = new PotionEffect(potion.id, 1200, 0);
 			int shade = selectedslot == slot ? 2 : blank ? 1 : 0;
 
-			mc.renderEngine.func_98187_b("/gui/enchant.png");
+			mc.renderEngine.bindTexture("/gui/enchant.png");
 			drawTexturedModalRect(x, y, 0, 166 + getSlotHeight() * shade, width - 30, getSlotHeight());
 			drawTexturedModalRect(x + width - 30, y, width - 23, 166 + getSlotHeight() * shade, 30, getSlotHeight());
 
 			if(potion.hasStatusIcon())
 			{
-				mc.renderEngine.func_98187_b("/gui/inventory.png");
+				mc.renderEngine.bindTexture("/gui/inventory.png");
 				int icon = potion.getStatusIconIndex();
 				drawTexturedModalRect(x + 1, y + 1, 0 + icon % 8 * 18, 198 + icon / 8 * 18, 18, 18);
 			}
@@ -356,7 +356,7 @@ public class GuiPotionCreator extends GuiContainerWidget
 	@Override
 	public void drawBackground()
 	{
-		mc.renderEngine.func_98187_b("/codechicken/nei/potion.png");
+		mc.renderEngine.bindTexture("/codechicken/nei/potion.png");
 		drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
 
 		FontUtils.drawCenteredString("Favourite Potions", xSize / 2, 4, 0x404040);

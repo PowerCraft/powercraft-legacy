@@ -343,8 +343,8 @@ public class PCws_BlockWeasel extends PC_Block {
 	}
 
 	public static int gettingPowerFrom(World world, int x, int y, int z, int rot){
-		if(world.isBlockIndirectlyProvidingPowerTo(x, y, z, rot)>0){
-			return world.isBlockIndirectlyProvidingPowerTo(x, y, z, rot);
+		if(world.getIndirectPowerLevelTo(x, y, z, rot)>0){
+			return world.getIndirectPowerLevelTo(x, y, z, rot);
 		}
 		if(GameInfo.getBID(world, x, y, z) == Block.redstoneWire.blockID){
 			return GameInfo.getMD(world, x, y, z);

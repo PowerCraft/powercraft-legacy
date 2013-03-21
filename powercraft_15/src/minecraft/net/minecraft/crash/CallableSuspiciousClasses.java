@@ -10,14 +10,14 @@ import java.util.concurrent.Callable;
 
 class CallableSuspiciousClasses implements Callable
 {
-    final CrashReport field_85086_a;
+    final CrashReport theCrashReport;
 
     CallableSuspiciousClasses(CrashReport par1CrashReport)
     {
-        this.field_85086_a = par1CrashReport;
+        this.theCrashReport = par1CrashReport;
     }
 
-    public String func_85085_a()
+    public String callSuspiciousClasses()
     {
         StringBuilder stringbuilder = new StringBuilder();
         ArrayList arraylist;

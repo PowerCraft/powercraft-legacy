@@ -278,7 +278,7 @@ public class EntityItem extends Entity
         {
             return false;
         }
-        else if (this.getEntityItem() != null && this.getEntityItem().itemID == Item.netherStar.itemID && par1DamageSource.func_94541_c())
+        else if (this.getEntityItem() != null && this.getEntityItem().itemID == Item.netherStar.itemID && par1DamageSource.isExplosion())
         {
             return false;
         }
@@ -432,7 +432,7 @@ public class EntityItem extends Entity
         {
             if (this.worldObj != null)
             {
-                this.worldObj.func_98180_V().func_98232_c("Item entity " + this.entityId + " has no item?!");
+                this.worldObj.getWorldLogAgent().func_98232_c("Item entity " + this.entityId + " has no item?!");
             }
 
             return new ItemStack(Block.stone);

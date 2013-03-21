@@ -35,7 +35,12 @@ public class BlockSilverfish extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister) {}
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister) {}
 
     /**
      * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData

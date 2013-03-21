@@ -143,14 +143,12 @@ public class PCde_BlockPlatform extends PC_Block {
 
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		float p = 0.0625F;
-		boolean swapped = PC_Renderer.swapTerrain(block);
 		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, p, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
 		ValueWriting.setBlockBounds(block, 0, 0, 1 - p, 1, 1, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[1]);
 		ValueWriting.setBlockBounds(block, 0, 0, 0, p, 1, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[1]);
-		PC_Renderer.resetTerrain(swapped);
 	}
 
 	@Override

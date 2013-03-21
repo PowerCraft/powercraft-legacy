@@ -69,7 +69,7 @@ public class EntitySmallFireball extends EntityFireball
 
                 if (this.worldObj.isAirBlock(i, j, k))
                 {
-                    this.worldObj.func_94575_c(i, j, k, Block.fire.blockID);
+                    this.worldObj.setBlock(i, j, k, Block.fire.blockID);
                 }
             }
 

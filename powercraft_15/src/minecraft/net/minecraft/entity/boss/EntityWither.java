@@ -375,7 +375,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
 
                                 if (i3 > 0 && i3 != Block.bedrock.blockID && i3 != Block.endPortal.blockID && i3 != Block.endPortalFrame.blockID)
                                 {
-                                    flag = this.worldObj.func_94578_a(j2, k2, l2, true) || flag;
+                                    flag = this.worldObj.destroyBlock(j2, k2, l2, true) || flag;
                                 }
                             }
                         }

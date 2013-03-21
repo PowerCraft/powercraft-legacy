@@ -30,10 +30,10 @@ public class RenderFireball extends Render
         Icon icon = Item.fireballCharge.getIconFromDamage(0);
         this.loadTexture("/gui/items.png");
         Tessellator tessellator = Tessellator.instance;
-        float f3 = icon.func_94209_e();
-        float f4 = icon.func_94212_f();
-        float f5 = icon.func_94206_g();
-        float f6 = icon.func_94210_h();
+        float f3 = icon.getMinU();
+        float f4 = icon.getMaxU();
+        float f5 = icon.getMinV();
+        float f6 = icon.getMaxV();
         float f7 = 1.0F;
         float f8 = 0.5F;
         float f9 = 0.25F;

@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class Gui
 {
-	//BY NEI
+	//NEI
     public float zLevel = 0.0F;
 
     protected void drawHorizontalLine(int par1, int par2, int par3, int par4)
@@ -79,7 +79,7 @@ public class Gui
     /**
      * Draws a rectangle with a vertical gradient between the specified colors.
      */
-    //BY NEI
+    //NEI
     public void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         float f = (float)(par5 >> 24 & 255) / 255.0F;
@@ -142,14 +142,14 @@ public class Gui
         tessellator.draw();
     }
 
-    public void func_94065_a(int par1, int par2, Icon par3Icon, int par4, int par5)
+    public void drawTexturedModelRectFromIcon(int par1, int par2, Icon par3Icon, int par4, int par5)
     {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + par5), (double)this.zLevel, (double)par3Icon.func_94209_e(), (double)par3Icon.func_94210_h());
-        tessellator.addVertexWithUV((double)(par1 + par4), (double)(par2 + par5), (double)this.zLevel, (double)par3Icon.func_94212_f(), (double)par3Icon.func_94210_h());
-        tessellator.addVertexWithUV((double)(par1 + par4), (double)(par2 + 0), (double)this.zLevel, (double)par3Icon.func_94212_f(), (double)par3Icon.func_94206_g());
-        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)this.zLevel, (double)par3Icon.func_94209_e(), (double)par3Icon.func_94206_g());
+        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + par5), (double)this.zLevel, (double)par3Icon.getMinU(), (double)par3Icon.getMaxV());
+        tessellator.addVertexWithUV((double)(par1 + par4), (double)(par2 + par5), (double)this.zLevel, (double)par3Icon.getMaxU(), (double)par3Icon.getMaxV());
+        tessellator.addVertexWithUV((double)(par1 + par4), (double)(par2 + 0), (double)this.zLevel, (double)par3Icon.getMaxU(), (double)par3Icon.getMinV());
+        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)this.zLevel, (double)par3Icon.getMinU(), (double)par3Icon.getMinV());
         tessellator.draw();
     }
 }

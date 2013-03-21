@@ -23,7 +23,7 @@ public class WorldGenReed extends WorldGenerator
                 {
                     if (Block.reed.canBlockStay(par1World, i1, j1 + i2, k1))
                     {
-                        par1World.setBlockAndMetadataWithNotify(i1, j1 + i2, k1, Block.reed.blockID, 0, 2);
+                        par1World.setBlock(i1, j1 + i2, k1, Block.reed.blockID, 0, 2);
                     }
                 }
             }

@@ -62,7 +62,7 @@ public class ItemMobSpawner extends ItemBlock
             	if(mobtype != null)
             	{
             	    NEICPH.sendMobSpawnerID(placedX, placedY, placedZ, mobtype);
-            	    tileentitymobspawner.func_98049_a().func_98272_a(mobtype);
+            	    tileentitymobspawner.func_98049_a().setMobID(mobtype);
             	}
             }
             return true;

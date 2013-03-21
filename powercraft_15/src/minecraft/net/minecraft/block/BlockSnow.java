@@ -27,9 +27,14 @@ public class BlockSnow extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("snow");
+        this.blockIcon = par1IconRegister.registerIcon("snow");
     }
 
     /**
@@ -92,7 +97,7 @@ public class BlockSnow extends Block
         Block block = Block.blocksList[l];
         if (block == null) return false;
         if (block == this && (par1World.getBlockMetadata(par2, par3 - 1, par4) & 7) == 7) return true;
-        if (block.isLeaves(par1World, par2, par3 - 1, par4) && Block.blocksList[l].isOpaqueCube()) return false;
+        if (!block.isLeaves(par1World, par2, par3 - 1, par4) && !Block.blocksList[l].isOpaqueCube()) return false;
         return par1World.getBlockMaterial(par2, par3 - 1, par4).blocksMovement();
     }
 
@@ -112,7 +117,7 @@ public class BlockSnow extends Block
     {
         if (!this.canPlaceBlockAt(par1World, par2, par3, par4))
         {
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
             return false;
         }
         else
@@ -128,7 +133,7 @@ public class BlockSnow extends Block
     public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6)
     {
         super.harvestBlock(par1World, par2EntityPlayer, par3, par4, par5, par6);
-        par1World.func_94571_i(par3, par4, par5);
+        par1World.setBlockToAir(par3, par4, par5);
     }
 
     /**
@@ -154,7 +159,7 @@ public class BlockSnow extends Block
     {
         if (par1World.getSavedLightValue(EnumSkyBlock.Block, par2, par3, par4) > 11)
         {
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
     }
 

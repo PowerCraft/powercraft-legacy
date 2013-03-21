@@ -354,14 +354,14 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             return;
         }
 
-        if (!replacer_canPlaceBlockAt(te.getWorldObj(), te.buildBlock, pos))
+        if (!replacer_canPlaceBlockAt(te.getWorldObj(), te.getStackInSlot(0), pos))
         {
             return;
         }
 
         PC_Struct2<ItemStack, Integer> harvested = replacer_harvestBlockAt(te.getWorldObj(), pos);
 
-        if (!replacer_placeBlockAt(te.getWorldObj(), te.extraMeta, te.buildBlock, pos))
+        if (!replacer_placeBlockAt(te.getWorldObj(), te.extraMeta, te.getStackInSlot(0), pos))
         {
             if (harvested != null)
             {
@@ -373,12 +373,12 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
         if (harvested == null)
         {
-            te.buildBlock = null;
+            te.setInventorySlotContents(0, null);
             te.extraMeta = -1;
         }
         else
         {
-            te.buildBlock = harvested.a;
+        	te.setInventorySlotContents(0, harvested.a);
             te.extraMeta = harvested.b;
         }
     }

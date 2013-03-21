@@ -94,8 +94,8 @@ public class MapItemRenderer
         tessellator.draw();
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_BLEND);
-        par2RenderEngine.func_98185_a();
-        par2RenderEngine.func_98187_b("/misc/mapicons.png");
+        par2RenderEngine.resetBoundTexture();
+        par2RenderEngine.bindTexture("/misc/mapicons.png");
         int j2 = 0;
 
         for (Iterator iterator = par3MapData.playersVisibleOnMap.values().iterator(); iterator.hasNext(); ++j2)

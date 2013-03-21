@@ -190,7 +190,7 @@ public abstract class SelectionListBase
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
         Tessellator tessellator = Tessellator.instance;
-        this.field_96622_a.renderEngine.func_98187_b("/gui/background.png");
+        this.field_96622_a.renderEngine.bindTexture("/gui/background.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float f1 = 32.0F;
         tessellator.startDrawingQuads();

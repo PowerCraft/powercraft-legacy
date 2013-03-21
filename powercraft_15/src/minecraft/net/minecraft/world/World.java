@@ -1,5 +1,6 @@
 package net.minecraft.world;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ import com.google.common.collect.ImmutableSetMultimap;
 
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.common.ForgeDummyContainer;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ForgeDirection;
@@ -63,6 +65,7 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
+import net.minecraft.entity.EnumCreatureType;
 
 public abstract class World implements IBlockAccess
 {
@@ -152,7 +155,7 @@ public abstract class World implements IBlockAccess
     /** The world-local pool of vectors */
     private final Vec3Pool vecPool = new Vec3Pool(300, 2000);
     private final Calendar theCalendar = Calendar.getInstance();
-    protected Scoreboard field_96442_D = new Scoreboard();
+    protected Scoreboard worldScoreboard = new Scoreboard();
     private final ILogAgent field_98181_L;
     private ArrayList collidingBoundingBoxes = new ArrayList();
     private boolean scanningTileEntities;
@@ -520,9 +523,12 @@ public abstract class World implements IBlockAccess
     }
 
     /**
-     * Sets the block ID and metadata, then notifies neighboring blocks of the change Params: x, y, z, BlockID, Metadata
+     * Sets the block ID and metadata at a given location. Args: X, Y, Z, new block ID, new metadata, flags. Flag 0x02
+     * will trigger a block update both on server and on client, flag 0x04, if used with 0x02, will prevent a block
+     * update on client worlds. Flag 0x01 will pass the original block ID when notifying adjacent blocks, otherwise it
+     * will pass 0.
      */
-    public boolean setBlockAndMetadataWithNotify(int par1, int par2, int par3, int par4, int par5, int par6)
+    public boolean setBlock(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         if (par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000)
         {
@@ -561,7 +567,7 @@ public abstract class World implements IBlockAccess
                         this.notifyBlockChange(par1, par2, par3, k1);
                         Block block = Block.blocksList[par4];
 
-                        if (block != null && block.func_96468_q_())
+                        if (block != null && block.hasComparatorInputOverride())
                         {
                             this.func_96440_m(par1, par2, par3, par4);
                         }
@@ -616,7 +622,8 @@ public abstract class World implements IBlockAccess
     }
 
     /**
-     * Sets the blocks metadata and if set will then notify blocks that this block changed. Args: x, y, z, metadata
+     * Sets the blocks metadata and if set will then notify blocks that this block changed, depending on the flag. Args:
+     * x, y, z, metadata, flag. See setBlock for flag description
      */
     public boolean setBlockMetadataWithNotify(int par1, int par2, int par3, int par4, int par5)
     {
@@ -651,7 +658,7 @@ public abstract class World implements IBlockAccess
                         this.notifyBlockChange(par1, par2, par3, l1);
                         Block block = Block.blocksList[l1];
 
-                        if (block != null && block.func_96468_q_())
+                        if (block != null && block.hasComparatorInputOverride())
                         {
                             this.func_96440_m(par1, par2, par3, l1);
                         }
@@ -667,12 +674,18 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    public boolean func_94571_i(int par1, int par2, int par3)
+    /**
+     * Sets a block to 0 and notifies relevant systems with the block change  Args: x, y, z
+     */
+    public boolean setBlockToAir(int par1, int par2, int par3)
     {
-        return this.setBlockAndMetadataWithNotify(par1, par2, par3, 0, 0, 3);
+        return this.setBlock(par1, par2, par3, 0, 0, 3);
     }
 
-    public boolean func_94578_a(int par1, int par2, int par3, boolean par4)
+    /**
+     * Destroys a block and optionally drops items. Args: X, Y, Z, dropItems
+     */
+    public boolean destroyBlock(int par1, int par2, int par3, boolean par4)
     {
         int l = this.getBlockId(par1, par2, par3);
 
@@ -686,7 +699,7 @@ public abstract class World implements IBlockAccess
                 Block.blocksList[l].dropBlockAsItem(this, par1, par2, par3, i1, 0);
             }
 
-            return this.setBlockAndMetadataWithNotify(par1, par2, par3, 0, 0, 3);
+            return this.setBlock(par1, par2, par3, 0, 0, 3);
         }
         else
         {
@@ -694,9 +707,12 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    public boolean func_94575_c(int par1, int par2, int par3, int par4)
+    /**
+     * Sets a block and notifies relevant systems with the block change  Args: x, y, z, blockID
+     */
+    public boolean setBlock(int par1, int par2, int par3, int par4)
     {
-        return this.setBlockAndMetadataWithNotify(par1, par2, par3, par4, 0, 3);
+        return this.setBlock(par1, par2, par3, par4, 0, 3);
     }
 
     /**
@@ -769,7 +785,11 @@ public abstract class World implements IBlockAccess
         this.notifyBlockOfNeighborChange(par1, par2, par3 + 1, par4);
     }
 
-    public void func_96439_d(int par1, int par2, int par3, int par4, int par5)
+    /**
+     * Calls notifyBlockOfNeighborChange on adjacent blocks, except the one on the given side. Args: X, Y, Z,
+     * changingBlockID, side
+     */
+    public void notifyBlocksOfNeighborChange(int par1, int par2, int par3, int par4, int par5)
     {
         if (par5 != 4)
         {
@@ -841,7 +861,10 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    public boolean func_94573_a(int par1, int par2, int par3, int par4)
+    /**
+     * Returns true if the given block will receive a scheduled tick in the future. Args: X, Y, Z, blockID
+     */
+    public boolean isBlockTickScheduled(int par1, int par2, int par3, int par4)
     {
         return false;
     }
@@ -973,7 +996,11 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    public int func_82734_g(int par1, int par2)
+    /**
+     * Gets the heightMapMinimum field of the given chunk, or 0 if the chunk is not loaded. Coords are in blocks. Args:
+     * X, Z
+     */
+    public int getChunkHeightMapMinimum(int par1, int par2)
     {
         if (par1 >= -30000000 && par2 >= -30000000 && par1 < 30000000 && par2 < 30000000)
         {
@@ -984,7 +1011,7 @@ public abstract class World implements IBlockAccess
             else
             {
                 Chunk chunk = this.getChunkFromChunkCoords(par1 >> 4, par2 >> 4);
-                return chunk.field_82912_p;
+                return chunk.heightMapMinimum;
             }
         }
         else
@@ -2050,7 +2077,15 @@ public abstract class World implements IBlockAccess
                     entity.func_85029_a(crashreportcategory);
                 }
 
-                throw new ReportedException(crashreport);
+                if (ForgeDummyContainer.removeErroringEntities)
+                {
+                    FMLLog.severe(crashreport.getCompleteReport());
+                    removeEntity(entity);
+                }
+                else
+                {
+                    throw new ReportedException(crashreport);
+                }
             }
 
             if (entity.isDead)
@@ -2112,7 +2147,16 @@ public abstract class World implements IBlockAccess
                     crashreport = CrashReport.makeCrashReport(throwable1, "Ticking entity");
                     crashreportcategory = crashreport.makeCategory("Entity being ticked");
                     entity.func_85029_a(crashreportcategory);
-                    throw new ReportedException(crashreport);
+
+                    if (ForgeDummyContainer.removeErroringEntities)
+                    {
+                        FMLLog.severe(crashreport.getCompleteReport());
+                        removeEntity(entity);
+                    }
+                    else
+                    {
+                        throw new ReportedException(crashreport);
+                    }
                 }
             }
 
@@ -2147,7 +2191,16 @@ public abstract class World implements IBlockAccess
                     crashreport = CrashReport.makeCrashReport(throwable2, "Ticking tile entity");
                     crashreportcategory = crashreport.makeCategory("Tile entity being ticked");
                     tileentity.func_85027_a(crashreportcategory);
-                    throw new ReportedException(crashreport);
+                    if (ForgeDummyContainer.removeErroringTileEntities)
+                    {
+                        FMLLog.severe(crashreport.getCompleteReport());
+                        tileentity.invalidate();
+                        setBlockToAir(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
+                    }
+                    else
+                    {
+                        throw new ReportedException(crashreport);
+                    }
                 }
             }
 
@@ -2726,7 +2779,7 @@ public abstract class World implements IBlockAccess
         if (this.getBlockId(par2, par3, par4) == Block.fire.blockID)
         {
             this.playAuxSFXAtEntity(par1EntityPlayer, 1004, par2, par3, par4, 0);
-            this.func_94571_i(par2, par3, par4);
+            this.setBlockToAir(par2, par3, par4);
             return true;
         }
         else
@@ -2911,6 +2964,13 @@ public abstract class World implements IBlockAccess
     public boolean doesBlockHaveSolidTopSurface(int par1, int par2, int par3)
     {
         return isBlockSolidOnSide(par1, par2, par3, ForgeDirection.UP);
+    }
+
+    @Deprecated //DO NOT USE THIS!!! USE doesBlockHaveSolidTopSurface
+    public boolean func_102026_a(Block par1Block, int par2)
+    {
+        // -.-  Mojang PLEASE make this location sensitive, you have no reason not to.
+        return par1Block == null ? false : (par1Block.blockMaterial.isOpaque() && par1Block.renderAsNormalBlock() ? true : (par1Block instanceof BlockStairs ? (par2 & 4) == 4 : (par1Block instanceof BlockHalfSlab ? (par2 & 8) == 8 : (par1Block instanceof BlockHopper ? true : (par1Block instanceof BlockSnow ? (par2 & 7) == 7 : false)))));
     }
 
     /**
@@ -3701,7 +3761,7 @@ public abstract class World implements IBlockAccess
                 block = null;
             }
 
-            return block != null && block.blockMaterial == Material.circuits && block1 == Block.anvil ? true : par1 > 0 && block == null && block1.func_94331_a(this, par2, par3, par4, par6, par8ItemStack);
+            return block != null && block.blockMaterial == Material.circuits && block1 == Block.anvil ? true : par1 > 0 && block == null && block1.canPlaceBlockOnSide(this, par2, par3, par4, par6, par8ItemStack);
         }
     }
 
@@ -3718,7 +3778,7 @@ public abstract class World implements IBlockAccess
         int l1 = i + l;
         int i2 = j + l;
         int j2 = k + l;
-        ChunkCache chunkcache = new ChunkCache(this, i1, j1, k1, l1, i2, j2);
+        ChunkCache chunkcache = new ChunkCache(this, i1, j1, k1, l1, i2, j2, 0);
         PathEntity pathentity = (new PathFinder(chunkcache, par4, par5, par6, par7)).createEntityPathTo(par1Entity, par2Entity, par3);
         this.theProfiler.endSection();
         return pathentity;
@@ -3737,7 +3797,7 @@ public abstract class World implements IBlockAccess
         int k2 = l + k1;
         int l2 = i1 + k1;
         int i3 = j1 + k1;
-        ChunkCache chunkcache = new ChunkCache(this, l1, i2, j2, k2, l2, i3);
+        ChunkCache chunkcache = new ChunkCache(this, l1, i2, j2, k2, l2, i3, 0);
         PathEntity pathentity = (new PathFinder(chunkcache, par6, par7, par8, par9)).createEntityPathTo(par1Entity, par2, par3, par4, par5);
         this.theProfiler.endSection();
         return pathentity;
@@ -3752,7 +3812,10 @@ public abstract class World implements IBlockAccess
         return i1 == 0 ? 0 : Block.blocksList[i1].isProvidingStrongPower(this, par1, par2, par3, par4);
     }
 
-    public int func_94577_B(int par1, int par2, int par3)
+    /**
+     * Returns the highest redstone signal strength powering the given block. Args: X, Y, Z.
+     */
+    public int getBlockPowerInput(int par1, int par2, int par3)
     {
         byte b0 = 0;
         int l = Math.max(b0, this.isBlockProvidingPowerTo(par1, par2 - 1, par3, 0));
@@ -3804,20 +3867,23 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    public boolean func_94574_k(int par1, int par2, int par3, int par4)
+    /**
+     * Returns the indirect signal strength being outputted by the given block in the *opposite* of the given direction.
+     * Args: X, Y, Z, direction
+     */
+    public boolean getIndirectPowerOutput(int par1, int par2, int par3, int par4)
     {
-        return this.isBlockIndirectlyProvidingPowerTo(par1, par2, par3, par4) > 0;
+        return this.getIndirectPowerLevelTo(par1, par2, par3, par4) > 0;
     }
 
     /**
-     * Is a block next to you getting powered (if its an attachable block) or is it providing power directly to you.
-     * Args: x, y, z, direction
+     * Gets the power level from a certain block face.  Args: x, y, z, direction
      */
-    public int isBlockIndirectlyProvidingPowerTo(int par1, int par2, int par3, int par4)
+    public int getIndirectPowerLevelTo(int par1, int par2, int par3, int par4)
     {
         if (this.isBlockNormalCube(par1, par2, par3))
         {
-            return this.func_94577_B(par1, par2, par3);
+            return this.getBlockPowerInput(par1, par2, par3);
         }
         else
         {
@@ -3832,16 +3898,16 @@ public abstract class World implements IBlockAccess
      */
     public boolean isBlockIndirectlyGettingPowered(int par1, int par2, int par3)
     {
-        return this.isBlockIndirectlyProvidingPowerTo(par1, par2 - 1, par3, 0) > 0 ? true : (this.isBlockIndirectlyProvidingPowerTo(par1, par2 + 1, par3, 1) > 0 ? true : (this.isBlockIndirectlyProvidingPowerTo(par1, par2, par3 - 1, 2) > 0 ? true : (this.isBlockIndirectlyProvidingPowerTo(par1, par2, par3 + 1, 3) > 0 ? true : (this.isBlockIndirectlyProvidingPowerTo(par1 - 1, par2, par3, 4) > 0 ? true : this.isBlockIndirectlyProvidingPowerTo(par1 + 1, par2, par3, 5) > 0))));
+        return this.getIndirectPowerLevelTo(par1, par2 - 1, par3, 0) > 0 ? true : (this.getIndirectPowerLevelTo(par1, par2 + 1, par3, 1) > 0 ? true : (this.getIndirectPowerLevelTo(par1, par2, par3 - 1, 2) > 0 ? true : (this.getIndirectPowerLevelTo(par1, par2, par3 + 1, 3) > 0 ? true : (this.getIndirectPowerLevelTo(par1 - 1, par2, par3, 4) > 0 ? true : this.getIndirectPowerLevelTo(par1 + 1, par2, par3, 5) > 0))));
     }
 
-    public int func_94572_D(int par1, int par2, int par3)
+    public int getStrongestIndirectPower(int par1, int par2, int par3)
     {
         int l = 0;
 
         for (int i1 = 0; i1 < 6; ++i1)
         {
-            int j1 = this.isBlockIndirectlyProvidingPowerTo(par1 + Facing.offsetsXForSide[i1], par2 + Facing.offsetsYForSide[i1], par3 + Facing.offsetsZForSide[i1], i1);
+            int j1 = this.getIndirectPowerLevelTo(par1 + Facing.offsetsXForSide[i1], par2 + Facing.offsetsYForSide[i1], par3 + Facing.offsetsZForSide[i1], i1);
 
             if (j1 >= 15)
             {
@@ -4365,9 +4431,9 @@ public abstract class World implements IBlockAccess
     @SideOnly(Side.CLIENT)
     public void func_92088_a(double par1, double par3, double par5, double par7, double par9, double par11, NBTTagCompound par13NBTTagCompound) {}
 
-    public Scoreboard func_96441_U()
+    public Scoreboard getScoreboard()
     {
-        return this.field_96442_D;
+        return this.worldScoreboard;
     }
 
     public void func_96440_m(int par1, int par2, int par3, int par4)
@@ -4382,7 +4448,7 @@ public abstract class World implements IBlockAccess
             {
                 Block block = Block.blocksList[l1];
 
-                if (Block.field_94346_cn.func_94487_f(l1))
+                if (Block.redstoneComparatorIdle.func_94487_f(l1))
                 {
                     block.onNeighborBlockChange(this, j1, par2, k1, par4);
                 }
@@ -4393,7 +4459,7 @@ public abstract class World implements IBlockAccess
                     l1 = this.getBlockId(j1, par2, k1);
                     block = Block.blocksList[l1];
 
-                    if (Block.field_94346_cn.func_94487_f(l1))
+                    if (Block.redstoneComparatorIdle.func_94487_f(l1))
                     {
                         block.onNeighborBlockChange(this, j1, par2, k1, par4);
                     }
@@ -4402,7 +4468,7 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    public ILogAgent func_98180_V()
+    public ILogAgent getWorldLogAgent()
     {
         return this.field_98181_L;
     }
@@ -4499,5 +4565,21 @@ public abstract class World implements IBlockAccess
         }
 
         return getChunkFromChunkCoords(x >> 4, z >> 4).getBlockLightOpacity(x & 15, y, z & 15);
+    }
+
+    /**
+     * Returns a count of entities that classify themselves as the specified creature type.
+     */
+    public int countEntities(EnumCreatureType type, boolean forSpawnCount)
+    {
+        int count = 0;
+        for (int x = 0; x < loadedEntityList.size(); x++)
+        {
+            if (((Entity)loadedEntityList.get(x)).isCreatureType(type, forSpawnCount))
+            {
+                count++;
+            }
+        }
+        return count;
     }
 }

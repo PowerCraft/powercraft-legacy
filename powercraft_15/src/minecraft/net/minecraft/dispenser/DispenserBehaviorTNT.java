@@ -14,10 +14,10 @@ final class DispenserBehaviorTNT extends BehaviorDefaultDispenseItem
      */
     protected ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
     {
-        EnumFacing enumfacing = BlockDispenser.func_100009_j_(par1IBlockSource.func_82620_h());
+        EnumFacing enumfacing = BlockDispenser.getFacing(par1IBlockSource.getBlockMetadata());
         World world = par1IBlockSource.getWorld();
         int i = par1IBlockSource.getXInt() + enumfacing.getFrontOffsetX();
-        int j = par1IBlockSource.getYInt() + enumfacing.func_96559_d();
+        int j = par1IBlockSource.getYInt() + enumfacing.getFrontOffsetY();
         int k = par1IBlockSource.getZInt() + enumfacing.getFrontOffsetZ();
         EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, (double)((float)i + 0.5F), (double)((float)j + 0.5F), (double)((float)k + 0.5F), (EntityLiving)null);
         world.spawnEntityInWorld(entitytntprimed);

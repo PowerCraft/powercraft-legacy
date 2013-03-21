@@ -57,7 +57,7 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG, PC_ITickHandler {
 		pos.x = (int)Math.round(player.posX);
 		pos.y = (int)Math.round(player.posY);
 		pos.z = (int)Math.round(player.posZ);
-		ChunkCache cc = new ChunkCache(player.worldObj, pos.x-10, pos.y-10, pos.z-10, pos.x+9, pos.y+9, pos.z+9);
+		ChunkCache cc = new ChunkCache(player.worldObj, pos.x-10, pos.y-10, pos.z-10, pos.x+9, pos.y+9, pos.z+9, 10);
 		GL11.glPushAttrib(-1);
 		int scale = 100*sr.getScaleFactor();
 		GL11.glViewport(0, mc.displayHeight-scale, scale, scale);
@@ -79,7 +79,6 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG, PC_ITickHandler {
 		if(update){
 			GL11.glNewList(glList, GL11.GL_COMPILE_AND_EXECUTE);
 			RenderBlocks renderer = new PChg_HologramRenderBlocks(cc);
-			PC_Renderer.resetTerrain(true);
 			PC_Renderer.tessellatorStartDrawingQuads();
 			for(int yy=-8; yy<8; yy++){
 				for(int xx=-8; xx<8; xx++){

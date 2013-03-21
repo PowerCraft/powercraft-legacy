@@ -10,6 +10,8 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.StepSound;
 import net.minecraft.block.material.Material;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityJumpHelper;
@@ -44,6 +46,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -1640,7 +1643,7 @@ public abstract class EntityLiving extends Entity
         par1NBTTagCompound.setShort("HurtTime", (short)this.hurtTime);
         par1NBTTagCompound.setShort("DeathTime", (short)this.deathTime);
         par1NBTTagCompound.setShort("AttackTime", (short)this.attackTime);
-        par1NBTTagCompound.setBoolean("CanPickUpLoot", this.func_98052_bS());
+        par1NBTTagCompound.setBoolean("CanPickUpLoot", this.canPickUpLoot());
         par1NBTTagCompound.setBoolean("PersistenceRequired", this.persistenceRequired);
         NBTTagList nbttaglist = new NBTTagList();
 
@@ -1700,7 +1703,7 @@ public abstract class EntityLiving extends Entity
         this.hurtTime = par1NBTTagCompound.getShort("HurtTime");
         this.deathTime = par1NBTTagCompound.getShort("DeathTime");
         this.attackTime = par1NBTTagCompound.getShort("AttackTime");
-        this.func_98053_h(par1NBTTagCompound.getBoolean("CanPickUpLoot"));
+        this.setCanPickUpLoot(par1NBTTagCompound.getBoolean("CanPickUpLoot"));
         this.persistenceRequired = par1NBTTagCompound.getBoolean("PersistenceRequired");
 
         if (par1NBTTagCompound.hasKey("CustomName") && par1NBTTagCompound.getString("CustomName").length() > 0)
@@ -1882,7 +1885,7 @@ public abstract class EntityLiving extends Entity
         this.worldObj.theProfiler.endSection();
         this.worldObj.theProfiler.startSection("looting");
 
-        if (!this.worldObj.isRemote && this.func_98052_bS() && !this.dead && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
+        if (!this.worldObj.isRemote && this.canPickUpLoot() && !this.dead && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
         {
             List list = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(1.0D, 0.0D, 1.0D));
             Iterator iterator = list.iterator();
@@ -1894,7 +1897,7 @@ public abstract class EntityLiving extends Entity
                 if (!entityitem.isDead && entityitem.getEntityItem() != null)
                 {
                     ItemStack itemstack = entityitem.getEntityItem();
-                    int i = func_82159_b(itemstack);
+                    int i = getArmorPosition(itemstack);
 
                     if (i > -1)
                     {
@@ -2431,17 +2434,32 @@ public abstract class EntityLiving extends Entity
             Integer integer = (Integer)iterator.next();
             PotionEffect potioneffect = (PotionEffect)this.activePotionsMap.get(integer);
 
-            if (!potioneffect.onUpdate(this))
+            try
             {
-                if (!this.worldObj.isRemote)
+                if (!potioneffect.onUpdate(this))
                 {
-                    iterator.remove();
-                    this.onFinishedPotionEffect(potioneffect);
+                    if (!this.worldObj.isRemote)
+                    {
+                        iterator.remove();
+                        this.onFinishedPotionEffect(potioneffect);
+                    }
+                }
+                else if (potioneffect.getDuration() % 600 == 0)
+                {
+                    this.onChangedPotionEffect(potioneffect);
                 }
             }
-            else if (potioneffect.getDuration() % 600 == 0)
+            catch (Throwable throwable)
             {
-                this.onChangedPotionEffect(potioneffect);
+                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Ticking mob effect instance");
+                CrashReportCategory crashreportcategory = crashreport.makeCategory("Mob effect being ticked");
+                crashreportcategory.addCrashSectionCallable("Effect Name", new CallableEffectName(this, potioneffect));
+                crashreportcategory.addCrashSectionCallable("Effect ID", new CallableEffectID(this, potioneffect));
+                crashreportcategory.addCrashSectionCallable("Effect Duration", new CallableEffectDuration(this, potioneffect));
+                crashreportcategory.addCrashSectionCallable("Effect Amplifier", new CallableEffectAmplifier(this, potioneffect));
+                crashreportcategory.addCrashSectionCallable("Effect is Splash", new CallableEffectIsSplash(this, potioneffect));
+                crashreportcategory.addCrashSectionCallable("Effect is Ambient", new CallableEffectIsAmbient(this, potioneffect));
+                throw new ReportedException(crashreport);
             }
         }
 
@@ -2851,7 +2869,7 @@ public abstract class EntityLiving extends Entity
         }
     }
 
-    public static int func_82159_b(ItemStack par0ItemStack)
+    public static int getArmorPosition(ItemStack par0ItemStack)
     {
         if (par0ItemStack.itemID != Block.pumpkin.blockID && par0ItemStack.itemID != Item.skull.itemID)
         {
@@ -3097,12 +3115,12 @@ public abstract class EntityLiving extends Entity
         this.equipmentDropChances[par1] = par2;
     }
 
-    public boolean func_98052_bS()
+    public boolean canPickUpLoot()
     {
         return this.canPickUpLoot;
     }
 
-    public void func_98053_h(boolean par1)
+    public void setCanPickUpLoot(boolean par1)
     {
         this.canPickUpLoot = par1;
     }

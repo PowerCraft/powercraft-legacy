@@ -21,7 +21,7 @@ public class BlockCocoa extends BlockDirectional
 {
     public static final String[] field_94470_a = new String[] {"cocoa_0", "cocoa_1", "cocoa_2"};
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94469_b;
+    private Icon[] iconArray;
 
     public BlockCocoa(int par1)
     {
@@ -36,7 +36,7 @@ public class BlockCocoa extends BlockDirectional
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return this.field_94469_b[2];
+        return this.iconArray[2];
     }
 
     /**
@@ -47,7 +47,7 @@ public class BlockCocoa extends BlockDirectional
         if (!this.canBlockStay(par1World, par2, par3, par4))
         {
             this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
         else if (par1World.rand.nextInt(5) == 0)
         {
@@ -65,12 +65,12 @@ public class BlockCocoa extends BlockDirectional
     @SideOnly(Side.CLIENT)
     public Icon func_94468_i_(int par1)
     {
-        if (par1 < 0 || par1 >= this.field_94469_b.length)
+        if (par1 < 0 || par1 >= this.iconArray.length)
         {
-            par1 = this.field_94469_b.length - 1;
+            par1 = this.iconArray.length - 1;
         }
 
-        return this.field_94469_b[par1];
+        return this.iconArray[par1];
     }
 
     /**
@@ -190,7 +190,7 @@ public class BlockCocoa extends BlockDirectional
         if (!this.canBlockStay(par1World, par2, par3, par4))
         {
             this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
     }
 
@@ -245,13 +245,18 @@ public class BlockCocoa extends BlockDirectional
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
-    {
-        this.field_94469_b = new Icon[field_94470_a.length];
 
-        for (int i = 0; i < this.field_94469_b.length; ++i)
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.iconArray = new Icon[field_94470_a.length];
+
+        for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.field_94469_b[i] = par1IconRegister.func_94245_a(field_94470_a[i]);
+            this.iconArray[i] = par1IconRegister.registerIcon(field_94470_a[i]);
         }
     }
 

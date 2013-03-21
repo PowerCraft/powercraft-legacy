@@ -28,7 +28,7 @@ public class TexturePackDefault extends TexturePackImplementation
         return TexturePackDefault.class.getResourceAsStream(par1Str) != null;
     }
 
-    public boolean func_94180_h()
+    public boolean isCompatible()
     {
         return true;
     }
@@ -45,11 +45,5 @@ public class TexturePackDefault extends TexturePackImplementation
         {
             return inputstream;
         }
-    }
-
-    @Override
-    public boolean func_94179_g()
-    {
-        return true;
     }
 }

@@ -1028,7 +1028,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	 */
 	protected static void renderImage_static(Gui gui, String texture, PC_VecI startPos, PC_VecI rectSize, PC_VecI imgOffset) {
 
-		mc.renderEngine.func_98187_b(texture);
+		mc.renderEngine.bindTexture(texture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -1103,7 +1103,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 		
 	
 	protected static void renderTextureSliced_static(Gui gui, PC_VecI startPos, String texture, PC_VecI rectSize, PC_VecI imgOffset, PC_VecI imgSize, PC_RectI frame, int color) {
-		mc.renderEngine.func_98187_b(texture);
+		mc.renderEngine.bindTexture(texture);
 		GL11.glColor4f(PC_Color.red(color), PC_Color.green(color), PC_Color.blue(color), 1.0f);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -1153,10 +1153,10 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 
 	protected static void drawTexturedModalRectWithIcon(int x, int y, int sizeX, int sizeY, Icon icon) {
 		Tessellator tessellator = Tessellator.instance;
-		float f3 = icon.func_94209_e();
-        float f4 = icon.func_94212_f();
-        float f5 = icon.func_94206_g();
-        float f6 = icon.func_94210_h();
+		float f3 = icon.getMinU();
+        float f4 = icon.getMaxU();
+        float f5 = icon.getMinV();
+        float f6 = icon.getMaxV();
 		tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, 1.0F, 0.0F);
         tessellator.addVertexWithUV(x, y+sizeY, 0.0D, (double)f3, (double)f6);

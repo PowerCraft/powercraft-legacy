@@ -209,7 +209,6 @@ public class PCde_BlockStairs extends PC_Block {
 	
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		float p = 0.0625F;
-		boolean swapped = PC_Renderer.swapTerrain(block);
 
 		ValueWriting.setBlockBounds(block, 0, 0F, 0.5F, 1, p, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
@@ -221,8 +220,6 @@ public class PCde_BlockStairs extends PC_Block {
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[1]);
 		ValueWriting.setBlockBounds(block, 0, 0.5F, 0, p, 0.5F + 0.5F, 0.5F);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[1]);
-
-		PC_Renderer.resetTerrain(swapped);
 	}
 
 	@Override

@@ -26,17 +26,11 @@ import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_RecipeRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.tileentity.PC_TileEntityWithInventory;
 
-public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
-{
-	
+public class PCma_TileEntityRoaster extends PC_TileEntityWithInventory{
+
 	private static Random random = new Random();
-	
-	private ItemStack roasterContents[] = new ItemStack[SIZE];
-
-    public static final int MAXSTACK = 16;
-
-    public static final int SIZE = 9;
 
     @PC_ClientServerSync(clientChangeAble=false)
     public int burnTime = 0;
@@ -49,6 +43,10 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     @PC_ClientServerSync(clientChangeAble=false)
     public boolean isActive;
 	
+    public PCma_TileEntityRoaster() {
+		super(PC_LangRegistry.tr("tile.PCmaRoaster.name") + " - " + PC_LangRegistry.tr("pc.roaster.insertFuel"), 9);
+	}
+
     public int getBurnTime() {
 		return burnTime;
 	}
@@ -111,116 +109,16 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     }
 
     @Override
-    public boolean canMachineInsertStackTo(int slot, ItemStack stack)
+    public boolean isStackValidForSlot(int slot, ItemStack stack)
     {
         return canPlayerInsertStackTo(slot, stack);
     }
 
     @Override
-    public boolean insertStackIntoInventory(ItemStack stack)
-    {
-        return PC_InventoryUtils.storeItemStackToInventoryFrom(this, stack, -1);
-    }
-
-    @Override
-    public boolean canDispenseStackFrom(int slot)
-    {
-        return true;
-    }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return SIZE;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int i)
-    {
-        return roasterContents[i];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int i, int j)
-    {
-        if (roasterContents[i] != null)
-        {
-            if (roasterContents[i].stackSize <= j)
-            {
-                ItemStack itemstack = roasterContents[i];
-                roasterContents[i] = null;
-                onInventoryChanged();
-                return itemstack;
-            }
-
-            ItemStack itemstack1 = roasterContents[i].splitStack(j);
-
-            if (roasterContents[i].stackSize == 0)
-            {
-                roasterContents[i] = null;
-            }
-
-            onInventoryChanged();
-            return itemstack1;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int i, ItemStack itemstack)
-    {
-        roasterContents[i] = itemstack;
-
-        if (itemstack != null && itemstack.stackSize > getInventoryStackLimit())
-        {
-            itemstack.stackSize = getInventoryStackLimit();
-        }
-
-        onInventoryChanged();
-    }
-
-    @Override
-    public String getInvName()
-    {
-        return PC_LangRegistry.tr("tile.PCmaRoaster.name") + " - " + PC_LangRegistry.tr("pc.roaster.insertFuel");
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readFromNBT(nbttagcompound);
-        PC_InventoryUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbttagcompound)
-    {
-        super.writeToNBT(nbttagcompound);
-        PC_InventoryUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
-    }
-
-    @Override
     public int getInventoryStackLimit()
     {
-        return MAXSTACK;
+        return 16;
     }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer entityplayer)
-    {
-        if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this)
-        {
-            return false;
-        }
-
-        return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
-    }
-
-    @Override
-    public void openChest() {}
 
     @Override
     public void closeChest()
@@ -512,51 +410,5 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 
         return 350;
     }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
-    {
-        if (roasterContents[par1] != null)
-        {
-            ItemStack itemstack = roasterContents[par1];
-            roasterContents[par1] = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public boolean needsSpecialInserter()
-    {
-        return false;
-    }
-    
-    @Override
-	public boolean canDropStackFrom(int slot) {
-		return true;
-	}
-
-	@Override
-	public int getSlotStackLimit(int slotIndex) {
-		return getInventoryStackLimit();
-	}
-
-	@Override
-	public boolean canPlayerTakeStack(int slotIndex, EntityPlayer entityPlayer) {
-		return true;
-	}
-
-	@Override
-	public boolean func_94042_c() {
-		return false;
-	}
-
-	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack) {
-		return PC_RecipeRegistry.isFuel(itemstack);
-	}
     
 }

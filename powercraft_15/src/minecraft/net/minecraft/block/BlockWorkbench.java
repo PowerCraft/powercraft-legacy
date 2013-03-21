@@ -29,15 +29,20 @@ public class BlockWorkbench extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94385_a : (par1 == 0 ? Block.planks.getBlockTextureFromSide(par1) : (par1 != 2 && par1 != 4 ? this.field_94336_cN : this.field_94384_b));
+        return par1 == 1 ? this.field_94385_a : (par1 == 0 ? Block.planks.getBlockTextureFromSide(par1) : (par1 != 2 && par1 != 4 ? this.blockIcon : this.field_94384_b));
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("workbench_side");
-        this.field_94385_a = par1IconRegister.func_94245_a("workbench_top");
-        this.field_94384_b = par1IconRegister.func_94245_a("workbench_front");
+        this.blockIcon = par1IconRegister.registerIcon("workbench_side");
+        this.field_94385_a = par1IconRegister.registerIcon("workbench_top");
+        this.field_94384_b = par1IconRegister.registerIcon("workbench_front");
     }
 
     /**

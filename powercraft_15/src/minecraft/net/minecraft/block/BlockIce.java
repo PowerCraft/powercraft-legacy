@@ -66,7 +66,7 @@ public class BlockIce extends BlockBreakable
         {
             if (par1World.provider.isHellWorld)
             {
-                par1World.func_94571_i(par3, par4, par5);
+                par1World.setBlockToAir(par3, par4, par5);
                 return;
             }
 
@@ -76,7 +76,7 @@ public class BlockIce extends BlockBreakable
 
             if (material.blocksMovement() || material.isLiquid())
             {
-                par1World.func_94575_c(par3, par4, par5, Block.waterMoving.blockID);
+                par1World.setBlock(par3, par4, par5, Block.waterMoving.blockID);
             }
         }
     }
@@ -98,12 +98,12 @@ public class BlockIce extends BlockBreakable
         {
             if (par1World.provider.isHellWorld)
             {
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
                 return;
             }
 
             this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-            par1World.func_94575_c(par2, par3, par4, Block.waterStill.blockID);
+            par1World.setBlock(par2, par3, par4, Block.waterStill.blockID);
         }
     }
 

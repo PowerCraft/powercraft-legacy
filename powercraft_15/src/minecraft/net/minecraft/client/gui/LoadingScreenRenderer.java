@@ -62,7 +62,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
         else
         {
             ScaledResolution scaledresolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-            GL11.glClear(256);
+            GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
             GL11.glMatrixMode(GL11.GL_PROJECTION);
             GL11.glLoadIdentity();
             GL11.glOrtho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 100.0D, 300.0D);
@@ -115,16 +115,16 @@ public class LoadingScreenRenderer implements IProgressUpdate
                 ScaledResolution scaledresolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
                 int k = scaledresolution.getScaledWidth();
                 int l = scaledresolution.getScaledHeight();
-                GL11.glClear(256);
+                GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
                 GL11.glMatrixMode(GL11.GL_PROJECTION);
                 GL11.glLoadIdentity();
                 GL11.glOrtho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 100.0D, 300.0D);
                 GL11.glMatrixMode(GL11.GL_MODELVIEW);
                 GL11.glLoadIdentity();
                 GL11.glTranslatef(0.0F, 0.0F, -200.0F);
-                GL11.glClear(16640);
+                GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
                 Tessellator tessellator = Tessellator.instance;
-                this.mc.renderEngine.func_98187_b("/gui/background.png");
+                this.mc.renderEngine.bindTexture("/gui/background.png");
                 float f = 32.0F;
                 tessellator.startDrawingQuads();
                 tessellator.setColorOpaque_I(4210752);

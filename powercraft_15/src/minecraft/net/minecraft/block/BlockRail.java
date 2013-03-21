@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 public class BlockRail extends BlockRailBase
 {
     @SideOnly(Side.CLIENT)
-    private Icon field_94359_b;
+    private Icon theIcon;
 
     protected BlockRail(int par1)
     {
@@ -23,14 +23,19 @@ public class BlockRail extends BlockRailBase
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par2 >= 6 ? this.field_94359_b : this.field_94336_cN;
+        return par2 >= 6 ? this.theIcon : this.blockIcon;
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        super.func_94332_a(par1IconRegister);
-        this.field_94359_b = par1IconRegister.func_94245_a("rail_turn");
+        super.registerIcons(par1IconRegister);
+        this.theIcon = par1IconRegister.registerIcon("rail_turn");
     }
 
     protected void func_94358_a(World par1World, int par2, int par3, int par4, int par5, int par6, int par7)

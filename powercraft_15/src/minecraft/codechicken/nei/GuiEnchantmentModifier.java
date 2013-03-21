@@ -29,7 +29,7 @@ public class GuiEnchantmentModifier extends GuiContainer
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
 	{
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.renderEngine.func_98187_b("/gui/enchant.png");
+        mc.renderEngine.bindTexture("/gui/enchant.png");
         GL11.glTranslatef(guiLeft, guiTop, 0);
         drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
         

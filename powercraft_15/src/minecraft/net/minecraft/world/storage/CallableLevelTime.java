@@ -11,13 +11,13 @@ class CallableLevelTime implements Callable
         this.worldInfoInstance = par1WorldInfo;
     }
 
-    public String func_85136_a()
+    public String callLevelTime()
     {
-        return String.format("%d game time, %d day time", new Object[] {Long.valueOf(WorldInfo.func_85126_g(this.worldInfoInstance)), Long.valueOf(WorldInfo.func_85129_h(this.worldInfoInstance))});
+        return String.format("%d game time, %d day time", new Object[] {Long.valueOf(WorldInfo.func_85126_g(this.worldInfoInstance)), Long.valueOf(WorldInfo.getWorldTime(this.worldInfoInstance))});
     }
 
     public Object call()
     {
-        return this.func_85136_a();
+        return this.callLevelTime();
     }
 }

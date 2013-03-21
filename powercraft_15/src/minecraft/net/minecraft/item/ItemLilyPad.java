@@ -47,7 +47,7 @@ public class ItemLilyPad extends ItemColored
 
                 if (par2World.getBlockMaterial(i, j, k) == Material.water && par2World.getBlockMetadata(i, j, k) == 0 && par2World.isAirBlock(i, j + 1, k))
                 {
-                    par2World.func_94575_c(i, j + 1, k, Block.waterlily.blockID);
+                    par2World.setBlock(i, j + 1, k, Block.waterlily.blockID);
 
                     if (!par3EntityPlayer.capabilities.isCreativeMode)
                     {

@@ -70,7 +70,7 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract
 
         if (this.breakingTime == 240 && this.theEntity.worldObj.difficultySetting == 3)
         {
-            this.theEntity.worldObj.func_94571_i(this.entityPosX, this.entityPosY, this.entityPosZ);
+            this.theEntity.worldObj.setBlockToAir(this.entityPosX, this.entityPosY, this.entityPosZ);
             this.theEntity.worldObj.playAuxSFX(1012, this.entityPosX, this.entityPosY, this.entityPosZ, 0);
             this.theEntity.worldObj.playAuxSFX(2001, this.entityPosX, this.entityPosY, this.entityPosZ, this.targetDoor.blockID);
         }

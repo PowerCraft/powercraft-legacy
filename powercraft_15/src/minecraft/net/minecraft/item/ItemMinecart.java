@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public class ItemMinecart extends Item
 {
-    private static final IBehaviorDispenseItem field_96602_b = new BehaviorDispenseMinecart();
+    private static final IBehaviorDispenseItem dispenserMinecartBehavior = new BehaviorDispenseMinecart();
     public int minecartType;
 
     public ItemMinecart(int par1, int par2)
@@ -19,7 +19,7 @@ public class ItemMinecart extends Item
         this.maxStackSize = 1;
         this.minecartType = par2;
         this.setCreativeTab(CreativeTabs.tabTransport);
-        BlockDispenser.dispenseBehaviorRegistry.putObject(this, field_96602_b);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(this, dispenserMinecartBehavior);
     }
 
     /**

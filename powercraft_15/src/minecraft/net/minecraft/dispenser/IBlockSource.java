@@ -16,7 +16,7 @@ public interface IBlockSource extends ILocatableSource
 
     int getZInt();
 
-    int func_82620_h();
+    int getBlockMetadata();
 
-    TileEntity func_82619_j();
+    TileEntity getBlockTileEntity();
 }

@@ -113,7 +113,11 @@ public class InventoryBasic implements IInventory
         return this.inventoryTitle;
     }
 
-    public boolean func_94042_c()
+    /**
+     * If this returns false, the inventory name will be used as an unlocalized name, and translated into the player's
+     * language. Otherwise it will be used directly.
+     */
+    public boolean isInvNameLocalized()
     {
         return this.field_94051_e;
     }
@@ -153,7 +157,10 @@ public class InventoryBasic implements IInventory
 
     public void closeChest() {}
 
-    public boolean func_94041_b(int par1, ItemStack par2ItemStack)
+    /**
+     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
+     */
+    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }

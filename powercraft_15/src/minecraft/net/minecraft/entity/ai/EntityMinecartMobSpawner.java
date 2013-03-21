@@ -62,7 +62,7 @@ public class EntityMinecartMobSpawner extends EntityMinecart
     public void onUpdate()
     {
         super.onUpdate();
-        this.field_98040_a.func_98278_g();
+        this.field_98040_a.updateSpawner();
     }
 
     @SideOnly(Side.CLIENT)

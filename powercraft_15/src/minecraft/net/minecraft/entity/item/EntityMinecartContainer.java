@@ -13,7 +13,7 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 
 public abstract class EntityMinecartContainer extends EntityMinecart implements IInventory
 {
-    private ItemStack[] field_94113_a = new ItemStack[36];
+    private ItemStack[] minecartContainerItems = new ItemStack[36];
     private boolean field_94112_b = true;
 
     public EntityMinecartContainer(World par1World)
@@ -66,7 +66,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
      */
     public ItemStack getStackInSlot(int par1)
     {
-        return this.field_94113_a[par1];
+        return this.minecartContainerItems[par1];
     }
 
     /**
@@ -75,23 +75,23 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
      */
     public ItemStack decrStackSize(int par1, int par2)
     {
-        if (this.field_94113_a[par1] != null)
+        if (this.minecartContainerItems[par1] != null)
         {
             ItemStack itemstack;
 
-            if (this.field_94113_a[par1].stackSize <= par2)
+            if (this.minecartContainerItems[par1].stackSize <= par2)
             {
-                itemstack = this.field_94113_a[par1];
-                this.field_94113_a[par1] = null;
+                itemstack = this.minecartContainerItems[par1];
+                this.minecartContainerItems[par1] = null;
                 return itemstack;
             }
             else
             {
-                itemstack = this.field_94113_a[par1].splitStack(par2);
+                itemstack = this.minecartContainerItems[par1].splitStack(par2);
 
-                if (this.field_94113_a[par1].stackSize == 0)
+                if (this.minecartContainerItems[par1].stackSize == 0)
                 {
-                    this.field_94113_a[par1] = null;
+                    this.minecartContainerItems[par1] = null;
                 }
 
                 return itemstack;
@@ -109,10 +109,10 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
      */
     public ItemStack getStackInSlotOnClosing(int par1)
     {
-        if (this.field_94113_a[par1] != null)
+        if (this.minecartContainerItems[par1] != null)
         {
-            ItemStack itemstack = this.field_94113_a[par1];
-            this.field_94113_a[par1] = null;
+            ItemStack itemstack = this.minecartContainerItems[par1];
+            this.minecartContainerItems[par1] = null;
             return itemstack;
         }
         else
@@ -126,7 +126,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
      */
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-        this.field_94113_a[par1] = par2ItemStack;
+        this.minecartContainerItems[par1] = par2ItemStack;
 
         if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
         {
@@ -151,7 +151,10 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
 
     public void closeChest() {}
 
-    public boolean func_94041_b(int par1, ItemStack par2ItemStack)
+    /**
+     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
+     */
+    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }
@@ -161,7 +164,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
      */
     public String getInvName()
     {
-        return this.func_94042_c() ? this.func_95999_t() : "container.minecart";
+        return this.isInvNameLocalized() ? this.func_95999_t() : "container.minecart";
     }
 
     /**
@@ -237,13 +240,13 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
         super.writeEntityToNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (int i = 0; i < this.field_94113_a.length; ++i)
+        for (int i = 0; i < this.minecartContainerItems.length; ++i)
         {
-            if (this.field_94113_a[i] != null)
+            if (this.minecartContainerItems[i] != null)
             {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
-                this.field_94113_a[i].writeToNBT(nbttagcompound1);
+                this.minecartContainerItems[i].writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
@@ -258,16 +261,16 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items");
-        this.field_94113_a = new ItemStack[this.getSizeInventory()];
+        this.minecartContainerItems = new ItemStack[this.getSizeInventory()];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
             NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
             int j = nbttagcompound1.getByte("Slot") & 255;
 
-            if (j >= 0 && j < this.field_94113_a.length)
+            if (j >= 0 && j < this.minecartContainerItems.length)
             {
-                this.field_94113_a[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                this.minecartContainerItems[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
         }
     }

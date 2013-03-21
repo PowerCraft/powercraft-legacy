@@ -20,7 +20,7 @@ public class PCco_MobSpawnerSetter implements PC_IPacketHandler, PC_IMSG
     {
         TileEntityMobSpawner tems = (TileEntityMobSpawner)player.worldObj.getBlockTileEntity((Integer)o[0], (Integer)o[1], (Integer)o[2]);
         MobSpawnerBaseLogic msbl = tems.func_98049_a();
-		msbl.func_98272_a((String)o[3]);
+		msbl.setMobID((String)o[3]);
         PC_ReflectHelper.setValue(MobSpawnerBaseLogic.class, msbl, 9, null, Entity.class);
         return true;
     }

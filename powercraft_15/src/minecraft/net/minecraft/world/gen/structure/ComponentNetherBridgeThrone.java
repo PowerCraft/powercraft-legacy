@@ -62,12 +62,12 @@ public class ComponentNetherBridgeThrone extends ComponentNetherBridgePiece
             if (par3StructureBoundingBox.isVecInside(j, i, k))
             {
                 this.hasSpawner = true;
-                par1World.setBlockAndMetadataWithNotify(j, i, k, Block.mobSpawner.blockID, 0, 2);
+                par1World.setBlock(j, i, k, Block.mobSpawner.blockID, 0, 2);
                 TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner)par1World.getBlockTileEntity(j, i, k);
 
                 if (tileentitymobspawner != null)
                 {
-                    tileentitymobspawner.func_98049_a().func_98272_a("Blaze");
+                    tileentitymobspawner.func_98049_a().setMobID("Blaze");
                 }
             }
         }

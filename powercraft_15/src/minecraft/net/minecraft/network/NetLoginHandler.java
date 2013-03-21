@@ -56,7 +56,7 @@ public class NetLoginHandler extends NetHandler
     public NetLoginHandler(MinecraftServer par1MinecraftServer, Socket par2Socket, String par3Str) throws IOException
     {
         this.mcServer = par1MinecraftServer;
-        this.myTCPConnection = new TcpConnection(par1MinecraftServer.func_98033_al(), par2Socket, par3Str, this, par1MinecraftServer.getKeyPair().getPrivate());
+        this.myTCPConnection = new TcpConnection(par1MinecraftServer.getLogAgent(), par2Socket, par3Str, this, par1MinecraftServer.getKeyPair().getPrivate());
         this.myTCPConnection.field_74468_e = 0;
     }
 
@@ -85,7 +85,7 @@ public class NetLoginHandler extends NetHandler
     {
         try
         {
-            this.mcServer.func_98033_al().func_98233_a("Disconnecting " + this.getUsernameAndAddress() + ": " + par1Str);
+            this.mcServer.getLogAgent().logInfo("Disconnecting " + this.getUsernameAndAddress() + ": " + par1Str);
             this.myTCPConnection.addToSendQueue(new Packet255KickDisconnect(par1Str));
             this.myTCPConnection.serverShutdown();
             this.connectionComplete = true;
@@ -200,7 +200,7 @@ public class NetLoginHandler extends NetHandler
 
     public void handleErrorMessage(String par1Str, Object[] par2ArrayOfObj)
     {
-        this.mcServer.func_98033_al().func_98233_a(this.getUsernameAndAddress() + " lost connection");
+        this.mcServer.getLogAgent().logInfo(this.getUsernameAndAddress() + " lost connection");
         this.connectionComplete = true;
     }
 

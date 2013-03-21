@@ -132,7 +132,7 @@ public class BlockFlowerPot extends Block
         if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4))
         {
             this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
     }
 

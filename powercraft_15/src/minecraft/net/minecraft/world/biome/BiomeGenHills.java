@@ -33,7 +33,7 @@ public class BiomeGenHills extends BiomeGenBase
 
             if (l1 == Block.stone.blockID)
             {
-                par1World.setBlockAndMetadataWithNotify(i1, j1, k1, Block.oreEmerald.blockID, 0, 2);
+                par1World.setBlock(i1, j1, k1, Block.oreEmerald.blockID, 0, 2);
             }
         }
 

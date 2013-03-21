@@ -121,12 +121,12 @@ public class GuiIngame extends Gui
         if (!this.mc.playerController.enableEverythingIsScrewedUpMode())
         {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.mc.renderEngine.func_98187_b("/gui/gui.png");
+            this.mc.renderEngine.bindTexture("/gui/gui.png");
             InventoryPlayer inventoryplayer = this.mc.thePlayer.inventory;
             this.zLevel = -90.0F;
             this.drawTexturedModalRect(k / 2 - 91, l - 22, 0, 0, 182, 22);
             this.drawTexturedModalRect(k / 2 - 91 - 1 + inventoryplayer.currentItem * 20, l - 22 - 1, 0, 22, 24, 22);
-            this.mc.renderEngine.func_98187_b("/gui/icons.png");
+            this.mc.renderEngine.bindTexture("/gui/icons.png");
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
             this.drawTexturedModalRect(k / 2 - 7, l / 2 - 7, 0, 0, 16, 16);
@@ -465,7 +465,7 @@ public class GuiIngame extends Gui
         {
             this.mc.mcProfiler.startSection("debug");
             GL11.glPushMatrix();
-            fontrenderer.drawStringWithShadow("Minecraft 1.5 (" + this.mc.debug + ")", 2, 2, 16777215);
+            fontrenderer.drawStringWithShadow("Minecraft 1.5.1 (" + this.mc.debug + ")", 2, 2, 16777215);
             fontrenderer.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
             fontrenderer.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
             fontrenderer.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
@@ -530,7 +530,7 @@ public class GuiIngame extends Gui
             this.mc.mcProfiler.endSection();
         }
 
-        ScoreObjective scoreobjective = this.mc.theWorld.func_96441_U().func_96539_a(1);
+        ScoreObjective scoreobjective = this.mc.theWorld.getScoreboard().func_96539_a(1);
 
         if (scoreobjective != null)
         {
@@ -546,7 +546,7 @@ public class GuiIngame extends Gui
         this.persistantChatGUI.drawChat(this.updateCounter);
         this.mc.mcProfiler.endSection();
         GL11.glPopMatrix();
-        scoreobjective = this.mc.theWorld.func_96441_U().func_96539_a(0);
+        scoreobjective = this.mc.theWorld.getScoreboard().func_96539_a(0);
 
         if (this.mc.gameSettings.keyBindPlayerList.pressed && (!this.mc.isIntegratedServerRunning() || this.mc.thePlayer.sendQueue.playerInfoList.size() > 1 || scoreobjective != null))
         {
@@ -583,7 +583,7 @@ public class GuiIngame extends Gui
                 if (j2 < list.size())
                 {
                     GuiPlayerInfo guiplayerinfo = (GuiPlayerInfo)list.get(j2);
-                    ScorePlayerTeam scoreplayerteam = this.mc.theWorld.func_96441_U().func_96509_i(guiplayerinfo.name);
+                    ScorePlayerTeam scoreplayerteam = this.mc.theWorld.getScoreboard().func_96509_i(guiplayerinfo.name);
                     String s3 = ScorePlayerTeam.func_96667_a(scoreplayerteam, guiplayerinfo.name);
                     fontrenderer.drawStringWithShadow(s3, k3, l2, 16777215);
 
@@ -601,7 +601,7 @@ public class GuiIngame extends Gui
                     }
 
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                    this.mc.renderEngine.func_98187_b("/gui/icons.png");
+                    this.mc.renderEngine.bindTexture("/gui/icons.png");
                     byte b4 = 0;
                     boolean flag3 = false;
 
@@ -649,7 +649,7 @@ public class GuiIngame extends Gui
 
         if (collection.size() <= 15)
         {
-            int k = 0;
+            int k = par4FontRenderer.getStringWidth(par1ScoreObjective.func_96678_d());
             String s;
 
             for (Iterator iterator = collection.iterator(); iterator.hasNext(); k = Math.max(k, par4FontRenderer.getStringWidth(s)))
@@ -716,7 +716,7 @@ public class GuiIngame extends Gui
             String s = BossStatus.bossName;
             fontrenderer.drawStringWithShadow(s, i / 2 - fontrenderer.getStringWidth(s) / 2, b0 - 10, 16777215);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.mc.renderEngine.func_98187_b("/gui/icons.png");
+            this.mc.renderEngine.bindTexture("/gui/icons.png");
         }
     }
 
@@ -727,7 +727,7 @@ public class GuiIngame extends Gui
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        this.mc.renderEngine.func_98187_b("%blur%/misc/pumpkinblur.png");
+        this.mc.renderEngine.bindTexture("%blur%/misc/pumpkinblur.png");
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(0.0D, (double)par2, -90.0D, 0.0D, 1.0D);
@@ -763,7 +763,7 @@ public class GuiIngame extends Gui
         GL11.glDepthMask(false);
         GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE_MINUS_SRC_COLOR);
         GL11.glColor4f(this.prevVignetteBrightness, this.prevVignetteBrightness, this.prevVignetteBrightness, 1.0F);
-        this.mc.renderEngine.func_98187_b("%blur%/misc/vignette.png");
+        this.mc.renderEngine.bindTexture("%blur%/misc/vignette.png");
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(0.0D, (double)par3, -90.0D, 0.0D, 1.0D);
@@ -794,12 +794,12 @@ public class GuiIngame extends Gui
         GL11.glDepthMask(false);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, par1);
-        this.mc.renderEngine.func_98187_b("/terrain.png");
+        this.mc.renderEngine.bindTexture("/terrain.png");
         Icon icon = Block.portal.getBlockTextureFromSide(1);
-        float f1 = icon.func_94209_e();
-        float f2 = icon.func_94206_g();
-        float f3 = icon.func_94212_f();
-        float f4 = icon.func_94210_h();
+        float f1 = icon.getMinU();
+        float f2 = icon.getMinV();
+        float f3 = icon.getMaxU();
+        float f4 = icon.getMaxV();
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(0.0D, (double)par3, -90.0D, (double)f1, (double)f4);

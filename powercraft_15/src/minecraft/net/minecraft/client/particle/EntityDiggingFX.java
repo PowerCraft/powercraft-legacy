@@ -66,18 +66,18 @@ public class EntityDiggingFX extends EntityFX
 
     public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        float f6 = ((float)this.field_94054_b + this.particleTextureJitterX / 4.0F) / 16.0F;
+        float f6 = ((float)this.particleTextureIndexX + this.particleTextureJitterX / 4.0F) / 16.0F;
         float f7 = f6 + 0.015609375F;
-        float f8 = ((float)this.field_94055_c + this.particleTextureJitterY / 4.0F) / 16.0F;
+        float f8 = ((float)this.particleTextureIndexY + this.particleTextureJitterY / 4.0F) / 16.0F;
         float f9 = f8 + 0.015609375F;
         float f10 = 0.1F * this.particleScale;
 
         if (this.particleTextureIndex != null)
         {
-            f6 = this.particleTextureIndex.func_94214_a((double)(this.particleTextureJitterX / 4.0F * 16.0F));
-            f7 = this.particleTextureIndex.func_94214_a((double)((this.particleTextureJitterX + 1.0F) / 4.0F * 16.0F));
-            f8 = this.particleTextureIndex.func_94207_b((double)(this.particleTextureJitterY / 4.0F * 16.0F));
-            f9 = this.particleTextureIndex.func_94207_b((double)((this.particleTextureJitterY + 1.0F) / 4.0F * 16.0F));
+            f6 = this.particleTextureIndex.getInterpolatedU((double)(this.particleTextureJitterX / 4.0F * 16.0F));
+            f7 = this.particleTextureIndex.getInterpolatedU((double)((this.particleTextureJitterX + 1.0F) / 4.0F * 16.0F));
+            f8 = this.particleTextureIndex.getInterpolatedV((double)(this.particleTextureJitterY / 4.0F * 16.0F));
+            f9 = this.particleTextureIndex.getInterpolatedV((double)((this.particleTextureJitterY + 1.0F) / 4.0F * 16.0F));
         }
 
         float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)par2 - interpPosX);

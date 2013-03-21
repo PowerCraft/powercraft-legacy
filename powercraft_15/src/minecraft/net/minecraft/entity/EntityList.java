@@ -74,7 +74,7 @@ public class EntityList
     public static Map IDtoClassMapping = new HashMap();
 
     /** provides a mapping between an Entity Class and an entity ID */
-  	//BY NEI
+    //NEI
     public static Map classToIDMapping = new HashMap();
 
     /** Maps entity names to their numeric identifiers */
@@ -183,7 +183,7 @@ public class EntityList
         }
         else
         {
-            par1World.func_98180_V().func_98236_b("Skipping Entity with id " + par0NBTTagCompound.getString("id"));
+            par1World.getWorldLogAgent().logWarning("Skipping Entity with id " + par0NBTTagCompound.getString("id"));
         }
 
         return entity;
@@ -212,7 +212,7 @@ public class EntityList
 
         if (entity == null)
         {
-            par1World.func_98180_V().func_98236_b("Skipping Entity with id " + par0);
+            par1World.getWorldLogAgent().logWarning("Skipping Entity with id " + par0);
         }
 
         return entity;

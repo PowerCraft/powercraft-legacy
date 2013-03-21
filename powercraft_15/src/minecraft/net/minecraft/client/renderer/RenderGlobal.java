@@ -135,7 +135,7 @@ public class RenderGlobal implements IWorldAccess
      * DestroyBlockProgress
      */
     public Map damagedBlocks = new HashMap();
-    private Icon[] field_94141_F;
+    private Icon[] destroyBlockIcons;
     private int renderDistance = -1;
 
     /** Render entities startup counter (init value=2) */
@@ -461,7 +461,7 @@ public class RenderGlobal implements IWorldAccess
             if (pass == 0)
             {
                 TileEntityRenderer.instance.cacheActiveRenderInfo(this.theWorld, this.renderEngine, this.mc.fontRenderer, this.mc.renderViewEntity, par3);
-                RenderManager.instance.cacheActiveRenderInfo(this.theWorld, this.renderEngine, this.mc.fontRenderer, this.mc.renderViewEntity, this.mc.field_96291_i, this.mc.gameSettings, par3);
+                RenderManager.instance.cacheActiveRenderInfo(this.theWorld, this.renderEngine, this.mc.fontRenderer, this.mc.renderViewEntity, this.mc.pointedEntityLiving, this.mc.gameSettings, par3);
                 this.countEntitiesTotal = 0;
                 this.countEntitiesRendered = 0;
                 this.countEntitiesHidden = 0;
@@ -967,7 +967,7 @@ public class RenderGlobal implements IWorldAccess
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             RenderHelper.disableStandardItemLighting();
             GL11.glDepthMask(false);
-            this.renderEngine.func_98187_b("/misc/tunnel.png");
+            this.renderEngine.bindTexture("/misc/tunnel.png");
             Tessellator tessellator = Tessellator.instance;
 
             for (int i = 0; i < 6; ++i)
@@ -1103,7 +1103,7 @@ public class RenderGlobal implements IWorldAccess
             GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(this.theWorld.getCelestialAngle(par1) * 360.0F, 1.0F, 0.0F, 0.0F);
             f10 = 30.0F;
-            this.renderEngine.func_98187_b("/environment/sun.png");
+            this.renderEngine.bindTexture("/environment/sun.png");
             tessellator1.startDrawingQuads();
             tessellator1.addVertexWithUV((double)(-f10), 100.0D, (double)(-f10), 0.0D, 0.0D);
             tessellator1.addVertexWithUV((double)f10, 100.0D, (double)(-f10), 1.0D, 0.0D);
@@ -1111,7 +1111,7 @@ public class RenderGlobal implements IWorldAccess
             tessellator1.addVertexWithUV((double)(-f10), 100.0D, (double)f10, 0.0D, 1.0D);
             tessellator1.draw();
             f10 = 20.0F;
-            this.renderEngine.func_98187_b("/environment/moon_phases.png");
+            this.renderEngine.bindTexture("/environment/moon_phases.png");
             int k = this.theWorld.getMoonPhase();
             int l = k % 4;
             int i1 = k / 4 % 2;
@@ -1217,7 +1217,7 @@ public class RenderGlobal implements IWorldAccess
                 byte b0 = 32;
                 int i = 256 / b0;
                 Tessellator tessellator = Tessellator.instance;
-                this.renderEngine.func_98187_b("/environment/clouds.png");
+                this.renderEngine.bindTexture("/environment/clouds.png");
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 Vec3 vec3 = this.theWorld.getCloudColour(par1);
@@ -1295,7 +1295,7 @@ public class RenderGlobal implements IWorldAccess
         int j = MathHelper.floor_double(d2 / 2048.0D);
         d1 -= (double)(i * 2048);
         d2 -= (double)(j * 2048);
-        this.renderEngine.func_98187_b("/environment/clouds.png");
+        this.renderEngine.bindTexture("/environment/clouds.png");
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         Vec3 vec3 = this.theWorld.getCloudColour(par1);
@@ -1624,7 +1624,7 @@ public class RenderGlobal implements IWorldAccess
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             float f1 = MathHelper.sin((float)Minecraft.getSystemTime() / 100.0F) * 0.2F + 0.8F;
             GL11.glColor4f(f1, f1, f1, MathHelper.sin((float)Minecraft.getSystemTime() / 200.0F) * 0.2F + 0.5F);
-            this.renderEngine.func_98187_b("/terrain.png");
+            this.renderEngine.bindTexture("/terrain.png");
         }
 
         GL11.glDisable(GL11.GL_BLEND);
@@ -1645,7 +1645,7 @@ public class RenderGlobal implements IWorldAccess
         if (!this.damagedBlocks.isEmpty())
         {
             GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR);
-            this.renderEngine.func_98187_b("/terrain.png");
+            this.renderEngine.bindTexture("/terrain.png");
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
             GL11.glPushMatrix();
             GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -1678,7 +1678,7 @@ public class RenderGlobal implements IWorldAccess
                         block = Block.stone;
                     }
 
-                    this.globalRenderBlocks.renderBlockUsingTexture(block, destroyblockprogress.getPartialBlockX(), destroyblockprogress.getPartialBlockY(), destroyblockprogress.getPartialBlockZ(), this.field_94141_F[destroyblockprogress.getPartialBlockDamage()]);
+                    this.globalRenderBlocks.renderBlockUsingTexture(block, destroyblockprogress.getPartialBlockX(), destroyblockprogress.getPartialBlockY(), destroyblockprogress.getPartialBlockZ(), this.destroyBlockIcons[destroyblockprogress.getPartialBlockDamage()]);
                 }
             }
 
@@ -1969,7 +1969,7 @@ public class RenderGlobal implements IWorldAccess
                     {
                         entityfx = new EntityCritFX(this.theWorld, par2, par4, par6, par8, par10, par12);
                         ((EntityFX)entityfx).setRBGColorF(((EntityFX)entityfx).getRedColorF() * 0.3F, ((EntityFX)entityfx).getGreenColorF() * 0.8F, ((EntityFX)entityfx).getBlueColorF());
-                        ((EntityFX)entityfx).func_94053_h();
+                        ((EntityFX)entityfx).nextTextureIndexX();
                     }
                     else if (par1Str.equals("smoke"))
                     {
@@ -2416,13 +2416,13 @@ public class RenderGlobal implements IWorldAccess
         }
     }
 
-    public void func_94140_a(IconRegister par1IconRegister)
+    public void registerDestroyBlockIcons(IconRegister par1IconRegister)
     {
-        this.field_94141_F = new Icon[10];
+        this.destroyBlockIcons = new Icon[10];
 
-        for (int i = 0; i < this.field_94141_F.length; ++i)
+        for (int i = 0; i < this.destroyBlockIcons.length; ++i)
         {
-            this.field_94141_F[i] = par1IconRegister.func_94245_a("destroy_" + i);
+            this.destroyBlockIcons[i] = par1IconRegister.registerIcon("destroy_" + i);
         }
     }
 }

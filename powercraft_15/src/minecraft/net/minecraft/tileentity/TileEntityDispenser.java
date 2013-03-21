@@ -140,7 +140,7 @@ public class TileEntityDispenser extends TileEntity implements IInventory
      */
     public String getInvName()
     {
-        return this.func_94042_c() ? this.field_94050_c : "container.dispenser";
+        return this.isInvNameLocalized() ? this.field_94050_c : "container.dispenser";
     }
 
     public void func_94049_a(String par1Str)
@@ -148,7 +148,11 @@ public class TileEntityDispenser extends TileEntity implements IInventory
         this.field_94050_c = par1Str;
     }
 
-    public boolean func_94042_c()
+    /**
+     * If this returns false, the inventory name will be used as an unlocalized name, and translated into the player's
+     * language. Otherwise it will be used directly.
+     */
+    public boolean isInvNameLocalized()
     {
         return this.field_94050_c != null;
     }
@@ -200,7 +204,7 @@ public class TileEntityDispenser extends TileEntity implements IInventory
 
         par1NBTTagCompound.setTag("Items", nbttaglist);
 
-        if (this.func_94042_c())
+        if (this.isInvNameLocalized())
         {
             par1NBTTagCompound.setString("CustomName", this.field_94050_c);
         }
@@ -227,7 +231,10 @@ public class TileEntityDispenser extends TileEntity implements IInventory
 
     public void closeChest() {}
 
-    public boolean func_94041_b(int par1, ItemStack par2ItemStack)
+    /**
+     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
+     */
+    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }

@@ -12,7 +12,7 @@ public class CallableServerProfiler implements Callable
         this.mcServer = par1;
     }
 
-    public String func_96557_a()
+    public String callServerProfiler()
     {
         int i = this.mcServer.worldServers[0].getWorldVec3Pool().getPoolSize();
         int j = 56 * i;
@@ -25,6 +25,6 @@ public class CallableServerProfiler implements Callable
 
     public Object call()
     {
-        return this.func_96557_a();
+        return this.callServerProfiler();
     }
 }

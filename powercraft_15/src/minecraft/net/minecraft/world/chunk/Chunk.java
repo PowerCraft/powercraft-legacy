@@ -98,7 +98,9 @@ public class Chunk
      * chunk is sent to a client, and never set to false.
      */
     public boolean sendUpdates;
-    public int field_82912_p;
+
+    /** Lowest value in the heightmap. */
+    public int heightMapMinimum;
 
     /**
      * Contains the current round-robin relight check index, and is implied as the relight check location as well.
@@ -119,7 +121,7 @@ public class Chunk
         this.hasEntities = false;
         this.lastSaveTime = 0L;
         this.sendUpdates = false;
-        this.field_82912_p = 0;
+        this.heightMapMinimum = 0;
         this.queuedLightChecks = 4096;
         this.field_76653_p = false;
         this.entityLists = new List[16];
@@ -340,7 +342,7 @@ public class Chunk
     public void generateSkylightMap()
     {
         int i = this.getTopFilledSegment();
-        this.field_82912_p = Integer.MAX_VALUE;
+        this.heightMapMinimum = Integer.MAX_VALUE;
         int j;
         int k;
 
@@ -365,9 +367,9 @@ public class Chunk
 
                         this.heightMap[k << 4 | j] = l;
 
-                        if (l < this.field_82912_p)
+                        if (l < this.heightMapMinimum)
                         {
-                            this.field_82912_p = l;
+                            this.heightMapMinimum = l;
                         }
                     }
 
@@ -441,10 +443,10 @@ public class Chunk
                         int k = this.getHeightValue(i, j);
                         int l = this.xPosition * 16 + i;
                         int i1 = this.zPosition * 16 + j;
-                        int j1 = this.worldObj.func_82734_g(l - 1, i1);
-                        int k1 = this.worldObj.func_82734_g(l + 1, i1);
-                        int l1 = this.worldObj.func_82734_g(l, i1 - 1);
-                        int i2 = this.worldObj.func_82734_g(l, i1 + 1);
+                        int j1 = this.worldObj.getChunkHeightMapMinimum(l - 1, i1);
+                        int k1 = this.worldObj.getChunkHeightMapMinimum(l + 1, i1);
+                        int l1 = this.worldObj.getChunkHeightMapMinimum(l, i1 - 1);
+                        int i2 = this.worldObj.getChunkHeightMapMinimum(l, i1 + 1);
 
                         if (k1 < j1)
                         {
@@ -602,9 +604,9 @@ public class Chunk
                 j2 = l;
             }
 
-            if (l1 < this.field_82912_p)
+            if (l1 < this.heightMapMinimum)
             {
-                this.field_82912_p = l1;
+                this.heightMapMinimum = l1;
             }
 
             if (!this.worldObj.provider.hasNoSky)
@@ -916,7 +918,7 @@ public class Chunk
 
         if (i != this.xPosition || j != this.zPosition)
         {
-            this.worldObj.func_98180_V().func_98232_c("Wrong location! " + par1Entity);
+            this.worldObj.getWorldLogAgent().func_98232_c("Wrong location! " + par1Entity);
             Thread.dumpStack();
         }
 

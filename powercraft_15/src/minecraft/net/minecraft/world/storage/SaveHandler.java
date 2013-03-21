@@ -280,7 +280,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
         catch (Exception exception)
         {
-            MinecraftServer.getServer().func_98033_al().func_98236_b("Failed to save player data for " + par1EntityPlayer.username);
+            MinecraftServer.getServer().getLogAgent().logWarning("Failed to save player data for " + par1EntityPlayer.username);
         }
     }
 
@@ -315,7 +315,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
         catch (Exception exception)
         {
-            MinecraftServer.getServer().func_98033_al().func_98236_b("Failed to load player data for " + par1Str);
+            MinecraftServer.getServer().getLogAgent().logWarning("Failed to load player data for " + par1Str);
         }
 
         return null;

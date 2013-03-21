@@ -406,11 +406,11 @@ public class ItemPotion extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94581_a(IconRegister par1IconRegister)
+    public void updateIcons(IconRegister par1IconRegister)
     {
-        this.field_94590_d = par1IconRegister.func_94245_a("potion");
-        this.field_94591_c = par1IconRegister.func_94245_a("potion_splash");
-        this.field_94592_ct = par1IconRegister.func_94245_a("potion_contents");
+        this.field_94590_d = par1IconRegister.registerIcon("potion");
+        this.field_94591_c = par1IconRegister.registerIcon("potion_splash");
+        this.field_94592_ct = par1IconRegister.registerIcon("potion_contents");
     }
 
     @SideOnly(Side.CLIENT)

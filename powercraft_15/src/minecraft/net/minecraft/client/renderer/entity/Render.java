@@ -44,7 +44,7 @@ public abstract class Render
      */
     protected void loadTexture(String par1Str)
     {
-        this.renderManager.renderEngine.func_98187_b(par1Str);
+        this.renderManager.renderEngine.bindTexture(par1Str);
     }
 
     /**
@@ -58,7 +58,7 @@ public abstract class Render
         if (i >= 0)
         {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, i);
-            renderengine.func_98185_a();
+            renderengine.resetBoundTexture();
             return true;
         }
         else
@@ -105,10 +105,10 @@ public abstract class Render
                 icon2 = icon1;
             }
 
-            float f7 = icon2.func_94209_e();
-            float f8 = icon2.func_94206_g();
-            float f9 = icon2.func_94212_f();
-            float f10 = icon2.func_94210_h();
+            float f7 = icon2.getMinU();
+            float f8 = icon2.getMinV();
+            float f9 = icon2.getMaxU();
+            float f10 = icon2.getMaxV();
 
             if (i / 2 % 2 == 0)
             {
@@ -141,7 +141,7 @@ public abstract class Render
     {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        this.renderManager.renderEngine.func_98187_b("%clamp%/misc/shadow.png");
+        this.renderManager.renderEngine.bindTexture("%clamp%/misc/shadow.png");
         World world = this.getWorldFromRenderManager();
         GL11.glDepthMask(false);
         float f2 = this.shadowSize;
@@ -357,5 +357,5 @@ public abstract class Render
         return this.renderManager.getFontRenderer();
     }
 
-    public void func_94143_a(IconRegister par1IconRegister) {}
+    public void updateIcons(IconRegister par1IconRegister) {}
 }

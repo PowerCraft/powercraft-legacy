@@ -76,7 +76,7 @@ public class ItemReed extends Item
                 Block block = Block.blocksList[this.spawnID];
                 int j1 = block.onBlockPlaced(par3World, par4, par5, par6, par7, par8, par9, par10, 0);
 
-                if (par3World.setBlockAndMetadataWithNotify(par4, par5, par6, this.spawnID, j1, 3))
+                if (par3World.setBlock(par4, par5, par6, this.spawnID, j1, 3))
                 {
                     if (par3World.getBlockId(par4, par5, par6) == this.spawnID)
                     {

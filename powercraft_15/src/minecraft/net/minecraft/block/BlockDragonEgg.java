@@ -58,7 +58,7 @@ public class BlockDragonEgg extends Block
             }
             else
             {
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
 
                 while (BlockSand.canFallBelow(par1World, par2, par3 - 1, par4) && par3 > 0)
                 {
@@ -67,7 +67,7 @@ public class BlockDragonEgg extends Block
 
                 if (par3 > 0)
                 {
-                    par1World.setBlockAndMetadataWithNotify(par2, par3, par4, this.blockID, 0, 2);
+                    par1World.setBlock(par2, par3, par4, this.blockID, 0, 2);
                 }
             }
         }
@@ -107,8 +107,8 @@ public class BlockDragonEgg extends Block
                 {
                     if (!par1World.isRemote)
                     {
-                        par1World.setBlockAndMetadataWithNotify(i1, j1, k1, this.blockID, par1World.getBlockMetadata(par2, par3, par4), 2);
-                        par1World.func_94571_i(par2, par3, par4);
+                        par1World.setBlock(i1, j1, k1, this.blockID, par1World.getBlockMetadata(par2, par3, par4), 2);
+                        par1World.setBlockToAir(par2, par3, par4);
                     }
                     else
                     {

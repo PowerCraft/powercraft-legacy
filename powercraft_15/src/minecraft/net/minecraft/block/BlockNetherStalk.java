@@ -17,7 +17,7 @@ public class BlockNetherStalk extends BlockFlower
 {
     private static final String[] field_94373_a = new String[] {"netherStalk_0", "netherStalk_1", "netherStalk_2"};
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94372_b;
+    private Icon[] iconArray;
 
     protected BlockNetherStalk(int par1)
     {
@@ -69,7 +69,7 @@ public class BlockNetherStalk extends BlockFlower
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par2 >= 3 ? this.field_94372_b[2] : (par2 > 0 ? this.field_94372_b[1] : this.field_94372_b[0]);
+        return par2 >= 3 ? this.iconArray[2] : (par2 > 0 ? this.iconArray[1] : this.iconArray[0]);
     }
 
     /**
@@ -115,13 +115,18 @@ public class BlockNetherStalk extends BlockFlower
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
-    {
-        this.field_94372_b = new Icon[field_94373_a.length];
 
-        for (int i = 0; i < this.field_94372_b.length; ++i)
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.iconArray = new Icon[field_94373_a.length];
+
+        for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.field_94372_b[i] = par1IconRegister.func_94245_a(field_94373_a[i]);
+            this.iconArray[i] = par1IconRegister.registerIcon(field_94373_a[i]);
         }
     }
 

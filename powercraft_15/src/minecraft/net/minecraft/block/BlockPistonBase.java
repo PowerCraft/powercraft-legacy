@@ -65,22 +65,27 @@ public class BlockPistonBase extends Block
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         int k = getOrientation(par2);
-        return k > 5 ? this.field_94497_cO : (par1 == k ? (!isExtended(par2) && this.minX <= 0.0D && this.minY <= 0.0D && this.minZ <= 0.0D && this.maxX >= 1.0D && this.maxY >= 1.0D && this.maxZ >= 1.0D ? this.field_94497_cO : this.field_94498_b) : (par1 == Facing.faceToSide[k] ? this.field_94499_c : this.field_94336_cN));
+        return k > 5 ? this.field_94497_cO : (par1 == k ? (!isExtended(par2) && this.minX <= 0.0D && this.minY <= 0.0D && this.minZ <= 0.0D && this.maxX >= 1.0D && this.maxY >= 1.0D && this.maxZ >= 1.0D ? this.field_94497_cO : this.field_94498_b) : (par1 == Facing.faceToSide[k] ? this.field_94499_c : this.blockIcon));
     }
 
     @SideOnly(Side.CLIENT)
     public static Icon func_94496_b(String par0Str)
     {
-        return par0Str == "piston_side" ? Block.pistonBase.field_94336_cN : (par0Str == "piston_top" ? Block.pistonBase.field_94497_cO : (par0Str == "piston_top_sticky" ? Block.pistonStickyBase.field_94497_cO : (par0Str == "piston_inner_top" ? Block.pistonBase.field_94498_b : null)));
+        return par0Str == "piston_side" ? Block.pistonBase.blockIcon : (par0Str == "piston_top" ? Block.pistonBase.field_94497_cO : (par0Str == "piston_top_sticky" ? Block.pistonStickyBase.field_94497_cO : (par0Str == "piston_inner_top" ? Block.pistonBase.field_94498_b : null)));
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("piston_side");
-        this.field_94497_cO = par1IconRegister.func_94245_a(this.isSticky ? "piston_top_sticky" : "piston_top");
-        this.field_94498_b = par1IconRegister.func_94245_a("piston_inner_top");
-        this.field_94499_c = par1IconRegister.func_94245_a("piston_bottom");
+        this.blockIcon = par1IconRegister.registerIcon("piston_side");
+        this.field_94497_cO = par1IconRegister.registerIcon(this.isSticky ? "piston_top_sticky" : "piston_top");
+        this.field_94498_b = par1IconRegister.registerIcon("piston_inner_top");
+        this.field_94499_c = par1IconRegister.registerIcon("piston_bottom");
     }
 
     /**
@@ -177,7 +182,7 @@ public class BlockPistonBase extends Block
      */
     private boolean isIndirectlyPowered(World par1World, int par2, int par3, int par4, int par5)
     {
-        return par5 != 0 && par1World.func_94574_k(par2, par3 - 1, par4, 0) ? true : (par5 != 1 && par1World.func_94574_k(par2, par3 + 1, par4, 1) ? true : (par5 != 2 && par1World.func_94574_k(par2, par3, par4 - 1, 2) ? true : (par5 != 3 && par1World.func_94574_k(par2, par3, par4 + 1, 3) ? true : (par5 != 5 && par1World.func_94574_k(par2 + 1, par3, par4, 5) ? true : (par5 != 4 && par1World.func_94574_k(par2 - 1, par3, par4, 4) ? true : (par1World.func_94574_k(par2, par3, par4, 0) ? true : (par1World.func_94574_k(par2, par3 + 2, par4, 1) ? true : (par1World.func_94574_k(par2, par3 + 1, par4 - 1, 2) ? true : (par1World.func_94574_k(par2, par3 + 1, par4 + 1, 3) ? true : (par1World.func_94574_k(par2 - 1, par3 + 1, par4, 4) ? true : par1World.func_94574_k(par2 + 1, par3 + 1, par4, 5)))))))))));
+        return par5 != 0 && par1World.getIndirectPowerOutput(par2, par3 - 1, par4, 0) ? true : (par5 != 1 && par1World.getIndirectPowerOutput(par2, par3 + 1, par4, 1) ? true : (par5 != 2 && par1World.getIndirectPowerOutput(par2, par3, par4 - 1, 2) ? true : (par5 != 3 && par1World.getIndirectPowerOutput(par2, par3, par4 + 1, 3) ? true : (par5 != 5 && par1World.getIndirectPowerOutput(par2 + 1, par3, par4, 5) ? true : (par5 != 4 && par1World.getIndirectPowerOutput(par2 - 1, par3, par4, 4) ? true : (par1World.getIndirectPowerOutput(par2, par3, par4, 0) ? true : (par1World.getIndirectPowerOutput(par2, par3 + 2, par4, 1) ? true : (par1World.getIndirectPowerOutput(par2, par3 + 1, par4 - 1, 2) ? true : (par1World.getIndirectPowerOutput(par2, par3 + 1, par4 + 1, 3) ? true : (par1World.getIndirectPowerOutput(par2 - 1, par3 + 1, par4, 4) ? true : par1World.getIndirectPowerOutput(par2 + 1, par3 + 1, par4, 5)))))))))));
     }
 
     /**
@@ -221,7 +226,7 @@ public class BlockPistonBase extends Block
                 ((TileEntityPiston)tileentity).clearPistonTileEntity();
             }
 
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, Block.pistonMoving.blockID, par6, 3);
+            par1World.setBlock(par2, par3, par4, Block.pistonMoving.blockID, par6, 3);
             par1World.setBlockTileEntity(par2, par3, par4, BlockPistonMoving.getTileEntity(this.blockID, par6, par6, false, true));
 
             if (this.isSticky)
@@ -256,18 +261,18 @@ public class BlockPistonBase extends Block
                     par2 += Facing.offsetsXForSide[par6];
                     par3 += Facing.offsetsYForSide[par6];
                     par4 += Facing.offsetsZForSide[par6];
-                    par1World.setBlockAndMetadataWithNotify(par2, par3, par4, Block.pistonMoving.blockID, j2, 3);
+                    par1World.setBlock(par2, par3, par4, Block.pistonMoving.blockID, j2, 3);
                     par1World.setBlockTileEntity(par2, par3, par4, BlockPistonMoving.getTileEntity(i2, j2, par6, false, false));
-                    par1World.func_94571_i(j1, k1, l1);
+                    par1World.setBlockToAir(j1, k1, l1);
                 }
                 else if (!flag1)
                 {
-                    par1World.func_94571_i(par2 + Facing.offsetsXForSide[par6], par3 + Facing.offsetsYForSide[par6], par4 + Facing.offsetsZForSide[par6]);
+                    par1World.setBlockToAir(par2 + Facing.offsetsXForSide[par6], par3 + Facing.offsetsYForSide[par6], par4 + Facing.offsetsZForSide[par6]);
                 }
             }
             else
             {
-                par1World.func_94571_i(par2 + Facing.offsetsXForSide[par6], par3 + Facing.offsetsYForSide[par6], par4 + Facing.offsetsZForSide[par6]);
+                par1World.setBlockToAir(par2 + Facing.offsetsXForSide[par6], par3 + Facing.offsetsYForSide[par6], par4 + Facing.offsetsZForSide[par6]);
             }
 
             par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "tile.piston.in", 0.5F, par1World.rand.nextFloat() * 0.15F + 0.6F);
@@ -522,8 +527,10 @@ public class BlockPistonBase extends Block
                         continue;
                     }
 
-                    Block.blocksList[i2].dropBlockAsItem(par1World, i1, j1, k1, par1World.getBlockMetadata(i1, j1, k1), 0);
-                    par1World.func_94571_i(i1, j1, k1);
+                    //With our change to how snowballs are dropped this needs to dissallow to mimic vanilla behavior.
+                    float chance = (Block.blocksList[i2] instanceof BlockSnow ? -1.0f : 1.0f);
+                    Block.blocksList[i2].dropBlockAsItemWithChance(par1World, i1, j1, k1, par1World.getBlockMetadata(i1, j1, k1), chance, 0);
+                    par1World.setBlockToAir(i1, j1, k1);
                 }
             }
 
@@ -546,12 +553,12 @@ public class BlockPistonBase extends Block
 
                 if (k3 == this.blockID && l2 == par2 && i3 == par3 && j3 == par4)
                 {
-                    par1World.setBlockAndMetadataWithNotify(i1, j1, k1, Block.pistonMoving.blockID, par5 | (this.isSticky ? 8 : 0), 4);
+                    par1World.setBlock(i1, j1, k1, Block.pistonMoving.blockID, par5 | (this.isSticky ? 8 : 0), 4);
                     par1World.setBlockTileEntity(i1, j1, k1, BlockPistonMoving.getTileEntity(Block.pistonExtension.blockID, par5 | (this.isSticky ? 8 : 0), par5, true, false));
                 }
                 else
                 {
-                    par1World.setBlockAndMetadataWithNotify(i1, j1, k1, Block.pistonMoving.blockID, l3, 4);
+                    par1World.setBlock(i1, j1, k1, Block.pistonMoving.blockID, l3, 4);
                     par1World.setBlockTileEntity(i1, j1, k1, BlockPistonMoving.getTileEntity(k3, l3, par5, true, false));
                 }
 

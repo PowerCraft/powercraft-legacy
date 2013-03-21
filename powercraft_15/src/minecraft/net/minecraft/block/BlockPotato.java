@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 public class BlockPotato extends BlockCrops
 {
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94365_a;
+    private Icon[] iconArray;
 
     public BlockPotato(int par1)
     {
@@ -32,11 +32,11 @@ public class BlockPotato extends BlockCrops
                 par2 = 5;
             }
 
-            return this.field_94365_a[par2 >> 1];
+            return this.iconArray[par2 >> 1];
         }
         else
         {
-            return this.field_94365_a[3];
+            return this.iconArray[3];
         }
     }
 
@@ -73,13 +73,18 @@ public class BlockPotato extends BlockCrops
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
-    {
-        this.field_94365_a = new Icon[4];
 
-        for (int i = 0; i < this.field_94365_a.length; ++i)
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.iconArray = new Icon[4];
+
+        for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.field_94365_a[i] = par1IconRegister.func_94245_a("potatoes_" + i);
+            this.iconArray[i] = par1IconRegister.registerIcon("potatoes_" + i);
         }
     }
 }

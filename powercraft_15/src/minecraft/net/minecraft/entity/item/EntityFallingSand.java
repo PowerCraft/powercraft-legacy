@@ -33,7 +33,7 @@ public class EntityFallingSand extends Entity
 
     /** Actual damage dealt to entities hit by falling block */
     private float fallHurtAmount;
-    public NBTTagCompound field_98051_e;
+    public NBTTagCompound fallingBlockTileEntityData;
 
     public EntityFallingSand(World par1World)
     {
@@ -44,7 +44,7 @@ public class EntityFallingSand extends Entity
         this.isAnvil = false;
         this.fallHurtMax = 40;
         this.fallHurtAmount = 2.0F;
-        this.field_98051_e = null;
+        this.fallingBlockTileEntityData = null;
     }
 
     public EntityFallingSand(World par1World, double par2, double par4, double par6, int par8)
@@ -61,7 +61,7 @@ public class EntityFallingSand extends Entity
         this.isAnvil = false;
         this.fallHurtMax = 40;
         this.fallHurtAmount = 2.0F;
-        this.field_98051_e = null;
+        this.fallingBlockTileEntityData = null;
         this.blockID = par8;
         this.metadata = par9;
         this.preventEntitySpawning = true;
@@ -130,7 +130,7 @@ public class EntityFallingSand extends Entity
                         return;
                     }
 
-                    this.worldObj.func_94571_i(i, j, k);
+                    this.worldObj.setBlockToAir(i, j, k);
                 }
 
                 if (this.onGround)
@@ -143,14 +143,14 @@ public class EntityFallingSand extends Entity
                     {
                         this.setDead();
 
-                        if (!this.isBreakingAnvil && this.worldObj.canPlaceEntityOnSide(this.blockID, i, j, k, true, 1, (Entity)null, (ItemStack)null) && !BlockSand.canFallBelow(this.worldObj, i, j - 1, k) && this.worldObj.setBlockAndMetadataWithNotify(i, j, k, this.blockID, this.metadata, 3))
+                        if (!this.isBreakingAnvil && this.worldObj.canPlaceEntityOnSide(this.blockID, i, j, k, true, 1, (Entity)null, (ItemStack)null) && !BlockSand.canFallBelow(this.worldObj, i, j - 1, k) && this.worldObj.setBlock(i, j, k, this.blockID, this.metadata, 3))
                         {
                             if (Block.blocksList[this.blockID] instanceof BlockSand)
                             {
                                 ((BlockSand)Block.blocksList[this.blockID]).onFinishFalling(this.worldObj, i, j, k, this.metadata);
                             }
 
-                            if (this.field_98051_e != null && Block.blocksList[this.blockID] instanceof ITileEntityProvider)
+                            if (this.fallingBlockTileEntityData != null && Block.blocksList[this.blockID] instanceof ITileEntityProvider)
                             {
                                 TileEntity tileentity = this.worldObj.getBlockTileEntity(i, j, k);
 
@@ -158,7 +158,7 @@ public class EntityFallingSand extends Entity
                                 {
                                     NBTTagCompound nbttagcompound = new NBTTagCompound();
                                     tileentity.writeToNBT(nbttagcompound);
-                                    Iterator iterator = this.field_98051_e.getTags().iterator();
+                                    Iterator iterator = this.fallingBlockTileEntityData.getTags().iterator();
 
                                     while (iterator.hasNext())
                                     {
@@ -248,9 +248,9 @@ public class EntityFallingSand extends Entity
         par1NBTTagCompound.setFloat("FallHurtAmount", this.fallHurtAmount);
         par1NBTTagCompound.setInteger("FallHurtMax", this.fallHurtMax);
 
-        if (this.field_98051_e != null)
+        if (this.fallingBlockTileEntityData != null)
         {
-            par1NBTTagCompound.setCompoundTag("TileEntityData", this.field_98051_e);
+            par1NBTTagCompound.setCompoundTag("TileEntityData", this.fallingBlockTileEntityData);
         }
     }
 
@@ -289,7 +289,7 @@ public class EntityFallingSand extends Entity
 
         if (par1NBTTagCompound.hasKey("TileEntityData"))
         {
-            this.field_98051_e = par1NBTTagCompound.getCompoundTag("TileEntityData");
+            this.fallingBlockTileEntityData = par1NBTTagCompound.getCompoundTag("TileEntityData");
         }
 
         if (this.blockID == 0)

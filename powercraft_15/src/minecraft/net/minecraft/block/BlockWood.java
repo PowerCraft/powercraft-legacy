@@ -13,9 +13,9 @@ public class BlockWood extends Block
 {
     /** The type of tree this block came from. */
     public static final String[] woodType = new String[] {"oak", "spruce", "birch", "jungle"};
-    public static final String[] field_94386_b = new String[] {"wood", "wood_spruce", "wood_birch", "wood_jungle"};
+    public static final String[] woodTextureTypes = new String[] {"wood", "wood_spruce", "wood_birch", "wood_jungle"};
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94387_c;
+    private Icon[] iconArray;
 
     public BlockWood(int par1)
     {
@@ -30,12 +30,12 @@ public class BlockWood extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        if (par2 < 0 || par2 >= this.field_94387_c.length)
+        if (par2 < 0 || par2 >= this.iconArray.length)
         {
             par2 = 0;
         }
 
-        return this.field_94387_c[par2];
+        return this.iconArray[par2];
     }
 
     /**
@@ -60,13 +60,18 @@ public class BlockWood extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
-    {
-        this.field_94387_c = new Icon[field_94386_b.length];
 
-        for (int i = 0; i < this.field_94387_c.length; ++i)
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.iconArray = new Icon[woodTextureTypes.length];
+
+        for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.field_94387_c[i] = par1IconRegister.func_94245_a(field_94386_b[i]);
+            this.iconArray[i] = par1IconRegister.registerIcon(woodTextureTypes[i]);
         }
     }
 }

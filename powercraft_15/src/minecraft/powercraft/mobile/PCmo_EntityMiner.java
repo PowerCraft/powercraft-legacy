@@ -203,7 +203,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	public boolean attackEntityFrom(DamageSource damagesource, int i) {
 		// all but void and explosion is ignored.
 		if (damagesource != DamageSource.outOfWorld
-				&& (worldObj.isRemote || isDead || (damagesource.getSourceOfDamage() == null && damagesource.func_94541_c() || st.isExplosionResistent))) {
+				&& (worldObj.isRemote || isDead || (damagesource.getSourceOfDamage() == null && damagesource.isExplosion() || st.isExplosionResistent))) {
 			return true;
 		}
 		setForwardDirection(-getForwardDirection());

@@ -81,7 +81,7 @@ public class GuiAchievement extends Gui
         ScaledResolution scaledresolution = new ScaledResolution(this.theGame.gameSettings, this.theGame.displayWidth, this.theGame.displayHeight);
         this.achievementWindowWidth = scaledresolution.getScaledWidth();
         this.achievementWindowHeight = scaledresolution.getScaledHeight();
-        GL11.glClear(256);
+        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         GL11.glOrtho(0.0D, (double)this.achievementWindowWidth, (double)this.achievementWindowHeight, 0.0D, 1000.0D, 3000.0D);
@@ -129,7 +129,7 @@ public class GuiAchievement extends Gui
                 int j = 0 - (int)(d1 * 36.0D);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
-                this.theGame.renderEngine.func_98187_b("/achievement/bg.png");
+                this.theGame.renderEngine.bindTexture("/achievement/bg.png");
                 GL11.glDisable(GL11.GL_LIGHTING);
                 this.drawTexturedModalRect(i, j, 96, 202, 160, 32);
 

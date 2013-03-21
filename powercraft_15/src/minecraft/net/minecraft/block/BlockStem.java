@@ -21,7 +21,7 @@ public class BlockStem extends BlockFlower
     /** Defines if it is a Melon or a Pumpkin that the stem is producing. */
     private final Block fruitType;
     @SideOnly(Side.CLIENT)
-    private Icon field_94369_b;
+    private Icon theIcon;
 
     protected BlockStem(int par1, Block par2Block)
     {
@@ -113,7 +113,7 @@ public class BlockStem extends BlockFlower
                     boolean isSoil = (blocksList[l1] != null && blocksList[l1].canSustainPlant(par1World, j1, par3 - 1, k1, ForgeDirection.UP, this));
                     if (par1World.getBlockId(j1, par3, k1) == 0 && (isSoil || l1 == Block.dirt.blockID || l1 == Block.grass.blockID))
                     {
-                        par1World.func_94575_c(j1, par3, k1, this.fruitType.blockID);
+                        par1World.setBlock(j1, par3, k1, this.fruitType.blockID);
                     }
                 }
             }
@@ -295,15 +295,20 @@ public class BlockStem extends BlockFlower
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94336_cN = par1IconRegister.func_94245_a("stem_straight");
-        this.field_94369_b = par1IconRegister.func_94245_a("stem_bent");
+        this.blockIcon = par1IconRegister.registerIcon("stem_straight");
+        this.theIcon = par1IconRegister.registerIcon("stem_bent");
     }
 
     @SideOnly(Side.CLIENT)
     public Icon func_94368_p()
     {
-        return this.field_94369_b;
+        return this.theIcon;
     }
 }

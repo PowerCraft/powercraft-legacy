@@ -38,6 +38,7 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 
 import cpw.mods.fml.common.CertificateHelper;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
 public class RelaunchLibraryManager
@@ -280,6 +281,7 @@ public class RelaunchLibraryManager
         Map<String,Object> data = new HashMap<String,Object>();
         data.put("mcLocation", mcDir);
         data.put("coremodList", loadPlugins);
+        data.put("runtimeDeobfuscationEnabled", !deobfuscatedEnvironment);
         for (IFMLLoadingPlugin plugin : loadPlugins)
         {
             downloadMonitor.updateProgressString("Running coremod plugin %s", plugin.getClass().getSimpleName());
@@ -405,6 +407,25 @@ public class RelaunchLibraryManager
                 downloadMonitor.updateProgressString("Loading coremod %s", coreMod.getName());
                 classLoader.addTransformerExclusion(fmlCorePlugin);
                 Class<?> coreModClass = Class.forName(fmlCorePlugin, true, classLoader);
+                MCVersion requiredMCVersion = coreModClass.getAnnotation(IFMLLoadingPlugin.MCVersion.class);
+                String version = "";
+                if (requiredMCVersion == null)
+                {
+                    FMLRelaunchLog.log(Level.WARNING, "The coremod %s does not have a MCVersion annotation, it may cause issues with this version of Minecraft", fmlCorePlugin);
+                }
+                else
+                {
+                    version = requiredMCVersion.value();
+                }
+                if (!"".equals(version) && !FMLInjectionData.mccversion.equals(version))
+                {
+                    FMLRelaunchLog.log(Level.SEVERE, "The coremod %s is requesting minecraft version %s and minecraft is %s. It will be ignored.", fmlCorePlugin, version, FMLInjectionData.mccversion);
+                    continue;
+                }
+                else if (!"".equals(version))
+                {
+                    FMLRelaunchLog.log(Level.FINE, "The coremod %s requested minecraft version %s and minecraft is %s. It will be loaded.", fmlCorePlugin, version, FMLInjectionData.mccversion);
+                }
                 TransformerExclusions trExclusions = coreModClass.getAnnotation(IFMLLoadingPlugin.TransformerExclusions.class);
                 if (trExclusions!=null)
                 {

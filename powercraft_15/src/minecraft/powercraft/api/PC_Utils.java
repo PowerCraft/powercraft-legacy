@@ -149,7 +149,7 @@ public class PC_Utils implements PC_IPacketHandler {
 
 						PC_GlobalVariables.tileEntity = te;
 
-						world.setBlockAndMetadataWithNotify(x, y, z, b.blockID,
+						world.setBlock(x, y, z, b.blockID,
 								meta, BLOCK_NOTIFY);
 
 						PC_GlobalVariables.tileEntity = null;
@@ -335,7 +335,7 @@ public class PC_Utils implements PC_IPacketHandler {
 
 		public static boolean setBID(World world, int x, int y, int z, int id,
 				int meta) {
-			return world.setBlockAndMetadataWithNotify(x, y, z, id, meta,
+			return world.setBlock(x, y, z, id, meta,
 					BLOCK_NOTIFY | BLOCK_UPDATE);
 		}
 
@@ -387,7 +387,7 @@ public class PC_Utils implements PC_IPacketHandler {
 
 		public static boolean setBIDNoNotify(World world, int x, int y, int z,
 				int id, int meta) {
-			return world.setBlockAndMetadataWithNotify(x, y, z, id, meta, 0);
+			return world.setBlock(x, y, z, id, meta, 0);
 		}
 
 		public static boolean setBIDNoNotify(World world, PC_VecI pos, int id,
@@ -742,7 +742,7 @@ public class PC_Utils implements PC_IPacketHandler {
 
 		public static int getPoweredDirectlyValue(World world, int x, int y,
 				int z) {
-			return world.func_94577_B(x, y, z);
+			return world.getBlockPowerInput(x, y, z);
 		}
 
 		public static boolean isPoweredIndirectly(World world, int x, int y,
@@ -803,14 +803,14 @@ public class PC_Utils implements PC_IPacketHandler {
 			}
 
 			if (inp == 4) {
-				boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(
+				boolean isProviding = (world.getIndirectPowerLevelTo(
 						x, y - 1, z, 0) > 0 || (world.getBlockId(x, y - 1, z) == Block.redstoneWire.blockID && world
 						.getBlockMetadata(x, y - 1, z) > 0));
 				return isProviding;
 			}
 
 			if (inp == 5) {
-				boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(
+				boolean isProviding = (world.getIndirectPowerLevelTo(
 						x, y + 1, z, 1) > 0 || (world.getBlockId(x, y + 1, z) == Block.redstoneWire.blockID && world
 						.getBlockMetadata(x, y + 1, z) > 0));
 				return isProviding;
@@ -843,25 +843,25 @@ public class PC_Utils implements PC_IPacketHandler {
 			}
 
 			if (rotation == N0) {
-				return (world.isBlockIndirectlyProvidingPowerTo(x, y, z + 1, 3) > 0 || world
+				return (world.getIndirectPowerLevelTo(x, y, z + 1, 3) > 0 || world
 						.getBlockId(x, y, z + 1) == Block.redstoneWire.blockID
 						&& world.getBlockMetadata(x, y, z + 1) > 0);
 			}
 
 			if (rotation == N1) {
-				return (world.isBlockIndirectlyProvidingPowerTo(x - 1, y, z, 4) > 0 || world
+				return (world.getIndirectPowerLevelTo(x - 1, y, z, 4) > 0 || world
 						.getBlockId(x - 1, y, z) == Block.redstoneWire.blockID
 						&& world.getBlockMetadata(x - 1, y, z) > 0);
 			}
 
 			if (rotation == N2) {
-				return (world.isBlockIndirectlyProvidingPowerTo(x, y, z - 1, 2) > 0 || world
+				return (world.getIndirectPowerLevelTo(x, y, z - 1, 2) > 0 || world
 						.getBlockId(x, y, z - 1) == Block.redstoneWire.blockID
 						&& world.getBlockMetadata(x, y, z - 1) > 0);
 			}
 
 			if (rotation == N3) {
-				return (world.isBlockIndirectlyProvidingPowerTo(x + 1, y, z, 5) > 0 || world
+				return (world.getIndirectPowerLevelTo(x + 1, y, z, 5) > 0 || world
 						.getBlockId(x + 1, y, z) == Block.redstoneWire.blockID
 						&& world.getBlockMetadata(x + 1, y, z) > 0);
 			}

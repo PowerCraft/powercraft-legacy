@@ -268,7 +268,7 @@ public class TileEntityBeacon extends TileEntity implements IInventory
     }
 
     @SideOnly(Side.CLIENT)
-    public double func_82115_m()
+    public double getMaxRenderDistanceSquared()
     {
         return 65536.0D;
     }
@@ -371,10 +371,14 @@ public class TileEntityBeacon extends TileEntity implements IInventory
      */
     public String getInvName()
     {
-        return this.func_94042_c() ? this.field_94048_i : "container.beacon";
+        return this.isInvNameLocalized() ? this.field_94048_i : "container.beacon";
     }
 
-    public boolean func_94042_c()
+    /**
+     * If this returns false, the inventory name will be used as an unlocalized name, and translated into the player's
+     * language. Otherwise it will be used directly.
+     */
+    public boolean isInvNameLocalized()
     {
         return this.field_94048_i != null && this.field_94048_i.length() > 0;
     }
@@ -405,7 +409,10 @@ public class TileEntityBeacon extends TileEntity implements IInventory
 
     public void closeChest() {}
 
-    public boolean func_94041_b(int par1, ItemStack par2ItemStack)
+    /**
+     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
+     */
+    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return par2ItemStack.itemID == Item.emerald.itemID || par2ItemStack.itemID == Item.diamond.itemID || par2ItemStack.itemID == Item.ingotGold.itemID || par2ItemStack.itemID == Item.ingotIron.itemID;
     }

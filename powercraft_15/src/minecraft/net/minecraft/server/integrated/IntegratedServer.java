@@ -33,7 +33,7 @@ public class IntegratedServer extends MinecraftServer
     /** The Minecraft instance. */
     private final Minecraft mc;
     private final WorldSettings theWorldSettings;
-    private final ILogAgent field_98130_m = new LogAgent("Minecraft-Server", " [SERVER]", (new File(Minecraft.getMinecraftDir(), "output-server.log")).getAbsolutePath());
+    private final ILogAgent serverLogAgent = new LogAgent("Minecraft-Server", " [SERVER]", (new File(Minecraft.getMinecraftDir(), "output-server.log")).getAbsolutePath());
 
     /** Instance of IntegratedServerListenThread. */
     private IntegratedServerListenThread theServerListeningThread;
@@ -69,10 +69,10 @@ public class IntegratedServer extends MinecraftServer
         this.convertMapIfNeeded(par1Str);
         ISaveHandler isavehandler = this.getActiveAnvilConverter().getSaveLoader(par1Str, true);
 
-        WorldServer overWorld = (isDemo() ? new DemoWorldServer(this, isavehandler, par2Str, 0, theProfiler, func_98033_al()) : new WorldServer(this, isavehandler, par2Str, 0, theWorldSettings, theProfiler, func_98033_al()));
+        WorldServer overWorld = (isDemo() ? new DemoWorldServer(this, isavehandler, par2Str, 0, theProfiler, getLogAgent()) : new WorldServer(this, isavehandler, par2Str, 0, theWorldSettings, theProfiler, getLogAgent()));
         for (int dim : DimensionManager.getStaticDimensionIDs())
         {
-            WorldServer world = (dim == 0 ? overWorld : new WorldServerMulti(this, isavehandler, par2Str, dim, theWorldSettings, overWorld, theProfiler, func_98033_al()));
+            WorldServer world = (dim == 0 ? overWorld : new WorldServerMulti(this, isavehandler, par2Str, dim, theWorldSettings, overWorld, theProfiler, getLogAgent()));
             world.addWorldAccess(new WorldManager(this, world));
 
             if (!this.isSinglePlayer())
@@ -93,13 +93,13 @@ public class IntegratedServer extends MinecraftServer
      */
     protected boolean startServer() throws IOException
     {
-        this.field_98130_m.func_98233_a("Starting integrated minecraft server version 1.5");
+        this.serverLogAgent.logInfo("Starting integrated minecraft server version 1.5.1");
         this.setOnlineMode(false);
         this.setCanSpawnAnimals(true);
         this.setCanSpawnNPCs(true);
         this.setAllowPvp(true);
         this.setAllowFlight(true);
-        this.field_98130_m.func_98233_a("Generating keypair");
+        this.serverLogAgent.logInfo("Generating keypair");
         this.setKeyPair(CryptManager.createNewKeyPair());
         if (!FMLCommonHandler.instance().handleServerAboutToStart(this)) { return false; }
         this.loadAllWorlds(this.getFolderName(), this.getWorldName(), this.theWorldSettings.getSeed(), this.theWorldSettings.getTerrainType(), this.theWorldSettings.func_82749_j());
@@ -117,7 +117,7 @@ public class IntegratedServer extends MinecraftServer
 
         if (!flag && this.isGamePaused)
         {
-            this.field_98130_m.func_98233_a("Saving and pausing game...");
+            this.serverLogAgent.logInfo("Saving and pausing game...");
             this.getConfigurationManager().saveAllPlayerData();
             this.saveAllWorlds(false);
         }
@@ -213,7 +213,7 @@ public class IntegratedServer extends MinecraftServer
         try
         {
             String s = this.theServerListeningThread.func_71755_c();
-            this.func_98033_al().func_98233_a("Started on " + s);
+            this.getLogAgent().logInfo("Started on " + s);
             this.isPublic = true;
             this.lanServerPing = new ThreadLanServerPing(this.getMOTD(), s);
             this.lanServerPing.start();
@@ -227,9 +227,9 @@ public class IntegratedServer extends MinecraftServer
         }
     }
 
-    public ILogAgent func_98033_al()
+    public ILogAgent getLogAgent()
     {
-        return this.field_98130_m;
+        return this.serverLogAgent;
     }
 
     /**

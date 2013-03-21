@@ -18,22 +18,22 @@ class EntityMinecartMobSpawnerLogic extends MobSpawnerBaseLogic
         this.field_98296_a.worldObj.setEntityState(this.field_98296_a, (byte)par1);
     }
 
-    public World func_98271_a()
+    public World getSpawnerWorld()
     {
         return this.field_98296_a.worldObj;
     }
 
-    public int func_98275_b()
+    public int getSpawnerX()
     {
         return MathHelper.floor_double(this.field_98296_a.posX);
     }
 
-    public int func_98274_c()
+    public int getSpawnerY()
     {
         return MathHelper.floor_double(this.field_98296_a.posY);
     }
 
-    public int func_98266_d()
+    public int getSpawnerZ()
     {
         return MathHelper.floor_double(this.field_98296_a.posZ);
     }

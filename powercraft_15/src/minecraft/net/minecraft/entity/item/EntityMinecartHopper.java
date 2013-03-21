@@ -34,7 +34,7 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements Hop
 
     public Block func_94093_n()
     {
-        return Block.field_94340_cs;
+        return Block.hopperBlock;
     }
 
     public int func_94085_r()
@@ -156,7 +156,7 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements Hop
     public void func_94095_a(DamageSource par1DamageSource)
     {
         super.func_94095_a(par1DamageSource);
-        this.dropItemWithOffset(Block.field_94340_cs.blockID, 1, 0.0F);
+        this.dropItemWithOffset(Block.hopperBlock.blockID, 1, 0.0F);
     }
 
     /**

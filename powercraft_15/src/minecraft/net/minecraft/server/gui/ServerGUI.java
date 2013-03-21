@@ -94,7 +94,7 @@ public class ServerGUI extends JComponent
     {
         JPanel jpanel = new JPanel(new BorderLayout());
         JTextArea jtextarea = new JTextArea();
-        this.serverInstance.func_98033_al().func_98076_a().addHandler(new GuiLogOutputHandler(jtextarea));
+        this.serverInstance.getLogAgent().func_98076_a().addHandler(new GuiLogOutputHandler(jtextarea));
         JScrollPane jscrollpane = new JScrollPane(jtextarea, 22, 30);
         jtextarea.setEditable(false);
         JTextField jtextfield = new JTextField();

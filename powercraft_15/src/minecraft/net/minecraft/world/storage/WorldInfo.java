@@ -611,22 +611,22 @@ public class WorldInfo
         return par0WorldInfo.mapFeaturesEnabled;
     }
 
-    static String func_85130_c(WorldInfo par0WorldInfo)
+    static String getWorldGeneratorOptions(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.generatorOptions;
     }
 
-    static int func_85125_d(WorldInfo par0WorldInfo)
+    static int getSpawnXCoordinate(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.spawnX;
     }
 
-    static int func_85124_e(WorldInfo par0WorldInfo)
+    static int getSpawnYCoordinate(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.spawnY;
     }
 
-    static int func_85123_f(WorldInfo par0WorldInfo)
+    static int getSpawnZCoordinate(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.spawnZ;
     }
@@ -636,7 +636,7 @@ public class WorldInfo
         return par0WorldInfo.totalTime;
     }
 
-    static long func_85129_h(WorldInfo par0WorldInfo)
+    static long getWorldTime(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.worldTime;
     }
@@ -646,32 +646,38 @@ public class WorldInfo
         return par0WorldInfo.dimension;
     }
 
-    static int func_85121_j(WorldInfo par0WorldInfo)
+    static int getSaveVersion(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.saveVersion;
     }
 
-    static int func_85119_k(WorldInfo par0WorldInfo)
+    static int getRainTime(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.rainTime;
     }
 
-    static boolean func_85127_l(WorldInfo par0WorldInfo)
+    /**
+     * Returns wether it's raining or not.
+     */
+    static boolean getRaining(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.raining;
     }
 
-    static int func_85133_m(WorldInfo par0WorldInfo)
+    static int getThunderTime(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.thunderTime;
     }
 
-    static boolean func_85116_n(WorldInfo par0WorldInfo)
+    /**
+     * Returns wether it's thundering or not.
+     */
+    static boolean getThundering(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.thundering;
     }
 
-    static EnumGameType func_85120_o(WorldInfo par0WorldInfo)
+    static EnumGameType getGameType(WorldInfo par0WorldInfo)
     {
         return par0WorldInfo.theGameType;
     }

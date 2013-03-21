@@ -78,7 +78,7 @@ public class WorldServer extends World
     public boolean canNotSave;
 
     /** is false if there are no players */
-    private boolean allPlayersSleeping;
+    public boolean allPlayersSleeping;
     private int updateEntityTick = 0;
     private final Teleporter field_85177_Q;
 
@@ -125,7 +125,7 @@ public class WorldServer extends World
         }
 
         this.field_85177_Q = new Teleporter(this);
-        this.field_96442_D = new ServerScoreboard(par1MinecraftServer);
+        this.worldScoreboard = new ServerScoreboard(par1MinecraftServer);
         ScoreboardSaveData scoreboardsavedata = (ScoreboardSaveData)this.mapStorage.loadData(ScoreboardSaveData.class, "scoreboard");
 
         if (scoreboardsavedata == null)
@@ -134,8 +134,8 @@ public class WorldServer extends World
             this.mapStorage.setData("scoreboard", scoreboardsavedata);
         }
 
-        scoreboardsavedata.func_96499_a(this.field_96442_D);
-        ((ServerScoreboard)this.field_96442_D).func_96547_a(scoreboardsavedata);
+        scoreboardsavedata.func_96499_a(this.worldScoreboard);
+        ((ServerScoreboard)this.worldScoreboard).func_96547_a(scoreboardsavedata);
         DimensionManager.setWorld(par4, this);
     }
 
@@ -384,12 +384,12 @@ public class WorldServer extends World
 
                 if (this.isBlockFreezableNaturally(j1 + k, l1 - 1, k1 + l))
                 {
-                    this.func_94575_c(j1 + k, l1 - 1, k1 + l, Block.ice.blockID);
+                    this.setBlock(j1 + k, l1 - 1, k1 + l, Block.ice.blockID);
                 }
 
                 if (this.isRaining() && this.canSnowAt(j1 + k, l1, k1 + l))
                 {
-                    this.func_94575_c(j1 + k, l1, k1 + l, Block.snow.blockID);
+                    this.setBlock(j1 + k, l1, k1 + l, Block.snow.blockID);
                 }
 
                 if (this.isRaining())
@@ -442,7 +442,10 @@ public class WorldServer extends World
         }
     }
 
-    public boolean func_94573_a(int par1, int par2, int par3, int par4)
+    /**
+     * Returns true if the given block will receive a scheduled tick in the future. Args: X, Y, Z, blockID
+     */
+    public boolean isBlockTickScheduled(int par1, int par2, int par3, int par4)
     {
         NextTickListEntry nextticklistentry = new NextTickListEntry(par1, par2, par3, par4);
         return this.field_94579_S.contains(nextticklistentry);
@@ -600,7 +603,7 @@ public class WorldServer extends World
                 {
                     int k = this.getBlockId(nextticklistentry.xCoord, nextticklistentry.yCoord, nextticklistentry.zCoord);
 
-                    if (k > 0 && Block.func_94329_b(k, nextticklistentry.blockID))
+                    if (k > 0 && Block.isAssociatedBlockID(k, nextticklistentry.blockID))
                     {
                         try
                         {
@@ -823,7 +826,7 @@ public class WorldServer extends World
             }
             else
             {
-                this.func_98180_V().func_98236_b("Unable to find spawn biome");
+                this.getWorldLogAgent().logWarning("Unable to find spawn biome");
             }
 
             int l = 0;

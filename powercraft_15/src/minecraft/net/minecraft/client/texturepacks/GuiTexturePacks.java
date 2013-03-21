@@ -63,7 +63,7 @@ public class GuiTexturePacks extends GuiScreen
                 {
                     try
                     {
-                        this.mc.func_98033_al().func_98233_a(this.fileLocation);
+                        this.mc.getLogAgent().logInfo(this.fileLocation);
                         Runtime.getRuntime().exec(new String[] {"/usr/bin/open", this.fileLocation});
                         return;
                     }
@@ -103,7 +103,7 @@ public class GuiTexturePacks extends GuiScreen
 
                 if (flag)
                 {
-                    this.mc.func_98033_al().func_98233_a("Opening via system class!");
+                    this.mc.getLogAgent().logInfo("Opening via system class!");
                     Sys.openURL("file://" + this.fileLocation);
                 }
             }

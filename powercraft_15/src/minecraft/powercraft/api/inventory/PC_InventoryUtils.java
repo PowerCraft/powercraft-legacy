@@ -126,18 +126,11 @@ public class PC_InventoryUtils {
 		return null;
 	}
 	
-	public static int getInvStartIndexForSide(IInventory inv, int side){
+	public static int[] getInvIndexesForSide(IInventory inv, int side){
 		if(inv instanceof ISidedInventory && side>=0){
-			return ((ISidedInventory) inv).func_94127_c(side);
+			return ((ISidedInventory) inv).getSizeInventorySide(side);
 		}
-		return 0;
-	}
-	
-	public static int getInvSizeForSide(IInventory inv, int side){
-		if(inv instanceof ISidedInventory && side>=0){
-			return ((ISidedInventory) inv).func_94128_d(side);
-		}
-		return inv.getSizeInventory();
+		return null;
 	}
 	
 	public static int getSlotStackLimit(IInventory inv, int i){
@@ -147,44 +140,89 @@ public class PC_InventoryUtils {
 		return inv.getInventoryStackLimit();
 	}
 	
-	public static int getFirstEmptySlot(IInventory inv, ItemStack itemstack, int side){
-		return getFirstEmptySlot(inv, itemstack, getInvStartIndexForSide(inv, side), getInvSizeForSide(inv, side));
+	public static int[] makeIndexList(int start, int end){
+		int[] indexes = new int[end-start+1];
+		for(int i=0; i<indexes.length; i++){
+			indexes[i] = i+start;
+		}
+		return indexes;
 	}
 	
-	public static int getFirstEmptySlot(IInventory inv, ItemStack itemstack, int startIndex, int size){
-		for (int i = startIndex; i < size; i++) {
-			if (inv.getStackInSlot(i) == null) {
-				if(inv.func_94041_b(i, itemstack))
-					return i;
+	public static int getFirstEmptySlot(IInventory inv, ItemStack itemstack, int side){
+		return getFirstEmptySlot(inv, itemstack, getInvIndexesForSide(inv, side));
+	}
+	
+	public static int getFirstEmptySlot(IInventory inv, ItemStack itemstack, int start, int end) {
+		return getFirstEmptySlot(inv, itemstack, makeIndexList(start, end));
+	}
+	
+	public static int getFirstEmptySlot(IInventory inv, ItemStack itemstack, int[] indexes){
+		if(indexes==null){
+			int size = inv.getSizeInventory();
+			for (int i = 0; i < size; i++) {
+				if (inv.getStackInSlot(i) == null) {
+					if(inv.isStackValidForSlot(i, itemstack))
+						return i;
+				}
+			}
+		}else{
+			for (int j = 0; j < indexes.length; j++) {
+				int i=indexes[j];
+				if (inv.getStackInSlot(i) == null) {
+					if(inv.isStackValidForSlot(i, itemstack))
+						return i;
+				}
 			}
 		}
 		return -1;
 	}
 	
 	public static int getSlotWithPlaceFor(IInventory inv, ItemStack itemstack, int side){
-		return getSlotWithPlaceFor(inv, itemstack, getInvStartIndexForSide(inv, side), getInvSizeForSide(inv, side));
+		return getSlotWithPlaceFor(inv, itemstack, getInvIndexesForSide(inv, side));
 	}
 	
-	public static int getSlotWithPlaceFor(IInventory inv, ItemStack itemstack, int startIndex, int size){
-		for (int i = startIndex; i < size; i++) {
-			ItemStack slot = inv.getStackInSlot(i);
-			if (slot != null) {
-				if(slot.isItemEqual(itemstack) && slot.getMaxStackSize()>slot.stackSize && getSlotStackLimit(inv, i)>slot.stackSize){
-					if(inv.func_94041_b(i, itemstack))
-						return i;
+	public static int getSlotWithPlaceFor(IInventory inv, ItemStack itemstack, int start, int end) {
+		return getSlotWithPlaceFor(inv, itemstack, makeIndexList(start, end));
+	}
+	
+	public static int getSlotWithPlaceFor(IInventory inv, ItemStack itemstack, int[] indexes){
+		if(indexes==null){
+			int size = inv.getSizeInventory();
+			for (int i = 0; i < size; i++) {
+				ItemStack slot = inv.getStackInSlot(i);
+				if (slot != null) {
+					if(slot.isItemEqual(itemstack) && slot.getMaxStackSize()>slot.stackSize && getSlotStackLimit(inv, i)>slot.stackSize){
+						if(inv.isStackValidForSlot(i, itemstack))
+							return i;
+					}
+				}
+			}
+		}else{
+			for (int j = 0; j < indexes.length; j++) {
+				int i=indexes[j];
+				ItemStack slot = inv.getStackInSlot(i);
+				if (slot != null) {
+					if(slot.isItemEqual(itemstack) && slot.getMaxStackSize()>slot.stackSize && getSlotStackLimit(inv, i)>slot.stackSize){
+						if(inv.isStackValidForSlot(i, itemstack))
+							return i;
+					}
 				}
 			}
 		}
-		return getFirstEmptySlot(inv, itemstack, startIndex, size);
+		return getFirstEmptySlot(inv, itemstack, indexes);
 	}
 	
 	public static boolean storeItemStackToInventoryFrom(IInventory inv, ItemStack itemstack, int side){
-		return storeItemStackToInventoryFrom(inv, itemstack, getInvStartIndexForSide(inv, side), getInvSizeForSide(inv, side));
+		return storeItemStackToInventoryFrom(inv, itemstack, getInvIndexesForSide(inv, side));
 	}
 	
-	public static boolean storeItemStackToInventoryFrom(IInventory inv, ItemStack itemstack, int startIndex, int size){
+	public static boolean storeItemStackToInventoryFrom(IInventory inv, ItemStack itemstack, int start, int end) {
+		return storeItemStackToInventoryFrom(inv, itemstack, makeIndexList(start, end));
+	}
+	
+	public static boolean storeItemStackToInventoryFrom(IInventory inv, ItemStack itemstack, int[] indexes){
 		while(itemstack.stackSize>0){
-			int slot = getSlotWithPlaceFor(inv, itemstack, startIndex, size);
+			int slot = getSlotWithPlaceFor(inv, itemstack, indexes);
 			if(slot<0)
 				break;
 			storeItemStackToSlot(inv, itemstack, slot);
@@ -217,30 +255,61 @@ public class PC_InventoryUtils {
 	}
 	
 	public static int getInventorySpaceFor(IInventory inv, ItemStack itemstack, int side){
-		return getInventorySpaceFor(inv, itemstack, getInvStartIndexForSide(inv, side), getInvSizeForSide(inv, side));
+		return getInventorySpaceFor(inv, itemstack, getInvIndexesForSide(inv, side));
 	}
 	
-	public static int getInventorySpaceFor(IInventory inv, ItemStack itemstack, int startIndex, int size){
+	public static int getInventorySpaceFor(IInventory inv, ItemStack itemstack, int start, int end) {
+		return getInventorySpaceFor(inv, itemstack, makeIndexList(start, end));
+	}
+	
+	public static int getInventorySpaceFor(IInventory inv, ItemStack itemstack, int[] indexes){
 		int space=0;
-		for (int i = startIndex; i < size; i++) {
-			ItemStack slot = inv.getStackInSlot(i);
-			int slotStackLimit = getSlotStackLimit(inv, i);
-			if(itemstack==null){
-				if (slot == null) {
-					space += slotStackLimit;
-				}
-			}else{
-				if(slotStackLimit>itemstack.getMaxStackSize()){
-					slotStackLimit = itemstack.getMaxStackSize();
-				}
-				if (slot != null) {
-					if(slot.isItemEqual(itemstack) && slotStackLimit>slot.stackSize){
-						if(inv.func_94041_b(i, itemstack)){
-							space += slotStackLimit-slot.stackSize;
-						}
+		if(indexes==null){
+			int size = inv.getSizeInventory();
+			for (int i = 0; i < size; i++) {
+				ItemStack slot = inv.getStackInSlot(i);
+				int slotStackLimit = getSlotStackLimit(inv, i);
+				if(itemstack==null){
+					if (slot == null) {
+						space += slotStackLimit;
 					}
 				}else{
-					space += slotStackLimit;
+					if(slotStackLimit>itemstack.getMaxStackSize()){
+						slotStackLimit = itemstack.getMaxStackSize();
+					}
+					if (slot != null) {
+						if(slot.isItemEqual(itemstack) && slotStackLimit>slot.stackSize){
+							if(inv.isStackValidForSlot(i, itemstack)){
+								space += slotStackLimit-slot.stackSize;
+							}
+						}
+					}else{
+						space += slotStackLimit;
+					}
+				}
+			}
+		}else{
+			for (int j = 0; j < indexes.length; j++) {
+				int i=indexes[j];
+				ItemStack slot = inv.getStackInSlot(i);
+				int slotStackLimit = getSlotStackLimit(inv, i);
+				if(itemstack==null){
+					if (slot == null) {
+						space += slotStackLimit;
+					}
+				}else{
+					if(slotStackLimit>itemstack.getMaxStackSize()){
+						slotStackLimit = itemstack.getMaxStackSize();
+					}
+					if (slot != null) {
+						if(slot.isItemEqual(itemstack) && slotStackLimit>slot.stackSize){
+							if(inv.isStackValidForSlot(i, itemstack)){
+								space += slotStackLimit-slot.stackSize;
+							}
+						}
+					}else{
+						space += slotStackLimit;
+					}
 				}
 			}
 		}
@@ -248,51 +317,102 @@ public class PC_InventoryUtils {
 	}
 	
 	public static int getInventoryCountOf(IInventory inv, ItemStack itemstack, int side){
-		return getInventoryCountOf(inv, itemstack, getInvStartIndexForSide(inv, side), getInvSizeForSide(inv, side));
+		return getInventoryCountOf(inv, itemstack, getInvIndexesForSide(inv, side));
 	}
 	
-	public static int getInventoryCountOf(IInventory inv, ItemStack itemstack, int startIndex, int size){
+	public static int getInventoryCountOf(IInventory inv, ItemStack itemstack, int start, int end) {
+		return getInventoryCountOf(inv, itemstack, makeIndexList(start, end));
+	}
+	
+	public static int getInventoryCountOf(IInventory inv, ItemStack itemstack, int[] indexes){
 		int count=0;
-		for (int i = startIndex; i < size; i++) {
-			ItemStack slot = inv.getStackInSlot(i);
-			if (slot != null) {
-				if(itemstack==null){
-					count += slot.stackSize;
-				}else{
-					if(slot.isItemEqual(itemstack)){
+		if(indexes==null){
+			int size = inv.getSizeInventory();
+			for (int i = 0; i < size; i++) {
+				ItemStack slot = inv.getStackInSlot(i);
+				if (slot != null) {
+					if(itemstack==null){
 						count += slot.stackSize;
+					}else{
+						if(slot.isItemEqual(itemstack)){
+							count += slot.stackSize;
+						}
 					}
 				}
-			}
+			}	
+		}else{
+			for (int j = 0; j < indexes.length; j++) {
+				int i=indexes[j];
+				ItemStack slot = inv.getStackInSlot(i);
+				if (slot != null) {
+					if(itemstack==null){
+						count += slot.stackSize;
+					}else{
+						if(slot.isItemEqual(itemstack)){
+							count += slot.stackSize;
+						}
+					}
+				}
+			}	
 		}
 		return count;
 	}
 	
 	public static int getInventoryFreeSlots(IInventory inv, int side){
-		return getInventoryFreeSlots(inv, getInvStartIndexForSide(inv, side), getInvSizeForSide(inv, side));
+		return getInventoryFreeSlots(inv, getInvIndexesForSide(inv, side));
 	}
 	
-	public static int getInventoryFreeSlots(IInventory inv, int startIndex, int size){
+	public static int getInventoryFreeSlots(IInventory inv, int start, int end) {
+		return getInventoryFreeSlots(inv, makeIndexList(start, end));
+	}
+	
+	public static int getInventoryFreeSlots(IInventory inv, int[] indexes){
 		int freeSlots=0;
-		for (int i = startIndex; i < size; i++) {
-			ItemStack slot = inv.getStackInSlot(i);
-			if (slot == null) {
-				freeSlots++;
+		if(indexes==null){
+			int size = inv.getSizeInventory();
+			for (int i = 0; i < size; i++) {
+				ItemStack slot = inv.getStackInSlot(i);
+				if (slot == null) {
+					freeSlots++;
+				}
+			}
+		}else{
+			for (int j = 0; j < indexes.length; j++) {
+				int i=indexes[j];
+				ItemStack slot = inv.getStackInSlot(i);
+				if (slot == null) {
+					freeSlots++;
+				}
 			}
 		}
 		return freeSlots;
 	}
 	
 	public static int getInventoryFullSlots(IInventory inv, int side){
-		return getInventoryFullSlots(inv, getInvStartIndexForSide(inv, side), getInvSizeForSide(inv, side));
+		return getInventoryFullSlots(inv, getInvIndexesForSide(inv, side));
 	}
 	
-	public static int getInventoryFullSlots(IInventory inv, int startIndex, int size){
+	public static int getInventoryFullSlots(IInventory inv, int start, int end) {
+		return getInventoryFullSlots(inv, makeIndexList(start, end));
+	}
+	
+	public static int getInventoryFullSlots(IInventory inv, int[] indexes){
 		int fullSlots=0;
-		for (int i = startIndex; i < size; i++) {
-			ItemStack slot = inv.getStackInSlot(i);
-			if (slot != null) {
-				fullSlots++;
+		if(indexes==null){
+			int size = inv.getSizeInventory();
+			for (int i = 0; i < size; i++) {
+				ItemStack slot = inv.getStackInSlot(i);
+				if (slot != null) {
+					fullSlots++;
+				}
+			}
+		}else{
+			for (int j = 0; j < indexes.length; j++) {
+				int i=indexes[j];
+				ItemStack slot = inv.getStackInSlot(i);
+				if (slot != null) {
+					fullSlots++;
+				}
 			}
 		}
 		return fullSlots;
@@ -376,14 +496,19 @@ public class PC_InventoryUtils {
 	}
 	
 	public static int useFuel(IInventory inv, int start, int end, World world, PC_VecI pos) {
-		for (int i = start; i < end; i++) {
+		return useFuel(inv, makeIndexList(start, end), world, pos);
+	}
+	
+	public static int useFuel(IInventory inv, int[] indexes, World world, PC_VecI pos) {
+		for (int j = 0; j < indexes.length; j++) {
+			int i=indexes[j];
 			ItemStack is = inv.getStackInSlot(i);
 			int fuel = PC_RecipeRegistry.getFuelValue(is);
 			if (fuel > 0) {
 				inv.decrStackSize(i, 1);
 				ItemStack container = GameInfo.getContainerItemStack(is);
 				if (container != null) {
-					storeItemStackToInventoryFrom(inv, container, start, end);
+					storeItemStackToInventoryFrom(inv, container, indexes);
 					if (container.stackSize > 0) {
 						ValueWriting.dropItemStack(world, container, pos);
 					}
@@ -393,7 +518,5 @@ public class PC_InventoryUtils {
 		}
 		return 0;
 	}
-	
-	
 	
 }

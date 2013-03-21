@@ -10,6 +10,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -187,7 +188,7 @@ public class ContainerRepair extends Container
                         int k2 = l1 - k1;
                         boolean flag1 = enchantment.func_92089_a(itemstack);
 
-                        if (this.thePlayer.capabilities.isCreativeMode)
+                        if (this.thePlayer.capabilities.isCreativeMode || itemstack.itemID == ItemEnchantedBook.enchantedBook.itemID)
                         {
                             flag1 = true;
                         }
@@ -313,7 +314,7 @@ public class ContainerRepair extends Container
 
             if (j == i && j > 0 && this.maximumCost >= 40)
             {
-                this.theWorld.func_98180_V().func_98233_a("Naming an item only, cost too high; giving discount to cap cost to 39 levels");
+                this.theWorld.getWorldLogAgent().logInfo("Naming an item only, cost too high; giving discount to cap cost to 39 levels");
                 this.maximumCost = 39;
             }
 

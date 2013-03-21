@@ -115,7 +115,7 @@ public class GuiMerchant extends GuiContainer
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.func_98187_b("/gui/trading.png");
+        this.mc.renderEngine.bindTexture("/gui/trading.png");
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
@@ -128,7 +128,7 @@ public class GuiMerchant extends GuiContainer
 
             if (merchantrecipe.func_82784_g())
             {
-                this.mc.renderEngine.func_98187_b("/gui/trading.png");
+                this.mc.renderEngine.bindTexture("/gui/trading.png");
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 GL11.glDisable(GL11.GL_LIGHTING);
                 this.drawTexturedModalRect(this.guiLeft + 83, this.guiTop + 21, 212, 0, 28, 21);

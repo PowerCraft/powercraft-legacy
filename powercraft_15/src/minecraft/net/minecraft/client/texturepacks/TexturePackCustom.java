@@ -84,7 +84,7 @@ public class TexturePackCustom extends TexturePackImplementation
         }
     }
 
-    public boolean func_94180_h()
+    public boolean isCompatible()
     {
         try
         {
@@ -108,11 +108,5 @@ public class TexturePackCustom extends TexturePackImplementation
 
         boolean flag = this.func_98140_c("terrain.png") || this.func_98140_c("gui/items.png");
         return !flag;
-    }
-
-    @Override
-    public boolean func_94179_g()
-    {
-        return true;
     }
 }

@@ -96,7 +96,7 @@ public class BlockTripWire extends Block
         if (flag != flag1)
         {
             this.dropBlockAsItem(par1World, par2, par3, par4, i1, 0);
-            par1World.func_94571_i(par2, par3, par4);
+            par1World.setBlockToAir(par2, par3, par4);
         }
     }
 

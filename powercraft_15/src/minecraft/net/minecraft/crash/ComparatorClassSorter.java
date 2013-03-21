@@ -4,11 +4,11 @@ import java.util.Comparator;
 
 class ComparatorClassSorter implements Comparator
 {
-    final CallableSuspiciousClasses field_85082_a;
+    final CallableSuspiciousClasses theSuspiciousClasses;
 
     ComparatorClassSorter(CallableSuspiciousClasses par1CallableSuspiciousClasses)
     {
-        this.field_85082_a = par1CallableSuspiciousClasses;
+        this.theSuspiciousClasses = par1CallableSuspiciousClasses;
     }
 
     public int func_85081_a(Class par1Class, Class par2Class)

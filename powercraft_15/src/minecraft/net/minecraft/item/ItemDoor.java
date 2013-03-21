@@ -104,8 +104,8 @@ public class ItemDoor extends Item
             flag2 = true;
         }
 
-        par0World.setBlockAndMetadataWithNotify(par1, par2, par3, par5Block.blockID, par4, 2);
-        par0World.setBlockAndMetadataWithNotify(par1, par2 + 1, par3, par5Block.blockID, 8 | (flag2 ? 1 : 0), 2);
+        par0World.setBlock(par1, par2, par3, par5Block.blockID, par4, 2);
+        par0World.setBlock(par1, par2 + 1, par3, par5Block.blockID, 8 | (flag2 ? 1 : 0), 2);
         par0World.notifyBlocksOfNeighborChange(par1, par2, par3, par5Block.blockID);
         par0World.notifyBlocksOfNeighborChange(par1, par2 + 1, par3, par5Block.blockID);
     }

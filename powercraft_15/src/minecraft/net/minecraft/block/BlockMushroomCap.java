@@ -15,7 +15,7 @@ public class BlockMushroomCap extends Block
     /** The mushroom type. 0 for brown, 1 for red. */
     private final int mushroomType;
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94428_c;
+    private Icon[] iconArray;
     @SideOnly(Side.CLIENT)
     private Icon field_94426_cO;
     @SideOnly(Side.CLIENT)
@@ -34,7 +34,7 @@ public class BlockMushroomCap extends Block
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par2 == 10 && par1 > 1 ? this.field_94426_cO : (par2 >= 1 && par2 <= 9 && par1 == 1 ? this.field_94428_c[this.mushroomType] : (par2 >= 1 && par2 <= 3 && par1 == 2 ? this.field_94428_c[this.mushroomType] : (par2 >= 7 && par2 <= 9 && par1 == 3 ? this.field_94428_c[this.mushroomType] : ((par2 == 1 || par2 == 4 || par2 == 7) && par1 == 4 ? this.field_94428_c[this.mushroomType] : ((par2 == 3 || par2 == 6 || par2 == 9) && par1 == 5 ? this.field_94428_c[this.mushroomType] : (par2 == 14 ? this.field_94428_c[this.mushroomType] : (par2 == 15 ? this.field_94426_cO : this.field_94427_cP)))))));
+        return par2 == 10 && par1 > 1 ? this.field_94426_cO : (par2 >= 1 && par2 <= 9 && par1 == 1 ? this.iconArray[this.mushroomType] : (par2 >= 1 && par2 <= 3 && par1 == 2 ? this.iconArray[this.mushroomType] : (par2 >= 7 && par2 <= 9 && par1 == 3 ? this.iconArray[this.mushroomType] : ((par2 == 1 || par2 == 4 || par2 == 7) && par1 == 4 ? this.iconArray[this.mushroomType] : ((par2 == 3 || par2 == 6 || par2 == 9) && par1 == 5 ? this.iconArray[this.mushroomType] : (par2 == 14 ? this.iconArray[this.mushroomType] : (par2 == 15 ? this.field_94426_cO : this.field_94427_cP)))))));
     }
 
     /**
@@ -71,16 +71,21 @@ public class BlockMushroomCap extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
-    {
-        this.field_94428_c = new Icon[field_94429_a.length];
 
-        for (int i = 0; i < this.field_94428_c.length; ++i)
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.iconArray = new Icon[field_94429_a.length];
+
+        for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.field_94428_c[i] = par1IconRegister.func_94245_a(field_94429_a[i]);
+            this.iconArray[i] = par1IconRegister.registerIcon(field_94429_a[i]);
         }
 
-        this.field_94427_cP = par1IconRegister.func_94245_a("mushroom_inside");
-        this.field_94426_cO = par1IconRegister.func_94245_a("mushroom_skin_stem");
+        this.field_94427_cP = par1IconRegister.registerIcon("mushroom_inside");
+        this.field_94426_cO = par1IconRegister.registerIcon("mushroom_skin_stem");
     }
 }

@@ -208,7 +208,7 @@ public class BlockTorch extends Block
             if (flag)
             {
                 this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
                 return true;
             }
             else
@@ -233,7 +233,7 @@ public class BlockTorch extends Block
             if (par1World.getBlockId(par2, par3, par4) == this.blockID)
             {
                 this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-                par1World.func_94571_i(par2, par3, par4);
+                par1World.setBlockToAir(par2, par3, par4);
             }
 
             return false;

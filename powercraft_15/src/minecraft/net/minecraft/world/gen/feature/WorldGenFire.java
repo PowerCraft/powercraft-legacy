@@ -16,7 +16,7 @@ public class WorldGenFire extends WorldGenerator
 
             if (par1World.isAirBlock(i1, j1, k1) && par1World.getBlockId(i1, j1 - 1, k1) == Block.netherrack.blockID)
             {
-                par1World.setBlockAndMetadataWithNotify(i1, j1, k1, Block.fire.blockID, 0, 2);
+                par1World.setBlock(i1, j1, k1, Block.fire.blockID, 0, 2);
             }
         }
 

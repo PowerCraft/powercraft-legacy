@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class BlockDaylightDetector extends BlockContainer
 {
-    private Icon[] field_94445_a = new Icon[2];
+    private Icon[] iconArray = new Icon[2];
 
     public BlockDaylightDetector(int par1)
     {
@@ -135,13 +135,18 @@ public class BlockDaylightDetector extends BlockContainer
      */
     public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94445_a[0] : this.field_94445_a[1];
+        return par1 == 1 ? this.iconArray[0] : this.iconArray[1];
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_94332_a(IconRegister par1IconRegister)
+
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94445_a[0] = par1IconRegister.func_94245_a("daylightDetector_top");
-        this.field_94445_a[1] = par1IconRegister.func_94245_a("daylightDetector_side");
+        this.iconArray[0] = par1IconRegister.registerIcon("daylightDetector_top");
+        this.iconArray[1] = par1IconRegister.registerIcon("daylightDetector_side");
     }
 }
