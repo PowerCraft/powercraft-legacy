@@ -1008,7 +1008,7 @@ public class Item
 
     /**
      * Determines if the specific ItemStack can be placed in the specified armor slot.
-     * 
+     *
      * @param stack The ItemStack
      * @param armorType Armor slot ID: 0: Helmet, 1: Chest, 2: Legs, 3: Boots
      * @return True if the given ItemStack can be inserted in the slot
@@ -1027,10 +1027,10 @@ public class Item
 
         return false;
     }
-    
+
     /**
      * ItemStack sensitive version of isPotionIngredient
-     * 
+     *
      * @param stack The item stack
      * @return True if this stack can be used as a potion ingredient
      */
@@ -1041,13 +1041,25 @@ public class Item
 
     /**
      * ItemStack sensitive version of getPotionEffect
-     * 
+     *
      * @param stack The item stack
      * @return A string containing the bit manipulation to apply the the potion.
      */
     public String getPotionEffect(ItemStack stack)
     {
         return getPotionEffect();
+    }
+
+    /**
+     * Allow or forbid the specific book/item combination as an anvil enchant
+     *
+     * @param itemstack1 The item
+     * @param itemstack2 The book
+     * @return if the enchantment is allowed
+     */
+    public boolean isBookEnchantable(ItemStack itemstack1, ItemStack itemstack2)
+    {
+        return true;
     }
 
 }

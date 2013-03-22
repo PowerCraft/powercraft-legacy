@@ -34,8 +34,7 @@ public abstract class Container
     /**
      * the slot is assumed empty
      */
-    //NEI
-    public Slot addSlotToContainer(Slot par1Slot)
+    protected Slot addSlotToContainer(Slot par1Slot)
     {
         par1Slot.slotNumber = this.inventorySlots.size();
         this.inventorySlots.add(par1Slot);

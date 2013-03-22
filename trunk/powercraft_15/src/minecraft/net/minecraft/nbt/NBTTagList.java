@@ -13,7 +13,7 @@ public class NBTTagList extends NBTBase
 {
     /** The array list containing the tags encapsulated in this list. */
 	//NEI
-	public List tagList = new ArrayList();
+    public List tagList = new ArrayList();
 
     /**
      * The type byte for the tags in the list - they must all be of the same type.
