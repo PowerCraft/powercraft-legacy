@@ -5,7 +5,7 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     cpw - implementation
  */
@@ -37,13 +37,13 @@ public class GuiIdMismatchScreen extends GuiYesNo {
         parentScreen = this;
         for (Entry<Integer, ItemData> entry : idDifferences.entriesOnlyOnLeft().entrySet())
         {
-            missingIds.add(String.format("ID %d (ModID: %s, type %s) is missing", entry.getValue().getItemId(), entry.getValue().getModId(), entry.getValue().getItemType()));
+            missingIds.add(String.format("ID %d from Mod %s is missing", entry.getValue().getItemId(), entry.getValue().getModId(), entry.getValue().getItemType()));
         }
         for (Entry<Integer, ValueDifference<ItemData>> entry : idDifferences.entriesDiffering().entrySet())
         {
             ItemData world = entry.getValue().leftValue();
             ItemData game = entry.getValue().rightValue();
-            mismatchedIds.add(String.format("ID %d is mismatched. World: (ModID: %s, type %s, ordinal %d) Game (ModID: %s, type %s, ordinal %d)", world.getItemId(), world.getModId(), world.getItemType(), world.getOrdinal(), game.getModId(), game.getItemType(), game.getOrdinal()));
+            mismatchedIds.add(String.format("ID %d is mismatched between world and game", world.getItemId()));
         }
         this.allowContinue = allowContinue;
     }
@@ -66,33 +66,32 @@ public class GuiIdMismatchScreen extends GuiYesNo {
         {
             buttonList.remove(0);
         }
-        int offset = Math.max(85 - missingIds.size() * 10 + mismatchedIds.size() * 30, 10);
-        this.drawCenteredString(this.fontRenderer, "Forge Mod Loader has found world ID mismatches", this.width / 2, offset, 0xFFFFFF);
-        offset += 10;
+        int offset = Math.max(85 - (missingIds.size() + mismatchedIds.size()) * 10, 30);
+        this.drawCenteredString(this.fontRenderer, "Forge Mod Loader has found ID mismatches", this.width / 2, 10, 0xFFFFFF);
+        this.drawCenteredString(this.fontRenderer, "Complete details are in the log file", this.width / 2, 20, 0xFFFFFF);
         for (String s: missingIds) {
             this.drawCenteredString(this.fontRenderer, s, this.width / 2, offset, 0xEEEEEE);
             offset += 10;
+            if (offset > this.height - 30) break;
         }
         for (String s: mismatchedIds) {
             this.drawCenteredString(this.fontRenderer, s, this.width / 2, offset, 0xEEEEEE);
             offset += 10;
+            if (offset > this.height - 30) break;
         }
-        offset += 10;
         if (allowContinue)
         {
-            this.drawCenteredString(this.fontRenderer, "Do you wish to continue loading?", this.width / 2, offset, 0xFFFFFF);
-            offset += 10;
+            this.drawCenteredString(this.fontRenderer, "Do you wish to continue loading?", this.width / 2, this.height - 30, 0xFFFFFF);
         }
         else
         {
-            this.drawCenteredString(this.fontRenderer, "You cannot connect to this server", this.width / 2, offset, 0xFFFFFF);
-            offset += 10;
+            this.drawCenteredString(this.fontRenderer, "You cannot connect to this server", this.width / 2, this.height - 30, 0xFFFFFF);
         }
         // super.super. Grrr
         for (int var4 = 0; var4 < this.buttonList.size(); ++var4)
         {
             GuiButton var5 = (GuiButton)this.buttonList.get(var4);
-            var5.yPosition = Math.min(offset + 10, this.height - 20);
+            var5.yPosition = this.height - 20;
             if (!allowContinue)
             {
                 var5.xPosition = this.width / 2 - 75;

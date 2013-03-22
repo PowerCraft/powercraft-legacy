@@ -438,7 +438,7 @@ public class RenderBlocks
         {
             par1Block.setBlockBoundsBasedOnState(this.blockAccess, par2, par3, par4);
             this.setRenderBoundsFromBlock(par1Block);
-            
+
             switch (l)
             {
                 //regex: ' : \(l == ([\d]+) \?' replace: ';\ncase \1: return' ::: IMPORTANT: REMEMBER THIS ON FIRST line!

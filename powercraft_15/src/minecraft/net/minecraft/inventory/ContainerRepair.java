@@ -305,6 +305,11 @@ public class ContainerRepair extends Container
                 k = Math.max(1, k / 2);
             }
 
+            if (flag && itemstack1!=null && !Item.itemsList[itemstack1.itemID].isBookEnchantable(itemstack1,itemstack2))
+            {
+                itemstack1 = null;
+            }
+
             this.maximumCost = k + i;
 
             if (i <= 0)
@@ -322,6 +327,7 @@ public class ContainerRepair extends Container
             {
                 itemstack1 = null;
             }
+
 
             if (itemstack1 != null)
             {
