@@ -78,12 +78,6 @@ public abstract class PCtr_BlockBeltBase extends PC_Block
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l)
-    {
-        return l != 1;
-    }
-
-    @Override
     public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving, ItemStack itemStack)
     {
         int l = PCtr_BeltHelper.getPlacedMeta(entityliving);

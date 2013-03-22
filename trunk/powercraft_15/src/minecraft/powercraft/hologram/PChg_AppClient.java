@@ -56,6 +56,7 @@ public class PChg_AppClient extends PChg_App {
 			te.glList = GL11.glGenLists(1);
 		}
 		if(te == PChg_HologramGlassesOverlay.fieldToUpdate){
+			mc.renderEngine.bindTexture("/terrain.png");
 			GL11.glNewList(te.glList, GL11.GL_COMPILE_AND_EXECUTE);
 			RenderBlocks renderer = new PChg_HologramRenderBlocks(cc);
 			PC_Renderer.tessellatorStartDrawingQuads();

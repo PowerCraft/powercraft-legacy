@@ -17,14 +17,16 @@ import powercraft.launcher.loader.PC_Module.PC_InitEntities;
 import powercraft.launcher.loader.PC_Module.PC_InitPacketHandlers;
 import powercraft.launcher.loader.PC_Module.PC_InitProperties;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module.PC_Instance;
 import powercraft.launcher.loader.PC_Module.PC_PreInit;
 import powercraft.launcher.loader.PC_Module.PC_RegisterContainers;
+import powercraft.launcher.loader.PC_ModuleObject;
 
 @PC_Module(name="Mobile", version="1.1.0")
 public class PCmo_App {
 
 	public static PCmo_MinerManager minerManager = new PCmo_MinerManager();
-	
+
 	public static final String pk_mForward = "move_forward";
 	public static final String pk_mBackward = "move_backward";
 	public static final String pk_mLeft = "turn_left";
@@ -40,6 +42,9 @@ public class PCmo_App {
 	public static final String pk_mMiningOn = "set_mining_on";
 	public static final String pk_mMiningOff = "set_mining_off";
 	public static final String pk_mCancel = "reset";
+	
+	@PC_Instance
+	public static PC_ModuleObject instance;
 	
 	@PC_PreInit
 	public void preInit() {
