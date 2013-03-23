@@ -50,19 +50,15 @@ public class PCde_BlockChimney extends PC_Block {
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		final float px = 0.0625F;
 		float w = px * 3;
-		
-		if (metadata == 0) icons[0] = Block.cobblestone.getBlockTextureFromSideAndMetadata(0, 0);
-		if (metadata == 1) icons[0] = Block.brick.getBlockTextureFromSideAndMetadata(0, 0);
-		if (metadata == 2) icons[0] = Block.stoneBrick.getBlockTextureFromSideAndMetadata(0, 0);
 
 		setBlockBounds(0, 0, 0, 1, 1, w);
-		PC_Renderer.renderInvBox(renderer, block, 0);
+		PC_Renderer.renderInvBox(renderer, block, metadata);
 		setBlockBounds(1 - w, 0, w, 1, 1, 1 - w);
-		PC_Renderer.renderInvBox(renderer, block, 0);
+		PC_Renderer.renderInvBox(renderer, block, metadata);
 		setBlockBounds(0, 0, 1 - w, 1, 1, 1);
-		PC_Renderer.renderInvBox(renderer, block, 0);
+		PC_Renderer.renderInvBox(renderer, block, metadata);
 		setBlockBounds(0, 0, w, w, 1, 1 - w);
-		PC_Renderer.renderInvBox(renderer, block, 0);
+		PC_Renderer.renderInvBox(renderer, block, metadata);
 		setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
@@ -70,12 +66,6 @@ public class PCde_BlockChimney extends PC_Block {
 		
 		final float px = 0.0625F;
 		float w = px * 3;
-
-		int metadata = GameInfo.getMD(world, x, y, z);
-		
-		if (metadata == 0) icons[0] = Block.cobblestone.getBlockTextureFromSideAndMetadata(0, 0);
-		if (metadata == 1) icons[0] = Block.brick.getBlockTextureFromSideAndMetadata(0, 0);
-		if (metadata == 2) icons[0] = Block.stoneBrick.getBlockTextureFromSideAndMetadata(0, 0);
 
 		setBlockBounds(0, 0, 0, 1, 1, w);
 		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
