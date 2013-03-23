@@ -41,6 +41,7 @@ public class PC_UpdateManager {
 	public static List<ModuleUpdateInfo> moduleList;
 	public static XMLInfoTag updateInfo;
 	public static File downloadTarget;
+	public static boolean newLauncher;
 	
 	public static void startUpdateInfoDownload(){
 		updateChecker = new PC_ThreadCheckUpdates();
@@ -49,6 +50,10 @@ public class PC_UpdateManager {
 	public static void moduleInfos(HashMap<String, PC_ModuleObject> modules){
 		updateInfo = updateChecker.getUpdateInfo();
 		boolean showUpdate = PC_Launcher.openAlwaysUpdateScreen();
+		if(updateInfo.getPowerCraftVersion().compareTo(new PC_Version(PC_LauncherUtils.getPowerCraftVersion()))>0){
+			newLauncher = true;
+			showUpdate=true;
+		}
 		moduleList = new ArrayList<ModuleUpdateInfo>();
 		for(XMLModuleTag xmlModule:updateInfo.getModules()){
 			ModuleUpdateInfo mui = new ModuleUpdateInfo();
@@ -117,12 +122,16 @@ public class PC_UpdateManager {
 		public XMLModuleTag xmlModule;
 	}
 
-	public static void download(XMLVersionTag version) {
+	public static void openURL(String url) {
 		try {
-			Desktop.getDesktop().browse(new URI(version.getDownloadLink()));
+			Desktop.getDesktop().browse(new URI(url));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
+	}
+	
+	public static void download(XMLVersionTag version) {
+		openURL(version.getDownloadLink());
 	}
 
 	public static void watchDirectory(File downloadTarget) {

@@ -50,7 +50,7 @@ public class PC_GuiUpdate extends GuiScreen {
 		buttonList.add(new GuiButton(3, 220, height - 28, width-240, 20, StringTranslate.getInstance().translateKey("Where to watch for downloads")));
 		buttonList.add(activate = new GuiButton(4, 220, height - 58, (width-240)/2, 20, StringTranslate.getInstance().translateKey("Activate")));
 		buttonList.add(delete = new GuiButton(5, 220+(width-240)/2, height - 58, (width-240)/2, 20, StringTranslate.getInstance().translateKey("Delete")));
-		buttonList.add(new GuiButton(6, 10, height - 58, 190, 20, StringTranslate.getInstance().translateKey("ignore")));
+		buttonList.add(new GuiButton(6, 10, height - 58, 190, 20, StringTranslate.getInstance().translateKey("Ignore")));
 		activate.drawButton = false;
 		delete.drawButton = false;
 	}
@@ -63,15 +63,58 @@ public class PC_GuiUpdate extends GuiScreen {
 		drawCenteredString(fontRenderer, "PowerCraft Update Screen", width / 2, 4, 0xffffff);
         super.drawScreen(par1, par2, par3);
 		
+        if(PC_UpdateManager.newLauncher){
+        	drawInfo("There is a new Launcher update", isMouseOverInfo(par1, par2));
+        }else if(!hasAPI()){
+        	drawInfo("Please download the API", false);
+        }
+        
         drawTooltip(par1, par2, par3);
         
         PC_UpdateManager.lookForDirectoryChange();
     }
 	
+	private boolean hasAPI(){
+		for(ModuleUpdateInfo mui:PC_UpdateManager.moduleList){
+			if(mui.module==null){
+				if(mui.xmlModule.getName().equals("Api")){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	private boolean isMouseOverInfo(int par1, int par2){
+		return par1>width-120 && par2<32;
+	}
+	
+	private void drawInfo(String info, boolean highLite) {
+		if(highLite){
+			GL11.glColor4f(1.0F, 1.0F, 0.4F, 1.0F);
+		}else{
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		}
+		mc.renderEngine.bindTexture("/gui/inventory.png");
+		drawTexturedModalRect(width-120, 0, 0, 166, 120, 32);
+		List<String> lines = fontRenderer.listFormattedStringToWidth(info, 100);
+		if(lines.size()==1){
+			fontRenderer.drawStringWithShadow(lines.get(0), width-110, 11, highLite?0xFF4433:0xFFFFFF);
+		}else if(lines.size()>1){
+			fontRenderer.drawStringWithShadow(lines.get(0), width-110, 6, highLite?0xFF4433:0xFFFFFF);
+			fontRenderer.drawStringWithShadow(lines.get(1), width-110, 16, highLite?0xFF4433:0xFFFFFF);
+		}
+	}
+
 	private void drawTooltip(int par1, int par2, float par3){
 		List list = null;
         
-        if(par1>220 && par1<width-20 && par2>height - 28 && par2<height - 8){
+		if(isMouseOverInfo(par1, par2)){
+			if(PC_UpdateManager.newLauncher){
+				list = Arrays.asList("Click to Download");
+			}
+		}
+        if(list==null && par1>220 && par1<width-20 && par2>height - 28 && par2<height - 8){
         	list = Arrays.asList("Browser Download", "Directory");
         }
         
@@ -152,6 +195,11 @@ public class PC_GuiUpdate extends GuiScreen {
 
 	@Override
 	protected void mouseClicked(int par1, int par2, int par3) {
+		if(isMouseOverInfo(par1, par2)){
+			if(PC_UpdateManager.newLauncher){
+				PC_UpdateManager.openURL("http://www.powercrafting.net/forum/viewtopic.php?f=29&t=100");
+			}
+		}
 		scroll.mouseClicked(par1, par2, par3);
 		versionList.mouseClicked(par1, par2, par3);
 		infoList.mouseClicked(par1, par2, par3);

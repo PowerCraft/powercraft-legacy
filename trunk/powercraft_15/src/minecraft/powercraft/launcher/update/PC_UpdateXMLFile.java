@@ -9,7 +9,6 @@ import org.w3c.dom.NodeList;
 
 import powercraft.launcher.PC_LauncherUtils;
 import powercraft.launcher.PC_Version;
-import powercraft.launcher.loader.PC_ModLoader;
 
 public class PC_UpdateXMLFile {
 
@@ -55,10 +54,15 @@ public class PC_UpdateXMLFile {
 	public static class XMLInfoTag extends XMLTag<XMLInfoTag>{
 		private List<XMLModuleTag> modules = new ArrayList<XMLModuleTag>();
 		private List<XMLPackTag> packs = new ArrayList<XMLPackTag>();
+		private PC_Version powerCraftVersion;
 		private XMLMainTag main;
-
+		
 		public XMLInfoTag(Node node) {
 			super(node);
+		}
+		
+		public PC_Version getPowerCraftVersion(){
+			return powerCraftVersion;
 		}
 		
 		public XMLModuleTag getModule(String moduleName) {
@@ -92,7 +96,9 @@ public class PC_UpdateXMLFile {
 		}
 		
 		@Override
-		protected void readAttributes(Element element) {}
+		protected void readAttributes(Element element) {
+			powerCraftVersion = new PC_Version(element.getAttribute("version"));
+		}
 
 		@Override
 		protected void readChild(String childName, Node childNode) {
