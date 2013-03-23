@@ -139,5 +139,7 @@ public abstract class PCws_WeaselPluginInfo {
 	public int inventoryStackLimit(){
 		return 64;
 	}
+
+	public abstract Icon getTexture(int side);
 	
 }

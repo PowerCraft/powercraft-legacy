@@ -17,9 +17,9 @@ public class PCws_WeaselPluginInfoDiskDrive extends PCws_WeaselPluginInfo {
 	public void renderInventoryBlock(Block block, Object renderer) {
 
 		float px = 0.0625F;
-		ValueWriting.setBlockBounds(block, 0, 0, 0, 16 * px, 13 * px, 16 * px);
+		block.setBlockBounds(0, 0, 0, 16 * px, 13 * px, 16 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[4], icons[5], icons[6], icons[6], icons[6], icons[6] });
-		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override
@@ -40,6 +40,17 @@ public class PCws_WeaselPluginInfoDiskDrive extends PCws_WeaselPluginInfo {
 	@Override
 	public int inventoryStackLimit(){
 		return 1;
+	}
+	
+	@Override
+	public Icon getTexture(int side) {
+		if(side==1){
+			return icons[5];
+		}else if(side==0){
+			return icons[4];
+		}else{
+			return icons[6];
+		}
 	}
 	
 }

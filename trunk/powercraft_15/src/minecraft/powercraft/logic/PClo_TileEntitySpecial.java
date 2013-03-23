@@ -8,9 +8,7 @@ import net.minecraft.world.World;
 import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.annotation.PC_ClientServerSync;
-import powercraft.api.inventory.PC_ISpecialAccessInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
-import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.tileentity.PC_TileEntityWithInventory;
 
 public class PClo_TileEntitySpecial extends PC_TileEntityWithInventory
@@ -70,15 +68,21 @@ public class PClo_TileEntitySpecial extends PC_TileEntityWithInventory
                 shouldState = worldObj.isRaining();
                 break;
 
-            case PClo_SpecialType.CHEST_EMPTY:
-            	shouldState = PC_InventoryUtils.getInventoryCountOf(PC_InventoryUtils.getInventoryAt(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd), getStackInSlot(0), -1)==0;
-                break;
+            case PClo_SpecialType.CHEST_EMPTY:{
+            	IInventory inv = PC_InventoryUtils.getInventoryAt(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd);
+            	if(inv!=null){
+            		shouldState = PC_InventoryUtils.getInventoryCountOf(inv, getStackInSlot(0))==0;
+            	}
+            	break;
 
-            case PClo_SpecialType.CHEST_FULL:
-                shouldState = PC_InventoryUtils.getInventorySpaceFor(PC_InventoryUtils.getInventoryAt(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd), getStackInSlot(0), -1)==0;
-                break;
+            }case PClo_SpecialType.CHEST_FULL:{
+            	IInventory inv = PC_InventoryUtils.getInventoryAt(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd);
+            	if(inv!=null){
+            		shouldState = PC_InventoryUtils.getInventorySpaceFor(inv, getStackInSlot(0))==0;
+            	}
+            	break;
 
-            case PClo_SpecialType.SPECIAL:
+            } case PClo_SpecialType.SPECIAL:
                 ValueWriting.preventSpawnerSpawning(worldObj, xCoord + 1, yCoord, zCoord);
                 ValueWriting.preventSpawnerSpawning(worldObj, xCoord - 1, yCoord, zCoord);
                 ValueWriting.preventSpawnerSpawning(worldObj, xCoord, yCoord + 1, zCoord);

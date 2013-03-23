@@ -185,7 +185,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		PC_Renderer.renderInvBox(renderer, block, metadata);
-		ValueWriting.setBlockBounds(block, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
 		// cobble body
 		

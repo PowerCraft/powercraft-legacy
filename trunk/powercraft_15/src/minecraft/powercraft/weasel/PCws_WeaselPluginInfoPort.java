@@ -17,13 +17,13 @@ public class PCws_WeaselPluginInfoPort extends PCws_WeaselPluginInfo {
 	@Override
 	public void renderInventoryBlock(Block block, Object renderer) {
 		float px = 0.0625F;
-		ValueWriting.setBlockBounds(block, 0, 0, 0, 16 * px, 3 * px, 16 * px);
+		block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[0], icons[2], icons[1], icons[1], icons[1], icons[1] });
 
 		//chip
-		ValueWriting.setBlockBounds(block, 5 * px, 3 * px, 5 * px, 11 * px, 5 * px, 11 * px);
+		block.setBlockBounds(5 * px, 3 * px, 5 * px, 11 * px, 5 * px, 11 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { null, icons[4], icons[5], icons[5], icons[5], icons[5] });
-		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override
@@ -40,6 +40,15 @@ public class PCws_WeaselPluginInfoPort extends PCws_WeaselPluginInfo {
 		}
 	}
 
-	
+	@Override
+	public Icon getTexture(int side) {
+		if(side==1){
+			return icons[4];
+		}else if(side==0){
+			return icons[0];
+		}else{
+			return icons[5];
+		}
+	}
 	
 }

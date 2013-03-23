@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -102,15 +103,21 @@ public class PClo_BlockSpecial extends PC_Block
                 shouldState = world.isRaining();
                 break;
 
-            case PClo_SpecialType.CHEST_EMPTY:
-            	shouldState = PC_InventoryUtils.getInventoryCountOf(PC_InventoryUtils.getInventoryAt(world, x + xAdd, y, z + zAdd), te.getStackInSlot(0), -1)==0;
-                break;
+            case PClo_SpecialType.CHEST_EMPTY:{
+            	IInventory inv = PC_InventoryUtils.getInventoryAt(world, x + xAdd, y, z + zAdd);
+            	if(inv!=null){
+            		shouldState = PC_InventoryUtils.getInventoryCountOf(inv, te.getStackInSlot(0))==0;
+            	}
+            	break;
 
-            case PClo_SpecialType.CHEST_FULL:
-                shouldState = PC_InventoryUtils.getInventorySpaceFor(PC_InventoryUtils.getInventoryAt(world, x + xAdd, y, z + zAdd), te.getStackInSlot(0), -1)==0;
-                break;
+            }case PClo_SpecialType.CHEST_FULL:{
+            	IInventory inv = PC_InventoryUtils.getInventoryAt(world, x + xAdd, y, z + zAdd);
+            	if(inv!=null){
+            		shouldState = PC_InventoryUtils.getInventorySpaceFor(inv, te.getStackInSlot(0))==0;
+            	}
+            	break;
 
-            case PClo_SpecialType.SPECIAL:
+            }case PClo_SpecialType.SPECIAL:
                 shouldState = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot);
                 TileEntity tes = GameInfo.getTE(world, x - xAdd, y, z - zAdd);
 

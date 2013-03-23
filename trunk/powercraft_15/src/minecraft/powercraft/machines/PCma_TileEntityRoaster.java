@@ -6,11 +6,8 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -20,12 +17,10 @@ import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.block.PC_Block;
-import powercraft.api.inventory.PC_ISpecialAccessInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_RecipeRegistry;
-import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.tileentity.PC_TileEntityWithInventory;
 
 public class PCma_TileEntityRoaster extends PC_TileEntityWithInventory{
@@ -334,12 +329,12 @@ public class PCma_TileEntityRoaster extends PC_TileEntityWithInventory{
 
     private boolean addFuelForItem(ItemStack itemstack)
     {
-    	int bt = PC_InventoryUtils.useFuel(this, 0, getSizeInventory(), worldObj, getCoord());
+    	int bt = PC_InventoryUtils.useFuel(this, worldObj, getCoord());
     	while(bt>0){
     		setBurnTime(getBurnTime()+bt);
     		if (getBurnTime() >= getItemSmeltTime(itemstack))
     			return true;
-    		bt = PC_InventoryUtils.useFuel(this, 0, getSizeInventory(), worldObj, getCoord());
+    		bt = PC_InventoryUtils.useFuel(this, worldObj, getCoord());
     	}
 
         if (getBurnTime() >= getItemSmeltTime(itemstack))

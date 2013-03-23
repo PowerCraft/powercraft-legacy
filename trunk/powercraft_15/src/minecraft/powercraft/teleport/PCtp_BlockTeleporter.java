@@ -263,9 +263,9 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 
 		ValueWriting.setBlockBounds(Block.blockSteel, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
-		ValueWriting.setBlockBounds(block, 0.1875F, 0.1875F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
+		block.setBlockBounds(0.1875F, 0.1875F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
 		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-		ValueWriting.setBlockBounds(block, 0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
+		block.setBlockBounds(0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
 		
 		tessellator.draw();
 		
@@ -285,9 +285,9 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 
 		ValueWriting.setBlockBounds(Block.blockSteel, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
-		ValueWriting.setBlockBounds(block, 0.1875F, 0.0F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
+		block.setBlockBounds(0.1875F, 0.0F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		ValueWriting.setBlockBounds(block, 0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
+		block.setBlockBounds(0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
 	}
 	
 	public result onHitByBeamTracer(IBlockAccess world, BeamSettings bs) {

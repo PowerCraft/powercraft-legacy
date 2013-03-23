@@ -52,11 +52,11 @@ public class PChg_AppClient extends PChg_App {
 		PC_Renderer.glScalef(1/16.0f, 1/16.0f, 1/16.0f);
 		PC_Renderer.glTranslatef(-offset.x, -offset.y, -offset.z);
 		
-		if(te.glList==0){
-			te.glList = GL11.glGenLists(1);
-		}
-		if(te == PChg_HologramGlassesOverlay.fieldToUpdate){
-			mc.renderEngine.bindTexture("/terrain.png");
+		mc.renderEngine.bindTexture("/terrain.png");
+		if(te == PChg_HologramGlassesOverlay.fieldToUpdate || te.glList==0){
+			if(te.glList==0){
+				te.glList = GL11.glGenLists(1);
+			}
 			GL11.glNewList(te.glList, GL11.GL_COMPILE_AND_EXECUTE);
 			RenderBlocks renderer = new PChg_HologramRenderBlocks(cc);
 			PC_Renderer.tessellatorStartDrawingQuads();

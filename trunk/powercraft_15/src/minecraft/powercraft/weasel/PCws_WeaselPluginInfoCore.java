@@ -21,13 +21,13 @@ public class PCws_WeaselPluginInfoCore extends PCws_WeaselPluginInfo {
 	public void renderInventoryBlock(Block block, Object renderer) {
 		float px = 0.0625F;
 		//floor
-		ValueWriting.setBlockBounds(block, 0, 0, 0, 16 * px, 3 * px, 16 * px);
+		block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[0], icons[2], icons[1], icons[1], icons[1], icons[1]});
 
 		//chip
-		ValueWriting.setBlockBounds(block, 4 * px, 3 * px, 3 * px, 12 * px, 5 * px, 13 * px);
+		block.setBlockBounds(4 * px, 3 * px, 3 * px, 12 * px, 5 * px, 13 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { null, icons[4], icons[5], icons[5], icons[5], icons[5] });
-		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override
@@ -42,6 +42,17 @@ public class PCws_WeaselPluginInfoCore extends PCws_WeaselPluginInfo {
 					(rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 		te.getWorldObj().spawnParticle("note", te.xCoord + 0.5D, te.yCoord + 0.3D, te.zCoord + 0.5D, (Double)obj,
 				0.0D, 0.0D);
+		}
+	}
+
+	@Override
+	public Icon getTexture(int side) {
+		if(side==1){
+			return icons[4];
+		}else if(side==0){
+			return icons[0];
+		}else{
+			return icons[5];
 		}
 	}
 	

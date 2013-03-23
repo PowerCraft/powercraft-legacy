@@ -48,6 +48,23 @@ public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 		return null;
 	}
 
+	public static PC_Direction getFromVec(PC_VecI vec){
+		int max=vec.x;
+		PC_Direction side = PC_Direction.RIGHT;
+		if(Math.abs(max)<Math.abs(vec.y)){
+			max=vec.y;
+			side=PC_Direction.TOP;
+		}
+		if(Math.abs(max)<Math.abs(vec.z)){
+			max=vec.z;
+			side=PC_Direction.FRONT;
+		}
+		if(max<0){
+			side = side.mirror();
+		}
+		return side;
+	}
+	
 	public PC_Direction rotateRight() {
 		switch (mcDir) {
 		case 0:

@@ -152,7 +152,7 @@ public class PCis_BigChestInventory implements IInventory {
 		if(entity.isDead)
 			return;
 		ItemStack is = entity.getEntityItem();
-		if(PC_InventoryUtils.storeItemStackToInventoryFrom(this, is, -1)){
+		if(PC_InventoryUtils.storeItemStackToInventoryFrom(this, is)){
 			entity.setDead();
 		}else{
 			entity.setEntityItemStack(is);
@@ -162,7 +162,7 @@ public class PCis_BigChestInventory implements IInventory {
 	public void interact(EntityPlayer entityPlayer, int slot) {
 		if(inv[slot]==null)
 			return;
-		PC_InventoryUtils.storeItemStackToInventoryFrom(entityPlayer.inventory, inv[slot], -1);
+		PC_InventoryUtils.storeItemStackToInventoryFrom(entityPlayer.inventory, inv[slot]);
 		if(inv[slot].stackSize==0){
 			inv[slot] = null;
 		}

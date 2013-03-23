@@ -171,11 +171,11 @@ public class PCco_BlockPowerCrystal extends PC_BlockOre
             a = 0.2F + Math.max(posRand.nextFloat() * (0.7F - x), 0.3F);
             b = 0.2F + Math.max(posRand.nextFloat() * (0.7F - y), 0.3F);
             c = 0.2F + Math.max(posRand.nextFloat() * (0.7F - z), 0.3F);
-            ValueWriting.setBlockBounds(block, x, y, z, x + a, y + b, z + c);
+            block.setBlockBounds(x, y, z, x + a, y + b, z + c);
             PC_Renderer.renderInvBox(renderer, block, metadata);
         }
 
-        ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
+        block.setBlockBounds(0, 0, 0, 1, 1, 1);
     }
 
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
@@ -192,11 +192,11 @@ public class PCco_BlockPowerCrystal extends PC_BlockOre
             a = i + 0.3F + posRand.nextFloat() * (0.7F - i);
             b = j + 0.3F + posRand.nextFloat() * (0.7F - j);
             c = k + 0.3F + posRand.nextFloat() * (0.7F - k);
-            ValueWriting.setBlockBounds(block, i, j, k, a, b, c);
+            block.setBlockBounds(i, j, k, a, b, c);
             PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
         }
 
-        ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
+        block.setBlockBounds(0, 0, 0, 1, 1, 1);
         PC_Renderer.tessellatorDraw();
         PC_Renderer.tessellatorStartDrawingQuads();
     }

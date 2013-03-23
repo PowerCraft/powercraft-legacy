@@ -1,12 +1,10 @@
 package powercraft.transport;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.inventory.PC_IInventory;
-import powercraft.api.inventory.PC_ISpecialAccessInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
 
 public abstract class PCtr_TileEntitySeparationBeltBase extends

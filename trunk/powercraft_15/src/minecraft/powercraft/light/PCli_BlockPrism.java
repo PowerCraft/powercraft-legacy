@@ -28,7 +28,7 @@ import powercraft.api.renderer.PC_Renderer;
 public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 
 	public PCli_BlockPrism(int id) {
-		super(id, Material.glass, null);
+		super(id, Material.glass, "prism");
 		float f = 0.4F;
 		float f1 = 1.0F;
 		setBlockBounds(0.5F - f, 0.1F, 0.5F - f, 0.5F + f, f1 - 0.1F, 0.5F + f);
@@ -165,18 +165,16 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 	}
 	
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
-		Block ice = Block.ice;
 		float px = 0.0625F;
-		PC_Renderer.bindTexture("/terrain.png");
-		ValueWriting.setBlockBounds(ice, 3 * px, 3 * px, 3 * px, 12 * px, 12 * px, 12 * px);
-		PC_Renderer.renderInvBox(renderer, ice, 0);
-		ValueWriting.setBlockBounds(ice, 4 * px, 4 * px, 2 * px, 11 * px, 11 * px, 13 * px);
-		PC_Renderer.renderInvBox(renderer, ice, 0);
-		ValueWriting.setBlockBounds(ice, 2 * px, 4 * px, 4 * px, 13 * px, 11 * px, 11 * px);
-		PC_Renderer.renderInvBox(renderer, ice, 0);
-		ValueWriting.setBlockBounds(ice, 4 * px, 2 * px, 4 * px, 11 * px, 13 * px, 11 * px);
-		PC_Renderer.renderInvBox(renderer, ice, 0);
-		ValueWriting.setBlockBounds(ice, 0, 0, 0, 1, 1, 1);
+		block.setBlockBounds(3 * px, 3 * px, 3 * px, 12 * px, 12 * px, 12 * px);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		block.setBlockBounds(4 * px, 4 * px, 2 * px, 11 * px, 11 * px, 13 * px);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		block.setBlockBounds(2 * px, 4 * px, 4 * px, 13 * px, 11 * px, 11 * px);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		block.setBlockBounds(4 * px, 2 * px, 4 * px, 11 * px, 13 * px, 11 * px);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	/** prism redirection vector for side */

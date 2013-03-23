@@ -1,6 +1,7 @@
 package powercraft.weasel;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.Icon;
 import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.renderer.PC_Renderer;
 
@@ -16,29 +17,29 @@ public class PCws_WeaselPluginInfoTouchscreen extends PCws_WeaselPluginInfo {
 	public void renderInventoryBlock(Block block, Object renderer) {
 		float px = 0.0625F;
 		// legs
-		ValueWriting.setBlockBounds(block, 3 * px, 0, 4 * px, 4 * px, 1 * px, 12 * px);
+		block.setBlockBounds(3 * px, 0, 4 * px, 4 * px, 1 * px, 12 * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
-		ValueWriting.setBlockBounds(block, 12 * px, 0, 4 * px, 13 * px, 1 * px, 12 * px);
+		block.setBlockBounds(12 * px, 0, 4 * px, 13 * px, 1 * px, 12 * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
 		//sticks
-		ValueWriting.setBlockBounds(block, 3 * px, 1 * px, 7.5F * px, 4 * px, 2 * px, 8.5F * px);
+		block.setBlockBounds(3 * px, 1 * px, 7.5F * px, 4 * px, 2 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
-		ValueWriting.setBlockBounds(block, 12 * px, 1 * px, 7.5F * px, 13 * px, 2 * px, 8.5F * px);
+		block.setBlockBounds(12 * px, 1 * px, 7.5F * px, 13 * px, 2 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
 
 		//bottom
-		ValueWriting.setBlockBounds(block, 0 * px, 2 * px, 7.5F * px, 16 * px, 3 * px, 8.5F * px);
+		block.setBlockBounds(0 * px, 2 * px, 7.5F * px, 16 * px, 3 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
 		//top
-		ValueWriting.setBlockBounds(block, 0 * px, 15 * px, 7.5F * px, 16 * px, 16 * px, 8.5F * px);
+		block.setBlockBounds(0 * px, 15 * px, 7.5F * px, 16 * px, 16 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
 		//left
-		ValueWriting.setBlockBounds(block, 0 * px, 3 * px, 7.5F * px, 1 * px, 15 * px, 8.5F * px);
+		block.setBlockBounds(0 * px, 3 * px, 7.5F * px, 1 * px, 15 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
 		//right
-		ValueWriting.setBlockBounds(block, 15 * px, 3 * px, 7.5F * px, 16 * px, 15 * px, 8.5F * px);
+		block.setBlockBounds(15 * px, 3 * px, 7.5F * px, 16 * px, 15 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
-		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override
@@ -54,6 +55,11 @@ public class PCws_WeaselPluginInfoTouchscreen extends PCws_WeaselPluginInfo {
 	@Override
 	public float[] getBounds() {
 		return new float[]{ 0, 0, 0, 1, 1, 1 };
+	}
+	
+	@Override
+	public Icon getTexture(int side) {
+		return icons[4];
 	}
 	
 }

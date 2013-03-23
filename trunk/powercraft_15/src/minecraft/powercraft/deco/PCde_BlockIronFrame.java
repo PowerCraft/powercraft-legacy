@@ -50,37 +50,37 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 		float s = 0.1875F;
 
 		// pillars
-		ValueWriting.setBlockBounds(block, 0, 0, 0, s, 1, s);
+		block.setBlockBounds(0, 0, 0, s, 1, s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		ValueWriting.setBlockBounds(block, 1 - s, 0, 0, 1, 1, s);
+		block.setBlockBounds(1 - s, 0, 0, 1, 1, s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		ValueWriting.setBlockBounds(block, 0, 0, 1 - s, s, 1, 1);
+		block.setBlockBounds(0, 0, 1 - s, s, 1, 1);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		ValueWriting.setBlockBounds(block, 1 - s, 0, 1 - s, 1, 1, 1);
+		block.setBlockBounds(1 - s, 0, 1 - s, 1, 1, 1);
 		PC_Renderer.renderInvBox(renderer, block, 0);
 
 		// x-sticks
-		ValueWriting.setBlockBounds(block, s, 0, 0, 1 - s, s, s);
+		block.setBlockBounds(s, 0, 0, 1 - s, s, s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		ValueWriting.setBlockBounds(block, s, 0, 1 - s, 1 - s, s, 1);
+		block.setBlockBounds(s, 0, 1 - s, 1 - s, s, 1);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		ValueWriting.setBlockBounds(block, s, 1 - s, 0, 1 - s, 1, s);
+		block.setBlockBounds(s, 1 - s, 0, 1 - s, 1, s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		ValueWriting.setBlockBounds(block, s, 1 - s, 1 - s, 1 - s, 1, 1);
+		block.setBlockBounds(s, 1 - s, 1 - s, 1 - s, 1, 1);
 		PC_Renderer.renderInvBox(renderer, block, 0);
 
 		// z-sticks
-		ValueWriting.setBlockBounds(block, 0, 0, s, s, s, 1 - s);
+		block.setBlockBounds(0, 0, s, s, s, 1 - s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		ValueWriting.setBlockBounds(block, 0, 1 - s, s, s, 1, 1 - s);
+		block.setBlockBounds(0, 1 - s, s, s, 1, 1 - s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
 
-		ValueWriting.setBlockBounds(block, 1 - s, 0, s, 1, s, 1 - s);
+		block.setBlockBounds(1 - s, 0, s, 1, s, 1 - s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		ValueWriting.setBlockBounds(block, 1 - s, 1 - s, s, 1, 1, 1 - s);
+		block.setBlockBounds(1 - s, 1 - s, s, 1, 1, 1 - s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
 		
-		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
 		
 	}
 
