@@ -1,16 +1,11 @@
 package powercraft.machines;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.api.annotation.PC_ClientServerSync;
-import powercraft.api.inventory.PC_ISpecialAccessInventory;
-import powercraft.api.inventory.PC_IStateReportingInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.registry.PC_RecipeRegistry;
-import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.tileentity.PC_TileEntityWithInventory;
 
 public class PCma_TileEntityTransmutabox extends PC_TileEntityWithInventory{
@@ -102,7 +97,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntityWithInventory{
     }
     
     private boolean sendToOutput(ItemStack is){
-    	return PC_InventoryUtils.storeItemStackToInventoryFrom(this, is, 23, 35);
+    	return PC_InventoryUtils.storeItemStackToInventoryFrom(this, is, PC_InventoryUtils.makeIndexList(23, 35));
     }
     
     @Override
@@ -180,7 +175,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntityWithInventory{
         		}
         	}else{
         		
-        		burnTime += PC_InventoryUtils.useFuel(this, 1, 9, worldObj, getCoord());
+        		burnTime += PC_InventoryUtils.useFuel(this, PC_InventoryUtils.makeIndexList(1, 9), worldObj, getCoord());
 	
 	            if (burnTime > 0)
 	            {

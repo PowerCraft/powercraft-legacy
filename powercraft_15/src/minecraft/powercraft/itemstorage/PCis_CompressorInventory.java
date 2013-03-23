@@ -1,12 +1,11 @@
 package powercraft.itemstorage;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import powercraft.api.PC_VecI;
-import powercraft.api.inventory.PC_ISpecialAccessInventory;
+import powercraft.api.inventory.PC_IInventory;
 
-public abstract class PCis_CompressorInventory implements IInventory, PC_ISpecialAccessInventory {
+public abstract class PCis_CompressorInventory implements PC_IInventory {
 
 	protected EntityPlayer player;
 	protected PC_VecI size;
@@ -46,23 +45,8 @@ public abstract class PCis_CompressorInventory implements IInventory, PC_ISpecia
 	public void openChest() {}
 
 	@Override
-	public boolean insertStackIntoInventory(ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public boolean needsSpecialInserter() {
-		return false;
-	}
-
-	@Override
 	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
 		return stack.itemID != PCis_App.compressor.itemID;
-	}
-
-	@Override
-	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
-		return false;
 	}
 
 	@Override
@@ -93,6 +77,21 @@ public abstract class PCis_CompressorInventory implements IInventory, PC_ISpecia
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return false;
+	}
+
+	@Override
+	public int[] getSizeInventorySide(int var1) {
+		return null;
+	}
+
+	@Override
+	public boolean func_102007_a(int i, ItemStack itemstack, int j) {
+		return false;
+	}
+
+	@Override
+	public boolean func_102008_b(int i, ItemStack itemstack, int j) {
 		return false;
 	}
 	

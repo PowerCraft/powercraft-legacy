@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_MathHelper;
@@ -51,6 +52,15 @@ public class PCws_BlockWeasel extends PC_Block {
 		for(PCws_WeaselPluginInfo pluginInfo:PCws_WeaselManager.getPluginInfoMap().values()){
 			pluginInfo.onIconLoading(this);
 		}
+	}
+
+	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5) {
+		return GameInfo.<PCws_TileEntityWeasel>getTE(par1iBlockAccess, par2, par3, par4).getTexture(par5);
+	}
+	
+	@Override
+	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
+		return PCws_WeaselManager.getPluginInfo(0).getTexture(0);
 	}
 
 	@Override

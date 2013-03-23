@@ -17,13 +17,13 @@ public class PCws_WeaselPluginInfoTerminal extends PCws_WeaselPluginInfo {
 	@Override
 	public void renderInventoryBlock(Block block, Object renderer) {
 		float px = 0.0625F;
-		ValueWriting.setBlockBounds(block, 1 * px, 0, 1 * px, 15 * px, 4 * px, 15 * px);
+		block.setBlockBounds(1 * px, 0, 1 * px, 15 * px, 4 * px, 15 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[0], icons[4], icons[5], icons[5], icons[5], icons[5] });
 
 		// screen
-		ValueWriting.setBlockBounds(block, 2 * px, 4 * px, 2 * px, 14 * px, 12 * px, 8 * px);
+		block.setBlockBounds(2 * px, 4 * px, 2 * px, 14 * px, 12 * px, 8 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[6], icons[6], icons[9], icons[8], icons[7], icons[7] });
-		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override
@@ -35,6 +35,17 @@ public class PCws_WeaselPluginInfoTerminal extends PCws_WeaselPluginInfo {
 	public void getServerMsg(PCws_TileEntityWeasel te, String msg, Object obj) {
 		if(msg.equals("play")){
 			PC_SoundRegistry.playSound(te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, "random.click", 0.05F, 3F);
+		}
+	}
+	
+	@Override
+	public Icon getTexture(int side) {
+		if(side==1){
+			return icons[4];
+		}else if(side==0){
+			return icons[0];
+		}else{
+			return icons[5];
 		}
 	}
 	

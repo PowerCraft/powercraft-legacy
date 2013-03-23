@@ -13,14 +13,12 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.annotation.PC_ClientServerSync;
-import powercraft.api.inventory.PC_ISpecialAccessInventory;
-import powercraft.api.inventory.PC_IStateReportingInventory;
+import powercraft.api.inventory.PC_IInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.registry.PC_SoundRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
 
-public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory
-{
+public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements PC_IInventory{
 	
     private static class ContainerFake extends Container
     {
@@ -42,6 +40,8 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
     private static Container fakeContainer = new ContainerFake();
 
     private ItemStack actContents[] = new ItemStack[18];
+    
+    private boolean isOrderingEnabled=true;
     
     @PC_ClientServerSync
     public boolean redstoneActivated;
@@ -129,83 +129,6 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
     }
 
     @Override
-    public boolean isContainerEmpty()
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            if (getStackInSlot(i) != null)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean isContainerFull()
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null)
-            {
-                return false;
-            }
-            else if (getStackInSlot(i) != null && getStackInSlot(i + 9) != null)
-            {
-                if (getStackInSlot(i).stackSize < Math.min(getStackInSlot(i).getMaxStackSize(), getInventoryStackLimit()))
-                {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean hasContainerNoFreeSlots()
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean hasInventoryPlaceFor(ItemStack itemStack)
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            if (getStackInSlot(i) == null || (getStackInSlot(i).isItemEqual(itemStack) && getStackInSlot(i).stackSize < Math.min(getInventoryStackLimit(), getStackInSlot(i).getMaxStackSize())))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean isContainerEmptyOf(ItemStack itemStack)
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            if (getStackInSlot(i) != null && !getStackInSlot(i).isItemEqual(itemStack))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
     public void onInventoryChanged() {}
 
     public void reorderACT()
@@ -289,14 +212,6 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
         onInventoryChanged();
     }
 
-    @Override
-    public boolean insertStackIntoInventory(ItemStack stack)
-    {
-        boolean flag = insertStackIntoInventory_do(stack);
-        orderAndCraft();
-        return flag;
-    }
-
     private boolean insertStackIntoInventory_do(ItemStack stack)
     {
         if (stack == null)
@@ -374,14 +289,18 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
     {
     	if(worldObj.isRemote)
     		return;
-        reorderACT();
-
-        if (!isRedstoneActivated())
-        {
-            doCrafting();
-        }
-
-        reorderACT();
+    	if(isOrderingEnabled){
+    		isOrderingEnabled = false;
+	        reorderACT();
+	
+	        if (!isRedstoneActivated())
+	        {
+	            doCrafting();
+	        }
+	
+	        reorderACT();
+	        isOrderingEnabled = true;
+    	}
     }
 
     public void doCrafting()
@@ -620,7 +539,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
         {
             itemstack.stackSize = getInventoryStackLimit();
         }
-
+        orderAndCraft();
         onInventoryChanged();
     }
 
@@ -693,18 +612,6 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
     {
         return slot < 9;
     }
-
-    @Override
-    public boolean needsSpecialInserter()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean canMachineInsertStackTo(int slot, ItemStack stack)
-    {
-        return false;
-    }
     
     @Override
 	protected void onCall(String key, Object value) {
@@ -735,6 +642,21 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return false;
+	}
+
+	@Override
+	public int[] getSizeInventorySide(int var1) {
+		return null;
+	}
+
+	@Override
+	public boolean func_102007_a(int i, ItemStack itemstack, int j) {
+		return false;
+	}
+
+	@Override
+	public boolean func_102008_b(int i, ItemStack itemstack, int j) {
 		return false;
 	}
     

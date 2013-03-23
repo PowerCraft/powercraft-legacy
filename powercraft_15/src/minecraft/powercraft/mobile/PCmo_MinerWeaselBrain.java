@@ -852,11 +852,11 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
     }
 
     public boolean isFull(){
-    	return PC_InventoryUtils.getInventoryFreeSlots(miner.cargo, -1)==0;
+    	return PC_InventoryUtils.getInventoryFreeSlots(miner.cargo)==0;
     }
     
     public boolean isEmpty(){
-    	return PC_InventoryUtils.getInventoryFullSlots(miner.cargo, -1)==0;
+    	return PC_InventoryUtils.getInventoryFullSlots(miner.cargo)==0;
     }
     
     public int countFuel(){
@@ -956,7 +956,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 				return false;
 			} else {
 				if (!placed.tryPlaceItemIntoWorld(miner.fakePlayer, miner.worldObj, pos.x, pos.y + 1, pos.z, 0, 0.0f, 0.0f, 0.0f)) {
-					PC_InventoryUtils.storeItemStackToInventoryFrom(miner.cargo, placed, -1);
+					PC_InventoryUtils.storeItemStackToInventoryFrom(miner.cargo, placed);
 				} else {
 					return true;
 				}
@@ -975,7 +975,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 				if (stack.itemID == numid) {
 					ItemStack placed = miner.cargo.decrStackSize(i, 1);
 					if (!placed.tryPlaceItemIntoWorld(miner.fakePlayer, miner.worldObj, pos.x, pos.y + 1, pos.z, 0, 0.0f, 0.0f, 0.0f)) {
-						PC_InventoryUtils.storeItemStackToInventoryFrom(miner.cargo, placed, -1);
+						PC_InventoryUtils.storeItemStackToInventoryFrom(miner.cargo, placed);
 					} else {
 						return true;
 					}

@@ -16,17 +16,17 @@ public class PCws_WeaselPluginInfoDisplay extends PCws_WeaselPluginInfo {
 	@Override
 	public void renderInventoryBlock(Block block, Object renderer) {
 		float px = 0.0625F;
-		ValueWriting.setBlockBounds(block, 3 * px, 0, 3 * px, 13 * px, 1 * px, 13 * px);
+		block.setBlockBounds(3 * px, 0, 3 * px, 13 * px, 1 * px, 13 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[5], icons[5], icons[4], icons[4], icons[4], icons[4] });
 
 		// leg
-		ValueWriting.setBlockBounds(block, 7.2F * px, 1 * px, 7.2F * px, 8.8F * px, 2 * px, 8.8F * px);
+		block.setBlockBounds(7.2F * px, 1 * px, 7.2F * px, 8.8F * px, 2 * px, 8.8F * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[4], icons[4], icons[4], icons[4], icons[4], icons[4] });
 
 		// screen
-		ValueWriting.setBlockBounds(block, 0 * px, 2 * px, 7 * px, 16 * px, 16 * px, 9 * px);
+		block.setBlockBounds(0 * px, 2 * px, 7 * px, 16 * px, 16 * px, 9 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[4], icons[4], icons[6], icons[7], icons[4], icons[4] });
-		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 	
 	@Override
@@ -42,6 +42,17 @@ public class PCws_WeaselPluginInfoDisplay extends PCws_WeaselPluginInfo {
 	@Override
 	public float[] getBounds() {
 		return new float[]{ 0, 0, 0, 1, 1, 1 };
+	}
+	
+	@Override
+	public Icon getTexture(int side) {
+		if(side==2){
+			return icons[6];
+		}else if(side==3){
+			return icons[7];
+		}else{
+			return icons[4];
+		}
 	}
 	
 }

@@ -36,9 +36,8 @@ import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.PC_VecF;
 import powercraft.api.PC_VecI;
 import powercraft.api.entity.PC_FakePlayer;
+import powercraft.api.inventory.PC_IInventory;
 import powercraft.api.inventory.PC_IInventoryWrapper;
-import powercraft.api.inventory.PC_ISpecialAccessInventory;
-import powercraft.api.inventory.PC_IStateReportingInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_GresRegistry;
@@ -501,7 +500,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * 
 	 * @author MightyPork
 	 */
-	public class MinerCargoInventory extends InventoryBasic implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory {
+	public class MinerCargoInventory extends InventoryBasic implements PC_IInventory {
 		/**
 		 * inventory
 		 */
@@ -517,7 +516,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	    public void onInventoryChanged(){
 	    	super.onInventoryChanged();
 	    	if(moveEnabled){
+	    		moveEnabled = false;
 	    		PC_InventoryUtils.moveStacks(cargo, xtals);
+	    		moveEnabled = true;
 	    	}
 	    }
 		
@@ -525,7 +526,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		public void closeChest() {
 			super.closeChest();
 			if(moveEnabled){
+				moveEnabled = false;
 				PC_InventoryUtils.moveStacks(cargo, xtals);
+				moveEnabled = true;
 			}
 		}
 
@@ -625,7 +628,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 
 			while (count >= neededForOne) {
-				if (PC_InventoryUtils.storeItemStackToInventoryFrom(this, out.copy(), -1)) {
+				if (PC_InventoryUtils.storeItemStackToInventoryFrom(this, out.copy())) {
 					count -= neededForOne;
 				} else {
 					break;
@@ -635,7 +638,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			if (count > 0) {
 				ItemStack remaining = stack.copy();
 				remaining.stackSize = count;
-				if (!PC_InventoryUtils.storeItemStackToInventoryFrom(this, remaining, -1)) {
+				if (!PC_InventoryUtils.storeItemStackToInventoryFrom(this, remaining)) {
 					entityDropItem(remaining, 1);
 				}
 			}
@@ -767,7 +770,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			PC_InventoryUtils.groupStacks(stacks);
 			for (ItemStack stack : stacks) {
 				if (stack != null) {
-					PC_InventoryUtils.storeItemStackToInventoryFrom(this, stack, -1);
+					PC_InventoryUtils.storeItemStackToInventoryFrom(this, stack);
 				}
 			}
 		}
@@ -819,7 +822,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 										if (destroyInstead) {
 											stored = true;
 										} else {
-											stored = PC_InventoryUtils.storeItemStackToInventoryFrom(chest, stack, -1);
+											stored = PC_InventoryUtils.storeItemStackToInventoryFrom(chest, stack);
 										}
 									}
 
@@ -863,7 +866,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 						}
 
 						ItemStack step = makeHalfStep(returned);
-						PC_InventoryUtils.storeItemStackToInventoryFrom(cargo, step.copy(), -1);
+						PC_InventoryUtils.storeItemStackToInventoryFrom(cargo, step.copy());
 						return step;
 					}
 				}
@@ -939,23 +942,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		@Override
-		public boolean insertStackIntoInventory(ItemStack stack) {
-			return false;
-		}
-
-		@Override
-		public boolean needsSpecialInserter() {
-			return false;
-		}
-
-		@Override
 		public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
 			return true;
-		}
-
-		@Override
-		public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
-			return canPlayerInsertStackTo(slot, stack);
 		}
 
 		@Override
@@ -975,46 +963,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		@Override
-		public boolean isContainerEmpty() {
-			for (int i = 0; i < getSizeInventory(); i++) {
-				if (getStackInSlot(i) == null) continue;
-			}
-			return true;
-		}
-
-		@Override
-		public boolean isContainerFull() {
-			for (int i = 0; i < getSizeInventory(); i++) {
-				if (getStackInSlot(i) == null) return false;
-				if (getStackInSlot(i).stackSize < Math.min(getInventoryStackLimit(), getStackInSlot(i).getMaxStackSize())) return false;
-			}
-			return true;
-		}
-
-		@Override
-		public boolean hasContainerNoFreeSlots() {
-			for (int i = 0; i < getSizeInventory(); i++) {
-				if (getStackInSlot(i) == null) return false;
-			}
-			return true;
-		}
-
-		@Override
 		public boolean canDropStackFrom(int slot) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean hasInventoryPlaceFor(ItemStack itemStack) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean isContainerEmptyOf(ItemStack itemStack) {
-			// TODO Auto-generated method stub
-			return false;
+			return true;
 		}
 
 		@Override
@@ -1027,6 +977,21 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			return true;
 		}
 
+		@Override
+		public int[] getSizeInventorySide(int var1) {
+			return null;
+		}
+
+		@Override
+		public boolean func_102007_a(int i, ItemStack itemstack, int j) {
+			return false;
+		}
+
+		@Override
+		public boolean func_102008_b(int i, ItemStack itemstack, int j) {
+			return false;
+		}
+
 
 	}
 
@@ -1037,7 +1002,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * 
 	 * @author MightyPork
 	 */
-	public class MinerCrystalInventory extends InventoryBasic implements IInventory, PC_ISpecialAccessInventory {
+	public class MinerCrystalInventory extends InventoryBasic implements PC_IInventory {
 		/**
 		 * inventory
 		 */
@@ -1063,16 +1028,6 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		@Override
-		public boolean insertStackIntoInventory(ItemStack stack) {
-			return false;
-		}
-
-		@Override
-		public boolean needsSpecialInserter() {
-			return false;
-		}
-
-		@Override
 		public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
 			return stack.itemID == PC_BlockRegistry.getPCBlockIDByName("PCco_BlockPowerCrystal") && stack.getItemDamage() == getCrystalTypeForSlot(slot);
 		}
@@ -1091,18 +1046,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		@Override
-		public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
-			return canPlayerInsertStackTo(slot, stack);
-		}
-
-		@Override
 		public boolean canDispenseStackFrom(int slot) {
 			return false;
 		}
 
 		@Override
 		public boolean canDropStackFrom(int slot) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 		
@@ -1110,10 +1059,30 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		public int getSlotStackLimit(int slotIndex) {
 			return getInventoryStackLimit();
 		}
+		
+		@Override
+		public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack) {
+			return canPlayerInsertStackTo(par1, par2ItemStack);
+		}
 
 		@Override
 		public boolean canPlayerTakeStack(int slotIndex, EntityPlayer entityPlayer) {
 			return true;
+		}
+
+		@Override
+		public int[] getSizeInventorySide(int var1) {
+			return null;
+		}
+
+		@Override
+		public boolean func_102007_a(int i, ItemStack itemstack, int j) {
+			return false;
+		}
+
+		@Override
+		public boolean func_102008_b(int i, ItemStack itemstack, int j) {
+			return false;
 		}
 	}
 
@@ -3241,9 +3210,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 						continue;
 					}
 	
-					if (xtal && PC_InventoryUtils.storeItemStackToInventoryFrom(xtals, itemStack, -1)) {
+					if (xtal && PC_InventoryUtils.storeItemStackToInventoryFrom(xtals, itemStack)) {
 						entity.setDead();
-					} else if (PC_InventoryUtils.storeItemStackToInventoryFrom(cargo, itemStack, -1)) {
+					} else if (PC_InventoryUtils.storeItemStackToInventoryFrom(cargo, itemStack)) {
 						entity.setDead();
 					}
 	
@@ -3270,7 +3239,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					}
 	
 					if (entity instanceof EntityArrow) {
-						PC_InventoryUtils.storeItemStackToInventoryFrom(cargo, new ItemStack(Item.arrow, 1, 0), -1);
+						PC_InventoryUtils.storeItemStackToInventoryFrom(cargo, new ItemStack(Item.arrow, 1, 0));
 						entity.setDead();
 						return;
 					}
@@ -3507,7 +3476,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		int yaw = (rotationYaw < 45 || rotationYaw > 315) ? 0 : (rotationYaw < 135 ? 1 : (rotationYaw < 215 ? 2 : (rotationYaw < 315 ? 3 : 0)));
 
 		int xl = xh - 1, zl = zh - 1;
-
+		
 		// building chests
 		for (int x = xl; x <= xh; x++) {
 			for (int z = zl; z <= zh; z++) {
@@ -3519,21 +3488,20 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				}
 			}
 		}
-
+		
 		IInventory inv = null;
 
 		for (int x = xl; x <= xh && inv==null; x++) {
 			for (int k = zl; k <= zh && inv==null; k++) {
-				inv = PC_InventoryUtils.getInventoryAt(worldObj, x, y + 1, k);
+				inv = PC_InventoryUtils.getBlockInventoryAt(worldObj, new PC_VecI(x, y + 1, k));
 			}
 		}
-
+		
 		if (inv != null) {
 			PC_InventoryUtils.moveStacks(xtals, inv);
 			cargo.moveEnabled=false;
 			PC_InventoryUtils.moveStacks(cargo, inv);
 			PC_InventoryUtils.dropInventoryContents(cargo, worldObj, new PC_VecI((int)Math.round(posX), (int)Math.round(posY + 2.2F), (int)Math.round(posZ)));
-
 		} else {
 			PC_Logger.warning("Despawning miner - the chest blocks weren't found.");
 		}

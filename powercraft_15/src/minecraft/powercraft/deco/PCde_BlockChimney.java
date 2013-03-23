@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_Utils;
@@ -27,7 +28,7 @@ public class PCde_BlockChimney extends PC_Block {
 		setStepSound(Block.soundMetalFootstep);
 		setCreativeTab(CreativeTabs.tabDecorations);
 	}
-	
+
 	@Override
 	public TileEntity newTileEntity(World world, int metadata) {
 		return new PCde_TileEntityChimney();
@@ -37,26 +38,32 @@ public class PCde_BlockChimney extends PC_Block {
 	public boolean isOpaqueCube() {
 		return false;
 	}
+	
+	@Override
+	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
+		if (par2 == 0) return Block.cobblestone.getBlockTextureFromSide(par1);
+		if (par2 == 1) return Block.brick.getBlockTextureFromSide(par1);
+		if (par2 == 2) return Block.stoneBrick.getBlockTextureFromSide(par1);
+		return null;
+	}
 
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		final float px = 0.0625F;
 		float w = px * 3;
+		
+		if (metadata == 0) icons[0] = Block.cobblestone.getBlockTextureFromSideAndMetadata(0, 0);
+		if (metadata == 1) icons[0] = Block.brick.getBlockTextureFromSideAndMetadata(0, 0);
+		if (metadata == 2) icons[0] = Block.stoneBrick.getBlockTextureFromSideAndMetadata(0, 0);
 
-		Block bl = null;
-		if (metadata == 0) bl = Block.cobblestone;
-		if (metadata == 1) bl = Block.brick;
-		if (metadata == 2) bl = Block.stoneBrick;
-		if (bl == null) return;
-
-		ValueWriting.setBlockBounds(bl, 0, 0, 0, 1, 1, w);
-		PC_Renderer.renderInvBox(renderer, bl, 0);
-		ValueWriting.setBlockBounds(bl, 1 - w, 0, w, 1, 1, 1 - w);
-		PC_Renderer.renderInvBox(renderer, bl, 0);
-		ValueWriting.setBlockBounds(bl, 0, 0, 1 - w, 1, 1, 1);
-		PC_Renderer.renderInvBox(renderer, bl, 0);
-		ValueWriting.setBlockBounds(bl, 0, 0, w, w, 1, 1 - w);
-		PC_Renderer.renderInvBox(renderer, bl, 0);
-		ValueWriting.setBlockBounds(bl, 0, 0, 0, 1, 1, 1);
+		block.setBlockBounds(0, 0, 0, 1, 1, w);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		block.setBlockBounds(1 - w, 0, w, 1, 1, 1 - w);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		block.setBlockBounds(0, 0, 1 - w, 1, 1, 1);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		block.setBlockBounds(0, 0, w, w, 1, 1 - w);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
@@ -66,26 +73,19 @@ public class PCde_BlockChimney extends PC_Block {
 
 		int metadata = GameInfo.getMD(world, x, y, z);
 		
-		Block bl = null;
-		if (metadata == 0) bl = Block.cobblestone;
-		if (metadata == 1) bl = Block.brick;
-		if (metadata == 2) bl = Block.stoneBrick;
-		if (bl == null) return;
+		if (metadata == 0) icons[0] = Block.cobblestone.getBlockTextureFromSideAndMetadata(0, 0);
+		if (metadata == 1) icons[0] = Block.brick.getBlockTextureFromSideAndMetadata(0, 0);
+		if (metadata == 2) icons[0] = Block.stoneBrick.getBlockTextureFromSideAndMetadata(0, 0);
 
-		ValueWriting.setBlockBounds(bl, 0, 0, 0, 1, 1, w);
-		PC_Renderer.renderStandardBlock(renderer, bl, x, y, z);
-
-		ValueWriting.setBlockBounds(bl, 1 - w, 0, w, 1, 1, 1 - w);
-		PC_Renderer.renderStandardBlock(renderer, bl, x, y, z);
-
-		ValueWriting.setBlockBounds(bl, 0, 0, 1 - w, 1, 1, 1);
-		PC_Renderer.renderStandardBlock(renderer, bl, x, y, z);
-
-		ValueWriting.setBlockBounds(bl, 0, 0, w, w, 1, 1 - w);
-		PC_Renderer.renderStandardBlock(renderer, bl, x, y, z);
-		
-		ValueWriting.setBlockBounds(bl, 0, 0, 0, 1, 1, 1);
-		
+		block.setBlockBounds(0, 0, 0, 1, 1, w);
+		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+		block.setBlockBounds(1 - w, 0, w, 1, 1, 1 - w);
+		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+		block.setBlockBounds(0, 0, 1 - w, 1, 1, 1);
+		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+		block.setBlockBounds(0, 0, w, w, 1, 1 - w);
+		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override

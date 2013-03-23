@@ -54,7 +54,7 @@ public class PCtr_BlockSplitter extends PC_Block {
 
         int rotation = PCtr_BeltHelper.getDir(redir);
         
-        if (entity instanceof EntityItem && PCtr_BeltHelper.storeEntityItemAt(world, pos_leading_to, (EntityItem) entity))
+        if (entity instanceof EntityItem && PCtr_BeltHelper.storeEntityItemAt(world, pos_leading_to, (EntityItem) entity, redir))
         {
             return;
         }

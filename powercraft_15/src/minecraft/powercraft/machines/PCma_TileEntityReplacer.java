@@ -2,20 +2,14 @@ package powercraft.machines;
 
 import java.util.Random;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import powercraft.api.PC_Color;
 import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.PC_VecF;
 import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_ClientServerSync;
-import powercraft.api.inventory.PC_ISpecialAccessInventory;
-import powercraft.api.inventory.PC_InventoryUtils;
-import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.tileentity.PC_TileEntityWithInventory;
 
 public class PCma_TileEntityReplacer extends PC_TileEntityWithInventory{

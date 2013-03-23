@@ -19,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.PC_VecI;
@@ -59,8 +60,12 @@ public class PC_InventoryUtils {
 		outerTag.setTag(invTagName, nbttaglist);
 	}
 
-	public static IInventory getBlockInventoryAt(IBlockAccess world, PC_VecI pos) {
-		TileEntity te = GameInfo.getTE(world, pos);
+	public static IInventory getBlockInventoryAt(World world, PC_VecI pos) {
+		return getBlockInventoryAt(world, pos.x, pos.y, pos.z);
+	}
+	
+	public static IInventory getBlockInventoryAt(IBlockAccess world, int x, int y, int z) {
+		TileEntity te = GameInfo.getTE(world, x, y, z);
 
 		if (te == null) {
 			return null;
@@ -75,36 +80,34 @@ public class PC_InventoryUtils {
 		}
 
 		IInventory inv = (IInventory) te;
-		int id = GameInfo.getBID(world, pos);
+		int id = GameInfo.getBID(world, x, y, z);
 
 		if (id == Block.chest.blockID) {
-			if (GameInfo.getBID(world, pos.offset(-1, 0, 0)) == Block.chest.blockID) {
-				inv = new InventoryLargeChest("Large chest", (IInventory) GameInfo.getTE(world, pos.offset(-1, 0, 0)), inv);
+			if (GameInfo.getBID(world, x-1, y, z) == Block.chest.blockID) {
+				inv = new InventoryLargeChest("Large chest", (IInventory) GameInfo.getTE(world, x-1, y, z), inv);
 			}
 
-			if (GameInfo.getBID(world, pos.offset(1, 0, 0)) == Block.chest.blockID) {
-				inv = new InventoryLargeChest("Large chest", inv, (IInventory) GameInfo.getTE(world, pos.offset(1, 0, 0)));
+			if (GameInfo.getBID(world, x+1, y, z) == Block.chest.blockID) {
+				inv = new InventoryLargeChest("Large chest", inv, (IInventory) GameInfo.getTE(world, x+1, y, z));
 			}
 
-			if (GameInfo.getBID(world, pos.offset(0, 0, -1)) == Block.chest.blockID) {
-				inv = new InventoryLargeChest("Large chest", (IInventory) GameInfo.getTE(world, pos.offset(0, 0, -1)), inv);
+			if (GameInfo.getBID(world, x, y, z-1) == Block.chest.blockID) {
+				inv = new InventoryLargeChest("Large chest", (IInventory) GameInfo.getTE(world, x, y, z-1), inv);
 			}
 
-			if (GameInfo.getBID(world, pos.offset(0, 0, 1)) == Block.chest.blockID) {
-				inv = new InventoryLargeChest("Large chest", inv, (IInventory) GameInfo.getTE(world, pos.offset(0, 0, 1)));
+			if (GameInfo.getBID(world, x, y, z+1) == Block.chest.blockID) {
+				inv = new InventoryLargeChest("Large chest", inv, (IInventory) GameInfo.getTE(world, x, y, z+1));
 			}
 		}
 		
 		return inv;
 	}
 
-	public static IInventory getInventoryAt(World world, int x, int y, int z) {
-		IInventory invAt = getBlockInventoryAt(world, new PC_VecI(x, y, z));
-
-		if (invAt != null) {
-			return invAt;
-		}
-
+	public static IInventory getEntityInventoryAt(World world, PC_VecI pos) {
+		return getEntityInventoryAt(world, pos.x, pos.y, pos.z);
+	}
+	
+	public static IInventory getEntityInventoryAt(World world, int x, int y, int z){
 		List<IInventory> list = world.getEntitiesWithinAABB(
 				IInventory.class,
 				AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1)
@@ -122,13 +125,29 @@ public class PC_InventoryUtils {
 		if (list2.size() >= 1) {
 			return list2.get(0).getInventory();
 		}
-
 		return null;
 	}
 	
-	public static int[] getInvIndexesForSide(IInventory inv, int side){
-		if(inv instanceof ISidedInventory && side>=0){
-			return ((ISidedInventory) inv).getSizeInventorySide(side);
+	public static IInventory getInventoryAt(World world, PC_VecI pos) {
+		return getInventoryAt(world, pos.x, pos.y, pos.z);
+	}
+	
+	public static IInventory getInventoryAt(World world, int x, int y, int z) {
+		IInventory invAt = getBlockInventoryAt(world, x, y, z);
+
+		if (invAt != null) {
+			return invAt;
+		}
+
+		return getEntityInventoryAt(world, x, y, z);
+	}
+	
+	public static int[] getInvIndexesForSide(IInventory inv, PC_Direction side){
+		if(side==null)
+			return null;
+		int sideID = side.getMCDir();
+		if(inv instanceof ISidedInventory && sideID>=0){
+			return ((ISidedInventory) inv).getSizeInventorySide(sideID);
 		}
 		return null;
 	}
@@ -148,12 +167,12 @@ public class PC_InventoryUtils {
 		return indexes;
 	}
 	
-	public static int getFirstEmptySlot(IInventory inv, ItemStack itemstack, int side){
-		return getFirstEmptySlot(inv, itemstack, getInvIndexesForSide(inv, side));
+	public static int getFirstEmptySlot(IInventory inv, ItemStack itemstack){
+		return getFirstEmptySlot(inv, itemstack, (int[])null);
 	}
 	
-	public static int getFirstEmptySlot(IInventory inv, ItemStack itemstack, int start, int end) {
-		return getFirstEmptySlot(inv, itemstack, makeIndexList(start, end));
+	public static int getFirstEmptySlot(IInventory inv, ItemStack itemstack, PC_Direction side){
+		return getFirstEmptySlot(inv, itemstack, getInvIndexesForSide(inv, side));
 	}
 	
 	public static int getFirstEmptySlot(IInventory inv, ItemStack itemstack, int[] indexes){
@@ -177,12 +196,12 @@ public class PC_InventoryUtils {
 		return -1;
 	}
 	
-	public static int getSlotWithPlaceFor(IInventory inv, ItemStack itemstack, int side){
-		return getSlotWithPlaceFor(inv, itemstack, getInvIndexesForSide(inv, side));
+	public static int getSlotWithPlaceFor(IInventory inv, ItemStack itemstack){
+		return getSlotWithPlaceFor(inv, itemstack, (int[])null);
 	}
 	
-	public static int getSlotWithPlaceFor(IInventory inv, ItemStack itemstack, int start, int end) {
-		return getSlotWithPlaceFor(inv, itemstack, makeIndexList(start, end));
+	public static int getSlotWithPlaceFor(IInventory inv, ItemStack itemstack, PC_Direction side){
+		return getSlotWithPlaceFor(inv, itemstack, getInvIndexesForSide(inv, side));
 	}
 	
 	public static int getSlotWithPlaceFor(IInventory inv, ItemStack itemstack, int[] indexes){
@@ -212,12 +231,12 @@ public class PC_InventoryUtils {
 		return getFirstEmptySlot(inv, itemstack, indexes);
 	}
 	
-	public static boolean storeItemStackToInventoryFrom(IInventory inv, ItemStack itemstack, int side){
-		return storeItemStackToInventoryFrom(inv, itemstack, getInvIndexesForSide(inv, side));
+	public static boolean storeItemStackToInventoryFrom(IInventory inv, ItemStack itemstack){
+		return storeItemStackToInventoryFrom(inv, itemstack, (int[])null);
 	}
 	
-	public static boolean storeItemStackToInventoryFrom(IInventory inv, ItemStack itemstack, int start, int end) {
-		return storeItemStackToInventoryFrom(inv, itemstack, makeIndexList(start, end));
+	public static boolean storeItemStackToInventoryFrom(IInventory inv, ItemStack itemstack, PC_Direction side){
+		return storeItemStackToInventoryFrom(inv, itemstack, getInvIndexesForSide(inv, side));
 	}
 	
 	public static boolean storeItemStackToInventoryFrom(IInventory inv, ItemStack itemstack, int[] indexes){
@@ -254,12 +273,12 @@ public class PC_InventoryUtils {
 		return itemstack.stackSize==0;
 	}
 	
-	public static int getInventorySpaceFor(IInventory inv, ItemStack itemstack, int side){
-		return getInventorySpaceFor(inv, itemstack, getInvIndexesForSide(inv, side));
+	public static int getInventorySpaceFor(IInventory inv, ItemStack itemstack){
+		return getInventorySpaceFor(inv, itemstack, (int[])null);
 	}
 	
-	public static int getInventorySpaceFor(IInventory inv, ItemStack itemstack, int start, int end) {
-		return getInventorySpaceFor(inv, itemstack, makeIndexList(start, end));
+	public static int getInventorySpaceFor(IInventory inv, ItemStack itemstack, PC_Direction side){
+		return getInventorySpaceFor(inv, itemstack, getInvIndexesForSide(inv, side));
 	}
 	
 	public static int getInventorySpaceFor(IInventory inv, ItemStack itemstack, int[] indexes){
@@ -316,12 +335,12 @@ public class PC_InventoryUtils {
 		return space;
 	}
 	
-	public static int getInventoryCountOf(IInventory inv, ItemStack itemstack, int side){
-		return getInventoryCountOf(inv, itemstack, getInvIndexesForSide(inv, side));
+	public static int getInventoryCountOf(IInventory inv, ItemStack itemstack){
+		return getInventoryCountOf(inv, itemstack, (int[])null);
 	}
 	
-	public static int getInventoryCountOf(IInventory inv, ItemStack itemstack, int start, int end) {
-		return getInventoryCountOf(inv, itemstack, makeIndexList(start, end));
+	public static int getInventoryCountOf(IInventory inv, ItemStack itemstack, PC_Direction side){
+		return getInventoryCountOf(inv, itemstack, getInvIndexesForSide(inv, side));
 	}
 	
 	public static int getInventoryCountOf(IInventory inv, ItemStack itemstack, int[] indexes){
@@ -358,12 +377,12 @@ public class PC_InventoryUtils {
 		return count;
 	}
 	
-	public static int getInventoryFreeSlots(IInventory inv, int side){
-		return getInventoryFreeSlots(inv, getInvIndexesForSide(inv, side));
+	public static int getInventoryFreeSlots(IInventory inv){
+		return getInventoryFreeSlots(inv, (int[])null);
 	}
 	
-	public static int getInventoryFreeSlots(IInventory inv, int start, int end) {
-		return getInventoryFreeSlots(inv, makeIndexList(start, end));
+	public static int getInventoryFreeSlots(IInventory inv, PC_Direction side){
+		return getInventoryFreeSlots(inv, getInvIndexesForSide(inv, side));
 	}
 	
 	public static int getInventoryFreeSlots(IInventory inv, int[] indexes){
@@ -388,12 +407,12 @@ public class PC_InventoryUtils {
 		return freeSlots;
 	}
 	
-	public static int getInventoryFullSlots(IInventory inv, int side){
-		return getInventoryFullSlots(inv, getInvIndexesForSide(inv, side));
+	public static int getInventoryFullSlots(IInventory inv){
+		return getInventoryFullSlots(inv, (int[])null);
 	}
 	
-	public static int getInventoryFullSlots(IInventory inv, int start, int end) {
-		return getInventoryFullSlots(inv, makeIndexList(start, end));
+	public static int getInventoryFullSlots(IInventory inv, PC_Direction side){
+		return getInventoryFullSlots(inv, getInvIndexesForSide(inv, side));
 	}
 	
 	public static int getInventoryFullSlots(IInventory inv, int[] indexes){
@@ -418,14 +437,45 @@ public class PC_InventoryUtils {
 		return fullSlots;
 	}
 	
-	public static void moveStacks(IInventory from, IInventory to) {
-		for (int i = 0; i < from.getSizeInventory(); i++) {
-			if (from.getStackInSlot(i) != null) {
-				
-				storeItemStackToInventoryFrom(to, from.getStackInSlot(i), -1);
-
-				if (from.getStackInSlot(i) != null && from.getStackInSlot(i).stackSize <= 0) {
-					from.setInventorySlotContents(i, null);
+	public static void moveStacks(IInventory from, IInventory to){
+		moveStacks(from, (int[])null, to, (int[])null);
+	}
+	
+	public static void moveStacks(IInventory from, PC_Direction fromSide, IInventory to, PC_Direction toSide) {
+		moveStacks(from, getInvIndexesForSide(from, fromSide), to, toSide);
+	}
+	
+	public static void moveStacks(IInventory from, int[] indexes, IInventory to, PC_Direction toSide) {
+		moveStacks(from, indexes, to, getInvIndexesForSide(to, toSide));
+	}
+	
+	public static void moveStacks(IInventory from, PC_Direction fromSide, IInventory to, int[] indexes) {
+		moveStacks(from, getInvIndexesForSide(from, fromSide), to, indexes);
+	}
+	
+	public static void moveStacks(IInventory from, int[] fromIndexes, IInventory to, int[] toIndexes) {
+		if(fromIndexes==null){
+			int size = from.getSizeInventory();
+			for (int i = 0; i < size; i++) {
+				if (from.getStackInSlot(i) != null) {
+					
+					storeItemStackToInventoryFrom(to, from.getStackInSlot(i), toIndexes);
+	
+					if (from.getStackInSlot(i) != null && from.getStackInSlot(i).stackSize <= 0) {
+						from.setInventorySlotContents(i, null);
+					}
+				}
+			}
+		}else{
+			for (int j = 0; j < fromIndexes.length; j++) {
+				int i=fromIndexes[j];
+				if (from.getStackInSlot(i) != null) {
+					
+					storeItemStackToInventoryFrom(to, from.getStackInSlot(i), toIndexes);
+	
+					if (from.getStackInSlot(i) != null && from.getStackInSlot(i).stackSize <= 0) {
+						from.setInventorySlotContents(i, null);
+					}
 				}
 			}
 		}
@@ -495,8 +545,12 @@ public class PC_InventoryUtils {
 		}
 	}
 	
-	public static int useFuel(IInventory inv, int start, int end, World world, PC_VecI pos) {
-		return useFuel(inv, makeIndexList(start, end), world, pos);
+	public static int useFuel(IInventory inv, World world, PC_VecI pos) {
+		return useFuel(inv, (int[])null, world, pos);
+	}
+	
+	public static int useFuel(IInventory inv, PC_Direction side, World world, PC_VecI pos) {
+		return useFuel(inv, getInvIndexesForSide(inv, side), world, pos);
 	}
 	
 	public static int useFuel(IInventory inv, int[] indexes, World world, PC_VecI pos) {

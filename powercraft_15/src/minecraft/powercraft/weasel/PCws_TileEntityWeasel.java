@@ -6,21 +6,21 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import powercraft.api.PC_Entry;
 import powercraft.api.PC_MathHelper;
 import powercraft.api.PC_PacketHandler;
 import powercraft.api.PC_Struct2;
 import powercraft.api.PC_Utils.SaveHandler;
-import powercraft.api.inventory.PC_ISpecialAccessInventory;
+import powercraft.api.inventory.PC_IInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
 import powercraft.api.tileentity.PC_TileEntity;
 
-public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEntityRenderer, IInventory, PC_ISpecialAccessInventory{
+public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEntityRenderer, PC_IInventory{
 
 	private HashMap<String, Object>map = new HashMap<String, Object>();
 	private int pluginID = -1;
@@ -187,23 +187,8 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	}
 
 	@Override
-	public boolean insertStackIntoInventory(ItemStack stack) {
-		return PC_InventoryUtils.storeItemStackToInventoryFrom(this, stack, 0, getPluginInfo().inventorySize()-1);
-	}
-
-	@Override
-	public boolean needsSpecialInserter() {
-		return false;
-	}
-
-	@Override
 	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
 		return stack.itemID==PCws_App.weaselDisk.itemID;
-	}
-
-	@Override
-	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
-		return canPlayerInsertStackTo(slot, stack);
 	}
 
 	@Override
@@ -296,7 +281,26 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return canPlayerInsertStackTo(i, itemstack);
+	}
+
+	@Override
+	public int[] getSizeInventorySide(int var1) {
+		return null;
+	}
+
+	@Override
+	public boolean func_102007_a(int i, ItemStack itemstack, int j) {
 		return false;
+	}
+
+	@Override
+	public boolean func_102008_b(int i, ItemStack itemstack, int j) {
+		return false;
+	}
+
+	public Icon getTexture(int side) {
+		return getPluginInfo().getTexture(side);
 	}
 	
 	

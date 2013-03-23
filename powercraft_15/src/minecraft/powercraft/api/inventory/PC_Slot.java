@@ -16,24 +16,24 @@ public class PC_Slot extends Slot {
 
 	@Override
 	public boolean isItemValid(ItemStack itemStack){
-		if (inventory instanceof PC_ISpecialAccessInventory){
-			return ((PC_ISpecialAccessInventory) inventory).canPlayerInsertStackTo(getSlotIndex(), itemStack);
+		if (inventory instanceof PC_IInventory){
+			return ((PC_IInventory) inventory).canPlayerInsertStackTo(getSlotIndex(), itemStack);
 		}
 		return true;
 	}
 	
 	@Override
 	public int getSlotStackLimit(){
-		if(inventory instanceof PC_ISpecialAccessInventory){
-    		return ((PC_ISpecialAccessInventory) inventory).getSlotStackLimit(getSlotIndex());
+		if(inventory instanceof PC_IInventory){
+    		return ((PC_IInventory) inventory).getSlotStackLimit(getSlotIndex());
     	}
 		return inventory.getInventoryStackLimit();
 	}
 	
 	@Override
 	public boolean canTakeStack(EntityPlayer entityPlayer){
-		if(inventory instanceof PC_ISpecialAccessInventory){
-			return ((PC_ISpecialAccessInventory) inventory).canPlayerTakeStack(getSlotIndex(), entityPlayer);
+		if(inventory instanceof PC_IInventory){
+			return ((PC_IInventory) inventory).canPlayerTakeStack(getSlotIndex(), entityPlayer);
 		}
 		return true;
 	}

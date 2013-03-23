@@ -73,10 +73,11 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG, PC_ITickHandler {
 		GL11.glRotatef(player.rotationYaw, 0, 1, 0);
 		GL11.glTranslatef(-(float)player.posX, -(float)player.posY, -(float)player.posZ);
 		
-		if(glList==0){
-			glList = GL11.glGenLists(1);
-		}
-		if(update){
+		mc.renderEngine.bindTexture("/terrain.png");
+		if(update || glList==0){
+			if(glList==0){
+				glList = GL11.glGenLists(1);
+			}
 			GL11.glNewList(glList, GL11.GL_COMPILE_AND_EXECUTE);
 			RenderBlocks renderer = new PChg_HologramRenderBlocks(cc);
 			PC_Renderer.tessellatorStartDrawingQuads();

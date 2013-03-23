@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.PC_VecI;
 import powercraft.api.gres.PC_GresBaseWithInventory;
-import powercraft.api.inventory.PC_ISpecialAccessInventory;
+import powercraft.api.inventory.PC_IInventory;
 import powercraft.api.inventory.PC_Slot;
 import powercraft.api.tileentity.PC_TileEntity;
 
@@ -40,7 +40,7 @@ public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory<PC
 		inventory.closeChest();
     }
 	
-	protected static class WeaselDiskManagerInventory implements IInventory, PC_ISpecialAccessInventory{
+	protected static class WeaselDiskManagerInventory implements PC_IInventory{
 
 		private ItemStack is[] = new ItemStack[3];
 		private World world;
@@ -115,29 +115,8 @@ public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory<PC
 		}
 
 		@Override
-		public boolean insertStackIntoInventory(ItemStack stack) {
-			for(int i=0; i<3; i++){
-				if(is[i]==null){
-					is[i] = stack;
-					return true;
-				}
-			}
-			return false;
-		}
-
-		@Override
-		public boolean needsSpecialInserter() {
-			return false;
-		}
-
-		@Override
 		public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
 			return stack.itemID == PCws_App.weaselDisk.itemID;
-		}
-
-		@Override
-		public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
-			return canPlayerInsertStackTo(slot, stack);
 		}
 
 		@Override
@@ -168,6 +147,21 @@ public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory<PC
 
 		@Override
 		public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+			return canPlayerInsertStackTo(i, itemstack);
+		}
+
+		@Override
+		public int[] getSizeInventorySide(int var1) {
+			return null;
+		}
+
+		@Override
+		public boolean func_102007_a(int i, ItemStack itemstack, int j) {
+			return false;
+		}
+
+		@Override
+		public boolean func_102008_b(int i, ItemStack itemstack, int j) {
 			return false;
 		}
 		

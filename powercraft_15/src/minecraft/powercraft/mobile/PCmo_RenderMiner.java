@@ -61,7 +61,7 @@ public class PCmo_RenderMiner extends Render {
 		modelMiner.render(entityminer, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
 		if (entityminer.hasPlayer()) {
-			loadTexture(PC_TextureRegistry.getPowerCraftImageDir() + "miner_overlay_keyboard.png");
+			loadTexture(PC_TextureRegistry.getPowerCraftImageDir() + PC_TextureRegistry.getTextureName(PCmo_App.instance, "miner_overlay_keyboard.png"));
 			modelMiner.render(entityminer, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		}
 

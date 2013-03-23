@@ -210,15 +210,15 @@ public class PCde_BlockStairs extends PC_Block {
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		float p = 0.0625F;
 
-		ValueWriting.setBlockBounds(block, 0, 0F, 0.5F, 1, p, 1);
+		block.setBlockBounds(0, 0F, 0.5F, 1, p, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
 
-		ValueWriting.setBlockBounds(block, 0, 0.5F - p, 0, 1, 0.5F, 0.5F);
+		block.setBlockBounds(0, 0.5F - p, 0, 1, 0.5F, 0.5F);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
 
-		ValueWriting.setBlockBounds(block, 0, 0, 0.5F, p, 0.5F, 1);
+		block.setBlockBounds(0, 0, 0.5F, p, 0.5F, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[1]);
-		ValueWriting.setBlockBounds(block, 0, 0.5F, 0, p, 0.5F + 0.5F, 0.5F);
+		block.setBlockBounds(0, 0.5F, 0, p, 0.5F + 0.5F, 0.5F);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[1]);
 	}
 

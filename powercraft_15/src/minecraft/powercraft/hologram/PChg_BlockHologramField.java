@@ -139,9 +139,9 @@ public class PChg_BlockHologramField extends PC_Block implements PC_IItemInfo {
     	ValueWriting.setBlockBounds(Block.blockSteel, s, 0, s, s*15, s, s*15);
     	PC_Renderer.renderInvBox(renderer, Block.blockSteel, 0);
     	ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, 0, 1, 1, 1);	
-    	ValueWriting.setBlockBounds(block, s*3, s*6, s*3, s*13, s*16, s*13);
+    	block.setBlockBounds(s*3, s*6, s*3, s*13, s*16, s*13);
     	PC_Renderer.renderInvBox(renderer, block, 0);
-    	ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
+    	block.setBlockBounds(0, 0, 0, 1, 1, 1);
     }
 	
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
@@ -161,9 +161,9 @@ public class PChg_BlockHologramField extends PC_Block implements PC_IItemInfo {
     	ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, 0, 1, 1, 1);
     	PC_Renderer.tessellatorDraw();
         PC_Renderer.tessellatorStartDrawingQuads();
-        ValueWriting.setBlockBounds(block, s*3, s*6, s*3, s*13, s*16, s*13);
+        block.setBlockBounds(s*3, s*6, s*3, s*13, s*16, s*13);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-    	ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
+    	block.setBlockBounds(0, 0, 0, 1, 1, 1);
     	PC_Renderer.tessellatorDraw();
         PC_Renderer.tessellatorStartDrawingQuads();
     }

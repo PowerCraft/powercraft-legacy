@@ -49,7 +49,7 @@ public class PCcp_BlockCheckpoint extends PC_Block implements PC_IItemInfo {
 			PCcp_TileEntityCheckpoint te = GameInfo.getTE(world, x, y, z);
 			EntityPlayer player = (EntityPlayer) entity;
 			if(!world.isRemote){
-				if(player.ticksExisted<=2 && PC_InventoryUtils.getInventoryFullSlots(player.inventory, -1)==0 && player.experienceTotal==0&&!player.onGround){
+				if(player.ticksExisted<=2 && PC_InventoryUtils.getInventoryFullSlots(player.inventory)==0 && player.experienceTotal==0&&!player.onGround){
 					for(int i=0; i<te.getSizeInventory(); i++){
 						ItemStack is = te.getStackInSlot(i);
 						if(is!=null){

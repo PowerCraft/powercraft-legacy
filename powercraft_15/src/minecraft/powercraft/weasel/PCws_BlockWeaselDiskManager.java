@@ -100,10 +100,10 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer){
         float px = 0.0625F;
         
-        ValueWriting.setBlockBounds(block, 0, 0, 0, 16 * px, 13 * px, 16 * px);
+        block.setBlockBounds(0, 0, 0, 16 * px, 13 * px, 16 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[0], icons[1], icons[2], icons[2], icons[2], icons[2] });
 
-        ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
+        block.setBlockBounds(0, 0, 0, 1, 1, 1);
 
     }
 	

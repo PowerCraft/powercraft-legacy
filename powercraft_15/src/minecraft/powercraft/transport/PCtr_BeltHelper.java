@@ -42,8 +42,8 @@ import powercraft.api.PC_MathHelper;
 import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.PC_VecI;
+import powercraft.api.inventory.PC_IInventory;
 import powercraft.api.inventory.PC_IInventoryWrapper;
-import powercraft.api.inventory.PC_ISpecialAccessInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_SoundRegistry;
@@ -356,47 +356,47 @@ public class PCtr_BeltHelper
 
         if (isBeyondStorageBorder(world, rot, pos, entity, STORAGE_BORDER) || ignoreStorageBorder)
         {
-            if (rot == 0 && storeEntityItemAt(world, pos.offset(0, 0, -1), entity))
+            if (rot == 0 && storeEntityItemAt(world, pos.offset(0, 0, -1), entity, PC_Direction.BACK))
             {
                 return true;
             }
 
-            if (rot == 1 && storeEntityItemAt(world, pos.offset(1, 0, 0), entity))
+            if (rot == 1 && storeEntityItemAt(world, pos.offset(1, 0, 0), entity, PC_Direction.RIGHT))
             {
                 return true;
             }
 
-            if (rot == 2 && storeEntityItemAt(world, pos.offset(0, 0, 1), entity))
+            if (rot == 2 && storeEntityItemAt(world, pos.offset(0, 0, 1), entity, PC_Direction.FRONT))
             {
                 return true;
             }
 
-            if (rot == 3 && storeEntityItemAt(world, pos.offset(-1, 0, 0), entity))
+            if (rot == 3 && storeEntityItemAt(world, pos.offset(-1, 0, 0), entity, PC_Direction.LEFT))
             {
                 return true;
             }
 
-            if (rot != 0 && rot != 2 && storeEntityItemAt(world, pos.offset(0, 0, -1), entity))
+            if (rot != 0 && rot != 2 && storeEntityItemAt(world, pos.offset(0, 0, -1), entity, PC_Direction.BACK))
             {
                 return true;
             }
 
-            if (rot != 1 && rot != 3 && storeEntityItemAt(world, pos.offset(1, 0, 0), entity))
+            if (rot != 1 && rot != 3 && storeEntityItemAt(world, pos.offset(1, 0, 0), entity, PC_Direction.RIGHT))
             {
                 return true;
             }
 
-            if (rot != 2 && rot != 0 && storeEntityItemAt(world, pos.offset(0, 0, 1), entity))
+            if (rot != 2 && rot != 0 && storeEntityItemAt(world, pos.offset(0, 0, 1), entity, PC_Direction.FRONT))
             {
                 return true;
             }
 
-            if (rot != 3 && rot != 1 && storeEntityItemAt(world, pos.offset(-1, 0, 0), entity))
+            if (rot != 3 && rot != 1 && storeEntityItemAt(world, pos.offset(-1, 0, 0), entity, PC_Direction.LEFT))
             {
                 return true;
             }
 
-            if (storeEntityItemAt(world, pos.offset(0, 1, 0), entity))
+            if (storeEntityItemAt(world, pos.offset(0, 1, 0), entity, PC_Direction.TOP))
             {
                 return true;
             }
@@ -424,7 +424,7 @@ public class PCtr_BeltHelper
 	                {
 	                    ItemStack stackToStore = entity.getEntityItem();
 	
-	                    if (stackToStore != null && PC_InventoryUtils.storeItemStackToInventoryFrom(inventory, stackToStore, -1))
+	                    if (stackToStore != null && PC_InventoryUtils.storeItemStackToInventoryFrom(inventory, stackToStore))
 	                    {
 	                        soundEffectChest(world, beltPos);
 	
@@ -443,7 +443,7 @@ public class PCtr_BeltHelper
         return false;
     }
 
-    public static boolean storeEntityItemAt(World world, PC_VecI inventoryPos, EntityItem entity)
+    public static boolean storeEntityItemAt(World world, PC_VecI inventoryPos, EntityItem entity, PC_Direction side)
     {
     	if(world.isRemote)
     		return false;
@@ -453,7 +453,7 @@ public class PCtr_BeltHelper
         {
             ItemStack stackToStore = entity.getEntityItem();
 
-            if (stackToStore != null && PC_InventoryUtils.storeItemStackToInventoryFrom(inventory, stackToStore, -1))
+            if (stackToStore != null && PC_InventoryUtils.storeItemStackToInventoryFrom(inventory, stackToStore, side))
             {
                 soundEffectChest(world, inventoryPos);
 
@@ -1078,32 +1078,32 @@ public class PCtr_BeltHelper
             return true;
         }
 
-        if (storeEntityItemAt(world, pos.offset(0, 0, -1), entity))
+        if (storeEntityItemAt(world, pos.offset(0, 0, -1), entity, PC_Direction.BACK))
         {
             return true;
         }
 
-        if (storeEntityItemAt(world, pos.offset(0, 0, 1), entity))
+        if (storeEntityItemAt(world, pos.offset(0, 0, 1), entity, PC_Direction.FRONT))
         {
             return true;
         }
 
-        if (storeEntityItemAt(world, pos.offset(-1, 0, 0), entity))
+        if (storeEntityItemAt(world, pos.offset(-1, 0, 0), entity, PC_Direction.LEFT))
         {
             return true;
         }
 
-        if (storeEntityItemAt(world, pos.offset(1, 0, 0), entity))
+        if (storeEntityItemAt(world, pos.offset(1, 0, 0), entity, PC_Direction.RIGHT))
         {
             return true;
         }
 
-        if (storeEntityItemAt(world, pos.offset(0, 1, 0), entity))
+        if (storeEntityItemAt(world, pos.offset(0, 1, 0), entity, PC_Direction.TOP))
         {
             return true;
         }
 
-        if (storeEntityItemAt(world, pos.offset(0, -1, 0), entity))
+        if (storeEntityItemAt(world, pos.offset(0, -1, 0), entity, PC_Direction.BOTTOM))
         {
             return true;
         }
@@ -1328,9 +1328,9 @@ public class PCtr_BeltHelper
         {
             for (int i = 0; i < inventory.getSizeInventory(); i++)
             {
-                if (inventory instanceof PC_ISpecialAccessInventory)
+                if (inventory instanceof PC_IInventory)
                 {
-                    if (!((PC_ISpecialAccessInventory) inventory).canDispenseStackFrom(i))
+                    if (!((PC_IInventory) inventory).canDispenseStackFrom(i))
                     {
                         continue;
                     }
@@ -1381,9 +1381,9 @@ public class PCtr_BeltHelper
         {
             boolean accessDenied = false;
 
-            if (inventory instanceof PC_ISpecialAccessInventory)
+            if (inventory instanceof PC_IInventory)
             {
-                if (!((PC_ISpecialAccessInventory) inventory).canDispenseStackFrom(i))
+                if (!((PC_IInventory) inventory).canDispenseStackFrom(i))
                 {
                     accessDenied = true;
                 }

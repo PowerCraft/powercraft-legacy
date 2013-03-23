@@ -31,7 +31,7 @@ import powercraft.api.renderer.PC_Renderer;
 public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 
 	public PCli_BlockMirror(int id) {
-		super(id, Material.glass, null);
+		super(id, Material.glass, "mirror");
 		float f = 0.4F;
 		float f1 = 1.0F;
 		setBlockBounds(0.5F - f, 0.1F, 0.5F - f, 0.5F + f, f1 - 0.1F, 0.5F + f);
@@ -283,15 +283,14 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 	}
 
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
-		Block steel = Block.blockSteel;
 		float px = 0.0625F;
-		ValueWriting.setBlockBounds(steel, 0 * px, 6 * px, 7 * px, 15 * px, 15 * px, 9 * px);
-		PC_Renderer.renderInvBox(renderer, steel, 0);
-		ValueWriting.setBlockBounds(steel, 3 * px, 0 * px, 7 * px, 5 * px, 6 * px, 9 * px);
-		PC_Renderer.renderInvBox(renderer, steel, 0);
-		ValueWriting.setBlockBounds(steel, 10 * px, 0 * px, 7 * px, 12 * px, 6 * px, 9 * px);
-		PC_Renderer.renderInvBox(renderer, steel, 0);
-		ValueWriting.setBlockBounds(steel, 0, 0, 0, 1, 1, 1);
+		block.setBlockBounds(0 * px, 6 * px, 7 * px, 15 * px, 15 * px, 9 * px);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		block.setBlockBounds(3 * px, 0 * px, 7 * px, 5 * px, 6 * px, 9 * px);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		block.setBlockBounds(10 * px, 0 * px, 7 * px, 12 * px, 6 * px, 9 * px);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override
