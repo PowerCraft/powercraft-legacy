@@ -15,15 +15,15 @@ public class PCws_WeaselPluginInfoPort extends PCws_WeaselPluginInfo {
 	}
 
 	@Override
-	public void renderInventoryBlock(Block block, Object renderer) {
+	public void renderInventoryBlock(PCws_BlockWeasel block, Object renderer) {
 		float px = 0.0625F;
-		block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
+		block.setWeaselBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[0], icons[2], icons[1], icons[1], icons[1], icons[1] });
 
 		//chip
-		block.setBlockBounds(5 * px, 3 * px, 5 * px, 11 * px, 5 * px, 11 * px);
+		block.setWeaselBlockBounds(5 * px, 3 * px, 5 * px, 11 * px, 5 * px, 11 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { null, icons[4], icons[5], icons[5], icons[5], icons[5] });
-		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		block.setWeaselBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override

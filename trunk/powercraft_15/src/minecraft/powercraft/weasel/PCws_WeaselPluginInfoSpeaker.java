@@ -16,16 +16,16 @@ public class PCws_WeaselPluginInfoSpeaker extends PCws_WeaselPluginInfo {
 	}
 
 	@Override
-	public void renderInventoryBlock(Block block, Object renderer) {
+	public void renderInventoryBlock(PCws_BlockWeasel block, Object renderer) {
 		float px = 0.0625F;
 		
-		block.setBlockBounds(0 * px, 0, 0 * px, 16 * px, 3 * px, 16 * px);
+		block.setWeaselBlockBounds(0 * px, 0, 0 * px, 16 * px, 3 * px, 16 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[0], icons[3], icons[1], icons[1], icons[1], icons[1] });
 
 		// box
-		block.setBlockBounds(2F * px, 1 * px, 2F * px, 14F * px, 15 * px, 14F * px);
+		block.setWeaselBlockBounds(2F * px, 1 * px, 2F * px, 14F * px, 15 * px, 14F * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { null, icons[4], icons[5], icons[5], icons[5], icons[5] });
-		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		block.setWeaselBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override

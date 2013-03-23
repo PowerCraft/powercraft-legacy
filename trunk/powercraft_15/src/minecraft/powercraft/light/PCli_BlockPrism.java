@@ -169,15 +169,15 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 	
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		float px = 0.0625F;
-		block.setBlockBounds(3 * px, 3 * px, 3 * px, 12 * px, 12 * px, 12 * px);
+		setBlockBounds(3 * px, 3 * px, 3 * px, 12 * px, 12 * px, 12 * px);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(4 * px, 4 * px, 2 * px, 11 * px, 11 * px, 13 * px);
+		setBlockBounds(4 * px, 4 * px, 2 * px, 11 * px, 11 * px, 13 * px);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(2 * px, 4 * px, 4 * px, 13 * px, 11 * px, 11 * px);
+		setBlockBounds(2 * px, 4 * px, 4 * px, 13 * px, 11 * px, 11 * px);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(4 * px, 2 * px, 4 * px, 11 * px, 13 * px, 11 * px);
+		setBlockBounds(4 * px, 2 * px, 4 * px, 11 * px, 13 * px, 11 * px);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	/** prism redirection vector for side */

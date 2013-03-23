@@ -50,37 +50,37 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 		float s = 0.1875F;
 
 		// pillars
-		block.setBlockBounds(0, 0, 0, s, 1, s);
+		setBlockBounds(0, 0, 0, s, 1, s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(1 - s, 0, 0, 1, 1, s);
+		setBlockBounds(1 - s, 0, 0, 1, 1, s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(0, 0, 1 - s, s, 1, 1);
+		setBlockBounds(0, 0, 1 - s, s, 1, 1);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(1 - s, 0, 1 - s, 1, 1, 1);
+		setBlockBounds(1 - s, 0, 1 - s, 1, 1, 1);
 		PC_Renderer.renderInvBox(renderer, block, 0);
 
 		// x-sticks
-		block.setBlockBounds(s, 0, 0, 1 - s, s, s);
+		setBlockBounds(s, 0, 0, 1 - s, s, s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(s, 0, 1 - s, 1 - s, s, 1);
+		setBlockBounds(s, 0, 1 - s, 1 - s, s, 1);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(s, 1 - s, 0, 1 - s, 1, s);
+		setBlockBounds(s, 1 - s, 0, 1 - s, 1, s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(s, 1 - s, 1 - s, 1 - s, 1, 1);
+		setBlockBounds(s, 1 - s, 1 - s, 1 - s, 1, 1);
 		PC_Renderer.renderInvBox(renderer, block, 0);
 
 		// z-sticks
-		block.setBlockBounds(0, 0, s, s, s, 1 - s);
+		setBlockBounds(0, 0, s, s, s, 1 - s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(0, 1 - s, s, s, 1, 1 - s);
+		setBlockBounds(0, 1 - s, s, s, 1, 1 - s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
 
-		block.setBlockBounds(1 - s, 0, s, 1, s, 1 - s);
+		setBlockBounds(1 - s, 0, s, 1, s, 1 - s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(1 - s, 1 - s, s, 1, 1, 1 - s);
+		setBlockBounds(1 - s, 1 - s, s, 1, 1, 1 - s);
 		PC_Renderer.renderInvBox(renderer, block, 0);
 		
-		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		setBlockBounds(0, 0, 0, 1, 1, 1);
 		
 	}
 

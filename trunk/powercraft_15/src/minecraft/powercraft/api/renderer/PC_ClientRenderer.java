@@ -16,6 +16,7 @@ import powercraft.api.PC_Direction;
 import powercraft.api.PC_IMSG;
 import powercraft.api.PC_VecF;
 import powercraft.api.PC_VecI;
+import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.block.PC_Block;
 import powercraft.api.inventory.PC_ISpecialInventoryTextures;
 import powercraft.api.registry.PC_MSGRegistry;
@@ -213,7 +214,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 				if (renderOnSide) {
 					block.setBlockBoundsForItemRender();
 				} else {
-					block.setBlockBounds(-0.1F, -0.1F, 0.4F, 1.1F, 1.1F, 0.6F);
+					ValueWriting.setBlockBounds(block, -0.1F, -0.1F, 0.4F, 1.1F, 1.1F, 0.6F);
 				}
 				
 				((RenderBlocks)renderer).setRenderBoundsFromBlock(block);

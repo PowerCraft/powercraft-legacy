@@ -168,13 +168,13 @@ public class PCnt_BlockSensor extends PC_Block {
 
 		Icon icon = metadata == 0 ? icons[1] : metadata == 1 ? icons[2] : icons[3];
 
-		block.setBlockBounds(0, 0, 0, 16 * px, 4 * px, 16 * px);
+		setBlockBounds(0, 0, 0, 16 * px, 4 * px, 16 * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icon);
-		block.setBlockBounds(6 * px, 4 * px, 6 * px, 10 * px, 9 * px, 10 * px);
+		setBlockBounds(6 * px, 4 * px, 6 * px, 10 * px, 9 * px, 10 * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icon);
-		block.setBlockBounds(5 * px, 8 * px, 5 * px, 11 * px, 14 * px, 11 * px);
+		setBlockBounds(5 * px, 8 * px, 5 * px, 11 * px, 14 * px, 11 * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
-		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 	
 	@Override

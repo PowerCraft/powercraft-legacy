@@ -76,13 +76,13 @@ public class PCli_BlockLightningConductor extends PC_Block
     {
         float f = 1.0f / 14.0f / 2.0f;
         PC_Renderer.glColor3f(1.0f, 1.0f, 1.0f);
-        block.setBlockBounds(0.5f - f * 5, 0.0f, 0.5f - f * 5, 0.5f + f * 5, 0.33f, 0.5f + f * 5);
+        setBlockBounds(0.5f - f * 5, 0.0f, 0.5f - f * 5, 0.5f + f * 5, 0.33f, 0.5f + f * 5);
         PC_Renderer.renderInvBox(renderer, block, metadata);
-        block.setBlockBounds(0.5f - f * 3, 0.33f, 0.5f - f * 3, 0.5f + f * 3, 0.66f, 0.5f + f * 3);
+        setBlockBounds(0.5f - f * 3, 0.33f, 0.5f - f * 3, 0.5f + f * 3, 0.66f, 0.5f + f * 3);
         PC_Renderer.renderInvBox(renderer, block, metadata);
-        block.setBlockBounds(0.5f - f * 1, 0.66f, 0.5f - f * 1, 0.5f + f * 1, 1.0f, 0.5f + f * 1);
+        setBlockBounds(0.5f - f * 1, 0.66f, 0.5f - f * 1, 0.5f + f * 1, 1.0f, 0.5f + f * 1);
         PC_Renderer.renderInvBox(renderer, block, metadata);
-        block.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
     }
 
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer)
@@ -94,20 +94,20 @@ public class PCli_BlockLightningConductor extends PC_Block
 
         if (GameInfo.getMD(world, x, y, z) == 0)
         {
-        	block.setBlockBounds(0.5f - f * 5, 0.0f, 0.5f - f * 5, 0.5f + f * 5, 0.66f, 0.5f + f * 5);
+        	setBlockBounds(0.5f - f * 5, 0.0f, 0.5f - f * 5, 0.5f + f * 5, 0.66f, 0.5f + f * 5);
             PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-            block.setBlockBounds(0.5f - f * 3, 0.66f, 0.5f - f * 3, 0.5f + f * 3, 1.0f, 0.5f + f * 3);
+            setBlockBounds(0.5f - f * 3, 0.66f, 0.5f - f * 3, 0.5f + f * 3, 1.0f, 0.5f + f * 3);
             PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
         }
         else
         {
-        	block.setBlockBounds(0.5f - f * 3, 0.0f, 0.5f - f * 3, 0.5f + f * 3, 0.33f, 0.5f + f * 3);
+        	setBlockBounds(0.5f - f * 3, 0.0f, 0.5f - f * 3, 0.5f + f * 3, 0.33f, 0.5f + f * 3);
             PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-            block.setBlockBounds(0.5f - f * 1, 0.33f, 0.5f - f * 1, 0.5f + f * 1, 1.0f, 0.5f + f * 1);
+            setBlockBounds(0.5f - f * 1, 0.33f, 0.5f - f * 1, 0.5f + f * 1, 1.0f, 0.5f + f * 1);
             PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
         }
 
-        block.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         PC_Renderer.tessellatorDraw();
         PC_Renderer.tessellatorStartDrawingQuads();
     }

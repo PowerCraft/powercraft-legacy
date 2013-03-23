@@ -401,7 +401,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
         float sidehalf = 0.1875F;
         float height = 0.15F;
         PC_Renderer.glColor3f(1.0f, 1.0f, 1.0f);
-        block.setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
+        setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
     }
 

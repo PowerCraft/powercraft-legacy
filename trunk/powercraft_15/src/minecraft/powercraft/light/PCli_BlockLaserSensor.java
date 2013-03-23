@@ -98,33 +98,33 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		float px=1.0f/16.0f;
 		renderSensor = true;
-		block.setBlockBounds(px*4, px*4, px*4, px*12, px*12, px*12);
+		setBlockBounds(px*4, px*4, px*4, px*12, px*12, px*12);
 		PC_Renderer.renderInvBox(renderer, block, 0);
 		renderSensor = false;
 		
 		// cobble body
-		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, px*2, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, px*2, 1.0F);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(px*6, px*2, px*6, px*10, px*4, px*10);
+		setBlockBounds(px*6, px*2, px*6, px*10, px*4, px*10);
 		PC_Renderer.renderInvBox(renderer, block, 0);
 		// reset
-		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
 		float px=1.0f/16.0f;
 		renderSensor = true;
-		block.setBlockBounds(px*4, px*4, px*4, px*12, px*12, px*12);
+		setBlockBounds(px*4, px*4, px*4, px*12, px*12, px*12);
 		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
 		renderSensor = false;
 		
 		// cobble body
-		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, px*2, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, px*2, 1.0F);
 		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-		block.setBlockBounds(px*6, px*2, px*6, px*10, px*4, px*10);
+		setBlockBounds(px*6, px*2, px*6, px*10, px*4, px*10);
 		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
 		// reset
-		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	public result onHitByBeamTracer(IBlockAccess world, BeamSettings bs) {

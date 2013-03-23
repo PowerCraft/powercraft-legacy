@@ -284,13 +284,13 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		float px = 0.0625F;
-		block.setBlockBounds(0 * px, 6 * px, 7 * px, 15 * px, 15 * px, 9 * px);
+		setBlockBounds(0 * px, 6 * px, 7 * px, 15 * px, 15 * px, 9 * px);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(3 * px, 0 * px, 7 * px, 5 * px, 6 * px, 9 * px);
+		setBlockBounds(3 * px, 0 * px, 7 * px, 5 * px, 6 * px, 9 * px);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(10 * px, 0 * px, 7 * px, 12 * px, 6 * px, 9 * px);
+		setBlockBounds(10 * px, 0 * px, 7 * px, 12 * px, 6 * px, 9 * px);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override

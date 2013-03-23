@@ -14,32 +14,32 @@ public class PCws_WeaselPluginInfoTouchscreen extends PCws_WeaselPluginInfo {
 	}
 
 	@Override
-	public void renderInventoryBlock(Block block, Object renderer) {
+	public void renderInventoryBlock(PCws_BlockWeasel block, Object renderer) {
 		float px = 0.0625F;
 		// legs
-		block.setBlockBounds(3 * px, 0, 4 * px, 4 * px, 1 * px, 12 * px);
+		block.setWeaselBlockBounds(3 * px, 0, 4 * px, 4 * px, 1 * px, 12 * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
-		block.setBlockBounds(12 * px, 0, 4 * px, 13 * px, 1 * px, 12 * px);
+		block.setWeaselBlockBounds(12 * px, 0, 4 * px, 13 * px, 1 * px, 12 * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
 		//sticks
-		block.setBlockBounds(3 * px, 1 * px, 7.5F * px, 4 * px, 2 * px, 8.5F * px);
+		block.setWeaselBlockBounds(3 * px, 1 * px, 7.5F * px, 4 * px, 2 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
-		block.setBlockBounds(12 * px, 1 * px, 7.5F * px, 13 * px, 2 * px, 8.5F * px);
+		block.setWeaselBlockBounds(12 * px, 1 * px, 7.5F * px, 13 * px, 2 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
 
 		//bottom
-		block.setBlockBounds(0 * px, 2 * px, 7.5F * px, 16 * px, 3 * px, 8.5F * px);
+		block.setWeaselBlockBounds(0 * px, 2 * px, 7.5F * px, 16 * px, 3 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
 		//top
-		block.setBlockBounds(0 * px, 15 * px, 7.5F * px, 16 * px, 16 * px, 8.5F * px);
+		block.setWeaselBlockBounds(0 * px, 15 * px, 7.5F * px, 16 * px, 16 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
 		//left
-		block.setBlockBounds(0 * px, 3 * px, 7.5F * px, 1 * px, 15 * px, 8.5F * px);
+		block.setWeaselBlockBounds(0 * px, 3 * px, 7.5F * px, 1 * px, 15 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
 		//right
-		block.setBlockBounds(15 * px, 3 * px, 7.5F * px, 16 * px, 15 * px, 8.5F * px);
+		block.setWeaselBlockBounds(15 * px, 3 * px, 7.5F * px, 16 * px, 15 * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
-		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		block.setWeaselBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override
