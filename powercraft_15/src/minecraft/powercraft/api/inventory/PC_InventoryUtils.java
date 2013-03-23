@@ -252,7 +252,16 @@ public class PC_InventoryUtils {
 	public static boolean storeItemStackToSlot(IInventory inv, ItemStack itemstack, int i){
 		ItemStack slot = inv.getStackInSlot(i);
 		if (slot == null) {
+			int store = getSlotStackLimit(inv, i);
+			if(store>itemstack.getMaxStackSize()){
+				store = itemstack.getMaxStackSize();
+			}
+			if(store>itemstack.stackSize){
+				store = itemstack.stackSize;
+			}
 			slot = itemstack.copy();
+			slot.stackSize = store;
+			itemstack.stackSize -= store;
 		}else{
 			if(slot.isItemEqual(itemstack)){
 				int store = getSlotStackLimit(inv, i);
