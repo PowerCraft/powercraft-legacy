@@ -14,12 +14,12 @@ public class PCws_WeaselPluginInfoDiskDrive extends PCws_WeaselPluginInfo {
 	}
 
 	@Override
-	public void renderInventoryBlock(Block block, Object renderer) {
+	public void renderInventoryBlock(PCws_BlockWeasel block, Object renderer) {
 
 		float px = 0.0625F;
-		block.setBlockBounds(0, 0, 0, 16 * px, 13 * px, 16 * px);
+		block.setWeaselBlockBounds(0, 0, 0, 16 * px, 13 * px, 16 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[4], icons[5], icons[6], icons[6], icons[6], icons[6] });
-		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		block.setWeaselBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override

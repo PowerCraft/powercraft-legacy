@@ -276,17 +276,17 @@ public class PCnt_BlockRadio extends PC_Block {
 		float px = 0.0625F;
 
 
-		block.setBlockBounds(0, 0, 0, 16 * px, 4 * px, 16 * px);
+		setBlockBounds(0, 0, 0, 16 * px, 4 * px, 16 * px);
 		PC_Renderer.renderInvBox(renderer, block, 0);
-		block.setBlockBounds(6.5F * px, 4F * px, 6.5F * px, 9.5F * px, 7F * px, 9.5F * px);
+		setBlockBounds(6.5F * px, 4F * px, 6.5F * px, 9.5F * px, 7F * px, 9.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icon);
-		block.setBlockBounds(7F * px, 7F * px, 7F * px, 9F * px, 10F * px, 9F * px);
+		setBlockBounds(7F * px, 7F * px, 7F * px, 9F * px, 10F * px, 9F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icon);
-		block.setBlockBounds(7.5F * px, 10F * px, 7.5F * px, 8.5F * px, 13F * px, 8.5F * px);
+		setBlockBounds(7.5F * px, 10F * px, 7.5F * px, 8.5F * px, 13F * px, 8.5F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icon);
-		block.setBlockBounds(7F * px, 12F * px, 7F * px, 9F * px, 14F * px, 9F * px);
+		setBlockBounds(7F * px, 12F * px, 7F * px, 9F * px, 14F * px, 9F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
-		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		setBlockBounds(0, 0, 0, 1, 1, 1);
 
 	}
 	

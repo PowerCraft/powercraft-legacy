@@ -114,6 +114,11 @@ public class PCws_BlockWeasel extends PC_Block {
 		return true;
 	}
 	
+	public final void setWeaselBlockBounds(float par1, float par2, float par3, float par4, float par5, float par6){
+		setBlockBounds(par1, par2, par3, par4, par5, par6);
+	}
+	
+	
 	@Override
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int dir) {
 		PCws_WeaselPlugin weaselPlugin = GameInfo.<PCws_TileEntityWeasel>getTE(world, x, y, z).getPlugin();
@@ -298,7 +303,7 @@ public class PCws_BlockWeasel extends PC_Block {
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
 		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			PCws_WeaselManager.getPluginInfo((Integer)obj[1]).renderInventoryBlock((Block)obj[0], obj[3]);
+			PCws_WeaselManager.getPluginInfo((Integer)obj[1]).renderInventoryBlock((PCws_BlockWeasel)obj[0], obj[3]);
 			break;
 		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
 			break;

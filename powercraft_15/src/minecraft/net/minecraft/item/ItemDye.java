@@ -327,7 +327,7 @@ public class ItemDye extends Item
 
         if (block != null)
         {
-            block.setBlockBoundsBasedOnState(par0World, par1, par2, par3);
+            setBlockBounds(BasedOnState(par0World, par1, par2, par3);
 
             for (int j1 = 0; j1 < par4; ++j1)
             {

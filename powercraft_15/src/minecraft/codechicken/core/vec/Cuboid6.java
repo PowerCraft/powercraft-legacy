@@ -51,6 +51,6 @@ public class Cuboid6
 
     public void setBlockBounds(Block block)
     {
-        block.setBlockBounds((float)min.x, (float)min.y, (float)min.z, (float)max.x, (float)max.y, (float)max.z);
+        setBlockBounds((float)min.x, (float)min.y, (float)min.z, (float)max.x, (float)max.y, (float)max.z);
     }
 }

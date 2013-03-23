@@ -72,34 +72,34 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
 
     public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer)
     {
-        block.setBlockBounds(0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
+        setBlockBounds(0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
         PC_Renderer.renderInvBox(renderer, block, metadata);
-        block.setBlockBounds(0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.2f);
+        setBlockBounds(0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.2f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
-        block.setBlockBounds(0.8f, 0.0f, 0.0f, 1.0f, 0.2f, 0.2f);
+        setBlockBounds(0.8f, 0.0f, 0.0f, 1.0f, 0.2f, 0.2f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
-        block.setBlockBounds(0.8f, 0.8f, 0.0f, 1.0f, 1.0f, 0.2f);
+        setBlockBounds(0.8f, 0.8f, 0.0f, 1.0f, 1.0f, 0.2f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
-        block.setBlockBounds(0.8f, 0.8f, 0.8f, 1.0f, 1.0f, 1.0f);
+        setBlockBounds(0.8f, 0.8f, 0.8f, 1.0f, 1.0f, 1.0f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
-        block.setBlockBounds(0.0f, 0.8f, 0.8f, 0.2f, 1.0f, 1.0f);
+        setBlockBounds(0.0f, 0.8f, 0.8f, 0.2f, 1.0f, 1.0f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
-        block.setBlockBounds(0.0f, 0.0f, 0.8f, 0.2f, 0.2f, 1.0f);
+        setBlockBounds(0.0f, 0.0f, 0.8f, 0.2f, 0.2f, 1.0f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
-        block.setBlockBounds(0.0f, 0.8f, 0.0f, 0.2f, 1.0f, 0.2f);
+        setBlockBounds(0.0f, 0.8f, 0.0f, 0.2f, 1.0f, 0.2f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
-        block.setBlockBounds(0.8f, 0.0f, 0.8f, 1.0f, 0.2f, 1.0f);
+        setBlockBounds(0.8f, 0.0f, 0.8f, 1.0f, 0.2f, 1.0f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
-        block.setBlockBounds(0, 0, 0, 1, 1, 1);
+        setBlockBounds(0, 0, 0, 1, 1, 1);
     }
 
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer)
     {
         PC_Renderer.tessellatorDraw();
         PC_Renderer.tessellatorStartDrawingQuads();
-        block.setBlockBounds(0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
+        setBlockBounds(0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-        block.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         
         ValueWriting.setBlockBounds(Block.blockSteel,0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.2f);
         PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);

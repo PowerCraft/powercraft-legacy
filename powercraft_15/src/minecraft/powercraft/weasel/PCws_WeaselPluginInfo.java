@@ -57,7 +57,7 @@ public abstract class PCws_WeaselPluginInfo {
 		return c.getSimpleName();
 	}
 	
-	public abstract void renderInventoryBlock(Block block, Object renderer);
+	public abstract void renderInventoryBlock(PCws_BlockWeasel block, Object renderer);
 	
 	public float[] getBounds(){
 		return new float[]{ 0, 0, 0, 1, 0.5F, 1 };
