@@ -8,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_BeamTracer.BeamSettings;
@@ -25,8 +26,10 @@ import powercraft.api.renderer.PC_Renderer;
 @PC_BlockInfo(tileEntity=PCli_TileEntityLaserSensor.class)
 public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 
+	private boolean renderSensor=false;
+	
 	public PCli_BlockLaserSensor(int id) {
-		super(id, Material.ground, null);
+		super(id, Material.ground, "lasersensor_down", "lasersensor_top", "lasersensor_side", "lasersensor_sensor");
 		setStepSound(Block.soundMetalFootstep);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHardness(0.7F);
@@ -52,6 +55,19 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
     }
     
     @Override
+	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
+		if(renderSensor){
+			return icons[3];
+		}
+		if(par1==0){
+			return icons[0];
+		}else if(par1==1){
+			return icons[1];
+		}
+		return icons[2];
+	}
+    
+	@Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
     {
         return AxisAlignedBB.getBoundingBox(i, j, k, (double) i + 1, (double) j + 0.7F, (double) k + 1);
@@ -80,31 +96,35 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 	}
 
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
-		ValueWriting.setBlockBounds(Block.ice, 0.3F, 0.3F, 0.3F, 0.7F, 0.7F, 0.7F);
-		PC_Renderer.renderInvBox(renderer, Block.ice, 0);
-		ValueWriting.setBlockBounds(Block.ice, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-
+		float px=1.0f/16.0f;
+		renderSensor = true;
+		block.setBlockBounds(px*4, px*4, px*4, px*12, px*12, px*12);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		renderSensor = false;
+		
 		// cobble body
-		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
-		PC_Renderer.renderInvBox(renderer, Block.cobblestone, 0);
-		ValueWriting.setBlockBounds(Block.cobblestone, 0.4F, 0.2F, 0.4F, 0.6F, 0.3F, 0.6F);
-		PC_Renderer.renderInvBox(renderer, Block.cobblestone, 0);
+		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, px*2, 1.0F);
+		PC_Renderer.renderInvBox(renderer, block, 0);
+		block.setBlockBounds(px*6, px*2, px*6, px*10, px*4, px*10);
+		PC_Renderer.renderInvBox(renderer, block, 0);
 		// reset
-		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
-		ValueWriting.setBlockBounds(Block.ice, 0.3F, 0.3F, 0.3F, 0.7F, 0.7F, 0.7F);
-		PC_Renderer.renderStandardBlock(renderer, Block.ice, x, y, z);
-		ValueWriting.setBlockBounds(Block.ice, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-
+		float px=1.0f/16.0f;
+		renderSensor = true;
+		block.setBlockBounds(px*4, px*4, px*4, px*12, px*12, px*12);
+		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+		renderSensor = false;
+		
 		// cobble body
-		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
-		PC_Renderer.renderStandardBlock(renderer, Block.cobblestone, x, y, z);
-		ValueWriting.setBlockBounds(Block.cobblestone, 0.4F, 0.2F, 0.4F, 0.6F, 0.3F, 0.6F);
-		PC_Renderer.renderStandardBlock(renderer, Block.cobblestone, x, y, z);
+		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, px*2, 1.0F);
+		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+		block.setBlockBounds(px*6, px*2, px*6, px*10, px*4, px*10);
+		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
 		// reset
-		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	public result onHitByBeamTracer(IBlockAccess world, BeamSettings bs) {
