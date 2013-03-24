@@ -9,6 +9,6 @@ public interface PC_IRecipeInfo extends PC_IRecipe {
 
 	public PC_VecI getSize();
 	public List<PC_ItemStack> getExpectedInputFor(int index);
-	public int getRecipeSize();
+	public int getPCRecipeSize();
 	
 }
