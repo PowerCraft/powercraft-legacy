@@ -2,16 +2,7 @@ package powercraft.launcher.update;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,18 +16,17 @@ import powercraft.launcher.loader.PC_ModuleClassInfo;
 import powercraft.launcher.loader.PC_ModuleDiscovery;
 import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.launcher.loader.PC_ModuleVersion;
+import powercraft.launcher.update.PC_FileWatcher.Event;
+import powercraft.launcher.update.PC_FileWatcher.WatchEvent;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLInfoTag;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLModuleTag;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLVersionTag;
-import powercraft.launcher.updategui.PC_FileRequestThread;
 import powercraft.launcher.updategui.PC_GuiUpdate;
 
 public class PC_UpdateManager {
 
 	private static PC_ThreadCheckUpdates updateChecker;
-	private static WatchKey key;
-	private static WatchService watcher;
-	private static Path dir;
+	private static PC_FileWatcher watcher;
 	
 	public static List<ModuleUpdateInfo> moduleList;
 	public static XMLInfoTag updateInfo;
@@ -135,23 +125,11 @@ public class PC_UpdateManager {
 	}
 
 	public static void watchDirectory(File downloadTarget) {
-		if(key!=null)
-			key.cancel();
-		try {
-			if(watcher==null)
-				watcher = FileSystems.getDefault().newWatchService();
-			dir = downloadTarget.toPath();
-			key = dir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		watcher = new PC_FileWatcher(downloadTarget);
 	}
 
 	public static void stopWatchDirectory() {
-		if(key!=null){
-			key.cancel();
-			key=null;
-		}
+		watcher=null;
 	}
 	
 	private static void tryToUseFile(File file){
@@ -159,32 +137,24 @@ public class PC_UpdateManager {
 		discovery.search(file);
 		HashMap<String, PC_ModuleObject>modules = discovery.getModules();
 		if(modules.size()>0){
-			try {
-				File to = new File(PC_LauncherUtils.getPowerCraftModuleFile(), file.getName());
-				Files.move(file.toPath(), to.toPath(), StandardCopyOption.REPLACE_EXISTING);
-				discovery = new PC_ModuleDiscovery();
-				discovery.search(to);
-				modules = discovery.getModules();
-				for(PC_ModuleObject module:modules.values()){
-					addModule(module);
-				}
-				System.out.println("Found Module Pack "+file);
-			} catch (IOException e) {
-				e.printStackTrace();
+			File to = new File(PC_LauncherUtils.getPowerCraftModuleFile(), file.getName());
+			PC_FileMover.moveAndDelete(file, to);
+			discovery = new PC_ModuleDiscovery();
+			discovery.search(to);
+			modules = discovery.getModules();
+			for(PC_ModuleObject module:modules.values()){
+				addModule(module);
 			}
+			System.out.println("Found Module Pack "+file);
 		}
 	}
 
 	public static void lookForDirectoryChange(){
-		if(key!=null){
-			 for (WatchEvent<?> event: key.pollEvents()) {
-		        WatchEvent.Kind<?> kind = event.kind();
-		        if (kind == StandardWatchEventKinds.OVERFLOW) {
-		            continue;
-		        }
-		        WatchEvent<Path> ev = (WatchEvent<Path>)event;
-		        Path filename = dir.resolve(ev.context());
-		        tryToUseFile(filename.toFile());
+		if(watcher!=null){
+			for (WatchEvent event: watcher.pollEvents()) {
+				if(event.event==Event.CREATE || event.event==Event.MODIFY){
+					tryToUseFile(event.file);
+				}
 		    }
 		}
 	}
