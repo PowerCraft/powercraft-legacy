@@ -198,7 +198,7 @@ public class PC_RecipeRegistry {
 			int i = 0;
 			for (int y = 0; y < size.y; y++) {
 				for (int x = 0; x < size.x; x++) {
-					if (i < ri.getRecipeSize()) {
+					if (i < ri.getPCRecipeSize()) {
 						list[x][y] = ri.getExpectedInputFor(i);
 					}
 					i++;

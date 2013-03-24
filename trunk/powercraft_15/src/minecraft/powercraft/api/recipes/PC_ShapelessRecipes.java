@@ -154,4 +154,9 @@ public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInfo, PC_IRecipe 
 		return recipeItems[index];
 	}
 
+	@Override
+	public int getPCRecipeSize() {
+		return getRecipeSize();
+	}
+
 }

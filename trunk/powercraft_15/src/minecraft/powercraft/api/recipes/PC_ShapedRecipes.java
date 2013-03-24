@@ -195,4 +195,9 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo, PC_IRecipe {
 		return recipeItems[x][y];
 	}
 
+	@Override
+	public int getPCRecipeSize() {
+		return getRecipeSize();
+	}
+
 }
