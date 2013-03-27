@@ -15,6 +15,7 @@ import net.minecraft.item.ItemReed;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Facing;
+import net.minecraft.world.World;
 import powercraft.api.PC_Utils;
 import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.PC_Utils.ValueWriting;
@@ -43,20 +44,18 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 	public boolean canUpdate() {
 		return false;
 	}
+	
+	@Override
+	public void setWorldObj(World world) {
+		super.setWorldObj(world);
+		fakeplayer = new PC_FakePlayer(world);
+	}
 
 	/**
 	 * Use some random item from the dispenser inventory.
 	 */
-	public void useItem() {
-
-		if (fakeplayer == null) {
-			fakeplayer = new PC_FakePlayer(worldObj);
-		}
-
-		int maxdist = 150;
-		if (worldObj.getBlockId(xCoord, yCoord - 1, zCoord) == Block.stoneBrick.blockID) {
-			maxdist = 1;
-		}
+	
+	public boolean useItem(PC_VecI coord) {
 		int i = -1;
 		int j = 1;
 		for (int k = 0; k < inventoryContents.length; k++) {
@@ -64,21 +63,20 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 				i = k;
 			}
 		}
-
 		if (i >= 0) {
-			for (int dist = 0; dist < maxdist; dist++) {
-				int state = try2useItem(getStackInSlot(i).copy(), dist);
-				if (state == -1) {
-					return;
+			int state = try2useItem(getStackInSlot(i).copy(), coord);
+			if (state == -1) {
+				return true;
+			}
+			if (state == 0) {
+				return false;
+			}
+			if (state != 0) {
+				if (PC_SoundRegistry.isSoundEnabled()) {
+					worldObj.playAuxSFX(1000, xCoord, yCoord, zCoord, 0);
 				}
-				if (state == 0) {
-					continue;
-				}
-				if (state != 0) {
-					if (PC_SoundRegistry.isSoundEnabled()) {
-						worldObj.playAuxSFX(1000, xCoord, yCoord, zCoord, 0);
-					}
-				}
+			}
+			if(!worldObj.isRemote){
 				if (state == 1) {
 					decrStackSize(i, 1);
 				}
@@ -88,16 +86,16 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 						setInventorySlotContents(i, null);
 					}
 				}
-				return;
 			}
+			return true;
 		} else {
 			if (PC_SoundRegistry.isSoundEnabled()) {
 				worldObj.playAuxSFX(1001, xCoord, yCoord, zCoord, 0);
 			}
-			return;
+			return false;
 		}
 	}
-
+	
 	/**
 	 * Use item, return state flag
 	 * 
@@ -106,19 +104,12 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 	 * @return 0 = nothing happened to the stack. 1 = decrement stack size, 2 =
 	 *         damage item
 	 */
-	private int try2useItem(ItemStack itemstack, int dist) {
-		int x = xCoord, y = yCoord, z = zCoord;
+	private int try2useItem(ItemStack itemstack, PC_VecI front) {
 
-		int l = worldObj.getBlockMetadata(x, y, z) & 7;
-		int incX = Facing.offsetsXForSide[l];
-		int incZ = Facing.offsetsZForSide[l];
+		int l = GameInfo.getMD(worldObj, front) & 7;
 
-		x += dist * incX;
-		z += dist * incZ;
-
-		PC_VecI front = new PC_VecI(x + incX, y, z + incZ);
-		PC_VecI below = new PC_VecI(x + incX, y - 1, z + incZ);
-		PC_VecI above = new PC_VecI(x + incX, y + 1, z + incZ);
+		PC_VecI below = new PC_VecI(front.offset(0, -1, 0));
+		PC_VecI above = new PC_VecI(front.offset(0, 1, 0));
 
 
 		int idFront = GameInfo.getBID(worldObj, front);
@@ -137,7 +128,7 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 			
 			if (PC_BlockRegistry.isBlock(worldObj, front, "PCtr_BlockBelt") || Block.blocksList[id] instanceof BlockRail) {
 				if (!worldObj.isRemote) {
-					worldObj.spawnEntityInWorld(EntityMinecart.func_94090_a(worldObj, (float) x + incX + 0.5F, y + 0.5F, (float) z + incZ + 0.5F,
+					worldObj.spawnEntityInWorld(EntityMinecart.func_94090_a(worldObj, front.x + 0.5F, front.y + 0.5F, front.z + 0.5F,
 							((ItemMinecart) itemstack.getItem()).minecartType));
 				}
 				return 1;
@@ -161,15 +152,15 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 			
 			ItemBlock item = ((ItemBlock) itemstack.getItem());
 
-			if (Block.blocksList[item.itemID].canPlaceBlockAt(worldObj, x + incX, y, z + incZ)) {
-				ValueWriting.setBID(worldObj, x + incX, y, z + incZ, item.itemID, item.getMetadata(itemstack.getItemDamage()));
+			if (Block.blocksList[item.itemID].canPlaceBlockAt(worldObj, front.x, front.y, front.z)) {
+				ValueWriting.setBID(worldObj, front.x, front.y, front.z, item.itemID, item.getMetadata(itemstack.getItemDamage()));
 				return 1;
 			}
 
-			if (isEmptyBlock(idFront) && Block.blocksList[item.itemID].canPlaceBlockAt(worldObj, x + incX * 2, y, z + incZ * 2)) {
+			/*if (isEmptyBlock(idFront) && Block.blocksList[item.itemID].canPlaceBlockAt(worldObj, x + incX * 2, y, z + incZ * 2)) {
 				ValueWriting.setBID(worldObj, x + incX * 2, y, z + incZ * 2, item.itemID, item.getMetadata(itemstack.getItemDamage()));
 				return 1;
-			}
+			}*/
 
 			return 0;
 		}
@@ -179,16 +170,16 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 			int dmgOrig = itemstack.getItemDamage();
 			int sizeOrig = itemstack.stackSize;
 
-			if (itemstack.getItem().onItemUse(itemstack, fakeplayer, worldObj, x + incX, y, z + incZ, 1, 0.0f, 0.0f, 0.0f)) {
+			if (itemstack.getItem().onItemUse(itemstack, fakeplayer, worldObj, front.x, front.y, front.z, 1, 0.0f, 0.0f, 0.0f)) {
 				
 				if (itemstack.getItem() instanceof ItemMonsterPlacer) {
 					return 1;
 				}
 
-				int idFrontNew = worldObj.getBlockId(x + incX, y, z + incZ);
-				int metaFrontNew = worldObj.getBlockMetadata(x + incX, y, z + incZ);
-				int idAboveNew = worldObj.getBlockId(x + incX, y + 1, z + incZ);
-				int metaAboveNew = worldObj.getBlockMetadata(x + incX, y + 1, z + incZ);
+				int idFrontNew = GameInfo.getBID(worldObj, front);
+				int metaFrontNew = GameInfo.getMD(worldObj, front);
+				int idAboveNew = GameInfo.getBID(worldObj, above);
+				int metaAboveNew = GameInfo.getMD(worldObj, above);
 
 				int dmgNew = itemstack.getItemDamage();
 				int sizeNew = itemstack.stackSize;
@@ -211,16 +202,16 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 			int dmg1 = itemstack.getItemDamage();
 			int size1 = itemstack.stackSize;
 
-			if (itemstack.getItem().onItemUse(itemstack, fakeplayer, worldObj, x + incX, y - 1, z + incZ, 1, 0.0f, 0.0f, 0.0f)) {
+			if (itemstack.getItem().onItemUse(itemstack, fakeplayer, worldObj, below.x, below.y, below.z, 1, 0.0f, 0.0f, 0.0f)) {
 
 				if (itemstack.getItem() instanceof ItemMonsterPlacer) {
 					return 1;
 				}
 
-				int idBelowNew = worldObj.getBlockId(x + incX, y - 1, z + incZ);
-				int metaBelowNew = worldObj.getBlockMetadata(x + incX, y - 1, z + incZ);
-				int idFrontNew = worldObj.getBlockId(x + incX, y, z + incZ);
-				int metaFrontNew = worldObj.getBlockMetadata(x + incX, y, z + incZ);
+				int idBelowNew = GameInfo.getBID(worldObj, below);
+				int metaBelowNew = GameInfo.getMD(worldObj, below);
+				int idFrontNew = GameInfo.getBID(worldObj, front);
+				int metaFrontNew = GameInfo.getMD(worldObj, front);
 
 				int dmg2 = itemstack.getItemDamage();
 				int size2 = itemstack.stackSize;

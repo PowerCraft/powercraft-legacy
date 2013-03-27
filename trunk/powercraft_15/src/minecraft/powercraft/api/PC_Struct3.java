@@ -5,10 +5,11 @@ import java.io.Serializable;
 import powercraft.api.PC_Utils.Coding;
 
 public class PC_Struct3<T1, T2, T3> implements Serializable {
+	
+	public static final long serialVersionUID = 32555623421456235L;
+	
 	public T1 a;
-
 	public T2 b;
-
 	public T3 c;
 
 	public PC_Struct3(T1 objA, T2 objB, T3 objC) {
