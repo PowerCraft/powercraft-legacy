@@ -180,14 +180,18 @@ public class PC_APIModule {
 										(Class<? extends Item>) clazz);
 							} else {
 								o = PC_ReflectHelper.create(clazz);
-								if (o instanceof PC_IMSG) {
-									PC_MSGRegistry
-											.registerMSGObject((PC_IMSG) o);
-								}
-								if (o instanceof PC_ITickHandler) {
-									PC_TickRegistry
-											.register((PC_ITickHandler) o);
-								}
+							}
+							if (o instanceof PC_IMSG) {
+								PC_MSGRegistry
+										.registerMSGObject((PC_IMSG) o);
+							}
+							if (o instanceof PC_ITickHandler) {
+								PC_TickRegistry
+										.register((PC_ITickHandler) o);
+							}
+							if (o instanceof PC_IPacketHandler) {
+								PC_PacketHandler
+										.registerPackethandler(clazz.getSimpleName(), (PC_IPacketHandler) o);
 							}
 							fieldWithAnnotation.setValue(o);
 							return false;

@@ -19,6 +19,9 @@ import powercraft.api.PC_Utils.Coding;
  *            4th object class
  */
 public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
+	
+	public static final long serialVersionUID = 235672321353289679L;
+	
 	/**
 	 * 1st object
 	 */

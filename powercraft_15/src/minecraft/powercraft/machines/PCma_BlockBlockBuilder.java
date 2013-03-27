@@ -6,15 +6,22 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Facing;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.api.PC_BeamTracer;
+import powercraft.api.PC_Color;
+import powercraft.api.PC_IBeamHandlerExt;
+import powercraft.api.PC_IPacketHandler;
+import powercraft.api.PC_PacketHandler;
 import powercraft.api.PC_Utils;
 import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.PC_Utils.ValueWriting;
@@ -22,6 +29,7 @@ import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.inventory.PC_ISpecialInventoryTextures;
+import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_KeyRegistry;
@@ -29,8 +37,10 @@ import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
 
 @PC_BlockInfo(tileEntity=PCma_TileEntityBlockBuilder.class)
-public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo{
+public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo, PC_IBeamHandlerExt, PC_IPacketHandler{
 	private static final int TXSIDE = 0, TXFRONT = 1;
+	
+	public static final int ENDBLOCK = 98;
 	
 	public PCma_BlockBlockBuilder(int id) {
 		super(id, Material.ground, "side", "builder_front");
@@ -147,14 +157,52 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
-		if (!world.isRemote && isIndirectlyPowered(world, i, j, k)) {
-			PCma_TileEntityBlockBuilder tileentity = (PCma_TileEntityBlockBuilder) world.getBlockTileEntity(i, j, k);
-			if (tileentity != null) {
-				tileentity.useItem();
-			}
+		if (isIndirectlyPowered(world, i, j, k)) {
+			buildBlocks(world, i, j, k, world.getBlockMetadata(i, j, k));
 		}
 	}
 
+	/**
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param deviceMeta
+	 */
+	private void buildBlocks(World world, int x, int y, int z, int deviceMeta) {
+
+		if(!world.isRemote)
+			PC_PacketHandler.sendToPacketHandler(true, world, "PCma_BlockBlockBuilder", x, y, z, deviceMeta);
+		
+		deviceMeta &= 0x7;
+
+		int incZ = Facing.offsetsZForSide[deviceMeta];
+		int incX = Facing.offsetsXForSide[deviceMeta];
+
+		PC_VecI move = new PC_VecI(incX, 0, incZ);
+
+		PC_VecI cnt = new PC_VecI(x, y, z);
+		PC_BeamTracer beamTracer = new PC_BeamTracer(world, this);
+
+		beamTracer.setStartCoord(cnt);
+		beamTracer.setStartMove(move);
+		beamTracer.setCanChangeColor(false);
+		beamTracer.setDetectEntities(true);
+		beamTracer.setTotalLengthLimit(8000);
+		beamTracer.setMaxLengthAfterCrystal(2000);
+		beamTracer.setStartLength(30);
+		beamTracer.setData("crystalAdd", 100);
+		beamTracer.setColor(new PC_Color(0.001f, 0.001f, 1.0f));
+
+		if (world.getBlockId(x, y - 1, z) == ENDBLOCK) {
+			beamTracer.setStartLength(1);
+			beamTracer.setMaxLengthAfterCrystal(1);
+		}
+		
+		beamTracer.flash();
+
+	}
+	
 	@Override
 	public TileEntity newTileEntity(World world, int metadata) {
 		return new PCma_TileEntityBlockBuilder();
@@ -224,6 +272,30 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 		}
 		}
 		return null;
+	}
+
+	@Override
+	public boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_VecI coord) {
+		return false;
+	}
+
+	@Override
+	public boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_VecI coord) {
+		return false;
+	}
+
+	@Override
+	public boolean onEmptyBlockHit(PC_BeamTracer beamTracer, PC_VecI coord) {
+		World world = beamTracer.getWorld();
+		PCma_TileEntityBlockBuilder tebb = GameInfo.getTE(world, beamTracer.getStartCoord());
+		return tebb.useItem(coord);
+	}
+
+	@Override
+	public boolean handleIncomingPacket(EntityPlayer player, Object[] o) {
+		if(player.worldObj.isRemote)
+			buildBlocks(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2], (Integer)o[3]);
+		return false;
 	}
 	
 }

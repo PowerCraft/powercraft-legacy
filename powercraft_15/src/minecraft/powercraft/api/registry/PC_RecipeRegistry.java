@@ -252,7 +252,7 @@ public class PC_RecipeRegistry {
 	}
 
 	public static int getFuelValue(ItemStack itemstack) {
-		return (int) (TileEntityFurnace.getItemBurnTime(itemstack));
+		return TileEntityFurnace.getItemBurnTime(itemstack);
 	}
 
 	public static ItemStack getSmeltingResult(ItemStack item) {

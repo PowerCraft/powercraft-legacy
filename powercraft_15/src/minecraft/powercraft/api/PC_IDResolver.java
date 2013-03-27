@@ -131,6 +131,8 @@ public class PC_IDResolver {
 	}
 
 	public static boolean loadPCObjectsIDs(File worldDirectory) {
+		if (!PC_GlobalVariables.idResolve)
+			return true;
 		File file = new File(worldDirectory, "powercraft.dat");
 		if (!file.exists())
 			return false;
