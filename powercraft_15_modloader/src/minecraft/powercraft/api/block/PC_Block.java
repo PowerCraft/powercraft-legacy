@@ -1,0 +1,310 @@
+package powercraft.api.block;
+
+import java.util.List;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.BlockContainer;
+import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.Icon;
+import net.minecraft.src.IconRegister;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemBlock;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.Material;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
+import powercraft.api.PC_GlobalVariables;
+import powercraft.api.PC_IIDChangeAble;
+import powercraft.api.PC_IMSG;
+import powercraft.api.PC_Struct3;
+import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.PC_VecI;
+import powercraft.api.annotation.PC_BlockInfo;
+import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.registry.PC_TextureRegistry;
+import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.launcher.loader.PC_ModuleObject;
+
+public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IIDChangeAble {
+	private PC_ModuleObject module;
+	protected Icon[] icons;
+	private String[] textureNames;
+	private BlockInfo replaced = new BlockInfo();
+	private BlockInfo thisBlock;
+	private Object iconRegistry;
+	
+	protected PC_Block(int id, Material material, String textureName, String... textureNames) {
+		super(id, material);
+		thisBlock = new BlockInfo(id);
+		this.textureNames = new String[1 + textureNames.length];
+		icons = new Icon[1 + textureNames.length];
+		this.textureNames[0] = textureName;
+		for (int i = 0; i < textureNames.length; i++) {
+			this.textureNames[i + 1] = textureNames[i];
+		}
+	}
+
+	public Object msg(int msg, Object... obj) {
+		IBlockAccess world = null;
+		PC_VecI pos = null;
+		int i = 0;
+		if (obj != null) {
+			if (obj.length >= 1) {
+				if (obj[0] instanceof IBlockAccess) {
+					world = (IBlockAccess) obj[0];
+					i = 1;
+					if (obj.length >= 2) {
+						if (obj[1] instanceof PC_VecI) {
+							pos = (PC_VecI) obj[1];
+							i = 2;
+						}
+					}
+				}
+			}
+		}
+		Object o[] = new Object[obj.length - i];
+		for (int j = 0; j < o.length; j++) {
+			o[j] = obj[j + i];
+		}
+		return msg(world, pos, msg, o);
+	}
+
+	public abstract Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj);
+
+	public TileEntity newTileEntity(World world, int metadata) {
+		PC_BlockInfo blockInfo = getClass().getAnnotation(PC_BlockInfo.class);
+		if(blockInfo==null || blockInfo.tileEntity()==null || blockInfo.tileEntity()==PC_BlockInfo.PC_FakeTileEntity.class){
+			return null;
+		}else{
+			return PC_ReflectHelper.create(blockInfo.tileEntity());
+		}
+	}
+
+	public final TileEntity createNewTileEntity(World world) {
+		return createNewTileEntity(world, 0);
+	}
+
+	public final TileEntity createNewTileEntity(World world, int metadata) {
+		if (PC_GlobalVariables.tileEntity != null && !world.isRemote) {
+			PC_GlobalVariables.tileEntity.validate();
+			return PC_GlobalVariables.tileEntity;
+		}
+		return newTileEntity(world, metadata);
+	}
+
+	public void setModule(PC_ModuleObject module) {
+		this.module = module;
+	}
+
+	public PC_ModuleObject getModule() {
+		return module;
+	}
+
+	public boolean showInCraftingTool() {
+		return true;
+	}
+
+	@Override
+	public int getRenderType() {
+		return PC_Renderer.getRendererID(true);
+	}
+
+	public static boolean canSilkHarvest(Block block) {
+		return block.renderAsNormalBlock() && !block.hasTileEntity();
+	}
+
+	public static ItemStack createStackedBlock(Block block, int meta) {
+		int var2 = 0;
+
+		if (block.blockID >= 0 && block.blockID < Item.itemsList.length && Item.itemsList[block.blockID].getHasSubtypes()) {
+			var2 = meta;
+		}
+
+		return new ItemStack(block.blockID, 1, var2);
+	}
+
+	public void setItemBlock(ItemBlock itemBlock) {
+		thisBlock.itemBlock = itemBlock;
+	}
+
+	public ItemBlock getItemBlock() {
+		return thisBlock.itemBlock;
+	}
+
+	@Override
+	public void setID(int id) {
+		int oldID = blockID;
+		if (oldID == id)
+			return;
+		if (PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, id, int.class)) {
+			if (PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, id, int.class)) {
+				if (PC_ReflectHelper.setValue(ItemBlock.class, thisBlock.itemBlock, 0, id, int.class)) {
+					if (oldID != -1) {
+						replaced.storeToID(oldID);
+					}
+					if (id != -1) {
+						replaced = new BlockInfo(id);
+						thisBlock.storeToID(id);
+					} else {
+						new BlockInfo().storeToID(oldID);
+						replaced = null;
+					}
+				} else {
+					PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, oldID, int.class);
+					PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID, int.class);
+				}
+			} else {
+				PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID, int.class);
+			}
+		}
+	}
+
+	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+		PC_TileEntity te = GameInfo.getTE(world, x, y, z);
+		if (PC_GlobalVariables.tileEntity == null) {
+			if(te!=null)
+				te.onBreakBlock();
+			super.breakBlock(world, x, y, z, par5, par6);
+		}
+	}
+
+	@Override
+	public Block setLightOpacity(int par1) {
+		thisBlock.lightOpacity = par1;
+		return super.setLightOpacity(par1);
+	}
+
+	@Override
+	public Block setLightValue(float par1) {
+		thisBlock.lightValue = (int) (15.0F * par1);
+		return super.setLightValue(par1);
+	}
+
+	public static class BlockInfo {
+		public Block block = null;
+		public boolean opaqueCubeLookup = false;
+		public int lightOpacity = 0;
+		public boolean canBlockGrass = false;
+		public int lightValue = 0;
+		public boolean useNeighborBrightness = false;
+		public int blockFireSpreadSpeed = 0;
+		public int blockFlammability = 0;
+		public List<PC_Struct3<Integer, ItemStack, Float>> furnaceRecipes;
+		public ItemBlock itemBlock = null;
+
+		public BlockInfo() {
+		}
+
+		public BlockInfo(int id) {
+			block = Block.blocksList[id];
+			opaqueCubeLookup = Block.opaqueCubeLookup[id];
+			lightOpacity = Block.lightOpacity[id];
+			canBlockGrass = Block.canBlockGrass[id];
+			lightValue = Block.lightValue[id];
+			useNeighborBrightness = Block.useNeighborBrightness[id];
+
+			itemBlock = (ItemBlock) Item.itemsList[id];
+		}
+
+		public void storeToID(int id) {
+			Block.blocksList[id] = block;
+			Block.opaqueCubeLookup[id] = opaqueCubeLookup;
+			Block.lightOpacity[id] = lightOpacity;
+			Block.canBlockGrass[id] = canBlockGrass;
+			Block.lightValue[id] = lightValue;
+			Block.useNeighborBrightness[id] = useNeighborBrightness;
+
+			Item.itemsList[id] = itemBlock;
+		}
+
+	}
+
+	@Override
+	public Block setCreativeTab(CreativeTabs _default) {
+		return super.setCreativeTab(GameInfo.getCreativeTab(_default));
+	}
+
+	@Override
+	public void registerIcons(IconRegister par1IconRegister) {
+		for (int i = 0; i < textureNames.length; i++) {
+			if(textureNames[i]!=null){
+				icons[i] = par1IconRegister.registerIcon(PC_TextureRegistry.getTextureName(module, textureNames[i]));
+			}
+		}
+		iconRegistry = par1IconRegister;
+		onIconLoading();
+		iconRegistry = null;
+	}
+
+	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
+		if (par2 >= icons.length) {
+			par2 = icons.length - 1;
+		}
+		return icons[par2];
+	}
+
+	public void onIconLoading(){
+		
+	}
+	
+	public Icon loadIcon(String file) {
+		if(iconRegistry!=null){
+			return ((IconRegister)iconRegistry).registerIcon(PC_TextureRegistry.getTextureName(module, file));
+		}
+		return null;
+	}
+	
+	
+	private String textureFile = "/terrain.png";
+	
+	public Block setTextureFile(String texture)
+    {
+        textureFile = texture;
+
+        return this;
+    }
+	
+	public String getTextureFile() {
+		return textureFile;
+	}
+	
+	@Override
+	public boolean getEnableStats(){
+		return false;
+	}
+	
+	/**
+     * Chance that fire will spread and consume this block.
+     * 300 being a 100% chance, 0, being a 0% chance.
+     * 
+     * @param world The current world
+     * @param x The blocks X position
+     * @param y The blocks Y position
+     * @param z The blocks Z position
+     * @param metadata The blocks current metadata
+     * @return A number ranging from 0 to 300 relating used to determine if the block will be consumed by fire
+     */
+    public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata)
+    {
+        return 0;
+    }
+    
+    /**
+     * Called when fire is updating, checks if a block face can catch fire.
+     * 
+     * 
+     * @param world The current world
+     * @param x The blocks X position
+     * @param y The blocks Y position
+     * @param z The blocks Z position
+     * @param metadata The blocks current metadata
+     * @return True if the face can be on fire, false otherwise.
+     */
+    public boolean isFlammable(IBlockAccess world, int x, int y, int z, int metadata)
+    {
+        return getFlammability(world, x, y, z, metadata) > 0;
+    }
+	
+}
