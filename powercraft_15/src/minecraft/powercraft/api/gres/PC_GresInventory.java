@@ -149,7 +149,7 @@ public class PC_GresInventory extends PC_GresWidget {
 
 	@Override
 	public boolean mouseClick(PC_VecI mousePos, int key) {
-		return key != -1;
+		return true;
 	}
 
 	@Override
