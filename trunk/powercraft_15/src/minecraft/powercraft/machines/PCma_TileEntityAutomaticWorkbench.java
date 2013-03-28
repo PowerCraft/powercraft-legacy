@@ -287,7 +287,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
     public void orderAndCraft()
     {
-    	if(worldObj.isRemote)
+    	if(worldObj == null || worldObj.isRemote)
     		return;
     	if(isOrderingEnabled){
     		isOrderingEnabled = false;
@@ -642,12 +642,12 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		return false;
+		return true;
 	}
 
 	@Override
 	public int[] getSizeInventorySide(int var1) {
-		return null;
+		return PC_InventoryUtils.makeIndexList(0, 8);
 	}
 
 	@Override

@@ -155,7 +155,7 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 
 	@Override
 	public int[] getSizeInventorySide(int var1) {
-		return null;
+		return PC_InventoryUtils.makeIndexList(0, getSizeInventory());
 	}
 
 	@Override

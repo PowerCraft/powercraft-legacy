@@ -441,7 +441,9 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		ItemStack itemstack = getEditItem();
+		System.out.println(itemstack);
 		if(widget==editDisk){
+			System.out.println("editDisk");
 			if(itemstack!=null){
 				openMainPage(false);
 				boolean isEmpty = PCws_ItemWeaselDisk.getType(itemstack)==PCws_ItemWeaselDisk.EMPTY;
