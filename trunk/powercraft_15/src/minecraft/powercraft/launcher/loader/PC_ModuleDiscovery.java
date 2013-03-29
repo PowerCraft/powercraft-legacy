@@ -1,5 +1,6 @@
 package powercraft.launcher.loader;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -207,15 +208,19 @@ public class PC_ModuleDiscovery {
 	}
 	
 	private void loadClass(InputStream is) {
-		byte[] b;
+		byte[] b = new byte[1024];
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		try {
-			b = new byte[is.available()];
-			is.read(b);
+			int length = 0;
+			while((length=is.read(b))!=-1){
+				buffer.write(b, 0, length);
+			}
 			is.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
 		}
+		b = buffer.toByteArray();
 		ClassReader cr = new ClassReader(b);
 		cr.accept(classVisitor, 0);
 	}
