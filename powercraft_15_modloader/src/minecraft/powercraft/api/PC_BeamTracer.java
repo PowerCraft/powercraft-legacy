@@ -288,17 +288,23 @@ public class PC_BeamTracer {
 			if (b != null) {
 				res = result.FALLBACK;
 				if (b instanceof PC_IMSG && handleBlocks) {
-					Object o = ((PC_IMSG) b).msg(
-							PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER,
-							getWorld(), settings);
+					Object o = ((PC_IMSG) b).msg(PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER, getWorld(), settings);
 					if (o instanceof result)
 						res = (result) o;
+				}
+			}else if(handler instanceof PC_IBeamHandlerExt){
+				boolean stop = ((PC_IBeamHandlerExt)handler).onEmptyBlockHit(this, settings.pos);
+				if (stop) {
+					return;
 				}
 			}
 
 			if (res == result.FALLBACK) {
 
-				boolean stop = handler.onBlockHit(this, b, settings.pos);
+				
+				boolean stop = true;
+				if(handler!=null)
+					stop = handler.onBlockHit(this, b, settings.pos);
 
 				if (stop) {
 					return;
@@ -339,7 +345,11 @@ public class PC_BeamTracer {
 					}
 					if (res == result.FALLBACK) {
 
-						if (handler.onEntityHit(this, entity, settings.pos)) {
+						if(handler!=null){
+							if (handler.onEntityHit(this, entity, settings.pos)) {
+								stop = true;
+							}
+						}else{
 							stop = true;
 						}
 
