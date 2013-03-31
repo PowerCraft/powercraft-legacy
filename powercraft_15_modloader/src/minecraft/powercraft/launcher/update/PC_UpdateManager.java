@@ -39,6 +39,8 @@ public class PC_UpdateManager {
 	
 	public static void moduleInfos(HashMap<String, PC_ModuleObject> modules){
 		updateInfo = updateChecker.getUpdateInfo();
+		if(updateInfo==null)
+			return;
 		boolean showUpdate = PC_Launcher.openAlwaysUpdateScreen();
 		if(updateInfo.getPowerCraftVersion().compareTo(new PC_Version(PC_LauncherUtils.getPowerCraftVersion()))>0){
 			newLauncher = true;
