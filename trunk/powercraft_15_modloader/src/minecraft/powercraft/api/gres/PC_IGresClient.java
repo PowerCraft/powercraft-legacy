@@ -2,9 +2,8 @@ package powercraft.api.gres;
 
 import powercraft.api.tileentity.PC_ITileEntityWatcher;
 
-
 public interface PC_IGresClient extends PC_ITileEntityWatcher {
-
+	
 	public void initGui(PC_IGresGui gui);
 	
 	public void onGuiClosed(PC_IGresGui gui);

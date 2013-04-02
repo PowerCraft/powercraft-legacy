@@ -1,12 +1,12 @@
 package powercraft.api.registry;
 
-import powercraft.api.PC_GlobalVariables;
-import powercraft.api.PC_Utils.GameInfo;
+import powercraft.api.utils.PC_GlobalVariables;
+import powercraft.api.utils.PC_Utils;
 
 public final class PC_SoundRegistry {
-
+	
 	public static boolean isSoundEnabled() {
-		if (GameInfo.isServer()) {
+		if (PC_Utils.isServer()) {
 			return false;
 		}
 		return PC_GlobalVariables.soundEnabled;

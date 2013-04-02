@@ -6,12 +6,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFire;
 import net.minecraft.src.ISaveFormat;
-import powercraft.api.PC_ClientUtils;
 import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.utils.PC_ClientUtils;
 
 public class PC_ClientHacks {
-
-	public static void hackClient(){
+	
+	public static void hackClient() {
 		
 		hackMinecraftSaver();
 		
@@ -19,12 +19,12 @@ public class PC_ClientHacks {
 		
 	}
 	
-	private static void hackMinecraftSaver(){
+	private static void hackMinecraftSaver() {
 		Minecraft mc = PC_ClientUtils.mc();
 		PC_ReflectHelper.setValue(Minecraft.class, mc, 44, new PC_HackedSaveConverter(new File(mc.mcDataDir, "saves")), ISaveFormat.class);
 	}
 	
-	private static void hackFire(){
+	private static void hackFire() {
 		int fireID = Block.fire.blockID;
 		Block.blocksList[fireID] = null;
 		Block newFire = new PC_BlockFireHack(Block.fire);
