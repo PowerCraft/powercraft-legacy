@@ -1,8 +1,7 @@
 package powercraft.api.gres;
 
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_VecI;
-
+import powercraft.api.utils.PC_RectI;
+import powercraft.api.utils.PC_VecI;
 
 /**
  * Frame widget with padding and horizontal layout
@@ -11,21 +10,21 @@ import powercraft.api.PC_VecI;
  * @copy (c) 2012
  */
 public class PC_GresFrame extends PC_GresWidget {
-
-
+	
 	/** distance from borders to contents. */
 	public int framePadding = 5;
-
+	
 	/**
 	 * frame widget H
 	 */
 	public PC_GresFrame() {
 		super();
 	}
-
+	
 	@Override
 	public PC_VecI calcSize() {
-		if (!visible) return zerosize;
+		if (!visible)
+			return zerosize;
 		calcChildPositions();
 		if (size.x < minSize.x + framePadding * 2) {
 			size.x = minSize.x + framePadding * 2;
@@ -33,13 +32,14 @@ public class PC_GresFrame extends PC_GresWidget {
 		if (size.y < minSize.y + framePadding * 2) {
 			size.y = minSize.y + framePadding * 2;
 		}
-
+		
 		return size.copy();
 	}
-
+	
 	@Override
 	public void calcChildPositions() {
-		if (!visible) return;
+		if (!visible)
+			return;
 		int xx = 0, xSize = 0;
 		for (PC_GresWidget w : childs) {
 			w.calcChildPositions();
@@ -95,48 +95,53 @@ public class PC_GresFrame extends PC_GresWidget {
 				default:
 				case TOP:
 					yPos = 0;
-					break;	
+					break;
 			}
 			w.setPosition(xPos, yPos);
 			xx += csize.x + w.widgetMargin;
 		}
 	}
-
+	
 	@Override
 	protected PC_RectI render(PC_VecI mpos, PC_RectI scissorOld, double scale) {
 		renderTextureSliced(mpos, imgdir + "frame.png", size, new PC_VecI(0, 0), new PC_VecI(256, 256), new PC_RectI(1, 1, 1, 1));
 		return null;
 	}
-
+	
 	@Override
 	public MouseOver mouseOver(PC_VecI mpos) {
-		if (!visible) return MouseOver.NON;
+		if (!visible)
+			return MouseOver.NON;
 		return MouseOver.CHILD;
 	}
-
+	
 	@Override
 	public boolean mouseClick(PC_VecI mpos, int key) {
 		return false;
 	}
-
+	
 	@Override
 	public boolean keyTyped(char c, int key) {
 		return false;
 	}
-
+	
 	@Override
-	public void mouseMove(PC_VecI mpos) {}
-
+	public void mouseMove(PC_VecI mpos) {
+	}
+	
 	@Override
 	public PC_VecI getMinSize() {
-		if (!visible) return zerosize;
+		if (!visible)
+			return zerosize;
 		return calcSize();
 	}
-
+	
 	@Override
-	public void mouseWheel(int i) {}
-
+	public void mouseWheel(int i) {
+	}
+	
 	@Override
-	public void addedToWidget() {}
-
+	public void addedToWidget() {
+	}
+	
 }

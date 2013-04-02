@@ -1,9 +1,7 @@
 package powercraft.api.gres;
 
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_VecI;
-
-
+import powercraft.api.utils.PC_RectI;
+import powercraft.api.utils.PC_VecI;
 
 /**
  * Resizable GUI vertical layout
@@ -12,17 +10,18 @@ import powercraft.api.PC_VecI;
  * @copy (c) 2012
  */
 public class PC_GresLayoutV extends PC_GresWidget {
-
+	
 	/**
 	 * vertical layout
 	 */
 	public PC_GresLayoutV() {
 		super();
 	}
-
+	
 	@Override
 	public PC_VecI calcSize() {
-		if (!visible) return zerosize;
+		if (!visible)
+			return zerosize;
 		calcChildPositions();
 		if (size.x < minSize.x) {
 			size.x = minSize.x;
@@ -32,14 +31,16 @@ public class PC_GresLayoutV extends PC_GresWidget {
 		}
 		return size.copy();
 	}
-
+	
 	@Override
 	public void calcChildPositions() {
-		if (!visible) return;
+		if (!visible)
+			return;
 		int yy = 0, ySize = 0;
 		int lastmargin = 0;
 		for (PC_GresWidget w : childs) {
-			if (!w.visible) continue;
+			if (!w.visible)
+				continue;
 			w.calcChildPositions();
 			PC_VecI csize = w.calcSize();
 			
@@ -60,13 +61,14 @@ public class PC_GresLayoutV extends PC_GresWidget {
 			ySize += csize.y + w.widgetMargin;
 		}
 		ySize -= lastmargin;
-		int numChilds = childs.size()-1;
-		int num=0;
+		int numChilds = childs.size() - 1;
+		int num = 0;
 		double gap = 0;
-		if(numChilds!=0)
-			gap = (size.y-ySize)/numChilds;
+		if (numChilds != 0)
+			gap = (size.y - ySize) / numChilds;
 		for (PC_GresWidget w : childs) {
-			if (!w.visible) continue;
+			if (!w.visible)
+				continue;
 			PC_VecI csize = w.getSize();
 			int xPos = 0;
 			int yPos = 0;
@@ -96,7 +98,7 @@ public class PC_GresLayoutV extends PC_GresWidget {
 				case STRETCH:
 					yPos = yy;
 					int realY = size.y;
-					csize.y = (int)(realY/(double)ySize*csize.y+0.5);
+					csize.y = (int) (realY / (double) ySize * csize.y + 0.5);
 					w.setSize(csize.x, csize.y, false);
 					break;
 				case JUSTIFIED:
@@ -113,40 +115,44 @@ public class PC_GresLayoutV extends PC_GresWidget {
 			num++;
 		}
 	}
-
+	
 	@Override
 	protected PC_RectI render(PC_VecI offsetPos, PC_RectI scissorOld, double scale) {
 		return null;
 	}
-
+	
 	@Override
 	public MouseOver mouseOver(PC_VecI mpos) {
 		return MouseOver.CHILD;
 	}
-
+	
 	@Override
 	public boolean mouseClick(PC_VecI pos, int key) {
 		return false;
 	}
-
+	
 	@Override
 	public boolean keyTyped(char c, int key) {
 		return false;
 	}
-
+	
 	@Override
-	public void mouseMove(PC_VecI pos) {}
-
+	public void mouseMove(PC_VecI pos) {
+	}
+	
 	@Override
 	public PC_VecI getMinSize() {
-		if (!visible) return zerosize;
+		if (!visible)
+			return zerosize;
 		return calcSize();
 	}
-
+	
 	@Override
-	public void mouseWheel(int i) {}
-
+	public void mouseWheel(int i) {
+	}
+	
 	@Override
-	public void addedToWidget() {}
-
+	public void addedToWidget() {
+	}
+	
 }

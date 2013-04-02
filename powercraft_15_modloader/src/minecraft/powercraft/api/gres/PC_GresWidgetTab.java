@@ -4,21 +4,21 @@ import net.minecraft.src.Icon;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_VecI;
+import powercraft.api.utils.PC_RectI;
+import powercraft.api.utils.PC_VecI;
 
 public class PC_GresWidgetTab extends PC_GresWidget {
-
+	
 	protected static PC_GresWidgetTab selectTab;
 	protected boolean isClicked = false;
 	protected double count = 0;
 	private Icon icon;
 	private String texture;
 	
-	public PC_GresWidgetTab(int color, String texture, Icon icon){
+	public PC_GresWidgetTab(int color, String texture, Icon icon) {
 		super(21, 20);
-		this.color = new int[]{color, color, color, color, color, color};
-		this.icon=icon;
+		this.color = new int[] { color, color, color, color, color, color };
+		this.icon = icon;
 		setMinSize(new PC_VecI(21, 20));
 		this.texture = texture;
 	}
@@ -30,13 +30,15 @@ public class PC_GresWidgetTab extends PC_GresWidget {
 	
 	@Override
 	public PC_VecI getSize() {
-		if (!visible) return new PC_VecI(0, 0);
+		if (!visible)
+			return new PC_VecI(0, 0);
 		return minSize.copy().add(size.copy().sub(minSize).mul(count));
 	}
-
+	
 	@Override
 	public PC_VecI calcSize() {
-		if (!visible) return zerosize;
+		if (!visible)
+			return zerosize;
 		calcChildPositions();
 		if (size.x < minSize.x) {
 			size.x = minSize.x;
@@ -46,14 +48,16 @@ public class PC_GresWidgetTab extends PC_GresWidget {
 		}
 		return getSize();
 	}
-
+	
 	@Override
 	public void calcChildPositions() {
-		if (!visible) return;
+		if (!visible)
+			return;
 		int yy = minSize.y, ySize = minSize.y;
 		int lastmargin = 0;
 		for (PC_GresWidget w : childs) {
-			if (!w.visible) continue;
+			if (!w.visible)
+				continue;
 			w.calcChildPositions();
 			PC_VecI csize = w.calcSize();
 			if (csize.x + 5 > size.x || ySize + csize.y + 4 > size.y) {
@@ -75,13 +79,14 @@ public class PC_GresWidgetTab extends PC_GresWidget {
 		size.y -= minSize.y + 4;
 		size.x -= 5;
 		ySize -= lastmargin;
-		int numChilds = childs.size()-1;
-		int num=0;
+		int numChilds = childs.size() - 1;
+		int num = 0;
 		double gap = 0;
-		if(numChilds!=0)
-			gap = (size.y-ySize)/numChilds;
+		if (numChilds != 0)
+			gap = (size.y - ySize) / numChilds;
 		for (PC_GresWidget w : childs) {
-			if (!w.visible) continue;
+			if (!w.visible)
+				continue;
 			PC_VecI csize = w.getSize();
 			int xPos = 0;
 			int yPos = 0;
@@ -111,7 +116,7 @@ public class PC_GresWidgetTab extends PC_GresWidget {
 				case STRETCH:
 					yPos = yy;
 					int realY = size.y;
-					csize.y = (int)(realY/(double)ySize*csize.y+0.5);
+					csize.y = (int) (realY / (double) ySize * csize.y + 0.5);
 					w.setSize(csize.x + 2, csize.y, false);
 					break;
 				case JUSTIFIED:
@@ -130,7 +135,7 @@ public class PC_GresWidgetTab extends PC_GresWidget {
 		size.y += minSize.y + 4;
 		size.x += 5;
 	}
-
+	
 	@Override
 	protected PC_RectI render(PC_VecI posOffset, PC_RectI scissorOld, double scale) {
 		renderTextureSlicedColored(posOffset, imgdir + "frame.png", getSize(), new PC_VecI(0, 0), new PC_VecI(256, 256), new PC_RectI(1, 1, 1, 1));
@@ -140,21 +145,21 @@ public class PC_GresWidgetTab extends PC_GresWidget {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		
 		drawTexturedModalRectWithIcon(pos.x + posOffset.x + 3, pos.y + posOffset.y + 2, 16, 16, icon);
-
+		
 		GL11.glDisable(GL11.GL_BLEND);
 		return null;
 	}
-
+	
 	@Override
 	public MouseOver mouseOver(PC_VecI mousePos) {
-		if(count>=1)
+		if (count >= 1)
 			return MouseOver.CHILD;
 		return MouseOver.THIS;
 	}
-
+	
 	@Override
 	public boolean mouseClick(PC_VecI mpos, int key) {
-		if (mpos.x < 0 || mpos.x >= getSize().x || mpos.y < 0 || mpos.y >= minSize.y) 
+		if (mpos.x < 0 || mpos.x >= getSize().x || mpos.y < 0 || mpos.y >= minSize.y)
 			return false;
 		if (!enabled || !visible) {
 			return false;
@@ -164,15 +169,16 @@ public class PC_GresWidgetTab extends PC_GresWidget {
 		}
 		if (isClicked && key == -1) {
 			isClicked = false;
-			if(selectTab==this){
+			if (selectTab == this) {
 				selectTab = null;
-			}else{
+			} else {
 				selectTab = this;
 			}
 			return true;
 		}
 		isClicked = key == -1 ? false : true;
-		if (key != -1) mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+		if (key != -1)
+			mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 		return false;
 	}
 	
@@ -182,50 +188,53 @@ public class PC_GresWidgetTab extends PC_GresWidget {
 			isClicked = false;
 		}
 	}
-
+	
 	@Override
-	public void mouseWheel(int i) {}
-
+	public void mouseWheel(int i) {
+	}
+	
 	@Override
 	public boolean keyTyped(char c, int key) {
 		return false;
 	}
-
+	
 	@Override
-	public void addedToWidget() {}
-
+	public void addedToWidget() {
+	}
+	
 	@Override
 	protected void onTick() {
-		if(selectTab!=this){
-			count-=0.1;
-			if(count<=0){
-				count=0;
+		if (selectTab != this) {
+			count -= 0.1;
+			if (count <= 0) {
+				count = 0;
 			}
-		}else{
-			count+=0.1;
-			if(count>=1){
-				count=1;
+		} else {
+			count += 0.1;
+			if (count >= 1) {
+				count = 1;
 			}
 		}
 	}
 	
 	@Override
 	public void updateRenderer(PC_VecI posOffset, PC_RectI scissorOld, double scale) {
-		if (!visible) return;
+		if (!visible)
+			return;
 		
-		if(count>=1)
+		if (count >= 1)
 			tabRenderer(posOffset.copy().add(pos), null, scale);
 		
 		PC_RectI scissorNew = setDrawRect(scissorOld, new PC_RectI(posOffset.x + pos.x, posOffset.y + pos.y, size.x, size.y), scale);
-		if(scissorNew==null)return;
+		if (scissorNew == null)
+			return;
 		
 		PC_RectI rect = render(posOffset, scissorNew, scale);
-		if(rect!=null)
+		if (rect != null)
 			scissorNew = setDrawRect(scissorNew, rect, scale);
 		
-		if(count>=1)
+		if (count >= 1)
 			childRenderer(posOffset.copy().add(pos), scissorNew, scale);
 	}
 	
 }
-

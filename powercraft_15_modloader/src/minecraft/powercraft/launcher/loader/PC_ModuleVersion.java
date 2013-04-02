@@ -30,53 +30,54 @@ public class PC_ModuleVersion {
 	public PC_Version getVersion() {
 		return moduleVersion;
 	}
-
+	
 	public String getClassName() {
-		if(client!=null)
+		if (client != null)
 			return client.className;
 		return common.className;
 	}
-
+	
 	public String getSuperName() {
-		if(client!=null)
+		if (client != null)
 			return client.superName;
 		return common.superName;
 	}
-
+	
 	public String[] getInterfaces() {
-		if(client!=null)
+		if (client != null)
 			return client.interfaces;
 		return common.interfaces;
 	}
-
+	
 	public PC_Version getModuleVersion() {
 		return moduleVersion;
 	}
-
+	
 	public String getDependencies() {
 		return dependencies;
 	}
+	
 	public File getFile() {
-		if(client!=null)
+		if (client != null)
 			return client.file;
 		return common.file;
 	}
-
+	
 	public File getStartFile() {
-		if(client!=null)
+		if (client != null)
 			return client.startFile;
 		return common.startFile;
 	}
-
+	
 	public void setClient(PC_ModuleClassInfo client) {
 		this.client = client;
 	}
 	
-	public PC_ModuleClassInfo getCommon(){
+	public PC_ModuleClassInfo getCommon() {
 		return common;
 	}
 	
-	public PC_ModuleClassInfo getClient(){
+	public PC_ModuleClassInfo getClient() {
 		return client;
 	}
 	

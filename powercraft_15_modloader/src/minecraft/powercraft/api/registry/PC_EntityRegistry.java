@@ -8,10 +8,10 @@ import powercraft.launcher.loader.PC_ModuleObject;
 
 public class PC_EntityRegistry {
 	
-	public static void register(PC_ModuleObject module, Class<? extends Entity> c, int entityID){
+	public static void register(PC_ModuleObject module, Class<? extends Entity> c, int entityID) {
 		final PC_Property config = module.getConfig().getProperty(c.getSimpleName(), null, null);
 		
-		if(!config.getBoolean("enabled", true)){
+		if (!config.getBoolean("enabled", true)) {
 			return;
 		}
 		

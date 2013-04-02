@@ -4,9 +4,9 @@ import java.util.List;
 
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_VecI;
 import powercraft.api.inventory.PC_SlotNoPickup;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_VecI;
 
 public class PC_GresItemToggel extends PC_GresInventory {
 	
@@ -19,53 +19,53 @@ public class PC_GresItemToggel extends PC_GresInventory {
 		super(width, height);
 		toogleList = new List[width][height];
 		index = new int[width][height];
-		for(int i=0; i<width; i++){
-			for(int j=0; j<height; j++){
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
 				slots[i][j] = new PC_SlotNoPickup().setBackgroundStack(null);
 			}
 		}
 	}
-
+	
 	@Override
 	public boolean mouseClick(PC_VecI mousePos, int key) {
 		Slot slot = getSlotUnderMouse(mousePos);
 		if (selectedSlot == slot && slot != null && key == -1) {
 			selectedSlot = null;
 			PC_VecI p = getSlotCoord(slot);
-			if(toogleList[p.x][p.y].size()>0){
+			if (toogleList[p.x][p.y].size() > 0) {
 				index[p.x][p.y]++;
 				index[p.x][p.y] %= toogleList[p.x][p.y].size();
-				((PC_SlotNoPickup)slots[p.x][p.y]).setBackgroundStack(toogleList[p.x][p.y].get(index[p.x][p.y]).a);
+				((PC_SlotNoPickup) slots[p.x][p.y]).setBackgroundStack(toogleList[p.x][p.y].get(index[p.x][p.y]).a);
 			}
 			return true;
 		}
-		if(key == -1){
+		if (key == -1) {
 			selectedSlot = null;
-		}else{
+		} else {
 			selectedSlot = slot;
 		}
 		return key != -1;
 	}
-
+	
 	@Override
 	public void mouseMove(PC_VecI mousePos) {
 		isMouseOver = true;
 		Slot slot = getSlotUnderMouse(mousePos);
-		if(slot==null){
+		if (slot == null) {
 			selectedSlot = null;
-		}else{
-			if(selectedSlot != slot){
+		} else {
+			if (selectedSlot != slot) {
 				selectedSlot = slot;
 			}
 		}
 	}
 	
-	private PC_VecI getSlotCoord(Slot slot){
-		if(slot==null)
+	private PC_VecI getSlotCoord(Slot slot) {
+		if (slot == null)
 			return null;
-		for(int i=0; i<gridWidth; i++){
-			for(int j=0; j<gridHeight; j++){
-				if(slots[i][j] == slot)
+		for (int i = 0; i < gridWidth; i++) {
+			for (int j = 0; j < gridHeight; j++) {
+				if (slots[i][j] == slot)
 					return new PC_VecI(i, j);
 			}
 		}
@@ -75,7 +75,7 @@ public class PC_GresItemToggel extends PC_GresInventory {
 	@Override
 	public List<String> getTooltip(PC_VecI mousePos) {
 		Slot slot = getSlotUnderMouse(mousePos);
-		if(slot!=null){
+		if (slot != null) {
 			PC_VecI p = getSlotCoord(slot);
 			return toogleList[p.x][p.y].get(index[p.x][p.y]).b;
 		}
@@ -85,10 +85,10 @@ public class PC_GresItemToggel extends PC_GresInventory {
 	public void setItemList(int i, int j, List<PC_Struct2<ItemStack, List<String>>> l) {
 		toogleList[i][j] = l;
 		index[i][j] = 0;
-		if(l!=null && l.size()>0){
-			((PC_SlotNoPickup)slots[i][j]).setBackgroundStack(l.get(0).a);
-		}else{
-			((PC_SlotNoPickup)slots[i][j]).setBackgroundStack(null);
+		if (l != null && l.size() > 0) {
+			((PC_SlotNoPickup) slots[i][j]).setBackgroundStack(l.get(0).a);
+		} else {
+			((PC_SlotNoPickup) slots[i][j]).setBackgroundStack(null);
 		}
 	}
 	

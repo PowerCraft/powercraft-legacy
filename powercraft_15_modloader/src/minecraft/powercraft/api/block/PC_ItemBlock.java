@@ -4,167 +4,160 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.Block;
-import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.api.PC_IMSG;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.item.PC_IItemInfo;
-import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 import powercraft.launcher.loader.PC_ModuleObject;
 
-public abstract class PC_ItemBlock extends ItemBlock implements PC_IItemInfo, PC_IMSG
-{
-    private PC_ModuleObject module;
-
-    protected PC_ItemBlock(int id){
-        super(id);
-    }
-
-    @Override
-    public PC_ModuleObject getModule()
-    {
-        return module;
-    }
-
-    public void setModule(PC_ModuleObject module)
-    {
-    	this.module = module;
-    }
-
-    @Override
-    public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
-    {
-        arrayList.add(new ItemStack(this));
-        return arrayList;
-    }
-
-    @Override
+public class PC_ItemBlock extends ItemBlock implements PC_IItemInfo {
+	
+	private PC_ModuleObject module;
+	
+	public PC_ItemBlock(int id) {
+		super(id);
+	}
+	
+	public void setModule(PC_ModuleObject module) {
+		this.module = module;
+	}
+	
+	@Override
+	public PC_ModuleObject getModule() {
+		return module;
+	}
+	
+	@Override
+	public List<ItemStack> getItemStacks(List<ItemStack> itemStacks) {
+		itemStacks.add(new ItemStack(this));
+		return itemStacks;
+	}
+	
+	@Override
 	public boolean showInCraftingTool() {
 		return true;
 	}
-    
-    @Override
-    public void getSubItems(int index, CreativeTabs creativeTab, List list)
-    {
-        list.addAll(getItemStacks(new ArrayList<ItemStack>()));
-    }
-
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
-    @Override
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
-    {
-        int var11 = par3World.getBlockId(par4, par5, par6);
-
-        if (var11 == Block.snow.blockID && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1)
-        {
-            par7 = 1;
-        }
-        else if (var11 != Block.vine.blockID && var11 != Block.tallGrass.blockID && var11 != Block.deadBush.blockID)
-        {
-            if (par7 == 0)
-            {
-                --par5;
-            }
-
-            if (par7 == 1)
-            {
-                ++par5;
-            }
-
-            if (par7 == 2)
-            {
-                --par6;
-            }
-
-            if (par7 == 3)
-            {
-                ++par6;
-            }
-
-            if (par7 == 4)
-            {
-                --par4;
-            }
-
-            if (par7 == 5)
-            {
-                ++par4;
-            }
-        }
-
-        if (par1ItemStack.stackSize == 0)
-        {
-            return false;
-        }
-        else if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack))
-        {
-            return false;
-        }
-        else if (par5 == 255 && Block.blocksList[this.getBlockID()].blockMaterial.isSolid())
-        {
-            return false;
-        }
-        else if (par3World.canPlaceEntityOnSide(this.getBlockID(), par4, par5, par6, false, par7, par2EntityPlayer, par1ItemStack))
-        {
-            Block var12 = Block.blocksList[this.getBlockID()];
-            int var13 = this.getMetadata(par1ItemStack.getItemDamage());
-            int var14 = Block.blocksList[this.getBlockID()].onBlockPlaced(par3World, par4, par5, par6, par7, par8, par9, par10, var13);
-
-            if (placeBlockAt(par1ItemStack, par2EntityPlayer, par3World, par4, par5, par6, par7, par8, par9, par10, var14))
-            {
-                par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), var12.stepSound.getPlaceSound(), (var12.stepSound.getVolume() + 1.0F) / 2.0F, var12.stepSound.getPitch() * 0.8F);
-                --par1ItemStack.stackSize;
-            }
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
-    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
-    {
-    	if(!ValueWriting.setBID(world, x, y, z, getBlockID(), metadata)){
-            return false;
-        }
-
-        if (world.getBlockId(x, y, z) == getBlockID())
-        {
-            Block block =  Block.blocksList[getBlockID()];
-            block.onBlockPlacedBy(world, x, y, z, player, stack);
-            TileEntity te = (TileEntity)GameInfo.getTE(world, x, y, z);
-
-            if (te == null)
-            {
-            	if(block instanceof PC_Block){
-            		te = (PC_TileEntity)ValueWriting.setTE(world, x, y, z, ((PC_Block)block).createNewTileEntity(world, metadata));
-            	}else if(block instanceof BlockContainer){
-            		te = (PC_TileEntity)ValueWriting.setTE(world, x, y, z, ((BlockContainer)block).createNewTileEntity(world));
-            	}
-            }
-
-            if (te instanceof PC_TileEntity)
-            {
-                ((PC_TileEntity)te).create(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-            }
-        }
-
-        return true;
-    }
-
-    public void doCrafting(ItemStack itemStack, InventoryCrafting inventoryCrafting) {
+	
+	@Override
+	public void getSubItems(int index, CreativeTabs creativeTab, List list) {
+		list.addAll(getItemStacks(new ArrayList<ItemStack>()));
 	}
-    
+	
+	/**
+	 * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
+	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
+	 */
+	public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int dir, float xHit, float yHit, float zHit) {
+		int blockID = PC_Utils.getBID(world, x, y, z);
+		int metadata = PC_Utils.getMD(world, x, y, z);
+		
+		if (blockID == Block.snow.blockID && (metadata & 7) < 1) {
+			dir = 1;
+		} else if (!PC_Utils.isBlockReplaceable(world, x, y, z)) {
+			
+			PC_VecI offset = PC_Direction.getFormMCDir(dir).getOffset();
+			
+			x += offset.x;
+			y += offset.y;
+			z += offset.z;
+			
+		}
+		
+		blockID = getBlockID();
+		Block block = Block.blocksList[blockID];
+		
+		if (itemStack.stackSize == 0) {
+			return false;
+		} else if (!entityPlayer.canPlayerEdit(x, y, z, dir, itemStack)) {
+			return false;
+		} else if (y == 255 && block.blockMaterial.isSolid()) {
+			return false;
+		} else if (world.canPlaceEntityOnSide(blockID, x, y, z, false, dir, entityPlayer, itemStack)) {
+			metadata = this.getMetadata(itemStack.getItemDamage());
+			metadata = block.onBlockPlaced(world, x, y, z, dir, xHit, yHit, zHit, metadata);
+			if (block instanceof PC_Block) {
+				metadata = ((PC_Block) block).makeBlockMetadata(itemStack, entityPlayer, world, x, y, z, dir, xHit, yHit, zHit, metadata);
+			}
+			
+			if (placeBlockAt(itemStack, entityPlayer, world, x, y, z, dir, xHit, yHit, zHit, metadata)) {
+				world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), block.stepSound.getPlaceSound(),
+						(block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+				--itemStack.stackSize;
+			}
+			
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Returns true if the given ItemBlock can be placed on the given side of the given block position.
+	 */
+	public boolean canPlaceItemBlockOnSide(World world, int x, int y, int z, int dir, EntityPlayer entityPlayer, ItemStack itemStack) {
+		int blockID = PC_Utils.getBID(world, x, y, z);
+		
+		if (blockID == Block.snow.blockID) {
+			dir = 1;
+		} else if (!PC_Utils.isBlockReplaceable(world, x, y, z)) {
+			PC_VecI offset = PC_Direction.getFormMCDir(dir).getOffset();
+			
+			x += offset.x;
+			y += offset.y;
+			z += offset.z;
+		}
+		
+		return world.canPlaceEntityOnSide(getBlockID(), x, y, z, false, dir, (Entity) null, itemStack);
+	}
+	
+	/**
+	 * Called to actually place the block, after the location is determined
+	 * and all permission checks have been made.
+	 * 
+	 * @param stack
+	 *            The item stack that was used to place the block. This can be changed inside the method.
+	 * @param player
+	 *            The player who is placing the block. Can be null if the block is not being placed by a player.
+	 * @param dir
+	 *            The dir the player (or machine) right-clicked on.
+	 */
+	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int dir, float hitX, float hitY, float hitZ,
+			int metadata) {
+		
+		int blockID = getBlockID();
+		
+		if (!PC_Utils.setBID(world, x, y, z, blockID, metadata)) {
+			return false;
+		}
+		
+		if (PC_Utils.getBID(world, x, y, z) == blockID) {
+			Block.blocksList[blockID].onBlockPlacedBy(world, x, y, z, player, stack);
+			Block.blocksList[blockID].onPostBlockPlaced(world, x, y, z, metadata);
+		}
+		
+		return true;
+	}
+	
+	public void doCrafting(ItemStack itemStack, InventoryCrafting inventoryCrafting) {
+		
+	}
+	
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		PC_Block block = (PC_Block) Block.blocksList[getBlockID()];
+		names.add(new LangEntry(block.getUnlocalizedName() + ".name", block.getName()));
+		return names;
+	}
+	
+	public int getBurnTime(ItemStack fuel) {
+		return 0;
+	}
+	
 }
