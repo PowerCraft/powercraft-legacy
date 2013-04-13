@@ -15,7 +15,7 @@ import powercraft.api.recipes.PC_IRecipe;
 import powercraft.api.recipes.PC_ShapedRecipes;
 import powercraft.api.recipes.PC_ShapelessRecipes;
 
-@PC_Module(name="Deco", version="1.1.0")
+@PC_Module(name="Deco", version="1.1.1")
 public class PCde_App {
 
 	@PC_FieldObject(clazz=PCde_BlockRedstoneStorage.class)
@@ -27,7 +27,7 @@ public class PCde_App {
 	@PC_FieldObject(clazz=PCde_BlockPlatform.class)
 	public static PC_Block platform;
 	@PC_FieldObject(clazz=PCde_BlockStairs.class)
-	public static PC_Block stairs;
+	public static PC_Block stairs;	
 	@PC_Instance
 	public static PC_ModuleObject instance;
 	
@@ -77,6 +77,76 @@ public class PCde_App {
 				"X X", 
 				"X X", 
 					'X', Block.stoneBrick));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,3),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.stoneBrick, 1, 2)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,4),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.stoneBrick, 1, 3)));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,5),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.sandStone, 1, 0)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,6),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.sandStone, 1, 1)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,7),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.sandStone, 1, 2)));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,8),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.netherBrick, 1, 0)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,9),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.blockNetherQuartz, 1, 0)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,10),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.blockNetherQuartz, 1, 1)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,11),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.blockNetherQuartz, 1, 2)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,12),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.cobblestoneMossy, 1, 0)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,13),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.stoneBrick, 1, 1)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,14),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.blockClay, 1, 0)));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,15),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', new PC_ItemStack(Block.blockSteel, 1, 0)));
+		
 		return recipes;
 	}
 
