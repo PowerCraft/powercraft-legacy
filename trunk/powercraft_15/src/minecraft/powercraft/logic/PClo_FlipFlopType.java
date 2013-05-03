@@ -19,13 +19,14 @@ public class PClo_FlipFlopType
     }
 
 	public static String[] getTextures(){
-    	String[] textures = new String[1+2*TOTAL_FLIPFLOP_COUNT];
-    	textures[0] = "sideplate";
+    	String[] textures = new String[2+2*TOTAL_FLIPFLOP_COUNT];
+    	textures[0] = "bottomplate";
+    	textures[1] = "sideplate";
     	for(int i=0; i<TOTAL_FLIPFLOP_COUNT; i++){
-    		textures[i+1+TOTAL_FLIPFLOP_COUNT] = names[i]+"_on";
+    		textures[i+2+TOTAL_FLIPFLOP_COUNT] = names[i]+"_on";
     	}
     	for(int i=0; i<TOTAL_FLIPFLOP_COUNT; i++){
-    		textures[i+1] = names[i]+"_off";
+    		textures[i+2] = names[i]+"_off";
     	}
     	return textures;
     }

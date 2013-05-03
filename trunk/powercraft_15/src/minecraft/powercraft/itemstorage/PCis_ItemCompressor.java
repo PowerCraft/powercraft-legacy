@@ -1,5 +1,6 @@
 package powercraft.itemstorage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,13 +9,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.api.PC_IPacketHandler;
-import powercraft.api.PC_PacketHandler;
-import powercraft.api.PC_VecI;
 import powercraft.api.item.PC_Item;
+import powercraft.api.network.PC_IPacketHandler;
+import powercraft.api.network.PC_PacketHandler;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_VecI;
 
 public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
 	
@@ -152,20 +153,6 @@ public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
 		}
 	}
 
-	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[NORMAL], "compressor"));
-			names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[ENDERACCESS], "ender compressor"));
-			names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[HEIGHT], "high stack compressor"));
-			names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[BIG], "big compressor"));
-			return names;
-		}
-		return null;
-	}
-
 	public static PCis_CompressorInventory getInventoryFor(EntityPlayer player, int equipment){
 		if(equipment==-1)
 			equipment=player.inventory.currentItem;
@@ -262,6 +249,15 @@ public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
 			setName(player, (String)o[1]);
 		}
 		return false;
+	}
+
+	@Override
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[NORMAL], "compressor"));
+		names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[ENDERACCESS], "ender compressor"));
+		names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[HEIGHT], "high stack compressor"));
+		names.add(new LangEntry(getUnlocalizedName()+"."+id2Name[BIG], "big compressor"));
+		return names;
 	}
 	
 }

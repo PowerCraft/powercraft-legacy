@@ -4,16 +4,16 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import powercraft.launcher.loader.PC_Module;
-import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
-import powercraft.launcher.loader.PC_Module.PC_Instance;
-import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.recipes.PC_IRecipe;
 import powercraft.api.recipes.PC_ShapedRecipes;
 import powercraft.api.recipes.PC_ShapelessRecipes;
+import powercraft.launcher.loader.PC_Module;
+import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module.PC_Instance;
+import powercraft.launcher.loader.PC_ModuleObject;
 
 @PC_Module(name="Deco", version="1.1.1")
 public class PCde_App {

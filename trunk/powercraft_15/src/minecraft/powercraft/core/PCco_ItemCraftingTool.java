@@ -1,5 +1,6 @@
 package powercraft.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -11,10 +12,8 @@ import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
 
-public class PCco_ItemCraftingTool extends PC_Item
-{
-    public PCco_ItemCraftingTool(int id)
-    {
+public class PCco_ItemCraftingTool extends PC_Item{
+    public PCco_ItemCraftingTool(int id){
     	super(id, "craftingtool");
         setMaxDamage(0);
         setMaxStackSize(1);
@@ -22,10 +21,8 @@ public class PCco_ItemCraftingTool extends PC_Item
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
-    {
-        if (!world.isRemote)
-        {
+    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer){
+        if (!world.isRemote){
             PC_GresRegistry.openGres("CraftingTool", entityplayer, null);
         }
 
@@ -33,13 +30,8 @@ public class PCco_ItemCraftingTool extends PC_Item
     }
 
 	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName(), "Crafting Tool"));
-            return names;
-		}
-		return null;
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry(getUnlocalizedName(), "Crafting Tool"));
+		return names;
 	}
 }

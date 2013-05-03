@@ -14,18 +14,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_MathHelper;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(itemBlock=PChg_ItemBlockHologramBlock.class, tileEntity=PChg_TileEntityHologramBlock.class)
+@PC_BlockInfo(name="Hologram", itemBlock=PChg_ItemBlockHologramBlock.class, tileEntity=PChg_TileEntityHologramBlock.class, canPlacedRotated=true)
 public class PChg_BlockHologramBlock extends PC_Block {
 
 	public PChg_BlockHologramBlock(int id) {
@@ -39,12 +37,7 @@ public class PChg_BlockHologramBlock extends PC_Block {
 	}
 	
 	public Block getContainingBlock(IBlockAccess world, int x, int y, int z){
-		return GameInfo.<PChg_TileEntityHologramBlock>getTE(world, x, y, z).getContainingBlock();
-	}
-	
-	@Override
-	public TileEntity newTileEntity(World world, int metadata) {
-		return new PChg_TileEntityHologramBlock();
+		return PC_Utils.<PChg_TileEntityHologramBlock>getTE(world, x, y, z).getContainingBlock();
 	}
 
 	public static int getRotation_static(int meta){
@@ -59,19 +52,6 @@ public class PChg_BlockHologramBlock extends PC_Block {
 	@Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z){
         return null;
-    }
-    
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving, ItemStack itemStack){
-        int l = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
-
-        if (entityliving instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed(((EntityPlayer)entityliving)))
-        {
-            l = ValueWriting.reverseSide(l);
-        }
-
-        ValueWriting.setMD(world, x, y, z, l);
-        onNeighborBlockChange(world, x, y, z, 0);
     }
     
     @Override
@@ -98,11 +78,11 @@ public class PChg_BlockHologramBlock extends PC_Block {
     public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z){
         
     	Block b = getContainingBlock(world, x, y, z);
-    	int meta = GameInfo.getMD(world, x, y, z);
+    	int meta = PC_Utils.getMD(world, x, y, z);
     	
         boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
 
-        if (remove && !GameInfo.isCreative(player)){
+        if (remove && !PC_Utils.isCreative(player)){
         	ItemStack itemStack = new ItemStack(this);
         	NBTTagCompound nbtTag = itemStack.getTagCompound();
     		if(nbtTag==null)
@@ -123,44 +103,21 @@ public class PChg_BlockHologramBlock extends PC_Block {
         return remove;
     }
     
-    public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer){
-    	PC_Renderer.renderInvBox(renderer, block, metadata);
+	@Override
+    public boolean renderInventoryBlock(int metadata, Object renderer){
+    	PC_Renderer.renderInvBox(renderer, this, metadata);
+    	return true;
     }
 
-    public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
-    	Block containingBlock = getContainingBlock(world, x, y, z);
-    	PC_Renderer.tessellatorDraw();
-    	PC_Renderer.tessellatorStartDrawingQuads();
-        PC_Renderer.renderBlockByRenderType(renderer, containingBlock, x, y, z);
-        PC_Renderer.tessellatorDraw();
-        PC_Renderer.tessellatorStartDrawingQuads();
-    }
-    
 	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.NO_PICKUP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}
-		case PC_MSGRegistry.MSG_ROTATION:
-			return getRotation_static((Integer)obj[0]);
-		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
-			break;
-		default:
-			return null;
-		}
-		return true;
-	}
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
+    	Block containingBlock = getContainingBlock(world, x, y, z);
+    	if(!containingBlock.hasTileEntity()){
+	        PC_Renderer.renderBlockByRenderType(renderer, containingBlock, x, y, z);
+    	}else{
+    		PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
+    	}
+        return true;
+    }
 
 }

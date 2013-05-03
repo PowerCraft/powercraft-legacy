@@ -1,9 +1,8 @@
 package powercraft.weasel;
 
-import net.minecraft.block.Block;
 import net.minecraft.util.Icon;
-import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Direction;
 
 public class PCws_WeaselPluginInfoDisplay extends PCws_WeaselPluginInfo {
 
@@ -45,10 +44,10 @@ public class PCws_WeaselPluginInfoDisplay extends PCws_WeaselPluginInfo {
 	}
 	
 	@Override
-	public Icon getTexture(int side) {
-		if(side==2){
+	public Icon getTexture(PC_Direction side) {
+		if(side==PC_Direction.BACK){
 			return icons[6];
-		}else if(side==3){
+		}else if(side==PC_Direction.FRONT){
 			return icons[7];
 		}else{
 			return icons[4];

@@ -1,5 +1,6 @@
 package powercraft.net;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -45,15 +46,10 @@ public class PCnt_ItemBlockRadio extends PC_ItemBlock {
 	}
 
 	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName() + ".tx", "Redstone Radio Transmitter"));
-			names.add(new LangEntry(getUnlocalizedName() + ".rx", "Redstone Radio Receiver"));
-            return names;
-		}
-		return null;
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry(getUnlocalizedName() + ".tx", "Redstone Radio Transmitter"));
+		names.add(new LangEntry(getUnlocalizedName() + ".rx", "Redstone Radio Receiver"));
+        return names;
 	}
-
+	
 }

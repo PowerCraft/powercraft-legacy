@@ -1,12 +1,11 @@
 package powercraft.light;
 
-import powercraft.api.PC_Color;
 import powercraft.api.annotation.PC_ClientServerSync;
-import powercraft.api.registry.PC_ModuleRegistry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Color;
 
 public class PCli_TileEntityMirror extends PC_TileEntity implements PC_ITileEntityRenderer {
 
@@ -62,13 +61,10 @@ public class PCli_TileEntityMirror extends PC_TileEntity implements PC_ITileEnti
 		PC_Renderer.glPushMatrix();
 		float f = 0.6666667F;
 
-		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F /* *f0 */, (float) z + 0.5F);
 		float f1 = (getBlockMetadata() * 360) / 16F;
 
 		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCli_App.instance, "mirror.png"));
-
-		PC_Renderer.glPushMatrix();
-		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);
+		PC_Renderer.glRotatef(-f1-90, 0, 1, 0);
 		PC_Renderer.glScalef(f, -f, -f);
 
 		int color = getMirrorColor();
@@ -92,7 +88,6 @@ public class PCli_TileEntityMirror extends PC_TileEntity implements PC_ITileEnti
 		PC_Renderer.glPopMatrix();
 
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		PC_Renderer.glPopMatrix();
 	}
 	
 }

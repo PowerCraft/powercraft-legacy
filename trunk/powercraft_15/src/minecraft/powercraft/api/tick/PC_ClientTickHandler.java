@@ -3,9 +3,8 @@ package powercraft.api.tick;
 import java.util.EnumSet;
 
 import net.minecraft.client.Minecraft;
-import powercraft.api.PC_ClientUtils;
-import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_TickRegistry;
+import powercraft.api.utils.PC_ClientUtils;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 

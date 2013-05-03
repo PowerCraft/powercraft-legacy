@@ -17,16 +17,5 @@ public class PChg_ItemBlockHologramBlockEmpty extends PC_ItemBlock {
 	public boolean hasEffect(ItemStack par1ItemStack) {
 		return true;
 	}
-	
-	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName(), "Hologramblock"));
-            return names;
-		}
-		return null;
-	}
 
 }

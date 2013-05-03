@@ -13,24 +13,23 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_IPacketHandler;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_IItemInfo;
+import powercraft.api.network.PC_IPacketHandler;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_SoundRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 import powercraft.weasel.engine.WeaselEngine;
 import powercraft.weasel.lang.Instruction;
 import powercraft.weasel.obj.WeaselDouble;
 import powercraft.weasel.obj.WeaselString;
 
-@PC_BlockInfo(tileEntity=PCws_TileEntityWeaselDiskManager.class)
+@PC_BlockInfo(name="Digital Workbench", tileEntity=PCws_TileEntityWeaselDiskManager.class)
 public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketHandler, PC_IItemInfo {
 
 	public PCws_BlockWeaselDiskManager(int id) {
@@ -42,11 +41,6 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
 		setResistance(60.0F);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
 		setCreativeTab(CreativeTabs.tabDecorations);
-	}
-	
-	@Override
-	public TileEntity newTileEntity(World world, int metadata) {
-		return new PCws_TileEntityWeaselDiskManager();
 	}
 	
 	@Override
@@ -92,34 +86,24 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
             }
         }
 
-        PC_GresRegistry.openGres("WeaselDiskManager", player, GameInfo.<PC_TileEntity>getTE(world, x, y, z));
+        PC_GresRegistry.openGres("WeaselDiskManager", player, PC_Utils.<PC_TileEntity>getTE(world, x, y, z));
         
         return true;
 	}
 	
-	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer){
+	public boolean renderInventoryBlock(int metadata, Object renderer){
         float px = 0.0625F;
         
         setBlockBounds(0, 0, 0, 16 * px, 13 * px, 16 * px);
-		PC_Renderer.renderInvBoxWithTextures(renderer, block, new Icon[] { icons[0], icons[1], icons[2], icons[2], icons[2], icons[2] });
+		PC_Renderer.renderInvBoxWithTextures(renderer, this, new Icon[] { sideIcons[0], sideIcons[1], sideIcons[2], sideIcons[2], sideIcons[2], sideIcons[2] });
 
         setBlockBounds(0, 0, 0, 1, 1, 1);
 
+        return true;
     }
 	
 	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Digital Workbench";
-		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			break;
-		default:
-			return null;
-		}
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
 		return true;
 	}
 

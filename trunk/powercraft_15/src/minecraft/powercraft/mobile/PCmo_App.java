@@ -4,13 +4,13 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import powercraft.api.PC_IPacketHandler;
-import powercraft.api.PC_Struct2;
 import powercraft.api.gres.PC_GresBaseWithInventory;
+import powercraft.api.network.PC_IPacketHandler;
 import powercraft.api.recipes.PC_3DRecipe;
 import powercraft.api.recipes.PC_IRecipe;
 import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_ModuleRegistry;
+import powercraft.api.utils.PC_Struct2;
 import powercraft.launcher.PC_Property;
 import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_InitEntities;

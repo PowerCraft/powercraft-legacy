@@ -3,12 +3,11 @@ package powercraft.teleport;
 import java.io.Serializable;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_Entry;
-import powercraft.api.PC_INBT;
-import powercraft.api.PC_PacketHandler;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.SaveHandler;
-import powercraft.api.PC_VecI;
+import powercraft.api.interfaces.PC_INBT;
+import powercraft.api.network.PC_PacketHandler;
+import powercraft.api.utils.PC_Entry;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serializable {
 
@@ -45,7 +44,7 @@ public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serial
 	public PCtp_TeleporterData readFromNBT(NBTTagCompound nbttag) {
 		pos = new PC_VecI();
 		name = nbttag.getString("name");
-		SaveHandler.loadFromNBT(nbttag, "pos", pos);
+		PC_Utils.loadFromNBT(nbttag, "pos", pos);
 		dimension = nbttag.getInteger("dimension");
 		animals = nbttag.getBoolean("animals");
 		monsters = nbttag.getBoolean("monsters");
@@ -57,7 +56,7 @@ public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serial
 		soundEnabled = nbttag.getBoolean("soundEnabled");
 		if(nbttag.hasKey("defaultTarget")){
 			defaultTarget = new PC_VecI();
-			SaveHandler.loadFromNBT(nbttag, "defaultTarget", defaultTarget);
+			PC_Utils.loadFromNBT(nbttag, "defaultTarget", defaultTarget);
 		}else{
 			defaultTarget = null;
 		}
@@ -69,7 +68,7 @@ public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serial
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbttag) {
 		nbttag.setString("name", name);
-		SaveHandler.saveToNBT(nbttag, "pos", pos);
+		PC_Utils.saveToNBT(nbttag, "pos", pos);
 		nbttag.setInteger("dimension", dimension);
 		nbttag.setBoolean("animals", animals);
 		nbttag.setBoolean("monsters", monsters);
@@ -80,7 +79,7 @@ public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serial
 		nbttag.setBoolean("playerChoose", playerChoose);
 		nbttag.setBoolean("soundEnabled", soundEnabled);
 		if(defaultTarget!=null)
-			SaveHandler.saveToNBT(nbttag, "defaultTarget", defaultTarget);
+			PC_Utils.saveToNBT(nbttag, "defaultTarget", defaultTarget);
 		nbttag.setInteger("defaultTargetDimension", defaultTargetDimension);
 		nbttag.setInteger("direction", direction);
 		return nbttag;
@@ -99,7 +98,7 @@ public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serial
 		soundEnabled = td.soundEnabled;
 		defaultTargetDimension = td.defaultTargetDimension;
 		direction = td.direction;
-		PCtp_TileEntityTeleporter te = GameInfo.getTE(GameInfo.mcs().worldServerForDimension(dimension), pos);
+		PCtp_TileEntityTeleporter te = PC_Utils.getTE(PC_Utils.mcs().worldServerForDimension(dimension), pos);
 		te.direction = direction;
 		te.soundEnabled = soundEnabled;
 		te.defaultTarget = defaultTarget;

@@ -23,8 +23,9 @@ public class PClo_GateType
     }
 
     public static String[] getTextures(){
-    	String[] textures = new String[1+8*TOTAL_GATE_COUNT-6];
+    	String[] textures = new String[2+8*TOTAL_GATE_COUNT-6];
     	int n=0;
+    	textures[n++] = "bottomplate";
     	textures[n++] = "sideplate";
     	textures[n++] = "not_on";
     	for(int i=1; i<TOTAL_GATE_COUNT; i++){

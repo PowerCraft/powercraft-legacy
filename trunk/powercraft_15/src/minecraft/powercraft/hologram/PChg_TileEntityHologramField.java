@@ -3,10 +3,10 @@ package powercraft.hologram;
 import java.util.ArrayList;
 import java.util.List;
 
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_VecI;
 
 public class PChg_TileEntityHologramField extends PC_TileEntity implements PC_ITileEntityRenderer{
 	
@@ -28,7 +28,7 @@ public class PChg_TileEntityHologramField extends PC_TileEntity implements PC_IT
 	}
 	
 	@Override
-	protected void dataChange(String key, Object value){
+	protected void dataChanged(String key, Object value){
 		if(key.equals("offsets"))
 			tick=0;
 	}

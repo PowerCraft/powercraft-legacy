@@ -13,8 +13,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenHell;
 import net.minecraft.world.biome.WorldChunkManager;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.block.PC_Block;
 import powercraft.api.inventory.PC_InventoryUtils;
@@ -22,6 +20,7 @@ import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_RecipeRegistry;
 import powercraft.api.tileentity.PC_TileEntityWithInventory;
+import powercraft.api.utils.PC_Utils;
 
 public class PCma_TileEntityRoaster extends PC_TileEntityWithInventory{
 
@@ -106,7 +105,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntityWithInventory{
     @Override
     public boolean isStackValidForSlot(int slot, ItemStack stack)
     {
-        return canPlayerInsertStackTo(slot, stack);
+        return true;
     }
 
     @Override
@@ -140,7 +139,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntityWithInventory{
 
         if (laserB != null)
         {
-            laser = GameInfo.getBID(worldObj, xCoord, yCoord + 1, zCoord) == laserB.blockID;
+            laser = PC_Utils.getBID(worldObj, xCoord, yCoord + 1, zCoord) == laserB.blockID;
         }
 
         if (getBurnTime() > 0)
@@ -312,14 +311,14 @@ public class PCma_TileEntityRoaster extends PC_TileEntityWithInventory{
             {
                 if (meta < 3)
                 {
-                	ValueWriting.setMD(worldObj, xCoord + x, yCoord + y, zCoord + z, ++meta);
+                	PC_Utils.setMD(worldObj, xCoord + x, yCoord + y, zCoord + z, ++meta);
                     return true;
                 }
             }
 
             if (id == Block.gravel.blockID)
             {
-            	ValueWriting.setBID(worldObj, xCoord + x, yCoord + y, zCoord + z, Block.slowSand.blockID, 0);
+            	PC_Utils.setBID(worldObj, xCoord + x, yCoord + y, zCoord + z, Block.slowSand.blockID, 0);
                 return true;
             }
         }
@@ -329,41 +328,20 @@ public class PCma_TileEntityRoaster extends PC_TileEntityWithInventory{
 
     private boolean addFuelForItem(ItemStack itemstack)
     {
-    	int bt = PC_InventoryUtils.useFuel(this, worldObj, getCoord());
-    	while(bt>0){
-    		setBurnTime(getBurnTime()+bt);
-    		if (getBurnTime() >= getItemSmeltTime(itemstack))
-    			return true;
-    		bt = PC_InventoryUtils.useFuel(this, worldObj, getCoord());
-    	}
-
-        if (getBurnTime() >= getItemSmeltTime(itemstack))
-        {
-            return true;
-        }
-
-        return false;
+    	return addFuelForTime(getItemSmeltTime(itemstack));
     }
 
     private boolean addFuelForTime(int time)
     {
-        for (int s = 0; s < getSizeInventory(); s++)
-        {
-            int bt = PC_RecipeRegistry.getFuelValue(getStackInSlot(s));
+    	int bt = PC_InventoryUtils.useFuel(this, worldObj, getCoord());
+    	while(bt>0){
+    		setBurnTime(getBurnTime()+bt);
+    		if (getBurnTime() >=  time)
+    			return true;
+    		bt = PC_InventoryUtils.useFuel(this, worldObj, getCoord());
+    	}
 
-            if (bt > 0)
-            {
-            	setBurnTime(getBurnTime()+bt);
-                decrStackSize(s, 1);
-
-                if (getBurnTime() >= time)
-                {
-                    return true;
-                }
-            }
-        }
-
-        if (getBurnTime() >= time)
+        if (getBurnTime() >=  time)
         {
             return true;
         }

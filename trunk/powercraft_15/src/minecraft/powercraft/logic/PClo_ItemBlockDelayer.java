@@ -1,15 +1,16 @@
 package powercraft.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import powercraft.api.PC_MathHelper;
 import powercraft.api.block.PC_ItemBlock;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_MathHelper;
 
 public class PClo_ItemBlockDelayer extends PC_ItemBlock
 {
@@ -67,14 +68,10 @@ public class PClo_ItemBlockDelayer extends PC_ItemBlock
     }
 
 	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName() + ".delayer0", "buffered delayer"));
-            names.add(new LangEntry(getUnlocalizedName() + ".delayer1", "delayed repeater"));
-            return names;
-		}
-		return null;
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry(getUnlocalizedName() + ".delayer0", "buffered delayer"));
+        names.add(new LangEntry(getUnlocalizedName() + ".delayer1", "delayed repeater"));
+        return names;
 	}
+	
 }

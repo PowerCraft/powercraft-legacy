@@ -3,13 +3,14 @@ package powercraft.net;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecF;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecF;
 
 public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntityRenderer {
 	
@@ -86,7 +87,7 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 	 * Notify block change.
 	 */
 	public void updateBlock() {
-		ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 		worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 	}
 
@@ -147,7 +148,7 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 				PCnt_RadioManager.transmitterOff(getChannel());
 			}
 			if(getType()==1)
-				ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+				PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 		}
 	}
 
@@ -170,7 +171,7 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 	}
 
 	@Override
-	protected void dataChange(String key, Object value) {
+	protected void dataChanged(String key, Object value) {
 		if(key.equals("channel")){
 			setChannel((String)value);
 		}else if(key.equals("active")){
@@ -179,12 +180,17 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 	}
 
 	@Override
+	public int getProvidingStrongRedstonePowerValue(PC_Direction dir) {
+		return isActive()?15:0;
+	}
+
+	@Override
 	public void renderTileEntityAt(double x, double y, double z, float rot) {
 
 		PC_Renderer.glPushMatrix();
 		float f = 1.0F;
-
-		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
+		
+		PC_Renderer.glTranslatef(0, -0.5F, 0);
 		
 		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCnt_App.instance, "block_radio.png"));
 
@@ -199,9 +205,10 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		PC_Renderer.glPopMatrix();
-
+		
 		if (!isHideLabel()) {
 			String foo = getChannel();
+			PC_Renderer.glRotatef(90, 0, 1, 0);
 			PC_Renderer.renderEntityLabelAt(foo, new PC_VecF(xCoord, yCoord, zCoord), 8, isRenderMicro() ? 0.5F : 1.3F, x, y, z);
 		}
 	}

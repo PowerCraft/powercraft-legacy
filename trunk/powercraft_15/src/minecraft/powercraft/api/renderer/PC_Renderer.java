@@ -4,8 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
-import powercraft.api.PC_VecF;
-import powercraft.api.block.PC_Block;
+import powercraft.api.utils.PC_VecF;
 
 public class PC_Renderer
 {
@@ -84,9 +83,9 @@ public class PC_Renderer
     public static void bindTexture(String texture)
     {
         renderer2d.iBindTexture(texture);
-    };
+    }
 
-    protected void iRenderStandardBlock(Object renderer, Block block, int x, int y, int z) {};
+    protected void iRenderStandardBlock(Object renderer, Block block, int x, int y, int z) {}
 
     public static void renderStandardBlock(Object renderer, Block block, int x, int y, int z)
     {

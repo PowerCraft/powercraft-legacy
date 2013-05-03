@@ -1,358 +1,262 @@
 package powercraft.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import powercraft.api.PC_GlobalVariables;
-import powercraft.api.PC_PacketHandler;
-import powercraft.api.PC_VecI;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.gres.PC_GresButton;
+
+import org.lwjgl.input.Keyboard;
+
+import powercraft.api.gres.PC_GresBaseWithInventory;
+import powercraft.api.gres.PC_GresFrame;
+import powercraft.api.gres.PC_GresImage;
 import powercraft.api.gres.PC_GresInventory;
-import powercraft.api.gres.PC_GresLabel;
+import powercraft.api.gres.PC_GresInventoryPlayer;
 import powercraft.api.gres.PC_GresLayoutH;
 import powercraft.api.gres.PC_GresLayoutV;
-import powercraft.api.gres.PC_GresTab;
+import powercraft.api.gres.PC_GresScrollBar;
 import powercraft.api.gres.PC_GresTextEdit;
 import powercraft.api.gres.PC_GresWidget;
 import powercraft.api.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.api.gres.PC_GresWindow;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
-import powercraft.api.inventory.PC_InventoryUtils;
-import powercraft.api.registry.PC_ItemRegistry;
+import powercraft.api.inventory.PC_Slot;
+import powercraft.api.item.PC_ItemStack;
+import powercraft.api.network.PC_PacketHandler;
+import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_VecI;
 
-public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements PC_IGresClient {
-
-	private static class Page{
-		public PC_GresWidget widget;
-		public PC_GresWidget tabWidget;
-		public PC_GresInventory inv;
-		public PC_GresButton buttonRight;
-		public PC_GresButton buttonLeft;
-		public boolean scroll;
-		public int page;
-		public List<PCco_SlotDirectCrafting> slots;
-	}
+public class PCco_GuiCraftingTool extends PC_GresBaseWithInventory<PC_TileEntity> implements PC_IGresClient {
 	
-	private List<Page> pages = new ArrayList<Page>();
+	private PCco_CraftingToolInventory ctinv;
+	private PCco_CraftingToolCraftingInventory ctcinv;
+	private PC_GresScrollBar scrollBar1;
+	private PC_GresScrollBar scrollBar2;
 	private PC_GresTextEdit search;
-	private Page searchPage;
-	private PC_GresButton trashAll;
-	private PC_GresButton sort;
-	private PC_GresTab tab;
+	private PC_GresInventory inv;
+	private PC_GresWidget searchView;
+	private PC_GresWidget recipeView;
+	private PC_GresFrame crafting1;
+	private PC_GresFrame crafting2;
+	private PC_GresFrame crafting3;
+	private String lastSearch;
 	
 	public PCco_GuiCraftingTool(EntityPlayer player, PC_TileEntity te, Object[] o) {
 		super(player, te, o);
 	}
 
-	private Page addPage(String name){
-		Page page = new Page();
-		page.tabWidget = new PC_GresLabel(name);
-		PC_GresLayoutV lv = new PC_GresLayoutV();
-		lv.setAlignH(PC_GresAlign.STRETCH);
-		page.slots = new ArrayList<PCco_SlotDirectCrafting>();
-		List<PCco_SlotDirectCrafting> cls = moduleList.get(name);
-		for(PCco_SlotDirectCrafting s: cls){
-			page.slots.add(s);
+	@Override
+	protected PC_Slot[] getAllSlots() {
+		ctinv = new PCco_CraftingToolInventory(this, new PC_VecI(11, 5));
+		ctcinv = new PCco_CraftingToolCraftingInventory(this);
+		invSlots = new PC_Slot[ctinv.getSizeInventory()+30];
+		for(int i=0; i<30; i++){
+			invSlots[i] = new PC_Slot(ctcinv, i);
 		}
-		page.scroll = page.slots.size()>12*9;
-		lv.add(page.inv = new PC_GresInventory(12, page.scroll?8:9));
-		if(page.scroll){
-			PC_GresLayoutH lh = new PC_GresLayoutH();
-			lh.setAlignH(PC_GresAlign.JUSTIFIED);
-			lh.add((page.buttonLeft = new PC_GresButton("<<<")).setButtonPadding(4, 4).enable(false));
-			lh.add(page.buttonRight = new PC_GresButton(">>>").setButtonPadding(4, 4));
-			lv.add(lh);
+		for(int i=0; i<ctinv.getSizeInventory(); i++){
+			invSlots[i+30] = new PC_Slot(ctinv, i);
 		}
-		page.widget = lv;
-		displayPage(page);
-		return page;
+		return null;
 	}
-	
-	private void displayPage(Page page){
-		PC_VecI gridSize = page.inv.getGridSize();
-		int maxSlots = gridSize.x * gridSize.y;
-		if(page.scroll){
-			int maxPage = page.slots.size() / maxSlots;
-			if(page.page>=maxPage){
-				page.buttonRight.enable(false);
-				page.page = maxPage;
-			}else{
-				page.buttonRight.enable(true);
-			}
-			if(page.page<=0){
-				page.buttonLeft.enable(false);
-				page.page = 0;
-			}else{
-				page.buttonLeft.enable(true);
-			}
-		}
-		int i=page.page*maxSlots;
-		for(int y=0; y<gridSize.y; y++){
-			for(int x=0; x<gridSize.x; x++){
-				if(page.slots.size()>i){
-					page.inv.setSlot(x, y, page.slots.get(i));
-				}else{
-					page.inv.setSlot(x, y, null);
-				}
-				i++;
-			}
-		}
+
+	@Override
+	public void keyChange(String key, Object value) {
+		
 	}
-	
-	private void searchItems(){
-		searchPage.slots.clear();
-		String searchString = search.getText().toLowerCase();
-		Collection<List<PCco_SlotDirectCrafting>> cls = moduleList.values();
-		for(List<PCco_SlotDirectCrafting> ls: cls){
-			for(PCco_SlotDirectCrafting s:ls){
-				List<String> info = (List<String>)s.getBackgroundStack().getTooltip(thePlayer, false);
-				for(String infoString:info){
-					if (infoString.toLowerCase().contains(searchString)){
-						searchPage.slots.add(s);
-						break;
-					}
-				}
-			}
-		}
-		for(PCco_SlotDirectCrafting s:allMcSlots){
-			List<String> info = (List<String>)s.getBackgroundStack().getTooltip(thePlayer, false);
-			for(String infoString:info){
-				if (infoString.toLowerCase().contains(searchString)){
-					searchPage.slots.add(s);
-					break;
-				}
-			}
-		}
-		displayPage(searchPage);
-	}
-	
-	private Page addPageSearch(){
-		searchPage = new Page();
-		searchPage.slots = new ArrayList<PCco_SlotDirectCrafting>();
-		searchPage.tabWidget = new PC_GresLabel("pc.gui.craftingTool.search");
-		searchPage.scroll = true;
-		PC_GresLayoutV lv = new PC_GresLayoutV();
-		lv.setAlignH(PC_GresAlign.STRETCH);
-		search = new PC_GresTextEdit("", 20);
-		lv.add(search);
-		lv.add(searchPage.inv = new PC_GresInventory(12, 6));
-		PC_GresLayoutH lh = new PC_GresLayoutH();
-		lh.setAlignH(PC_GresAlign.JUSTIFIED);
-		lh.add((searchPage.buttonLeft = new PC_GresButton("<<<")).setButtonPadding(4, 4).enable(false));
-		lh.add(searchPage.buttonRight = new PC_GresButton(">>>").setButtonPadding(4, 4));
-		lv.add(lh);
-		searchPage.widget = lv;
-		searchItems();
-		return searchPage;
-	}
-	
+
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow("pc.gui.craftingTool.title");
-		w.setAlignH(PC_GresAlign.STRETCH);
-		
-		tab = new PC_GresTab();
-		
-		String[] keys = moduleList.keySet().toArray(new String[0]);
-		
-		Arrays.sort(keys);
-		
-		PC_GresWidget td=null;
-		
-		for(String key:keys){
-			Page page = addPage(key);
-			pages.add(page);
-			if(key.equalsIgnoreCase("core"))
-				td = page.widget;
-			tab.addTab(page.widget, page.tabWidget);
-		}
-		
-		searchPage = addPageSearch();
-		tab.addTab(searchPage.widget, searchPage.tabWidget);
-		
-		PC_GresLayoutV lv = new PC_GresLayoutV();
-		lv.setAlignH(PC_GresAlign.CENTER);
-		lv.setAlignV(PC_GresAlign.JUSTIFIED);
-		
-		PC_GresLayoutV lv1 = new PC_GresLayoutV();
-		lv1.add(new PC_GresInventory(trash));
-		lv1.add(trashAll = new PC_GresButton("pc.gui.craftingTool.trashAll"));
-		lv1.add(sort = new PC_GresButton("pc.gui.craftingTool.sort"));
-		lv.add(lv1);
-		
-		lv1 = new PC_GresLayoutV();
-		PC_GresWidget label = new PC_GresLabel("container.inventory").setWidgetMargin(2)
-				.setColor(PC_GresWidget.textColorEnabled, 0x404040).setColor(PC_GresWidget.textColorHover, 0x404040);
-		lv1.add(label);
-		PC_GresInventory inv = new PC_GresInventory(9, 3);
-		for(int x=0; x<9; x++){
-			for(int y=0; y<3; y++){
-				inv.setSlot(x, y, gui.getContainer().inventoryPlayerUpper[x][y]);
+		searchView = new PC_GresLayoutV();
+		searchView.add(search = new PC_GresTextEdit("", 20));
+		PC_GresWidget lh = new PC_GresLayoutH();
+		lh.setAlignV(PC_GresAlign.STRETCH);
+		inv = new PC_GresInventory(11, 5);
+		for(int y=0; y<5; y++){
+			for(int x=0; x<11; x++){
+				inv.setSlot(x, y, invSlots[y*11+x+30]);
 			}
 		}
-		lv1.add(inv);
-		lv.add(lv1);
-		
-		tab.addTab(lv, new PC_GresLabel("container.inventory"));
-		
-		if(td!=null)
-			tab.makeTabVisible(td);
-		
-		w.add(tab);
-		
-		PC_GresLayoutH lh = new PC_GresLayoutH();
-		lh.setAlignH(PC_GresAlign.CENTER);
-		inv = new PC_GresInventory(9, 1);
-		for(int x=0; x<9; x++){
-			inv.setSlot(x, 0, gui.getContainer().inventoryPlayerLower[x][0]);
-		}
 		lh.add(inv);
-		w.add(lh);
+		lh.add(scrollBar1 = new PC_GresScrollBar((ctinv.getNumRows()+6)*16));
+		searchView.add(lh);
+		searchView.add(new PC_GresInventoryPlayer(true));
+		w.add(searchView);
 		
+		recipeView = new PC_GresLayoutV();
+		lh = new PC_GresLayoutH();
+		lh.setAlignV(PC_GresAlign.STRETCH);
+		PC_GresLayoutV lv = new PC_GresLayoutV();
+		crafting1 = new PC_GresFrame();
+		PC_GresInventory recipeInv = new PC_GresInventory(3, 3);
+		for (int y = 0; y < 3; y++) {
+			for (int x = 0; x < 3; x++) {
+				recipeInv.setSlot(x, y, invSlots[x+y*3+1]);
+			}
+		}
+		crafting1.add(recipeInv);
+		crafting1.add(new PC_GresImage(PC_TextureRegistry.getGresImgDir() + "widgets.png", 44, 66, 12, 11));
+		crafting1.add(new PC_GresInventory(invSlots[0]));
+		lv.add(crafting1);
+		crafting2 = new PC_GresFrame();
+		recipeInv = new PC_GresInventory(3, 3);
+		for (int y = 0; y < 3; y++) {
+			for (int x = 0; x < 3; x++) {
+				recipeInv.setSlot(x, y, invSlots[x+y*3+11]);
+			}
+		}
+		crafting2.add(recipeInv);
+		crafting2.add(new PC_GresImage(PC_TextureRegistry.getGresImgDir() + "widgets.png", 44, 66, 12, 11));
+		crafting2.add(new PC_GresInventory(invSlots[10]));
+		lv.add(crafting2);
+		crafting3 = new PC_GresFrame();
+		recipeInv = new PC_GresInventory(3, 3);
+		for (int y = 0; y < 3; y++) {
+			for (int x = 0; x < 3; x++) {
+				recipeInv.setSlot(x, y, invSlots[x+y*3+21]);
+			}
+		}
+		crafting3.add(recipeInv);
+		crafting3.add(new PC_GresImage(PC_TextureRegistry.getGresImgDir() + "widgets.png", 44, 66, 12, 11));
+		crafting3.add(new PC_GresInventory(invSlots[20]));
+		lv.add(crafting3);
+		lh.add(lv);
+		lh.add(scrollBar2 = new PC_GresScrollBar((ctinv.getNumRows()+6)*16));
+		recipeView.add(lh);
+		recipeView.setVisible(false);
+		w.add(recipeView);
+		recipeView.setVisible(false);
 		gui.add(w);
 	}
 
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {}
 
-	private void updatePage(Page p, PC_GresWidget widget){
-		if(p.scroll){
-			boolean b=false;
-			if(widget==p.buttonLeft){
-				b = true;
-				p.page--;
-			}else if(widget==p.buttonRight){
-				b = true;
-				p.page++;
+	@Override
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+		if(widget==scrollBar1){
+			ctinv.setScroll(scrollBar1.getScroll()/16);
+		}else if(widget==scrollBar2){
+			if(crafting1.getSize().y>0){
+				ctcinv.setScroll((int)(scrollBar2.getScroll()/crafting1.getSize().y+0.5));
 			}
-			displayPage(p);
+		}else if(widget==search){
+			if(lastSearch!=null){
+				if(lastSearch.equals(search.getText()))
+					return;
+			}
+			ctinv.setSearchString(search.getText());
+			scrollBar1.setMaxScollSize((ctinv.getNumRows()+6)*16);
+			ctinv.setScroll(scrollBar1.getScroll()/16);
+		}else if(widget==inv){
+			Slot slot = inv.slotOver;
+			if(slot!=null && inv.isMouseDown){
+				craft(slot.getStack());
+			}
+		}
+	}
+
+	private void craft(ItemStack p){
+		if(p!=null){
+			p = p.copy();
+			ItemStack[] pi = PCco_CraftingToolCrafter.getPlayerInventory(thePlayer);
+			p.stackSize = PCco_CraftingToolCrafter.craft(p, pi, new ArrayList<PC_ItemStack>(), 0, thePlayer);
+			if(p.stackSize>0){
+				ItemStack isp = thePlayer.inventory.getItemStack();
+				if(isp==null){
+					thePlayer.inventory.setItemStack(p);
+				}else{
+					if(!isp.isItemEqual(p)){
+						return;
+					}
+					if(isp.stackSize+p.stackSize>p.getMaxStackSize()){
+						return;
+					}
+					isp.stackSize+=p.stackSize;
+					thePlayer.inventory.setItemStack(isp);
+				}
+				PCco_CraftingToolCrafter.setPlayerInventory(pi, thePlayer);
+				PC_PacketHandler.sendToPacketHandler(true, thePlayer.worldObj, "CraftingToolCrafter", p.itemID, p.getItemDamage());
+				ctinv.updateAvailability();
+			}
 		}
 	}
 	
 	@Override
-	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		final int craftingTool = PC_ItemRegistry.getPCItemIDByName("PCco_ItemCraftingTool");
-		if(widget==search){
-			searchItems();
-			return;
-		}
-		if(widget==trashAll){
-			IInventory inv = thePlayer.inventory;
-			for (int i = 0; i < inv.getSizeInventory() - 4; i++) {
-				ItemStack stack = inv.getStackInSlot(i);
-				if (stack != null) {
-					if (stack.itemID != craftingTool) {
-						inv.decrStackSize(i, inv.getStackInSlot(i).stackSize);
-					}
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN || i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			if(searchView.isVisible()){
+				gui.close();
+			}else{
+				recipeView.setVisible(false);
+				searchView.setVisible(true);
+				searchView.getParent().calcChildPositions();
+			}
+		}else if(i==Keyboard.KEY_R){
+			PC_VecI mp = gui.getMousePos();
+			Slot slot = gui.getSlotAt(mp.x, mp.y);
+			if(slot!=null){
+				ItemStack is = slot.getStack();
+				if(is==null && slot instanceof PC_Slot){
+					is = ((PC_Slot)slot).getBackgroundStack();
+				}
+				if(is!=null){
+					ctcinv.setProduct(is.copy());
+					searchView.setVisible(false);
+					recipeView.setVisible(true);
+					crafting1.setVisible(false);
+					crafting2.setVisible(false);
+					crafting3.setVisible(false);
+					scrollBar2.setMaxScollSize(0);
+					recipeView.getParent().calcChildPositions();
 				}
 			}
-			PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "DeleteAllPlayerStacks", "Delete");
 		}
-		if(widget==sort){
-			InventoryPlayer inv = thePlayer.inventory;
-			List<ItemStack> stacks = new ArrayList<ItemStack>();
-			for (int i = 0; i < inv.getSizeInventory() - 4; i++) {
-				ItemStack stack = inv.getStackInSlot(i);
-				if (stack != null) {
-					inv.setInventorySlotContents(i, null);
-					stacks.add(stack);
-				}
-			}
-
-			if (stacks.size() == 0) return;
-
-			PC_InventoryUtils.groupStacks(stacks);
-
-			List<ItemStack> sorted = new ArrayList<ItemStack>();
-
-			while (stacks.size() > 0) {
-				ItemStack lowest = null;
-				int indexLowest = -1;
-				for (int i = 0; i < stacks.size(); i++) {
-					ItemStack checked = stacks.get(i);
-					if (checked == null) {
-						indexLowest = i;
-						break;
-					}
-
-					if (lowest == null
-							|| (checked.itemID == craftingTool && lowest.itemID != craftingTool)
-							|| ((lowest.itemID * 32000 * 64 + lowest.getItemDamage() * 64 + lowest.stackSize) > (checked.itemID * 32000 * 64
-									+ checked.getItemDamage() * 64 + checked.stackSize) && lowest.itemID != craftingTool)) {
-						lowest = checked;
-						indexLowest = i;
-					}
-				}
-				if (lowest != null) sorted.add(stacks.remove(indexLowest));
-			}
-
-			for (ItemStack stack : sorted) {
-				inv.addItemStackToInventory(stack);
-			}
-			
-			PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "DeleteAllPlayerStacks", "Sort");
-			
-		}
-		for(Page p:pages){
-			updatePage(p, widget);
-		}
-		updatePage(searchPage, widget);
-	}
-
-	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		
 	}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
 
 	@Override
-	public void updateScreen(PC_IGresGui gui) {}
+	public void updateScreen(PC_IGresGui gui) {
+		ctcinv.nextTick();
+	}
 
 	@Override
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2, float par3) {
 		return false;
 	}
 
-	@Override
-	public void keyChange(String key, Object value) {}
+	public synchronized void updateSrcoll() {
+		scrollBar1.setMaxScollSize(ctinv.getNumRows()*16);
+		ctinv.setScroll((int)(scrollBar1.getScroll()/16.0+0.5));
+	}
 
-	@Override
-	public ItemStack slotClick(int id, int par2, int par3, EntityPlayer player) {
-		if(!(GameInfo.isCreative(player) || PC_GlobalVariables.config.getBoolean("cheats.survivalCheating"))){
-			PC_GresWidget w = tab.getActiveTab();
-			if(w==searchPage.widget){
-				for(PCco_SlotDirectCrafting slot:searchPage.slots){
-					slot.updateAvailable();
-				}
-			}else{
-				for(Page page:pages){
-					if(page.widget==w){
-						for(PCco_SlotDirectCrafting slot:page.slots){
-							slot.updateAvailable();
-						}
-						break;
-					}
-				}
-			}
+	public void updateCraftings() {
+		int recipes = ctcinv.getNumRecipes();
+		if(recipes>0){
+			crafting1.setVisible(true);
 		}
-		return super.slotClick(id, par2, par3, player);
+		if(recipes>1){
+			crafting2.setVisible(true);
+		}
+		if(recipes>2){
+			crafting3.setVisible(true);
+		}
+		scrollBar2.setMaxScollSize(crafting1.getSize().y*(recipes+1));
+		ctcinv.setScroll((int)(scrollBar2.getScroll()/crafting1.getSize().y+0.5));
+		recipeView.calcChildPositions();
+	}
+	
+	@Override
+	public ItemStack slotClick(int par1, int par2, int par3,
+			EntityPlayer par4EntityPlayer) {
+		ItemStack is = super.slotClick(par1, par2, par3, par4EntityPlayer);
+		ctinv.updateAvailability();
+		return is;
 	}
 	
 }

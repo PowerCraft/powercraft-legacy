@@ -12,17 +12,18 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public abstract class PCtr_BlockBeltBase extends PC_Block
 {
     public PCtr_BlockBeltBase(int id, String texture)
     {
-        super(id, PCtr_MaterialConveyor.getMaterial(), texture, "belt_side", "belt_down");
+        super(id, PCtr_MaterialConveyor.getMaterial(), "belt_down", texture, "belt_side");
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, PCtr_BeltHelper.HEIGHT, 1.0F);
         setHardness(0.22F);
         setResistance(8.0F);
@@ -32,12 +33,6 @@ public abstract class PCtr_BlockBeltBase extends PC_Block
 
     @Override
     public abstract void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity);
-    
-    @Override
-    public Icon getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k, int l)
-    {
-        return getBlockTextureFromSideAndMetadata(l, iblockaccess.getBlockMetadata(i, j, k));
-    }
     
     @Override
     public boolean isOpaqueCube()
@@ -74,14 +69,7 @@ public abstract class PCtr_BlockBeltBase extends PC_Block
     @Override
     public void setBlockBoundsForItemRender()
     {
-        setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 0.6F, 1.0F);
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving, ItemStack itemStack)
-    {
-        int l = PCtr_BeltHelper.getPlacedMeta(entityliving);
-        ValueWriting.setMD(world, i, j, k, l);
+        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0F + PCtr_BeltHelper.HEIGHT, 1.0F);
     }
 
     @Override
@@ -91,50 +79,17 @@ public abstract class PCtr_BlockBeltBase extends PC_Block
     }
 
     @Override
-    public Icon getBlockTextureFromSideAndMetadata(int i, int j)
-    {
-        if (i == 0)
-        {
-            return icons[2];
-        }
-
-        if (i == 1)
-        {
-            return icons[0];
-        }
-        else
-        {
-            return icons[1];
-        }
-    }
-
-    @Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
     {
         return PCtr_BeltHelper.blockActivated(world, i, j, k, entityplayer);
     }
-    
-    protected abstract Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj);
 
 	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-	   		list.add(PC_Utils.NO_HARVEST);
-	   		list.add(PC_Utils.NO_PICKUP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_RENDER_ITEM_HORIZONTAL:
-			return false;
-		case PC_MSGRegistry.MSG_ROTATION:
-			return PCtr_BeltHelper.getRotation((Integer)obj[0]);
-		default:
-			return msg2(world, pos, msg, obj);
-		}
+	public PC_VecI moveBlockTryToPlaceAt(World world, int x, int y, int z,
+			PC_Direction dir, float xHit, float yHit, float zHit,
+			ItemStack itemStack, EntityPlayer entityPlayer) {
+		PC_Direction pDir = PC_Direction.getFormPlayerDir(PC_MathHelper.floor_double(((entityPlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3);
+		return pDir.getOffset();
 	}
     
 }

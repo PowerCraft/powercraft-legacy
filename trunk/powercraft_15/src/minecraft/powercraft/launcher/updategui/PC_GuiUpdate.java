@@ -1,6 +1,5 @@
 package powercraft.launcher.updategui;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,15 +16,9 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-import powercraft.launcher.PC_Launcher;
 import powercraft.launcher.PC_LauncherClientUtils;
-import powercraft.launcher.loader.PC_ModuleObject;
-import powercraft.launcher.loader.PC_ModuleVersion;
 import powercraft.launcher.update.PC_UpdateManager;
 import powercraft.launcher.update.PC_UpdateManager.ModuleUpdateInfo;
-import powercraft.launcher.update.PC_UpdateXMLFile.XMLInfoTag;
-import powercraft.launcher.update.PC_UpdateXMLFile.XMLPackTag;
-import powercraft.launcher.updategui.PC_GuiElementScroll.ScrollElement;
 
 public class PC_GuiUpdate extends GuiScreen {
 

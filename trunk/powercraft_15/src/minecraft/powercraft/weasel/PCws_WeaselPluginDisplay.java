@@ -2,8 +2,8 @@ package powercraft.weasel;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_Color;
 import powercraft.api.registry.PC_GresRegistry;
+import powercraft.api.utils.PC_Color;
 import powercraft.weasel.engine.Calc;
 import powercraft.weasel.engine.WeaselFunctionManager;
 import powercraft.weasel.exception.WeaselRuntimeException;

@@ -1,5 +1,6 @@
 package powercraft.transport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -35,16 +36,11 @@ public class PCtr_ItemBlockElevator extends PC_ItemBlock
         arrayList.add(new ItemStack(this, 1, 1));
         return arrayList;
     }
-
+    
 	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName() + ".up", "elevator up"));
-			names.add(new LangEntry(getUnlocalizedName() + ".down", "elevator down"));
-            return names;
-		}
-		return null;
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry(getUnlocalizedName() + ".up", "elevator up"));
+		names.add(new LangEntry(getUnlocalizedName() + ".down", "elevator down"));
+        return names;
 	}
 }

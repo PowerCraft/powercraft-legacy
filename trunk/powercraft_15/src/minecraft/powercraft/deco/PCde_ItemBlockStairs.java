@@ -9,12 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.block.PC_ItemBlock;
 import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Utils;
 
 public class PCde_ItemBlockStairs extends PC_ItemBlock {
 
@@ -65,7 +64,7 @@ public class PCde_ItemBlockStairs extends PC_ItemBlock {
 
 
 		// special placing rules for Ledge
-		int bID = GameInfo.getBID(world, i, j - 1, k);
+		int bID = PC_Utils.getBID(world, i, j - 1, k);
 		
 		if (bID == PCde_App.stairs.blockID || bID == PCde_App.platform.blockID) {
 
@@ -105,7 +104,7 @@ public class PCde_ItemBlockStairs extends PC_ItemBlock {
 
 		if (world.canPlaceEntityOnSide(PCde_App.stairs.blockID, i, j, k, false, l, entityplayer, itemstack)) {
 			Block block = PCde_App.stairs;
-			if(ValueWriting.setBID(world, i, j, k, block.blockID, 0)){
+			if(PC_Utils.setBID(world, i, j, k, block.blockID, 0)){
 				// set tile entity
 				PCde_TileEntityStairs ted = (PCde_TileEntityStairs) world.getBlockTileEntity(i, j, k);
 				if (ted == null) {
@@ -125,17 +124,6 @@ public class PCde_ItemBlockStairs extends PC_ItemBlock {
 			}
 		}
 		return true;
-	}
-
-	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName(), "Stairs"));
-            return names;
-		}
-		return null;
 	}
 
 }

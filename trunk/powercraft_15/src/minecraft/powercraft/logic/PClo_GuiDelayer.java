@@ -1,7 +1,8 @@
 package powercraft.logic;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.api.PC_Utils.Converter;
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresLabel;
 import powercraft.api.gres.PC_GresLayoutH;
@@ -14,6 +15,7 @@ import powercraft.api.gres.PC_GresWindow;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
 
 public class PClo_GuiDelayer implements PC_IGresClient {
 
@@ -37,7 +39,7 @@ public class PClo_GuiDelayer implements PC_IGresClient {
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel("pc.gui.delayer.delay"));
-		vg.add(editDelay = new PC_GresTextEdit(Converter.doubleToString(Converter.ticksToSecs(delayer.getDelay())), 8, PC_GresInputType.UNSIGNED_FLOAT));
+		vg.add(editDelay = new PC_GresTextEdit(""+PC_Utils.ticksToSecs(delayer.getDelay()), 8, PC_GresInputType.UNSIGNED_FLOAT));
 		w.add(vg);
 
 
@@ -65,30 +67,29 @@ public class PClo_GuiDelayer implements PC_IGresClient {
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if(widget==buttonOK){
-			onReturnPressed(gui);
+			String sDelay = editDelay.getText();
+			if(sDelay!=null && !sDelay.equals("")){
+				int delay = PC_Utils.secsToTicks(Double.valueOf(sDelay));
+				if(delay>0){
+					delayer.setDelay(delay);
+					gui.close();
+				}else{
+					txError.setText("pc.gui.pulsar.errintputzero");
+				}
+			}else{
+				txError.setText("pc.gui.delayer.errnoinput");
+			}
 		}else if(widget==buttonCancel){
-			onEscapePressed(gui);
+			gui.close();
 		}
 	}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		String sDelay = editDelay.getText();
-		if(sDelay!=null && !sDelay.equals("")){
-			int delay = Converter.secsToTicks(Double.valueOf(sDelay));
-			if(delay>0){
-				delayer.setDelay(delay);
-				gui.close();
-			}else{
-				txError.setText("pc.gui.pulsar.errintputzero");
-			}
-		}else{
-			txError.setText("pc.gui.delayer.errnoinput");
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN){
+			actionPerformed(buttonOK, gui);
+		}else if(i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			gui.close();
 		}
 	}
 

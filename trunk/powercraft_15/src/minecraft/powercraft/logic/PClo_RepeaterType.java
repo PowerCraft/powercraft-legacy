@@ -20,8 +20,9 @@ public class PClo_RepeaterType
     }
 
     public static String[] getTextures(){
-    	String[] textures = new String[18];
+    	String[] textures = new String[19];
     	int n=0;
+    	textures[n++] = "bottomplate";
     	textures[n++] = "sideplate";
     	textures[n++] = "crossing0";
     	textures[n++] = "crossing1";

@@ -11,7 +11,6 @@ import net.minecraft.block.BlockTorch;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartChest;
@@ -25,30 +24,26 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
-import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_BeamTracer;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_IBeamHandler;
-import powercraft.api.PC_IPacketHandler;
-import powercraft.api.PC_PacketHandler;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
+import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
-import powercraft.api.inventory.PC_ISpecialInventoryTextures;
+import powercraft.api.building.PC_BuildingManager;
+import powercraft.api.interfaces.PC_IBeamHandler;
 import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.item.PC_IItemInfo;
-import powercraft.api.registry.PC_KeyRegistry;
+import powercraft.api.network.PC_IPacketHandler;
+import powercraft.api.network.PC_PacketHandler;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_SoundRegistry;
-import powercraft.machines.PCma_CropHarvestingManager.PC_CropEntry;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-public class PCma_BlockHarvester extends PC_Block implements
-		PC_ISpecialInventoryTextures, PC_IBeamHandler, PC_IItemInfo, PC_IPacketHandler {
+@PC_BlockInfo(name="Harvester", canPlacedRotated=true)
+public class PCma_BlockHarvester extends PC_Block implements PC_IBeamHandler, PC_IItemInfo, PC_IPacketHandler {
 
 	private static final int TXSIDE = 0, TXFRONT = 1, TXBACK = 2;
 	/**
@@ -61,7 +56,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 	private ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
 	
 	public PCma_BlockHarvester(int id) {
-		super(id, Material.ground, "side", "harvester_front", "harvester_back");
+		super(id, Material.ground, "side", "side", "harvester_front", "harvester_back", "side", "side");
 		setHardness(0.7F);
 		setResistance(10.0F);
 		setStepSound(Block.soundStoneFootstep);
@@ -75,41 +70,6 @@ public class PCma_BlockHarvester extends PC_Block implements
 	}
 	
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int s, int m) {
-		if (s == 1) {
-			return icons[TXSIDE];
-		}
-		if (s == 0) {
-			return icons[TXSIDE];
-		} else {
-			if (m == s) {
-				return icons[TXFRONT];
-			}
-			if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4)) {
-				return icons[TXBACK];
-			}
-			return icons[TXSIDE];
-		}
-	}
-
-	@Override
-	public Icon getInvTexture(int i, int m) {
-		if (i == 1) {
-			return icons[TXSIDE];
-		}
-		if (i == 0) {
-			return icons[TXSIDE];
-		}
-		if (i == 3) {
-			return icons[TXFRONT];
-		} else if (i == 4) {
-			return icons[TXBACK];
-		} else {
-			return icons[TXSIDE];
-		}
-	}
-	
-	@Override
 	public boolean isBlockSolid(IBlockAccess iblockaccess, int i, int j, int k, int l) {
 		return true;
 	}
@@ -120,31 +80,6 @@ public class PCma_BlockHarvester extends PC_Block implements
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving, ItemStack itemStack) {
-		int l = MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-
-		if (entityliving instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed((EntityPlayer)entityliving)) {
-			l = ValueWriting.reverseSide(l);
-		}
-
-		if (l == 0) {
-			l = 2;
-		} else if (l == 1) {
-			l = 5;
-		} else if (l == 2) {
-			l = 3;
-		} else if (l == 3) {
-			l = 4;
-		}
-
-		if (isIndirectlyPowered(world, i, j, k)) {
-			world.scheduleBlockUpdate(i, j, k, blockID, tickRate(world));
-		}
-
-		ValueWriting.setMD(world, i, j, k, l);
-	}
-
-	@Override
 	public void onBlockAdded(World world, int i, int j, int k) {
 		int l = world.getBlockMetadata(i, j, k);
 		if (isIndirectlyPowered(world, i, j, k)) {
@@ -152,17 +87,13 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 			l |= 8;
 		}
-		ValueWriting.setMD(world, i, j, k, l);
+		PC_Utils.setMD(world, i, j, k, l);
 	}
 
 	private boolean isIndirectlyPowered(World world, int i, int j, int k) {
-		// if (world.isBlockGettingPowered(i, j, k)) { return true; }
-
 		if (world.isBlockIndirectlyGettingPowered(i, j, k)) {
 			return true;
 		}
-
-		// if (world.isBlockGettingPowered(i, j - 1, k)) { return true; }
 
 		if (world.isBlockIndirectlyGettingPowered(i, j - 1, k)) {
 			return true;
@@ -202,16 +133,11 @@ public class PCma_BlockHarvester extends PC_Block implements
 		
 		deviceMeta &= 0x7;
 
-		int incZ = Facing.offsetsZForSide[deviceMeta];
-		int incX = Facing.offsetsXForSide[deviceMeta];
-
-		PC_VecI move = new PC_VecI(incX, 0, incZ);
-
 		PC_VecI cnt = new PC_VecI(x, y, z);
 		PC_BeamTracer beamTracer = new PC_BeamTracer(world, this);
 
 		beamTracer.setStartCoord(cnt);
-		beamTracer.setStartMove(move);
+		beamTracer.setStartMove(getRotation(deviceMeta).getOffset().mul(-1));
 		beamTracer.setCanChangeColor(false);
 		beamTracer.setDetectEntities(true);
 		beamTracer.setTotalLengthLimit(8000);
@@ -245,23 +171,14 @@ public class PCma_BlockHarvester extends PC_Block implements
 	@Override
 	public boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_VecI coord) {
 		World world = beamTracer.getWorld();
-		int id = GameInfo.getBID(world, coord);
-		int meta = GameInfo.getMD(world, coord);
+		int id = PC_Utils.getBID(world, coord);
+		int meta = PC_Utils.getMD(world, coord);
 
 		if (id == 49 || id == 7 || id == ENDBLOCK) {
 			return true;
 		}
-
-
-		// sapling on grass
-		if (PCma_TreeHarvestingManager.isBlockTreeSapling(id, meta)) {
-			int underId = GameInfo.getBID(world, coord.offset(0, -1, 0));
-			if (underId == Block.dirt.blockID || underId == Block.grass.blockID || underId == Block.mycelium.blockID) {
-				return false;
-			}
-		}
 		
-		if(PC_MSGRegistry.hasFlag(world, coord, PC_Utils.HARVEST_STOP)){
+		if(PC_MSGRegistry.hasFlag(world, coord, PC_MSGRegistry.HARVEST_STOP)){
 			return true;
 		}
 
@@ -272,116 +189,27 @@ public class PCma_BlockHarvester extends PC_Block implements
 				|| id == Block.fire.blockID || Block.blocksList[id] instanceof BlockTorch || id == Block.redstoneWire.blockID || id == Block.mobSpawner.blockID
 				|| id == Block.lever.blockID || id == Block.woodenButton.blockID || id == Block.stoneButton.blockID || Block.blocksList[id] instanceof BlockRedstoneRepeater
 				|| id == Block.pistonStickyBase.blockID || id == Block.pistonBase.blockID || id == Block.pistonExtension.blockID
-				|| id == Block.pistonMoving.blockID || Block.blocksList[id] instanceof BlockRail || PC_MSGRegistry.hasFlag(world, coord, PC_Utils.NO_HARVEST)) {
+				|| id == Block.pistonMoving.blockID || Block.blocksList[id] instanceof BlockRail) {
 
 			return false;
 		}
-
-
-
-		// tree - replace with sapling
-		if (PCma_TreeHarvestingManager.isBlockTreeWood(id, meta)) {
-			if(world.isRemote)
-				return true;
-			ItemStack[] output = PCma_TreeHarvestingManager.harvestTreeAt(world, coord);
-
-			if (output != null) {
-				if(!world.isRemote)
-					for (ItemStack stack : output) {
-						addToDispenseList(world, stack);
-					}
-			}
-
-			return true;
-			// return false;
-		}
-
-		// block registered using XML
-		if (PCma_CropHarvestingManager.isBlockRegisteredCrop(id)) {
-
-			PC_CropEntry cropEntry;
-			
-			if ((cropEntry = PCma_CropHarvestingManager.getHarvestBlockCrop(id, meta))!=null) {
-
-				if(world.isRemote)
-					return true;
-				
-				ItemStack[] harvested = cropEntry.getHarvestedStacks(id, meta);
-
-				if (harvested != null) {
-
-					for (ItemStack stack : harvested) {
-
-						// play breaking sound and animation
-						if (PC_SoundRegistry.isSoundEnabled()) {
-							world.playAuxSFX(2001, coord.x, coord.y, coord.z, id + (meta << 12));
-						}
-
-						addToDispenseList(world, stack);
-					}
-
-				}
-
-				int newMeta = cropEntry.getReplantMetadata(id, meta);
-
-				if (newMeta == -1) {
-					ValueWriting.setBID(world, coord, 0, 0);
-				} else {
-					ValueWriting.setMD(world, coord, newMeta);
-				}
-
-				return true;
-
-			}
-
-			return false;
-
-		}
-
-		// ignore inventory blocks
-		if (world.getBlockTileEntity(coord.x, coord.y, coord.z) != null && world.getBlockTileEntity(coord.x, coord.y, coord.z) instanceof IInventory) {
-			return false;
-		}
-
-		if(world.isRemote)
-			return true;
 		
-		// now regular block breaking
-		int dropId;
-		int dropMeta;
-		int dropQuant;
 
-		dropId = Block.blocksList[id].idDropped(id, world.rand, meta);
-		dropMeta = Block.blocksList[id].damageDropped(meta);
-		dropQuant = Block.blocksList[id].quantityDropped(world.rand);
+		List<PC_Struct2<PC_VecI, ItemStack>> blockDrops = PC_BuildingManager.harvest(world, coord, 0);
 
-		// play breaking sound and animation
-		if (PC_SoundRegistry.isSoundEnabled()) {
-			world.playAuxSFX(2001, coord.x, coord.y, coord.z, id + (meta << 12));
+		if(blockDrops!=null){
+		
+			if(!world.isRemote){
+				for(PC_Struct2<PC_VecI, ItemStack> blockDrop:blockDrops){
+					drops.add(blockDrop.b);
+				}
+			}
+
+			return true;
+			
 		}
-
-		// set air, or water in case of ice
-		ValueWriting.setBID(world, coord, id == Block.ice.blockID ? Block.waterMoving.blockID : 0, 0);
-
-		if (id == Block.tallGrass.blockID) {
-			dropId = Item.seeds.itemID;
-			if (world.rand.nextInt(5) != 0) {
-				return true;
-			} // dddd
-		}
-
-		if (dropId <= 0) {
-			dropId = id;
-		}
-
-		if (dropQuant <= 0) {
-			dropQuant = 1;
-		}
-
-		addToDispenseList(world, new ItemStack(dropId, dropQuant, dropMeta));
-
-		return true;
-		// return false;
+		
+		return false;
 	}
 
 
@@ -403,7 +231,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 				return false;
 			}
 
-			int l = GameInfo.getMD(world, coord.x, coord.y, coord.z) & 7;
+			int l = PC_Utils.getMD(world, coord.x, coord.y, coord.z) & 7;
 
 			int iPLUS1 = -Facing.offsetsXForSide[l];
 			int kPLUS1 = -Facing.offsetsZForSide[l];
@@ -493,19 +321,16 @@ public class PCma_BlockHarvester extends PC_Block implements
 			return;
 		}
 
-		int l = world.getBlockMetadata(devPos.x, devPos.y, devPos.z) & 7;
+		PC_VecI offset = getRotation(PC_Utils.getMD(world, devPos)).getOffset();
 
-		int dispIncX = -Facing.offsetsXForSide[l];
-		int dispIncZ = -Facing.offsetsZForSide[l];
-
-		double dx = devPos.x + dispIncX * 1.0D + 0.5D;
+		double dx = devPos.x + offset.x * 1.0D + 0.5D;
 		double dy = devPos.y + 0.5D;
-		double dz = devPos.z + dispIncZ * 1.0D + 0.5D;
+		double dz = devPos.z + offset.z * 1.0D + 0.5D;
 
 		EntityItem entityitem = new EntityItem(world, dx, dy - 0.29999999999999999D, dz, itemstack);
 		double throwSpeed = world.rand.nextDouble() * 0.10000000000000001D + 0.20000000000000001D;
 		
-		Block b = GameInfo.getBlock(world, devPos.offset(dispIncX, 0, dispIncZ));
+		Block b = PC_Utils.getBlock(world, devPos.offset(offset.x, 0, offset.z));
 		String module = null;
 		if(b instanceof PC_Block){
 			module = ((PC_Block) b).getModule().getModuleName();
@@ -516,9 +341,9 @@ public class PCma_BlockHarvester extends PC_Block implements
 			entityitem.motionY = 0;
 			entityitem.motionZ = 0;
 		} else {
-			entityitem.motionX = dispIncX * throwSpeed;
+			entityitem.motionX = offset.x * throwSpeed;
 			entityitem.motionY = 0.20000000298023224D;
-			entityitem.motionZ = dispIncZ * throwSpeed;
+			entityitem.motionZ = offset.z * throwSpeed;
 		}
 
 		entityitem.delayBeforeCanPickup = 5;
@@ -527,7 +352,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 			world.playAuxSFX(1000, devPos.x, devPos.y, devPos.z, 0);
 		}
 
-		world.playAuxSFX(2000, devPos.x, devPos.y, devPos.z, dispIncX + 1 + (dispIncZ + 1) * 3);
+		world.playAuxSFX(2000, devPos.x, devPos.y, devPos.z, offset.x + 1 + (offset.z + 1) * 3);
 
 	}
 
@@ -545,26 +370,6 @@ public class PCma_BlockHarvester extends PC_Block implements
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this));
 		return arrayList;
-	}
-	
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Harvester";
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-	   		list.add(PC_Utils.NO_HARVEST);
-	   		list.add(PC_Utils.NO_PICKUP);
-	   		list.add(PC_Utils.HARVEST_STOP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}
-		}
-		return null;
 	}
 
 	@Override

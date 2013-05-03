@@ -18,7 +18,6 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import powercraft.api.PC_VecI;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.recipes.PC_3DRecipe;
 import powercraft.api.recipes.PC_I3DRecipeHandler;
@@ -28,7 +27,9 @@ import powercraft.api.recipes.PC_ShapedRecipes;
 import powercraft.api.recipes.PC_ShapelessRecipes;
 import powercraft.api.recipes.PC_SmeltRecipe;
 import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.utils.PC_VecI;
 import cpw.mods.fml.common.registry.GameRegistry;
+
 
 public class PC_RecipeRegistry {
 
@@ -81,6 +82,8 @@ public class PC_RecipeRegistry {
 							for (ItemStack is : (List<ItemStack>) o[i]) {
 								list[x][y].add(new PC_ItemStack(is));
 							}
+						}else{
+							list[x][y]=null;
 						}
 					}
 					i++;
@@ -243,6 +246,7 @@ public class PC_RecipeRegistry {
 						list[x][y] = new ArrayList<PC_ItemStack>();
 						list[x][y].add(new PC_ItemStack(stacks.get(i)));
 					}
+					i++;
 				}
 			}
 		} else {

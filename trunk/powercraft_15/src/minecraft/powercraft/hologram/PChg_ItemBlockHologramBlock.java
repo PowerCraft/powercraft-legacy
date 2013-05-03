@@ -1,5 +1,6 @@
 package powercraft.hologram;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -9,13 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.block.PC_ItemBlock;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
 
 public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {
 
@@ -63,7 +63,7 @@ public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {
 	
 	@Override
 	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
-		if (!ValueWriting.setBID(world, x, y, z, getBlockID(), metadata))
+		if (!PC_Utils.setBID(world, x, y, z, getBlockID(), metadata))
         {
             return false;
         }
@@ -76,19 +76,18 @@ public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {
             if(nbtTag!=null){
             	ItemStack item = ItemStack.loadItemStackFromNBT(nbtTag.getCompoundTag("Item"));
             	if(item.getItem().getHasSubtypes()){
-            		ValueWriting.setMD(world, x, y, z, item.getItemDamage());
+            		PC_Utils.setMD(world, x, y, z, item.getItemDamage());
             	}
             }
-            TileEntity te = (TileEntity)GameInfo.getTE(world, x, y, z);
+            TileEntity te = (TileEntity)PC_Utils.getTE(world, x, y, z);
 
             if (te == null)
             {
-                te = (TileEntity)ValueWriting.setTE(world, x, y, z, block.createTileEntity(world, metadata));
+               PC_Utils.setTE(world, x, y, z, te = block.createTileEntity(world, metadata));
             }
-
-            if (te instanceof PC_TileEntity)
-            {
-                ((PC_TileEntity)te).create(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+            
+            if(te instanceof PC_TileEntity){
+            	((PC_TileEntity)te).create(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
             }
         }
 
@@ -107,17 +106,14 @@ public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {
 		ItemStack item = ItemStack.loadItemStackFromNBT(nbtTag.getCompoundTag("Item"));
         return PC_LangRegistry.tr(getUnlocalizedName()+".desc.name", item.getDisplayName());
     }
-	
+
 	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName(), "Hologramblock"));
-			names.add(new LangEntry(getUnlocalizedName()+".desc", "Contains: %s"));
-			return names;
-		}
-		return null;
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry(getUnlocalizedName(), "Hologramblock"));
+		names.add(new LangEntry(getUnlocalizedName()+".desc", "Contains: %s"));
+		return names;
 	}
 
+	
+	
 }

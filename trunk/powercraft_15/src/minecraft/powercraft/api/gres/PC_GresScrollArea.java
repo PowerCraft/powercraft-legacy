@@ -1,7 +1,7 @@
 package powercraft.api.gres;
 
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_VecI;
+import powercraft.api.utils.PC_RectI;
+import powercraft.api.utils.PC_VecI;
 
 
 public class PC_GresScrollArea extends PC_GresWidget {
@@ -283,5 +283,5 @@ public class PC_GresScrollArea extends PC_GresWidget {
 
 	@Override
 	public void addedToWidget() {}
-
+	
 }

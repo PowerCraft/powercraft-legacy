@@ -12,10 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_IItemInfo;
@@ -23,8 +19,10 @@ import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(tileEntity=PCma_TileEntityXPBank.class)
+@PC_BlockInfo(name="XP Bank", tileEntity=PCma_TileEntityXPBank.class)
 public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
 {
     public PCma_BlockXPBank(int id)
@@ -36,11 +34,6 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
         setResistance(100.0F);
         setLightValue(0.5F);
         setCreativeTab(CreativeTabs.tabDecorations);
-    }
-
-    @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PCma_TileEntityXPBank();
     }
 
     @Override
@@ -79,7 +72,7 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
             }
         }
 
-        PC_GresRegistry.openGres("XPBank", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+        PC_GresRegistry.openGres("XPBank", entityplayer, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
         return true;
     }
 
@@ -96,16 +89,6 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-   	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-       	return (((PCma_TileEntityXPBank) world.getBlockTileEntity(x, y, z)).getXP()+9)/10;
-   	}
-
-   	@Override
-   	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
-   		return isProvidingWeakPower(world, x, y, z, s);
-   	}
-
-    @Override
     public void onBlockHarvested(World world, int i, int j, int k, int par5, EntityPlayer player)
     {
         try
@@ -115,40 +98,44 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
         catch (NullPointerException npe) {}
     }
 
-    public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer)
+    @Override
+    public boolean renderInventoryBlock(int metadata, Object renderer)
     {
-        PC_Renderer.renderInvBox(renderer, block, metadata);
+        PC_Renderer.renderInvBox(renderer, this, metadata);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.3F, 0.0F, 1.0F, 0.8F, 1.0F);
+        PC_Utils.setBlockBounds(Block.obsidian, 0.0F, 0.3F, 0.0F, 1.0F, 0.8F, 1.0F);
         PC_Renderer.renderInvBox(renderer, Block.obsidian, 0);
-        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 0.2F, 0.3F, 0.2F);
+        PC_Utils.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 0.2F, 0.3F, 0.2F);
         PC_Renderer.renderInvBox(renderer, Block.obsidian, 0);
-        ValueWriting.setBlockBounds(Block.obsidian, 0.8F, 0.0F, 0.0F, 1.0F, 0.3F, 0.2F);
+        PC_Utils.setBlockBounds(Block.obsidian, 0.8F, 0.0F, 0.0F, 1.0F, 0.3F, 0.2F);
         PC_Renderer.renderInvBox(renderer, Block.obsidian, 0);
-        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.8F, 0.2F, 0.3F, 1.0F);
+        PC_Utils.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.8F, 0.2F, 0.3F, 1.0F);
         PC_Renderer.renderInvBox(renderer, Block.obsidian, 0);
-        ValueWriting.setBlockBounds(Block.obsidian, 0.8F, 0.0F, 0.8F, 1.0F, 0.3F, 1.0F);
+        PC_Utils.setBlockBounds(Block.obsidian, 0.8F, 0.0F, 0.8F, 1.0F, 0.3F, 1.0F);
         PC_Renderer.renderInvBox(renderer, Block.obsidian, 0);
-        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        PC_Utils.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        return true;
     }
 
-    public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer)
+    @Override
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer)
     {
         int xp = ((PCma_TileEntityXPBank) world.getBlockTileEntity(x, y, z)).getXP();
         setBlockBounds(0.15F, 0.29F - 0.2F * calculateHeightMultiplier(xp), 0.15F, 0.85F, 0.71F + 0.2F * calculateHeightMultiplier(xp), 0.85F);
-        PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+        PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.3F, 0.0F, 1.0F, 0.7F, 1.0F);
+        PC_Utils.setBlockBounds(Block.obsidian, 0.0F, 0.3F, 0.0F, 1.0F, 0.7F, 1.0F);
         PC_Renderer.renderStandardBlock(renderer, Block.obsidian, x, y, z);
-        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 0.15F, 0.3F, 0.15F);
+        PC_Utils.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 0.15F, 0.3F, 0.15F);
         PC_Renderer.renderStandardBlock(renderer, Block.obsidian, x, y, z);
-        ValueWriting.setBlockBounds(Block.obsidian, 0.85F, 0.0F, 0.0F, 1.0F, 0.3F, 0.15F);
+        PC_Utils.setBlockBounds(Block.obsidian, 0.85F, 0.0F, 0.0F, 1.0F, 0.3F, 0.15F);
         PC_Renderer.renderStandardBlock(renderer, Block.obsidian, x, y, z);
-        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.85F, 0.15F, 0.3F, 1.0F);
+        PC_Utils.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.85F, 0.15F, 0.3F, 1.0F);
         PC_Renderer.renderStandardBlock(renderer, Block.obsidian, x, y, z);
-        ValueWriting.setBlockBounds(Block.obsidian, 0.85F, 0.0F, 0.85F, 1.0F, 0.3F, 1.0F);
+        PC_Utils.setBlockBounds(Block.obsidian, 0.85F, 0.0F, 0.85F, 1.0F, 0.3F, 1.0F);
         PC_Renderer.renderStandardBlock(renderer, Block.obsidian, x, y, z);
-        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        PC_Utils.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        return true;
     }
 
     @Override
@@ -157,33 +144,5 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
-
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "XP Bank";
-		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-	   		list.add(PC_Utils.NO_HARVEST);
-	   		list.add(PC_Utils.NO_PICKUP);
-	   		list.add(PC_Utils.HARVEST_STOP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:{
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			return true;
-		}case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:{
-			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
-			return true;
-		}
-		}
-		return null;
-	}
-    
-   	
    	
 }

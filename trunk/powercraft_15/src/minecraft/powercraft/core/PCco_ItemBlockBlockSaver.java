@@ -1,5 +1,6 @@
 package powercraft.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -9,12 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.block.PC_ItemBlock;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
-import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCco_ItemBlockBlockSaver extends PC_ItemBlock {
 
@@ -86,8 +85,8 @@ public class PCco_ItemBlockBlockSaver extends PC_ItemBlock {
 		if (world.canPlaceEntityOnSide(placedID, x, y, z, false, face, entityplayer, setItem)) {
 			Block block = Block.blocksList[placedID];
 
-			if (ValueWriting.setBID(world, pos, placedID, placedMeta)) {
-				if (GameInfo.getBID(world, pos) == placedID) {
+			if (PC_Utils.setBID(world, pos, placedID, placedMeta)) {
+				if (PC_Utils.getBID(world, pos) == placedID) {
 					/** @todo onBlockPlacedBy*/
 					Block.blocksList[placedID].onBlockPlacedBy(world, x, y, z, entityplayer, setItem);
 
@@ -97,7 +96,7 @@ public class PCco_ItemBlockBlockSaver extends PC_ItemBlock {
 					if (itemstack.hasTagCompound()) {
 						NBTTagCompound tag = itemstack.getTagCompound();
 
-						TileEntity tec = GameInfo.getTE(world, pos);
+						TileEntity tec = PC_Utils.getTE(world, pos);
 						if (tec != null) {
 							int cx = tec.xCoord;
 							int cy = tec.yCoord;
@@ -155,15 +154,4 @@ public class PCco_ItemBlockBlockSaver extends PC_ItemBlock {
 		list.add(i.getItemDisplayName(is));
 	}
 	
-	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName(), "Block Saver"));
-            return names;
-		}
-		return null;
-	}
-
 }

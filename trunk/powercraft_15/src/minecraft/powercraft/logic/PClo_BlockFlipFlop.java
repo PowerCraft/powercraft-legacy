@@ -14,11 +14,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_MathHelper;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.annotation.PC_Shining;
 import powercraft.api.annotation.PC_Shining.OFF;
@@ -27,10 +22,14 @@ import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 import powercraft.launcher.PC_Property;
 
 @PC_Shining
-@PC_BlockInfo(itemBlock=PClo_ItemBlockFlipFlop.class, tileEntity=PClo_TileEntityFlipFlop.class)
+@PC_BlockInfo(name="FlipFlop", itemBlock=PClo_ItemBlockFlipFlop.class, tileEntity=PClo_TileEntityFlipFlop.class, canPlacedRotated=true)
 public class PClo_BlockFlipFlop extends PC_Block
 {
     private static Random rand = new Random();
@@ -42,7 +41,7 @@ public class PClo_BlockFlipFlop extends PC_Block
 
     public PClo_BlockFlipFlop(int id, boolean on)
     {
-        super(id, Material.ground, "bottomplate", PClo_FlipFlopType.getTextures());
+        super(id, Material.ground, PClo_FlipFlopType.getTextures());
         setHardness(0.35F);
         setStepSound(Block.soundWoodFootstep);
         disableStats();
@@ -55,25 +54,20 @@ public class PClo_BlockFlipFlop extends PC_Block
         }
     }
 
-    public static int getRotation_static(int meta)
-    {
-        return meta & 0x3;
-    }
-
     @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PClo_TileEntityFlipFlop();
-    }
+	public void initConfig(PC_Property config) {
+		super.initConfig(config);
+		on.setLightValue(config.getInt("brightness", 7) * 0.0625F);
+	}
 
     @Override
     public void updateTick(World world, int x, int y, int z, Random random)
     {
-        int rot = getRotation_static(GameInfo.getMD(world, x, y, z));
         PClo_TileEntityFlipFlop te = getTE(world, x, y, z);
         boolean state = isActive(world, x, y, z);
-        boolean i1 = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.RIGHT, rot);
-        boolean i2 = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot);
-        boolean i3 = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.LEFT, rot);
+        boolean i1 = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.RIGHT)>0;
+        boolean i2 = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
+        boolean i3 = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.LEFT)>0;
         boolean shouldState = false;
 
         switch (te.getType())
@@ -149,7 +143,7 @@ public class PClo_BlockFlipFlop extends PC_Block
 
         if (state != shouldState)
         {
-            ValueWriting.setBlockState(world, x, y, z, shouldState);
+            PC_Utils.setBlockState(world, x, y, z, shouldState);
         }
     }
 
@@ -164,37 +158,36 @@ public class PClo_BlockFlipFlop extends PC_Block
     {
         world.scheduleBlockUpdate(x, y, z, blockID, tickRate(world));
     }
-
+    
     @Override
-   	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-    	int meta = GameInfo.getMD(world, x, y, z);
-        int rotation = getRotation_static(meta);
+	public int getProvidingWeakRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
+		return getProvidingStrongRedstonePowerValue(world, x, y, z, dir);
+	}
+    
+    @Override
+	public int getProvidingStrongRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
+    	PC_Direction rotation = getRotation(PC_Utils.getMD(world, x, y, z));
 
         if (!isActive(world, x, y, z))
         {
             return 0;
         }
 
-        if ((rotation == 0 && s == 3) || (rotation == 1 && s == 4) || (rotation == 2 && s == 2) || (rotation == 3 && s == 5))
+        if (rotation == dir)
         {
             return 15;
         }
 
         if (getType(world, x, y, z) == PClo_FlipFlopType.RS)
         {
-            if ((rotation == 0 && s == 2) || (rotation == 1 && s == 5) || (rotation == 2 && s == 3) || (rotation == 3 && s == 4))
+            if (rotation == dir.mirror())
             {
                 return 15;
             }
         }
 
         return 0;
-   	}
-
-   	@Override
-   	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
-   		return isProvidingWeakPower(world, x, y, z, s);
-   	}
+	}
 
     @Override
     public boolean canProvidePower()
@@ -216,7 +209,7 @@ public class PClo_BlockFlipFlop extends PC_Block
 
     public static PClo_TileEntityFlipFlop getTE(IBlockAccess world, int x, int y, int z)
     {
-        TileEntity te = GameInfo.getTE(world, x, y, z);;
+        TileEntity te = PC_Utils.getTE(world, x, y, z);;
 
         if (te instanceof PClo_TileEntityFlipFlop)
         {
@@ -240,40 +233,40 @@ public class PClo_BlockFlipFlop extends PC_Block
 
     public static boolean isActive(IBlockAccess world, int x, int y, int z)
     {
-        return GameInfo.getBID(world, x, y, z) == on.blockID;
+        return PC_Utils.getBID(world, x, y, z) == on.blockID;
     }
 
     @Override
-    public Icon getBlockTexture(IBlockAccess iblockaccess, int x, int y, int z, int side)
+    public Icon getBlockTexture(IBlockAccess iblockaccess, int x, int y, int z, PC_Direction side)
     {
-        if (side == 1)
+        if (side == PC_Direction.TOP)
         {
-            return icons[getType(iblockaccess, x, y, z)+2+(isActive(iblockaccess, x, y, z) ? 0 : PClo_FlipFlopType.TOTAL_FLIPFLOP_COUNT)];
+            return sideIcons[getType(iblockaccess, x, y, z)+2+(isActive(iblockaccess, x, y, z) ? 0 : PClo_FlipFlopType.TOTAL_FLIPFLOP_COUNT)];
         }
 
-        if (side == 0)
+        if (side == PC_Direction.BOTTOM)
         {
-            return icons[0];
+            return sideIcons[0];
         }
 
-        return icons[1];
+        return sideIcons[1];
     }
 
     @Override
-    public Icon getBlockTextureFromSideAndMetadata(int side, int meta)
+    public Icon getBlockTextureFromSideAndMetadata(PC_Direction side, int meta)
     {
-        if (side == 0)
+        if (side == PC_Direction.BOTTOM)
         {
-            return icons[0];
+            return sideIcons[0];
         }
 
-        if (side == 1)
+        if (side == PC_Direction.TOP)
         {
-            return icons[meta+2];
+            return sideIcons[meta+2];
         }
         else
         {
-            return icons[1];
+            return sideIcons[1];
         }
     }
 
@@ -294,21 +287,6 @@ public class PClo_BlockFlipFlop extends PC_Block
     {
         setBlockBoundsBasedOnState(world, x, y, z);
         return super.getCollisionBoundingBoxFromPool(world, x, y, z);
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving, ItemStack itemStack)
-    {
-        int type = getType(world, x, y, z);
-        int l = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
-
-        if (entityliving instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed(((EntityPlayer)entityliving)))
-        {
-            l = ValueWriting.reverseSide(l);
-        }
-
-        ValueWriting.setMD(world, x, y, z, l);
-        onNeighborBlockChange(world, x, y, z, 0);
     }
 
     @Override
@@ -348,37 +326,12 @@ public class PClo_BlockFlipFlop extends PC_Block
         int type = getType(world, x, y, z);
         boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
 
-        if (remove && !GameInfo.isCreative(player))
+        if (remove && !PC_Utils.isCreative(player))
         {
             dropBlockAsItem_do(world, x, y, z, new ItemStack(PClo_App.flipFlop, 1, type));
         }
 
         return remove;
     }
-
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_LOAD_FROM_CONFIG:
-			on.setLightValue(((PC_Property)obj[0]).getInt("brightness", 15) * 0.0625F);
-			break;
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.NO_PICKUP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_RENDER_ITEM_HORIZONTAL:
-			return false;
-		case PC_MSGRegistry.MSG_ROTATION:
-			return getRotation_static((Integer)obj[0]);
-		default:
-			return null;
-		}
-		return true;
-	}
    	
 }

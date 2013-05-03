@@ -16,11 +16,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.annotation.PC_Shining;
 import powercraft.api.annotation.PC_Shining.OFF;
@@ -30,10 +25,14 @@ import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 import powercraft.launcher.PC_Property;
 
 @PC_Shining
-@PC_BlockInfo(tileEntity=PCli_TileEntityLight.class)
+@PC_BlockInfo(name="Light", tileEntity=PCli_TileEntityLight.class)
 public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 {
     @ON
@@ -53,31 +52,24 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
             setCreativeTab(CreativeTabs.tabDecorations);
         }
     }
-
-    @Override
-	public boolean showInCraftingTool() {
-    	if(this==on)
-			return true;
-		return false;
-	}
     
     @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PCli_TileEntityLight();
-    }
+	public void initConfig(PC_Property config) {
+		super.initConfig(config);
+		on.setLightValue(config.getInt("brightness", 15) * 0.0625F);
+	}
 
-    @Override
-    public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
-    {
-        PCli_TileEntityLight te = GameInfo.getTE(par1iBlockAccess, par2, par3, par4);
+	@Override
+    public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, PC_Direction par5){
+        PCli_TileEntityLight te = PC_Utils.getTE(par1iBlockAccess, par2, par3, par4);
 
         if (te == null) return
                     super.getBlockTexture(par1iBlockAccess, par2, par3, par4, par5);
 
         if (!te.isHuge()) 
-        	return icons[0];
+        	return sideIcons[0];
 
-        return icons[1];
+        return sideIcons[1];
     }
 
     @Override
@@ -118,7 +110,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 	@Override
     public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving player, ItemStack itemStack)
     {
-        PCli_TileEntityLight tileentity = GameInfo.getTE(world, i, j, k);
+        PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k);
 
         if (tileentity != null && tileentity.isStable())
         {
@@ -142,7 +134,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     {
         ItemStack ihold = entityplayer.getCurrentEquippedItem();
 
-        PCli_TileEntityLight te = GameInfo.<PCli_TileEntityLight>getTE(world, i, j, k, blockID);
+        PCli_TileEntityLight te = PC_Utils.<PCli_TileEntityLight>getTE(world, i, j, k);
         
         if (ihold != null)
         {
@@ -162,92 +154,60 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int i, int j, int k, int l)
+    public void onNeighborBlockChange(World world, int x, int y, int z, int id)
     {
-        PCli_TileEntityLight tileentity = GameInfo.getTE(world, i, j, k, blockID);
+        PCli_TileEntityLight tileentity = PC_Utils.getTE(world, x, y, z);
 
         if (tileentity == null || tileentity.isStable())
         {
             return;
         }
 
-        boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k)||GameInfo.isPoweredDirectly(world, i, j, k) ;
+        boolean powered = PC_Utils.getBlockRedstonePowereValue(world, x, y, z)>0;
 
         if (tileentity.isActive() != powered)
         {
-            world.scheduleBlockUpdate(i, j, k, blockID, 1);
+            world.scheduleBlockUpdate(x, y, z, blockID, 1);
         }
     }
 
     @Override
-    public void updateTick(World world, int i, int j, int k, Random random)
+    public void updateTick(World world, int x, int y, int z, Random random)
     {
-        PCli_TileEntityLight tileentity = GameInfo.getTE(world, i, j, k);
+        PCli_TileEntityLight tileentity = PC_Utils.getTE(world, x, y, z);
 
         if (tileentity == null || tileentity.isStable())
         {
             return;
         }
 
-        boolean powered = GameInfo.isPoweredDirectly(world, i, j, k) || world.isBlockIndirectlyGettingPowered(i, j, k);
+        boolean powered = PC_Utils.getBlockRedstonePowereValue(world, x, y, z)>0;
 
         if (tileentity.isActive() != powered)
         {
-            onPoweredBlockChange(world, i, j, k, powered);
+            onPoweredBlockChange(world, x, y, z, powered);
         }
-    }
-
-    private boolean isAttachmentBlockPowered(World world, int x, int y, int z, int side)
-    {
-        if (side == 0)
-        {
-            return GameInfo.isPoweredDirectly(world, x, y-1, z) && world.getBlockId(x, y - 1, x) != 0;
-        }
-
-        if (side == 1)
-        {
-            return GameInfo.isPoweredDirectly(world, x, y, z+1) && world.getBlockId(x, y, x + 1) != 0;
-        }
-
-        if (side == 2)
-        {
-            return GameInfo.isPoweredDirectly(world, x, y, z-1) && world.getBlockId(x, y, x - 1) != 0;
-        }
-
-        if (side == 3)
-        {
-            return GameInfo.isPoweredDirectly(world, x+1, y, z) && world.getBlockId(x + 1, y, x) != 0;
-        }
-
-        if (side == 4)
-        {
-            return GameInfo.isPoweredDirectly(world, x-1, y, z) && world.getBlockId(x - 1, y, x) != 0;
-        }
-
-        if (side == 5)
-        {
-            return GameInfo.isPoweredDirectly(world, x, y+1, z) && world.getBlockId(x, y + 1, x) != 0;
-        }
-
-        return false;
     }
 
     public static void onPoweredBlockChange(World world, int x, int y, int z, boolean rs_state)
     {
-        PCli_TileEntityLight tileentity = GameInfo.getTE(world, x, y, z);
+        PCli_TileEntityLight tileentity = PC_Utils.getTE(world, x, y, z);
 
         if ((tileentity == null || tileentity.isStable()) && rs_state == false)
         {
             return;
         }
 
-        ValueWriting.setBlockState(world, x, y, z, rs_state);
+        PC_Utils.setBlockState(world, x, y, z, rs_state);
     }
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
-        setBlockBoundsBasedOnState(par1World, par2, par3, par4);
+    	TileEntity te = PC_Utils.getTE(par1World, par2, par3, par4);
+    	if(te instanceof PCli_TileEntityLight){
+    		setBlockBoundsBasedOnState(par1World, par2, par3, par4);
+    	}
         return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
     }
 
@@ -255,7 +215,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k)
     {
         int i1 = iblockaccess.getBlockMetadata(i, j, k);
-        PCli_TileEntityLight te = GameInfo.getTE(iblockaccess, i, j, k);
+        PCli_TileEntityLight te = PC_Utils.getTE(iblockaccess, i, j, k);
 
         if (te == null)
         {
@@ -299,7 +259,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 
     private PC_Color getColor(IBlockAccess w, int i, int j, int k)
     {
-        PCli_TileEntityLight tei = GameInfo.getTE(w, i, j, k);
+        PCli_TileEntityLight tei = PC_Utils.getTE(w, i, j, k);
 
         if (tei == null)
         {
@@ -324,7 +284,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     @Override
     public void randomDisplayTick(World world, int i, int j, int k, Random random)
     {
-        PCli_TileEntityLight tei = GameInfo.getTE(world, i, j, k);
+        PCli_TileEntityLight tei = PC_Utils.getTE(world, i, j, k);
 
         if (!tei.isActive())
         {
@@ -396,42 +356,17 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
         return arrayList;
     }
 
-    public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer)
-    {
+    public boolean renderInventoryBlock(int metadata, Object renderer) {
         float sidehalf = 0.1875F;
         float height = 0.15F;
         PC_Renderer.glColor3f(1.0f, 1.0f, 1.0f);
         setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
-        PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
+        PC_Renderer.renderInvBoxWithTexture(renderer, this, sideIcons[0]);
+        return true;
     }
-
+    
 	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_LOAD_FROM_CONFIG:
-			on.setLightValue(((PC_Property)obj[0]).getInt("brightness", 15) * 0.0625F);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			break;
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Light";
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.NO_PICKUP);
-			list.add(PC_Utils.HARVEST_STOP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}
-		default:
-			return null;
-		}
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
 		return true;
 	}
     

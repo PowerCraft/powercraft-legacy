@@ -10,9 +10,6 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.input.Keyboard;
 
-import powercraft.api.PC_Color;
-import powercraft.api.PC_PacketHandler;
-import powercraft.api.PC_VecI;
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresButtonImage;
 import powercraft.api.gres.PC_GresCheckBox;
@@ -36,9 +33,12 @@ import powercraft.api.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.api.gres.PC_GresWindow;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
+import powercraft.api.network.PC_PacketHandler;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_VecI;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import powercraft.weasel.engine.WeaselEngine;
 import powercraft.weasel.obj.WeaselDouble;
@@ -662,15 +662,11 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 	}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_RETURN || i==Keyboard.KEY_E)
+			gui.close();
 	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
+	
 	@Override
 	public void updateTick(PC_IGresGui gui) {
 	}

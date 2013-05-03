@@ -1,14 +1,12 @@
 package powercraft.core;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.api.PC_MathHelper;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
-import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.gres.PC_GresInventory;
 import powercraft.api.gres.PC_GresLabel;
 import powercraft.api.gres.PC_GresLayoutV;
@@ -18,9 +16,11 @@ import powercraft.api.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.api.gres.PC_GresWindow;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
-import powercraft.api.inventory.PC_Slot;
 import powercraft.api.inventory.PC_SlotNoPickup;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCco_GuiOreSnifferResultScreen implements PC_IGresClient {
 
@@ -181,8 +181,8 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresClient {
 				
 				PC_VecI pos = startpos[x][y].offset(vector.copy().mul(distance));
 
-				int id = GameInfo.getBID(world, pos);
-				int meta = GameInfo.getMD(world, pos);
+				int id = PC_Utils.getBID(world, pos);
+				int meta = PC_Utils.getMD(world, pos);
 
 				if (id != 0 && Block.blocksList[id] != null) {
 					if(id==Block.redstoneWire.blockID){
@@ -208,12 +208,11 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresClient {
 	}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN || i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			gui.close();
+		}
 	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}

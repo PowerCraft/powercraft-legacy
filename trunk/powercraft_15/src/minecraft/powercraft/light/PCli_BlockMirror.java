@@ -9,25 +9,21 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.api.PC_BeamTracer.BeamHitResult;
 import powercraft.api.PC_BeamTracer.BeamSettings;
-import powercraft.api.PC_BeamTracer.result;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.registry.PC_BlockRegistry;
-import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(tileEntity=PCli_TileEntityMirror.class)
+@PC_BlockInfo(name="Mirror", tileEntity=PCli_TileEntityMirror.class)
 public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 
 	public PCli_BlockMirror(int id) {
@@ -39,11 +35,6 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 		setResistance(4.0F);
 		setStepSound(Block.soundStoneFootstep);
 		setCreativeTab(CreativeTabs.tabDecorations);
-	}
-
-	@Override
-	public TileEntity newTileEntity(World world, int metadata) {
-		return new PCli_TileEntityMirror();
 	}
 	
 	@Override
@@ -65,7 +56,7 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
     public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving player, ItemStack itemStack)
     {
 		int m = MathHelper.floor_double((((player.rotationYaw + 180F) * 16F) / 360F) + 0.5D) & 0xf;
-		ValueWriting.setMD(world, i, j, k, m);
+		PC_Utils.setMD(world, i, j, k, m);
     }
 	
 	@Override
@@ -74,7 +65,7 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 		if (ihold != null) {
 			if (Block.blocksList[ihold.itemID] == PC_BlockRegistry.getPCBlockByName("PCco_BlockPowerCrystal")) {
 
-				PCli_TileEntityMirror teo = GameInfo.getTE(world, i, j, k, blockID);
+				PCli_TileEntityMirror teo = PC_Utils.getTE(world, i, j, k);
 				if (teo != null) {
 					teo.setMirrorColor(ihold.getItemDamage());
 				}
@@ -90,7 +81,7 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 
 		int m = MathHelper.floor_double((((player.rotationYaw + 180F) * 16F) / 360F) + 0.5D) & 0xf;
 		if(!world.isRemote)
-			ValueWriting.setMD(world, i, j, k, m);
+			PC_Utils.setMD(world, i, j, k, m);
 
 		return true;
 	}
@@ -106,7 +97,7 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 	 */
 	public static int getMirrorColor(IBlockAccess iblockaccess, int x, int y, int z) {
 
-		PCli_TileEntityMirror teo = GameInfo.getTE(iblockaccess, x, y, z);
+		PCli_TileEntityMirror teo = PC_Utils.getTE(iblockaccess, x, y, z);
 
 		if (teo == null) {
 			return 0;
@@ -243,19 +234,43 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 		return angle;
 
 	}
+
+	@Override
+	public boolean renderInventoryBlock(int metadata, Object renderer) {
+		float px = 0.0625F;
+		setBlockBounds(0 * px, 6 * px, 7 * px, 15 * px, 15 * px, 9 * px);
+		PC_Renderer.renderInvBox(renderer, this, 0);
+		setBlockBounds(3 * px, 0 * px, 7 * px, 5 * px, 6 * px, 9 * px);
+		PC_Renderer.renderInvBox(renderer, this, 0);
+		setBlockBounds(10 * px, 0 * px, 7 * px, 12 * px, 6 * px, 9 * px);
+		PC_Renderer.renderInvBox(renderer, this, 0);
+		setBlockBounds(0, 0, 0, 1, 1, 1);
+		return true;
+	}
 	
-	public result onHitByBeamTracer(IBlockAccess world, BeamSettings bs) {
-		PC_VecI pos = bs.getPos();
-		PC_VecI move = bs.getMove();
-		int mirrorColor = PCli_BlockMirror.getMirrorColor(world, pos.x, pos.y, pos.z);
+	@Override
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
+		return true;
+	}
+
+	@Override
+	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
+		arrayList.add(new ItemStack(this));
+		return arrayList;
+	}
+
+	@Override
+	public BeamHitResult onBlockHitByBeam(World world, int x, int y, int z, BeamSettings settings) {
+		PC_VecI move = settings.getMove();
+		int mirrorColor = PCli_BlockMirror.getMirrorColor(world, x, y, z);
 		PC_Color c = null;
 		if(mirrorColor>=0)
 			c = PC_Color.fromHex(PC_Color.crystal_colors[mirrorColor]);
-		if (c==null || bs.getColor().equals(c)) {
+		if (c==null || settings.getColor().equals(c)) {
 			// vertical beam
 			if (move.x == 0 && move.z == 0) {
 	
-				int a = mirrorTo45[GameInfo.getMD(world, pos.x, pos.y, pos.z)];
+				int a = mirrorTo45[PC_Utils.getMD(world, x, y, z)];
 				PC_VecI reflected = getMoveFromAngle(a).mul(-1);
 	
 				move.x = reflected.x;
@@ -263,7 +278,7 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 	
 			} else {
 				float beamAngle = getAngleFromMove(move);
-				float mAngle = mirrorAngle[GameInfo.getMD(world, pos.x, pos.y, pos.z)];
+				float mAngle = mirrorAngle[PC_Utils.getMD(world, x, y, z)];
 	
 				float diff = angleDiff(beamAngle, mAngle);
 	
@@ -278,53 +293,8 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 				move.z = reflected.z;
 			}
 		}
-		bs.setMove(move);
-		return result.CONTINUE;
-	}
-
-	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
-		float px = 0.0625F;
-		setBlockBounds(0 * px, 6 * px, 7 * px, 15 * px, 15 * px, 9 * px);
-		PC_Renderer.renderInvBox(renderer, block, 0);
-		setBlockBounds(3 * px, 0 * px, 7 * px, 5 * px, 6 * px, 9 * px);
-		PC_Renderer.renderInvBox(renderer, block, 0);
-		setBlockBounds(10 * px, 0 * px, 7 * px, 12 * px, 6 * px, 9 * px);
-		PC_Renderer.renderInvBox(renderer, block, 0);
-		setBlockBounds(0, 0, 0, 1, 1, 1);
-	}
-
-	@Override
-	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
-		arrayList.add(new ItemStack(this));
-		return arrayList;
-	}
-
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			break;
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.NO_PICKUP);
-			list.add(PC_Utils.PASSIVE);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Mirror";
-		case PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER:
-			return onHitByBeamTracer(world, (BeamSettings)obj[0]);
-		default:
-			return null;
-		}
-		return true;
+		settings.setMove(move);
+		return BeamHitResult.CONTINUE;
 	}
 	
 }

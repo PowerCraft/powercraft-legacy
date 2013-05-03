@@ -11,16 +11,14 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.api.PC_ClientUtils;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_IMSG;
-import powercraft.api.PC_VecF;
-import powercraft.api.PC_VecI;
-import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.block.PC_Block;
+import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.inventory.PC_ISpecialInventoryTextures;
 import powercraft.api.registry.PC_MSGRegistry;
-import powercraft.launcher.PC_Logger;
+import powercraft.api.utils.PC_ClientUtils;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecF;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -36,29 +34,24 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-		boolean b = false;
-		if(block instanceof PC_IMSG){
-			Object o = ((PC_IMSG)block).msg(PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK, block, metadata, modelID, renderer);
-			if(o instanceof Boolean)
-				b = (Boolean)o;
-		}
-		if(!b){
-			iRenderInvBlockRotatedBox(block, metadata, modelID, renderer);
+		if (block instanceof PC_Block) {
+			PC_Block pcBlock = (PC_Block) block;
+			if (!pcBlock.renderInventoryBlock(metadata, renderer)) {
+				iRenderInvBlockRotatedBox(block, metadata, modelID, renderer);
+			}
 		}
 	}
-
+	
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-		boolean b = false;
-		if(block instanceof PC_IMSG){
-			Object o = ((PC_IMSG) block).msg(PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK, world, new PC_VecI(x, y, z), block, modelId, renderer);
-			if(o instanceof Boolean)
-				b = (Boolean)o;
+		if (block instanceof PC_Block) {
+			PC_Block pcBlock = (PC_Block) block;
+			if (!pcBlock.renderWorldBlock(world, x, y, z, renderer)) {
+				iRenderBlockRotatedBox(world, x, y, z, block, modelId, renderer);
+			}
+			return true;
 		}
-		if(!b){
-			iRenderBlockRotatedBox(world, x, y, z, block, modelId, renderer);
-		}
-		return true;
+		return false;
 	}
 
 	@Override
@@ -140,28 +133,30 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, -1F, 0.0F);
-		renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, textures[0]);
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, textures[1]);
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, 0.0F, -1F);
-		renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, textures[2]);
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, textures[3]);
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(-1F, 0.0F, 0.0F);
-		renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, textures[4]);
-		tessellator.draw();
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(1.0F, 0.0F, 0.0F);
-		renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, textures[5]);
+		if(textures[0]!=null){
+			tessellator.setNormal(0.0F, -1F, 0.0F);
+			renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, textures[0]);
+		}
+		if(textures[1]!=null){
+			tessellator.setNormal(0.0F, 1.0F, 0.0F);
+			renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, textures[1]);
+		}
+		if(textures[2]!=null){
+			tessellator.setNormal(0.0F, 0.0F, -1F);
+			renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, textures[2]);
+		}
+		if(textures[3]!=null){
+			tessellator.setNormal(0.0F, 0.0F, 1.0F);
+			renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, textures[3]);
+		}
+		if(textures[4]!=null){
+			tessellator.setNormal(-1F, 0.0F, 0.0F);
+			renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, textures[4]);
+		}
+		if(textures[5]!=null){
+			tessellator.setNormal(1.0F, 0.0F, 0.0F);
+			renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, textures[5]);
+		}
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		((RenderBlocks)renderer).unlockBlockBounds();
@@ -169,87 +164,24 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	
 	@Override
 	protected void iRenderBlockRotatedBox(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer){
-		Tessellator tessellator = Tessellator.instance;
-		int metaAt = world.getBlockMetadata(x, y, z);
-
-		if (block instanceof PC_IMSG) {
-
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-
+		RenderBlocks renderblocks = (RenderBlocks)renderer;
+		if(block instanceof PC_Block){
 			block.setBlockBoundsBasedOnState(world, x, y, z);
-			((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
-			Object o=((PC_IMSG) block).msg(PC_MSGRegistry.MSG_ROTATION, metaAt);
-			if(o instanceof Integer){
-				PC_Direction d = PC_Direction.BACK;
-				for(int i=0; i<(Integer)o; i++){
-					d = d.rotateRight();
-				}
-				o = d;
-			}
-			if(o instanceof PC_Direction){
-				((RenderBlocks)renderer).uvRotateTop = ((PC_Direction)o).getMCDir();
-				((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
-				((RenderBlocks)renderer).uvRotateTop = 0;
-			}else{
-				iRenderBlock(world, x, y, z, block, modelId, (RenderBlocks)renderer);
-			}
+			renderblocks.setRenderBoundsFromBlock(block);
+			renderblocks.uvRotateTop = ((PC_Block)block).getRotation2(PC_Utils.getMD(world, x, y, z)).getMCSide();
+			renderblocks.renderStandardBlock(block, x, y, z);
+			renderblocks.uvRotateTop = 0;
 		}else{
-			iRenderBlock(world, x, y, z, block, modelId, (RenderBlocks)renderer);
+			iRenderBlock(world, x, y, z, block, modelId, renderblocks);
 		}
 
 	}
 	
 	@Override
 	protected void iRenderInvBlockRotatedBox(Block block, int metadata, int modelID, Object renderer){
-		RenderBlocks renderblocks = (RenderBlocks)renderer;
-		Tessellator tessellator = Tessellator.instance;
-		
-		if (block instanceof PC_IMSG) {
 
-			Object o=((PC_IMSG) block).msg(PC_MSGRegistry.MSG_RENDER_ITEM_HORIZONTAL);
-			if(o instanceof Boolean){
-				boolean renderOnSide = (Boolean)o;
-	
-				if (renderOnSide) {
-					block.setBlockBoundsForItemRender();
-				} else {
-					ValueWriting.setBlockBounds(block, -0.1F, -0.1F, 0.4F, 1.1F, 1.1F, 0.6F);
-				}
-				
-				((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
-				GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, -1F, 0.0F);
-				renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 0 : 0, metadata));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, 1.0F, 0.0F);
-				renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 1 : 0, metadata));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, 0.0F, -1F);
-				renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 2 : 0, metadata));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, 0.0F, 1.0F);
-				renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 3 : 1, metadata));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(-1F, 0.0F, 0.0F);
-				renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 4 : 0, metadata));
-				tessellator.draw();
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(1.0F, 0.0F, 0.0F);
-				renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 5 : 0, metadata));
-				tessellator.draw();
-				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-				((RenderBlocks)renderer).unlockBlockBounds();
-			}else{
-				iRenderInvBox(renderer, block, metadata);
-			}
-			return;
-		}
+		iRenderInvBox(renderer, block, metadata);
+
 	}
 	
 	protected void iRenderBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
@@ -460,7 +392,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		float f1 = 1.0F; // 1.6F;
 		float f2 = 0.01666667F * f1;
 		GL11.glPushMatrix();
-		GL11.glTranslatef((float) x + 0.5F, (float) y + yOffset, (float) z + 0.5F);
+		GL11.glTranslatef(0, yOffset - 0.5F, 0);
 		GL11.glNormal3f(0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);

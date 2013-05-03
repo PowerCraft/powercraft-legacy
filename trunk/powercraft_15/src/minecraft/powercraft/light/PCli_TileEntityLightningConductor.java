@@ -7,17 +7,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecF;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecF;
 
 public class PCli_TileEntityLightningConductor extends PC_TileEntity
 {
 	
     private int lightningCharge = 0;
     private int lightningChargeRequired = 0;
-
+    
     private static final int FLASH_CHARGE_MIN = 8000;
     private static final int FLASH_CHARGE_MAX = 17000;
     
@@ -35,7 +35,8 @@ public class PCli_TileEntityLightningConductor extends PC_TileEntity
     @Override
     public void updateEntity()
     {
-        if (tileEntityInvalid)
+    	int meta = PC_Utils.getMD(worldObj, getCoord());
+        if (tileEntityInvalid || meta==0)
         {
             return;
         }
@@ -56,7 +57,6 @@ public class PCli_TileEntityLightningConductor extends PC_TileEntity
                         worldObj.addWeatherEffect(bolt);
                     }
 
-                    ValueWriting.givePowerToBlock(worldObj, xCoord, yCoord - 2, zCoord, 1000.0f);
                     lightningCharge = 0;
                     lightningChargeRequired = getLightningChargeRequired();
                 }
@@ -65,21 +65,21 @@ public class PCli_TileEntityLightningConductor extends PC_TileEntity
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF(getCoord())
+                    PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF(getCoord())
                             .offset(-0.1F + rand.nextFloat() * 1.2F, rand.nextFloat() * 0.8F - 1.0f, -0.1F + rand.nextFloat() * 1.2F), new PC_Color(
                             		0.6f, 0.6f, 1.0f), new PC_VecF(), 0);
                 }
 
                 for (int i = 0; i < 2; i++)
                 {
-                    ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF(getCoord())
+                    PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF(getCoord())
                             .offset(0.1F + rand.nextFloat() * 0.8F, rand.nextFloat() * 0.8F - 0.2f, 0.1F + rand.nextFloat() * 0.8F), new PC_Color(
                             		0.6f, 0.6f, 1.0f), new PC_VecF(), 0);
                 }
 
                 for (int i = 0; i < 2; i++)
                 {
-                    ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF(getCoord())
+                    PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF(getCoord())
                             .offset(0.2F + rand.nextFloat() * 0.6F, rand.nextFloat() * 0.9F - 0.4f, 0.2F + rand.nextFloat() * 0.6F), new PC_Color(
                                     0.6f, 0.6f, 1.0f), new PC_VecF(), 0);
                 }

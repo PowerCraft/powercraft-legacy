@@ -8,15 +8,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class, tileEntity=PCtr_TileEntitySeparationBelt.class)
+@PC_BlockInfo(name="separation belt", tileEntity=PCtr_TileEntitySeparationBelt.class, canPlacedRotated=true)
 public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
 {
     public PCtr_BlockBeltSeparator(int id)
@@ -36,14 +36,10 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
 
         PCtr_TileEntitySeparationBelt tes = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
         PC_Direction redir = tes.getDirection(entity);
-        int rotation = PCtr_BeltHelper.getRotation(world.getBlockMetadata(i, j, k));
-        for(;rotation>0; rotation--){
-        	redir = redir.rotateLeft();
-        }
+        PC_Direction rotation = getRotation(world.getBlockMetadata(i, j, k));
+        rotation.rotate(redir);
 
-        PC_VecI pos_leading_to = pos.offset(redir.getDir());
-
-        rotation = PCtr_BeltHelper.getDir(redir);
+        PC_VecI pos_leading_to = pos.offset(rotation.getOffset());
         
         if (entity instanceof EntityItem && PCtr_BeltHelper.storeEntityItemAt(world, pos_leading_to, (EntityItem) entity, redir))
         {
@@ -84,23 +80,9 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
                 }
             }
 
-            PC_GresRegistry.openGres("SeperationBelt", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+            PC_GresRegistry.openGres("SeperationBelt", entityplayer, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
             return true;
         }
     }
 
-    @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PCtr_TileEntitySeparationBelt();
-    }
-    
-	@Override
-	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:{
-			return "separation belt";
-		}
-		}
-		return null;
-	}
 }

@@ -33,11 +33,6 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 		super(player, te, o);
 	}
 
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
 	private void makeProgramTab(PC_GresTab tab){
 		List<Keyword> kw = (List<Keyword>)te.getData("keywords");
 		PC_GresLayoutV lv = new PC_GresLayoutV();
@@ -154,9 +149,9 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 		if(widget==launchProgram){
 			te.call("launch", program.getText());
 		}else if(widget==restartProgram){
-			te.call("restart", null);
+			te.call("restart");
 		}else if(widget==stopProgram){
-			te.call("stop", null);
+			te.call("stop");
 		}else{
 			super.actionPerformed(widget, gui);
 		}

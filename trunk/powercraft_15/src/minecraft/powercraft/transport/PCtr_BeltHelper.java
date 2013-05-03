@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartContainer;
@@ -37,16 +36,15 @@ import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_MathHelper;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
+import powercraft.api.block.PC_Block;
 import powercraft.api.inventory.PC_IInventory;
 import powercraft.api.inventory.PC_IInventoryWrapper;
 import powercraft.api.inventory.PC_InventoryUtils;
-import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_SoundRegistry;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCtr_BeltHelper
 {
@@ -106,7 +104,7 @@ public class PCtr_BeltHelper
             return true;
         }
 
-        if (GameInfo.isEntityFX(entity))
+        if (PC_Utils.isEntityFX(entity))
         {
             return true;
         }
@@ -295,9 +293,9 @@ public class PCtr_BeltHelper
     {
         if (entity.getEntityItem().itemID == Item.bucketWater.itemID)
         {
-            if (GameInfo.getBID(world, pos) == Block.cauldron.blockID && GameInfo.getMD(world, pos) < 3)
+            if (PC_Utils.getBID(world, pos) == Block.cauldron.blockID && PC_Utils.getMD(world, pos) < 3)
             {
-            	ValueWriting.setMD(world, pos, 3);
+            	PC_Utils.setMD(world, pos, 3);
                 entity.getEntityItem().itemID = Item.bucketEmpty.itemID;
                 return true;
             }
@@ -305,9 +303,9 @@ public class PCtr_BeltHelper
 
         if (entity.getEntityItem().itemID == Item.bucketEmpty.itemID)
         {
-            if (GameInfo.getBID(world, pos) == Block.waterStill.blockID || GameInfo.getBID(world, pos) == Block.waterMoving.blockID && GameInfo.getMD(world, pos) == 0)
+            if (PC_Utils.getBID(world, pos) == Block.waterStill.blockID || PC_Utils.getBID(world, pos) == Block.waterMoving.blockID && PC_Utils.getMD(world, pos) == 0)
             {
-            	ValueWriting.setBID(world, pos, 0, 0);
+            	PC_Utils.setBID(world, pos, 0, 0);
                 entity.getEntityItem().itemID = Item.bucketWater.itemID;
                 return true;
             }
@@ -315,10 +313,10 @@ public class PCtr_BeltHelper
 
         if (entity.getEntityItem().itemID == Item.glassBottle.itemID)
         {
-            if (GameInfo.getBID(world, pos) == Block.cauldron.blockID && GameInfo.getBID(world, pos) > 0)
+            if (PC_Utils.getBID(world, pos) == Block.cauldron.blockID && PC_Utils.getBID(world, pos) > 0)
             {
-                int meta = GameInfo.getMD(world, pos);
-                ValueWriting.setMD(world, pos, meta - 1);
+                int meta = PC_Utils.getMD(world, pos);
+                PC_Utils.setMD(world, pos, meta - 1);
                 EntityItem entity2 = new EntityItem(world, entity.posX, entity.posY, entity.posZ, new ItemStack(Item.potion.itemID, 1, 0));
                 entity2.motionX = entity.motionX;
                 entity2.motionY = entity.motionY;
@@ -352,46 +350,33 @@ public class PCtr_BeltHelper
             return false;
         }
 
-        int rot = getRotation(GameInfo.getMD(world, pos));
+        PC_Block block = PC_Utils.getBlock(world, pos);
+        PC_Direction rot = block.getRotation(PC_Utils.getMD(world, pos));
 
         if (isBeyondStorageBorder(world, rot, pos, entity, STORAGE_BORDER) || ignoreStorageBorder)
         {
-            if (rot == 0 && storeEntityItemAt(world, pos.offset(0, 0, -1), entity, PC_Direction.BACK))
+        	
+            if (storeEntityItemAt(world, pos.offset(rot.getOffset()), entity, rot))
             {
                 return true;
             }
 
-            if (rot == 1 && storeEntityItemAt(world, pos.offset(1, 0, 0), entity, PC_Direction.RIGHT))
+            if (rot != PC_Direction.BACK && rot != PC_Direction.FRONT && storeEntityItemAt(world, pos.offset(0, 0, -1), entity, PC_Direction.BACK))
             {
                 return true;
             }
 
-            if (rot == 2 && storeEntityItemAt(world, pos.offset(0, 0, 1), entity, PC_Direction.FRONT))
+            if (rot != PC_Direction.LEFT && rot != PC_Direction.RIGHT && storeEntityItemAt(world, pos.offset(1, 0, 0), entity, PC_Direction.RIGHT))
             {
                 return true;
             }
 
-            if (rot == 3 && storeEntityItemAt(world, pos.offset(-1, 0, 0), entity, PC_Direction.LEFT))
+            if (rot != PC_Direction.FRONT && rot != PC_Direction.BACK && storeEntityItemAt(world, pos.offset(0, 0, 1), entity, PC_Direction.FRONT))
             {
                 return true;
             }
 
-            if (rot != 0 && rot != 2 && storeEntityItemAt(world, pos.offset(0, 0, -1), entity, PC_Direction.BACK))
-            {
-                return true;
-            }
-
-            if (rot != 1 && rot != 3 && storeEntityItemAt(world, pos.offset(1, 0, 0), entity, PC_Direction.RIGHT))
-            {
-                return true;
-            }
-
-            if (rot != 2 && rot != 0 && storeEntityItemAt(world, pos.offset(0, 0, 1), entity, PC_Direction.FRONT))
-            {
-                return true;
-            }
-
-            if (rot != 3 && rot != 1 && storeEntityItemAt(world, pos.offset(-1, 0, 0), entity, PC_Direction.LEFT))
+            if (rot != PC_Direction.RIGHT && rot != PC_Direction.LEFT && storeEntityItemAt(world, pos.offset(-1, 0, 0), entity, PC_Direction.LEFT))
             {
                 return true;
             }
@@ -481,7 +466,7 @@ public class PCtr_BeltHelper
 
         if (isWall)
         {
-            Block block = Block.blocksList[GameInfo.getBID(world, blockPos)];
+            Block block = Block.blocksList[PC_Utils.getBID(world, blockPos)];
 
             if (block != null)
             {
@@ -497,7 +482,7 @@ public class PCtr_BeltHelper
 
     public static boolean isConveyorAt(World world, PC_VecI pos)
     {
-        int id = GameInfo.getBID(world, pos);
+        int id = PC_Utils.getBID(world, pos);
 
         if (id > 0)
         {
@@ -512,7 +497,7 @@ public class PCtr_BeltHelper
 
     public static boolean isTransporterAt(World world, PC_VecI pos)
     {
-        int id = GameInfo.getBID(world, pos);
+        int id = PC_Utils.getBID(world, pos);
 
         if (id > 0)
         {
@@ -543,57 +528,34 @@ public class PCtr_BeltHelper
     	return -1;
     }
     
-    public static boolean isBeyondStorageBorder(World world, int rotation, PC_VecI beltPos, Entity entity, float border)
+    public static boolean isBeyondStorageBorder(World world, PC_Direction rotation, PC_VecI beltPos, Entity entity, float border)
     {
-        switch (rotation)
-        {
-            case 0:
-                if (entity.posZ > beltPos.z + 1 - border)
-                {
-                    return false;
-                }
-
-                break;
-
-            case 1:
-                if (entity.posX < beltPos.x + border)
-                {
-                    return false;
-                }
-
-                break;
-
-            case 2:
-                if (entity.posZ < beltPos.z + border)
-                {
-                    return false;
-                }
-
-                break;
-
-            case 3:
-                if (entity.posX > beltPos.x + 1 - border)
-                {
-                    return false;
-                }
-
-                break;
-                
-            case 4:
-                if (entity.posY > beltPos.y + 1 - border)
-                {
-                    return false;
-                }
-
-                break;
-                
-            case 5:
-                if (entity.posY < beltPos.y + border)
-                {
-                    return false;
-                }
-                break;
-        }
+    	
+    	if(rotation==PC_Direction.BACK){
+    		 if (entity.posZ > beltPos.z + 1 - border){
+                 return false;
+             }
+    	}else if(rotation==PC_Direction.LEFT){
+    		if (entity.posX < beltPos.x + border){
+                return false;
+            }
+    	}else if(rotation==PC_Direction.FRONT){
+    		if (entity.posZ < beltPos.z + border){
+                return false;
+            }
+    	}else if(rotation==PC_Direction.RIGHT){
+    		if (entity.posX > beltPos.x + 1 - border){
+                return false;
+            }
+    	}else if(rotation==PC_Direction.TOP){
+    		if (entity.posY > beltPos.y + 1 - border) {
+                return false;
+            }
+    	}else if(rotation==PC_Direction.BOTTOM){
+    		if (entity.posY < beltPos.y + border){
+                return false;
+            }
+    	}
 
         return true;
     }
@@ -630,7 +592,7 @@ public class PCtr_BeltHelper
         }
     }
 
-    public static void moveEntityOnBelt(World world, PC_VecI pos, Entity entity, boolean bordersEnabled, boolean motionEnabled, int moveDirection,
+    public static void moveEntityOnBelt(World world, PC_VecI pos, Entity entity, boolean bordersEnabled, boolean motionEnabled, PC_Direction direction,
             double max_horizontal_speed, double horizontal_boost)
     {
     	int jumpModifier = (entity instanceof EntityItem || entity instanceof EntityXPOrb)?2:3;
@@ -645,6 +607,8 @@ public class PCtr_BeltHelper
             }
         }
 
+        int moveDirection = direction.getMCSide();
+        
         if (moveDirection<4 && (entity instanceof EntityItem || entity instanceof EntityXPOrb))
         {
         	if(entity instanceof EntityItem){
@@ -702,7 +666,7 @@ public class PCtr_BeltHelper
 
                 break;
 
-            case 1:
+            case 2:
                 if (motionX <= max_horizontal_speed && motionEnabled)
                 {
                     entity.addVelocity(horizontal_boost, 0, 0);
@@ -723,7 +687,7 @@ public class PCtr_BeltHelper
 
                 break;
 
-            case 2:
+            case 3:
                 if (motionZ <= max_horizontal_speed && motionEnabled)
                 {
                     entity.addVelocity(0, 0, horizontal_boost);
@@ -744,7 +708,7 @@ public class PCtr_BeltHelper
 
                 break;
 
-            case 3:
+            case 1:
                 if (motionX >= -max_horizontal_speed && motionEnabled)
                 {
                     entity.addVelocity(-horizontal_boost, 0, 0);
@@ -965,28 +929,6 @@ public class PCtr_BeltHelper
                 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.6F);
     }
 
-    public static int getPlacedMeta(EntityLiving player)
-    {
-        int l = PC_MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 2.5D) & 3;
-
-        if (player instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed(((EntityPlayer)player)))
-        {
-            l = ValueWriting.reverseSide(l);
-        }
-
-        if (l == 2)
-        {
-            l = 8;
-        }
-
-        if (l == 3)
-        {
-            l = 9;
-        }
-
-        return l;
-    }
-
     public static boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer)
     {
         ItemStack stack = entityplayer.getCurrentEquippedItem();
@@ -1005,7 +947,7 @@ public class PCtr_BeltHelper
                 world.spawnEntityInWorld(EntityMinecart.func_94090_a(world, i + 0.5F, j + 0.5F, k + 0.5F, ((ItemMinecart) equip_item).minecartType));
             }
 
-            if (!GameInfo.isCreative(entityplayer))
+            if (!PC_Utils.isCreative(entityplayer))
             {
                 entityplayer.inventory.decrStackSize(entityplayer.inventory.currentItem, 1);
             }
@@ -1018,57 +960,7 @@ public class PCtr_BeltHelper
 
     public static boolean isActive(int meta)
     {
-        return meta == getActiveMeta(meta);
-    }
-
-    public static int getActiveMeta(int meta)
-    {
-        switch (meta)
-        {
-            case 0:
-                return 6;
-
-            case 1:
-                return 7;
-
-            case 8:
-                return 14;
-
-            case 9:
-                return 15;
-        }
-
-        return meta;
-    }
-
-    public static int getPassiveMeta(int meta)
-    {
-        switch (meta)
-        {
-            case 6:
-                return 0;
-
-            case 7:
-                return 1;
-
-            case 14:
-                return 8;
-
-            case 15:
-                return 9;
-        }
-
-        return meta;
-    }
-
-    public static int getMeta(int meta, boolean on)
-    {
-        if (on)
-        {
-            return getActiveMeta(meta);
-        }
-
-        return getPassiveMeta(meta);
+        return (meta & 8) != 0;
     }
 
     public static boolean storeAllSides(World world, PC_VecI pos, EntityItem entity)
@@ -1125,7 +1017,7 @@ public class PCtr_BeltHelper
 
     public static void tryToDispenseItem(World world, PC_VecI beltPos)
     {
-        int rot = getRotation(GameInfo.getMD(world, beltPos));
+        int rot = getRotation(PC_Utils.getMD(world, beltPos));
 
         if (rot == 2 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, -1), beltPos))
         {
@@ -1313,7 +1205,7 @@ public class PCtr_BeltHelper
     }
 
     public static ItemStack[] dispenseStuffFromInventory(World world, PC_VecI beltPos, IInventory inventory){
-    	 PCtr_TileEntityEjectionBelt teb = GameInfo.getTE(world, beltPos);
+    	 PCtr_TileEntityEjectionBelt teb = PC_Utils.getTE(world, beltPos);
         if (isSpecialContainer(inventory))
         {
             return dispenseFromSpecialContainer(inventory, teb);

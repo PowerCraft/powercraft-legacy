@@ -3,12 +3,8 @@ package powercraft.weasel;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,24 +16,22 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_MathHelper;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.Communication;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_ItemRegistry;
 import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(itemBlock=PCws_ItemBlockWeasel.class, tileEntity=PCws_TileEntityWeasel.class)
+@PC_BlockInfo(name="Weasel", itemBlock=PCws_ItemBlockWeasel.class, tileEntity=PCws_TileEntityWeasel.class)
 public class PCws_BlockWeasel extends PC_Block {
 
 	public PCws_BlockWeasel(int id) {
-		super(id, Material.ground, null);
+		super(id, Material.ground);
 		setHardness(0.5F);
 		setLightValue(0);
 		setStepSound(Block.soundWoodFootstep);
@@ -50,22 +44,17 @@ public class PCws_BlockWeasel extends PC_Block {
 	@Override
 	public void onIconLoading() {
 		for(PCws_WeaselPluginInfo pluginInfo:PCws_WeaselManager.getPluginInfoMap().values()){
-			pluginInfo.onIconLoading(this);
+			pluginInfo.onIconLoading();
 		}
 	}
 
-	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5) {
-		return GameInfo.<PCws_TileEntityWeasel>getTE(par1iBlockAccess, par2, par3, par4).getTexture(par5);
+	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, PC_Direction par5) {
+		return PC_Utils.<PCws_TileEntityWeasel>getTE(par1iBlockAccess, par2, par3, par4).getTexture(par5);
 	}
 	
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
-		return PCws_WeaselManager.getPluginInfo(0).getTexture(0);
-	}
-
-	@Override
-	public TileEntity newTileEntity(World world, int metadata) {
-		return new PCws_TileEntityWeasel();
+	public Icon getBlockTextureFromSideAndMetadata(PC_Direction par1, int par2) {
+		return PCws_WeaselManager.getPluginInfo(0).getTexture(PC_Direction.BOTTOM);
 	}
 	
 	@Override
@@ -81,7 +70,7 @@ public class PCws_BlockWeasel extends PC_Block {
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-		PCws_TileEntityWeasel te = GameInfo.getTE(world, x, y, z);
+		PCws_TileEntityWeasel te = PC_Utils.getTE(world, x, y, z);
 		if(te!=null){
 			float[] bounds = te.getPluginInfo().getBounds();
 			setBlockBounds(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
@@ -120,66 +109,30 @@ public class PCws_BlockWeasel extends PC_Block {
 	
 	
 	@Override
-	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int dir) {
-		PCws_WeaselPlugin weaselPlugin = GameInfo.<PCws_TileEntityWeasel>getTE(world, x, y, z).getPlugin();
+	public int getProvidingWeakRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction pcDir) {
+		PCws_WeaselPlugin weaselPlugin = PC_Utils.<PCws_TileEntityWeasel>getTE(world, x, y, z).getPlugin();
+		int dir = pcDir.getMCDir();
 		if(weaselPlugin!=null){
-			
-			int meta = GameInfo.getMD(world, x, y, z);
-			int rotation = getRotation(meta);
 			if(dir==0){
 				return weaselPlugin.getOutport(4);
 			}else if(dir==1){
 				return weaselPlugin.getOutport(5);
+			}else if(dir==2){
+				return weaselPlugin.getOutport(0);
+			}else if(dir==3){
+				return weaselPlugin.getOutport(3);
+			}else if(dir==4){
+				return weaselPlugin.getOutport(2);
 			}else{
-				if(rotation==0){
-					if(dir==2){
-						return weaselPlugin.getOutport(0);
-					}else if(dir==3){
-						return weaselPlugin.getOutport(3);
-					}else if(dir==4){
-						return weaselPlugin.getOutport(2);
-					}else{
-						return weaselPlugin.getOutport(1);
-					}
-				}else if(rotation==1){
-					if(dir==2){
-						return weaselPlugin.getOutport(2);
-					}else if(dir==3){
-						return weaselPlugin.getOutport(1);
-					}else if(dir==4){
-						return weaselPlugin.getOutport(3);
-					}else{
-						return weaselPlugin.getOutport(0);
-					}
-				}else if(rotation==2){
-					if(dir==2){
-						return weaselPlugin.getOutport(3);
-					}else if(dir==3){
-						return weaselPlugin.getOutport(0);
-					}else if(dir==4){
-						return weaselPlugin.getOutport(1);
-					}else{
-						return weaselPlugin.getOutport(2);
-					}
-				}else{
-					if(dir==2){
-						return weaselPlugin.getOutport(1);
-					}else if(dir==3){
-						return weaselPlugin.getOutport(2);
-					}else if(dir==4){
-						return weaselPlugin.getOutport(0);
-					}else{
-						return weaselPlugin.getOutport(3);
-					}
-				}
+				return weaselPlugin.getOutport(1);
 			}
 		}
 		return 0;
 	}
 
 	@Override
-	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int dir) {
-		return isProvidingWeakPower(world, x, y, z, dir);
+	public int getProvidingStrongRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
+		return getProvidingWeakRedstonePowerValue(world, x, y, z, dir);
 	}
 	
 	@Override
@@ -202,7 +155,7 @@ public class PCws_BlockWeasel extends PC_Block {
 						weaselPlugin.connectToNetwork(PCws_WeaselManager.getNetwork(network));
 						world.scheduleBlockUpdate(x, y, z, blockID, 1);
 
-						Communication.chatMsg(PC_LangRegistry.tr("pc.weasel.activatorSetNetwork", new String[] { network }), true);
+						PC_Utils.chatMsg(PC_LangRegistry.tr("pc.weasel.activatorSetNetwork", new String[] { network }));
 						world.playSoundEffect(x, y, z, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F, 0.5F);
 					}
 				}else{
@@ -211,7 +164,7 @@ public class PCws_BlockWeasel extends PC_Block {
 						ihold.setTagCompound(new NBTTagCompound());
 					}
 					ihold.getTagCompound().setString("WeaselNetwork", network);
-					Communication.chatMsg(PC_LangRegistry.tr("pc.weasel.activatorGetNetwork", new String[] { network }), true);
+					PC_Utils.chatMsg(PC_LangRegistry.tr("pc.weasel.activatorGetNetwork", new String[] { network }));
 				}
 				return true;
 			}
@@ -231,20 +184,6 @@ public class PCws_BlockWeasel extends PC_Block {
         weaselPlugin.openGui(player);
         
         return true;
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack itemStack) {
-		int l = PC_MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 2.5D) & 3;
-
-        if (player instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed(((EntityPlayer)player)))
-        {
-            l = ValueWriting.reverseSide(l);
-        }
-        
-        ValueWriting.setMD(world, x, y, z, l);
-        
-		super.onBlockPlacedBy(world, x, y, z, player, itemStack);
 	}
 
 	@Override
@@ -272,10 +211,10 @@ public class PCws_BlockWeasel extends PC_Block {
 	@Override
     public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
     {
-        int type = GameInfo.<PCws_TileEntityWeasel>getTE(world, x, y, z).getType();
+        int type = PC_Utils.<PCws_TileEntityWeasel>getTE(world, x, y, z).getType();
         boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
 
-        if (remove && !GameInfo.isCreative(player))
+        if (remove && !PC_Utils.isCreative(player))
         {
             dropBlockAsItem_do(world, x, y, z, new ItemStack(PCws_App.weasel, 1, type));
         }
@@ -285,7 +224,7 @@ public class PCws_BlockWeasel extends PC_Block {
 	
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-		PCws_TileEntityWeasel te = GameInfo.getTE(world, x, y, z);
+		PCws_TileEntityWeasel te = PC_Utils.getTE(world, x, y, z);
 
 		if (te != null) {
 			String b = (String)te.getData("error");
@@ -300,21 +239,13 @@ public class PCws_BlockWeasel extends PC_Block {
 	}
 	
 	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			PCws_WeaselManager.getPluginInfo((Integer)obj[1]).renderInventoryBlock((PCws_BlockWeasel)obj[0], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			break;
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			return list;
-		}
-		default:
-			return null;
-		}
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
+		return true;
+	}
+
+	@Override
+	public boolean renderInventoryBlock(int metadata, Object renderer) {
+		PCws_WeaselManager.getPluginInfo(metadata).renderInventoryBlock(this, renderer);
 		return true;
 	}
 
@@ -323,7 +254,7 @@ public class PCws_BlockWeasel extends PC_Block {
 			return null;
 		PCws_WeaselPlugin wp = null;
 		if(world.blockExists(x, y, z))
-			wp = GameInfo.<PCws_TileEntityWeasel>getTE(world, x, y, z).getPlugin();
+			wp = PC_Utils.<PCws_TileEntityWeasel>getTE(world, x, y, z).getPlugin();
 		if(wp==null)
 			wp = PCws_WeaselManager.getPlugin(world, x, y, z);
 		return wp;
@@ -341,18 +272,18 @@ public class PCws_BlockWeasel extends PC_Block {
 	 * @param pos the block position
 	 * @return array of booleans
 	 */
-	public static int[] getWeaselInputStates(World world, PC_VecI pos) {
+	public int[] getWeaselInputStates(World world, PC_VecI pos) {
 
 		if(!world.blockExists(pos.x, pos.y, pos.z))
 			return null;
 		
 		return new int[]{
-				powered_from_input(world, pos, 0),
-				powered_from_input(world, pos, 1),
-				powered_from_input(world, pos, 2),
-				powered_from_input(world, pos, 3),
-				powered_from_input(world, pos, 4),
-				powered_from_input(world, pos, 5)
+				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.BACK),
+				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.LEFT),
+				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.RIGHT),
+				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.FRONT),
+				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.TOP),
+				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.BOTTOM)
 			};
 		
 	}
@@ -361,79 +292,10 @@ public class PCws_BlockWeasel extends PC_Block {
 		if(world.getIndirectPowerLevelTo(x, y, z, rot)>0){
 			return world.getIndirectPowerLevelTo(x, y, z, rot);
 		}
-		if(GameInfo.getBID(world, x, y, z) == Block.redstoneWire.blockID){
-			return GameInfo.getMD(world, x, y, z);
+		if(PC_Utils.getBID(world, x, y, z) == Block.redstoneWire.blockID){
+			return PC_Utils.getMD(world, x, y, z);
 		}
 		return 0;
-	}
-	
-	/**
-	 * Is the gate powered from given input? This method takes care of rotation
-	 * for you. 0 BACK, 1 LEFT, 2 RIGHT, 3 FRONT, 4 BOTTOM, 5 TOP
-	 * 
-	 * @param world the World
-	 * @param pos the block position
-	 * @param inp the input number
-	 * @return is powered
-	 */
-	public static int powered_from_input(World world, PC_VecI pos, int inp) {
-		if (world == null) return 0;
-		int x = pos.x, y = pos.y, z = pos.z;
-		
-		if (inp == 4) {
-			return gettingPowerFrom(world, x, y - 1, z, 0);
-		}
-		if (inp == 5) {
-			return gettingPowerFrom(world, x, y + 1, z, 1);
-		}
-
-		int rotation = getRotation(world.getBlockMetadata(x, y, z));
-		int N0 = 0, N1 = 1, N2 = 2, N3 = 3;
-		if (inp == 0) {
-			N0 = 0;
-			N1 = 1;
-			N2 = 2;
-			N3 = 3;
-		}else if (inp == 1) {
-			N0 = 3;
-			N1 = 0;
-			N2 = 1;
-			N3 = 2;
-		} else if (inp == 2) {
-			N0 = 1;
-			N1 = 2;
-			N2 = 3;
-			N3 = 0;
-		} else if (inp == 3) {
-			N0 = 2;
-			N1 = 3;
-			N2 = 0;
-			N3 = 1;
-		}
-
-		if (rotation == N0) {
-			return gettingPowerFrom(world, x, y, z + 1, 3);
-		}
-		if (rotation == N1) {
-			return gettingPowerFrom(world, x - 1, y, z, 4);
-		}
-		if (rotation == N2) {
-			return gettingPowerFrom(world, x, y, z - 1, 2);
-		}
-		if (rotation == N3) {
-			return gettingPowerFrom(world, x + 1, y, z, 5);
-		}
-		return 0;
-	}
-	
-	/**
-	 * Get gate rotation, same as getRotation, but available statically
-	 * 
-	 * @param meta block meta
-	 * @return rotation 0,1,2,3
-	 */
-	public static int getRotation(int meta) {
-		return meta & 3;
 	}
 	
 }

@@ -15,10 +15,6 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.inventory.PC_ISpecialInventoryTextures;
@@ -28,15 +24,18 @@ import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(tileEntity=PCma_TileEntityAutomaticWorkbench.class)
-public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo
+@PC_BlockInfo(name="Automatic Workbench", tileEntity=PCma_TileEntityAutomaticWorkbench.class, canPlacedRotated=true)
+public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_IItemInfo
 {
     private static final int TXTOP = 0, TXSIDE = 1, TXFRONT = 2;
 
     public PCma_BlockAutomaticWorkbench(int id)
     {
-        super(id, Material.ground, "workbench_top", "side", "workbench_front");
+        super(id, Material.ground, "workbench_top", "side", "workbench_front", "side", "side", "side");
         setHardness(0.7F);
         setResistance(10.0F);
         setStepSound(Block.soundMetalFootstep);
@@ -54,91 +53,6 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
         }
 
         super.breakBlock(world, i, j, k, par5, par6);
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving, ItemStack itemStack)
-    {
-        int l = MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 2.5D) & 3;
-
-        if (entityliving instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed(((EntityPlayer)entityliving)))
-        {
-            l = ValueWriting.reverseSide(l);
-        }
-
-        ValueWriting.setMD(world, i, j, k, l);
-    }
-
-    @Override
-    public Icon getBlockTextureFromSideAndMetadata(int s, int m)
-    {
-        if (m == 0)
-        {
-            m = 2;
-        }
-        else if (m == 1)
-        {
-            m = 5;
-        }
-        else if (m == 2)
-        {
-            m = 3;
-        }
-        else if (m == 3)
-        {
-            m = 4;
-        }
-
-        if (s == 1)
-        {
-            return icons[TXTOP];
-        }
-
-        if (s == 0)
-        {
-            return icons[TXSIDE];
-        }
-        else
-        {
-            if (m == s)
-            {
-                return icons[TXSIDE];
-            }
-
-            if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4))
-            {
-                return icons[TXFRONT];
-            }
-
-            return icons[TXSIDE];
-        }
-    }
-
-    @Override
-    public Icon getInvTexture(int i, int m)
-    {
-        if (i == 1)
-        {
-            return icons[TXTOP];
-        }
-
-        if (i == 0)
-        {
-            return icons[TXSIDE];
-        }
-
-        if (i == 3)
-        {
-            return icons[TXFRONT];
-        }
-        else if (i == 4)
-        {
-            return icons[TXSIDE];
-        }
-        else
-        {
-            return icons[TXSIDE];
-        }
     }
 
     @Override
@@ -168,7 +82,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
         if (world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k)
                 || world.isBlockIndirectlyGettingPowered(i, j - 1, k))
         {
-            ((PCma_TileEntityAutomaticWorkbench)GameInfo.getTE(world, i, j, k)).doCrafting();
+            ((PCma_TileEntityAutomaticWorkbench)PC_Utils.getTE(world, i, j, k)).doCrafting();
         }
     }
 
@@ -191,13 +105,8 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
             }
         }
 
-        PC_GresRegistry.openGres("AutomaticWorkbench", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+        PC_GresRegistry.openGres("AutomaticWorkbench", entityplayer, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
         return true;
-    }
-
-    @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PCma_TileEntityAutomaticWorkbench();
     }
     
     @Override
@@ -206,25 +115,5 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
-
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Automatic Workbench";
-		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-	   		list.add(PC_Utils.NO_HARVEST);
-	   		list.add(PC_Utils.NO_PICKUP);
-	   		list.add(PC_Utils.HARVEST_STOP);
-	   		return list;
-		}
-		}
-		return null;
-	}
    	
 }

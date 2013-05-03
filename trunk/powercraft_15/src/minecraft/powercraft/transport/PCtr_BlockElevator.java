@@ -12,15 +12,15 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_MathHelper;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(itemBlock=PCtr_ItemBlockElevator.class)
+@PC_BlockInfo(name="Elevator", itemBlock=PCtr_ItemBlockElevator.class)
 public class PCtr_BlockElevator extends PC_Block
 {
     private static final double BORDERS = 0.25D;
@@ -48,8 +48,8 @@ public class PCtr_BlockElevator extends PC_Block
     }
     
     @Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
-		return meta==0?icons[0]:icons[1];
+	public Icon getBlockTextureFromSideAndMetadata(PC_Direction side, int meta) {
+		return meta==0?sideIcons[0]:sideIcons[1];
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class PCtr_BlockElevator extends PC_Block
             }
         }
 
-        boolean down = (GameInfo.getMD(world, pos) == 1);
+        boolean down = (PC_Utils.getMD(world, pos) == 1);
         PCtr_BeltHelper.entityPreventDespawning(world, pos, true, entity);
         boolean halted = world.isBlockIndirectlyGettingPowered(i, j, k);
         double BBOOST = (entity instanceof EntityPlayer) ? BORDER_BOOST / 4.0D : BORDER_BOOST;
@@ -127,7 +127,7 @@ public class PCtr_BlockElevator extends PC_Block
 
                 if (side != -1)
                 {
-                    PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, side, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
+                    PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, PC_Direction.getFormMCSide(side), PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                             PCtr_BeltHelper.HORIZONTAL_BOOST);
                 }
             }
@@ -137,22 +137,22 @@ public class PCtr_BlockElevator extends PC_Block
                 {
                     if (PCtr_BeltHelper.isConveyorAt(world, pos.offset(1, 0, 0)))
                     {
-                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, 1, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
+                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, PC_Direction.RIGHT, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                                 PCtr_BeltHelper.HORIZONTAL_BOOST * (down ? 1.2D : 1));
                     }
                     else if (PCtr_BeltHelper.isConveyorAt(world, pos.offset(-1, 0, 0)))
                     {
-                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, 3, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
+                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, PC_Direction.FRONT, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                                 PCtr_BeltHelper.HORIZONTAL_BOOST * (down ? 1.2D : 1));
                     }
                     else if (PCtr_BeltHelper.isConveyorAt(world, pos.offset(0, 0, 1)))
                     {
-                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, 2, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
+                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, PC_Direction.LEFT, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                                 PCtr_BeltHelper.HORIZONTAL_BOOST * (down ? 1.2D : 1));
                     }
                     else if (PCtr_BeltHelper.isConveyorAt(world, pos.offset(0, 0, -1)))
                     {
-                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, 0, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
+                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, PC_Direction.BACK, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                                 PCtr_BeltHelper.HORIZONTAL_BOOST * (down ? 1.2D : 1));
                     }
                 }
@@ -232,22 +232,5 @@ public class PCtr_BlockElevator extends PC_Block
     {
         return getRenderColor(world.getBlockMetadata(i, j, k));
     }
-
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-	   		list.add(PC_Utils.NO_HARVEST);
-	   		list.add(PC_Utils.NO_PICKUP);
-	   		return list;
-		}
-		}
-		return null;
-	}
     
 }

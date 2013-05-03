@@ -8,11 +8,9 @@ import java.util.List;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-
-import powercraft.api.PC_LangEntry;
-import powercraft.api.PC_Struct2;
+import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.registry.PC_LangRegistry;
-import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.utils.PC_Struct2;
 
 /**
  * 

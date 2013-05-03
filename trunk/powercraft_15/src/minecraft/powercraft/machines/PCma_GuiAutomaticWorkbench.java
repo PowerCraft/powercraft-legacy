@@ -1,5 +1,7 @@
 package powercraft.machines;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.api.gres.PC_GresCheckBox;
 import powercraft.api.gres.PC_GresFrame;
@@ -70,7 +72,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {
-		tileEntity.call("orderAndCraft", null);
+		tileEntity.call("orderAndCraft");
 	}
 
 	@Override
@@ -79,13 +81,10 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 	}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		gui.close();
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN || i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			gui.close();
+		}
 	}
 
 	@Override

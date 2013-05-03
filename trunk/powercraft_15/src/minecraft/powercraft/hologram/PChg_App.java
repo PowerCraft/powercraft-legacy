@@ -5,10 +5,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import powercraft.launcher.loader.PC_Module;
-import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
-import powercraft.launcher.loader.PC_Module.PC_Instance;
-import powercraft.launcher.loader.PC_ModuleObject;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_ItemArmor;
@@ -18,6 +14,10 @@ import powercraft.api.recipes.PC_ShapedRecipes;
 import powercraft.api.recipes.PC_ShapelessRecipes;
 import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_ItemRegistry;
+import powercraft.launcher.loader.PC_Module;
+import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
+import powercraft.launcher.loader.PC_Module.PC_Instance;
+import powercraft.launcher.loader.PC_ModuleObject;
 
 @PC_Module(name="Hologram", version="1.1.0")
 public class PChg_App {

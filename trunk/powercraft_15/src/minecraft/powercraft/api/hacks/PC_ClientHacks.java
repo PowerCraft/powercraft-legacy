@@ -4,8 +4,8 @@ import java.io.File;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.storage.ISaveFormat;
-import powercraft.api.PC_ClientUtils;
 import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.utils.PC_ClientUtils;
 
 public class PC_ClientHacks {
 

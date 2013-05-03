@@ -1,7 +1,6 @@
 package powercraft.light;
 
 import powercraft.api.annotation.PC_ClientServerSync;
-import powercraft.api.registry.PC_ModuleRegistry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
@@ -47,14 +46,12 @@ public class PCli_TileEntityPrism extends PC_TileEntity implements PC_ITileEntit
 			modelPrism.sides[a].showModel = getPrismSide(a);
 		}
 
-		PC_Renderer.glPushMatrix();
 		float f = 1.0F;
-
-		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
 		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCli_App.instance, "prism.png"));
 
 		PC_Renderer.glPushMatrix();
+		PC_Renderer.glRotatef(90, 0, 1, 0);
 		PC_Renderer.glScalef(f, -f, -f);
 
 		PC_Renderer.glEnable(3042 /* GL_BLEND */);
@@ -71,7 +68,6 @@ public class PCli_TileEntityPrism extends PC_TileEntity implements PC_ITileEntit
 		PC_Renderer.glPopMatrix();
 
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		PC_Renderer.glPopMatrix();
 	}
 	
 }

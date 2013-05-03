@@ -1,5 +1,7 @@
 package powercraft.machines;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.api.gres.PC_GresCheckBox;
 import powercraft.api.gres.PC_GresInventory;
@@ -87,13 +89,10 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 	}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		gui.close();
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN || i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			gui.close();
+		}
 	}
 
 	@Override

@@ -1,12 +1,12 @@
 package powercraft.weasel.lang;
 
 
+import net.minecraft.nbt.NBTTagCompound;
 import powercraft.weasel.engine.Calc;
 import powercraft.weasel.engine.InstructionList;
 import powercraft.weasel.engine.WeaselEngine;
 import powercraft.weasel.exception.WeaselRuntimeException;
 import powercraft.weasel.obj.WeaselObject;
-import net.minecraft.nbt.NBTTagCompound;
 
 
 /**

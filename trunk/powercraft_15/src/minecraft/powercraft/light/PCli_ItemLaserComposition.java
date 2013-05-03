@@ -1,5 +1,6 @@
 package powercraft.light;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -15,11 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import powercraft.api.PC_BeamTracer;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_GlobalVariables;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
 import powercraft.api.item.PC_Item;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.reflect.PC_ReflectHelper;
@@ -27,6 +23,10 @@ import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_GlobalVariables;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCli_ItemLaserComposition extends PC_Item
 {
@@ -74,7 +74,7 @@ public class PCli_ItemLaserComposition extends PC_Item
     public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10)
     {
     	
-    	TileEntity te = GameInfo.getTE(world, i, j, k);
+    	TileEntity te = PC_Utils.getTE(world, i, j, k);
     	
     	if(te instanceof PCli_TileEntityLaser){
     		
@@ -217,7 +217,7 @@ public class PCli_ItemLaserComposition extends PC_Item
 	}
 
 	public static boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_VecI coord, PC_ItemStack itemstack, boolean isBurning) {
-		if(block.isOpaqueCube() && !PC_MSGRegistry.hasFlag(beamTracer.getWorld(), coord, PC_Utils.BEAMTRACER_STOP)){
+		if(block.isOpaqueCube()/* && !PC_MSGRegistry.hasFlag(beamTracer.getWorld(), coord, PC_Utils.BEAMTRACER_STOP)*/){
 			return true;
 		}
 		return false;
@@ -284,26 +284,21 @@ public class PCli_ItemLaserComposition extends PC_Item
         int levelSensor = nbtTagCompound.getInteger("level.sensor");
 		return levelSensor>0;
 	}
-
-	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName(), "Laser Composition"));
-			names.add(new LangEntry(getUnlocalizedName() + ".kill", "Kill Level %s"));
-			names.add(new LangEntry(getUnlocalizedName() + ".distance", "Distance Level %s"));
-			names.add(new LangEntry(getUnlocalizedName() + ".sensor", "Sensor Level %s"));;
-            return names;
-		}
-		return null;
-	}
 	
 	public Object areItemsEqual(PC_ItemStack itemStack, int otherMeta, NBTTagCompound otherNbtTag) {
 		NBTTagCompound nbtTag = itemStack.getNBTTag();
 		if(nbtTag==null||otherNbtTag==null)
 			return true;
 		return null;
+	}
+
+	@Override
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry(getUnlocalizedName(), "Laser Composition"));
+		names.add(new LangEntry(getUnlocalizedName() + ".kill", "Kill Level %s"));
+		names.add(new LangEntry(getUnlocalizedName() + ".distance", "Distance Level %s"));
+		names.add(new LangEntry(getUnlocalizedName() + ".sensor", "Sensor Level %s"));;
+        return names;
 	}
 	
 }

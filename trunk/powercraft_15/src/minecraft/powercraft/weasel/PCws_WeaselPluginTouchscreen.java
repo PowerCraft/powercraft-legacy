@@ -5,13 +5,13 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_Entry;
-import powercraft.api.PC_PacketHandler;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Struct4;
-import powercraft.api.PC_VecI;
+import powercraft.api.network.PC_PacketHandler;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_KeyRegistry;
+import powercraft.api.utils.PC_Entry;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Struct4;
+import powercraft.api.utils.PC_VecI;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapAdapter;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import powercraft.weasel.engine.WeaselFunctionManager;
@@ -90,9 +90,9 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 	}
 	
 	@Override
-	public void getClientMsg(String msg, Object obj) {
+	public void getClientMsg(String msg, Object[] obj) {
 		if(msg.equalsIgnoreCase("event")){
-			PC_Struct4<String, PC_VecI, Integer, Integer> event = (PC_Struct4<String, PC_VecI, Integer, Integer>) obj;
+			PC_Struct4<String, PC_VecI, Integer, Integer> event = (PC_Struct4<String, PC_VecI, Integer, Integer>) obj[0];
 			if(getNetwork()!=null){
 				WeaselDouble mx = new WeaselDouble(event.b.x);
 				WeaselDouble my = new WeaselDouble(event.b.y);

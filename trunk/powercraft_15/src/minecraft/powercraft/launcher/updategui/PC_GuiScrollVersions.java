@@ -1,9 +1,7 @@
 package powercraft.launcher.updategui;
 
-import java.util.Arrays;
 import java.util.List;
 
-import powercraft.launcher.PC_Version;
 import powercraft.launcher.loader.PC_ModuleVersion;
 import powercraft.launcher.update.PC_UpdateManager.ModuleUpdateInfo;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLModuleTag;

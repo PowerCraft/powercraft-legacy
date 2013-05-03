@@ -1,7 +1,8 @@
 package powercraft.api.gres;
 
-import powercraft.api.PC_VecI;
+import net.minecraft.inventory.Slot;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_VecI;
 
 
 public interface PC_IGresGui {
@@ -46,5 +47,9 @@ public interface PC_IGresGui {
 	public void registerAction(PC_GresWidget widget);
 	
 	public PC_TileEntity getTE();
+	
+	public Slot getSlotAt(int x, int y);
+
+	public PC_VecI getMousePos();
 	
 }

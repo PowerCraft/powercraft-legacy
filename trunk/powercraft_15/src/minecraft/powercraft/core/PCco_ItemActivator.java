@@ -1,5 +1,6 @@
 package powercraft.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -8,15 +9,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
-import powercraft.api.PC_MathHelper;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
+import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.item.PC_Item;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_MSGRegistry.MSGIterator;
 import powercraft.api.registry.PC_RecipeRegistry;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCco_ItemActivator extends PC_Item{
     
@@ -27,6 +28,12 @@ public class PCco_ItemActivator extends PC_Item{
         setCreativeTab(CreativeTabs.tabTools);
     }
 
+	@Override
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry(getUnlocalizedName(), "Activation Crystal"));
+		return names;
+	}
+	
     @Override
     public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int x, int y, int z, int l, float par8, float par9, float par10)
     {
@@ -60,28 +67,17 @@ public class PCco_ItemActivator extends PC_Item{
 				pos = new PC_VecI(x, y+1, z);
 			}
 
-			if (GameInfo.getBID(world, pos) == Block.chest.blockID && GameInfo.getBID(world, pos.copy().add(0, -1, 0)) == Block.blockSteel.blockID) {
+			if (PC_Utils.getBID(world, pos) == Block.chest.blockID && PC_Utils.getBID(world, pos.copy().add(0, -1, 0)) == Block.blockSteel.blockID) {
 				break;
 			}
 
-			ItemStack stackchest = ValueWriting.extractAndRemoveChest(world, pos);
+			/*ItemStack stackchest = PC_InventoryUtils.extractAndRemoveChest(world, pos);
 			if (stackchest != null) {
-				ValueWriting.dropItemStack(world, stackchest, pos);
+				PC_Utils.dropItemStack(world, pos, stackchest);
 				return true;
-			}
+			}*/
 		}
 
         return false;
     }
-
-	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName(), "Activation Crystal"));
-            return names;
-		}
-		return null;
-	}
 }

@@ -7,24 +7,20 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import powercraft.api.PC_ClientUtils;
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_VecI;
-import powercraft.api.inventory.PC_Slot;
 import powercraft.api.tileentity.PC_ITileEntityWatcher;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_ClientUtils;
+import powercraft.api.utils.PC_RectI;
+import powercraft.api.utils.PC_VecI;
 
 
 /**
@@ -137,11 +133,7 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 			}
 		}
 
-		if (i == Keyboard.KEY_ESCAPE || i == Keyboard.KEY_E) {
-			gui.onEscapePressed(this);
-		} else if (i == Keyboard.KEY_RETURN) {
-			gui.onReturnPressed(this);
-		}
+		gui.onKeyPressed(this, c, i);
 	}
 
 	@Override
@@ -470,14 +462,13 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 	@Override
     public void handleMouseInput()
     {
-        int var1 = Mouse.getEventX() * this.width / this.mc.displayWidth;
-        int var2 = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+		PC_VecI mp = getMousePos();
 
         if (Mouse.getEventButtonState())
         {
-            this.mouseClicked(var1, var2, Mouse.getEventButton());
+            this.mouseClicked(mp.x, mp.y, Mouse.getEventButton());
         }else{
-            this.mouseMovedOrUp(var1, var2, Mouse.getEventButton());
+            this.mouseMovedOrUp(mp.x, mp.y, Mouse.getEventButton());
         }
     }
 
@@ -487,19 +478,23 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 			s.xDisplayPosition = x - 999;
 			s.yDisplayPosition = y - 999;
 		}
-		Slot s = getSlotAtPosition(x, y);
+		Slot s = getSlotAt(x, y);
 		if(s!=null){
 			s.xDisplayPosition = x-guiLeft-8;
 			s.yDisplayPosition = y-guiTop-8;
 		}
 	}
 	
-	public Slot getSlotAtPosition(int x, int y) {
+	public Slot getSlotAt(int x, int y) {
 		PC_GresWidget w = child.getWidgetUnderMouse(new PC_VecI(x, y));
 		if(w==null)
 			return null;
 		PC_VecI fpos = w.getPositionOnScreen();
 		return w.getSlotUnderMouse(new PC_VecI(x - fpos.x, y - fpos.y));
+	}
+	
+	public Slot getSlotAtPosition(int x, int y){
+		return getSlotAt(x, y);
 	}
 	
 	public List<String> getTooltipAtPosition(int x, int y) {
@@ -523,6 +518,13 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 	
 	public static RenderItem getItemRenderer(){
 		return itemRenderer;
+	}
+	
+	@Override
+	public PC_VecI getMousePos() {
+		int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+	    int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+		return new PC_VecI(x, y);
 	}
 	
 }

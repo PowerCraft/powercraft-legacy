@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import powercraft.api.PC_Color;
-import powercraft.api.PC_VecI;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_VecI;
 import powercraft.weasel.engine.Calc;
 import powercraft.weasel.engine.WeaselEngine;
 import powercraft.weasel.engine.WeaselFunctionManager;

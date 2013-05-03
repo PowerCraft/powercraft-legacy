@@ -3,11 +3,9 @@ package powercraft.api.thread;
 import java.util.ArrayList;
 import java.util.List;
 
-import powercraft.api.PC_GlobalVariables;
-import powercraft.api.PC_IMSG;
-import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_TickRegistry;
 import powercraft.api.tick.PC_ITickHandler;
+import powercraft.api.utils.PC_GlobalVariables;
 
 public class PC_ThreadManager implements PC_ITickHandler {
 

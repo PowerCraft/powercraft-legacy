@@ -1,8 +1,8 @@
 package powercraft.api.gres;
 
 import net.minecraft.client.gui.FontRenderer;
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_VecI;
+import powercraft.api.utils.PC_RectI;
+import powercraft.api.utils.PC_VecI;
 
 
 /**

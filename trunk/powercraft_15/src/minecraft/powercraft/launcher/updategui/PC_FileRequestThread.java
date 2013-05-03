@@ -1,10 +1,7 @@
 package powercraft.launcher.updategui;
 
-import java.io.File;
-
 import javax.swing.JFileChooser;
 
-import powercraft.launcher.PC_Launcher;
 import powercraft.launcher.update.PC_UpdateManager;
 
 public class PC_FileRequestThread extends Thread {

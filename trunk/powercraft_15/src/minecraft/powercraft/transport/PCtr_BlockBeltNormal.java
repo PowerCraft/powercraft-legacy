@@ -4,12 +4,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class)
+@PC_BlockInfo(name="normal belt", canPlacedRotated=true)
 public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase
 {
     public PCtr_BlockBeltNormal(int id)
@@ -39,27 +40,8 @@ public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase
             }
         }
 
-        int direction = PCtr_BeltHelper.getRotation(GameInfo.getMD(world, pos));
-        PC_VecI pos_leading_to = pos.copy();
-
-        switch (direction)
-        {
-            case 0:
-                pos_leading_to.z--;
-                break;
-
-            case 1:
-                pos_leading_to.x++;
-                break;
-
-            case 2:
-                pos_leading_to.z++;
-                break;
-
-            case 3:
-                pos_leading_to.x--;
-                break;
-        }
+        PC_Direction direction = getRotation(PC_Utils.getMD(world, pos));
+        PC_VecI pos_leading_to = pos.offset(direction.getOffset());
 
         boolean leadsToNowhere = PCtr_BeltHelper.isBlocked(world, pos_leading_to);
         leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, direction, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
@@ -73,14 +55,4 @@ public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase
         double boost = PCtr_BeltHelper.HORIZONTAL_BOOST;
         PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, direction, speed_max, boost);
     }
-    
-	@Override
-	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:{
-			return "normal belt";
-		}
-		}
-		return null;
-	}
 }

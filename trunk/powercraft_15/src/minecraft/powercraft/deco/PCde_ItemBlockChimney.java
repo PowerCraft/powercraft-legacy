@@ -1,5 +1,6 @@
 package powercraft.deco;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -51,6 +52,15 @@ public class PCde_ItemBlockChimney extends PC_ItemBlock {
 	}
 
 	@Override
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry(getUnlocalizedName() + ".type0", "Cobblestone Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type1", "Brick Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type2", "StoneBrick Chimney"));
+        return names;
+	}
+	
+	
+	
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_MSGRegistry.MSG_DEFAULT_NAME:

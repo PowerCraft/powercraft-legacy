@@ -19,35 +19,21 @@ import net.minecraft.world.ChunkCache;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-import powercraft.api.PC_ClientUtils;
-import powercraft.api.PC_IMSG;
-import powercraft.api.PC_VecI;
+import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.renderer.PC_IOverlayRenderer;
+import powercraft.api.renderer.PC_OverlayRenderer;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tick.PC_ITickHandler;
+import powercraft.api.utils.PC_ClientUtils;
+import powercraft.api.utils.PC_VecI;
 
-public class PChg_HologramGlassesOverlay implements PC_IMSG, PC_ITickHandler {
+public class PChg_HologramGlassesOverlay implements PC_IOverlayRenderer, PC_ITickHandler {
 
 	private static int glList;
 	private static int tick=0;
 	private static boolean update=true;
 	public static PChg_TileEntityHologramField fieldToUpdate;
-	
-	@Override
-	public Object msg(int msg, Object... obj) {
-		if(msg==PC_MSGRegistry.MSG_RENDER_OVERLAY){
-			onRenderOverlay((GuiIngame)obj[0]);
-		}
-		return null;
-	}
-
-	private static void onRenderOverlay(GuiIngame gi) {
-		EntityPlayer player = PC_ClientUtils.mc().thePlayer;
-		ItemStack helmet = player.inventory.armorItemInSlot(3);
-		if(helmet!=null && helmet.itemID == PChg_App.hologramGlasses.itemID){
-			drawArea(PC_ClientUtils.mc(), player);
-		}
-	}
 
 	private static void drawArea(Minecraft mc, EntityPlayer player){
 		ScaledResolution sr = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
@@ -108,6 +94,7 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG, PC_ITickHandler {
 						if(tileEntity!=null && !(tileEntity instanceof PChg_TileEntityHologramField)){
 							if(TileEntityRenderer.instance.getFontRenderer()!=null){
 								GL11.glPushAttrib(-1);
+								mc.renderEngine.resetBoundTexture();
 								TileEntityRenderer.instance.renderTileEntityAt(tileEntity, pos.x+xx, pos.y+yy, pos.z+zz, 1);
 								GL11.glPopAttrib();
 							}
@@ -133,6 +120,7 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG, PC_ITickHandler {
         {
         	GL11.glPushAttrib(-1);
             var7 = (Entity)var5.get(var6);
+            mc.renderEngine.resetBoundTexture();
             RenderManager.instance.renderEntity(var7, 1);
             GL11.glPopAttrib();
         }
@@ -158,6 +146,20 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG, PC_ITickHandler {
 			}
 		}
 		tick++;
+	}
+
+	@Override
+	public void preOverlayRendering(PC_OverlayRenderer overlayRenderer, float timeStamp, boolean screen, int mx, int my) {
+		EntityPlayer player = PC_ClientUtils.mc().thePlayer;
+		ItemStack helmet = player.inventory.armorItemInSlot(3);
+		if(helmet!=null && helmet.itemID == PChg_App.hologramGlasses.itemID){
+			drawArea(PC_ClientUtils.mc(), player);
+		}
+	}
+
+	@Override
+	public void postOverlayRendering(PC_OverlayRenderer overlayRenderer, float timeStamp, boolean screen, int mx, int my) {
+		
 	}
 	
 }

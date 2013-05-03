@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import powercraft.api.PC_PacketHandler;
+
+import org.lwjgl.input.Keyboard;
+
 import powercraft.api.gres.PC_GresLayoutV;
 import powercraft.api.gres.PC_GresRadioButton;
 import powercraft.api.gres.PC_GresRadioButton.PC_GresRadioGroup;
@@ -24,6 +24,7 @@ import powercraft.api.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.api.gres.PC_GresWindow;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
+import powercraft.api.network.PC_PacketHandler;
 import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
@@ -80,7 +81,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 		
 		gui.add(w);
 	}
-
+	
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {}
 
@@ -96,12 +97,11 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 	}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN || i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			gui.close();
+		}
 	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}

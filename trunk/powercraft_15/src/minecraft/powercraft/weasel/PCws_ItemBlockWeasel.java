@@ -1,5 +1,6 @@
 package powercraft.weasel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -28,18 +29,13 @@ public class PCws_ItemBlockWeasel extends PC_ItemBlock {
 	}
 
 	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			for(Entry<Integer, PCws_WeaselPluginInfo>e:PCws_WeaselManager.getPluginInfoMap().entrySet()){
-				names.add(new LangEntry(getUnlocalizedName() + "." + e.getValue().getKey(), e.getValue().getDefaultName()));
-			}
-			return names;
-		default:
-			return null;
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		for(Entry<Integer, PCws_WeaselPluginInfo>e:PCws_WeaselManager.getPluginInfoMap().entrySet()){
+			names.add(new LangEntry(getUnlocalizedName() + "." + e.getValue().getKey(), e.getValue().getDefaultName()));
 		}
-		//return true;
+		return names;
 	}
+	
+	
 
 }

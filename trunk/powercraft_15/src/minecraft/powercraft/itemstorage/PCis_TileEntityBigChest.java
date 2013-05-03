@@ -12,17 +12,16 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_Entry;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecF;
-import powercraft.api.PC_VecI;
 import powercraft.api.inventory.PC_IInventoryWrapper;
 import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.recipes.PC_3DRecipe;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Entry;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecF;
+import powercraft.api.utils.PC_VecI;
 
 public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInventoryWrapper {
 
@@ -78,7 +77,7 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 		if(pos==TOPBACKRIGHT || pos==TOPFRONTRIGHT || pos==BOTTOMBACKRIGHT || pos==BOTTOMFRONTRIGHT){
 			p.sub(3, 0, 0);
 		}
-		return GameInfo.getTE(worldObj, p);
+		return PC_Utils.getTE(worldObj, p);
 	}
 	
 	public void setPos(int pos){
@@ -110,7 +109,7 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 		}
 		Random rand = new Random();
 		PC_Color color = new PC_Color(0.7f + rand.nextFloat()*0.3f, rand.nextFloat()*0.3f, 0.2f+rand.nextFloat()*0.3f);
-		ValueWriting.spawnParticle("PC_EntityFanFX", worldObj, new PC_VecF(getCoord()), new PC_VecF(rand.nextFloat()-0.5f, rand.nextFloat()-0.5f, rand.nextFloat()-0.5f),
+		PC_Utils.spawnParticle("PC_EntityFanFX", worldObj, new PC_VecF(getCoord()), new PC_VecF(rand.nextFloat()-0.5f, rand.nextFloat()-0.5f, rand.nextFloat()-0.5f),
 				new PC_VecF(rand.nextFloat()-0.5f, rand.nextFloat()-0.5f, rand.nextFloat()-0.5f).div(10.0f), 0.05f + rand.nextFloat()*0.1f, color);
 		
 	}
@@ -149,8 +148,8 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 		for(int x=0; x<=1; x++){
 			for(int y=0; y<=1; y++){
 				for(int z=0; z<=1; z++){
-					if(GameInfo.getBID(worldObj, pos.offset(x*3, y*3, z*3))==PCis_App.bigChest.blockID){
-						ValueWriting.setBID(worldObj, pos.offset(x*3, y*3, z*3), Block.glass.blockID, 0);
+					if(PC_Utils.getBID(worldObj, pos.offset(x*3, y*3, z*3))==PCis_App.bigChest.blockID){
+						PC_Utils.setBID(worldObj, pos.offset(x*3, y*3, z*3), Block.glass.blockID, 0);
 					}
 				}
 			}

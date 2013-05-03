@@ -8,9 +8,14 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
+import powercraft.api.block.PC_Block;
+import powercraft.api.interfaces.PC_IBeamHandler;
+import powercraft.api.interfaces.PC_IBeamHandlerExt;
+import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 /**
  * Laser beam tracing class
@@ -19,34 +24,34 @@ import powercraft.api.registry.PC_MSGRegistry;
  * @copy (c) 2012
  */
 public class PC_BeamTracer {
-
+	
 	private Random rand = new Random();
-
+	
 	private PC_VecI startCoord, startMove;
-
+	
 	/**
 	 * The beam color.<br>
 	 * This object also contains information about beam visibility (particles
 	 * enabled) and power crystal metadata.
 	 */
 	private PC_Color origColor;
-
+	
 	private PC_IBeamHandler handler;
-
+	
 	/** The current world */
 	protected World world;
-
+	
 	private boolean canChangeColor = false;
 	private boolean canHitEntity = false;
 	private boolean handleBlocks = true;
-
+	
 	private int maxTotalLength = 8000;
 	private int start_limit = 40;
 	private int maximum_current_limit = 80;
 	private float strength = 0.2f;
-
+	
 	private HashMap<String, Object> data = new HashMap<String, Object>();
-
+	
 	/**
 	 * Laser beam raytracer
 	 * 
@@ -59,11 +64,11 @@ public class PC_BeamTracer {
 		this.handler = handler;
 		this.world = worldObj;
 	}
-
+	
 	public World getWorld() {
 		return world;
 	}
-
+	
 	/**
 	 * Set if the beam can change color on PowerCrystals
 	 * 
@@ -75,7 +80,7 @@ public class PC_BeamTracer {
 		canChangeColor = state;
 		return this;
 	}
-
+	
 	/**
 	 * Set starting strength
 	 * 
@@ -86,12 +91,12 @@ public class PC_BeamTracer {
 		this.strength = strength;
 		return this;
 	}
-
+	
 	public PC_BeamTracer setBlockHandels(boolean b) {
 		handleBlocks = b;
 		return this;
 	}
-
+	
 	/**
 	 * Set starting range
 	 * 
@@ -103,7 +108,7 @@ public class PC_BeamTracer {
 		start_limit = length;
 		return this;
 	}
-
+	
 	/**
 	 * Set maximum current limit. When crystal adds some length, it is checked
 	 * against this limit and shortened if needed.<br>
@@ -117,7 +122,7 @@ public class PC_BeamTracer {
 		maximum_current_limit = length;
 		return this;
 	}
-
+	
 	/**
 	 * Set how many blocks a crystal adds.
 	 * 
@@ -129,7 +134,7 @@ public class PC_BeamTracer {
 		data.put(key, value);
 		return this;
 	}
-
+	
 	/**
 	 * Set the highest possible length (all forked beams together)
 	 * 
@@ -141,7 +146,7 @@ public class PC_BeamTracer {
 		maxTotalLength = length;
 		return this;
 	}
-
+	
 	/**
 	 * Set starting coordinates of the beam (the device)
 	 * 
@@ -154,7 +159,7 @@ public class PC_BeamTracer {
 		startCoord = new PC_VecI(x, y, z);
 		return this;
 	}
-
+	
 	/**
 	 * Set starting coordinates of the beam (the device)
 	 * 
@@ -165,11 +170,11 @@ public class PC_BeamTracer {
 		startCoord = coord.copy();
 		return this;
 	}
-
+	
 	public PC_VecI getStartCoord() {
 		return startCoord.copy();
 	}
-
+	
 	/**
 	 * Set starting movement vector of the beam
 	 * 
@@ -182,7 +187,7 @@ public class PC_BeamTracer {
 		startMove = new PC_VecI(x, y, z);
 		return this;
 	}
-
+	
 	/**
 	 * Set starting movement vector of the beam
 	 * 
@@ -193,7 +198,7 @@ public class PC_BeamTracer {
 		startMove = coord.copy();
 		return this;
 	}
-
+	
 	/**
 	 * Set starting beam color (can be changed by power crystals)
 	 * 
@@ -207,7 +212,7 @@ public class PC_BeamTracer {
 		origColor = color.copy();
 		return this;
 	}
-
+	
 	/**
 	 * Set initial beam color
 	 * 
@@ -223,7 +228,7 @@ public class PC_BeamTracer {
 		origColor = new PC_Color(r, g, b);
 		return this;
 	}
-
+	
 	/**
 	 * Set whether the beam can detect entities
 	 * 
@@ -234,23 +239,22 @@ public class PC_BeamTracer {
 		canHitEntity = state;
 		return this;
 	}
-
+	
 	/**
 	 * Total beam length in this flash. <br>
 	 * Used to prevent infinite loops and stack overflow.
 	 */
 	private int totalLength = 0;
-
+	
 	/**
 	 * Send one light quantum and spawn particles on the way.
 	 */
 	public void flash() {
 		totalLength = 0;
-
-		forkBeam(new BeamSettings(this, startCoord, startMove, origColor,
-				strength, start_limit));
+		
+		forkBeam(new BeamSettings(this, startCoord, startMove, origColor, strength, start_limit));
 	}
-
+	
 	/**
 	 * Fork current beam. To be called only by subclasses.
 	 * 
@@ -265,116 +269,106 @@ public class PC_BeamTracer {
 	 */
 	public void forkBeam(BeamSettings settings) {
 		// copy parameters to prevent interference
-
+		
 		for (; settings.length > 0; settings.length--) {
-
+			
 			if (++totalLength > maxTotalLength) {
 				return;
 			}
-
+			
 			if (world.isRemote) {
-
-				addLaser(world, settings.pos, settings.move, strength,
-						settings.color);
-
+				
+				addLaser(world, settings.pos, settings.move, strength, settings.color);
+				
 			}
-
+			
 			settings.pos.add(settings.move);
-
-			int id = GameInfo.getBID(world, settings.pos);
-
+			
+			int id = PC_Utils.getBID(world, settings.pos);
+			
 			Block b = Block.blocksList[id];
-			result res = result.CONTINUE;
+			BeamHitResult res = BeamHitResult.CONTINUE;
 			if (b != null) {
-				res = result.FALLBACK;
-				if (b instanceof PC_IMSG && handleBlocks) {
-					Object o = ((PC_IMSG) b).msg(PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER, getWorld(), settings);
-					if (o instanceof result)
-						res = (result) o;
+				res = BeamHitResult.FALLBACK;
+				if (b instanceof PC_Block && handleBlocks) {
+					res = ((PC_Block) b).onBlockHitByBeam(world, settings.pos.x, settings.pos.y, settings.pos.z, settings);
 				}
-			}else if(handler instanceof PC_IBeamHandlerExt){
-				boolean stop = ((PC_IBeamHandlerExt)handler).onEmptyBlockHit(this, settings.pos);
+			} else if (handler instanceof PC_IBeamHandlerExt) {
+				boolean stop = ((PC_IBeamHandlerExt) handler).onEmptyBlockHit(this, settings.pos);
 				if (stop) {
 					return;
 				}
 			}
-
-			if (res == result.FALLBACK) {
-
+			
+			if (res == BeamHitResult.FALLBACK) {
 				
 				boolean stop = true;
-				if(handler!=null)
+				if (handler != null)
 					stop = handler.onBlockHit(this, b, settings.pos);
-
+				
 				if (stop) {
 					return;
 				}
-
-			} else if (res == result.CONTINUE) {
-
+				
+			} else if (res == BeamHitResult.CONTINUE) {
+				
 				// just continue
-
-			} else if (res == result.STOP) {
-
+				
+			} else if (res == BeamHitResult.STOP) {
+				
 				// break loop
 				return;
-
+				
 			}
-
+			
 			if (canHitEntity) {
-
+				
 				// check for entities in this block.
 				/**
 				 * @todo getBoundingBox??
 				 */
-				List<Entity> hitList = world.getEntitiesWithinAABB(
-						Entity.class, AxisAlignedBB.getBoundingBox(
-								settings.pos.x, settings.pos.y, settings.pos.z,
-								settings.pos.x + 1, settings.pos.y + 1,
-								settings.pos.z + 1));
-
+				List<Entity> hitList = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(settings.pos.x, settings.pos.y, settings.pos.z,
+						settings.pos.x + 1, settings.pos.y + 1, settings.pos.z + 1));
+				
 				boolean stop = false;
 				for (Entity entity : hitList) {
-					res = result.FALLBACK;
+					res = BeamHitResult.FALLBACK;
 					if (entity instanceof PC_IMSG && handleBlocks) {
-						Object o = ((PC_IMSG) entity).msg(
-								PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER,
-								getWorld(), settings);
-						if (o instanceof result)
-							res = (result) o;
+						Object o = ((PC_IMSG) entity).msg(PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER, world, settings);
+						if (o instanceof BeamHitResult)
+							res = (BeamHitResult) o;
 					}
-					if (res == result.FALLBACK) {
-
-						if(handler!=null){
+					if (res == BeamHitResult.FALLBACK) {
+						
+						if (handler != null) {
 							if (handler.onEntityHit(this, entity, settings.pos)) {
 								stop = true;
 							}
-						}else{
+						} else {
 							stop = true;
 						}
-
-					} else if (res == result.CONTINUE) {
-
+						
+					} else if (res == BeamHitResult.CONTINUE) {
+						
 						// just continue
-
-					} else if (res == result.STOP) {
-
+						
+					} else if (res == BeamHitResult.STOP) {
+						
 						stop = true;
-
+						
 					}
 				}
-
+				
 				if (stop) {
 					return;
 				}
-
+				
 			}
 		}
-
+		
 	}
-
-	public static void addLaser(World world, PC_VecI cnt, PC_VecI move,
-			float strength, PC_Color color) {
+	
+	public static void addLaser(World world, PC_VecI cnt, PC_VecI move, float strength, PC_Color color) {
 		cnt = cnt.copy();
 		PC_VecI oldMove = move;
 		move = move.copy();
@@ -395,15 +389,14 @@ public class PC_BeamTracer {
 		}
 		if (dirChage)
 			cnt = cnt.offset(oldMove);
-
-		ValueWriting.spawnParticle("PC_EntityLaserFX", world, cnt, move,
-				strength, color);
+		
+		PC_Utils.spawnParticle("PC_EntityLaserFX", world, cnt, move, strength, color);
 	}
-
+	
 	/**
 	 * Result state enum for extending class's block hit method.
 	 */
-	public static enum result {
+	public static enum BeamHitResult {
 		/** Fall back to handler */
 		FALLBACK,
 		/** Continue to next block */
@@ -411,7 +404,7 @@ public class PC_BeamTracer {
 		/** Stop the beam propagation */
 		STOP;
 	}
-
+	
 	public static class BeamSettings {
 		private PC_BeamTracer beamTracer;
 		private PC_VecI pos;
@@ -419,10 +412,8 @@ public class PC_BeamTracer {
 		private PC_Color color;
 		private float strength;
 		private int length;
-
-		public BeamSettings(PC_BeamTracer beamTracer, PC_VecI startCoord,
-				PC_VecI startMove, PC_Color origColor, float strength2,
-				int start_limit) {
+		
+		public BeamSettings(PC_BeamTracer beamTracer, PC_VecI startCoord, PC_VecI startMove, PC_Color origColor, float strength2, int start_limit) {
 			this.beamTracer = beamTracer;
 			pos = startCoord.copy();
 			move = startMove.copy();
@@ -430,56 +421,56 @@ public class PC_BeamTracer {
 			strength = strength2;
 			length = start_limit;
 		}
-
+		
 		public PC_BeamTracer getBeamTracer() {
 			return beamTracer;
 		}
-
+		
 		public PC_VecI getPos() {
 			return pos.copy();
 		}
-
+		
 		public PC_VecI getMove() {
 			return move.copy();
 		}
-
+		
 		public PC_Color getColor() {
 			return color.copy();
 		}
-
+		
 		public float getStrength() {
 			return strength;
 		}
-
+		
 		public int getLength() {
 			return length;
 		}
-
+		
 		public Object getData(String key) {
 			return beamTracer.data.get(key);
 		}
-
+		
 		public void setPos(PC_VecI newPos) {
 			pos.setTo(newPos);
 		}
-
+		
 		public void setMove(PC_VecI newMove) {
 			move.setTo(newMove);
 		}
-
+		
 		public void setColor(PC_Color newColor) {
 			if (beamTracer.canChangeColor)
 				color.setTo(newColor);
 		}
-
+		
 		public void setStrength(float newStrength) {
 			strength = newStrength;
 		}
-
+		
 		public void setLength(int newLength) {
 			length = newLength;
 		}
-
+		
 	}
-
+	
 }

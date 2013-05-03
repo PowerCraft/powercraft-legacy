@@ -5,28 +5,22 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_MathHelper;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.registry.PC_BlockRegistry;
-import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(tileEntity=PCli_TileEntityLaser.class)
+@PC_BlockInfo(name="Laser", tileEntity=PCli_TileEntityLaser.class, canPlacedRotated=true)
 public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 {
     public PCli_BlockLaser(int id)
@@ -52,11 +46,6 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PCli_TileEntityLaser();
-    }
-
-    @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
     {
         return AxisAlignedBB.getBoundingBox(i, j, k, (double) i + 1, (double) j + 0.7F, (double) k + 1);
@@ -71,13 +60,13 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
     @Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
     {
-        PCli_TileEntityLaser te = GameInfo.getTE(world, i, j, k, blockID);
+        PCli_TileEntityLaser te = PC_Utils.getTE(world, i, j, k);
         
         if (te != null && te.getItemStack()!=null){
         	ItemStack ihold = entityplayer.getCurrentEquippedItem();
         	if (ihold == null || ihold.getItem().itemID == Item.stick.itemID) {
-        		if(!GameInfo.isCreative(entityplayer)){
-        			ValueWriting.dropItemStack(world, te.getItemStack().toItemStack(), new PC_VecI(i, j, k));
+        		if(!PC_Utils.isCreative(entityplayer)){
+        			PC_Utils.dropItemStack(world, i, j, k, te.getItemStack().toItemStack());
 	        	}
         		te.setItemStack(null);
 		    }
@@ -86,74 +75,20 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving, ItemStack itemStack)
-    {
-        int l = PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-        boolean reverse = false;
-
-        if (entityliving instanceof EntityPlayer)
-        {
-            PC_KeyRegistry.isPlacingReversed((EntityPlayer)entityliving);
-        }
-
-        if (reverse)
-        {
-            l = ValueWriting.reverseSide(l);
-        }
-
-        if (l == 0)
-        {
-            l = 2;
-        }
-        else if (l == 1)
-        {
-            l = 5;
-        }
-        else if (l == 2)
-        {
-            l = 3;
-        }
-        else if (l == 3)
-        {
-            l = 4;
-        }
-
-        ValueWriting.setMD(world, i, j, k, l);
-        
-        PCli_TileEntityLaser te = GameInfo.getTE(world, i, j, k, blockID);
-        
-        if(te!=null){
-        	te.setKiller(PC_BlockRegistry.isBlock(world, new PC_VecI(i, j-1, k), "PCma_BlockRoaster"));
-        }
-        onNeighborBlockChange(world, i, j, k, 0);
-    }
-
-    @Override
-    public boolean canProvidePower()
-    {
+    public boolean canProvidePower(){
         return true;
     }
 
     @Override
-	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-    	return ((PCli_TileEntityLaser) GameInfo.getTE(world, x, y, z)).isActive()?15:0;
-	}
-
-	@Override
-	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
-		return isProvidingWeakPower(world, x, y, z, s);
-	}
-
-    @Override
     public void onBlockHarvested(World world, int x, int y, int z, int metadata, EntityPlayer player)
     {
-        if (!GameInfo.isCreative(player))
+        if (!PC_Utils.isCreative(player))
         {
-            PCli_TileEntityLaser te = GameInfo.getTE(world, x, y, z, blockID);
+            PCli_TileEntityLaser te = PC_Utils.getTE(world, x, y, z);
 
             if (te != null && te.getItemStack()!=null)
             {
-                ValueWriting.dropItemStack(world, te.getItemStack().toItemStack(), new PC_VecI(x, y, z));
+                PC_Utils.dropItemStack(world, x, y, z, te.getItemStack().toItemStack());
             }
         }
     }
@@ -161,13 +96,13 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
     @Override
     public void breakBlock(World world, int i, int j, int k, int par5, int par6)
     {
-        ValueWriting.hugeUpdate(world, i, j, k);
+        PC_Utils.hugeUpdate(world, i, j, k);
         super.breakBlock(world, i, j, k, par5, par6);
     }
     
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int par5) {
-		PCli_TileEntityLaser te = GameInfo.getTE(world, x, y, z, blockID);
+		PCli_TileEntityLaser te = PC_Utils.getTE(world, x, y, z);
 	        
         if(te!=null){
         	te.setKiller(PC_BlockRegistry.isBlock(world, new PC_VecI(x, y-1, z), "PCma_BlockRoaster"));
@@ -183,44 +118,26 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 		return arrayList;
 	}
 
-	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
-		PC_Renderer.renderInvBox(renderer, block, metadata);
+	public boolean renderInventoryBlock(int metadata, Object renderer) {
+		PC_Renderer.renderInvBox(renderer, this, metadata);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
 		// cobble body
 		
-		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+		PC_Utils.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 		PC_Renderer.renderInvBox(renderer, Block.cobblestone, 0);
-		ValueWriting.setBlockBounds(Block.cobblestone, 0.4F, 0.2F, 0.4F, 0.6F, 0.3F, 0.6F);
+		PC_Utils.setBlockBounds(Block.cobblestone, 0.4F, 0.2F, 0.4F, 0.6F, 0.3F, 0.6F);
 		PC_Renderer.renderInvBox(renderer, Block.cobblestone, 0);
 		// reset
-		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		PC_Utils.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		
+		return true;
 	}
 
+	
+	
 	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			break;
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Laser";
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.HARVEST_STOP);
-			list.add(PC_Utils.BEAMTRACER_STOP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}
-		default:
-			return null;
-		}
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
 		return true;
 	}
 	

@@ -1,7 +1,8 @@
 package powercraft.logic;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.api.PC_Utils.Converter;
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresCheckBox;
 import powercraft.api.gres.PC_GresLabel;
@@ -16,6 +17,7 @@ import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
 
 public class PClo_GuiPulsar implements PC_IGresClient {
 
@@ -46,12 +48,12 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel("pc.gui.pulsar.delay"));
-		vg.add(editDelay = new PC_GresTextEdit(Converter.doubleToString(Converter.ticksToSecs(pulsar.getDelay())), 8, PC_GresInputType.UNSIGNED_FLOAT));
+		vg.add(editDelay = new PC_GresTextEdit(""+PC_Utils.ticksToSecs(pulsar.getDelay()), 8, PC_GresInputType.UNSIGNED_FLOAT));
 		hg.add(vg);
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel("pc.gui.pulsar.hold"));
-		vg.add(editHold = new PC_GresTextEdit(Converter.doubleToString(Converter.ticksToSecs(pulsar.getHold())), 8, PC_GresInputType.UNSIGNED_FLOAT));
+		vg.add(editHold = new PC_GresTextEdit(""+PC_Utils.ticksToSecs(pulsar.getHold()), 8, PC_GresInputType.UNSIGNED_FLOAT));
 		hg.add(vg);
 
 		w.add(hg);
@@ -94,8 +96,8 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 			String hold = editHold.getText();
 			txError.setText("");
 			if(!(delay.equals("")||hold.equals(""))){
-				int idelay = Converter.secsToTicks(Double.parseDouble(delay));
-				int ihold = Converter.secsToTicks(Double.parseDouble(hold));
+				int idelay = PC_Utils.secsToTicks(Double.parseDouble(delay));
+				int ihold = PC_Utils.secsToTicks(Double.parseDouble(hold));
 				if(idelay<2){
 					txError.setText(PC_LangRegistry.tr("pc.gui.pulsar.errDelay"));
 				}else if(ihold>=idelay||ihold<=0){
@@ -113,8 +115,8 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 			String hold = editHold.getText();
 			txError.setText("");
 			if(!(delay.equals("")||hold.equals(""))){
-				int idelay = Converter.secsToTicks(Double.parseDouble(delay));
-				int ihold = Converter.secsToTicks(Double.parseDouble(hold));
+				int idelay = PC_Utils.secsToTicks(Double.parseDouble(delay));
+				int ihold = PC_Utils.secsToTicks(Double.parseDouble(hold));
 				if(idelay<2){
 					txError.setText(PC_LangRegistry.tr("pc.gui.pulsar.errDelay"));
 				}else if(ihold>=idelay||ihold<=0){
@@ -131,12 +133,13 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 	}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN){
+			actionPerformed(buttonOK, gui);
+		}else if(i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			gui.close();
+		}
 	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}

@@ -12,18 +12,17 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_BeamTracer.BeamSettings;
-import powercraft.api.PC_BeamTracer.result;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
+import powercraft.api.PC_BeamTracer.BeamHitResult;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(tileEntity=PCli_TileEntityLaserSensor.class)
+@PC_BlockInfo(name="Laser Sensor", tileEntity=PCli_TileEntityLaserSensor.class)
 public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 
 	private boolean renderSensor=false;
@@ -48,23 +47,18 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
     {
         return false;
     }
-
-    @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PCli_TileEntityLaserSensor();
-    }
     
     @Override
-	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
+	public Icon getBlockTextureFromSideAndMetadata(PC_Direction par1, int par2) {
 		if(renderSensor){
-			return icons[3];
+			return sideIcons[3];
 		}
-		if(par1==0){
-			return icons[0];
-		}else if(par1==1){
-			return icons[1];
+		if(par1==PC_Direction.BOTTOM){
+			return sideIcons[0];
+		}else if(par1==PC_Direction.TOP){
+			return sideIcons[1];
 		}
-		return icons[2];
+		return sideIcons[2];
 	}
     
 	@Override
@@ -79,89 +73,55 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
         return true;
     }
 
-    @Override
-	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-    	return ((PCli_TileEntityLaserSensor) GameInfo.getTE(world, x, y, z)).isActive()?15:0;
-	}
-
-	@Override
-	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
-		return isProvidingWeakPower(world, x, y, z, s);
-	}
-
 	@Override
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this));
 		return arrayList;
 	}
 
-	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
+	@Override
+	public boolean renderInventoryBlock(int modelID, Object renderer) {
 		float px=1.0f/16.0f;
 		renderSensor = true;
 		setBlockBounds(px*4, px*4, px*4, px*12, px*12, px*12);
-		PC_Renderer.renderInvBox(renderer, block, 0);
+		PC_Renderer.renderInvBox(renderer, this, 0);
 		renderSensor = false;
 		
 		// cobble body
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, px*2, 1.0F);
-		PC_Renderer.renderInvBox(renderer, block, 0);
+		PC_Renderer.renderInvBox(renderer, this, 0);
 		setBlockBounds(px*6, px*2, px*6, px*10, px*4, px*10);
-		PC_Renderer.renderInvBox(renderer, block, 0);
+		PC_Renderer.renderInvBox(renderer, this, 0);
 		// reset
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-	}
-
-	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
-		float px=1.0f/16.0f;
-		renderSensor = true;
-		setBlockBounds(px*4, px*4, px*4, px*12, px*12, px*12);
-		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-		renderSensor = false;
-		
-		// cobble body
-		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, px*2, 1.0F);
-		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-		setBlockBounds(px*6, px*2, px*6, px*10, px*4, px*10);
-		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-		// reset
-		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-	}
-
-	public result onHitByBeamTracer(IBlockAccess world, BeamSettings bs) {
-		PC_VecI pos = bs.getPos();
-		PCli_TileEntityLaserSensor te = GameInfo.getTE(world, pos.x, pos.y, pos.z, blockID);
-		if(te!=null && !te.getWorldObj().isRemote){
-			te.hitByBeam();
-		}
-		return result.STOP;
+		return true;
 	}
 
 	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
-			break;
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Laser Sensor";
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.HARVEST_STOP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER:
-			return onHitByBeamTracer(world, (BeamSettings)obj[0]);
-		default:
-			return null;
-		}
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
+		float px=1.0f/16.0f;
+		renderSensor = true;
+		setBlockBounds(px*4, px*4, px*4, px*12, px*12, px*12);
+		PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
+		renderSensor = false;
+		
+		// cobble body
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, px*2, 1.0F);
+		PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
+		setBlockBounds(px*6, px*2, px*6, px*10, px*4, px*10);
+		PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
+		// reset
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		return true;
+	}
+
+	@Override
+	public BeamHitResult onBlockHitByBeam(World world, int x, int y, int z, BeamSettings bs) {
+		PCli_TileEntityLaserSensor te = PC_Utils.getTE(world, x, y, z);
+		if(te!=null && !world.isRemote){
+			te.hitByBeam();
+		}
+		return BeamHitResult.STOP;
 	}
 	
 }

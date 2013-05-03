@@ -11,9 +11,7 @@ public interface PC_IGresClient extends PC_ITileEntityWatcher {
 	
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui);
 	
-	public void onEscapePressed(PC_IGresGui gui);
-	
-	public void onReturnPressed(PC_IGresGui gui);
+	public void onKeyPressed(PC_IGresGui gui, char c, int i);
 	
 	public void updateTick(PC_IGresGui gui);
 	

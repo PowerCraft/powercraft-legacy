@@ -10,14 +10,14 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.Communication;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.registry.PC_LangRegistry;
-import powercraft.api.registry.PC_ModuleRegistry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
 
 public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEntityRenderer {
 	
@@ -61,7 +61,7 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 			msg = PC_LangRegistry.tr("pc.sensor.range.5+", new String[] { getRange() + "" });
 		}
 
-		Communication.chatMsg(msg, true);
+		PC_Utils.chatMsg(msg);
 	}
 
 	/**
@@ -129,6 +129,11 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 		}
 	}
 
+	@Override
+	public int getProvidingStrongRedstonePowerValue(PC_Direction dir) {
+		return isActive()?15:0;
+	}
+	
 	/**
 	 * Get detected entity group (item, mob, player)
 	 * 
@@ -157,7 +162,7 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 		PC_Renderer.glPushMatrix();
 		float f = 1.0F;
 
-		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
+		PC_Renderer.glTranslatef(0, -0.5F, 0);
 
 		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCnt_App.instance, "block_sensor.png"));
 

@@ -19,11 +19,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.registry.PC_RecipeRegistry;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PC_InventoryUtils {
 
@@ -65,7 +64,7 @@ public class PC_InventoryUtils {
 	}
 	
 	public static IInventory getBlockInventoryAt(IBlockAccess world, int x, int y, int z) {
-		TileEntity te = GameInfo.getTE(world, x, y, z);
+		TileEntity te = PC_Utils.getTE(world, x, y, z);
 
 		if (te == null) {
 			return null;
@@ -80,23 +79,23 @@ public class PC_InventoryUtils {
 		}
 
 		IInventory inv = (IInventory) te;
-		int id = GameInfo.getBID(world, x, y, z);
+		int id = PC_Utils.getBID(world, x, y, z);
 
 		if (id == Block.chest.blockID) {
-			if (GameInfo.getBID(world, x-1, y, z) == Block.chest.blockID) {
-				inv = new InventoryLargeChest("Large chest", (IInventory) GameInfo.getTE(world, x-1, y, z), inv);
+			if (PC_Utils.getBID(world, x-1, y, z) == Block.chest.blockID) {
+				inv = new InventoryLargeChest("Large chest", (IInventory) PC_Utils.getTE(world, x-1, y, z), inv);
 			}
 
-			if (GameInfo.getBID(world, x+1, y, z) == Block.chest.blockID) {
-				inv = new InventoryLargeChest("Large chest", inv, (IInventory) GameInfo.getTE(world, x+1, y, z));
+			if (PC_Utils.getBID(world, x+1, y, z) == Block.chest.blockID) {
+				inv = new InventoryLargeChest("Large chest", inv, (IInventory) PC_Utils.getTE(world, x+1, y, z));
 			}
 
-			if (GameInfo.getBID(world, x, y, z-1) == Block.chest.blockID) {
-				inv = new InventoryLargeChest("Large chest", (IInventory) GameInfo.getTE(world, x, y, z-1), inv);
+			if (PC_Utils.getBID(world, x, y, z-1) == Block.chest.blockID) {
+				inv = new InventoryLargeChest("Large chest", (IInventory) PC_Utils.getTE(world, x, y, z-1), inv);
 			}
 
-			if (GameInfo.getBID(world, x, y, z+1) == Block.chest.blockID) {
-				inv = new InventoryLargeChest("Large chest", inv, (IInventory) GameInfo.getTE(world, x, y, z+1));
+			if (PC_Utils.getBID(world, x, y, z+1) == Block.chest.blockID) {
+				inv = new InventoryLargeChest("Large chest", inv, (IInventory) PC_Utils.getTE(world, x, y, z+1));
 			}
 		}
 		
@@ -549,7 +548,7 @@ public class PC_InventoryUtils {
 				}
 				ItemStack itemstack = inventory.getStackInSlot(i);
 				inventory.setInventorySlotContents(i, null);
-				ValueWriting.dropItemStack(world, itemstack, pos);
+				PC_Utils.dropItemStack(world, pos, itemstack);
 			}
 		}
 	}
@@ -563,20 +562,39 @@ public class PC_InventoryUtils {
 	}
 	
 	public static int useFuel(IInventory inv, int[] indexes, World world, PC_VecI pos) {
-		for (int j = 0; j < indexes.length; j++) {
-			int i=indexes[j];
-			ItemStack is = inv.getStackInSlot(i);
-			int fuel = PC_RecipeRegistry.getFuelValue(is);
-			if (fuel > 0) {
-				inv.decrStackSize(i, 1);
-				ItemStack container = GameInfo.getContainerItemStack(is);
-				if (container != null) {
-					storeItemStackToInventoryFrom(inv, container, indexes);
-					if (container.stackSize > 0) {
-						ValueWriting.dropItemStack(world, container, pos);
+		if(indexes==null){
+			int size = inv.getSizeInventory();
+			for (int i = 0; i < size; i++) {
+				ItemStack is = inv.getStackInSlot(i);
+				int fuel = PC_RecipeRegistry.getFuelValue(is);
+				if (fuel > 0) {
+					inv.decrStackSize(i, 1);
+					ItemStack container = PC_Utils.getContainerItemStack(is);
+					if (container != null) {
+						storeItemStackToInventoryFrom(inv, container, indexes);
+						if (container.stackSize > 0) {
+							PC_Utils.dropItemStack(world, pos, container);
+						}
 					}
+					return fuel;
 				}
-				return fuel;
+			}
+		}else{
+			for (int j = 0; j < indexes.length; j++) {
+				int i=indexes[j];
+				ItemStack is = inv.getStackInSlot(i);
+				int fuel = PC_RecipeRegistry.getFuelValue(is);
+				if (fuel > 0) {
+					inv.decrStackSize(i, 1);
+					ItemStack container = PC_Utils.getContainerItemStack(is);
+					if (container != null) {
+						storeItemStackToInventoryFrom(inv, container, indexes);
+						if (container.stackSize > 0) {
+							PC_Utils.dropItemStack(world, pos, container);
+						}
+					}
+					return fuel;
+				}
 			}
 		}
 		return 0;

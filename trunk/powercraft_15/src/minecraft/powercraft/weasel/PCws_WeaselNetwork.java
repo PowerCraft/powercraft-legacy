@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_INBT;
-import powercraft.api.PC_Utils.SaveHandler;
+import powercraft.api.interfaces.PC_INBT;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Utils;
 import powercraft.weasel.engine.Calc;
 import powercraft.weasel.engine.WeaselFunctionManager;
 import powercraft.weasel.exception.WeaselRuntimeException;
@@ -42,13 +42,13 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_IWeaselNetworkDev
 		id = nbttag.getInteger("id");
 		PCws_WeaselManager.registerNetwork(this, id);
 		name = nbttag.getString("name");
-		SaveHandler.loadFromNBT(nbttag, "color", color);
+		PC_Utils.loadFromNBT(nbttag, "color", color);
 		int num = nbttag.getInteger("count");
 		members.clear();
 		for(int i=0; i<num; i++){
 			members.add(nbttag.getInteger("value["+i+"]"));
 		}
-		SaveHandler.loadFromNBT(nbttag, "localHeap", localHeap);
+		PC_Utils.loadFromNBT(nbttag, "localHeap", localHeap);
 		return this;
 	}
 	@Override
@@ -56,14 +56,14 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_IWeaselNetworkDev
 		needSave = false;
 		nbttag.setInteger("id", id);
 		nbttag.setString("name", name);
-		SaveHandler.saveToNBT(nbttag, "color", color);
+		PC_Utils.saveToNBT(nbttag, "color", color);
 		nbttag.setInteger("count", members.size());
 		int i=0;
 		for(Integer mem:members){
 			nbttag.setInteger("value["+i+"]", mem);
 			i++;
 		}
-		SaveHandler.saveToNBT(nbttag, "localHeap", localHeap);
+		PC_Utils.saveToNBT(nbttag, "localHeap", localHeap);
 		return nbttag;
 	}
 	

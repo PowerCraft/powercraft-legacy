@@ -4,7 +4,9 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import powercraft.core.PCco_App;
+
+import org.lwjgl.input.Keyboard;
+
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresCheckBox;
 import powercraft.api.gres.PC_GresGap;
@@ -23,7 +25,7 @@ import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
-import powercraft.weasel.PCws_WeaselHighlightHelper;
+import powercraft.core.PCco_App;
 
 public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient {
 
@@ -54,9 +56,7 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		PC_GresLayoutV lv = new PC_GresLayoutV();
 		lv.setAlignH(PC_GresAlign.STRETCH);
 		lv.add(new PC_GresLabel((String)miner.getInfo("script")));
-		lv.add(program = new PC_GresTextEditMultiline((String)miner.getInfo("program"), 300, 120, 
-				PCws_WeaselHighlightHelper.colorDefault, PCws_WeaselHighlightHelper.colorBackground,
-				kw, PCws_WeaselHighlightHelper.autoAdd));
+		lv.add(program = new PC_GresTextEditMultiline((String)miner.getInfo("program"), 300, 120, 0xFFFFFFFF, 0x00, kw, null));
 		
 		lv.add(programError = new PC_GresLabel("pc.gui.miner.noError"));
 		programError.enable(false);
@@ -235,13 +235,10 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 	}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		gui.close();
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN || i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			gui.close();
+		}
 	}
 
 	@Override

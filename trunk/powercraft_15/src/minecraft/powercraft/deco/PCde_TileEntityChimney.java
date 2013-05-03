@@ -3,12 +3,11 @@ package powercraft.deco;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCde_TileEntityChimney extends PC_TileEntity {
 
@@ -41,30 +40,30 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 			double smJ = yCoord + 0.4F + rand.nextFloat() * 0.6F;
 			double smK = zCoord + rand.nextFloat() * 0.4F + 0.2F;
 
-			ValueWriting.spawnParticle("EntitySmokeFX", worldObj, smI, smJ, smK, 0.0D, 0.0D, 0.0D, 2.0F);
+			PC_Utils.spawnParticle("EntitySmokeFX", worldObj, smI, smJ, smK, 0.0D, 0.0D, 0.0D, 2.0F);
 			
 		}
 	}
 
 	private boolean doesBlockSmoke(PC_VecI pos) {
-		Block block = GameInfo.getBlock(worldObj, pos);
+		Block block = PC_Utils.getBlock(worldObj, pos);
 		if (block == Block.furnaceBurning) return true;
 		if (block == Block.fire) return true;
 		if (block instanceof PC_Block){
-			Object o = ((PC_Block) block).msg(PC_MSGRegistry.MSG_DOES_SMOKE, worldObj, pos);
+			/*Object o = ((PC_Block) block).msg(PC_MSGRegistry.MSG_DOES_SMOKE, worldObj, pos);
 			if(o instanceof Boolean){
 				return (Boolean)o;
-			}
+			}*/
 		}
 		return false;
 	}
 
 	private boolean isBlockLitFurnace(PC_VecI pos) {
-		return GameInfo.getBID(worldObj, pos) == Block.furnaceBurning.blockID;
+		return PC_Utils.getBID(worldObj, pos) == Block.furnaceBurning.blockID;
 	}
 
 	private boolean isBlockChimney(PC_VecI pos) {
-		if (GameInfo.getBID(worldObj, pos) == PCde_App.chimney.blockID) {
+		if (PC_Utils.getBID(worldObj, pos) == PCde_App.chimney.blockID) {
 			return true;
 		}
 		return false;

@@ -7,13 +7,14 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Utils.SaveHandler;
+import net.minecraft.world.storage.SaveHandler;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_ModuleRegistry;
 import powercraft.api.thread.PC_IThreadJob;
 import powercraft.api.thread.PC_ThreadJob;
 import powercraft.api.thread.PC_ThreadManager;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Utils;
 import powercraft.weasel.engine.WeaselEngine;
 import powercraft.weasel.engine.WeaselFunctionManager;
 import powercraft.weasel.exception.SyntaxError;
@@ -99,7 +100,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 	protected PCws_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
 		program = tag.getString("program");
 		lock.lock();
-		SaveHandler.loadFromNBT(tag, "engine", weasel);
+		PC_Utils.loadFromNBT(tag, "engine", weasel);
 		lock.unlock();
 		sleepTimer = tag.getInteger("sleep");
 		stop = tag.getBoolean("stop");
@@ -109,7 +110,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 	@Override
 	protected NBTTagCompound writePluginToNBT(NBTTagCompound tag) {
 		tag.setString("program", program);
-		SaveHandler.saveToNBT(tag, "engine", weasel);
+		PC_Utils.saveToNBT(tag, "engine", weasel);
 		tag.setInteger("sleep", sleepTimer);
 		tag.setBoolean("stop", stop);
 		return tag;
@@ -174,10 +175,10 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 	}
 	
 	@Override
-	public void getClientMsg(String msg, Object obj) {
+	public void getClientMsg(String msg, Object[] obj) {
 		if(msg.equalsIgnoreCase("launch")){
 			restartDevice();
-			program = (String)obj;
+			program = (String)obj[0];
 			try {
 				List<Instruction> list = WeaselEngine.compileProgram(program);
 				lock.lock();

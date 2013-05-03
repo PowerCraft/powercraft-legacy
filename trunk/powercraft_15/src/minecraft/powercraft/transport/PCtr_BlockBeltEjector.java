@@ -10,14 +10,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class, tileEntity=PCtr_TileEntityEjectionBelt.class)
+@PC_BlockInfo(name="ejection belt", tileEntity=PCtr_TileEntityEjectionBelt.class, canPlacedRotated=true)
 public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
 {
     public PCtr_BlockBeltEjector(int id)
@@ -40,27 +41,9 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
             PCtr_BeltHelper.packItems(world, pos);
         }
 
-        int direction = PCtr_BeltHelper.getRotation(GameInfo.getMD(world, pos));
-        PC_VecI pos_leading_to = pos.copy();
+        PC_Direction direction = getRotation(world.getBlockMetadata(i, j, k));
 
-        switch (direction)
-        {
-            case 0:
-                pos_leading_to.z--;
-                break;
-
-            case 1:
-                pos_leading_to.x++;
-                break;
-
-            case 2:
-                pos_leading_to.z++;
-                break;
-
-            case 3:
-                pos_leading_to.x--;
-                break;
-        }
+        PC_VecI pos_leading_to = pos.offset(direction.getOffset());
 
         boolean leadsToNowhere = PCtr_BeltHelper.isBlocked(world, pos_leading_to);
         leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, direction, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
@@ -76,11 +59,6 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
     }
 
     @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PCtr_TileEntityEjectionBelt();
-    }
-
-    @Override
     public boolean canProvidePower()
     {
         return true;
@@ -88,7 +66,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
 
     private boolean isPowered(World world, PC_VecI pos)
     {
-    	return GameInfo.isPoweredIndirectly(world, pos) || GameInfo.isPoweredIndirectly(world, pos.offset(0, 1, 0)) || GameInfo.isPoweredIndirectly(world, pos.offset(0, -1, 0));
+    	return getRedstonePowereValue(world, pos.x, pos.y, pos.z)>0;
     }
 
     @Override
@@ -122,7 +100,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
                 }
             }
 
-            PC_GresRegistry.openGres("EjectionBelt", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+            PC_GresRegistry.openGres("EjectionBelt", entityplayer, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
             return true;
         }
     }
@@ -131,8 +109,8 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
     public void updateTick(World world, int i, int j, int k, Random random)
     {
         PC_VecI pos = new PC_VecI(i, j, k);
-        int meta = GameInfo.getMD(world, pos);
-        PCtr_TileEntityEjectionBelt te = GameInfo.getTE(world, pos);
+        int meta = PC_Utils.getMD(world, pos);
+        PCtr_TileEntityEjectionBelt te = PC_Utils.getTE(world, pos);
         
         if (isPowered(world, pos))
         {
@@ -152,13 +130,4 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
         }
     }
 
-	@Override
-	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:{
-			return "ejection belt";
-		}
-		}
-		return null;
-	}
 }

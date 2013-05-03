@@ -2,9 +2,9 @@ package powercraft.teleport;
 
 import java.util.List;
 
-import powercraft.api.PC_Struct2;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.utils.PC_Struct2;
 import powercraft.launcher.loader.PC_ClientModule;
 import powercraft.launcher.loader.PC_ClientModule.PC_InitLanguage;
 import powercraft.launcher.loader.PC_ClientModule.PC_RegisterGuis;

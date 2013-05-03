@@ -12,24 +12,23 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(tileEntity=PCma_TileEntityRoaster.class)
+@PC_BlockInfo(name="Roaster", tileEntity=PCma_TileEntityRoaster.class)
 public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
 {
     private static final int TXDOWN = 2, TXTOP = 1, TXSIDE = 0;
 
     public PCma_BlockRoaster(int id)
     {
-        super(id, Material.ground, "roaster_side", "roaster_top", "roaster_down");
+        super(id, Material.ground, "roaster_down", "roaster_top", "roaster_side");
         setLightOpacity(0);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
         setCreativeTab(CreativeTabs.tabDecorations);
@@ -51,24 +50,6 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
     public boolean isOpaqueCube()
     {
         return false;
-    }
-
-    @Override
-    public Icon getBlockTextureFromSideAndMetadata(int s, int m)
-    {
-        if (s == 1)
-        {
-            return icons[TXTOP];
-        }
-
-        if (s == 0)
-        {
-            return icons[TXDOWN];
-        }
-        else
-        {
-            return icons[TXSIDE];
-        }
     }
 
     @Override
@@ -101,18 +82,13 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
             return true;
         }
 
-        PC_GresRegistry.openGres("Roaster", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+        PC_GresRegistry.openGres("Roaster", entityplayer, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
         return true;
-    }
-
-    @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PCma_TileEntityRoaster();
     }
 
     public static boolean isIndirectlyPowered(IBlockAccess iBlockAccess, int x, int y, int z)
     {
-    	PCma_TileEntityRoaster te = GameInfo.getTE(iBlockAccess, x, y, z);
+    	PCma_TileEntityRoaster te = PC_Utils.getTE(iBlockAccess, x, y, z);
     	if(te==null)
 			return false;
     	World world = te.getWorldObj();
@@ -122,20 +98,20 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
     	
     	boolean on=false;
     	
-        if (GameInfo.isPoweredDirectly(world, x, y, z))
+    	/** TODO if (PC_Utils.isPoweredDirectly(world, x, y, z))
         {
         	on= true;
-        }
+        }*/
 
         if (world.isBlockIndirectlyGettingPowered(x, y, z))
         {
         	on= true;
         }
 
-        if (GameInfo.isPoweredDirectly(world, x, y-1, z))
+        /** TODO if (PC_Utils.isPoweredDirectly(world, x, y-1, z))
         {
         	on= true;
-        }
+        }*/
 
         if (world.isBlockIndirectlyGettingPowered(x, y - 1, z))
         {
@@ -152,7 +128,7 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
     {
         try
         {
-            return GameInfo.<PCma_TileEntityRoaster>getTE(world, x, y, z).getBurnTime() > 0;
+            return PC_Utils.<PCma_TileEntityRoaster>getTE(world, x, y, z).getBurnTime() > 0;
         }
         catch (RuntimeException re)
         {
@@ -231,30 +207,5 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
-
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Roaster";
-		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-	   		list.add(PC_Utils.NO_HARVEST);
-	   		list.add(PC_Utils.NO_PICKUP);
-	   		list.add(PC_Utils.HARVEST_STOP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_DOES_SMOKE:
-			return isBurning(world, pos.x, pos.y, pos.z);
-		case PC_MSGRegistry.MSG_STR_MSG:{
-			if("isBurning".equalsIgnoreCase((String) obj[0]))
-				return isBurning(world, pos.x, pos.y, pos.z);
-		}
-		}
-		return null;
-	}
     
 }

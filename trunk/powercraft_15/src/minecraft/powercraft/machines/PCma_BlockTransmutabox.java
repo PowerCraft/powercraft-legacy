@@ -10,10 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_IItemInfo;
@@ -21,8 +17,10 @@ import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(tileEntity=PCma_TileEntityTransmutabox.class)
+@PC_BlockInfo(name="Transmutabox", tileEntity=PCma_TileEntityTransmutabox.class)
 public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
 {
     public PCma_BlockTransmutabox(int id)
@@ -36,17 +34,12 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
 
     public void receivePower(IBlockAccess world, int x, int y, int z, float power)
     {
-        PCma_TileEntityTransmutabox te = GameInfo.getTE(world, x, y, z, blockID);
+        PCma_TileEntityTransmutabox te = PC_Utils.getTE(world, x, y, z);
 
         if (te != null)
         {
             te.addEnergy((int)power);
         }
-    }
-
-    @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PCma_TileEntityTransmutabox();
     }
 
     @Override
@@ -66,60 +59,64 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
             int z, EntityPlayer player, int par6, float par7,
             float par8, float par9)
     {
-        PC_GresRegistry.openGres("Transmutabox", player, GameInfo.<PC_TileEntity>getTE(world, x, y, z));
+        PC_GresRegistry.openGres("Transmutabox", player, PC_Utils.<PC_TileEntity>getTE(world, x, y, z));
         return true;
     }
 
-    public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer)
+    @Override
+    public boolean renderInventoryBlock(int metadata, Object renderer)
     {
         setBlockBounds(0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
-        PC_Renderer.renderInvBox(renderer, block, metadata);
+        PC_Renderer.renderInvBox(renderer, this, metadata);
         setBlockBounds(0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.2f);
-        PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
+        PC_Renderer.renderInvBoxWithTexture(renderer, this, Block.blockSteel.getBlockTextureFromSide(0));
         setBlockBounds(0.8f, 0.0f, 0.0f, 1.0f, 0.2f, 0.2f);
-        PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
+        PC_Renderer.renderInvBoxWithTexture(renderer, this, Block.blockSteel.getBlockTextureFromSide(0));
         setBlockBounds(0.8f, 0.8f, 0.0f, 1.0f, 1.0f, 0.2f);
-        PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
+        PC_Renderer.renderInvBoxWithTexture(renderer, this, Block.blockSteel.getBlockTextureFromSide(0));
         setBlockBounds(0.8f, 0.8f, 0.8f, 1.0f, 1.0f, 1.0f);
-        PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
+        PC_Renderer.renderInvBoxWithTexture(renderer, this, Block.blockSteel.getBlockTextureFromSide(0));
         setBlockBounds(0.0f, 0.8f, 0.8f, 0.2f, 1.0f, 1.0f);
-        PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
+        PC_Renderer.renderInvBoxWithTexture(renderer, this, Block.blockSteel.getBlockTextureFromSide(0));
         setBlockBounds(0.0f, 0.0f, 0.8f, 0.2f, 0.2f, 1.0f);
-        PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
+        PC_Renderer.renderInvBoxWithTexture(renderer, this, Block.blockSteel.getBlockTextureFromSide(0));
         setBlockBounds(0.0f, 0.8f, 0.0f, 0.2f, 1.0f, 0.2f);
-        PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
+        PC_Renderer.renderInvBoxWithTexture(renderer, this, Block.blockSteel.getBlockTextureFromSide(0));
         setBlockBounds(0.8f, 0.0f, 0.8f, 1.0f, 0.2f, 1.0f);
-        PC_Renderer.renderInvBoxWithTexture(renderer, block, Block.blockSteel.getBlockTextureFromSide(0));
+        PC_Renderer.renderInvBoxWithTexture(renderer, this, Block.blockSteel.getBlockTextureFromSide(0));
         setBlockBounds(0, 0, 0, 1, 1, 1);
+        return true;
     }
 
-    public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer)
+    @Override
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer)
     {
         PC_Renderer.tessellatorDraw();
         PC_Renderer.tessellatorStartDrawingQuads();
         setBlockBounds(0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
-        PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+        PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
         setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         
-        ValueWriting.setBlockBounds(Block.blockSteel,0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.2f);
+        PC_Utils.setBlockBounds(Block.blockSteel,0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.2f);
         PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-        ValueWriting.setBlockBounds(Block.blockSteel,0.8f, 0.0f, 0.0f, 1.0f, 0.2f, 0.2f);
+        PC_Utils.setBlockBounds(Block.blockSteel,0.8f, 0.0f, 0.0f, 1.0f, 0.2f, 0.2f);
         PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-        ValueWriting.setBlockBounds(Block.blockSteel,0.8f, 0.8f, 0.0f, 1.0f, 1.0f, 0.2f);
+        PC_Utils.setBlockBounds(Block.blockSteel,0.8f, 0.8f, 0.0f, 1.0f, 1.0f, 0.2f);
         PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-        ValueWriting.setBlockBounds(Block.blockSteel,0.8f, 0.8f, 0.8f, 1.0f, 1.0f, 1.0f);
+        PC_Utils.setBlockBounds(Block.blockSteel,0.8f, 0.8f, 0.8f, 1.0f, 1.0f, 1.0f);
         PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-        ValueWriting.setBlockBounds(Block.blockSteel,0.0f, 0.8f, 0.8f, 0.2f, 1.0f, 1.0f);
+        PC_Utils.setBlockBounds(Block.blockSteel,0.0f, 0.8f, 0.8f, 0.2f, 1.0f, 1.0f);
         PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-        ValueWriting.setBlockBounds(Block.blockSteel,0.0f, 0.0f, 0.8f, 0.2f, 0.2f, 1.0f);
+        PC_Utils.setBlockBounds(Block.blockSteel,0.0f, 0.0f, 0.8f, 0.2f, 0.2f, 1.0f);
         PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-        ValueWriting.setBlockBounds(Block.blockSteel,0.0f, 0.8f, 0.0f, 0.2f, 1.0f, 0.2f);
+        PC_Utils.setBlockBounds(Block.blockSteel,0.0f, 0.8f, 0.0f, 0.2f, 1.0f, 0.2f);
         PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-        ValueWriting.setBlockBounds(Block.blockSteel,0.8f, 0.0f, 0.8f, 1.0f, 0.2f, 1.0f);
+        PC_Utils.setBlockBounds(Block.blockSteel,0.8f, 0.0f, 0.8f, 1.0f, 0.2f, 1.0f);
         PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-        ValueWriting.setBlockBounds(Block.blockSteel,0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        PC_Utils.setBlockBounds(Block.blockSteel,0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         PC_Renderer.tessellatorDraw();
         PC_Renderer.tessellatorStartDrawingQuads();
+        return true;
     }
 
     @Override
@@ -128,35 +125,5 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
-
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Transmutabox";
-		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-	   		list.add(PC_Utils.NO_HARVEST);
-	   		list.add(PC_Utils.NO_PICKUP);
-	   		list.add(PC_Utils.HARVEST_STOP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:{
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			return true;
-		}case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:{
-			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
-			return true;
-		}case PC_MSGRegistry.MSG_CAN_RECIVE_POWER:{
-			return true;
-		}case PC_MSGRegistry.MSG_RECIVE_POWER:{
-			receivePower(world, (Integer)obj[0], (Integer)obj[1], (Integer)obj[2], (Float)obj[3]);
-		}
-		}
-		return null;
-	}
     
 }

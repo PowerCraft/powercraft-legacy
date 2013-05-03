@@ -3,9 +3,10 @@ package powercraft.itemstorage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_Utils.SaveHandler;
-import powercraft.api.PC_VecI;
+import net.minecraft.world.storage.SaveHandler;
 import powercraft.api.inventory.PC_InventoryUtils;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCis_NormalCompressorInventory extends PCis_CompressorInventory {
 
@@ -16,10 +17,10 @@ public class PCis_NormalCompressorInventory extends PCis_CompressorInventory {
 		NBTTagCompound tag = compressor.getTagCompound();
 		if(tag==null){
 			compressor.setTagCompound(tag = new NBTTagCompound());
-			SaveHandler.saveToNBT(tag, "invSize", size);
+			PC_Utils.saveToNBT(tag, "invSize", size);
 			is = new ItemStack[size.x*size.y];
 		}else{
-			SaveHandler.loadFromNBT(tag, "invSize", size);
+			PC_Utils.loadFromNBT(tag, "invSize", size);
 			is = new ItemStack[size.x*size.y];
 			PC_InventoryUtils.loadInventoryFromNBT(tag, "inv", this);
 		}

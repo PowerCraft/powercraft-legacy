@@ -5,13 +5,13 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class, tileEntity=PCtr_TileEntityRedirectionBelt.class)
+@PC_BlockInfo(name="redirector belt", tileEntity=PCtr_TileEntityRedirectionBelt.class, canPlacedRotated=true)
 public class PCtr_BlockBeltRedirector extends PCtr_BlockBeltBase
 {
     public PCtr_BlockBeltRedirector(int id)
@@ -21,12 +21,7 @@ public class PCtr_BlockBeltRedirector extends PCtr_BlockBeltBase
 
     public boolean isPowered(World world, PC_VecI pos)
     {
-    	return GameInfo.isPoweredIndirectly(world, pos) || GameInfo.isPoweredIndirectly(world, pos.offset(0, 1, 0)) || GameInfo.isPoweredIndirectly(world, pos.offset(0, -1, 0));
-    }
-
-    @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PCtr_TileEntityRedirectionBelt();
+    	return getRedstonePowereValue(world, pos.x, pos.y, pos.z)>0;
     }
 
     @Override
@@ -51,14 +46,10 @@ public class PCtr_BlockBeltRedirector extends PCtr_BlockBeltBase
 
         PCtr_TileEntityRedirectionBeltBase teRedir = (PCtr_TileEntityRedirectionBeltBase) world.getBlockTileEntity(i, j, k);
         PC_Direction redir = teRedir.getDirection(entity);
-        int direction = PCtr_BeltHelper.getRotation(GameInfo.getMD(world, pos));
-        for(;direction>0; direction--){
-        	redir = redir.rotateLeft();
-        }
+        PC_Direction direction = getRotation(PC_Utils.getMD(world, pos));
+        direction = direction.rotate(redir);
 
-        PC_VecI pos_leading_to = pos.offset(redir.getDir());
-
-        direction = PCtr_BeltHelper.getDir(redir);
+        PC_VecI pos_leading_to = pos.offset(direction.getOffset());
         
         boolean leadsToNowhere = PCtr_BeltHelper.isBlocked(world, pos_leading_to);
         leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, direction, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
@@ -72,14 +63,4 @@ public class PCtr_BlockBeltRedirector extends PCtr_BlockBeltBase
         double boost = PCtr_BeltHelper.HORIZONTAL_BOOST;
         PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, direction, speed_max, boost);
     }
-
-	@Override
-	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:{
-			return "redirector belt";
-		}
-		}
-		return null;
-	}
 }

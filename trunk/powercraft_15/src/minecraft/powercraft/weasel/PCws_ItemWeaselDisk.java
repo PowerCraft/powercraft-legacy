@@ -11,12 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.SaveHandler;
-import powercraft.api.PC_VecI;
+import net.minecraft.world.storage.SaveHandler;
 import powercraft.api.item.PC_Item;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import powercraft.weasel.engine.Calc;
 import powercraft.weasel.engine.WeaselEngine;
@@ -77,22 +78,17 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 	public String getItemDisplayName(ItemStack itemstack) {
 		return getTypeVerbose(itemstack);
 	}
-
+	
 	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry("pc.weasel.disk.empty", "Blank Weasel Disk"));
-			names.add(new LangEntry("pc.weasel.disk.text", "Weasel Text Disk"));
-			names.add(new LangEntry("pc.weasel.disk.image", "Weasel Image Disk"));
-			names.add(new LangEntry("pc.weasel.disk.numberList", "Weasel Numbers Disk"));
-			names.add(new LangEntry("pc.weasel.disk.stringList", "Weasel Strings Disk"));
-			names.add(new LangEntry("pc.weasel.disk.variableMap", "Weasel Data Disk"));
-			names.add(new LangEntry("pc.weasel.disk.programLibrary", "Weasel Library Disk"));
-            return names;
-		}
-		return null;
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry("pc.weasel.disk.empty", "Blank Weasel Disk"));
+		names.add(new LangEntry("pc.weasel.disk.text", "Weasel Text Disk"));
+		names.add(new LangEntry("pc.weasel.disk.image", "Weasel Image Disk"));
+		names.add(new LangEntry("pc.weasel.disk.numberList", "Weasel Numbers Disk"));
+		names.add(new LangEntry("pc.weasel.disk.stringList", "Weasel Strings Disk"));
+		names.add(new LangEntry("pc.weasel.disk.variableMap", "Weasel Data Disk"));
+		names.add(new LangEntry("pc.weasel.disk.programLibrary", "Weasel Library Disk"));
+        return names;
 	}
 
 	/**
@@ -149,7 +145,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 				return;
 
 			case VARMAP:
-				SaveHandler.saveToNBT(tag, "Map", new WeaselVariableMap());
+				PC_Utils.saveToNBT(tag, "Map", new WeaselVariableMap());
 				return;
 		}
 	}
@@ -414,9 +410,9 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		checkTag(itemstack);
 		if (getType(itemstack) != VARMAP) throw new WeaselRuntimeException("VarMap function called on " + getTypeVerbose(itemstack) + " disk.");
 
-		WeaselVariableMap map = (WeaselVariableMap) SaveHandler.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
+		WeaselVariableMap map = (WeaselVariableMap) PC_Utils.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
 		map.setVariableForce(name, value);
-		SaveHandler.saveToNBT(itemstack.getTagCompound(), "Map", map);
+		PC_Utils.saveToNBT(itemstack.getTagCompound(), "Map", map);
 	}
 
 	/**
@@ -430,7 +426,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		checkTag(itemstack);
 		if (getType(itemstack) != VARMAP) throw new WeaselRuntimeException("VarMap function called on " + getTypeVerbose(itemstack) + " disk.");
 
-		WeaselVariableMap map = (WeaselVariableMap) SaveHandler.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
+		WeaselVariableMap map = (WeaselVariableMap) PC_Utils.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
 
 		return map.getVariable(name);
 	}
@@ -446,7 +442,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		checkTag(itemstack);
 		if (getType(itemstack) != VARMAP) throw new WeaselRuntimeException("VarMap function called on " + getTypeVerbose(itemstack) + " disk.");
 
-		WeaselVariableMap map = (WeaselVariableMap) SaveHandler.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
+		WeaselVariableMap map = (WeaselVariableMap) PC_Utils.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
 		
 		return (map.getVariable(name) != null);
 	}
@@ -461,9 +457,9 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		checkTag(itemstack);
 		if (getType(itemstack) != VARMAP) throw new WeaselRuntimeException("VarMap function called on " + getTypeVerbose(itemstack) + " disk.");
 
-		WeaselVariableMap map = (WeaselVariableMap) SaveHandler.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
+		WeaselVariableMap map = (WeaselVariableMap) PC_Utils.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
 		map.unsetVariable(name);
-		SaveHandler.saveToNBT(itemstack.getTagCompound(), "Map", map);
+		PC_Utils.saveToNBT(itemstack.getTagCompound(), "Map", map);
 		
 	}
 
@@ -477,9 +473,9 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		checkTag(itemstack);
 		if (getType(itemstack) != VARMAP) throw new WeaselRuntimeException("VarMap function called on " + getTypeVerbose(itemstack) + " disk.");
 
-		WeaselVariableMap map = (WeaselVariableMap) SaveHandler.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
+		WeaselVariableMap map = (WeaselVariableMap) PC_Utils.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
 		map.clear();
-		SaveHandler.saveToNBT(itemstack.getTagCompound(), "Map", map);
+		PC_Utils.saveToNBT(itemstack.getTagCompound(), "Map", map);
 		
 	}
 
@@ -493,7 +489,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		checkTag(itemstack);
 		if (getType(itemstack) != VARMAP) throw new WeaselRuntimeException("VarMap function called on " + getTypeVerbose(itemstack) + " disk.");
 
-		return (WeaselVariableMap) SaveHandler.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
+		return (WeaselVariableMap) PC_Utils.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
 	}
 
 

@@ -5,11 +5,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.block.PC_Block;
 import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.tileentity.PC_TileEntityWithInventory;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
 
 public class PClo_TileEntitySpecial extends PC_TileEntityWithInventory
 {
@@ -32,27 +33,14 @@ public class PClo_TileEntitySpecial extends PC_TileEntityWithInventory
     @Override
     public void updateEntity()
     {
+    	PC_Block block = PC_Utils.getBlock(worldObj, xCoord, yCoord, zCoord);
+    	if(block==null){
+    		return;
+    	}
         int nextUpdate = 0;
         boolean shouldState = false;
-        int rot = PClo_BlockSpecial.getRotation_static(GameInfo.getMD(worldObj, xCoord, yCoord, zCoord));
-        int xAdd = 0, zAdd = 0;
-
-        if (rot == 0)
-        {
-            zAdd = 1;
-        }
-        else if (rot == 1)
-        {
-            xAdd = -1;
-        }
-        else if (rot == 2)
-        {
-            zAdd = -1;
-        }
-        else if (rot == 3)
-        {
-            xAdd = 1;
-        }
+        PC_Direction rot = block.getRotation(PC_Utils.getMD(worldObj, xCoord, yCoord, zCoord));
+        int xAdd = rot.getOffset().x, zAdd = rot.getOffset().z;
 
         switch (getType())
         {
@@ -83,11 +71,11 @@ public class PClo_TileEntitySpecial extends PC_TileEntityWithInventory
             	break;
 
             } case PClo_SpecialType.SPECIAL:
-                ValueWriting.preventSpawnerSpawning(worldObj, xCoord + 1, yCoord, zCoord);
-                ValueWriting.preventSpawnerSpawning(worldObj, xCoord - 1, yCoord, zCoord);
-                ValueWriting.preventSpawnerSpawning(worldObj, xCoord, yCoord + 1, zCoord);
-                ValueWriting.preventSpawnerSpawning(worldObj, xCoord, yCoord, zCoord + 1);
-                ValueWriting.preventSpawnerSpawning(worldObj, xCoord, yCoord, zCoord - 1);
+                PClo_BlockSpecial.preventSpawnerSpawning(worldObj, xCoord + 1, yCoord, zCoord);
+                PClo_BlockSpecial.preventSpawnerSpawning(worldObj, xCoord - 1, yCoord, zCoord);
+                PClo_BlockSpecial.preventSpawnerSpawning(worldObj, xCoord, yCoord + 1, zCoord);
+                PClo_BlockSpecial.preventSpawnerSpawning(worldObj, xCoord, yCoord, zCoord + 1);
+                PClo_BlockSpecial.preventSpawnerSpawning(worldObj, xCoord, yCoord, zCoord - 1);
 
             default:
                 return;
@@ -95,7 +83,7 @@ public class PClo_TileEntitySpecial extends PC_TileEntityWithInventory
 
         if (PClo_BlockSpecial.isActive(worldObj, xCoord, yCoord, zCoord) != shouldState)
         {
-            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, GameInfo.getBID(worldObj, xCoord, yCoord, zCoord), 1);
+            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord), 1);
         }
     }
 

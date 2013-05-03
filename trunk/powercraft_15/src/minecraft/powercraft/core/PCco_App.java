@@ -4,17 +4,17 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import powercraft.api.PC_GlobalVariables;
-import powercraft.api.PC_IPacketHandler;
-import powercraft.api.PC_Struct2;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
 import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.item.PC_Item;
 import powercraft.api.item.PC_ItemStack;
+import powercraft.api.network.PC_IPacketHandler;
 import powercraft.api.recipes.PC_IRecipe;
 import powercraft.api.recipes.PC_ShapedRecipes;
 import powercraft.api.recipes.PC_ShapelessRecipes;
+import powercraft.api.utils.PC_GlobalVariables;
+import powercraft.api.utils.PC_Struct2;
 import powercraft.launcher.PC_Property;
 import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_InitPacketHandlers;
@@ -39,9 +39,7 @@ public class PCco_App {
 	public static PC_Item oreSniffer;
 	@PC_FieldObject(clazz=PCco_MobSpawnerSetter.class)
 	public static PCco_MobSpawnerSetter spawnerSetter;
-	@PC_FieldObject(clazz=PCco_CraftingToolLoader.class)
-	public static PCco_CraftingToolLoader craftingToolLoader;
-
+	
 	@PC_InitProperties
 	public void initProperties(PC_Property config) {
 		PC_GlobalVariables.consts.put("recipes.recyclation", config.getBoolean("recipes.recyclation", true, "Add new recypes allowing easy material recyclation"));
@@ -104,14 +102,14 @@ public class PCco_App {
 			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
 		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("DeleteAllPlayerStacks", new PCco_DeleteAllPlayerStacks()));
 		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("MobSpawner", spawnerSetter));
-		
+		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("CraftingToolCrafter", new PCco_CraftingToolCrafter()));
 		return packetHandlers;
 	}
-	
+
 	@PC_RegisterContainers
 	public List<PC_Struct2<String, Class<? extends PC_GresBaseWithInventory>>> registerContainers(List<PC_Struct2<String, Class<? extends PC_GresBaseWithInventory>>> guis) {
 		guis.add(new PC_Struct2<String, Class<? extends PC_GresBaseWithInventory>>("CraftingTool", PCco_ContainerCraftingTool.class));
 		return guis;
 	}
-
+	
 }

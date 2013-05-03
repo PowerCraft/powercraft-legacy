@@ -13,13 +13,13 @@ import net.minecraft.util.Icon;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.api.PC_ClientUtils;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_VecI;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.tileentity.PC_ITileEntityWatcher;
+import powercraft.api.utils.PC_ClientUtils;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_RectI;
+import powercraft.api.utils.PC_VecI;
 
 
 /**
@@ -244,7 +244,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	/**
 	 * @return true if is visible
 	 */
-	protected boolean isVisible() {
+	public boolean isVisible() {
 		return visible;
 	}
 
@@ -858,7 +858,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	public void updateRenderer(PC_VecI posOffset, PC_RectI scissorOld, double scale) {
 		if (!visible) return;
 		
-		tabRenderer(posOffset.copy().add(pos), null, scale);
+		tabRenderer(posOffset.offset(pos), null, scale);
 		
 		PC_RectI scissorNew = setDrawRect(scissorOld, new PC_RectI(posOffset.x + pos.x, posOffset.y + pos.y, size.x, size.y), scale);
 		if(scissorNew==null)return;
@@ -867,7 +867,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 		if(rect!=null)
 			scissorNew = setDrawRect(scissorNew, rect, scale);
 		
-		childRenderer(posOffset.copy().add(pos), scissorNew, scale);
+		childRenderer(posOffset.offset(pos), scissorNew, scale);
 	}
 
 	public void childRenderer(PC_VecI posOffset, PC_RectI scissorNew, double scale){

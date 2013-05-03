@@ -2,6 +2,9 @@ package powercraft.itemstorage;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+
+import org.lwjgl.input.Keyboard;
+
 import powercraft.api.gres.PC_GresCheckBox;
 import powercraft.api.gres.PC_GresInventory;
 import powercraft.api.gres.PC_GresInventoryPlayer;
@@ -15,8 +18,7 @@ import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.tileentity.PC_TileEntity;
 
-public class PCis_GuiCompressor extends PCis_ContainerCompressor
-		implements PC_IGresClient {
+public class PCis_GuiCompressor extends PCis_ContainerCompressor implements PC_IGresClient {
 
 	public PC_GresTextEdit name;
 	public PC_GresCheckBox takeStacks;
@@ -76,15 +78,12 @@ public class PCis_GuiCompressor extends PCis_ContainerCompressor
 			}
 		}
 	}
-
+	
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		gui.close();
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN || i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			gui.close();
+		}
 	}
 
 	@Override

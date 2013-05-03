@@ -75,7 +75,7 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 	public void addText(String text) {
 		if(System.currentTimeMillis() - lastTime > 100){
 			if(getTE()!=null){
-				getTE().call("play", null);
+				getTE().call("play");
 				lastTime = System.currentTimeMillis();
 			}
 		}
@@ -95,9 +95,9 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 	public void update() {}
 
 	@Override
-	public void getClientMsg(String msg, Object obj) {
+	public void getClientMsg(String msg, Object[] obj) {
 		if(msg.equalsIgnoreCase("input")){
-			String input = (String)obj;
+			String input = (String)obj[0];
 			input = input.trim();
 			if (input.length() > 0) {
 				userInput.add(input);

@@ -29,7 +29,7 @@ public class PC_UpdateXMLFile {
 			this.node = node;
 		}
 		
-		protected T read(){
+		public T read(){
 			if(node instanceof Element){
 				readAttributes((Element)node);
 			}
@@ -117,8 +117,6 @@ public class PC_UpdateXMLFile {
 	
 	public static class XMLModuleTag extends XMLTag<XMLModuleTag>{
 		private String name;
-		private int langVersion;
-		private String langLink;
 		private List<XMLVersionTag> versions = new ArrayList<XMLVersionTag>();
 
 		public XMLModuleTag(XMLTag parent, Node node) {
@@ -127,14 +125,6 @@ public class PC_UpdateXMLFile {
 
 		public String getName() {
 			return name;
-		}
-		
-		public int getLangVersion() {
-			return langVersion;
-		}
-		
-		public String getLangLink() {
-			return langLink;
 		}
 		
 		public XMLVersionTag getVersion(PC_Version versionV) {
@@ -166,12 +156,6 @@ public class PC_UpdateXMLFile {
 		protected void readAttributes(Element element) {
 			name = element.getAttribute("modulename");
 			String sLangVersion = element.getAttribute("langversion");
-			try{
-				langVersion = Integer.parseInt(sLangVersion);
-			}catch(NumberFormatException e){
-				e.printStackTrace();
-			}
-			langLink = element.getAttribute("langlink");
 		}
 
 		@Override

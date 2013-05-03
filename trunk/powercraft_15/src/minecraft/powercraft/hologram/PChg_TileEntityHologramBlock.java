@@ -24,6 +24,8 @@ public class PChg_TileEntityHologramBlock extends PC_TileEntity {
 		}
 	}
 
+	
+	
 	public Block getContainingBlock() {
 		Block b = Block.blocksList[containingBlockID];
 		if(b==null){

@@ -13,11 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.launcher.PC_Property;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.annotation.PC_Shining;
 import powercraft.api.annotation.PC_Shining.OFF;
@@ -27,9 +22,12 @@ import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
+import powercraft.launcher.PC_Property;
 
 @PC_Shining
-@PC_BlockInfo(tileEntity=PClo_TileEntityPulsar.class)
+@PC_BlockInfo(name="Redstone Pulsar", tileEntity=PClo_TileEntityPulsar.class)
 public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
 {
     @ON
@@ -51,27 +49,17 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
     }
     
     @Override
+	public void initConfig(PC_Property config) {
+		super.initConfig(config);
+		on.setLightValue(config.getInt("brightness", 7) * 0.0625F);
+	}
+    
+    @Override
 	public boolean showInCraftingTool() {
     	if(this==on)
 			return true;
 		return false;
 	}
-
-	@Override
-    public TileEntity newTileEntity(World world, int metadata)
-    {
-        return new PClo_TileEntityPulsar();
-    }
-
-    @Override
-   	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-       	return isActive(world, x, y, z)?15:0;
-   	}
-
-   	@Override
-   	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
-   		return isProvidingWeakPower(world, x, y, z, s);
-   	}
 
     @Override
     public boolean canProvidePower()
@@ -87,9 +75,9 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
     
     @Override
 	public void updateTick(World world, int x, int y, int z, Random par5Random) {
-    	PClo_TileEntityPulsar tep = GameInfo.getTE(world, x, y, z);
+    	PClo_TileEntityPulsar tep = PC_Utils.getTE(world, x, y, z);
     	if(tep.getShould() != tep.isActive()){
-    		ValueWriting.setBlockState(world, x, y, z, tep.getShould());
+    		PC_Utils.setBlockState(world, x, y, z, tep.getShould());
     	}
 	}
 
@@ -119,7 +107,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
 
         if (world.isRemote)
         {
-            PC_GresRegistry.openGres("Pulsar", player, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+            PC_GresRegistry.openGres("Pulsar", player, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
         }
 
         return true;
@@ -189,25 +177,5 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
-
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_LOAD_FROM_CONFIG:
-			on.setLightValue(((PC_Property)obj[0]).getInt("brightness", 7) * 0.0625F);
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Redstone Pulsar";
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-	   		list.add(PC_Utils.NO_PICKUP);
-	   		list.add(PC_Utils.HARVEST_STOP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}}
-		return null;
-	}
+    
 }

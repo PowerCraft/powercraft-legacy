@@ -6,10 +6,10 @@ import java.util.Random;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Utils;
 
 public class PCma_TileEntityXPBank extends PC_TileEntity
 {
@@ -293,16 +293,16 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
     }
 
 	@Override
-	protected void onCall(String key, Object value) {
+	protected void onCall(String key, Object[] value) {
 		if(key.equals("givePlayerXP")){
-			PC_Struct2<String, Integer> d = (PC_Struct2<String, Integer>)value;
+			PC_Struct2<String, Integer> d = (PC_Struct2<String, Integer>)value[0];
 			if (!worldObj.isRemote){
-                givePlayerXP(GameInfo.mcs().getConfigurationManager().getPlayerForUsername(d.a), d.b);
+                givePlayerXP(PC_Utils.mcs().getConfigurationManager().getPlayerForUsername(d.a), d.b);
             }
 		}else if(key.equals("givePlayerLevel")){
-			PC_Struct2<String, Integer> d = (PC_Struct2<String, Integer>)value;
+			PC_Struct2<String, Integer> d = (PC_Struct2<String, Integer>)value[0];
 			if (!worldObj.isRemote){
-				givePlayerLevel(GameInfo.mcs().getConfigurationManager().getPlayerForUsername(d.a), d.b);
+				givePlayerLevel(PC_Utils.mcs().getConfigurationManager().getPlayerForUsername(d.a), d.b);
             }
 		}
 	}

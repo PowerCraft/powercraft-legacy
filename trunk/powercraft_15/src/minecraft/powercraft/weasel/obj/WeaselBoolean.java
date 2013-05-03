@@ -1,8 +1,8 @@
 package powercraft.weasel.obj;
 
 
-import powercraft.weasel.engine.Calc;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.weasel.engine.Calc;
 
 
 /**
