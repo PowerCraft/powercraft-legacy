@@ -1,5 +1,6 @@
 package powercraft.api.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.CreativeTabs;
@@ -12,12 +13,13 @@ import net.minecraft.src.ItemStack;
 import powercraft.api.interfaces.PC_IIDChangeAble;
 import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.utils.PC_GlobalVariables;
 import powercraft.api.utils.PC_Utils;
 import powercraft.launcher.loader.PC_ModuleObject;
 
-public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC_IMSG, PC_IIDChangeAble {
+public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC_IIDChangeAble {
 	public static final int HEAD = 0, TORSO = 1, LEGS = 2, FEET = 3;
 	
 	private PC_ModuleObject module;
@@ -36,6 +38,8 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
 			this.textureNames[i + 1] = textureNames[i];
 		}
 	}
+	
+	public abstract List<LangEntry> getNames(ArrayList<LangEntry> names);
 	
 	public void setID(int id) {
 		int oldID = itemID;
@@ -75,7 +79,7 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
 	}
 	
 	public String getArmorTextureFile(ItemStack itemstack) {
-		return PC_TextureRegistry.getTextureName(module, armorTexture);
+		return PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(module, armorTexture);
 	}
 	
 	@Override

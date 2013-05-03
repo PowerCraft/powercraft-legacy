@@ -9,6 +9,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
+import powercraft.api.annotation.PC_BlockFlag;
 import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
@@ -21,6 +22,8 @@ public final class PC_MSGRegistry {
 			MSG_LOAD_FROM_CONFIG = 10, MSG_ON_HIT_BY_BEAM_TRACER = 11, MSG_BURN_TIME = 12, MSG_RECIVE_POWER = 13, MSG_CAN_RECIVE_POWER = 14,
 			MSG_ON_ACTIVATOR_USED_ON_BLOCK = 15, MSG_STR_MSG = 17, MSG_RENDER_ITEM_HORIZONTAL = 18, MSG_ROTATION = 19, MSG_RATING = 20, MSG_CONDUCTIVITY = 21,
 			MSG_LOAD_WORLD = 23, MSG_GET_PROVIDET_GLOBAL_FUNCTIONS = 24, MSG_RENDER_OVERLAY = 25, MSG_OPEN_GUI_OR_PLACE_BLOCK = 26, MSG_DOES_SMOKE = 27;
+	
+	public static final String HARVEST_STOP = "HARVEST_STOP", NO_HARVEST = "NO_HARVEST", DECO_FRAME_ATTACHED = "DECO_FRAME_ATTACHED";
 	
 	public static List<PC_IMSG> getMSGObjects() {
 		return new ArrayList<PC_IMSG>(msgObjects);
@@ -71,10 +74,12 @@ public final class PC_MSGRegistry {
 	
 	public static boolean hasFlag(World world, PC_VecI pos, String flag) {
 		Block b = PC_Utils.getBlock(world, pos);
-		if (b instanceof PC_IMSG) {
-			List<String> list = (List<String>) ((PC_IMSG) b).msg(MSG_BLOCK_FLAGS, world, pos, new ArrayList<String>());
-			if (list != null) {
-				return list.contains(flag);
+		if(b.getClass().isAnnotationPresent(PC_BlockFlag.class)){
+			String[] list = b.getClass().getAnnotation(PC_BlockFlag.class).flags();
+			for(String key:list){
+				if(key.equals(flag)){
+					return true;
+				}
 			}
 		}
 		return false;

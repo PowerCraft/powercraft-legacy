@@ -48,7 +48,6 @@ public final class PC_ItemRegistry {
 				id = getFreeItemID();
 			}
 			PC_Item item = PC_ReflectHelper.create(itemClass, id);
-			PC_MSGRegistry.registerMSGObject(item);
 			items.put(itemClass.getSimpleName(), item);
 			item.setUnlocalizedName(itemClass.getSimpleName());
 			item.setModule(module);
@@ -84,9 +83,7 @@ public final class PC_ItemRegistry {
 				}
 			});
 			
-			item.msg(PC_MSGRegistry.MSG_LOAD_FROM_CONFIG, config);
-			
-			List<LangEntry> l = (List<LangEntry>) item.msg(PC_MSGRegistry.MSG_DEFAULT_NAME, new ArrayList<LangEntry>());
+			List<LangEntry> l = item.getNames(new ArrayList<LangEntry>());
 			if (l != null) {
 				PC_LangRegistry.registerLanguage(module, l.toArray(new LangEntry[0]));
 			}
@@ -112,12 +109,9 @@ public final class PC_ItemRegistry {
 				id = getFreeItemID();
 			}
 			PC_ItemArmor itemArmor = PC_ReflectHelper.create(itemArmorClass, id);
-			PC_MSGRegistry.registerMSGObject(itemArmor);
 			itemArmors.put(itemArmorClass.getSimpleName(), itemArmor);
 			itemArmor.setUnlocalizedName(itemArmorClass.getSimpleName());
 			itemArmor.setModule(module);
-			
-			itemArmor.msg(PC_MSGRegistry.MSG_LOAD_FROM_CONFIG, config);
 			
 			PC_ReflectHelper.getAllFieldsWithAnnotation(itemArmorClass, itemArmor, PC_Config.class, new PC_IFieldAnnotationIterator<PC_Config>() {
 				
@@ -150,7 +144,7 @@ public final class PC_ItemRegistry {
 				}
 			});
 			
-			List<LangEntry> l = (List<LangEntry>) itemArmor.msg(PC_MSGRegistry.MSG_DEFAULT_NAME, new ArrayList<LangEntry>());
+			List<LangEntry> l = itemArmor.getNames(new ArrayList<LangEntry>());
 			if (l != null) {
 				PC_LangRegistry.registerLanguage(module, l.toArray(new LangEntry[0]));
 			}

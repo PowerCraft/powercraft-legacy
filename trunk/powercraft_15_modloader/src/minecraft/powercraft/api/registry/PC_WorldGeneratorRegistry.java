@@ -18,7 +18,7 @@ public class PC_WorldGeneratorRegistry {
 		}
 	}
 	
-	public static void onGenerate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
 		for (PC_IWorldGenerator worldGenerator : worldGenerators) {
 			worldGenerator.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 		}

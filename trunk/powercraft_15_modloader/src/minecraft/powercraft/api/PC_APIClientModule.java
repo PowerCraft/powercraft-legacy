@@ -38,6 +38,7 @@ public class PC_APIClientModule extends PC_APIModule {
 	@Override
 	protected void clientPreInit(List<PC_ModuleObject> modules) {
 		PC_Logger.enterSection("Module Language Init");
+		new PC_ThreadLangUpdates();
 		for (PC_ModuleObject module : modules) {
 			List<LangEntry> l = module.initLanguage(new ArrayList<LangEntry>());
 			if (l != null) {

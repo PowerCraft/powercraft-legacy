@@ -252,7 +252,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	/**
 	 * @return true if is visible
 	 */
-	protected boolean isVisible() {
+	public boolean isVisible() {
 		return visible;
 	}
 	

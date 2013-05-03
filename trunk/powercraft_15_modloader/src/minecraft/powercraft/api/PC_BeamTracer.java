@@ -8,6 +8,7 @@ import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.World;
+import powercraft.api.block.PC_Block;
 import powercraft.api.interfaces.PC_IBeamHandler;
 import powercraft.api.interfaces.PC_IBeamHandlerExt;
 import powercraft.api.interfaces.PC_IMSG;
@@ -286,13 +287,11 @@ public class PC_BeamTracer {
 			int id = PC_Utils.getBID(world, settings.pos);
 			
 			Block b = Block.blocksList[id];
-			result res = result.CONTINUE;
+			BeamHitResult res = BeamHitResult.CONTINUE;
 			if (b != null) {
-				res = result.FALLBACK;
-				if (b instanceof PC_IMSG && handleBlocks) {
-					Object o = ((PC_IMSG) b).msg(PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER, getWorld(), settings);
-					if (o instanceof result)
-						res = (result) o;
+				res = BeamHitResult.FALLBACK;
+				if (b instanceof PC_Block && handleBlocks) {
+					res = ((PC_Block) b).onBlockHitByBeam(world, settings.pos.x, settings.pos.y, settings.pos.z, settings);
 				}
 			} else if (handler instanceof PC_IBeamHandlerExt) {
 				boolean stop = ((PC_IBeamHandlerExt) handler).onEmptyBlockHit(this, settings.pos);
@@ -301,7 +300,7 @@ public class PC_BeamTracer {
 				}
 			}
 			
-			if (res == result.FALLBACK) {
+			if (res == BeamHitResult.FALLBACK) {
 				
 				boolean stop = true;
 				if (handler != null)
@@ -311,11 +310,11 @@ public class PC_BeamTracer {
 					return;
 				}
 				
-			} else if (res == result.CONTINUE) {
+			} else if (res == BeamHitResult.CONTINUE) {
 				
 				// just continue
 				
-			} else if (res == result.STOP) {
+			} else if (res == BeamHitResult.STOP) {
 				
 				// break loop
 				return;
@@ -333,13 +332,13 @@ public class PC_BeamTracer {
 				
 				boolean stop = false;
 				for (Entity entity : hitList) {
-					res = result.FALLBACK;
+					res = BeamHitResult.FALLBACK;
 					if (entity instanceof PC_IMSG && handleBlocks) {
-						Object o = ((PC_IMSG) entity).msg(PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER, getWorld(), settings);
-						if (o instanceof result)
-							res = (result) o;
+						Object o = ((PC_IMSG) entity).msg(PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER, world, settings);
+						if (o instanceof BeamHitResult)
+							res = (BeamHitResult) o;
 					}
-					if (res == result.FALLBACK) {
+					if (res == BeamHitResult.FALLBACK) {
 						
 						if (handler != null) {
 							if (handler.onEntityHit(this, entity, settings.pos)) {
@@ -349,11 +348,11 @@ public class PC_BeamTracer {
 							stop = true;
 						}
 						
-					} else if (res == result.CONTINUE) {
+					} else if (res == BeamHitResult.CONTINUE) {
 						
 						// just continue
 						
-					} else if (res == result.STOP) {
+					} else if (res == BeamHitResult.STOP) {
 						
 						stop = true;
 						
@@ -397,7 +396,7 @@ public class PC_BeamTracer {
 	/**
 	 * Result state enum for extending class's block hit method.
 	 */
-	public static enum result {
+	public static enum BeamHitResult {
 		/** Fall back to handler */
 		FALLBACK,
 		/** Continue to next block */

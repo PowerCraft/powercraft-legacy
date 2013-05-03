@@ -169,6 +169,7 @@ public class PC_RecipeRegistry {
 						list[x][y] = new ArrayList<PC_ItemStack>();
 						list[x][y].add(new PC_ItemStack(stacks.get(i)));
 					}
+					i++;
 				}
 			}
 		} else {

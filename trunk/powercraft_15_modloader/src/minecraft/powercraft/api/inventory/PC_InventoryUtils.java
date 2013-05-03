@@ -19,6 +19,7 @@ import net.minecraft.src.NBTTagInt;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import powercraft.api.registry.PC_RecipeRegistry;
 import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
@@ -555,20 +556,39 @@ public class PC_InventoryUtils {
 	}
 	
 	public static int useFuel(IInventory inv, int[] indexes, World world, PC_VecI pos) {
-		for (int j = 0; j < indexes.length; j++) {
-			int i = indexes[j];
-			ItemStack is = inv.getStackInSlot(i);
-			int fuel = PC_Utils.getFuelValue(is);
-			if (fuel > 0) {
-				inv.decrStackSize(i, 1);
-				ItemStack container = PC_Utils.getContainerItemStack(is);
-				if (container != null) {
-					storeItemStackToInventoryFrom(inv, container, indexes);
-					if (container.stackSize > 0) {
-						PC_Utils.dropItemStack(world, pos, container);
+		if(indexes==null){
+			int size = inv.getSizeInventory();
+			for (int i = 0; i < size; i++) {
+				ItemStack is = inv.getStackInSlot(i);
+				int fuel = PC_RecipeRegistry.getFuelValue(is);
+				if (fuel > 0) {
+					inv.decrStackSize(i, 1);
+					ItemStack container = PC_Utils.getContainerItemStack(is);
+					if (container != null) {
+						storeItemStackToInventoryFrom(inv, container, indexes);
+						if (container.stackSize > 0) {
+							PC_Utils.dropItemStack(world, pos, container);
+						}
 					}
+					return fuel;
 				}
-				return fuel;
+			}
+		}else{
+			for (int j = 0; j < indexes.length; j++) {
+				int i=indexes[j];
+				ItemStack is = inv.getStackInSlot(i);
+				int fuel = PC_RecipeRegistry.getFuelValue(is);
+				if (fuel > 0) {
+					inv.decrStackSize(i, 1);
+					ItemStack container = PC_Utils.getContainerItemStack(is);
+					if (container != null) {
+						storeItemStackToInventoryFrom(inv, container, indexes);
+						if (container.stackSize > 0) {
+							PC_Utils.dropItemStack(world, pos, container);
+						}
+					}
+					return fuel;
+				}
 			}
 		}
 		return 0;

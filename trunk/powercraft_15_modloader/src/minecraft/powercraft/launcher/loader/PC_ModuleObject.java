@@ -33,11 +33,11 @@ public class PC_ModuleObject {
 	private boolean errored = false;
 	
 	public PC_ModuleObject(String moduleName) {
+		this.moduleName = moduleName;
 		String version = getConfig().getString("loader.usingVersion");
 		if (!version.equals("")) {
 			usingVersion = new PC_Version(version);
 		}
-		this.moduleName = moduleName;
 	}
 	
 	public String getModuleName() {

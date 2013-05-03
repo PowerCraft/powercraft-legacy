@@ -34,6 +34,8 @@ public class PC_GresInventory extends PC_GresWidget {
 	
 	public Slot slotOver = null;
 	
+	public boolean isMouseDown;
+	
 	/**
 	 * Inventory widget, with empty slot grid. To be filled using setSlot()
 	 * 
@@ -153,6 +155,7 @@ public class PC_GresInventory extends PC_GresWidget {
 	
 	@Override
 	public boolean mouseClick(PC_VecI mousePos, int key) {
+		isMouseDown = key!=-1;
 		return true;
 	}
 	

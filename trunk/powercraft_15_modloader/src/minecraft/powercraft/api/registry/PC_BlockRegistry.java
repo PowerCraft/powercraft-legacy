@@ -9,10 +9,13 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ModLoader;
+import powercraft.api.PC_OreDictionary;
 import powercraft.api.annotation.PC_BlockInfo;
+import powercraft.api.annotation.PC_OreInfo;
 import powercraft.api.annotation.PC_Shining;
 import powercraft.api.block.PC_Block;
 import powercraft.api.block.PC_ItemBlock;
+import powercraft.api.item.PC_ItemStack;
 import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
@@ -29,7 +32,7 @@ public final class PC_BlockRegistry {
 	
 	public static <T extends PC_Block> T register(PC_ModuleObject module, Class<T> blockClass, Class<? extends PC_ItemBlock> itemBlockClass,
 			Class<? extends PC_TileEntity> tileEntityClass) {
-		final PC_Property config = module.getConfig().getProperty(blockClass.getSimpleName(), null, null);
+		PC_Property config = module.getConfig().getProperty(blockClass.getSimpleName(), null, null);
 		try {
 			
 			if (!config.getBoolean("enabled", true)) {
@@ -82,6 +85,10 @@ public final class PC_BlockRegistry {
 			block.getIndirectPowerOutput(blockClass.getSimpleName());
 			block.setModule(module);
 			block.initConfig(config);
+			
+			if(block.getClass().isAnnotationPresent(PC_OreInfo.class)){
+				PC_OreDictionary.register(block.getClass().getAnnotation(PC_OreInfo.class).oreName(), new PC_ItemStack(block));
+			}
 			
 			if (itemBlockClass == null) {
 				itemBlockClass = PC_ItemBlock.class;

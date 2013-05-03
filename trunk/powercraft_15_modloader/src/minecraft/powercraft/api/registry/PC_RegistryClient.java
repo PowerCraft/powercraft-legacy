@@ -15,6 +15,7 @@ import net.minecraft.src.Icon;
 import net.minecraft.src.IconRegister;
 import net.minecraft.src.KeyBinding;
 import net.minecraft.src.ModLoader;
+import net.minecraft.src.StringTranslate;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraft.src.mod_PowerCraft;
@@ -80,7 +81,7 @@ public class PC_RegistryClient extends PC_RegistryServer {
 	@Override
 	protected void loadLanguage(PC_ModuleObject module) {
 		final PC_ModuleObject m = module;
-		File folder = new File(Minecraft.getMinecraftDir(), PC_Utils.getPowerCraftFile() + "lang/");
+		File folder = new File(PC_Utils.getPowerCraftFile(), "lang");
 		
 		String[] files = folder.list(new FilenameFilter() {
 			
@@ -253,6 +254,11 @@ public class PC_RegistryClient extends PC_RegistryServer {
 			return iconRegister.registerIcon(texture);
 		}
 		return null;
+	}
+
+	@Override
+	public String getUsedLang() {
+		return StringTranslate.getInstance().getCurrentLanguage();
 	}
 	
 	public static void keyEvent(String keyCode, boolean state) {

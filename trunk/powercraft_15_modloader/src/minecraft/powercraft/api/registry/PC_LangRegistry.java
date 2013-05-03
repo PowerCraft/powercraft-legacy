@@ -39,5 +39,15 @@ public final class PC_LangRegistry {
 			super(key, trans, desc);
 		}
 	}
+
+	public static void reloadLanguage() {
+		for(PC_ModuleObject module:PC_ModuleRegistry.getModuleList()){
+			loadLanguage(module);
+		}
+	}
+
+	public static String getUsedLang() {
+		return PC_RegistryServer.getInstance().getUsedLang();
+	}
 	
 }

@@ -13,12 +13,13 @@ import net.minecraft.src.NBTTagCompound;
 import powercraft.api.interfaces.PC_IIDChangeAble;
 import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.utils.PC_GlobalVariables;
 import powercraft.api.utils.PC_Utils;
 import powercraft.launcher.loader.PC_ModuleObject;
 
-public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG, PC_IIDChangeAble {
+public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IIDChangeAble {
 	private PC_ModuleObject module;
 	private boolean canSetTextureFile = true;
 	private Item replacedItem = null;
@@ -34,6 +35,8 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG, PC_
 			this.textureNames[i + 1] = textureNames[i];
 		}
 	}
+	
+	public abstract List<LangEntry> getNames(ArrayList<LangEntry> names);
 	
 	@Override
 	public void setID(int id) {
