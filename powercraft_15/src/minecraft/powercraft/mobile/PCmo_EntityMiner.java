@@ -27,18 +27,13 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import powercraft.api.PC_INBT;
-import powercraft.api.PC_PacketHandler;
-import powercraft.api.PC_Utils.Communication;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.SaveHandler;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecF;
-import powercraft.api.PC_VecI;
+import powercraft.api.building.PC_BuildingManager;
 import powercraft.api.entity.PC_FakePlayer;
+import powercraft.api.interfaces.PC_INBT;
 import powercraft.api.inventory.PC_IInventory;
 import powercraft.api.inventory.PC_IInventoryWrapper;
 import powercraft.api.inventory.PC_InventoryUtils;
+import powercraft.api.network.PC_PacketHandler;
 import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_ItemRegistry;
@@ -47,13 +42,12 @@ import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_RecipeRegistry;
 import powercraft.api.registry.PC_SoundRegistry;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecF;
+import powercraft.api.utils.PC_VecI;
 import powercraft.launcher.PC_Logger;
-import powercraft.machines.PCma_CropHarvestingManager;
-import powercraft.machines.PCma_CropHarvestingManager.PC_CropEntry;
 import powercraft.mobile.PCmo_Command.ParseException;
-import powercraft.weasel.engine.Calc;
-import powercraft.weasel.obj.WeaselDouble;
-import powercraft.weasel.obj.WeaselObject;
 
 public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
@@ -378,7 +372,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			tag.setInteger("Steps", stepCounter);
 			tag.setBoolean("UpStepLaid", upStepLaid);
 			tag.setBoolean("BridgeDone", bridgeDone);
-			SaveHandler.saveToNBT(tag, "Target", target);
+			PC_Utils.saveToNBT(tag, "Target", target);
 			tag.setInteger("RotationRemaining", rotationRemaining);
 			tag.setInteger("Level", level);
 			tag.setInteger("FuelBuffer", fuelBuffer);
@@ -406,7 +400,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			stepCounter = tag.getInteger("Steps");
 			upStepLaid = tag.getBoolean("UpStepLaid");
 			bridgeDone = tag.getBoolean("BridgeDone");
-			SaveHandler.loadFromNBT(tag, "Target", target);
+			PC_Utils.loadFromNBT(tag, "Target", target);
 			rotationRemaining = tag.getInteger("RotationRemaining");
 			level = tag.getInteger("Level");
 			fuelBuffer = tag.getInteger("FuelBuffer");
@@ -1710,7 +1704,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		if (!shouldMakeEffects()) {
 			return;
 		}
-		int id = GameInfo.getBID(worldObj, pos);
+		int id = PC_Utils.getBID(worldObj, pos);
 
 		Block block = Block.blocksList[id];
 		if (st.miningTickCounter % 8 == 0 && block != null) {
@@ -1751,52 +1745,15 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 */
 	private void harvestBlock_do(PC_VecI pos) {
 		if(pos == null) return;
-		int id = GameInfo.getBID(worldObj, pos);
-		int meta = GameInfo.getMD(worldObj, pos);
-
+		int id = PC_Utils.getBID(worldObj, pos);
+		int meta = PC_Utils.getMD(worldObj, pos);
 		if (!shouldIgnoreBlockForHarvesting(pos, id)) {
-
-			if (PCma_CropHarvestingManager.isBlockRegisteredCrop(id)) {
-
-				PC_CropEntry cropEntry;
-				
-				if ((cropEntry = PCma_CropHarvestingManager.getHarvestBlockCrop(id, meta))!=null) {
-
-					ItemStack[] harvested = cropEntry.getHarvestedStacks(id, meta);
-
-					if (harvested != null) {
-
-						for (ItemStack stack : harvested) {
-
-							// play breaking sound and animation
-							if (PC_SoundRegistry.isSoundEnabled()) {
-								worldObj.playAuxSFX(2001, pos.x, pos.y, pos.z, id + (meta << 12));
-							}
-							
-							ValueWriting.dropItemStack(worldObj, stack, pos);
-							
-						}
-
-					}
-
-					int newMeta = cropEntry.getReplantMetadata(id, meta);
-
-					if (newMeta == -1) {
-						ValueWriting.setBID(worldObj, pos, 0, 0);
-					} else {
-						ValueWriting.setMD(worldObj, pos, newMeta);
-					}
-
+			List<PC_Struct2<PC_VecI, ItemStack>> drops = PC_BuildingManager.harvest(worldObj, pos, 0);
+			for(PC_Struct2<PC_VecI, ItemStack> drop:drops){
+				if (PC_SoundRegistry.isSoundEnabled()) {
+					worldObj.playAuxSFX(2001, pos.x, pos.y, pos.z, id + (meta << 12));
 				}
-
-			} else {
-				if(Block.blocksList[id] != null) {
-					Block.blocksList[id].harvestBlock(worldObj, fakePlayer, pos.x, pos.y, pos.z, meta);
-					ValueWriting.setBID(worldObj, pos, 0, 0);
-					if (shouldMakeEffects()) {
-						worldObj.playAuxSFX(2001, pos.x, pos.y, pos.z, id + (meta << 12));
-					}
-				}
+				PC_Utils.dropItemStack(worldObj, drop.a, drop.b);
 			}
 		}
 	}
@@ -1808,7 +1765,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * @param loc block position index.
 	 */
 	private void performMiningUpdate(PC_VecI pos, int loc) {
-		int id = GameInfo.getBID(worldObj, pos);
+		int id = PC_Utils.getBID(worldObj, pos);
 
 		if (loc == 4 || loc == 5) {
 			bridgeBuilding_do(pos.offset(0, -1, 0));
@@ -2036,7 +1993,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * @return is free to move
 	 */
 	private boolean checkIfAir(PC_VecI pos, boolean lower) {
-		int id = GameInfo.getBID(worldObj, pos);
+		int id = PC_Utils.getBID(worldObj, pos);
 
 		if (lower && id == Block.stoneSingleSlab.blockID) {
 			return true;
@@ -2101,7 +2058,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			}
 			int id = fill.itemID;
 			int meta = fill.getItemDamage();
-			ValueWriting.setBID(worldObj, pos, id, meta);
+			PC_Utils.setBID(worldObj, pos, id, meta);
 
 			if (shouldMakeEffects()) {
 				worldObj.playSoundEffect(pos.x + 0.5F, pos.y + 0.5F, pos.z + 0.5F, Block.blocksList[id].stepSound.getStepSound(),
@@ -2128,7 +2085,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			if (worldObj.getBlockId(x, y, z) == 0) {
 				ItemStack halfstep = cargo.getHalfStep();
 				if (halfstep != null) {
-					ValueWriting.setBID(worldObj, x, y, z, halfstep.itemID,
+					PC_Utils.setBID(worldObj, x, y, z, halfstep.itemID,
 							((ItemBlock) halfstep.getItem()).getMetadata(halfstep.getItemDamage()));
 				}
 
@@ -2146,7 +2103,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 				id = fill.itemID;
 				int meta = fill.getItemDamage();
-				ValueWriting.setBID(worldObj, x, y + (step ? -1 : 0), z, id, meta);
+				PC_Utils.setBID(worldObj, x, y + (step ? -1 : 0), z, id, meta);
 				if (shouldMakeEffects()) {
 					worldObj.playSoundEffect(x + 0.5F, (float) y + (step ? -1 : 0) + 0.5F, z + 0.5F, Block.blocksList[id].stepSound.getStepSound(),
 							(Block.blocksList[id].stepSound.getVolume() + 1.0F) / 2.0F, Block.blocksList[id].stepSound.getPitch() * 0.8F);
@@ -2256,7 +2213,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 								fillMeta = fill.getItemDamage();
 							}
 						}
-						ValueWriting.setBID(worldObj, x, y, z, fillId, fillMeta);
+						PC_Utils.setBID(worldObj, x, y, z, fillId, fillMeta);
 						if (Block.blocksList[fillId] != null) {
 							if (shouldMakeEffects()) {
 								worldObj.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, Block.blocksList[fillId].stepSound.getStepSound(),
@@ -2354,19 +2311,19 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		if (!getFlag(torchesOnlyOnFloor)) {
 			if (worldObj.getBlockId(rightX, y + 1, rightZ) == 0 && torch.canPlaceBlockAt(worldObj, rightX, y + 1, rightZ)) {
-				ValueWriting.setBID(worldObj, rightX, y + 1, rightZ, torch.blockID, 0);
+				PC_Utils.setBID(worldObj, rightX, y + 1, rightZ, torch.blockID, 0);
 				cargo.consumeItem(Block.torchWood.blockID, -1, 1);
 				return;
 			}
 			if (worldObj.getBlockId(leftX, y + 1, leftZ) == 0 && torch.canPlaceBlockAt(worldObj, leftX, y + 1, leftZ)) {
-				ValueWriting.setBID(worldObj, leftX, y + 1, leftZ, torch.blockID, 0);
+				PC_Utils.setBID(worldObj, leftX, y + 1, leftZ, torch.blockID, 0);
 				cargo.consumeItem(Block.torchWood.blockID, -1, 1);
 				return;
 			}
 		}
 
 		if (worldObj.getBlockId(rightX, y, rightZ) == 0 && torch.canPlaceBlockAt(worldObj, rightX, y, rightZ)) {
-			ValueWriting.setBID(worldObj, rightX, y, rightZ, torch.blockID, 0);
+			PC_Utils.setBID(worldObj, rightX, y, rightZ, torch.blockID, 0);
 			// set on floor if not building stairs.
 			if (st.realCommand != PCmo_Command.UP) {
 				Block.torchWood.onBlockPlacedBy(worldObj, rightX, y, rightZ, fakePlayer, new ItemStack(Block.torchWood));
@@ -2376,7 +2333,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		if (worldObj.getBlockId(leftX, y, leftZ) == 0 && torch.canPlaceBlockAt(worldObj, leftX, y, leftZ)) {
-			ValueWriting.setBID(worldObj, leftX, y, leftZ, torch.blockID, 0);
+			PC_Utils.setBID(worldObj, leftX, y, leftZ, torch.blockID, 0);
 
 			// set on floor if not building stairs.
 			if (st.realCommand != PCmo_Command.UP) {
@@ -2755,14 +2712,14 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mBridgeOn)) {
 			if (sendCommandToMiners(PCmo_Command.BRIDGE_ENABLE)) {
-				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.bridgeOn"), true);
+				PC_Utils.chatMsg(PC_LangRegistry.tr("pc.miner.bridgeOn"));
 			}
 			return;
 		}
 
 		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mBridgeOff)) {
 			if (sendCommandToMiners(PCmo_Command.BRIDGE_DISABLE)) {
-				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.bridgeOff"), true);
+				PC_Utils.chatMsg(PC_LangRegistry.tr("pc.miner.bridgeOff"));
 			}
 			return;
 		}
@@ -2779,7 +2736,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			if (keyPressTimer[8] == 0) {
 				keyPressTimer[8] = CooldownTime;
 				if (sendCommandToMiners(PCmo_Command.RUN_PROGRAM)) {
-					Communication.chatMsg(PC_LangRegistry.tr("pc.miner.launchedAll"), true);
+					PC_Utils.chatMsg(PC_LangRegistry.tr("pc.miner.launchedAll"));
 				}
 			}
 			return;
@@ -2792,21 +2749,21 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mMiningOn)) {
 			if (sendCommandToMiners(PCmo_Command.MINING_ENABLE)) {
-				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.miningOn"), true);
+				PC_Utils.chatMsg(PC_LangRegistry.tr("pc.miner.miningOn"));
 			}
 			return;
 		}
 
 		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mMiningOff)) {
 			if (sendCommandToMiners(PCmo_Command.MINING_DISABLE)) {
-				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.miningOff"), true);
+				PC_Utils.chatMsg(PC_LangRegistry.tr("pc.miner.miningOff"));
 			}
 			return;
 		}
 
 		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mCancel)) {
 			if (sendCommandToMiners(PCmo_Command.RESET)) {
-				Communication.chatMsg(PC_LangRegistry.tr("pc.miner.operationsCancelled"), true);
+				PC_Utils.chatMsg(PC_LangRegistry.tr("pc.miner.operationsCancelled"));
 			}
 			return;
 		}
@@ -2848,7 +2805,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		prevPosZ = posZ;
 
 		if(playerConectedID!=null && !worldObj.isRemote){
-			EntityPlayer e = GameInfo.mcs().getConfigurationManager().getPlayerForUsername(playerConectedID);
+			EntityPlayer e = PC_Utils.mcs().getConfigurationManager().getPlayerForUsername(playerConectedID);
 			if(e!=null){
 				handleKeybordInput(e);
 				playerTimeout = 0;
@@ -3231,7 +3188,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			if (list != null && list.size() > 0) {
 				for (int j1 = 0; j1 < list.size(); j1++) {
 					Entity entity = list.get(j1);
-					if (GameInfo.isEntityFX(entity)|| entity instanceof EntityXPOrb) {
+					if (PC_Utils.isEntityFX(entity)|| entity instanceof EntityXPOrb) {
 						continue;
 					}
 					if (entity.isDead) {
@@ -3335,8 +3292,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		tag.setBoolean(torches, getFlag(torches));
 		tag.setBoolean(cobbleMake, getFlag(cobbleMake));
 		tag.setBoolean(airFillingEnabled, getFlag(airFillingEnabled));
-		SaveHandler.saveToNBT(tag, "Status", st);
-		SaveHandler.saveToNBT(tag, "Brain", br);
+		PC_Utils.saveToNBT(tag, "Status", st);
+		PC_Utils.saveToNBT(tag, "Brain", br);
 
 		PC_InventoryUtils.saveInventoryToNBT(tag, "CargoInv", cargo);
 		PC_InventoryUtils.saveInventoryToNBT(tag, "XtalInv", xtals);
@@ -3364,8 +3321,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		setFlag(torches, tag.getBoolean(torches));
 		setFlag(cobbleMake, tag.getBoolean(cobbleMake));
 		setFlag(airFillingEnabled, tag.getBoolean(airFillingEnabled));
-		SaveHandler.loadFromNBT(tag, "Status", st);
-		SaveHandler.loadFromNBT(tag, "Brain", br);
+		PC_Utils.loadFromNBT(tag, "Status", st);
+		PC_Utils.loadFromNBT(tag, "Brain", br);
 		
 		updateLevel();
 	}
@@ -3480,11 +3437,11 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		// building chests
 		for (int x = xl; x <= xh; x++) {
 			for (int z = zl; z <= zh; z++) {
-				ValueWriting.setBID(worldObj, x, y, z, Block.blockSteel.blockID, 0);
+				PC_Utils.setBID(worldObj, x, y, z, Block.blockSteel.blockID, 0);
 				if ((yaw == 0 && x == xh) || (yaw == 1 && z == zh) || (yaw == 2 && x == xl) || (yaw == 3 && z == zl)) {
-					ValueWriting.setBID(worldObj, x, y+1, z, Block.chest.blockID, 0);
+					PC_Utils.setBID(worldObj, x, y+1, z, Block.chest.blockID, 0);
 				} else {
-					ValueWriting.setBID(worldObj, x, y+1, z, Block.blockSteel.blockID, 0);
+					PC_Utils.setBID(worldObj, x, y+1, z, Block.blockSteel.blockID, 0);
 				}
 			}
 		}
@@ -3558,95 +3515,6 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				br.msg(obj);
 			}
 		}
-	}
-	
-	public static boolean matchStackIdentifier(WeaselObject identifier, ItemStack stack) {
-		if (identifier == null || stack == null) return false;
-		if (identifier instanceof WeaselDouble) {
-			if (stack.itemID == Calc.toInteger(identifier)) {
-				return true;
-			}
-		} else {
-			String str = Calc.toString(identifier);
-			int id = stack.itemID;
-			if (str.equalsIgnoreCase("ALL")) {
-				return true;
-			}
-			if (str.equalsIgnoreCase("ITEM")) {
-				if (!(stack.getItem() instanceof ItemBlock)) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("BLOCK")) {
-				if (stack.getItem() instanceof ItemBlock) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("BUILDING_BLOCK")) {
-				if (isBlockGoodForBuilding(stack, 3)) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("FUEL")) {
-				if (PC_RecipeRegistry.getFuelValue(stack) > 0) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("ORE")) {
-				if (id == Block.oreCoal.blockID || id == Block.oreIron.blockID || id == Block.oreGold.blockID || id == Block.oreLapis.blockID
-						|| id == Block.oreRedstone.blockID) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("LAPIS")) {
-				if (id == Item.dyePowder.itemID && stack.getItemDamage() == 4) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("BONEMEAL")) {
-				if (id == Item.dyePowder.itemID && stack.getItemDamage() == 15) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("JUNK")) {
-				if (id == Block.gravel.blockID || id == Block.sapling.blockID || id == Block.leaves.blockID || id == Block.dirt.blockID
-						|| id == Item.seeds.itemID) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("VALUABLE")) {
-				//@formatter:off
-				if (id == Block.blockClay.blockID || 
-						id == Block.blockSnow.blockID ||
-						id == Block.blockLapis.blockID ||
-						id == Block.blockSteel.blockID || 
-						id == Block.blockGold.blockID || 
-						id == Block.slowSand.blockID || 
-						id == Block.oreIron.blockID || 
-						id == Block.oreGold.blockID || 
-						id == Block.oreDiamond.blockID || 
-						id == Block.oreLapis.blockID || 
-						id == Block.oreRedstone.blockID || 
-						id == Block.glowStone.blockID || 
-						id == Block.oreCoal.blockID || 
-						id == Item.ingotGold.itemID || 
-						id == Item.ingotIron.itemID || 
-						id == Item.goldNugget.itemID || 
-						id == Item.netherStalkSeeds.itemID || 
-						id == Item.diamond.itemID || 
-						id == Item.lightStoneDust.itemID || 
-						id == PC_BlockRegistry.getPCBlockIDByName("PCco_BlockPowerCrystal") ||
-						id == PC_ItemRegistry.getPCItemIDByName("PCco_ItemPowerDust") ||
-						(id == Item.dyePowder.itemID && stack.getItemDamage() == 4) || 
-						(id == Item.dyePowder.itemID && stack.getItemDamage() == 3) || 
-						id == Block.bedrock.blockID || 
-						id == Block.obsidian.blockID) {
-					return true;
-				}
-				//@formatter:on
-			}
-		}
-		return false;
 	}
 	
 	/**

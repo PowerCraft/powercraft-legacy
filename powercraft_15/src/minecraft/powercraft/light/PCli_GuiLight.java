@@ -1,7 +1,8 @@
 package powercraft.light;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.api.PC_Color;
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresCheckBox;
 import powercraft.api.gres.PC_GresColor;
@@ -14,6 +15,7 @@ import powercraft.api.gres.PC_GresWindow;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Color;
 
 public class PCli_GuiLight implements PC_IGresClient {
 
@@ -62,25 +64,14 @@ public class PCli_GuiLight implements PC_IGresClient {
 		if(widget == colorPicker){
 			colorWidget.setColor(colorPicker.getColor());
 		}else if(widget == accept){
-			onReturnPressed(gui);
+			light.setColor(PC_Color.fromHex(colorPicker.getColor()));
+			light.setHuge(checkHuge.isChecked());
+			light.setStable(checkStable.isChecked());
+			gui.close();
 		}else if (widget == cancel) {
 			gui.close();
 		}
 
-	}
-
-	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		light.setColor(PC_Color.fromHex(colorPicker.getColor()));
-		light.setHuge(checkHuge.isChecked());
-		light.setStable(checkStable.isChecked());
-		gui.close();
 	}
 
 	@Override
@@ -103,6 +94,15 @@ public class PCli_GuiLight implements PC_IGresClient {
 			checkStable.check((Boolean)value);
 		}else if(key.equals("isHuge")){
 			checkHuge.check((Boolean)value);
+		}
+	}
+
+	@Override
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN){
+			actionPerformed(accept, gui);
+		}else if(i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			gui.close();
 		}
 	}
 

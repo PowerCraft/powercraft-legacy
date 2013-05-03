@@ -1,5 +1,6 @@
 package powercraft.weasel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,14 +16,11 @@ public class PCws_ItemTransistor extends PC_Item {
 	}
 
 	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName(), "Transistor"));
-			return names;
-		}
-		return null;
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry(getUnlocalizedName(), "Transistor"));
+		return names;
 	}
 
+	
+	
 }

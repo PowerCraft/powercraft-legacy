@@ -2,13 +2,14 @@ package powercraft.api.block;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -16,130 +17,119 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_GlobalVariables;
-import powercraft.api.PC_IIDChangeAble;
-import powercraft.api.PC_IMSG;
-import powercraft.api.PC_Struct3;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.ForgeDirection;
+import powercraft.api.PC_BeamTracer.BeamSettings;
+import powercraft.api.PC_BeamTracer.BeamHitResult;
 import powercraft.api.annotation.PC_BlockInfo;
+import powercraft.api.annotation.PC_Config;
+import powercraft.api.annotation.PC_OreInfo;
+import powercraft.api.interfaces.PC_IIDChangeAble;
+import powercraft.api.interfaces.PC_IWorldGenerator;
+import powercraft.api.reflect.PC_FieldWithAnnotation;
+import powercraft.api.reflect.PC_IFieldAnnotationIterator;
 import powercraft.api.reflect.PC_ReflectHelper;
-import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_GlobalVariables;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Struct3;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
+import powercraft.launcher.PC_Property;
 import powercraft.launcher.loader.PC_ModuleObject;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IIDChangeAble {
+public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAble, PC_IWorldGenerator {
+	
+	private PC_BlockInfo blockInfo;
 	private PC_ModuleObject module;
-	protected Icon[] icons;
-	private String[] textureNames;
 	private BlockInfo replaced = new BlockInfo();
 	private BlockInfo thisBlock;
-	private Object iconRegistry;
+	private String[] sideTextures;
+	protected Icon[] sideIcons;
+	private int[] oreGens;
 	
-	protected PC_Block(int id, Material material, String textureName, String... textureNames) {
+	public PC_Block(int id, Material material) {
 		super(id, material);
 		thisBlock = new BlockInfo(id);
-		this.textureNames = new String[1 + textureNames.length];
-		icons = new Icon[1 + textureNames.length];
-		this.textureNames[0] = textureName;
-		for (int i = 0; i < textureNames.length; i++) {
-			this.textureNames[i + 1] = textureNames[i];
-		}
+		blockInfo = getClass().getAnnotation(PC_BlockInfo.class);
+		disableStats();
 	}
 	
-	public Object msg(int msg, Object... obj) {
-		IBlockAccess world = null;
-		PC_VecI pos = null;
-		int i = 0;
-		if (obj != null) {
-			if (obj.length >= 1) {
-				if (obj[0] instanceof IBlockAccess) {
-					world = (IBlockAccess) obj[0];
-					i = 1;
-					if (obj.length >= 2) {
-						if (obj[1] instanceof PC_VecI) {
-							pos = (PC_VecI) obj[1];
-							i = 2;
-						}
-					}
-				}
-			}
-		}
-		Object o[] = new Object[obj.length - i];
-		for (int j = 0; j < o.length; j++) {
-			o[j] = obj[j + i];
-		}
-		return msg(world, pos, msg, o);
+	public PC_Block(int id, Material material, String texture) {
+		this(id, material);
+		sideTextures = new String[] { texture };
 	}
-
-	public abstract Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj);
-
-	public TileEntity newTileEntity(World world, int metadata) {
-		PC_BlockInfo blockInfo = getClass().getAnnotation(PC_BlockInfo.class);
-		if(blockInfo==null || blockInfo.tileEntity()==null || blockInfo.tileEntity()==PC_BlockInfo.PC_FakeTileEntity.class){
-			return null;
-		}else{
-			return PC_ReflectHelper.create(blockInfo.tileEntity());
-		}
+	
+	public PC_Block(int id, Material material, String... textures) {
+		this(id, material);
+		sideTextures = textures;
 	}
-
-	public final TileEntity createNewTileEntity(World world) {
-		return createNewTileEntity(world, 0);
-	}
-
-	public final TileEntity createNewTileEntity(World world, int metadata) {
-		if (PC_GlobalVariables.tileEntity != null && !world.isRemote) {
-			PC_GlobalVariables.tileEntity.validate();
-			return PC_GlobalVariables.tileEntity;
-		}
-		return newTileEntity(world, metadata);
-	}
-
-	public void setModule(PC_ModuleObject module) {
-		this.module = module;
-	}
-
-	public PC_ModuleObject getModule() {
-		return module;
-	}
-
+	
 	public boolean showInCraftingTool() {
 		return true;
 	}
-
-	@Override
-	public int getRenderType() {
-		return PC_Renderer.getRendererID(true);
+	
+	public String getName() {
+		return blockInfo == null ? null : blockInfo.name();
 	}
-
-	public static boolean canSilkHarvest(Block block) {
-		return block.renderAsNormalBlock() && !block.hasTileEntity();
+	
+	public boolean canPlacedRotated(){
+		return blockInfo.canPlacedRotated();
 	}
-
-	public static ItemStack createStackedBlock(Block block, int meta) {
-		int var2 = 0;
-
-		if (block.blockID >= 0 && block.blockID < Item.itemsList.length && Item.itemsList[block.blockID].getHasSubtypes()) {
-			var2 = meta;
+	
+	public void initConfig(PC_Property config) {
+		PC_OreInfo oreInfo = getClass().getAnnotation(PC_OreInfo.class);
+		if (oreInfo != null) {
+			oreGens = new int[4];
+			oreGens[0] = config.getInt("spawn.in_chunk", oreInfo.genOresInChunk(), "Number of deposits in each 16x16 chunk.");
+			oreGens[1] = config.getInt("spawn.deposit_max_size", oreInfo.genOresDepositMaxCount(), "Highest Ore count in one deposit");
+			oreGens[2] = config.getInt("spawn.max_y", oreInfo.genOresMaxY(), "Max Y coordinate of ore deposits.");
+			oreGens[3] = config.getInt("spawn.min_y", oreInfo.genOresMinY(), "Min Y coordinate of ore deposits.");
 		}
-
-		return new ItemStack(block.blockID, 1, var2);
+		PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), this, PC_Config.class, new InitConfigFieldAnnotationIterator(config));
 	}
-
+	
+	public TileEntity newTileEntity(World world) {
+		if (blockInfo == null || blockInfo.tileEntity() == null || blockInfo.tileEntity() == PC_BlockInfo.PC_FakeTileEntity.class) {
+			return null;
+		} else {
+			return PC_ReflectHelper.create(blockInfo.tileEntity());
+		}
+	}
+	
+	@Override
+	public TileEntity createNewTileEntity(World world) {
+		if (PC_GlobalVariables.tileEntity.size() > 0 && !world.isRemote) {
+			TileEntity tileEntity = PC_GlobalVariables.tileEntity.get(0);
+			if (tileEntity.isInvalid())
+				tileEntity.validate();
+			return tileEntity;
+		}
+		return newTileEntity(world);
+	}
+	
+	public void setModule(PC_ModuleObject module) {
+		this.module = module;
+	}
+	
+	public PC_ModuleObject getModule() {
+		return module;
+	}
+	
 	public void setItemBlock(ItemBlock itemBlock) {
 		thisBlock.itemBlock = itemBlock;
 	}
-
+	
 	public ItemBlock getItemBlock() {
 		return thisBlock.itemBlock;
 	}
-
+	
 	@Override
 	public void setID(int id) {
 		int oldID = blockID;
@@ -167,28 +157,321 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 			}
 		}
 	}
-
-	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-		PC_TileEntity te = GameInfo.getTE(world, x, y, z);
-		if (PC_GlobalVariables.tileEntity == null) {
-			if(te!=null)
-				te.onBreakBlock();
-			super.breakBlock(world, x, y, z, par5, par6);
+	
+	@Override
+	public Block setCreativeTab(CreativeTabs _default) {
+		return super.setCreativeTab(PC_Utils.getCreativeTab(_default));
+	}
+	
+	@Override
+	public int getRenderType() {
+		return PC_Renderer.getRendererID(true);
+	}
+	
+	@Override
+	public void breakBlock(World world, int x, int y, int z, int id, int metadata) {
+		if (PC_GlobalVariables.tileEntity.size()==0 || world.isRemote) {
+			super.breakBlock(world, x, y, z, id, metadata);
 		}
 	}
-
-	@Override
-	public Block setLightOpacity(int par1) {
-		thisBlock.lightOpacity = par1;
-		return super.setLightOpacity(par1);
+	
+	public int makeBlockMetadata(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float xHit, float yHit,
+			float zHit, int metadata) {
+		if (blockInfo.canPlacedRotated()) {
+			int rotation = PC_MathHelper.floor_double(((entityPlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+			if (PC_KeyRegistry.isPlacingReversed(entityPlayer)) {
+				rotation = (rotation + 2) % 4;
+			}
+			metadata &= ~3;
+			metadata |= rotation;
+		}
+		return metadata;
 	}
-
-	@Override
-	public Block setLightValue(float par1) {
-		thisBlock.lightValue = (int) (15.0F * par1);
-		return super.setLightValue(par1);
+	
+	public PC_Direction getRotation(int metadata) {
+		if (blockInfo.canPlacedRotated()) {
+			metadata &= 3;
+			if (metadata == 0) {
+				return PC_Direction.FRONT;
+			} else if (metadata == 1) {
+				return PC_Direction.RIGHT;
+			} else if (metadata == 2) {
+				return PC_Direction.BACK;
+			} else if (metadata == 3) {
+				return PC_Direction.LEFT;
+			}
+		}
+		return PC_Direction.FRONT;
 	}
-
+	
+	public PC_Direction getRotation2(int metadata) {
+		if (blockInfo.canPlacedRotated()) {
+			metadata &= 3;
+			if (metadata == 0) {
+				return PC_Direction.FRONT;
+			} else if (metadata == 1) {
+				return PC_Direction.LEFT;
+			} else if (metadata == 2) {
+				return PC_Direction.BACK;
+			} else if (metadata == 3) {
+				return PC_Direction.RIGHT;
+			}
+		}
+		return PC_Direction.FRONT;
+	}
+	
+	@Override
+	public final Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int dir) {
+		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
+		pcDir = pcDir.rotate(getRotation(PC_Utils.getMD(world, x, y, z)));
+		return getBlockTexture(world, x, y, z, pcDir);
+	}
+	
+	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
+		return getBlockTextureFromSideAndMetadata(dir, PC_Utils.getMD(world, x, y, z));
+	}
+	
+	@Override
+	public final Icon getBlockTextureFromSideAndMetadata(int dir, int metadata) {
+		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
+		pcDir = pcDir.rotate(getRotation(metadata));
+		return getBlockTextureFromSideAndMetadata(pcDir, metadata);
+	}
+	
+	public Icon getBlockTextureFromSideAndMetadata(PC_Direction dir, int metadata) {
+		if (sideIcons != null) {
+			int index = dir.getMCDir();
+			if (index >= sideIcons.length)
+				index = sideIcons.length-1;
+			return sideIcons[index];
+		}
+		return null;
+	}
+	
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, int id) {
+		TileEntity te = PC_Utils.getTE(world, x, y, z);
+		if (te instanceof PC_TileEntity) {
+			((PC_TileEntity) te).onNeighborBlockChange(id);
+		}
+	}
+	
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int dir, float xHit, float yHit, float zHit) {
+		TileEntity te = PC_Utils.getTE(world, x, y, z);
+		if (te instanceof PC_TileEntity) {
+			return ((PC_TileEntity) te).openGui(entityPlayer);
+		}
+		return false;
+	}
+	
+	@Override
+	public final int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int dir) {
+		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
+		pcDir = pcDir.rotate(getRotation(PC_Utils.getMD(world, x, y, z))).mirror();
+		return getProvidingWeakRedstonePowerValue(world, x, y, z, pcDir);
+	}
+	
+	public int getProvidingWeakRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
+		TileEntity te = PC_Utils.getTE(world, x, y, z);
+		if (te instanceof PC_TileEntity) {
+			return ((PC_TileEntity) te).getProvidingWeakRedstonePowerValue(dir);
+		}
+		return getProvidingStrongRedstonePowerValue(world, x, y, z, dir);
+	}
+	
+	@Override
+	public final int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int dir) {
+		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
+		pcDir = pcDir.rotate(getRotation(PC_Utils.getMD(world, x, y, z))).mirror();
+		return getProvidingStrongRedstonePowerValue(world, x, y, z, pcDir);
+	}
+	
+	public int getProvidingStrongRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
+		TileEntity te = PC_Utils.getTE(world, x, y, z);
+		if (te instanceof PC_TileEntity) {
+			return ((PC_TileEntity) te).getProvidingStrongRedstonePowerValue(dir);
+		}
+		return 0;
+	}
+	
+	public int getRedstonePowereValueFromInput(World world, int x, int y, int z, PC_Direction dir) {
+		dir = dir.rotateRev(getRotation(PC_Utils.getMD(world, x, y, z)));
+		PC_VecI offset = dir.getOffset();
+		return world.getIndirectPowerLevelTo(x + offset.x, y + offset.y, z + offset.z, dir.getMCDir());
+	}
+	
+	public int getRedstonePowereValue(World world, int x, int y, int z) {
+		return world.getStrongestIndirectPower(x, y, z);
+	}
+	
+	public int getRedstonePowereValueFromInputEx(World world, int x, int y, int z, PC_Direction dir) {
+		dir = dir.rotateRev(getRotation(PC_Utils.getMD(world, x, y, z)));
+		PC_VecI offset = dir.getOffset();
+		int powerLevel = world.getIndirectPowerLevelTo(x + offset.x, y + offset.y, z + offset.z, dir.getMCDir());
+		if (powerLevel == 0 && PC_Utils.getBID(world, x + offset.x, y + offset.y, z + offset.z) == Block.redstoneWire.blockID) {
+			powerLevel = PC_Utils.getMD(world, x + offset.x, y + offset.y, z + offset.z);
+		}
+		return powerLevel;
+	}
+	
+	public int getRedstonePowereValueEx(World world, int x, int y, int z) {
+		int max = 0;
+		for(int i=0; i<6; i++){
+			int value = getRedstonePowereValueFromInputEx(world, x, y, z, PC_Direction.getFormMCDir(i));
+			if(value>max){
+				max = value;
+			}
+		}
+		return max;
+	}
+	
+	@Override
+	public Block setLightOpacity(int lightOpacity) {
+		thisBlock.lightOpacity = lightOpacity;
+		return super.setLightOpacity(lightOpacity);
+	}
+	
+	@Override
+	public Block setLightValue(float lightValue) {
+		thisBlock.lightValue = (int) (15.0F * lightValue);
+		return super.setLightValue(lightValue);
+	}
+	
+	public boolean isFlammable(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face){
+		return isFlammable(world, x, y, z, metadata);
+	}
+	
+	public boolean isFlammable(IBlockAccess world, int x, int y, int z, int md) {
+		return getFlammability(world, x, y, z, md)>0;
+	}
+	
+	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face){
+		return getFlammability(world, x, y, z, metadata);
+	}
+	
+	public int getFlammability(IBlockAccess world, int x, int y, int z, int md) {
+		return 0;
+	}
+	
+	public boolean isBlockReplaceable(World world, int x, int y, int z) {
+		return false;
+	}
+	
+	
+	
+	@Override
+	public final void registerIcons(IconRegister iconRegister) {
+		if (sideTextures != null) {
+			sideIcons = new Icon[sideTextures.length];
+			for (int i = 0; i < sideTextures.length; i++) {
+				if (sideTextures[i] != null) {
+					sideIcons[i] = iconRegister.registerIcon(PC_TextureRegistry.getTextureName(module, sideTextures[i]));
+				}
+			}
+		}
+		
+		PC_TextureRegistry.onIconLoading(this, iconRegister);
+		
+	}
+	
+	public void onIconLoading() {
+		
+	}
+	
+	public boolean isOre() {
+		return oreGens != null;
+	}
+	
+	public int getGenOresSpawnsInChunk(Random random, World world, int chunkX, int chunkZ) {
+		return oreGens[0];
+	}
+	
+	public int getGenOreblocksOnSpawnPoint(Random random, World world, int chunkX, int chunkZ) {
+		return random.nextInt(oreGens[1] + 1);
+	}
+	
+	public PC_VecI getGenOresSpawnPoint(Random random, World world, int chunkX, int chunkZ) {
+		return new PC_VecI(random.nextInt(16), oreGens[3] + random.nextInt(oreGens[2] - oreGens[3] + 1), random.nextInt(16));
+	}
+	
+	public int getGenOresSpawnMetadata(Random random, World world, int chunkX, int chunkZ) {
+		return 0;
+	}
+	
+	@Override
+	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+		if (isOre()) {
+			int num = getGenOresSpawnsInChunk(random, world, chunkX, chunkZ);
+			for (int i = 0; i < num; i++) {
+				int blocksCount = getGenOreblocksOnSpawnPoint(random, world, chunkX, chunkZ);
+				PC_VecI pos = getGenOresSpawnPoint(random, world, chunkX, chunkZ);
+				pos.y = PC_MathHelper.clamp_int(pos.y, 1, world.getHeight());
+				int metadata = getGenOresSpawnMetadata(random, world, chunkX, chunkZ);
+				pos.add(chunkX * 16, 0, chunkZ * 16);
+				new PC_WorldGenMinableMetadata(blockID, metadata, blocksCount).generate(world, random, pos.x, pos.y, pos.z);
+			}
+		}
+	}
+	
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
+		return false;
+	}
+	
+	public boolean renderInventoryBlock(int metadata, Object renderer) {
+		return false;
+	}
+	
+	public PC_VecI moveBlockTryToPlaceOnSide(World world, int x, int y, int z, PC_Direction side, float xHit, float yHit, float zHit, Block block, ItemStack itemStack, EntityPlayer entityPlayer){
+		return null;
+	}
+	
+	public PC_VecI moveBlockTryToPlaceAt(World world, int x, int y, int z, PC_Direction dir, float xHit, float yHit, float zHit, ItemStack itemStack, EntityPlayer entityPlayer){
+		return null;
+	}
+	
+	public BeamHitResult onBlockHitByBeam(World world, int x, int y, int z, BeamSettings settings) {
+		return BeamHitResult.FALLBACK;
+	}
+	
+	private class InitConfigFieldAnnotationIterator implements PC_IFieldAnnotationIterator<PC_Config> {
+		
+		private PC_Property config;
+		
+		public InitConfigFieldAnnotationIterator(PC_Property config) {
+			this.config = config;
+		}
+		
+		@Override
+		public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_Config> fieldWithAnnotation) {
+			Class<?> c = fieldWithAnnotation.getFieldClass();
+			String name = fieldWithAnnotation.getAnnotation().name();
+			if (name.equals("")) {
+				name = fieldWithAnnotation.getFieldName();
+			}
+			String[] comment = fieldWithAnnotation.getAnnotation().comment();
+			if (c == String.class) {
+				String data = (String) fieldWithAnnotation.getValue();
+				data = config.getString(name, data, comment);
+				fieldWithAnnotation.setValue(data);
+			} else if (c == Integer.class || c == int.class) {
+				int data = (Integer) fieldWithAnnotation.getValue();
+				data = config.getInt(name, data, comment);
+				fieldWithAnnotation.setValue(data);
+			} else if (c == Float.class || c == float.class) {
+				float data = (Float) fieldWithAnnotation.getValue();
+				data = config.getFloat(name, data, comment);
+				fieldWithAnnotation.setValue(data);
+			} else if (c == Boolean.class || c == boolean.class) {
+				boolean data = (Boolean) fieldWithAnnotation.getValue();
+				data = config.getBoolean(name, data, comment);
+				fieldWithAnnotation.setValue(data);
+			}
+			return false;
+		}
+		
+	}
+	
 	public static class BlockInfo {
 		public Block block = null;
 		public boolean opaqueCubeLookup = false;
@@ -241,41 +524,5 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IID
 		}
 
 	}
-
-	@Override
-	public Block setCreativeTab(CreativeTabs _default) {
-		return super.setCreativeTab(GameInfo.getCreativeTab(_default));
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister) {
-		for (int i = 0; i < textureNames.length; i++) {
-			if(textureNames[i]!=null){
-				icons[i] = par1IconRegister.registerIcon(PC_TextureRegistry.getTextureName(module, textureNames[i]));
-			}
-		}
-		iconRegistry = par1IconRegister;
-		onIconLoading();
-		iconRegistry = null;
-	}
-
-	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
-		if (par2 >= icons.length) {
-			par2 = icons.length - 1;
-		}
-		return icons[par2];
-	}
-
-	public void onIconLoading(){
-		
-	}
 	
-	public Icon loadIcon(String file) {
-		if(iconRegistry!=null){
-			return ((IconRegister)iconRegistry).registerIcon(PC_TextureRegistry.getTextureName(module, file));
-		}
-		return null;
-	}
-
 }

@@ -23,18 +23,19 @@ public class PCde_ModelPlatform extends ModelBase {
 
 		ironLedge[1] = new ModelRenderer(this, 0, 37);
 		ironLedge[1].addBox(-8F, -4F, -8F, 1, 11, 16, 0.0F);
-
+		ironLedge[1].rotateAngleY = (float) (Math.PI * 1.5F);
+		
 		ironLedge[2] = new ModelRenderer(this, 0, 37);
 		ironLedge[2].addBox(-8.0002F, -4.00008F, -8.0002F, 1, 11, 16, 0.0F);
-		ironLedge[2].rotateAngleY = (float) (Math.PI * 0.5F);
+		ironLedge[2].rotateAngleY = (float) (Math.PI * 0F);
 
 		ironLedge[3] = new ModelRenderer(this, 0, 37);
 		ironLedge[3].addBox(-8.0004F, -4.00005F, -8.0004F, 1, 11, 16, 0.0F);
-		ironLedge[3].rotateAngleY = (float) (Math.PI * 1F);
+		ironLedge[3].rotateAngleY = (float) (Math.PI * 0.5F);
 
 		ironLedge[4] = new ModelRenderer(this, 0, 37);
 		ironLedge[4].addBox(-8.0006F, -4.0001F, -8.0006F, 1, 11, 16, 0.0F);
-		ironLedge[4].rotateAngleY = (float) (Math.PI * 1.5F);
+		ironLedge[4].rotateAngleY = (float) (Math.PI * 1F);
 
 	}
 

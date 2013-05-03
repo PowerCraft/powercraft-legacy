@@ -1,16 +1,14 @@
 package powercraft.weasel.engine;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Struct3;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Struct3;
 import powercraft.weasel.exception.WeaselRuntimeException;
 import powercraft.weasel.exception.WeaselRuntimeExceptionFunctionNotExist;
 import powercraft.weasel.obj.WeaselBoolean;

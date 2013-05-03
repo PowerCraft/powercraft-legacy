@@ -6,8 +6,8 @@ import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_VecI;
+import powercraft.api.utils.PC_RectI;
+import powercraft.api.utils.PC_VecI;
 
 
 /**

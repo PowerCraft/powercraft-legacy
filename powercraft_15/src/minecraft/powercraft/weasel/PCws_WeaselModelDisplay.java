@@ -4,8 +4,8 @@ import java.util.List;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelRenderer;
-import powercraft.api.PC_Color;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Color;
 
 public class PCws_WeaselModelDisplay extends PCws_WeaselModelBase {
 

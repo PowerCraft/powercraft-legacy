@@ -2,6 +2,7 @@ package powercraft.api.gres;
 
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.client.gui.FontRenderer;
@@ -10,8 +11,8 @@ import net.minecraft.util.ChatAllowedCharacters;
 
 import org.lwjgl.input.Keyboard;
 
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_VecI;
+import powercraft.api.utils.PC_RectI;
+import powercraft.api.utils.PC_VecI;
 
 
 /**
@@ -1068,7 +1069,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 
 	@Override
 	protected PC_RectI render(PC_VecI offsetPos, PC_RectI scissorOld, double scale) {
-
+		
 		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y, 0xffA0A0A0);
 		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
 
@@ -1127,6 +1128,8 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 
 		}
 
+		
+		
 		text.render(offsetPos);
 
 		if (enabled && hasFocus && (cursorCounter / 6) % 2 == 0) {
@@ -1238,4 +1241,12 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	private boolean yCoordsInDrawRect(int cy) {
 		return cy >= scroll.y && cy < scroll.y + shownLines();
 	}
+
+	@Override
+	public List<String> getTooltip(PC_VecI mousePos) {
+		if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)||Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))
+			return Arrays.asList("Line: "+(getMousePositionInString(mousePos).y+1));
+		return null;
+	}
+	
 }

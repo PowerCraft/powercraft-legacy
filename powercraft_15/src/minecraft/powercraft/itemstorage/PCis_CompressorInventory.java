@@ -2,8 +2,8 @@ package powercraft.itemstorage;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import powercraft.api.PC_VecI;
 import powercraft.api.inventory.PC_IInventory;
+import powercraft.api.utils.PC_VecI;
 
 public abstract class PCis_CompressorInventory implements PC_IInventory {
 

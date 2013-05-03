@@ -11,18 +11,16 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import powercraft.api.PC_IPacketHandler;
-import powercraft.api.PC_MathHelper;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Utils.Communication;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.inventory.PC_InventoryUtils;
+import powercraft.api.network.PC_IPacketHandler;
 import powercraft.api.recipes.PC_I3DRecipeHandler;
 import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_LangRegistry;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler {
 	
@@ -65,7 +63,7 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 	@Override
 	public boolean foundStructAt(EntityPlayer entityplayer, World world, PC_Struct2<PC_VecI, Integer> structStart) {
 		
-		if(GameInfo.getBID(world, structStart.a)==Block.obsidian.blockID){
+		if(PC_Utils.getBID(world, structStart.a)==Block.obsidian.blockID){
 			List<PCmo_EntityMiner> miner = world.getEntitiesWithinAABB(PCmo_EntityMiner.class, AxisAlignedBB.getBoundingBox(structStart.a.x+1, structStart.a.y+1, structStart.a.z+1, 
 					structStart.a.x+3, structStart.a.y+3, structStart.a.z+3));
 			if(miner.size()!=1)
@@ -77,7 +75,7 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 			for(int x=0; x<4; x++){
 				for(int y=0; y<4; y++){
 					for(int z=0; z<4; z++){
-						ValueWriting.setBID(world, structStart.a.offset(x, y, z), 0, 0);
+						PC_Utils.setBID(world, structStart.a.offset(x, y, z), 0, 0);
 					}
 				}
 			}
@@ -100,14 +98,14 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 		}
 		
 		if (inv == null) {
-			Communication.chatMsg(eMinerStructure, false);
+			PC_Utils.chatMsg(eMinerStructure);
 			return false;
 		}
 
 		int cnt = countPowerCrystals(inv);
 
 		if (cnt == 0) {
-			Communication.chatMsg(eMinerCrystals, false);
+			PC_Utils.chatMsg(eMinerCrystals);
 			return false;
 		}
 
@@ -118,7 +116,7 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 		for(int x=0; x<2; x++){
 			for(int y=0; y<2; y++){
 				for(int z=0; z<2; z++){
-					ValueWriting.setBID(world, structStart.a.offset(x, y, z), 0, 0);
+					PC_Utils.setBID(world, structStart.a.offset(x, y, z), 0, 0);
 				}
 			}
 		}

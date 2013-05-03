@@ -4,15 +4,13 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import powercraft.api.PC_Struct2;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
 import powercraft.api.gres.PC_GresBaseWithInventory;
-import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.recipes.PC_IRecipe;
 import powercraft.api.recipes.PC_ShapedRecipes;
-import powercraft.launcher.loader.PC_ClientModule.PC_RegisterGuis;
+import powercraft.api.utils.PC_Struct2;
 import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_RegisterContainers;

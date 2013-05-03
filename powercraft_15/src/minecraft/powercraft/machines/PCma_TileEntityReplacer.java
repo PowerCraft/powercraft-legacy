@@ -5,12 +5,12 @@ import java.util.Random;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecF;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.tileentity.PC_TileEntityWithInventory;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecF;
+import powercraft.api.utils.PC_VecI;
 
 public class PCma_TileEntityReplacer extends PC_TileEntityWithInventory{
 	
@@ -113,7 +113,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntityWithInventory{
             double d2 = zCoord + rand.nextFloat();
             int a = rand.nextInt(3);
             int b = rand.nextInt(3);
-            ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), getAidcolor(), new PC_VecF(), 0);
+            PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), getAidcolor(), new PC_VecF(), 0);
 
             for (int q = 0; q < 8; q++)
             {
@@ -162,7 +162,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntityWithInventory{
                         break;
                 }
 
-                ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), getAidcolor(), new PC_VecF(), 0);
+                PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), getAidcolor(), new PC_VecF(), 0);
             }
         }
 

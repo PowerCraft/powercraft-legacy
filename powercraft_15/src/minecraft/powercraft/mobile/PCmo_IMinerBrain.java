@@ -2,8 +2,8 @@ package powercraft.mobile;
 
 import java.util.List;
 
-import powercraft.api.PC_INBT;
 import powercraft.api.gres.PC_GresTextEditMultiline.Keyword;
+import powercraft.api.interfaces.PC_INBT;
 import powercraft.mobile.PCmo_Command.ParseException;
 
 public interface PCmo_IMinerBrain extends PC_INBT<PCmo_IMinerBrain> {

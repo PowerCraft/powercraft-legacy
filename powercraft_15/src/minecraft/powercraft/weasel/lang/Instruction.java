@@ -4,7 +4,7 @@ package powercraft.weasel.lang;
 import java.util.HashMap;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_INBT;
+import powercraft.api.interfaces.PC_INBT;
 import powercraft.weasel.engine.InstructionList;
 import powercraft.weasel.engine.WeaselEngine;
 import powercraft.weasel.exception.WeaselRuntimeException;

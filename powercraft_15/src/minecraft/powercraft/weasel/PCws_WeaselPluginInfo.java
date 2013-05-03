@@ -1,16 +1,13 @@
 package powercraft.weasel;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.reflect.PC_ReflectHelper;
-import powercraft.api.registry.PC_ModuleRegistry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
 
 public abstract class PCws_WeaselPluginInfo {
 
@@ -26,13 +23,13 @@ public abstract class PCws_WeaselPluginInfo {
 		this.icons = new Icon[4+iconNames.length];
 	}
 	
-	public void onIconLoading(PC_Block block){
-		icons[0] = block.loadIcon("weasel_down");
-		icons[1] = block.loadIcon("weasel_side");
-		icons[2] = block.loadIcon("weasel_top");
-		icons[3] = block.loadIcon("weasel_top_empty");
+	public void onIconLoading(){
+		icons[0] = PC_TextureRegistry.registerIcon(PCws_App.instance, "weasel_down");
+		icons[1] = PC_TextureRegistry.registerIcon(PCws_App.instance, "weasel_side");
+		icons[2] = PC_TextureRegistry.registerIcon(PCws_App.instance, "weasel_top");
+		icons[3] = PC_TextureRegistry.registerIcon(PCws_App.instance, "weasel_top_empty");
 		for(int i=0; i<iconNames.length; i++){
-			icons[i+4] = block.loadIcon(iconNames[i]);
+			icons[i+4] = PC_TextureRegistry.registerIcon(PCws_App.instance, iconNames[i]);
 		}
 	}
 	
@@ -94,7 +91,7 @@ public abstract class PCws_WeaselPluginInfo {
 				PC_Renderer.glRotatef(f1, 0.0F, 1.0F, 0.0F);
 			}
 		}else{
-			PC_Renderer.glRotatef(90 * (GameInfo.getMD(te.getWorldObj(), te.getCoord()) & 3), 0, 1, 0);
+			PC_Renderer.glRotatef(90 * (PC_Utils.getMD(te.getWorldObj(), te.getCoord()) & 3), 0, 1, 0);
 		}
 		model.renderDevice(te);
 
@@ -128,7 +125,7 @@ public abstract class PCws_WeaselPluginInfo {
 		return false;
 	}
 	
-	public void getServerMsg(PCws_TileEntityWeasel te, String msg, Object obj) {
+	public void getServerMsg(PCws_TileEntityWeasel te, String msg, Object[] obj) {
 		
 	}
 	
@@ -140,6 +137,6 @@ public abstract class PCws_WeaselPluginInfo {
 		return 64;
 	}
 
-	public abstract Icon getTexture(int side);
+	public abstract Icon getTexture(PC_Direction side);
 	
 }

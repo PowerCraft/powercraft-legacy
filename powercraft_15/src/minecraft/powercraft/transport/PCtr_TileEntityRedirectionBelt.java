@@ -1,9 +1,9 @@
 package powercraft.transport;
 
 import net.minecraft.entity.Entity;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBeltBase
 {
@@ -14,7 +14,7 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
     {
         PCtr_BlockBeltRedirector block = ((PCtr_BlockBeltRedirector) PCtr_App.redirectionBelt);
         PC_VecI pos = getCoord();
-        int meta = PCtr_BeltHelper.getRotation(GameInfo.getMD(worldObj, pos));
+        int meta = PCtr_BeltHelper.getRotation(PC_Utils.getMD(worldObj, pos));
         PC_Direction redir = null;
 
         if (block.isPowered(worldObj, pos))

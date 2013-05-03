@@ -3,14 +3,13 @@ package powercraft.weasel.lang;
 
 import java.util.ArrayList;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import powercraft.weasel.engine.Calc;
 import powercraft.weasel.engine.InstructionList;
 import powercraft.weasel.engine.WeaselEngine;
 import powercraft.weasel.exception.WeaselRuntimeException;
 import powercraft.weasel.obj.WeaselObject;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
 
 /**

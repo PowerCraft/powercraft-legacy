@@ -1,10 +1,7 @@
 package powercraft.checkpoints;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import powercraft.api.annotation.PC_ClientServerSync;
-import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.tileentity.PC_TileEntityWithInventory;
 
 public class PCcp_TileEntityCheckpoint extends PC_TileEntityWithInventory {

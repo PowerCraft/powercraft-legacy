@@ -1,7 +1,6 @@
 package powercraft.light;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import powercraft.api.registry.PC_LangRegistry;
 

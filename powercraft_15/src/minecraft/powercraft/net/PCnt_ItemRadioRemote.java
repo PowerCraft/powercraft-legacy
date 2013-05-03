@@ -1,5 +1,6 @@
 package powercraft.net;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,11 +9,11 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.Communication;
 import powercraft.api.item.PC_Item;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Utils;
 
 public class PCnt_ItemRadioRemote extends PC_Item {
 	
@@ -87,7 +88,7 @@ public class PCnt_ItemRadioRemote extends PC_Item {
 
 		tag.setString("channel", channel == null ? "default" : channel);
 
-		Communication.chatMsg(PC_LangRegistry.tr("pc.radioRemote.connected", new String[] { channel }), true);
+		PC_Utils.chatMsg(PC_LangRegistry.tr("pc.radioRemote.connected", new String[] { channel }));
 	}
 
 	@Override
@@ -97,16 +98,11 @@ public class PCnt_ItemRadioRemote extends PC_Item {
 			list.add(PC_LangRegistry.tr("pc.radioRemote.desc", new String[] { itemstack.getTagCompound().getString("channel") }));
 		}
 	}
-	
+
 	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName(), "Radio Remote"));
-            return names;
-		}
-		return null;
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry(getUnlocalizedName(), "Radio Remote"));
+        return names;
 	}
 	
 }

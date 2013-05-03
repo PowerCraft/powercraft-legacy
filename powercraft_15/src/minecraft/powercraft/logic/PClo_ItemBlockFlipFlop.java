@@ -1,15 +1,16 @@
 package powercraft.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import powercraft.api.PC_MathHelper;
 import powercraft.api.block.PC_ItemBlock;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_MathHelper;
 
 public class PClo_ItemBlockFlipFlop extends PC_ItemBlock
 {
@@ -65,18 +66,14 @@ public class PClo_ItemBlockFlipFlop extends PC_ItemBlock
     {
         return PC_LangRegistry.tr("pc.flipflop." + PClo_FlipFlopType.names[PC_MathHelper.clamp_int(dmg, 0, PClo_FlipFlopType.TOTAL_FLIPFLOP_COUNT - 1)] + ".desc");
     }
-
+	
 	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			for (int i = 0; i < PClo_FlipFlopType.TOTAL_FLIPFLOP_COUNT; i++)
-	        {
-				names.add(new LangEntry(getUnlocalizedName() + ".flipflop"+i, PClo_FlipFlopType.names[i] + " flipflop"));
-	        };
-            return names;
-		}
-		return null;
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		for (int i = 0; i < PClo_FlipFlopType.TOTAL_FLIPFLOP_COUNT; i++)
+        {
+			names.add(new LangEntry(getUnlocalizedName() + ".flipflop"+i, PClo_FlipFlopType.names[i] + " flipflop"));
+        }
+        return names;
 	}
+	
 }

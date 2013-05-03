@@ -6,10 +6,10 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.api.PC_ClientUtils;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_VecI;
 import powercraft.api.registry.PC_TextureRegistry;
+import powercraft.api.utils.PC_ClientUtils;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_VecI;
 
 public class PC_EntityLaserFX extends EntityFX {
 	

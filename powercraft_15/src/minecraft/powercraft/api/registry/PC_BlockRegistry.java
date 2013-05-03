@@ -4,39 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.src.ModLoader;
 import net.minecraft.world.IBlockAccess;
-import powercraft.launcher.PC_Property;
-import powercraft.launcher.mod_PowerCraft;
-import powercraft.launcher.loader.PC_ModuleObject;
-import powercraft.api.PC_GlobalVariables;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
+import powercraft.api.PC_OreDictionary;
 import powercraft.api.annotation.PC_BlockInfo;
-import powercraft.api.annotation.PC_Config;
+import powercraft.api.annotation.PC_OreInfo;
 import powercraft.api.annotation.PC_Shining;
 import powercraft.api.block.PC_Block;
-import powercraft.api.block.PC_BlockOre;
 import powercraft.api.block.PC_ItemBlock;
-import powercraft.api.reflect.PC_FieldWithAnnotation;
-import powercraft.api.reflect.PC_IFieldAnnotationIterator;
+import powercraft.api.item.PC_ItemStack;
 import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
 import powercraft.api.tileentity.PC_TileEntity;
-import cpw.mods.fml.common.registry.GameRegistry;
+import powercraft.api.utils.PC_GlobalVariables;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
+import powercraft.launcher.PC_Property;
+import powercraft.launcher.loader.PC_ModuleObject;
 
 public final class PC_BlockRegistry {
-
+	
 	protected static TreeMap<String, PC_Block> blocks = new TreeMap<String, PC_Block>();
 	
-	public static <T extends PC_Block> T register(PC_ModuleObject module, Class<T> blockClass, Class<? extends PC_ItemBlock> itemBlockClass, Class<? extends PC_TileEntity> tileEntityClass){
-		final PC_Property config = module.getConfig().getProperty(blockClass.getSimpleName(), null, null);
+	public static <T extends PC_Block> T register(PC_ModuleObject module, Class<T> blockClass, Class<? extends PC_ItemBlock> itemBlockClass,
+			Class<? extends PC_TileEntity> tileEntityClass) {
+		PC_Property config = module.getConfig().getProperty(blockClass.getSimpleName(), null, null);
 		try {
 			
-			if(!config.getBoolean("enabled", true)){
+			if (!config.getBoolean("enabled", true)) {
 				return null;
 			}
 			
@@ -45,7 +46,7 @@ public final class PC_BlockRegistry {
 			
 			if (blockClass.isAnnotationPresent(PC_Shining.class)) {
 				int idOn = config.getInt("defaultID.on", -1);
-				if(idOn==-1){
+				if (idOn == -1) {
 					idOn = getFreeBlockID();
 					config.setInt("defaultID.on", idOn);
 				}
@@ -54,7 +55,7 @@ public final class PC_BlockRegistry {
 				}
 				block = PC_ReflectHelper.create(blockClass, idOn, true);
 				int idOff = config.getInt("defaultID.off", -1);
-				if(idOff==-1){
+				if (idOff == -1) {
 					idOff = getFreeBlockID();
 					config.setInt("defaultID.off", idOff);
 				}
@@ -62,20 +63,17 @@ public final class PC_BlockRegistry {
 					idOff = getFreeBlockID();
 				}
 				blockOff = PC_ReflectHelper.create(blockClass, idOff, false);
-				PC_ReflectHelper.setFieldsWithAnnotationTo(blockClass, blockClass,
-						PC_Shining.ON.class, block);
-				PC_ReflectHelper.setFieldsWithAnnotationTo(blockClass, blockClass,
-						PC_Shining.OFF.class, blockOff);
+				PC_ReflectHelper.setFieldsWithAnnotationTo(blockClass, blockClass, PC_Shining.ON.class, block);
+				PC_ReflectHelper.setFieldsWithAnnotationTo(blockClass, blockClass, PC_Shining.OFF.class, blockOff);
 				blockOff.setUnlocalizedName(blockClass.getSimpleName());
 				blockOff.setModule(module);
-				PC_MSGRegistry.registerMSGObject(blockOff);
 				blocks.put(blockClass.getSimpleName() + ".Off", blockOff);
 				registerBlock(blockOff, null);
 				ItemBlock itemBlock = (ItemBlock) Item.itemsList[blockOff.blockID];
 				blockOff.setItemBlock(itemBlock);
 			} else {
 				int id = config.getInt("defaultID", -1);
-				if(id==-1){
+				if (id == -1) {
 					id = getFreeBlockID();
 					config.setInt("defaultID", id);
 				}
@@ -85,147 +83,69 @@ public final class PC_BlockRegistry {
 				block = PC_ReflectHelper.create(blockClass, id);
 			}
 			
-			PC_MSGRegistry.registerMSGObject(block);
 			blocks.put(blockClass.getSimpleName(), block);
 			block.setUnlocalizedName(blockClass.getSimpleName());
 			block.setModule(module);
+			block.initConfig(config);
 			
-			
-			
-			PC_ReflectHelper.getAllFieldsWithAnnotation(blockClass, blocks, PC_Config.class, new PC_IFieldAnnotationIterator<PC_Config>() {
-
-				@Override
-				public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_Config> fieldWithAnnotation) {
-					Class<?> c = fieldWithAnnotation.getFieldClass();
-					String name = fieldWithAnnotation.getAnnotation().name();
-					if(name.equals("")){
-						name = fieldWithAnnotation.getFieldName();
-					}
-					String[] comment = fieldWithAnnotation.getAnnotation().comment();
-					if(c == String.class){
-						String data = (String)fieldWithAnnotation.getValue();
-						data = config.getString(name, data, comment);
-						fieldWithAnnotation.setValue(data);
-					}else if(c == Integer.class||c==int.class){
-						int data = (Integer)fieldWithAnnotation.getValue();
-						data = config.getInt(name, data, comment);
-						fieldWithAnnotation.setValue(data);
-					}else if(c == Float.class||c==float.class){
-						float data = (Float)fieldWithAnnotation.getValue();
-						data = config.getFloat(name, data, comment);
-						fieldWithAnnotation.setValue(data);
-					}else if(c == Boolean.class||c==boolean.class){
-						boolean data = (Boolean)fieldWithAnnotation.getValue();
-						data = config.getBoolean(name, data, comment);
-						fieldWithAnnotation.setValue(data);
-					}
-					return false;
-				}
-			});
-			
-			if(block instanceof PC_BlockOre){
-				PC_BlockOre blockOre = (PC_BlockOre)block;
-				blockOre.setGenOresInChunk(config.getInt("spawn.in_chunk", blockOre.getGenOresInChunk(), "Number of deposits in each 16x16 chunk."));
-				blockOre.setGenOresDepositMaxCount(config.getInt("spawn.deposit_max_size", blockOre.getGenOresDepositMaxCount(), "Highest Ore count in one deposit"));
-				blockOre.setGenOresMaxY(config.getInt("spawn.max_y", blockOre.getGenOresMaxY(), "Max Y coordinate of ore deposits."));
-				blockOre.setGenOresMinY(config.getInt("spawn.min_y", blockOre.getGenOresMinY(), "Min Y coordinate of ore deposits."));
+			if(block.getClass().isAnnotationPresent(PC_OreInfo.class)){
+				PC_OreDictionary.register(block.getClass().getAnnotation(PC_OreInfo.class).oreName(), new PC_ItemStack(block));
 			}
 			
-			PC_ReflectHelper.getAllFieldsWithAnnotation(block.getClass(), block, PC_BlockInfo.ConfigEntry.class, new PC_IFieldAnnotationIterator<PC_BlockInfo.ConfigEntry>() {
-
-				@Override
-				public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_BlockInfo.ConfigEntry> fieldWithAnnotation) {
-					String entry = fieldWithAnnotation.getAnnotation().entryName();
-					String comment[] = fieldWithAnnotation.getAnnotation().comment();
-					if(comment.length==0){
-						comment = null;
-					}
-					Class<?> c = fieldWithAnnotation.getFieldClass();
-					if(c==Boolean.class || c==boolean.class){
-						boolean defaultValue = (Boolean)fieldWithAnnotation.getValue();
-						boolean value = config.getBoolean(entry, defaultValue, comment);
-						fieldWithAnnotation.setValue(value);
-					}else if(c==Integer.class || c==int.class){
-						int defaultValue = (Integer)fieldWithAnnotation.getValue();
-						int value = config.getInt(entry, defaultValue, comment);
-						fieldWithAnnotation.setValue(value);
-					}else if(c==Float.class || c==float.class){
-						float defaultValue = (Float)fieldWithAnnotation.getValue();
-						float value = config.getFloat(entry, defaultValue, comment);
-						fieldWithAnnotation.setValue(value);
-					}else if(c==String.class){
-						String defaultValue = (String)fieldWithAnnotation.getValue();
-						String value = config.getString(entry, defaultValue, comment);
-						fieldWithAnnotation.setValue(value);
-					}
-					return false;
-				}
-				
-			});
-			block.msg(PC_MSGRegistry.MSG_LOAD_FROM_CONFIG, config);
-
-			registerBlock(block, itemBlockClass);
-
-			ItemBlock itemBlock = (ItemBlock) Item.itemsList[block.blockID];
-
-			block.setItemBlock(itemBlock);
-
 			if (itemBlockClass == null) {
-				PC_LangRegistry.registerLanguage(
-						module,
-						new LangEntry(block
-								.getUnlocalizedName(), (String) block
-								.msg(PC_MSGRegistry.MSG_DEFAULT_NAME)));
-			} else {
-				PC_ItemBlock ib = (PC_ItemBlock) itemBlock;
-				ib.setModule(module);
-				List<LangEntry> l = (List<LangEntry>) ib
-						.msg(PC_MSGRegistry.MSG_DEFAULT_NAME,
-								new ArrayList<LangEntry>());
-				if (l != null) {
-					PC_LangRegistry.registerLanguage(module,
-							l.toArray(new LangEntry[0]));
-				}
+				itemBlockClass = PC_ItemBlock.class;
 			}
-
+			registerBlock(block, itemBlockClass);
+			
+			PC_ItemBlock itemBlock = (PC_ItemBlock) Item.itemsList[block.blockID];
+			
+			block.setItemBlock(itemBlock);
+			
+			itemBlock.setModule(module);
+			List<LangEntry> l = itemBlock.getNames(new ArrayList<LangEntry>());
+			if (l != null) {
+				PC_LangRegistry.registerLanguage(module, l.toArray(new LangEntry[0]));
+			}
+			
 			if (tileEntityClass != null) {
-				GameRegistry.registerTileEntity(tileEntityClass, tileEntityClass.getName());
 				if (PC_ITileEntityRenderer.class.isAssignableFrom(tileEntityClass))
 					PC_RegistryServer.getInstance().tileEntitySpecialRenderer(tileEntityClass);
+				else
+					GameRegistry.registerTileEntity(tileEntityClass, tileEntityClass.getName());
 			}
-
-			return (T)block;
 			
-		}catch(Exception e){
+			return (T) block;
+			
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
 	private static void registerBlock(PC_Block block, Class<? extends ItemBlock> itemBlock) {
-		if(itemBlock==null)
-			GameRegistry.registerBlock(block);
+		if (itemBlock == null)
+			ModLoader.registerBlock(block);
 		else
-			GameRegistry.registerBlock(block, itemBlock);
+			ModLoader.registerBlock(block, itemBlock);
 	}
 	
-	public static <T extends PC_Block> T register(PC_ModuleObject module, Class<T> blockClass){
+	public static <T extends PC_Block> T register(PC_ModuleObject module, Class<T> blockClass) {
 		
 		Class<? extends PC_ItemBlock> itemBlockClass = null;
 		Class<? extends PC_TileEntity> tileEntityClass = null;
 		
 		PC_BlockInfo blockInfo = PC_ReflectHelper.getAnnotation(blockClass, PC_BlockInfo.class);
 		
-		if(blockInfo!=null){
-		
-			if(blockInfo.itemBlock() != PC_BlockInfo.PC_FakeItemBlock.class){
+		if (blockInfo != null) {
+			
+			if (blockInfo.itemBlock() != PC_BlockInfo.PC_FakeItemBlock.class) {
 				itemBlockClass = blockInfo.itemBlock();
 			}
 			
-			if(blockInfo.tileEntity() != PC_BlockInfo.PC_FakeTileEntity.class){
+			if (blockInfo.tileEntity() != PC_BlockInfo.PC_FakeTileEntity.class) {
 				tileEntityClass = blockInfo.tileEntity();
 			}
-		
+			
 		}
 		
 		return register(module, blockClass, itemBlockClass, tileEntityClass);
@@ -236,14 +156,13 @@ public final class PC_BlockRegistry {
 			if (Block.blocksList[i] == null)
 				return i;
 		}
-		for (int i = 1; i < PC_GlobalVariables.blockStartIndex
-				&& i < Block.blocksList.length; i++) {
+		for (int i = 1; i < PC_GlobalVariables.blockStartIndex && i < Block.blocksList.length; i++) {
 			if (Block.blocksList[i] == null)
 				return i;
 		}
 		return -1;
 	}
-
+	
 	public static boolean isBlockIDFree(int id) {
 		if (id <= 0)
 			return false;
@@ -269,8 +188,8 @@ public final class PC_BlockRegistry {
 	}
 	
 	public static boolean isBlock(IBlockAccess world, PC_VecI pos, String... names) {
-		Block block = GameInfo.getBlock(world, pos.x, pos.y, pos.z);
-		if(block instanceof PC_Block){
+		Block block = PC_Utils.getBlock(world, pos);
+		if (block instanceof PC_Block) {
 			for (String name : names)
 				if (block == getPCBlockByName(name))
 					return true;

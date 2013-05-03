@@ -6,20 +6,25 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
+import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(itemBlock=PCde_ItemBlockPlatform.class, tileEntity=PCde_TileEntityPlatform.class)
+@PC_BlockInfo(name="Platform", tileEntity=PCde_TileEntityPlatform.class)
 public class PCde_BlockPlatform extends PC_Block {
 
 	public PCde_BlockPlatform(int id) {
@@ -28,11 +33,6 @@ public class PCde_BlockPlatform extends PC_Block {
 		setResistance(30.0F);
 		setStepSound(Block.soundMetalFootstep);
 		setCreativeTab(CreativeTabs.tabDecorations);
-	}
-	
-	@Override
-	public TileEntity newTileEntity(World world, int metadata) {
-		return new PCde_TileEntityPlatform();
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class PCde_BlockPlatform extends PC_Block {
 	}
 
 	private static boolean isFallBlock(World world, PC_VecI pos) {
-		int id = GameInfo.getBID(world, pos);
+		int id = PC_Utils.getBID(world, pos);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return true;
 		}
@@ -125,7 +125,7 @@ public class PCde_BlockPlatform extends PC_Block {
 	}
 
 	private static boolean isClimbBlock(World world, PC_VecI pos) {
-		int id = GameInfo.getBID(world, pos);
+		int id = PC_Utils.getBID(world, pos);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return false;
 		}
@@ -141,40 +141,39 @@ public class PCde_BlockPlatform extends PC_Block {
 		setBlockBounds(0, 0, 0, 1, 0.0625F, 1);
 	}
 
-	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
+	@Override
+	public boolean renderInventoryBlock(int metadata, Object renderer) {
 		float p = 0.0625F;
 		setBlockBounds(0, 0, 0, 1, p, 1);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, sideIcons[0]);
 		setBlockBounds(0, 0, 1 - p, 1, 1, 1);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[1]);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, sideIcons[1]);
 		setBlockBounds(0, 0, 0, p, 1, 1);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[1]);
-	}
-
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			break;
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.NO_PICKUP);
-			list.add(PC_Utils.PASSIVE);
-			return list;
-		}
-		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}
-		default:
-			return null;
-		}
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, sideIcons[1]);
 		return true;
+	}
+	
+	@Override
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
+		return true;
+	}
+	
+	@Override
+	public PC_VecI moveBlockTryToPlaceAt(World world, int x, int y, int z,
+			PC_Direction dir, float xHit, float yHit, float zHit,
+			ItemStack itemStack, EntityPlayer entityPlayer) {
+		
+		Item item = itemStack.getItem();
+		if(item instanceof ItemBlock){
+			Block block = Block.blocksList[((ItemBlock) item).getBlockID()];
+			PC_Direction pRot = PC_Direction.getFormPlayerDir(MathHelper.floor_double(((entityPlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3);
+			PC_VecI offset = pRot.getOffset();
+			if(block==PCde_App.stairs && PC_KeyRegistry.isPlacingReversed(entityPlayer)){
+				offset.y--;
+			}
+			return offset;
+		}
+		return null;
 	}
 	
 }

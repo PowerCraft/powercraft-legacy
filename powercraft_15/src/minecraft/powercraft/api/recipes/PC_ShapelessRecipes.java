@@ -9,12 +9,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
-import powercraft.api.PC_GlobalVariables;
-import powercraft.api.PC_VecI;
 import powercraft.api.block.PC_ItemBlock;
 import powercraft.api.item.PC_Item;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.utils.PC_GlobalVariables;
+import powercraft.api.utils.PC_VecI;
 
 public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInfo, PC_IRecipe {
 

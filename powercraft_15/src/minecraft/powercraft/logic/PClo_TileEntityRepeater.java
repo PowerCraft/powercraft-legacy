@@ -3,9 +3,9 @@ package powercraft.logic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
 
 public class PClo_TileEntityRepeater extends PC_TileEntity
 {
@@ -37,7 +37,7 @@ public class PClo_TileEntityRepeater extends PC_TileEntity
     	if(state!=b){
     		state = b;
     		notifyChanges("state");
-	        ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+	        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 	        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     	}
     }
@@ -46,13 +46,18 @@ public class PClo_TileEntityRepeater extends PC_TileEntity
     {
     	return inp;
     }
+    
+    @Override
+	protected void dataRecieved() {
+    	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
 
-    public void change()
+	public void change()
     {
     	inp = PClo_RepeaterType.change(type, inp);
     	notifyChanges("inp");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        ValueWriting.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
-        ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+        PC_Utils.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
+        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
     }
 }

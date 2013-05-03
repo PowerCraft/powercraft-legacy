@@ -9,12 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.block.PC_ItemBlock;
 import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Utils;
 
 public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 
@@ -66,15 +65,12 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 
 		// special placing rules for Ledge
 		
-		int bID = GameInfo.getBID(world, i, j - 1, k);
+		int bID = PC_Utils.getBID(world, i, j - 1, k);
 		
 		if (bID == PCde_App.stairs.blockID || bID == PCde_App.platform.blockID) {
 
 			int dir = ((MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
-			if (PC_KeyRegistry.isPlacingReversed(entityplayer)) {
-				dir = ValueWriting.reverseSide(dir);
-			}
 			int meta = world.getBlockMetadata(i, j - 1, k);
 
 			i -= Direction.offsetX[dir];
@@ -103,7 +99,7 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 
 		if (world.canPlaceEntityOnSide(PCde_App.platform.blockID, i, j, k, false, l, entityplayer, itemstack)) {
 			Block block = PCde_App.platform;
-			if(ValueWriting.setBID(world, i, j, k, block.blockID, 0)){
+			if(PC_Utils.setBID(world, i, j, k, block.blockID, 0)){
 				// set tile entity
 				PCde_TileEntityPlatform ted = (PCde_TileEntityPlatform) world.getBlockTileEntity(i, j, k);
 				if (ted == null) {
@@ -125,15 +121,4 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 		return true;
 	}
 
-	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName(), "Platform"));
-            return names;
-		}
-		return null;
-	}
-	
 }

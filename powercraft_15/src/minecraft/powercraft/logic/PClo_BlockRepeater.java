@@ -15,12 +15,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.launcher.PC_Property;
-import powercraft.api.PC_MathHelper;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.annotation.PC_Shining;
 import powercraft.api.annotation.PC_Shining.OFF;
@@ -29,9 +23,14 @@ import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
+import powercraft.launcher.PC_Property;
 
 @PC_Shining
-@PC_BlockInfo(itemBlock=PClo_ItemBlockRepeater.class, tileEntity=PClo_TileEntityRepeater.class)
+@PC_BlockInfo(name="Repeater", itemBlock=PClo_ItemBlockRepeater.class, tileEntity=PClo_TileEntityRepeater.class, canPlacedRotated=true)
 public class PClo_BlockRepeater extends PC_Block
 {
     @ON
@@ -41,7 +40,7 @@ public class PClo_BlockRepeater extends PC_Block
 
     public PClo_BlockRepeater(int id, boolean on)
     {
-    	super(id, Material.ground, "bottomplate", PClo_RepeaterType.getTextures());
+    	super(id, Material.ground, PClo_RepeaterType.getTextures());
         setHardness(0.35F);
         setStepSound(Block.soundWoodFootstep);
         disableStats();
@@ -55,21 +54,22 @@ public class PClo_BlockRepeater extends PC_Block
     }
 
     @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PClo_TileEntityRepeater();
-    }
-
+	public void initConfig(PC_Property config) {
+		super.initConfig(config);
+		on.setLightValue(config.getInt("brightness", 7) * 0.0625F);
+	}
+    
     @Override
     public void updateTick(World world, int x, int y, int z, Random random)
     {
-        int rot = getRotation_static(GameInfo.getMD(world, x, y, z));
         PClo_TileEntityRepeater te = getTE(world, x, y, z);
 
         if (te.getType() == PClo_RepeaterType.CROSSING)
         {
-            int[] inp = { GameInfo.poweredFromInput(world, x, y, z, PC_Utils.LEFT) ? 1 : 0, GameInfo.poweredFromInput(world, x, y, z, PC_Utils.BACK) ? 1 : 0,
-                    GameInfo.poweredFromInput(world, x, y, z, PC_Utils.RIGHT) ? 1 : 0, GameInfo.poweredFromInput(world, x, y, z, PC_Utils.FRONT) ? 1 : 0
-                        };
+            int[] inp = {getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.LEFT)>0 ? 1 : 0, 
+            			getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0 ? 1 : 0,
+            			getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.RIGHT)>0 ? 1 : 0, 
+            			getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.FRONT)>0 ? 1 : 0};
             int variant = te.getInp();
             int shouldState = 0;
 
@@ -95,16 +95,16 @@ public class PClo_BlockRepeater extends PC_Block
             if (te.getState() != shouldState)
             {
                 te.setState(shouldState);
-                ValueWriting.setBlockState(world, x, y, z, shouldState != 0);
+                PC_Utils.setBlockState(world, x, y, z, shouldState != 0);
             }
         }
         else
         {
-            boolean shouldState = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot);
+            boolean shouldState = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
 
             if (isActive(world, x, y, z) != shouldState)
             {
-                ValueWriting.setBlockState(world, x, y, z, shouldState);
+                PC_Utils.setBlockState(world, x, y, z, shouldState);
             }
         }
     }
@@ -123,22 +123,27 @@ public class PClo_BlockRepeater extends PC_Block
         if (te.getType() == PClo_RepeaterType.REPEATER_STRAIGHT_I || te.getType() == PClo_RepeaterType.REPEATER_CORNER_I)
         {
             updateTick(world, x, y, z, new Random());
-        }
-        else
-        {
-            world.scheduleBlockUpdate(x, y, z, blockID, tickRate(world));
+        }else{
+        	boolean shouldState = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
+        	if (isActive(world, x, y, z) != shouldState){
+        		world.scheduleBlockUpdate(x, y, z, blockID, tickRate(world));
+        	}
         }
     }
 
     @Override
-   	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-    	int meta = GameInfo.getMD(world, x, y, z);
-        int rotation = getRotation_static(meta);
+   	public int getProvidingWeakRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
+   		return getProvidingStrongRedstonePowerValue(world, x, y, z, dir);
+   	}
+    
+    @Override
+   	public int getProvidingStrongRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
         PClo_TileEntityRepeater te = getTE(world, x, y, z);
         int type = te.getType();
         boolean L = false, R = false, F = false, B = false;
         int variant = te.getInp();
-
+        int s = dir.getMCDir();
+        
         if (type == PClo_RepeaterType.CROSSING)
         {
             int state = te.getState();
@@ -227,87 +232,16 @@ public class PClo_BlockRepeater extends PC_Block
             R = variant == 1;
         }
 
-        switch (rotation)
-        {
-            case 0:
-                switch (s)
-                {
-                    case 3:
-                        return F?15:0;
-
-                    case 4:
-                        return R?15:0;
-
-                    case 2:
-                        return B?15:0;
-
-                    case 5:
-                        return L?15:0;
-                }
-
-                break;
-
-            case 1:
-                switch (s)
-                {
-                    case 3:
-                        return L?15:0;
-
-                    case 4:
-                        return F?15:0;
-
-                    case 2:
-                        return R?15:0;
-
-                    case 5:
-                        return B?15:0;
-                }
-
-                break;
-
-            case 2:
-                switch (s)
-                {
-                    case 3:
-                        return B?15:0;
-
-                    case 4:
-                        return L?15:0;
-
-                    case 2:
-                        return F?15:0;
-
-                    case 5:
-                        return R?15:0;
-                }
-
-                break;
-
-            case 3:
-                switch (s)
-                {
-                    case 3:
-                        return R?15:0;
-
-                    case 4:
-                        return B?15:0;
-
-                    case 2:
-                        return L?15:0;
-
-                    case 5:
-                        return F?15:0;
-                }
-
-                break;
-        }
+        if(dir==PC_Direction.LEFT)
+        	return L?15:0;
+        if(dir==PC_Direction.RIGHT)
+        	return R?15:0;
+        if(dir==PC_Direction.FRONT)
+        	return F?15:0;
+        if(dir==PC_Direction.BOTTOM)
+        	return B?15:0;
 
         return 0;
-   	}
-
-   	@Override
-   	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
-   		return isProvidingWeakPower(world, x, y, z, s);
    	}
 
     @Override
@@ -330,7 +264,7 @@ public class PClo_BlockRepeater extends PC_Block
 
     public static PClo_TileEntityRepeater getTE(IBlockAccess world, int x, int y, int z)
     {
-        TileEntity te = GameInfo.getTE(world, x, y, z);
+        TileEntity te = PC_Utils.getTE(world, x, y, z);
 
         if (te instanceof PClo_TileEntityRepeater)
         {
@@ -366,46 +300,41 @@ public class PClo_BlockRepeater extends PC_Block
 
     public static boolean isActive(IBlockAccess world, int x, int y, int z)
     {
-        return GameInfo.getBID(world, x, y, z) == on.blockID;
+        return PC_Utils.getBID(world, x, y, z) == on.blockID;
     }
 
     @Override
-    public Icon getBlockTexture(IBlockAccess iblockaccess, int x, int y, int z, int side)
+    public Icon getBlockTexture(IBlockAccess iblockaccess, int x, int y, int z, PC_Direction side)
     {
-        if (side == 1)
+        if (side == PC_Direction.TOP)
         {
-            return icons[PClo_RepeaterType.getTextureIndex(getType(iblockaccess, x, y, z), isActive(iblockaccess, x, y, z))+getInp(iblockaccess, x, y, z)];
+            return sideIcons[PClo_RepeaterType.getTextureIndex(getType(iblockaccess, x, y, z), isActive(iblockaccess, x, y, z))+getInp(iblockaccess, x, y, z)];
         }
 
-        if (side == 0)
+        if (side == PC_Direction.BOTTOM)
         {
-            return icons[0];
+            return sideIcons[0];
         }
 
-        return icons[1];
+        return sideIcons[1];
     }
 
     @Override
-    public Icon getBlockTextureFromSideAndMetadata(int side, int meta)
+    public Icon getBlockTextureFromSideAndMetadata(PC_Direction side, int meta)
     {
-        if (side == 0)
+        if (side == PC_Direction.BOTTOM)
         {
-            return icons[0];
+            return sideIcons[0];
         }
 
-        if (side == 1)
+        if (side == PC_Direction.TOP)
         {
-            return icons[PClo_RepeaterType.getTextureIndex(meta, true)];
+            return sideIcons[PClo_RepeaterType.getTextureIndex(meta, true)];
         }
         else
         {
-            return icons[1];
+            return sideIcons[1];
         }
-    }
-
-    public static int getRotation_static(int meta)
-    {
-        return meta & 0x3;
     }
 
     @Override
@@ -425,21 +354,6 @@ public class PClo_BlockRepeater extends PC_Block
     {
         setBlockBoundsBasedOnState(world, x, y, z);
         return super.getCollisionBoundingBoxFromPool(world, x, y, z);
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving, ItemStack itemStack)
-    {
-        int type = getType(world, x, y, z);
-        int l = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
-
-        if (entityliving instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed(((EntityPlayer)entityliving)))
-        {
-            l = ValueWriting.reverseSide(l);
-        }
-
-        ValueWriting.setMD(world, x, y, z, l);
-        onNeighborBlockChange(world, x, y, z, 0);
     }
 
     @Override
@@ -500,7 +414,7 @@ public class PClo_BlockRepeater extends PC_Block
         int type = getType(world, x, y, z);
         boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
 
-        if (remove && !GameInfo.isCreative(player))
+        if (remove && !PC_Utils.isCreative(player))
         {
             dropBlockAsItem_do(world, x, y, z, new ItemStack(PClo_App.repeater, 1, type));
         }
@@ -508,28 +422,4 @@ public class PClo_BlockRepeater extends PC_Block
         return remove;
     }
 
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_LOAD_FROM_CONFIG:
-			on.setLightValue(((PC_Property)obj[0]).getInt("brightness", 15) * 0.0625F);
-			break;
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.NO_PICKUP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_RENDER_ITEM_HORIZONTAL:
-			return false;
-		case PC_MSGRegistry.MSG_ROTATION:
-			return getRotation_static((Integer)obj[0]);
-		default:
-			return null;
-		}
-		return true;
-	}
 }

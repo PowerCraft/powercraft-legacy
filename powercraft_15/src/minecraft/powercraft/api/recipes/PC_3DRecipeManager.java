@@ -2,8 +2,8 @@ package powercraft.api.recipes;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import powercraft.api.PC_VecI;
 import powercraft.api.registry.PC_RecipeRegistry;
+import powercraft.api.utils.PC_VecI;
 
 //AlphaI
 @Deprecated

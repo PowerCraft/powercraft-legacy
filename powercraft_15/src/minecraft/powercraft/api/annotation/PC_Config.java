@@ -8,8 +8,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface PC_Config {
-
+	
 	String name() default "";
+	
 	String[] comment() default {};
 	
 }

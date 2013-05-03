@@ -4,12 +4,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.inventory.PC_IInventory;
 import powercraft.api.inventory.PC_Slot;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory<PC_TileEntity> {
 	
@@ -108,7 +108,7 @@ public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory<PC
 			if(!world.isRemote){
 				for(int i=0; i<3; i++){
 					if(is[i]!=null){
-						ValueWriting.dropItemStack(world, is[i], pos);
+						PC_Utils.dropItemStack(world, pos, is[i]);
 					}
 				}
 			}

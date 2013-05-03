@@ -4,9 +4,9 @@ import java.util.List;
 
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_VecI;
 import powercraft.api.inventory.PC_SlotNoPickup;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_VecI;
 
 public class PC_GresItemToggel extends PC_GresInventory {
 	

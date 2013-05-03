@@ -4,8 +4,8 @@ import net.minecraft.util.Icon;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_VecI;
+import powercraft.api.utils.PC_RectI;
+import powercraft.api.utils.PC_VecI;
 
 public class PC_GresWidgetTab extends PC_GresWidget {
 

@@ -6,16 +6,18 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.SaveHandler;
-import powercraft.api.PC_VecI;
 import powercraft.api.gres.PC_GresTextEditMultiline.Keyword;
 import powercraft.api.inventory.PC_InventoryUtils;
+import powercraft.api.registry.PC_BlockRegistry;
+import powercraft.api.registry.PC_ItemRegistry;
 import powercraft.api.registry.PC_RecipeRegistry;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 import powercraft.mobile.PCmo_Command.ParseException;
 import powercraft.mobile.PCmo_EntityMiner.Agree;
 import powercraft.weasel.PCws_IWeaselEngine;
@@ -159,7 +161,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		}
 		networkID = nbttag.getInteger("networkID");
 		miner.setInfo("deviceName", nbttag.getString("name"));
-		SaveHandler.loadFromNBT(nbttag, "engine", engine);
+		PC_Utils.loadFromNBT(nbttag, "engine", engine);
 		sleep = nbttag.getInteger("sleep");
 		program = nbttag.getString("program");
 		if(nbttag.hasKey("error"))
@@ -175,7 +177,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		nbttag.setInteger("id", id);
 		nbttag.setInteger("networkID", networkID);
 		nbttag.setString("name", (String)miner.getInfo("deviceName"));
-		SaveHandler.saveToNBT(nbttag, "engine", engine);
+		PC_Utils.saveToNBT(nbttag, "engine", engine);
 		nbttag.setInteger("sleep", sleep);
 		nbttag.setString("program", program);
 		if(error!=null)
@@ -735,7 +737,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 						
 						@Override
 						public boolean agree(ItemStack stack) {
-							return miner.matchStackIdentifier(obj, stack);
+							return matchStackIdentifier(obj, stack);
 						}
 					}.set(args[0]));
 
@@ -769,7 +771,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 					if (n > 0 || n == -1) {
 						for (int i = 1; i < args.length; i++) {
 							WeaselObject arg = args[i];
-							if (PCmo_EntityMiner.matchStackIdentifier(arg, stack)) return true;
+							if (matchStackIdentifier(arg, stack)) return true;
 						}
 					}
 					return false;
@@ -798,7 +800,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 							continue oo;
 						}
 					} else {
-						if (PCmo_EntityMiner.matchStackIdentifier(arg, stack)) {
+						if (matchStackIdentifier(arg, stack)) {
 							cnt++;
 							continue oo;
 						}
@@ -829,7 +831,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 							continue oo;
 						}
 					} else {
-						if (PCmo_EntityMiner.matchStackIdentifier(arg, stack)) {
+						if (matchStackIdentifier(arg, stack)) {
 							cnt += stack.stackSize;
 							continue oo;
 						}
@@ -917,14 +919,14 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 
 		if (stack.getItem() == null) throw new WeaselRuntimeException(arg + " is not a valid block/item ID.");
 
-		return (PCmo_EntityMiner.matchStackIdentifier(arg, stack));
+		return (matchStackIdentifier(arg, stack));
     }
     
     public int getBlockAt(String side){
 		char sid = side.charAt(0);
 		String num = side.substring(1);
 
-		return GameInfo.getBID(miner.worldObj, miner.getCoordOnSide(sid, Integer.valueOf(num)));
+		return PC_Utils.getBID(miner.worldObj, miner.getCoordOnSide(sid, Integer.valueOf(num)));
     }
 
     public boolean setBlockAt(String side, Object id){
@@ -997,7 +999,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		String num = side.substring(1);
 
 		PC_VecI pos = miner.getCoordOnSide(sid, Integer.valueOf(num));
-		return miner.canHarvestBlockWithCurrentLevel(pos, GameInfo.getBID(miner.worldObj, pos));
+		return miner.canHarvestBlockWithCurrentLevel(pos, PC_Utils.getBID(miner.worldObj, pos));
     }
  
     public void sortInventory(){
@@ -1038,7 +1040,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 						
 						@Override
 						public boolean agree(ItemStack stack) {
-							return miner.matchStackIdentifier(obj, stack);
+							return matchStackIdentifier(obj, stack);
 						}
 					}.set(args[0]));
 
@@ -1072,7 +1074,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 					if (n > 0 || n == -1) {
 						for (int i = 1; i < args.length; i++) {
 							WeaselObject arg = args[i];
-							if (PCmo_EntityMiner.matchStackIdentifier(arg, stack)) return true;
+							if (matchStackIdentifier(arg, stack)) return true;
 						}
 					}
 					return false;
@@ -1119,7 +1121,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 						}
 
 						private boolean agree_do(ItemStack stack) {
-							return PCmo_EntityMiner.matchStackIdentifier(obj, stack);
+							return matchStackIdentifier(obj, stack);
 						}
 					}.set(args[0]));
 
@@ -1158,7 +1160,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 					if (n > 0 || n == -1) {
 						for (int i = 1; i < args.length; i++) {
 							WeaselObject arg = args[i];
-							if (PCmo_EntityMiner.matchStackIdentifier(arg, stack)) return true;
+							if (matchStackIdentifier(arg, stack)) return true;
 						}
 					}
 					return false;
@@ -1205,7 +1207,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 						}
 
 						private boolean agree_do(ItemStack stack) {
-							return PCmo_EntityMiner.matchStackIdentifier(obj, stack);
+							return matchStackIdentifier(obj, stack);
 						}
 					}.set(args[0]));
 
@@ -1244,7 +1246,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 					if (n > 0 || n == -1) {
 						for (int i = 1; i < args.length; i++) {
 							WeaselObject arg = args[i];
-							if (PCmo_EntityMiner.matchStackIdentifier(arg, stack)) return true;
+							if (matchStackIdentifier(arg, stack)) return true;
 						}
 					}
 					return false;
@@ -1400,4 +1402,93 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		addText(text);
 	}
     
+	public static boolean matchStackIdentifier(WeaselObject identifier, ItemStack stack) {
+		if (identifier == null || stack == null) return false;
+		if (identifier instanceof WeaselDouble) {
+			if (stack.itemID == Calc.toInteger(identifier)) {
+				return true;
+			}
+		} else {
+			String str = Calc.toString(identifier);
+			int id = stack.itemID;
+			if (str.equalsIgnoreCase("ALL")) {
+				return true;
+			}
+			if (str.equalsIgnoreCase("ITEM")) {
+				if (!(stack.getItem() instanceof ItemBlock)) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("BLOCK")) {
+				if (stack.getItem() instanceof ItemBlock) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("BUILDING_BLOCK")) {
+				if (PCmo_EntityMiner.isBlockGoodForBuilding(stack, 3)) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("FUEL")) {
+				if (PC_RecipeRegistry.getFuelValue(stack) > 0) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("ORE")) {
+				if (id == Block.oreCoal.blockID || id == Block.oreIron.blockID || id == Block.oreGold.blockID || id == Block.oreLapis.blockID
+						|| id == Block.oreRedstone.blockID) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("LAPIS")) {
+				if (id == Item.dyePowder.itemID && stack.getItemDamage() == 4) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("BONEMEAL")) {
+				if (id == Item.dyePowder.itemID && stack.getItemDamage() == 15) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("JUNK")) {
+				if (id == Block.gravel.blockID || id == Block.sapling.blockID || id == Block.leaves.blockID || id == Block.dirt.blockID
+						|| id == Item.seeds.itemID) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("VALUABLE")) {
+				//@formatter:off
+				if (id == Block.blockClay.blockID || 
+						id == Block.blockSnow.blockID ||
+						id == Block.blockLapis.blockID ||
+						id == Block.blockSteel.blockID || 
+						id == Block.blockGold.blockID || 
+						id == Block.slowSand.blockID || 
+						id == Block.oreIron.blockID || 
+						id == Block.oreGold.blockID || 
+						id == Block.oreDiamond.blockID || 
+						id == Block.oreLapis.blockID || 
+						id == Block.oreRedstone.blockID || 
+						id == Block.glowStone.blockID || 
+						id == Block.oreCoal.blockID || 
+						id == Item.ingotGold.itemID || 
+						id == Item.ingotIron.itemID || 
+						id == Item.goldNugget.itemID || 
+						id == Item.netherStalkSeeds.itemID || 
+						id == Item.diamond.itemID || 
+						id == Item.lightStoneDust.itemID || 
+						id == PC_BlockRegistry.getPCBlockIDByName("PCco_BlockPowerCrystal") ||
+						id == PC_ItemRegistry.getPCItemIDByName("PCco_ItemPowerDust") ||
+						(id == Item.dyePowder.itemID && stack.getItemDamage() == 4) || 
+						(id == Item.dyePowder.itemID && stack.getItemDamage() == 3) || 
+						id == Block.bedrock.blockID || 
+						id == Block.obsidian.blockID) {
+					return true;
+				}
+				//@formatter:on
+			}
+		}
+		return false;
+	}
+	
 }

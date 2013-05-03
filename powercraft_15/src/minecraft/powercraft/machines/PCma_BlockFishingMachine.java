@@ -10,25 +10,24 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.recipes.PC_3DRecipe;
 import powercraft.api.recipes.PC_I3DRecipeHandler;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_SoundRegistry;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(tileEntity=PCma_TileEntityFishingMachine.class)
+@PC_BlockInfo(name="Fishing Machine", tileEntity=PCma_TileEntityFishingMachine.class)
 public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHandler {
 
 	private static PC_3DRecipe struct;
 	
 	public PCma_BlockFishingMachine(int id) {
-		super(id, Material.iron, null);
+		super(id, Material.iron);
 		struct = new PC_3DRecipe(null, 
 				new String[]{
 				"www",
@@ -68,11 +67,6 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	}
 	
 	@Override
-	public TileEntity newTileEntity(World world, int metadata) {
-		return new PCma_TileEntityFishingMachine();
-	}
-	
-	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
 		return Block.blockSteel.blockID;
 	}
@@ -104,7 +98,7 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-		if(GameInfo.<PCma_TileEntityFishingMachine>getTE(world, x, y, z).isRunning()){
+		if(PC_Utils.<PCma_TileEntityFishingMachine>getTE(world, x, y, z).isRunning()){
 			// bubbles
 			for (int i = 0; i < 2; i++) {
 				double buX = x + 0.2D + rand.nextFloat() * 0.6F;
@@ -123,7 +117,7 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 				double chimX = x + 0.5;
 				double chimY = y + 2.4F;
 				double chimZ = z + 0.5;
-				int rota = GameInfo.getMD(world, x, y+1, z);
+				int rota = PC_Utils.getMD(world, x, y+1, z);
 				if (rota == 2){
 					chimX += 0.6;
 		        }else if (rota == 3){
@@ -139,25 +133,8 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	}
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
-		return Block.blockSteel.getBlockTextureFromSideAndMetadata(par1, par2);
-	}
-
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-	   		list.add(PC_Utils.NO_HARVEST);
-	   		list.add(PC_Utils.NO_PICKUP);
-	   		return list;
-		}default:
-			return null;
-		}
+	public Icon getBlockTextureFromSideAndMetadata(PC_Direction par1, int par2) {
+		return Block.blockSteel.getBlockTextureFromSideAndMetadata(par1.getMCDir(), par2);
 	}
 
 	@Override
@@ -166,14 +143,14 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 		int fishingMachine = PCma_App.fishingMachine.blockID;
 		for(int z=-2; z<=2; z++){
 			for(int x=-2; x<=2; x++){
-				int blockID = GameInfo.getBID(world, pos.x + x, pos.y, pos.z - z);
+				int blockID = PC_Utils.getBID(world, pos.x + x, pos.y, pos.z - z);
 				if(blockID==fishingMachine){
 					return false;
 				}
 			}
 		}
-		int meta = GameInfo.getMD(world, pos);
-		ValueWriting.setBID(world, pos, blockID, meta);
+		int meta = PC_Utils.getMD(world, pos);
+		PC_Utils.setBID(world, pos, blockID, meta);
 		return true;
 	}
 

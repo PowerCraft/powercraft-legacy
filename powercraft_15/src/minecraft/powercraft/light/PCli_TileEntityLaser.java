@@ -3,12 +3,9 @@ package powercraft.light;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import powercraft.api.PC_BeamTracer;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_IBeamHandler;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.block.PC_Block;
+import powercraft.api.interfaces.PC_IBeamHandler;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
@@ -16,6 +13,9 @@ import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandler, PC_ITileEntityRenderer{
 	
@@ -73,8 +73,9 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     	if(laser==null){
 	    	laser = new PC_BeamTracer(worldObj, this);
 	    	laser.setStartCoord(getCoord());
-	    	int metadata = GameInfo.getMD(worldObj, xCoord, yCoord, zCoord);
-	    	laser.setStartMove(metadata == 4?1:metadata == 5?-1:0, 0, metadata == 2?1:metadata == 3?-1:0);
+	    	int metadata = PC_Utils.getMD(worldObj, xCoord, yCoord, zCoord);
+	    	PC_Block block = PC_Utils.getBlock(worldObj, getCoord());
+	    	laser.setStartMove(block.getRotation(PC_Utils.getMD(worldObj, getCoord())).getOffset());
 	    	laser.setColor(PCli_ItemLaserComposition.getColorForItemStack(getItemStack()));
 	    	laser.setDetectEntities(true);
 	    	laser.setCanChangeColor(true);
@@ -86,7 +87,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     	if(PCli_ItemLaserComposition.isSensor(getItemStack())){
 	    	if(oldActive != active){
 	    		notifyChanges("active");
-	    		ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+	    		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 	    	}
     	}
     }
@@ -94,7 +95,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     private boolean isRoasterBurning(){
     	boolean isBurning = false;
 		if(isKiller()){
-			Block b = GameInfo.getBlock(worldObj, xCoord, yCoord-1, zCoord);
+			Block b = PC_Utils.getBlock(worldObj, xCoord, yCoord-1, zCoord);
 			if(b!=null && b == PC_BlockRegistry.getPCBlockByName("PCma_BlockRoaster")){
 				Object o = PC_MSGRegistry.callBlockMSG(worldObj, getCoord().offset(0, -1, 0), PC_MSGRegistry.MSG_DOES_SMOKE);
 				if(o instanceof Boolean)
@@ -126,7 +127,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 	}
 
 	@Override
-	protected void dataChange(String key, Object value){
+	protected void dataChanged(String key, Object value){
 		if(key.equals("itemstack")){
 			laser = null;
 		}
@@ -142,23 +143,14 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 		PC_Renderer.glPushMatrix();
 		float f = 1.0F;
 
-		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F /* *f0 */, (float) z + 0.5F);
-
-		int[] meta2angle = { 0, 0, 90, 270, 0, 180 };
-
-		float f1 = meta2angle[getBlockMetadata()];
-
 		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCli_App.instance, "laser.png"));
 
-		PC_Renderer.glPushMatrix();
-		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);
 		PC_Renderer.glScalef(f, -f, -f);
 		modelLaser.renderLaser();
 		PC_Color color = PCli_ItemLaserComposition.getColorForItemStack(getItemStack());
 		PC_Renderer.glColor4f((float)color.x, (float)color.y, (float)color.z, 1.0F);
 		modelLaser.renderLens();
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		PC_Renderer.glPopMatrix();
 
 		PC_Renderer.glPopMatrix();
 	}

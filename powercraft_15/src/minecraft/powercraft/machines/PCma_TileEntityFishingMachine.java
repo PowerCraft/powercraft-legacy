@@ -9,9 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_RecipeRegistry;
@@ -19,6 +16,8 @@ import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_ITileEntityRenderer {
 
@@ -58,7 +57,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 	}
 
 	private IInventory getChestInventory() {
-		TileEntity te = GameInfo.getTE(worldObj, getCoord().offset(0, 1, 0));
+		TileEntity te = PC_Utils.getTE(worldObj, getCoord().offset(0, 1, 0));
 
 		if (te instanceof IInventory) {
 			return (IInventory) te;
@@ -100,8 +99,8 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 	
 	private void turnIntoBlocks(){
 		PC_VecI pos = getCoord();
-		int meta = GameInfo.getMD(worldObj, pos);
-		ValueWriting.setBID(worldObj, pos, Block.blockSteel.blockID, meta);
+		int meta = PC_Utils.getMD(worldObj, pos);
+		PC_Utils.setBID(worldObj, pos, Block.blockSteel.blockID, meta);
 	}
 	
 	/**
@@ -122,7 +121,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 
 
 		for (int i = 0; i < outputs.length; i++) {
-			Block b = GameInfo.getBlock(worldObj, getCoord().offset(outputs[i]));
+			Block b = PC_Utils.getBlock(worldObj, getCoord().offset(outputs[i]));
 			if (b instanceof PC_Block && ((PC_Block)b).getModule().getModuleName().equals("Transport")) {
 				ejectFish_do(getCoord().offset(outputs[i]), false);
 				return;
@@ -130,7 +129,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 		}
 
 		for (int i = 0; i < outputs.length; i++) {
-			if(GameInfo.getBID(worldObj, getCoord().offset(outputs[i])) == 0) {
+			if(PC_Utils.getBID(worldObj, getCoord().offset(outputs[i])) == 0) {
 				ejectFish_do(getCoord().offset(outputs[i]), true);
 				return;
 			}
@@ -192,7 +191,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 		PC_Renderer.glTranslatef((float) x + 0.5f, (float) y, (float) z + 0.5f);
 		float f4 = 0.75F;
 		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCma_App.instance, "fisher.png"));
-		int rota = GameInfo.getMD(worldObj, getCoord().offset(0, 1, 0));
+		int rota = PC_Utils.getMD(worldObj, getCoord().offset(0, 1, 0));
 		if (rota == 2){
 			rota = 270;
         }else if (rota == 3){

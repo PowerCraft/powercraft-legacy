@@ -11,12 +11,14 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.block.PC_Block;
 import powercraft.api.inventory.PC_IInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.registry.PC_SoundRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements PC_IInventory{
 	
@@ -367,7 +369,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
             	actContents[i].stackSize--;
             	
                 if (actContents[i].getItem().hasContainerItem()){
-                	ItemStack con = GameInfo.getContainerItemStack(actContents[i]);
+                	ItemStack con = PC_Utils.getContainerItemStack(actContents[i]);
                 	if (con.isItemStackDamageable() && con.getItemDamage() > con.getMaxDamage()){
                 		con = null;
                 	}
@@ -400,7 +402,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
             	actContents[i].stackSize--;
             	
                 if (actContents[i].getItem().hasContainerItem()){
-                	ItemStack con = GameInfo.getContainerItemStack(actContents[i]);
+                	ItemStack con = PC_Utils.getContainerItemStack(actContents[i]);
                 	if (con.isItemStackDamageable() && con.getItemDamage() > con.getMaxDamage()){
                 		con = null;
                 	}
@@ -432,37 +434,16 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
         }
         if(worldObj.isRemote)
     		return true;
-        int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-        int i1 = 0;
-        int j1 = 0;
+        PC_VecI offset = ((PC_Block)getBlockType()).getRotation(PC_Utils.getMD(worldObj, xCoord, yCoord, zCoord)).getOffset();
 
-        switch (meta)
-        {
-            case 0:
-                j1 = 1;
-                break;
-
-            case 1:
-                i1 = -1;
-                break;
-
-            case 2:
-                j1 = -1;
-                break;
-
-            case 3:
-                i1 = 1;
-                break;
-        }
-
-        double d = xCoord + i1 * 1.0D + 0.5D;
+        double d = xCoord + offset.x * 1.0D + 0.5D;
         double d1 = yCoord + 0.5D;
-        double d2 = zCoord + j1 * 1.0D + 0.5D;
+        double d2 = zCoord + offset.z * 1.0D + 0.5D;
         double d3 = worldObj.rand.nextDouble() * 0.02000000000000001D + 0.05000000000000001D;
         EntityItem entityitem = new EntityItem(worldObj, d, d1 - 0.29999999999999999D, d2, stack2drop.copy());
-        entityitem.motionX = i1 * d3;
+        entityitem.motionX = offset.x * d3;
         entityitem.motionY = 0.05000000298023221D;
-        entityitem.motionZ = j1 * d3;
+        entityitem.motionZ = offset.z * d3;
 
         if (!worldObj.isRemote)
         {
@@ -614,7 +595,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
     }
     
     @Override
-	protected void onCall(String key, Object value) {
+	protected void onCall(String key, Object[] value) {
 		if(key.equals("orderAndCraft")){
 			orderAndCraft();
 		}
@@ -652,12 +633,12 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
 	@Override
 	public boolean func_102007_a(int i, ItemStack itemstack, int j) {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean func_102008_b(int i, ItemStack itemstack, int j) {
-		return false;
+		return true;
 	}
     
 }

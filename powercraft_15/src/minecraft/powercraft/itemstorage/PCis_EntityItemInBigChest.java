@@ -4,12 +4,11 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.api.PC_Entry;
-import powercraft.api.PC_PacketHandler;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecF;
-import powercraft.api.PC_VecI;
+import powercraft.api.network.PC_PacketHandler;
+import powercraft.api.utils.PC_Entry;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecF;
+import powercraft.api.utils.PC_VecI;
 
 public class PCis_EntityItemInBigChest extends EntityItem {
 
@@ -82,7 +81,7 @@ public class PCis_EntityItemInBigChest extends EntityItem {
 	}
 	
 	private PCis_TileEntityBigChest getChest(){
-		return GameInfo.getTE(worldObj, mid.offset(-2));
+		return PC_Utils.getTE(worldObj, mid.offset(-2));
 	}
 	
 }

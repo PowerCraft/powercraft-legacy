@@ -2,7 +2,6 @@ package powercraft.api.tick;
 
 import java.util.EnumSet;
 
-import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_TickRegistry;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;

@@ -4,9 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_VecI;
 import powercraft.api.entity.PC_EntityItem;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_VecI;
 
 public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntitySeparationBeltBase
 {

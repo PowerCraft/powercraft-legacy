@@ -17,11 +17,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.Communication;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_GresRegistry;
@@ -29,8 +24,11 @@ import powercraft.api.registry.PC_ItemRegistry;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(itemBlock=PCnt_ItemBlockRadio.class, tileEntity=PCnt_TileEntityRadio.class)
+@PC_BlockInfo(name="Redstone Radio", itemBlock=PCnt_ItemBlockRadio.class, tileEntity=PCnt_TileEntityRadio.class)
 public class PCnt_BlockRadio extends PC_Block {
 
 	/**
@@ -42,11 +40,6 @@ public class PCnt_BlockRadio extends PC_Block {
 		setHardness(0.35F);
 		setResistance(30.0F);
 		setCreativeTab(CreativeTabs.tabRedstone);
-	}
-
-	@Override
-	public TileEntity newTileEntity(World world, int metadata) {
-		return new PCnt_TileEntityRadio();
 	}
 	
 	@Override
@@ -79,17 +72,17 @@ public class PCnt_BlockRadio extends PC_Block {
 	}
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int i, int j) {
-		if(i==0||i==1)
-			return icons[0];
-		return icons[1];
+	public Icon getBlockTextureFromSideAndMetadata(PC_Direction i, int j) {
+		if(i==PC_Direction.BOTTOM||i==PC_Direction.TOP)
+			return sideIcons[0];
+		return sideIcons[1];
 	}
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
 
-		PCnt_TileEntityRadio ter = GameInfo.getTE(world, x, y, z);
+		PCnt_TileEntityRadio ter = PC_Utils.getTE(world, x, y, z);
 		if (ter == null) return false;
 
 
@@ -109,7 +102,7 @@ public class PCnt_BlockRadio extends PC_Block {
 						ihold.setTagCompound(tag);
 					}
 
-					Communication.chatMsg(PC_LangRegistry.tr("pc.radio.activatorGetChannel", new String[] { ter.getChannel() }), true);
+					PC_Utils.chatMsg(PC_LangRegistry.tr("pc.radio.activatorGetChannel", new String[] { ter.getChannel() }));
 
 				} else {
 					if (ihold.hasTagCompound()) {
@@ -122,12 +115,12 @@ public class PCnt_BlockRadio extends PC_Block {
 
 							ter.setActive(PCnt_RadioManager.getChannelState(chnl));
 							if (ter.isActive()) {
-								ValueWriting.setMD(world, pos, 1);
+								PC_Utils.setMD(world, pos, 1);
 							}
 
 							world.scheduleBlockUpdate(pos.x, pos.y, pos.z, blockID, 1);
 
-							Communication.chatMsg(PC_LangRegistry.tr("pc.radio.activatorSetChannel", new String[] { chnl }), true);
+							PC_Utils.chatMsg(PC_LangRegistry.tr("pc.radio.activatorSetChannel", new String[] { chnl }));
 							world.playSoundEffect(x, y, z, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F, 0.5F);
 						}
 					}
@@ -141,7 +134,7 @@ public class PCnt_BlockRadio extends PC_Block {
 			if (holditem.itemID == PCnt_App.portableTx.itemID) {
 				String channel = PCnt_RadioManager.default_radio_channel;
 
-				channel = GameInfo.<PCnt_TileEntityRadio>getTE(world, x, y, z).getChannel();
+				channel = PC_Utils.<PCnt_TileEntityRadio>getTE(world, x, y, z).getChannel();
 
 				PCnt_ItemRadioRemote.setChannel(holditem, channel);
 				world.playSoundAtEntity(entityplayer, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F,
@@ -182,14 +175,14 @@ public class PCnt_BlockRadio extends PC_Block {
 	@Override
     public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
     {
-		PCnt_TileEntityRadio te = GameInfo.getTE(world, x, y, z);
+		PCnt_TileEntityRadio te = PC_Utils.getTE(world, x, y, z);
         boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
 
         if (remove){
         	if (te.isTransmitter() && te.isActive() && !world.isRemote) {
     			PCnt_RadioManager.transmitterOff(te.getChannel());
     		}
-        	 if (!GameInfo.isCreative(player)){
+        	 if (!PC_Utils.isCreative(player)){
         		 dropBlockAsItem_do(world, x, y, z, new ItemStack(PCnt_App.radio, 1, te.getType()));
         	 }
         }
@@ -201,7 +194,7 @@ public class PCnt_BlockRadio extends PC_Block {
 	public void updateTick(World world, int i, int j, int k, Random random) {
 		int meta = world.getBlockMetadata(i, j, k);
 
-		PCnt_TileEntityRadio ter = GameInfo.getTE(world, i, j, k);
+		PCnt_TileEntityRadio ter = PC_Utils.getTE(world, i, j, k);
 
 		if (ter.isTransmitter()) {
 
@@ -213,8 +206,8 @@ public class PCnt_BlockRadio extends PC_Block {
 	}
 
 	private boolean isGettingPower(World world, int i, int j, int k) {
-		return ((GameInfo.isPoweredDirectly(world, i, j, k) || GameInfo.isPoweredDirectly(world, i, j - 1, k) || world.isBlockIndirectlyGettingPowered(i, j, k) || world
-				.isBlockIndirectlyGettingPowered(i, j - 1, k)));
+		return ((PC_Utils.getBlockRedstonePowereValue(world, i, j, k)>0 || PC_Utils.getBlockRedstonePowereValue(world, i, j - 1, k)>0 ||
+				world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j - 1, k)));
 	}
 
 	@Override
@@ -222,20 +215,6 @@ public class PCnt_BlockRadio extends PC_Block {
 
 		world.scheduleBlockUpdate(i, j, k, blockID, 1);
 
-	}
-
-	@Override
-	public int isProvidingWeakPower(IBlockAccess iblockaccess, int i, int j, int k, int l) {
-		PCnt_TileEntityRadio te = GameInfo.getTE(iblockaccess, i, j, k);
-		if (te.isReceiver() && te.isActive()) {
-			return 15;
-		}
-		return 0;
-	}
-
-	@Override
-	public int isProvidingStrongPower(IBlockAccess world, int i, int j, int k, int l) {
-		return isProvidingWeakPower(world, i, j, k, l);
 	}
 
 	@Override
@@ -251,7 +230,7 @@ public class PCnt_BlockRadio extends PC_Block {
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 		
-		PCnt_TileEntityRadio te = GameInfo.getTE(world, i, j, k);
+		PCnt_TileEntityRadio te = PC_Utils.getTE(world, i, j, k);
 		if(!te.isActive())
 			return;
 		
@@ -269,47 +248,31 @@ public class PCnt_BlockRadio extends PC_Block {
 		return 2;
 	}
 	
-	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer){
+	@Override
+	public boolean renderInventoryBlock(int metadata, Object renderer){
 
-		Icon icon = metadata == 0 ? icons[3]: icons[2];
+		Icon icon = metadata == 0 ? sideIcons[3]: sideIcons[2];
 
 		float px = 0.0625F;
 
 
 		setBlockBounds(0, 0, 0, 16 * px, 4 * px, 16 * px);
-		PC_Renderer.renderInvBox(renderer, block, 0);
+		PC_Renderer.renderInvBox(renderer, this, 0);
 		setBlockBounds(6.5F * px, 4F * px, 6.5F * px, 9.5F * px, 7F * px, 9.5F * px);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icon);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, icon);
 		setBlockBounds(7F * px, 7F * px, 7F * px, 9F * px, 10F * px, 9F * px);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icon);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, icon);
 		setBlockBounds(7.5F * px, 10F * px, 7.5F * px, 8.5F * px, 13F * px, 8.5F * px);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icon);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, icon);
 		setBlockBounds(7F * px, 12F * px, 7F * px, 9F * px, 14F * px, 9F * px);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[4]);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, sideIcons[4]);
 		setBlockBounds(0, 0, 0, 1, 1, 1);
 
+		return true;
 	}
 	
 	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.NO_PICKUP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			break;
-		default:
-			return null;
-		}
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
 		return true;
 	}
 

@@ -15,13 +15,12 @@ import net.minecraft.world.ChunkCache;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.launcher.loader.PC_ClientModule;
-import powercraft.launcher.loader.PC_ClientModule.PC_LoadTextureFiles;
-import powercraft.launcher.loader.PC_Module.PC_Init;
-import powercraft.api.PC_ClientUtils;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_ClientUtils;
+import powercraft.api.utils.PC_VecI;
+import powercraft.launcher.loader.PC_ClientModule;
+import powercraft.launcher.loader.PC_ClientModule.PC_LoadTextureFiles;
 
 @PC_ClientModule
 public class PChg_AppClient extends PChg_App {
@@ -48,7 +47,8 @@ public class PChg_AppClient extends PChg_App {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		PC_Renderer.glPushMatrix();
-		PC_Renderer.glTranslatef((float)x+0.5f, (float)y+1.5f, (float)z+0.5f);
+		PC_Renderer.glRotatef(90, 0, 1, 0);
+		PC_Renderer.glTranslatef(0, 1, 0);
 		PC_Renderer.glScalef(1/16.0f, 1/16.0f, 1/16.0f);
 		PC_Renderer.glTranslatef(-offset.x, -offset.y, -offset.z);
 		
@@ -86,6 +86,7 @@ public class PChg_AppClient extends PChg_App {
 						TileEntity tileEntity = cc.getBlockTileEntity(offset.x+xx, offset.y+yy, offset.z+zz);
 						if(tileEntity!=null && !(tileEntity instanceof PChg_TileEntityHologramField)){
 							GL11.glPushAttrib(-1);
+							mc.renderEngine.resetBoundTexture();
 							TileEntityRenderer.instance.renderTileEntityAt(tileEntity, offset.x+xx, offset.y+yy, offset.z+zz, 1);
 							GL11.glPopAttrib();
 						}
@@ -105,11 +106,12 @@ public class PChg_AppClient extends PChg_App {
         List var5 = te.getWorldObj().getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(offset.x-15, offset.y-15, offset.z-15, offset.x+16, offset.y+16, offset.z+16));
         int var6;
         Entity var7;
-
+        
         for (var6 = 0; var6 < var5.size(); ++var6)
         {
         	GL11.glPushAttrib(-1);
             var7 = (Entity)var5.get(var6);
+            mc.renderEngine.resetBoundTexture();
             RenderManager.instance.renderEntity(var7, 1);
             GL11.glPopAttrib();
         }

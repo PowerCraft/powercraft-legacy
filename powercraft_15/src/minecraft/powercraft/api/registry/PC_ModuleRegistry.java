@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import powercraft.api.item.PC_IItemInfo;
 import powercraft.launcher.PC_Launcher;
 import powercraft.launcher.loader.PC_ModuleObject;
-import powercraft.api.item.PC_IItemInfo;
 
 public final class PC_ModuleRegistry {
-
+	
 	public static HashMap<String, PC_ModuleObject> getModules() {
 		return PC_Launcher.getModules();
 	}
@@ -28,7 +28,7 @@ public final class PC_ModuleRegistry {
 		}
 		return null;
 	}
-
+	
 	public static List<PC_ModuleObject> getModuleList() {
 		return new ArrayList<PC_ModuleObject>(getModules().values());
 	}

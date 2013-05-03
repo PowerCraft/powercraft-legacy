@@ -13,9 +13,9 @@ import net.minecraft.util.Icon;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_VecI;
 import powercraft.api.inventory.PC_Slot;
+import powercraft.api.utils.PC_RectI;
+import powercraft.api.utils.PC_VecI;
 
 public class PC_GresInventory extends PC_GresWidget {
 
@@ -33,6 +33,8 @@ public class PC_GresInventory extends PC_GresWidget {
 	protected int slotHeight = 0;
 	
 	public Slot slotOver=null;
+	
+	public boolean isMouseDown;
 	
 	/**
 	 * Inventory widget, with empty slot grid. To be filled using setSlot()
@@ -76,7 +78,7 @@ public class PC_GresInventory extends PC_GresWidget {
 		this(1, 1, 26, 26);
 		slots[0][0] = slot;
 	}
-
+	
 	@Override
 	public PC_VecI getMinSize() {
 		return calcSize();
@@ -149,6 +151,7 @@ public class PC_GresInventory extends PC_GresWidget {
 
 	@Override
 	public boolean mouseClick(PC_VecI mousePos, int key) {
+		isMouseDown = key!=-1;
 		return true;
 	}
 

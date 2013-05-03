@@ -8,23 +8,25 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_MathHelper;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(itemBlock=PCde_ItemBlockStairs.class, tileEntity=PCde_TileEntityStairs.class)
+@PC_BlockInfo(name="Stairs", tileEntity=PCde_TileEntityStairs.class, canPlacedRotated=true)
 public class PCde_BlockStairs extends PC_Block {
 
 	public PCde_BlockStairs(int id) {
@@ -34,11 +36,6 @@ public class PCde_BlockStairs extends PC_Block {
 		setStepSound(Block.soundMetalFootstep);
 		setCreativeTab(CreativeTabs.tabDecorations);
 	}
-	
-	@Override
-	public TileEntity newTileEntity(World world, int metadata) {
-		return new PCde_TileEntityStairs();
-	}
 
 	/**
 	 * Get fences that are shown for stairs.
@@ -47,18 +44,18 @@ public class PCde_BlockStairs extends PC_Block {
 	 * @param pos block pos
 	 * @return bool{X+, X-, Z+, Z-}
 	 */
-	public static boolean[] getFencesShownStairsAbsolute(World world, PC_VecI pos) {
+	private boolean[] getFencesShownStairsAbsolute(World world, PC_VecI pos) {
 		boolean fences[] = { false, false, false, false };
 
-		int j = GameInfo.getMD(world, pos);
+		PC_Direction dir = getRotation(PC_Utils.getMD(world, pos)).mirror();
 
-		if (j == 0) {
+		if (dir == PC_Direction.FRONT) {
 			fences[0] = fences[1] = true;
-		} else if (j == 1) {
+		} else if (dir == PC_Direction.RIGHT) {
 			fences[2] = fences[3] = true;
-		} else if (j == 2) {
+		} else if (dir == PC_Direction.BACK) {
 			fences[0] = fences[1] = true;
-		} else if (j == 3) {
+		} else if (dir == PC_Direction.LEFT) {
 			fences[2] = fences[3] = true;
 		}
 
@@ -76,22 +73,22 @@ public class PCde_BlockStairs extends PC_Block {
 	 * @param pos
 	 * @return left, right
 	 */
-	public static boolean[] getFencesShownStairsRelative(World world, PC_VecI pos) {
+	public boolean[] getFencesShownStairsRelative(World world, PC_VecI pos) {
 		boolean fences[] = getFencesShownStairsAbsolute(world, pos);
 		boolean rel[] = { false, false };
 
-		int j = GameInfo.getMD(world, pos);
+		PC_Direction dir = getRotation(PC_Utils.getMD(world, pos)).mirror();
 
-		if (j == 0) {
+		if (dir == PC_Direction.FRONT) {
 			rel[0] = fences[0];
 			rel[1] = fences[1];
-		} else if (j == 1) {
+		} else if (dir == PC_Direction.RIGHT) {
 			rel[0] = fences[2];
 			rel[1] = fences[3];
-		} else if (j == 2) {
+		} else if (dir == PC_Direction.BACK) {
 			rel[0] = fences[1];
 			rel[1] = fences[0];
-		} else if (j == 3) {
+		} else if (dir == PC_Direction.LEFT) {
 			rel[0] = fences[3];
 			rel[1] = fences[2];
 		}
@@ -100,7 +97,7 @@ public class PCde_BlockStairs extends PC_Block {
 	}
 
 	private static boolean isFallBlock(World world, PC_VecI pos) {
-		int id = GameInfo.getBID(world, pos);
+		int id = PC_Utils.getBID(world, pos);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return true;
 		}
@@ -121,18 +118,6 @@ public class PCde_BlockStairs extends PC_Block {
 		return false;
 	}
 
-	private static boolean isClimbBlock(World world, PC_VecI pos) {
-		int id = GameInfo.getBID(world, pos);
-		if (id == 0 || Block.blocksList[id] == null) {
-			return false;
-		}
-
-		if (id == Block.ladder.blockID || id == Block.vine.blockID) {
-			return true;
-		}
-		return false;
-	}
-
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k) {
 		setBlockBounds(0, 0, 0, 1, 1, 1);
@@ -141,24 +126,24 @@ public class PCde_BlockStairs extends PC_Block {
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List arraylist, Entity entity) {
 
-		int j = world.getBlockMetadata(x, y, z);
+		PC_Direction dir = getRotation(PC_Utils.getMD(world, x, y, z)).mirror();
 
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
 		super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 
-		if (j == 0) {
+		if (dir == PC_Direction.FRONT) {
 			setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 1.0F, 0.5F);
 			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 
-		} else if (j == 1) {
+		} else if (dir == PC_Direction.RIGHT) {
 			setBlockBounds(0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
 			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 
-		} else if (j == 2) {
+		} else if (dir == PC_Direction.BACK) {
 			setBlockBounds(0.0F, 0.5F, 0.5F, 1.0F, 1.0F, 1.0F);
 			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 
-		} else if (j == 3) {
+		} else if (dir == PC_Direction.LEFT) {
 			setBlockBounds(0.0F, 0.5F, 0.0F, 0.5F, 1.0F, 1.0F);
 			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
@@ -187,17 +172,6 @@ public class PCde_BlockStairs extends PC_Block {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving, ItemStack itemStack) {
-
-		int dir = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
-		if (entityliving instanceof EntityPlayer && PC_KeyRegistry.isPlacingReversed((EntityPlayer)entityliving)) {
-			dir = ValueWriting.reverseSide(dir);
-		}
-		
-		ValueWriting.setMD(world, x, y, z, dir);
-	}
-
-	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
@@ -207,45 +181,52 @@ public class PCde_BlockStairs extends PC_Block {
 		return false;
 	}
 	
-	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
+	public boolean renderInventoryBlock(int metadata, Object renderer) {
 		float p = 0.0625F;
 
 		setBlockBounds(0, 0F, 0.5F, 1, p, 1);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, sideIcons[0]);
 
 		setBlockBounds(0, 0.5F - p, 0, 1, 0.5F, 0.5F);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, sideIcons[0]);
 
 		setBlockBounds(0, 0, 0.5F, p, 0.5F, 1);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[1]);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, sideIcons[1]);
 		setBlockBounds(0, 0.5F, 0, p, 0.5F + 0.5F, 0.5F);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[1]);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, sideIcons[1]);
+		
+		return true;
+		
+	}
+	
+	@Override
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
+		return true;
 	}
 
 	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			break;
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.NO_PICKUP);
-			list.add(PC_Utils.PASSIVE);
-			return list;
+	public PC_VecI moveBlockTryToPlaceAt(World world, int x, int y, int z,
+			PC_Direction dir, float xHit, float yHit, float zHit,
+			ItemStack itemStack, EntityPlayer entityPlayer) {
+		
+		Item item = itemStack.getItem();
+		if(item instanceof ItemBlock){
+			Block block = Block.blocksList[((ItemBlock) item).getBlockID()];
+			PC_Direction rot = getRotation(PC_Utils.getMD(world, x, y, z));
+			PC_Direction pRot = PC_Direction.getFormPlayerDir(MathHelper.floor_double(((entityPlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3);
+			PC_VecI offset = pRot.getOffset();
+			if(rot==pRot){
+				if(block==PCde_App.stairs || block==PCde_App.platform){
+					offset.y++;
+				}
+			}else if(rot==pRot.mirror()){
+				if(block==PCde_App.stairs && PC_KeyRegistry.isPlacingReversed(entityPlayer)){
+					offset.y--;
+				}
+			}
+			return offset;
 		}
-		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}
-		default:
-			return null;
-		}
-		return true;
+		return null;
 	}
 	
 }

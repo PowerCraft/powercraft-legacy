@@ -3,7 +3,9 @@ package powercraft.teleport;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.api.PC_PacketHandler;
+
+import org.lwjgl.input.Keyboard;
+
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresCheckBox;
 import powercraft.api.gres.PC_GresLabel;
@@ -19,6 +21,7 @@ import powercraft.api.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.api.gres.PC_GresWindow;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
+import powercraft.api.network.PC_PacketHandler;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
 
@@ -164,38 +167,40 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 			radioBox.calcSize();
 			radioBoxScroll.calcChildPositions();
 		}else if(widget==ok){
-			onReturnPressed(gui);
+			if(ok.isEnabled()){
+				PC_GresRadioButton rb = rg.getChecked();
+				String target="";
+				if(rb!=null)
+					target = rb.getText();
+				if(target.equals(PC_LangRegistry.tr("pc.gui.teleporter.nothing")))
+					target = "";
+				td.name = name.getText();
+				td.animals = animals.isChecked();
+				td.monsters = monsters.isChecked();
+				td.items = items.isChecked();
+				td.players = players.isChecked();
+				td.lasers = lasers.isChecked();
+				td.sneakTrigger = sneakTrigger.isChecked();
+				td.playerChoose = playerChoose.isChecked();
+				td.soundEnabled = soundEnabled.isChecked();
+				td.direction = this.dir.getChecked().getId();
+				PC_PacketHandler.sendToPacketHandler(player.worldObj, "Teleporter", "set", td, target);
+				gui.close();
+			}
 		}
 	}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		if(ok.isEnabled()){
-			PC_GresRadioButton rb = rg.getChecked();
-			String target="";
-			if(rb!=null)
-				target = rb.getText();
-			if(target.equals(PC_LangRegistry.tr("pc.gui.teleporter.nothing")))
-				target = "";
-			td.name = name.getText();
-			td.animals = animals.isChecked();
-			td.monsters = monsters.isChecked();
-			td.items = items.isChecked();
-			td.players = players.isChecked();
-			td.lasers = lasers.isChecked();
-			td.sneakTrigger = sneakTrigger.isChecked();
-			td.playerChoose = playerChoose.isChecked();
-			td.soundEnabled = soundEnabled.isChecked();
-			td.direction = this.dir.getChecked().getId();
-			PC_PacketHandler.sendToPacketHandler(player.worldObj, "Teleporter", "set", td, target);
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN){
+			if(ok.isEnabled()){
+				actionPerformed(ok, gui);
+			}
+		}else if(i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
 			gui.close();
 		}
 	}
+
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}

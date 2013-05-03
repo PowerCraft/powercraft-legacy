@@ -7,9 +7,9 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PC_3DRecipe implements PC_IRecipe {
 	
@@ -128,8 +128,8 @@ public class PC_3DRecipe implements PC_IRecipe {
 						PC_Struct2<Boolean, List<PC_Struct2<Block, Integer>>> ok = array[x][y][z];
 						if(ok!=null){
 							PC_VecI p = pos.offset(xx, y, zz);
-							Block block = GameInfo.getBlock(world, p);
-							int md = GameInfo.getMD(world, p);
+							Block block = PC_Utils.getBlock(world, p);
+							int md = PC_Utils.getMD(world, p);
 							boolean isOk1 = false;
 							if(ok.b!=null){
 								isOk1 = true;

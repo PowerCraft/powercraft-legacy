@@ -1,5 +1,7 @@
 package powercraft.transport;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresGap;
@@ -121,49 +123,48 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if(widget == btnCANCEL){
-			onEscapePressed(gui);
+			gui.close();
 		}else if(widget == btnOK){
-			onReturnPressed(gui);
+			int actionType=0;
+			if (radioModeStacks.isChecked()) 
+				actionType = 0;
+			if (radioModeItems.isChecked()) 
+				actionType = 1;
+			if (radioModeAll.isChecked()) 
+				actionType = 2;
+			teb.setActionType(actionType);
+			
+			int itemSelectMode=0;
+			if (radioSelectFirst.isChecked())
+				itemSelectMode = 0;
+			if (radioSelectLast.isChecked()) 
+				itemSelectMode = 1;
+			if (radioSelectRandom.isChecked()) 
+				itemSelectMode = 2;
+			teb.setItemSelectMode(itemSelectMode);
+			
+			try {
+				teb.setNumStacksEjected(Integer.parseInt(editSlots.getText()));
+			} catch (NumberFormatException e) {}
+
+			try {
+				teb.setNumItemsEjected(Integer.parseInt(editItems.getText()));
+			} catch (NumberFormatException e) {}
+
+
+			// save data
+
+			gui.close();
 		}
 	}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		int actionType=0;
-		if (radioModeStacks.isChecked()) 
-			actionType = 0;
-		if (radioModeItems.isChecked()) 
-			actionType = 1;
-		if (radioModeAll.isChecked()) 
-			actionType = 2;
-		teb.setActionType(actionType);
-		
-		int itemSelectMode=0;
-		if (radioSelectFirst.isChecked())
-			itemSelectMode = 0;
-		if (radioSelectLast.isChecked()) 
-			itemSelectMode = 1;
-		if (radioSelectRandom.isChecked()) 
-			itemSelectMode = 2;
-		teb.setItemSelectMode(itemSelectMode);
-		
-		try {
-			teb.setNumStacksEjected(Integer.parseInt(editSlots.getText()));
-		} catch (NumberFormatException e) {}
-
-		try {
-			teb.setNumItemsEjected(Integer.parseInt(editItems.getText()));
-		} catch (NumberFormatException e) {}
-
-
-		// save data
-
-		gui.close();
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN){
+			actionPerformed(btnOK, gui);
+		}else if(i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			gui.close();
+		}
 	}
 
 	@Override

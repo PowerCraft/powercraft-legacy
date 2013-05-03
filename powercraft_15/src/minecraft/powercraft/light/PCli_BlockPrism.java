@@ -2,32 +2,25 @@ package powercraft.light;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.api.PC_BeamTracer.BeamHitResult;
 import powercraft.api.PC_BeamTracer.BeamSettings;
-import powercraft.api.PC_BeamTracer.result;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_IItemInfo;
-import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(tileEntity=PCli_TileEntityPrism.class)
+@PC_BlockInfo(name="Prism", tileEntity=PCli_TileEntityPrism.class)
 public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 
 	public PCli_BlockPrism(int id) {
@@ -39,11 +32,6 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 		setResistance(4.0F);
 		setStepSound(Block.soundStoneFootstep);
 		setCreativeTab(CreativeTabs.tabDecorations);
-	}
-	
-	@Override
-	public TileEntity newTileEntity(World world, int metadata) {
-		return new PCli_TileEntityPrism();
 	}
 	
 	@Override
@@ -104,11 +92,11 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 
 				if (isGlassPanelOnSide(world, i, j, k, angle) == false) {
 
-					PCli_TileEntityPrism teo = GameInfo.getTE(world, i, j, k, blockID);
+					PCli_TileEntityPrism teo = PC_Utils.getTE(world, i, j, k);
 					if (teo != null) {
 						teo.setPrismSide(angle, true);
 					}
-					if (!GameInfo.isCreative(player)) {
+					if (!PC_Utils.isCreative(player)) {
 						ihold.stackSize--;
 					}
 					drop = false;
@@ -121,12 +109,12 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 
 			if (isGlassPanelOnSide(world, i, j, k, angle)) {
 
-				PCli_TileEntityPrism teo = GameInfo.getTE(world, i, j, k, blockID);
+				PCli_TileEntityPrism teo = PC_Utils.getTE(world, i, j, k);
 				if (teo != null) {
 					teo.setPrismSide(angle, false);
 				}
-				if (!GameInfo.isCreative(player)) {
-					ValueWriting.dropItemStack(world, new ItemStack(Block.thinGlass, 1), new PC_VecI(i, j, k));
+				if (!PC_Utils.isCreative(player)) {
+					PC_Utils.dropItemStack(world, i, j, k, new ItemStack(Block.thinGlass, 1));
 				}
 
 			}
@@ -148,7 +136,7 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 	 */
 	public static boolean isGlassPanelOnSide(IBlockAccess iblockaccess, int x, int y, int z, int side) {
 
-		PCli_TileEntityPrism teo = GameInfo.getTE(iblockaccess, x, y, z);
+		PCli_TileEntityPrism teo = PC_Utils.getTE(iblockaccess, x, y, z);
 
 		if (teo == null) {
 			return false;
@@ -167,18 +155,26 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 		return 0xffffcc;
 	}
 	
-	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
+	public boolean renderInventoryBlock(int metadata, Object renderer) {
 		float px = 0.0625F;
 		setBlockBounds(3 * px, 3 * px, 3 * px, 12 * px, 12 * px, 12 * px);
-		PC_Renderer.renderInvBox(renderer, block, 0);
+		PC_Renderer.renderInvBox(renderer, this, 0);
 		setBlockBounds(4 * px, 4 * px, 2 * px, 11 * px, 11 * px, 13 * px);
-		PC_Renderer.renderInvBox(renderer, block, 0);
+		PC_Renderer.renderInvBox(renderer, this, 0);
 		setBlockBounds(2 * px, 4 * px, 4 * px, 13 * px, 11 * px, 11 * px);
-		PC_Renderer.renderInvBox(renderer, block, 0);
+		PC_Renderer.renderInvBox(renderer, this, 0);
 		setBlockBounds(4 * px, 2 * px, 4 * px, 11 * px, 13 * px, 11 * px);
-		PC_Renderer.renderInvBox(renderer, block, 0);
+		PC_Renderer.renderInvBox(renderer, this, 0);
 		setBlockBounds(0, 0, 0, 1, 1, 1);
+		return true;
 	}
+	
+	@Override
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
+		return true;
+	}
+
+
 
 	/** prism redirection vector for side */
 	private static final PC_VecI[] prismMove = { new PC_VecI(0, -1, 0), new PC_VecI(0, 1, 0), new PC_VecI(1, 0, 0), new PC_VecI(1, 0, 1),
@@ -209,17 +205,22 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 	private PC_VecI getPrismOutputMove(int side) {
 		return prismMove[side];
 	}
-	
-	public result onHitByBeamTracer(IBlockAccess world, BeamSettings bs) {
 
-		PC_VecI pos = bs.getPos();
+	@Override
+	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
+		arrayList.add(new ItemStack(this));
+		return arrayList;
+	}
+
+	@Override
+	public BeamHitResult onBlockHitByBeam(World world, int x, int y, int z, BeamSettings settings) {
 		
-		PCli_TileEntityPrism prism = GameInfo.getTE(world, pos.x, pos.y, pos.z);
+		PCli_TileEntityPrism prism = PC_Utils.getTE(world, x, y, z);
 
 		int sideCount = 0;
 		int[] side = new int[10];
 
-		int thisPrismSide = getPrismSideFacingMove(bs.getMove());
+		int thisPrismSide = getPrismSideFacingMove(settings.getMove());
 
 		for (int h = 0; h < 10; h++) {
 			if (prism.getPrismSide(h)) {
@@ -232,50 +233,16 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 
 			for (int h = 0; h < sideCount; h++) {
 				PC_VecI newMove = getPrismOutputMove(side[h]).copy();
-				bs.getBeamTracer().forkBeam(new BeamSettings(bs.getBeamTracer(), bs.getPos(), newMove, bs.getColor(), bs.getStrength(), bs.getLength() / Math.round(sideCount * 0.75F)));
+				settings.getBeamTracer().forkBeam(new BeamSettings(settings.getBeamTracer(), settings.getPos(), newMove, settings.getColor(), settings.getStrength(), settings.getLength() / Math.round(sideCount * 0.75F)));
 			}
 
 		}
 
 		if (sideCount > 0) {
-			return result.STOP;
+			return BeamHitResult.STOP;
 		}
 
-		return result.CONTINUE;
-	}
-
-	@Override
-	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
-		arrayList.add(new ItemStack(this));
-		return arrayList;
-	}
-	
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			break;
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.NO_PICKUP);
-			list.add(PC_Utils.PASSIVE);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Prism";
-		case PC_MSGRegistry.MSG_ON_HIT_BY_BEAM_TRACER:
-			return onHitByBeamTracer(world, (BeamSettings)obj[0]);
-		default:
-			return null;
-		}
-		return true;
+		return BeamHitResult.CONTINUE;
 	}
 	
 }

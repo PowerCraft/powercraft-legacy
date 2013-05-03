@@ -1,6 +1,5 @@
 package powercraft.deco;
 
-import powercraft.api.registry.PC_ModuleRegistry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
@@ -13,11 +12,7 @@ public class PCde_TileEntityPlatform extends PC_TileEntity implements
 
 	@Override
 	public void renderTileEntityAt(double x, double y, double z, float f0) {
-
-		PC_Renderer.glPushMatrix();
 		float f = 1.0F;
-
-		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
 		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCde_App.instance, "block_deco.png"));
 
@@ -29,8 +24,6 @@ public class PCde_TileEntityPlatform extends PC_TileEntity implements
 		model.setLedgeFences(fences[0], fences[1], fences[2], fences[3], fences[4]);
 		
 		model.render();
-
-		PC_Renderer.glPopMatrix();
 
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		PC_Renderer.glPopMatrix();

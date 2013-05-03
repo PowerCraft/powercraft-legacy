@@ -23,11 +23,6 @@ public class PCws_GuiWeaselTerminal extends PCws_GuiWeasel {
 		super(player, te, o);
 	}
 
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		actionPerformed(send, gui);
-	}
-
 	private void makeTerminalTab(PC_GresTab tab){
 		PC_GresLayoutV lv = new PC_GresLayoutV();
 		lv.add(cons = new PC_GresTextEditMultiline(((String)te.getData("text")).trim(), 300, 120, 0x00EE00, 0x000000));

@@ -1,10 +1,9 @@
 package powercraft.weasel;
 
-import net.minecraft.block.Block;
 import net.minecraft.util.Icon;
-import powercraft.api.PC_Struct4;
-import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Struct4;
 
 public class PCws_WeaselPluginInfoPort extends PCws_WeaselPluginInfo {
 
@@ -32,19 +31,19 @@ public class PCws_WeaselPluginInfoPort extends PCws_WeaselPluginInfo {
 	}
 
 	@Override
-	public void getServerMsg(PCws_TileEntityWeasel te, String msg, Object obj) {
+	public void getServerMsg(PCws_TileEntityWeasel te, String msg, Object[] obj) {
 		if(msg.equalsIgnoreCase("play")){
-			PC_Struct4<String, Float, Float, Float> s = (PC_Struct4<String, Float, Float, Float>)obj;
+			PC_Struct4<String, Float, Float, Float> s = (PC_Struct4<String, Float, Float, Float>)obj[0];
 			te.getWorldObj().playSoundEffect(te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, s.a, s.b, s.c);
 			te.getWorldObj().spawnParticle("note", te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, s.d, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
-	public Icon getTexture(int side) {
-		if(side==1){
+	public Icon getTexture(PC_Direction side) {
+		if(side==PC_Direction.TOP){
 			return icons[4];
-		}else if(side==0){
+		}else if(side==PC_Direction.BOTTOM){
 			return icons[0];
 		}else{
 			return icons[5];

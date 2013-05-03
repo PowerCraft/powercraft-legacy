@@ -1,5 +1,7 @@
 package powercraft.transport;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.api.gres.PC_GresCheckBox;
 import powercraft.api.gres.PC_GresGap;
@@ -86,13 +88,10 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		gui.close();
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN || i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			gui.close();
+		}
 	}
 
 	@Override

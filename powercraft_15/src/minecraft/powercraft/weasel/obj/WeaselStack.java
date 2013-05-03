@@ -6,11 +6,9 @@ import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
-import powercraft.weasel.exception.WeaselRuntimeException;
-
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import powercraft.weasel.exception.WeaselRuntimeException;
 
 
 /**

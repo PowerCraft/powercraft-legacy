@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
@@ -31,13 +30,14 @@ public class PC_ModuleObject {
 	private boolean isLoaded=false;
 	private List<PC_ModuleObject> after = new ArrayList<PC_ModuleObject>();
 	private PC_Property config;
+	private boolean errored = false;
 	
 	public PC_ModuleObject(String moduleName){
+		this.moduleName = moduleName;
 		String version = getConfig().getString("loader.usingVersion");
 		if(!version.equals("")){
 			usingVersion = new PC_Version(version);
 		}
-		this.moduleName = moduleName;
 	}
 	
 	public String getModuleName() {
@@ -125,6 +125,8 @@ public class PC_ModuleObject {
 	}
 	
 	public Object callMethod(String name, Class<?>[] classes, Object[] objects) {
+		if(errored)
+			return null;
 		Class<?> c = moduleClass;
 		
 		while(c!=null){
@@ -153,6 +155,8 @@ public class PC_ModuleObject {
 	}
 
 	public Object callMethod(Class<? extends Annotation> annontation, Object[] objects) {
+		if(errored)
+			return null;
 		Class<?> c = moduleClass;
 		
 		while(c!=null){
@@ -212,62 +216,144 @@ public class PC_ModuleObject {
 	}
 	
 	public void preInit() {
-		callMethod(PC_Module.PC_PreInit.class, new Object[]{});
+		try{
+			callMethod(PC_Module.PC_PreInit.class, new Object[]{});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "preInit", e);
+		}
 	}
 	
 	public void init(){
-		callMethod(PC_Module.PC_Init.class, new Object[]{});
+		try{
+			callMethod(PC_Module.PC_Init.class, new Object[]{});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "init", e);
+		}
 	}
 	
 	public void postInit(){
-		callMethod(PC_Module.PC_PostInit.class, new Object[]{});
+		try{
+			callMethod(PC_Module.PC_PostInit.class, new Object[]{});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "postInit", e);
+		}
 	}
 	
 	public void initProperties(PC_Property config){
-		callMethod(PC_Module.PC_InitProperties.class, new Object[]{config});
+		try{
+			callMethod(PC_Module.PC_InitProperties.class, new Object[]{config});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "initProperties", e);
+		}
 	}
 	
 	public List initEntities(List entities){
-		return (List)callMethod(PC_Module.PC_InitEntities.class, new Object[]{entities});
+		try{
+			return (List)callMethod(PC_Module.PC_InitEntities.class, new Object[]{entities});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "initEntities", e);
+		}
+		return new ArrayList();
 	}
 	
 	public List initRecipes(List recipes){
-		return (List)callMethod(PC_Module.PC_InitRecipes.class, new Object[]{recipes});
+		try{
+			return (List)callMethod(PC_Module.PC_InitRecipes.class, new Object[]{recipes});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "initRecipes", e);
+		}
+		return new ArrayList();
 	}
 	
 	public List initDataHandlers(List dataHandlers){
-		return (List)callMethod(PC_Module.PC_InitDataHandlers.class, new Object[]{dataHandlers});
+		try{
+			return (List)callMethod(PC_Module.PC_InitDataHandlers.class, new Object[]{dataHandlers});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "initDataHandlers", e);
+		}
+		return new ArrayList();
 	}
 	
 	public List initPacketHandlers(List packetHandlers){
-		return (List)callMethod(PC_Module.PC_InitPacketHandlers.class, new Object[]{packetHandlers});
+		try{
+			return (List)callMethod(PC_Module.PC_InitPacketHandlers.class, new Object[]{packetHandlers});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "initPacketHandlers", e);
+		}
+		return new ArrayList();
 	}
 	
 	public List registerContainers(List containers){
-		return (List)callMethod(PC_Module.PC_RegisterContainers.class, new Object[]{containers});
+		try{
+			return (List)callMethod(PC_Module.PC_RegisterContainers.class, new Object[]{containers});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "registerContainers", e);
+		}
+		return new ArrayList();
 	}
 
 	public List initLanguage(List arrayList) {
-		return (List)callMethod(PC_ClientModule.PC_InitLanguage.class, new Object[]{arrayList});
+		try{
+			return (List)callMethod(PC_ClientModule.PC_InitLanguage.class, new Object[]{arrayList});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "initLanguage", e);
+		}
+		return new ArrayList();
 	}
 
 	public List loadTextureFiles(List arrayList) {
-		return (List)callMethod(PC_ClientModule.PC_LoadTextureFiles.class, new Object[]{arrayList});
+		try{
+			return (List)callMethod(PC_ClientModule.PC_LoadTextureFiles.class, new Object[]{arrayList});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "loadTextureFiles", e);
+		}
+		return new ArrayList();
 	}
 
 	public List addSplashes(List arrayList) {
-		return (List)callMethod(PC_ClientModule.PC_AddSplashes.class, new Object[]{arrayList});
+		try{
+			return (List)callMethod(PC_ClientModule.PC_AddSplashes.class, new Object[]{arrayList});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "addSplashes", e);
+		}
+		return new ArrayList();
 	}
 	
 	public List registerEntityRender(List arrayList) {
-		return (List)callMethod(PC_ClientModule.PC_RegisterEntityRender.class, new Object[]{arrayList});
+		try{
+			return (List)callMethod(PC_ClientModule.PC_RegisterEntityRender.class, new Object[]{arrayList});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "registerEntityRender", e);
+		}
+		return new ArrayList();
 	}
 
 	public List registerGuis(List guis){
-		return (List)callMethod(PC_ClientModule.PC_RegisterGuis.class, new Object[]{guis});
+		try{
+			return (List)callMethod(PC_ClientModule.PC_RegisterGuis.class, new Object[]{guis});
+		}catch(Throwable e){
+			errored();
+			PC_Logger.throwing("PC_ModuleObject", "registerGuis", e);
+		}
+		return new ArrayList();
 	}
 	
 	public void resolveInstances(HashMap<String, PC_ModuleObject> modules) {
+		if(errored)
+			return;
 		Class<?> c = moduleClass;
 		while(c!=null){
 			Field fa[] = c.getDeclaredFields();
@@ -293,6 +379,10 @@ public class PC_ModuleObject {
 	
 			c = c.getSuperclass();
 		}
+	}
+
+	public void errored() {
+		errored = true;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package powercraft.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,18 +21,16 @@ public class PCco_ItemPowerDust extends PC_Item {
     {
         return true;
     }
-	
+
 	@Override
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName(), "Power Dust"));
-            return names;
-		case PC_MSGRegistry.MSG_BURN_TIME:
-			 return 3600;
-		}
-		return null;
+	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
+		names.add(new LangEntry(getUnlocalizedName(), "Ore Sniffer"));
+        return names;
 	}
 
+	@Override
+	public int getBurnTime(ItemStack fuel) {
+		return 3600;
+	}
+	
 }

@@ -15,9 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import powercraft.launcher.PC_Property;
-import powercraft.api.PC_Struct3;
-import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.item.PC_Item;
@@ -27,6 +24,9 @@ import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_ItemRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_RecipeRegistry;
+import powercraft.api.utils.PC_Struct3;
+import powercraft.api.utils.PC_Utils;
+import powercraft.launcher.PC_Property;
 
 public class PCma_ItemRanking {
 	
@@ -205,7 +205,7 @@ public class PCma_ItemRanking {
 			}else{
 				item = getItem(key);
 			}
-			List<Integer> l = GameInfo.parseIntList(prop.getString());
+			List<Integer> l = PC_Utils.parseIntList(prop.getString());
 			int num=0;
 			for(Integer i:l){
 				if(i>0)
@@ -227,7 +227,7 @@ public class PCma_ItemRanking {
 		if(hasInit)
 			return;
 		
-		File file = new File(GameInfo.getPowerCraftFile(), "/itemRanks.cfg");
+		File file = new File(PC_Utils.getPowerCraftFile(), "/itemRanks.cfg");
 		
 		PC_Property prop;
 		
@@ -331,7 +331,7 @@ public class PCma_ItemRanking {
 		TreeMap<String, PC_ItemArmor> itemArmors = PC_ItemRegistry.getPCItemArmors();
 		
 		for(PC_Block block:blocks.values()){
-			Object o = block.msg(PC_MSGRegistry.MSG_RATING);
+			/** TODO Object o = block.msg(PC_MSGRegistry.MSG_RATING);
 			if(o instanceof List){
 				List<Integer> rating = (List<Integer>)o;
 				String s = "";
@@ -341,11 +341,11 @@ public class PCma_ItemRanking {
 						s+=", ";
 				}
 				reg(prop, block, s);
-			}
+			}*/
 		}
 		
 		for(PC_Item item:items.values()){
-			Object o = item.msg(PC_MSGRegistry.MSG_RATING);
+			/** TODO Object o = item.msg(PC_MSGRegistry.MSG_RATING);
 			if(o instanceof List){
 				List<Integer> rating = (List<Integer>)o;
 				String s = "";
@@ -355,11 +355,11 @@ public class PCma_ItemRanking {
 						s+=", ";
 				}
 				reg(prop, item, s);
-			}
+			}*/
 		}
 		
 		for(PC_ItemArmor itemArmor:itemArmors.values()){
-			Object o = itemArmor.msg(PC_MSGRegistry.MSG_RATING);
+			/** TODO Object o = itemArmor.msg(PC_MSGRegistry.MSG_RATING);
 			if(o instanceof List){
 				List<Integer> rating = (List<Integer>)o;
 				String s = "";
@@ -369,7 +369,7 @@ public class PCma_ItemRanking {
 						s+=", ";
 				}
 				reg(prop, itemArmor, s);
-			}
+			}*/
 		}
 		
 		load("", prop);

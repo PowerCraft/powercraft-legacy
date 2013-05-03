@@ -15,16 +15,14 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 
 /**
@@ -33,7 +31,7 @@ import powercraft.api.tileentity.PC_TileEntity;
  * @author MightyPork
  * @copy (c) 2012
  */
-@PC_BlockInfo(itemBlock=PCnt_ItemBlockSensor.class, tileEntity=PCnt_TileEntitySensor.class)
+@PC_BlockInfo(name="Sensor", itemBlock=PCnt_ItemBlockSensor.class, tileEntity=PCnt_TileEntitySensor.class)
 public class PCnt_BlockSensor extends PC_Block {
 
 	/**
@@ -47,11 +45,6 @@ public class PCnt_BlockSensor extends PC_Block {
 		setResistance(30.0F);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		setCreativeTab(CreativeTabs.tabRedstone);
-	}
-	
-	@Override
-	public TileEntity newTileEntity(World world, int metadata) {
-		return new PCnt_TileEntitySensor();
 	}
 
 	@Override
@@ -91,7 +84,7 @@ public class PCnt_BlockSensor extends PC_Block {
 			}
 		}
 
-		PC_GresRegistry.openGres("Sensor", player, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+		PC_GresRegistry.openGres("Sensor", player, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
 		//PC_Utils.openGres(player, new PClo_GuiSensor((PClo_TileEntitySensor) new PC_CoordI(i, j, k).getTileEntity(world)));
 		return true;
 	}
@@ -108,7 +101,7 @@ public class PCnt_BlockSensor extends PC_Block {
 	 * @param pos device position.
 	 */
 	public static void printRange(World world, PC_VecI pos) {
-		PCnt_TileEntitySensor ent = GameInfo.getTE(world, pos);
+		PCnt_TileEntitySensor ent = PC_Utils.getTE(world, pos);
 		ent.printRange();
 	}
 
@@ -140,18 +133,8 @@ public class PCnt_BlockSensor extends PC_Block {
 	}
 
 	@Override
-	public int isProvidingWeakPower(IBlockAccess world, int i, int j, int k, int l) {
-		return GameInfo.<PCnt_TileEntitySensor>getTE(world, i, j, k).isActive()?15:0;
-	}
-
-	@Override
-	public int isProvidingStrongPower(IBlockAccess world, int i, int j, int k, int l) {
-		return isProvidingWeakPower(world, i, j, k, l);
-	}
-
-	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-		if (!GameInfo.<PCnt_TileEntitySensor>getTE(world, i, j, k).isActive()) {
+		if (!PC_Utils.<PCnt_TileEntitySensor>getTE(world, i, j, k).isActive()) {
 			return;
 		}
 
@@ -162,55 +145,40 @@ public class PCnt_BlockSensor extends PC_Block {
 		world.spawnParticle("reddust", ii, jj, kk, 0, 0, 0);
 	}
 
-	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer){
+	@Override
+	public boolean renderInventoryBlock(int metadata, Object renderer){
 
 		float px = 0.0625F;
 
-		Icon icon = metadata == 0 ? icons[1] : metadata == 1 ? icons[2] : icons[3];
+		Icon icon = metadata == 0 ? sideIcons[1] : metadata == 1 ? sideIcons[2] : sideIcons[3];
 
 		setBlockBounds(0, 0, 0, 16 * px, 4 * px, 16 * px);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icon);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, icon);
 		setBlockBounds(6 * px, 4 * px, 6 * px, 10 * px, 9 * px, 10 * px);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icon);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, icon);
 		setBlockBounds(5 * px, 8 * px, 5 * px, 11 * px, 14 * px, 11 * px);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, icons[0]);
+		PC_Renderer.renderInvBoxWithTexture(renderer, this, sideIcons[0]);
 		setBlockBounds(0, 0, 0, 1, 1, 1);
+		return true;
 	}
 	
 	@Override
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
+		return true;
+	}
+
+	@Override
     public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
     {
-        int type = GameInfo.<PCnt_TileEntitySensor>getTE(world, x, y, z).getGroup();
+        int type = PC_Utils.<PCnt_TileEntitySensor>getTE(world, x, y, z).getGroup();
         boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
 
-        if (remove && !GameInfo.isCreative(player))
+        if (remove && !PC_Utils.isCreative(player))
         {
             dropBlockAsItem_do(world, x, y, z, new ItemStack(PCnt_App.sensor, 1, type));
         }
 
         return remove;
     }
-	
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			break;
-		default:
-			return null;
-		}
-		return true;
-	}
 
 }

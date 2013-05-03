@@ -10,15 +10,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import powercraft.api.PC_Entry;
-import powercraft.api.PC_MathHelper;
-import powercraft.api.PC_PacketHandler;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Utils.SaveHandler;
 import powercraft.api.inventory.PC_IInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
+import powercraft.api.network.PC_PacketHandler;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Entry;
+import powercraft.api.utils.PC_MathHelper;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Utils;
 
 public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEntityRenderer, PC_IInventory{
 
@@ -64,7 +65,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		int size = nbtTagCompound.getInteger("count");
 		for(int i=0; i<size; i++){
 			String key = nbtTagCompound.getString("key["+i+"]");
-			Object value = SaveHandler.loadFromNBT(nbtTagCompound, "value["+i+"]");
+			Object value = PC_Utils.loadFromNBT(nbtTagCompound, "value["+i+"]");
 			map.put(key, value);
 		}
 	}
@@ -82,7 +83,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		int i=0;
 		for(Entry<String, Object>e:map.entrySet()){
 			nbtTagCompound.setString("key["+i+"]", e.getKey());
-			SaveHandler.saveToNBT(nbtTagCompound, "value["+i+"]", e.getValue());
+			PC_Utils.saveToNBT(nbtTagCompound, "value["+i+"]", e.getValue());
 			i++;
 		}
 		nbtTag.setCompoundTag("weaselMap", nbtTagCompound);
@@ -124,7 +125,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	}
 	
 	@Override
-	protected void dataChange(String key, Object value) {
+	protected void dataChanged(String key, Object value) {
 		PCws_WeaselPlugin plugin = getPlugin();
 		if(key.equals("invSize")){
 			inv = new ItemStack[(Integer)value];
@@ -132,14 +133,9 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 			plugin.reciveData(key, value);
 		}
 	}
-
-	@Override
-	public void call(String key, Object value){
-    	PC_PacketHandler.setTileEntity(this, new PC_Entry("call", new PC_Entry(key, value)));
-    }
 	
 	@Override
-	protected void onCall(String key, Object value) {
+	protected void onCall(String key, Object[] value) {
 		PCws_WeaselPlugin plugin = getPlugin();
 		if(plugin!=null)
     		plugin.getClientMsg(key, value);
@@ -152,11 +148,11 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	public void setData(EntityPlayer player, PC_Struct2<String, Object>[] data) {
 		for(int i=0; i<data.length; i++){
     		if(data[i].a.equals("call")){
-    			PC_Struct2<String, Object> s = (PC_Struct2<String, Object>)data[i].b;
+    			PC_Struct2<String, Object[]> s = (PC_Struct2<String, Object[]>)data[i].b;
     			onCall(s.a, s.b);
     		}else{
     			map.put(data[i].a, data[i].b);
-    			dataChange(data[i].a, data[i].b);
+    			dataChanged(data[i].a, data[i].b);
     		}
     	}
     	dataRecieved();
@@ -299,7 +295,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		return false;
 	}
 
-	public Icon getTexture(int side) {
+	public Icon getTexture(PC_Direction side) {
 		return getPluginInfo().getTexture(side);
 	}
 	

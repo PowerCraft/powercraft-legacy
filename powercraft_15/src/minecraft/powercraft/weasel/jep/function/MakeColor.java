@@ -14,7 +14,6 @@ import java.util.Stack;
 import org.lwjgl.util.Color;
 
 import powercraft.weasel.jep.ParseException;
-import powercraft.weasel.obj.WeaselDouble;
 
 
 

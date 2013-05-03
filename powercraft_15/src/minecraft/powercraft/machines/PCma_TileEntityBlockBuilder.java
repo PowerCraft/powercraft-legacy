@@ -5,28 +5,20 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRail;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemMinecart;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemReed;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Facing;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.entity.PC_FakePlayer;
-import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_SoundRegistry;
-import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.tileentity.PC_TileEntityWithInventory;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 
@@ -106,20 +98,20 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 	 */
 	private int try2useItem(ItemStack itemstack, PC_VecI front) {
 
-		int l = GameInfo.getMD(worldObj, front) & 7;
+		int l = PC_Utils.getMD(worldObj, front) & 7;
 
 		PC_VecI below = new PC_VecI(front.offset(0, -1, 0));
 		PC_VecI above = new PC_VecI(front.offset(0, 1, 0));
 
 
-		int idFront = GameInfo.getBID(worldObj, front);
-		int metaFront = GameInfo.getMD(worldObj, front);
+		int idFront = PC_Utils.getBID(worldObj, front);
+		int metaFront = PC_Utils.getMD(worldObj, front);
 
-		int idBelow = GameInfo.getBID(worldObj, below);
-		int metaBelow = GameInfo.getMD(worldObj, below);
+		int idBelow = PC_Utils.getBID(worldObj, below);
+		int metaBelow = PC_Utils.getMD(worldObj, below);
 
-		int idAbove = GameInfo.getBID(worldObj, above);
-		int metaAbove = GameInfo.getMD(worldObj, above);
+		int idAbove = PC_Utils.getBID(worldObj, above);
+		int metaAbove = PC_Utils.getMD(worldObj, above);
 
 		int id = idFront;
 
@@ -139,26 +131,26 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 		if (id == 49
 				|| id == 7
 				|| id == 98
-				|| (PC_MSGRegistry.hasFlag(worldObj, front, PC_Utils.HARVEST_STOP))) {
+				/** TODO || (PC_MSGRegistry.hasFlag(worldObj, front, PC_Utils.HARVEST_STOP))*/) {
 			return -1;
 		}
 
 		// try to place front
 		if (itemstack.getItem() instanceof ItemBlock) {
 
-			if(PC_MSGRegistry.hasFlag(itemstack, PC_Utils.NO_BUILD)){
+			/** TODO if(PC_MSGRegistry.hasFlag(itemstack, PC_Utils.NO_BUILD)){
 				return 0;
-			}
+			}*/
 			
 			ItemBlock item = ((ItemBlock) itemstack.getItem());
 
 			if (Block.blocksList[item.itemID].canPlaceBlockAt(worldObj, front.x, front.y, front.z)) {
-				ValueWriting.setBID(worldObj, front.x, front.y, front.z, item.itemID, item.getMetadata(itemstack.getItemDamage()));
+				PC_Utils.setBID(worldObj, front.x, front.y, front.z, item.itemID, item.getMetadata(itemstack.getItemDamage()));
 				return 1;
 			}
 
 			/*if (isEmptyBlock(idFront) && Block.blocksList[item.itemID].canPlaceBlockAt(worldObj, x + incX * 2, y, z + incZ * 2)) {
-				ValueWriting.setBID(worldObj, x + incX * 2, y, z + incZ * 2, item.itemID, item.getMetadata(itemstack.getItemDamage()));
+				PC_Utils.setBID(worldObj, x + incX * 2, y, z + incZ * 2, item.itemID, item.getMetadata(itemstack.getItemDamage()));
 				return 1;
 			}*/
 
@@ -166,7 +158,7 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 		}
 
 		// use on front block (usually bonemeal on crops)
-		if (!isEmptyBlock(idFront) && !(itemstack.getItem() instanceof ItemReed)) {
+		if (!PC_Utils.isBlockReplaceable(worldObj, front) && !(itemstack.getItem() instanceof ItemReed)) {
 			int dmgOrig = itemstack.getItemDamage();
 			int sizeOrig = itemstack.stackSize;
 
@@ -176,10 +168,10 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 					return 1;
 				}
 
-				int idFrontNew = GameInfo.getBID(worldObj, front);
-				int metaFrontNew = GameInfo.getMD(worldObj, front);
-				int idAboveNew = GameInfo.getBID(worldObj, above);
-				int metaAboveNew = GameInfo.getMD(worldObj, above);
+				int idFrontNew = PC_Utils.getBID(worldObj, front);
+				int metaFrontNew = PC_Utils.getMD(worldObj, front);
+				int idAboveNew = PC_Utils.getBID(worldObj, above);
+				int metaAboveNew = PC_Utils.getMD(worldObj, above);
 
 				int dmgNew = itemstack.getItemDamage();
 				int sizeNew = itemstack.stackSize;
@@ -198,7 +190,7 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 		}
 
 		// use below
-		if (isEmptyBlock(idFront) && !isEmptyBlock(idBelow)) {
+		if (PC_Utils.isBlockReplaceable(worldObj, front) && !PC_Utils.isBlockReplaceable(worldObj, below)) {
 			int dmg1 = itemstack.getItemDamage();
 			int size1 = itemstack.stackSize;
 
@@ -208,10 +200,10 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 					return 1;
 				}
 
-				int idBelowNew = GameInfo.getBID(worldObj, below);
-				int metaBelowNew = GameInfo.getMD(worldObj, below);
-				int idFrontNew = GameInfo.getBID(worldObj, front);
-				int metaFrontNew = GameInfo.getMD(worldObj, front);
+				int idBelowNew = PC_Utils.getBID(worldObj, below);
+				int metaBelowNew = PC_Utils.getMD(worldObj, below);
+				int idFrontNew = PC_Utils.getBID(worldObj, front);
+				int metaFrontNew = PC_Utils.getMD(worldObj, front);
 
 				int dmg2 = itemstack.getItemDamage();
 				int size2 = itemstack.stackSize;
@@ -229,10 +221,6 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 		}
 
 		return 0;
-	}
-
-	private boolean isEmptyBlock(int id) {
-		return (id == 0 || id == 8 || id == 9 || id == 10 || id == 11 || id == Block.snow.blockID);
 	}
 
 }

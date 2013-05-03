@@ -9,16 +9,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.api.PC_IDataHandler;
-import powercraft.api.PC_IPacketHandler;
-import powercraft.api.PC_PacketHandler;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.SaveHandler;
-import powercraft.api.PC_VecF;
-import powercraft.api.PC_VecI;
 import powercraft.api.block.PC_Block;
+import powercraft.api.interfaces.PC_IDataHandler;
+import powercraft.api.network.PC_IPacketHandler;
+import powercraft.api.network.PC_PacketHandler;
 import powercraft.api.registry.PC_GresRegistry;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecF;
+import powercraft.api.utils.PC_VecI;
 
 public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandler {
 
@@ -32,7 +31,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		int num = nbtTag.getInteger("count");
 		for(int i=0; i<num; i++){
 			PCtp_TeleporterData td = new PCtp_TeleporterData();
-			SaveHandler.loadFromNBT(nbtTag, "value["+i+"]", td);
+			PC_Utils.loadFromNBT(nbtTag, "value["+i+"]", td);
 			teleporter.add(td);
 		}
 	}
@@ -43,7 +42,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		nbtTag.setInteger("count", teleporter.size());
 		int i=0;
 		for(PCtp_TeleporterData td:teleporter){
-			SaveHandler.saveToNBT(nbtTag, "value["+i+"]", td);
+			PC_Utils.saveToNBT(nbtTag, "value["+i+"]", td);
 			i++;
 		}
 		return nbtTag;
@@ -84,15 +83,11 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 				teleportEntityToTarget(player, td);
 		}else if(msg.equals("teleport")){
 			int entityID = (Integer)o[1];
-			PC_VecF pos = (PC_VecF)o[2];
+			PC_VecI pos = (PC_VecI)o[2];
 			int entrot = (Integer)o[3];
 			Entity entity = player.worldObj.getEntityByID(entityID);
 			if(entity!=null){
-				entity.setLocationAndAngles(pos.x, pos.y, pos.z, entrot, 0);
-				entity.motionX = 0;
-				entity.motionY = 0;
-				entity.motionZ = 0;
-				player.worldObj.updateEntityWithOptionalForce(entity, true);
+				teleportTo(entity, new PC_Struct2<PC_VecI, Integer>(pos, entrot));
 			}
 		}
 		return false;
@@ -158,12 +153,12 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 
 			good=0;
 			
-			Block b = GameInfo.getBlock(world, tmp);
+			Block b = PC_Utils.getBlock(world, tmp);
 			
 			if(b instanceof PC_Block){
 				PC_Block pcb = (PC_Block)b;
 				if("Transport".equalsIgnoreCase(pcb.getModule().getModuleName())){
-					meta = GameInfo.getMD(world, tmp);
+					meta = PC_Utils.getMD(world, tmp);
 					rotation = 0;
 					switch (meta)
 			        {
@@ -213,38 +208,38 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 	}
 	
 	private static boolean teleportTo(Entity entity, PC_Struct2<PC_VecI, Integer> s){
-		if(entity instanceof EntityPlayerMP){
-            EntityPlayerMP player = (EntityPlayerMP)entity;
-
-            if (!player.playerNetServerHandler.connectionClosed)
-            {
-            	player.playerNetServerHandler.setPlayerLocation(s.a.x+0.5, s.a.y, s.a.z+0.5, s.b, 0.0F);
-            	player.fallDistance = 0.0F;
-            }
-            return true;
+		if(!entity.worldObj.isRemote){
+			if(entity instanceof EntityPlayerMP){
+	            EntityPlayerMP player = (EntityPlayerMP)entity;
+	            if (!player.playerNetServerHandler.connectionClosed){
+	            	player.playerNetServerHandler.setPlayerLocation(s.a.x + 0.5, s.a.y + 0.1, s.a.z + 0.5, s.b, 0.0F);
+	            	player.fallDistance = 0.0F;
+	            }
+			}
+	        entity.setPositionAndRotation(s.a.x + 0.5, s.a.y + 0.1, s.a.z + 0.5, s.b, 0);
+	        entity.setPositionAndRotation2(s.a.x + 0.5, s.a.y + 0.1, s.a.z + 0.5, s.b, 0, 0);
+			entity.motionX = 0;
+			entity.motionY = 0;
+			entity.motionZ = 0;
+			PC_PacketHandler.sendToPacketHandler(true, entity.worldObj, "Teleporter", "teleport", entity.entityId, s.a, s.b);
+			entity.worldObj.updateEntityWithOptionalForce(entity, true);
 		}
-
-        entity.setLocationAndAngles(s.a.x + 0.5, s.a.y + 0.1, s.a.z + 0.5, 0, 0);
-		entity.motionX = 0;
-		entity.motionY = 0;
-		entity.motionZ = 0;
-		PC_PacketHandler.sendToPacketHandler(true, entity.worldObj, "Teleporter", "teleport", entity.entityId, 
-				new PC_VecF((float)entity.posX, (float)entity.posY, (float)entity.posZ), s.b);
-		entity.worldObj.updateEntityWithOptionalForce(entity, true);
         return true;
     }
 
 	public static boolean teleportEntityToTarget(Entity entity, PCtp_TeleporterData to) {
-		World world = GameInfo.mcs().worldServerForDimension(to.dimension);
+		World world = PC_Utils.mcs().worldServerForDimension(to.dimension);
 		PC_Struct2<PC_VecI, Integer> s = calculatePos(world, to, (int)entity.prevRotationYaw);
-		if(!(entity instanceof EntityPlayerMP))
-			if(!teleportTo(entity, s))
-				return false;
-		if(entity.dimension != to.dimension)
-			entity.travelToDimension(to.dimension);
-		if(entity instanceof EntityPlayerMP)
-			if(!teleportTo(entity, s))
-				return false;
+		if(!entity.worldObj.isRemote){
+			if(!(entity instanceof EntityPlayerMP))
+				if(!teleportTo(entity, s))
+					return false;
+			if(entity.dimension != to.dimension)
+				entity.travelToDimension(to.dimension);
+			if(entity instanceof EntityPlayerMP)
+				if(!teleportTo(entity, s))
+					return false;
+		}
 		return true;
 	}
 	
@@ -284,6 +279,11 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		if(td.name!=null&&!td.equals(""))
 			names.remove(td.name);
 		PC_GresRegistry.openGres("PlayerTeleport", player, null, names);
+	}
+
+	@Override
+	public String getName() {
+		return "PCtp_TeleporterManager";
 	}
 	
 }

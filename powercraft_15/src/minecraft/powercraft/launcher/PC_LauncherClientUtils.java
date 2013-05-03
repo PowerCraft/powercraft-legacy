@@ -1,13 +1,9 @@
 package powercraft.launcher;
 
 import java.io.File;
-import java.util.HashMap;
 
-import powercraft.launcher.loader.PC_ModuleObject;
-import powercraft.launcher.update.PC_UpdateManager;
-import powercraft.launcher.updategui.PC_GuiUpdate;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.ModLoader;
+import powercraft.launcher.updategui.PC_GuiUpdate;
 
 public class PC_LauncherClientUtils extends PC_LauncherUtils {
 	

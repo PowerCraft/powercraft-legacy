@@ -1,7 +1,7 @@
 package powercraft.api.gres;
 
 import net.minecraft.inventory.Slot;
-import powercraft.api.PC_VecI;
+import powercraft.api.utils.PC_VecI;
 
 
 /**

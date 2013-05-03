@@ -12,10 +12,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_IItemInfo;
@@ -23,8 +19,10 @@ import powercraft.api.registry.PC_ItemRegistry;
 import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(tileEntity=PChg_TileEntityHologramField.class)
+@PC_BlockInfo(name="Hologram Field", tileEntity=PChg_TileEntityHologramField.class)
 public class PChg_BlockHologramField extends PC_Block implements PC_IItemInfo {
 
 	public PChg_BlockHologramField(int id) {
@@ -39,18 +37,13 @@ public class PChg_BlockHologramField extends PC_Block implements PC_IItemInfo {
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z){
         return null;
     }
-	
-	@Override
-	public TileEntity newTileEntity(World world, int metadata) {
-		return new PChg_TileEntityHologramField();
-	}
 
 	@Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int l, float par7, float par8, float par9)
     {
         ItemStack ihold = entityplayer.getCurrentEquippedItem();
 
-        PChg_TileEntityHologramField tileentity = GameInfo.getTE(world, i, j, k);
+        PChg_TileEntityHologramField tileentity = PC_Utils.getTE(world, i, j, k);
         
         if (ihold != null)
         {
@@ -126,79 +119,56 @@ public class PChg_BlockHologramField extends PC_Block implements PC_IItemInfo {
 		return false;
 	}
 	
-	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer){
+	@Override
+	public boolean renderInventoryBlock(int metadata, Object renderer){
 		float s = 1.0f/16.0f;
-		ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, 0, s*15, s*5, s);
+		PC_Utils.setBlockBounds(Block.blockSteel, 0, 0, 0, s*15, s*5, s);
     	PC_Renderer.renderInvBox(renderer, Block.blockSteel, 0);
-    	ValueWriting.setBlockBounds(Block.blockSteel, s*15, 0, 0, s*16, s*5, s*15);
+    	PC_Utils.setBlockBounds(Block.blockSteel, s*15, 0, 0, s*16, s*5, s*15);
     	PC_Renderer.renderInvBox(renderer, Block.blockSteel, 0);
-    	ValueWriting.setBlockBounds(Block.blockSteel, s, 0, s*15, s*16, s*5, s*16);
+    	PC_Utils.setBlockBounds(Block.blockSteel, s, 0, s*15, s*16, s*5, s*16);
     	PC_Renderer.renderInvBox(renderer, Block.blockSteel, 0);
-    	ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, s, s, s*5, s*16);
+    	PC_Utils.setBlockBounds(Block.blockSteel, 0, 0, s, s, s*5, s*16);
     	PC_Renderer.renderInvBox(renderer, Block.blockSteel, 0);
-    	ValueWriting.setBlockBounds(Block.blockSteel, s, 0, s, s*15, s, s*15);
+    	PC_Utils.setBlockBounds(Block.blockSteel, s, 0, s, s*15, s, s*15);
     	PC_Renderer.renderInvBox(renderer, Block.blockSteel, 0);
-    	ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, 0, 1, 1, 1);	
+    	PC_Utils.setBlockBounds(Block.blockSteel, 0, 0, 0, 1, 1, 1);	
     	setBlockBounds(s*3, s*6, s*3, s*13, s*16, s*13);
-    	PC_Renderer.renderInvBox(renderer, block, 0);
+    	PC_Renderer.renderInvBox(renderer, this, 0);
     	setBlockBounds(0, 0, 0, 1, 1, 1);
+    	return true;
     }
 	
-	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
+	@Override
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
 		float s = 1.0f/16.0f;
 		PC_Renderer.tessellatorDraw();
         PC_Renderer.tessellatorStartDrawingQuads();
-		ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, 0, s*15, s*5, s);
+        PC_Utils.setBlockBounds(Block.blockSteel, 0, 0, 0, s*15, s*5, s);
 		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-    	ValueWriting.setBlockBounds(Block.blockSteel, s*15, 0, 0, s*16, s*5, s*15);
+		PC_Utils.setBlockBounds(Block.blockSteel, s*15, 0, 0, s*16, s*5, s*15);
     	PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-    	ValueWriting.setBlockBounds(Block.blockSteel, s, 0, s*15, s*16, s*5, s*16);
+    	PC_Utils.setBlockBounds(Block.blockSteel, s, 0, s*15, s*16, s*5, s*16);
     	PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-    	ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, s, s, s*5, s*16);
+    	PC_Utils.setBlockBounds(Block.blockSteel, 0, 0, s, s, s*5, s*16);
     	PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-    	ValueWriting.setBlockBounds(Block.blockSteel, s, 0, s, s*15, s, s*15);
+    	PC_Utils.setBlockBounds(Block.blockSteel, s, 0, s, s*15, s, s*15);
     	PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
-    	ValueWriting.setBlockBounds(Block.blockSteel, 0, 0, 0, 1, 1, 1);
+    	PC_Utils.setBlockBounds(Block.blockSteel, 0, 0, 0, 1, 1, 1);
     	PC_Renderer.tessellatorDraw();
         PC_Renderer.tessellatorStartDrawingQuads();
         setBlockBounds(s*3, s*6, s*3, s*13, s*16, s*13);
-        PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+        PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
     	setBlockBounds(0, 0, 0, 1, 1, 1);
     	PC_Renderer.tessellatorDraw();
         PC_Renderer.tessellatorStartDrawingQuads();
+        return true;
     }
 	
 	@Override
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this));
 		return arrayList;
-	}
-	
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Hologram Field";
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.NO_PICKUP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}
-		case PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK:
-			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
-			break;
-		case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
-			break;
-		default:
-			return null;
-		}
-		return true;
 	}
 
 }

@@ -12,9 +12,8 @@ package powercraft.weasel.jep.function;
 import java.util.Calendar;
 import java.util.Stack;
 
-import powercraft.weasel.jep.ParseException;
-
 import net.minecraft.src.ModLoader;
+import powercraft.weasel.jep.ParseException;
 
 
 /**

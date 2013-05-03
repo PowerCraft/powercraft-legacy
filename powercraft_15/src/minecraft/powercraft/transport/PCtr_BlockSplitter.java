@@ -14,17 +14,16 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(tileEntity=PCtr_TileEntitySplitter.class)
+@PC_BlockInfo(name="Splitter", tileEntity=PCtr_TileEntitySplitter.class)
 public class PCtr_BlockSplitter extends PC_Block {
 
 	public static int color[] = {0x49C0FF, 0xFF4C7B, 0xFF8849, 0xE8FF42, 0x4CFF7F, 0x5149FF};
@@ -50,9 +49,7 @@ public class PCtr_BlockSplitter extends PC_Block {
         PCtr_TileEntitySplitter tes = (PCtr_TileEntitySplitter) world.getBlockTileEntity(i, j, k);
         PC_Direction redir = tes.getDirection(entity);
 
-        PC_VecI pos_leading_to = pos.offset(redir.getDir());
-
-        int rotation = PCtr_BeltHelper.getDir(redir);
+        PC_VecI pos_leading_to = pos.offset(redir.getOffset());
         
         if (entity instanceof EntityItem && PCtr_BeltHelper.storeEntityItemAt(world, pos_leading_to, (EntityItem) entity, redir))
         {
@@ -66,13 +63,13 @@ public class PCtr_BlockSplitter extends PC_Block {
             PCtr_BeltHelper.entityPreventDespawning(world, pos, true, entity);
         }
 
-        if(rotation<4){
+        if(redir.getMCSide()<4){
         	entity.motionY=0;
         	entity.onGround=true;
         }
         
-        leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, rotation, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
-        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, rotation, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
+        leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, redir, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
+        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, redir, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                 PCtr_BeltHelper.HORIZONTAL_BOOST);
     }
 
@@ -98,7 +95,7 @@ public class PCtr_BlockSplitter extends PC_Block {
                 }
             }
 
-            PC_GresRegistry.openGres("Splitter", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+            PC_GresRegistry.openGres("Splitter", entityplayer, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
             return true;
         }
     }
@@ -106,11 +103,6 @@ public class PCtr_BlockSplitter extends PC_Block {
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
         return null;
-    }
-    
-    @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PCtr_TileEntitySplitter();
     }
 
     @Override
@@ -127,29 +119,5 @@ public class PCtr_BlockSplitter extends PC_Block {
     public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l){
         return true;
     }
-    
-    @Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
-		return icons[side];
-	}
-    
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			return "Splitter";
-		case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-	   		list.add(PC_Utils.NO_HARVEST);
-	   		list.add(PC_Utils.NO_PICKUP);
-	   		return list;
-		}
-		}
-		return null;
-	}
 
 }

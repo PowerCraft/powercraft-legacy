@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_IDataHandler;
-import powercraft.api.PC_IMSG;
-import powercraft.api.PC_Struct3;
+import powercraft.api.interfaces.PC_IDataHandler;
+import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Struct3;
 
 public class PCnt_RadioManager implements PC_IDataHandler, PC_IMSG {
 
@@ -152,6 +152,11 @@ public class PCnt_RadioManager implements PC_IDataHandler, PC_IMSG {
 			return l;
 		}
 		return null;
+	}
+
+	@Override
+	public String getName() {
+		return "PC_RadioManager";
 	}
 
 }

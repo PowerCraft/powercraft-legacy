@@ -24,7 +24,7 @@ import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
  * @author XOR
  * 
  */
-@Mod(modid = "PowerCraft", name = "PowerCraft", version = "3.5.1", dependencies = "after:*")
+@Mod(modid = "PowerCraft", name = "PowerCraft", version = "3.5.2", dependencies = "after:*")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "PowerCraft" }, packetHandler = PC_PacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "PowerCraft" }, packetHandler = PC_PacketHandler.class))
 public class mod_PowerCraft {
 

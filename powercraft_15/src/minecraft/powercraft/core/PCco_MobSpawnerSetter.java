@@ -5,13 +5,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
-import powercraft.api.PC_IMSG;
-import powercraft.api.PC_IPacketHandler;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
+import powercraft.api.interfaces.PC_IMSG;
+import powercraft.api.network.PC_IPacketHandler;
 import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
 public class PCco_MobSpawnerSetter implements PC_IPacketHandler, PC_IMSG
 {
@@ -30,7 +30,7 @@ public class PCco_MobSpawnerSetter implements PC_IPacketHandler, PC_IMSG
 		switch(msg){
 		case PC_MSGRegistry.MSG_ON_ACTIVATOR_USED_ON_BLOCK:
 			PC_VecI pos = (PC_VecI)obj[3];
-			if(GameInfo.getTE((World)obj[2], pos) instanceof TileEntityMobSpawner){
+			if(PC_Utils.getTE((World)obj[2], pos) instanceof TileEntityMobSpawner){
 				PC_GresRegistry.openGres("SpawnerEditor", (EntityPlayer)obj[1], null, pos.x, pos.y, pos.z);
 				return true;
 			}

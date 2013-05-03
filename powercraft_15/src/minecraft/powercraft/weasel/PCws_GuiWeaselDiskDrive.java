@@ -2,9 +2,10 @@ package powercraft.weasel;
 
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import powercraft.api.PC_Color;
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresColorPicker;
 import powercraft.api.gres.PC_GresInventory;
@@ -18,6 +19,7 @@ import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Color;
 
 public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 		implements PC_IGresClient {
@@ -117,13 +119,9 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 	}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		gui.close();
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_RETURN || i==Keyboard.KEY_E)
+			gui.close();
 	}
 
 	@Override

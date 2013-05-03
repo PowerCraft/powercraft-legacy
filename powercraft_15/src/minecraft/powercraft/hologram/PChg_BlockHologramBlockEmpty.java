@@ -12,16 +12,15 @@ import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_ClientUtils;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.utils.PC_ClientUtils;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(itemBlock=PChg_ItemBlockHologramBlockEmpty.class)
+@PC_BlockInfo(name="Hologramblock", itemBlock=PChg_ItemBlockHologramBlockEmpty.class)
 public class PChg_BlockHologramBlockEmpty extends PC_Block {
 
 	public PChg_BlockHologramBlockEmpty(int id) {
@@ -47,13 +46,14 @@ public class PChg_BlockHologramBlockEmpty extends PC_Block {
 		return false;
 	}
 	
-    public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
+	@Override
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
     	final Map<Integer, Integer> map = new TreeMap<Integer, Integer>();
     	for(int xOff=-1;xOff<2;xOff++){
     		for(int yOff=-1;yOff<2;yOff++){
     			for(int zOff=-1;zOff<2;zOff++){
     				if((zOff|xOff|yOff)==0) continue;
-    				int bid = GameInfo.getBID(world, xOff+x, yOff+y, zOff+z);
+    				int bid = PC_Utils.getBID(world, xOff+x, yOff+y, zOff+z);
     				if(!map.containsKey(bid)){
     					map.put(bid, 1);
     				}else{
@@ -77,33 +77,15 @@ public class PChg_BlockHologramBlockEmpty extends PC_Block {
     	if(fittingID==PChg_App.hologramBlockEmpty.blockID||(PC_ClientUtils.mc().thePlayer.getCurrentEquippedItem()!=null && PC_ClientUtils.mc().thePlayer.getCurrentEquippedItem().itemID==Item.stick.itemID)){
     		PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
     	}else{
-            PC_Renderer.renderBlockByRenderType(renderer, renderingBlock, x, y, z);	
+    		if(!renderingBlock.hasTileEntity()){
+    			PC_Renderer.renderBlockByRenderType(renderer, renderingBlock, x, y, z);	
+    		}else{
+    			PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
+    		}
     	}
         PC_Renderer.tessellatorDraw();
         PC_Renderer.tessellatorStartDrawingQuads();
+        return true;
     }
-	
-  
-	
-	@Override
-	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[0];
-			list.add(PC_Utils.NO_HARVEST);
-			list.add(PC_Utils.NO_PICKUP);
-	   		return list;
-		}case PC_MSGRegistry.MSG_ITEM_FLAGS:{
-			List<String> list = (List<String>)obj[1];
-			list.add(PC_Utils.NO_BUILD);
-			return list;
-		}case PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK:
-			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
-			break;
-		default:
-			return null;
-		}
-		return true;
-	}
 
 }

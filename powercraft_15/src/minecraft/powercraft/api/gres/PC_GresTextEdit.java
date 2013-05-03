@@ -6,8 +6,8 @@ import net.minecraft.util.ChatAllowedCharacters;
 
 import org.lwjgl.input.Keyboard;
 
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_VecI;
+import powercraft.api.utils.PC_RectI;
+import powercraft.api.utils.PC_VecI;
 
 
 /**

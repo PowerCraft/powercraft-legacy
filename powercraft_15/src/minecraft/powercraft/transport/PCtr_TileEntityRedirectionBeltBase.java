@@ -5,9 +5,9 @@ import java.util.Hashtable;
 import java.util.Random;
 
 import net.minecraft.entity.Entity;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_Struct2;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Struct2;
 
 public abstract class PCtr_TileEntityRedirectionBeltBase extends PC_TileEntity
 {
@@ -72,10 +72,10 @@ public abstract class PCtr_TileEntityRedirectionBeltBase extends PC_TileEntity
     }
     
     @Override
-	protected void onCall(String key, Object value) {
+	protected void onCall(String key, Object[]value) {
 		if(key.equals("newID")){
 			if(worldObj.isRemote){
-				PC_Struct2<Integer, PC_Direction> d= (PC_Struct2<Integer, PC_Direction>)value;
+				PC_Struct2<Integer, PC_Direction> d= (PC_Struct2<Integer, PC_Direction>)value[0];
 				setItemDirection(d.a, d.b);
 			}
 		}

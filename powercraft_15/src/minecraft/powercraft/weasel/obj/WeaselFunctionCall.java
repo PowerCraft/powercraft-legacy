@@ -1,7 +1,7 @@
 package powercraft.weasel.obj;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_INBT;
+import powercraft.api.interfaces.PC_INBT;
 
 public class WeaselFunctionCall extends WeaselObject {
 

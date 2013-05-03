@@ -11,32 +11,24 @@ import powercraft.api.tileentity.PC_TileEntity;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface PC_BlockInfo {
-
-	public final static class PC_FakeItemBlock extends PC_ItemBlock{
-
+	
+	public final static class PC_FakeItemBlock extends PC_ItemBlock {
+		
 		private PC_FakeItemBlock() {
 			super(-1);
 		}
-
-		@Override
-		public Object msg(int msg, Object... obj) {
-			return null;
-		}
 		
 	}
 	
-	public final static class PC_FakeTileEntity extends PC_TileEntity{}
+	public final static class PC_FakeTileEntity extends PC_TileEntity {
+	}
+	
+	public String name();
 	
 	public Class<? extends PC_ItemBlock> itemBlock() default PC_FakeItemBlock.class;
+	
 	public Class<? extends PC_TileEntity> tileEntity() default PC_FakeTileEntity.class;
 	
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.FIELD)
-	public @interface ConfigEntry {
-		
-		public String entryName();
-		public String[] comment() default {};
-		
-	}
+	public boolean canPlacedRotated() default false;
 	
 }

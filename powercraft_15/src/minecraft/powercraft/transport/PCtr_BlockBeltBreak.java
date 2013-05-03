@@ -5,12 +5,13 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_VecI;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class)
+@PC_BlockInfo(name="break belt", canPlacedRotated=true)
 public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
 {
     public PCtr_BlockBeltBreak(int id)
@@ -59,39 +60,9 @@ public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
             }
         }
 
-        int meta = PCtr_BeltHelper.getRotation(world.getBlockMetadata(i, j, k));
-        int direction = meta;
+        PC_Direction direction = getRotation(world.getBlockMetadata(i, j, k));
 
-        if (direction == -1)
-        {
-            direction = 3;
-        }
-
-        if (direction == 4)
-        {
-            direction = 0;
-        }
-
-        PC_VecI pos_leading_to = pos.copy();
-
-        switch (direction)
-        {
-            case 0:
-                pos_leading_to.z--;
-                break;
-
-            case 1:
-                pos_leading_to.x++;
-                break;
-
-            case 2:
-                pos_leading_to.z++;
-                break;
-
-            case 3:
-                pos_leading_to.x--;
-                break;
-        }
+        PC_VecI pos_leading_to = pos.offset(direction.getOffset());
 
         boolean leadsToNowhere = PCtr_BeltHelper.isBlocked(world, pos_leading_to);
         leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, direction, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
@@ -108,16 +79,7 @@ public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
 
     private boolean isPowered(World world, PC_VecI pos)
     {
-    	return GameInfo.isPoweredIndirectly(world, pos) || GameInfo.isPoweredIndirectly(world, pos.offset(0, 1, 0)) || GameInfo.isPoweredIndirectly(world, pos.offset(0, -1, 0));
+    	return getRedstonePowereValue(world, pos.x, pos.y, pos.z)>0;
     }
 
-	@Override
-	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		switch (msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:{
-			return "break belt";
-		}
-		}
-		return null;
-	}
 }

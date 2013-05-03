@@ -3,12 +3,11 @@ package powercraft.weasel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_INBT;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.SaveHandler;
-import powercraft.api.PC_Utils.ValueWriting;
-import powercraft.api.PC_VecI;
+import net.minecraft.world.storage.SaveHandler;
+import powercraft.api.interfaces.PC_INBT;
+import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Utils;
+import powercraft.api.utils.PC_VecI;
 import powercraft.weasel.engine.Calc;
 import powercraft.weasel.engine.WeaselFunctionManager;
 import powercraft.weasel.obj.WeaselDouble;
@@ -50,7 +49,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, P
 		networkID = nbttag.getInteger("networkID");
 		name = nbttag.getString("name");
 		dimension = nbttag.getInteger("dimension");
-		SaveHandler.loadFromNBT(nbttag, "pos", pos);
+		PC_Utils.loadFromNBT(nbttag, "pos", pos);
 		if(nbttag.hasKey("plugin")){
 			readPluginFromNBT(nbttag.getCompoundTag("plugin"));
 		}
@@ -77,7 +76,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, P
 		nbttag.setInteger("networkID", networkID);
 		nbttag.setString("name", name);
 		dimension = nbttag.getInteger("dimension");
-		SaveHandler.saveToNBT(nbttag, "pos", pos);
+		PC_Utils.saveToNBT(nbttag, "pos", pos);
 		NBTTagCompound nbtPlugin = writePluginToNBT(new NBTTagCompound());
 		if(nbtPlugin!=null)
 			nbttag.setCompoundTag("plugin", nbtPlugin);
@@ -163,13 +162,13 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, P
 	public void setOutport(int port, int state){
 		if(weaselOutport[port] != state){
 			weaselOutport[port] = state;
-			ValueWriting.hugeUpdate(getWorld(), pos.x, pos.y, pos.z);
+			PC_Utils.hugeUpdate(getWorld(), pos.x, pos.y, pos.z);
 			needsSave();
 		}
 	}
 	
 	public void refreshInport(){
-		int newWeaselInport[] = PCws_BlockWeasel.getWeaselInputStates(getWorld(), pos);
+		int newWeaselInport[] = ((PCws_BlockWeasel)PCws_App.weasel).getWeaselInputStates(getWorld(), pos);
 		PCws_WeaselNetwork weaselNetwork = getNetwork();
 		boolean anyChange = false;
 		boolean anyNoCall = false;
@@ -263,11 +262,11 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, P
 	}
 	
 	public World getWorld(){
-		return GameInfo.getWorldForDimension(dimension);
+		return PC_Utils.getWorldForDimension(dimension);
 	}
 
 	public PCws_TileEntityWeasel getTE(){
-		return GameInfo.getTE(getWorld(), pos);
+		return PC_Utils.getTE(getWorld(), pos);
 	}
 	
 	public PC_Color getColor() {
@@ -317,23 +316,23 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, P
 		syncWithClient(tileEntityWeasel);
 	}
 
-	public void getClientMsg(String msg, Object obj) {
+	public void getClientMsg(String msg, Object[] obj) {
 		if(msg.equalsIgnoreCase("deviceRename")){
-			setName((String)obj);
+			setName((String)obj[0]);
 		}else if(msg.equalsIgnoreCase("networkJoin")){
-			if(((String) obj).equals("")){
+			if(((String) obj[0]).equals("")){
 				removeFromNetwork();
 			}else{
-				connectToNetwork(PCws_WeaselManager.getNetwork((String) obj));
+				connectToNetwork(PCws_WeaselManager.getNetwork((String) obj[0]));
 			}
 		}else if(msg.equalsIgnoreCase("networkRename")){
 			if(getNetwork()==null){
 				connectToNetwork(new PCws_WeaselNetwork());
 			}
-			getNetwork().setName((String) obj);
+			getNetwork().setName((String) obj[0]);
 		}else if(msg.equalsIgnoreCase("networkNew")){
 			connectToNetwork(new PCws_WeaselNetwork());
-			getNetwork().setName((String) obj);
+			getNetwork().setName((String) obj[0]);
 		}
 	}
 
@@ -370,7 +369,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, P
 		for(int i=0; i<6; i++){
 			weaselOutport[i] = 0;
 		}
-		ValueWriting.hugeUpdate(getWorld(), pos.x, pos.y, pos.z);
+		PC_Utils.hugeUpdate(getWorld(), pos.x, pos.y, pos.z);
 		restart();
 		error = null;
 		PCws_TileEntityWeasel te;

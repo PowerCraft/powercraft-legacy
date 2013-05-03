@@ -2,8 +2,9 @@ package powercraft.weasel;
 
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.api.PC_Color;
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresColorPicker;
 import powercraft.api.gres.PC_GresLabel;
@@ -17,6 +18,7 @@ import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Color;
 
 public class PCws_GuiWeaselOnlyNet implements PC_IGresClient {
 
@@ -74,9 +76,9 @@ public class PCws_GuiWeaselOnlyNet implements PC_IGresClient {
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if(widget==ok){
-			onReturnPressed(gui);
+			gui.close();
 		}else if(widget==cancel){
-			onEscapePressed(gui);
+			gui.close();
 		}else if(widget==deviceName){
 			List<String> deviceNames = (List<String>)te.getData("deviceNames");
 			deviceRename.enable(!deviceNames.contains(deviceName.getText()));
@@ -115,13 +117,9 @@ public class PCws_GuiWeaselOnlyNet implements PC_IGresClient {
 	}
 	
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		gui.close();
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_RETURN || i==Keyboard.KEY_E)
+			gui.close();
 	}
 	
 	@Override

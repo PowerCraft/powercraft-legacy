@@ -3,16 +3,16 @@ package powercraft.api.nei;
 import java.util.List;
 import java.util.TreeMap;
 
-import powercraft.launcher.PC_Logger;
-import powercraft.api.PC_IMSG;
 import powercraft.api.annotation.PC_Shining;
 import powercraft.api.block.PC_Block;
+import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.item.PC_Item;
 import powercraft.api.item.PC_ItemArmor;
 import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_ItemRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
+import powercraft.launcher.PC_Logger;
 import codechicken.nei.ItemList;
 import codechicken.nei.api.API;
 import codechicken.nei.api.ItemInfo;

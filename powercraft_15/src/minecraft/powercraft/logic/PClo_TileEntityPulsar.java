@@ -1,14 +1,11 @@
 package powercraft.logic;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_Utils.Communication;
-import powercraft.api.PC_Utils.Converter;
-import powercraft.api.PC_Utils.GameInfo;
-import powercraft.api.PC_Utils.ValueWriting;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_SoundRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Utils;
 
 public class PClo_TileEntityPulsar extends PC_TileEntity{
 	
@@ -54,17 +51,17 @@ public class PClo_TileEntityPulsar extends PC_TileEntity{
 
     public void printDelay()
     {
-        Communication.chatMsg(PC_LangRegistry.tr("pc.pulsar.clickMsg", new String[] {getDelay() + "", Converter.ticksToSecs(getDelay()) + "" }), true);
+        PC_Utils.chatMsg(PC_LangRegistry.tr("pc.pulsar.clickMsg", new String[] {getDelay() + "", PC_Utils.ticksToSecs(getDelay()) + "" }));
     }
 
     public void printDelayTime()
     {
-        Communication.chatMsg(PC_LangRegistry.tr("pc.pulsar.clickMsgTime", new String[] {getDelay() + "", Converter.ticksToSecs(getDelay()) + "", (getDelay() - delayTimer) + "" }), true);
+    	PC_Utils.chatMsg(PC_LangRegistry.tr("pc.pulsar.clickMsgTime", new String[] {getDelay() + "", PC_Utils.ticksToSecs(getDelay()) + "", (getDelay() - delayTimer) + "" }));
     }
 
     public boolean isActive()
     {
-        return GameInfo.getBID(worldObj, xCoord, yCoord, zCoord) == PClo_BlockPulsar.on.blockID;
+        return PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord) == PClo_BlockPulsar.on.blockID;
     }
 
     @Override
@@ -77,14 +74,14 @@ public class PClo_TileEntityPulsar extends PC_TileEntity{
         
         if (delayTimer < 0 && !isActive())
         {
-        	ValueWriting.setBlockState(worldObj, xCoord, yCoord, zCoord, true);
+        	PC_Utils.setBlockState(worldObj, xCoord, yCoord, zCoord, true);
         }
 
         delayTimer++;
 
         if (delayTimer >= getHold() && isActive())
         {
-        	ValueWriting.setBlockState(worldObj, xCoord, yCoord, zCoord, false);
+        	PC_Utils.setBlockState(worldObj, xCoord, yCoord, zCoord, false);
         }
 
         if (delayTimer >= getDelay())
@@ -134,8 +131,10 @@ public class PClo_TileEntityPulsar extends PC_TileEntity{
     	}
 	}
     
+    
+    
 	@Override
-	protected void onCall(String key, Object value) {
+	protected void onCall(String key, Object[] value) {
 		if(key.equals("change")){
 			 if (worldObj.isRemote)
              {

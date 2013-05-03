@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import powercraft.weasel.engine.IVariableProvider;
-import powercraft.weasel.exception.WeaselRuntimeException;
-
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import powercraft.weasel.engine.IVariableProvider;
+import powercraft.weasel.exception.WeaselRuntimeException;
 
 
 /**

@@ -1,7 +1,8 @@
 package powercraft.machines;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.api.PC_VecI;
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresButtonImage;
 import powercraft.api.gres.PC_GresCheckBox;
@@ -21,6 +22,7 @@ import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_TextureRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_VecI;
 
 public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGresClient {
 
@@ -221,16 +223,12 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 
 		}
 	}
-
+	
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
-		
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		actionPerformed(button[1], gui);
+	public void onKeyPressed(PC_IGresGui gui, char c, int i) {
+		if(i==Keyboard.KEY_RETURN || i==Keyboard.KEY_ESCAPE || i==Keyboard.KEY_E){
+			gui.close();
+		}
 	}
 
 	@Override

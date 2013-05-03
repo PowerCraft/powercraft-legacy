@@ -3,19 +3,18 @@ package powercraft.weasel.engine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_Color;
-import powercraft.api.PC_INBT;
+import powercraft.api.interfaces.PC_INBT;
+import powercraft.api.utils.PC_Color;
 import powercraft.weasel.exception.EndOfProgramException;
 import powercraft.weasel.exception.SyntaxError;
 import powercraft.weasel.exception.WeaselRuntimeException;
 import powercraft.weasel.lang.Instruction;
 import powercraft.weasel.obj.WeaselBoolean;
 import powercraft.weasel.obj.WeaselDouble;
-import powercraft.weasel.obj.WeaselFunctionCall;
 import powercraft.weasel.obj.WeaselObject;
 import powercraft.weasel.obj.WeaselStack;
 import powercraft.weasel.obj.WeaselString;

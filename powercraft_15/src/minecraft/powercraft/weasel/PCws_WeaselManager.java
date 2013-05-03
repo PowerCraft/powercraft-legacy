@@ -7,12 +7,12 @@ import java.util.TreeMap;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.api.PC_IDataHandler;
-import powercraft.api.PC_IMSG;
-import powercraft.api.PC_Struct3;
-import powercraft.api.PC_Utils.SaveHandler;
+import powercraft.api.interfaces.PC_IDataHandler;
+import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.tick.PC_ITickHandler;
+import powercraft.api.utils.PC_Struct3;
+import powercraft.api.utils.PC_Utils;
 import powercraft.weasel.engine.WeaselFunctionManager;
 import powercraft.weasel.exception.WeaselRuntimeException;
 import powercraft.weasel.obj.WeaselObject;
@@ -44,20 +44,20 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG, PC_ITickHan
 		networks.clear();
 		plugins.clear();
 		
-		SaveHandler.loadFromNBT(nbtTag, "globalHeap", globalHeap);
+		PC_Utils.loadFromNBT(nbtTag, "globalHeap", globalHeap);
 		
 		NBTTagCompound nbtNetworks = nbtTag.getCompoundTag("networks");
 		int num = nbtNetworks.getInteger("count");
 		for(int i=0; i<num; i++){
 			PCws_WeaselNetwork network = new PCws_WeaselNetwork();
-			SaveHandler.loadFromNBT(nbtNetworks, "value["+i+"]", network);
+			PC_Utils.loadFromNBT(nbtNetworks, "value["+i+"]", network);
 		}
 		
 		NBTTagCompound nbtPlugins = nbtTag.getCompoundTag("plugins");
 		num = nbtPlugins.getInteger("count");
 		for(int i=0; i<num; i++){
 			PCws_WeaselPlugin plugin = createPlugin(nbtPlugins.getInteger("type["+i+"]"));
-			SaveHandler.loadFromNBT(nbtPlugins, "value["+i+"]", plugin);
+			PC_Utils.loadFromNBT(nbtPlugins, "value["+i+"]", plugin);
 		}
 		
 	}
@@ -65,13 +65,13 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG, PC_ITickHan
 	@Override
 	public NBTTagCompound save(NBTTagCompound nbtTag) {
 		needSave = false;
-		SaveHandler.saveToNBT(nbtTag, "globalHeap", globalHeap);
+		PC_Utils.saveToNBT(nbtTag, "globalHeap", globalHeap);
 		
 		NBTTagCompound nbtNetworks = new NBTTagCompound();
 		nbtNetworks.setInteger("count", networks.size());
 		int i=0;
 		for(Entry<Integer, PCws_WeaselNetwork> network:networks.entrySet()){
-			SaveHandler.saveToNBT(nbtNetworks, "value["+i+"]", network.getValue());
+			PC_Utils.saveToNBT(nbtNetworks, "value["+i+"]", network.getValue());
 			i++;
 		}
 		nbtTag.setCompoundTag("networks", nbtNetworks);
@@ -87,7 +87,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG, PC_ITickHan
 					}
 				}
 				nbtPlugins.setInteger("type["+i+"]", type);
-				SaveHandler.saveToNBT(nbtPlugins, "value["+i+"]", (PCws_WeaselPlugin)plugin.getValue());
+				PC_Utils.saveToNBT(nbtPlugins, "value["+i+"]", (PCws_WeaselPlugin)plugin.getValue());
 				i++;
 			}
 		}
@@ -321,6 +321,11 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG, PC_ITickHan
 	@Override
 	public void tickEvent() {
 		update();
+	}
+
+	@Override
+	public String getName() {
+		return "PCws_WeaselManager";
 	}
 	
 }

@@ -3,10 +3,11 @@ package powercraft.logic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.annotation.PC_ClientServerSync;
+import powercraft.api.block.PC_Block;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Direction;
+import powercraft.api.utils.PC_Utils;
 
 public class PClo_TileEntityDelayer extends PC_TileEntity
 {
@@ -61,21 +62,21 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
     }
     
     @Override
-    public void updateEntity()
-    {
-        int rot = PClo_BlockDelayer.getRotation_static(GameInfo.getMD(worldObj, xCoord, yCoord, zCoord));
+    public void updateEntity(){
         boolean stop = false;
         boolean reset = false;
 
+        PC_Block b = PC_Utils.getBlock(worldObj, getCoord());
+        
         if (getType() == PClo_DelayerType.FIFO)
         {
-            stop = GameInfo.poweredFromInput(worldObj, xCoord, yCoord, zCoord, PC_Utils.RIGHT, rot);
-            reset = GameInfo.poweredFromInput(worldObj, xCoord, yCoord, zCoord, PC_Utils.LEFT, rot);
+            stop = b.getRedstonePowereValueFromInput(worldObj, xCoord, yCoord, zCoord, PC_Direction.RIGHT)>0;
+            reset = b.getRedstonePowereValueFromInput(worldObj, xCoord, yCoord, zCoord, PC_Direction.LEFT)>0;
         }
         
         if (!stop || reset)
         {
-            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, GameInfo.getBID(worldObj, xCoord, yCoord, zCoord), PClo_App.delayer.tickRate(worldObj));
+            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord), PClo_App.delayer.tickRate(worldObj));
         }
     }
 

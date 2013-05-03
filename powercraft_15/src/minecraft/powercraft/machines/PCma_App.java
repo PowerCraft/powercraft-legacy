@@ -4,8 +4,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import powercraft.api.PC_Struct2;
-import powercraft.api.PC_Utils.GameInfo;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
 import powercraft.api.gres.PC_GresBaseWithInventory;
@@ -14,6 +12,8 @@ import powercraft.api.recipes.PC_3DRecipe;
 import powercraft.api.recipes.PC_I3DRecipeHandler;
 import powercraft.api.recipes.PC_IRecipe;
 import powercraft.api.recipes.PC_ShapedRecipes;
+import powercraft.api.utils.PC_Struct2;
+import powercraft.api.utils.PC_Utils;
 import powercraft.launcher.PC_Property;
 import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_Init;
@@ -50,12 +50,6 @@ public class PCma_App{
     @PC_Instance
 	public static PC_ModuleObject instance;
 
-	@PC_Init
-	public void init() {
-        PCma_CropHarvestingManager.loadCrops();
-        PCma_TreeHarvestingManager.loadTrees();
-	}
-
 	@PC_PostInit
 	public void postInit() {
 		PCma_ItemRanking.init();
@@ -63,7 +57,7 @@ public class PCma_App{
 
 	@PC_InitProperties
 	public void initProperties(PC_Property config) {
-		roasterIgnoreBlockIDs = GameInfo.parseIntList(config.getString("PCma_BlockRoaster.roasterIgnoreBlockIDs", "1"));
+		roasterIgnoreBlockIDs = PC_Utils.parseIntList(config.getString("PCma_BlockRoaster.roasterIgnoreBlockIDs", "1"));
 	}
 	
 	@PC_InitRecipes
