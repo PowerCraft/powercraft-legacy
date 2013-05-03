@@ -35,6 +35,8 @@ import net.minecraft.src.World;
 import net.minecraft.src.WorldServer;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
+import powercraft.api.building.PC_CropHarvesting;
+import powercraft.api.building.PC_TreeHarvesting;
 import powercraft.api.entity.PC_EntityFanFX;
 import powercraft.api.entity.PC_EntityLaserFX;
 import powercraft.api.entity.PC_EntityLaserParticleFX;
@@ -58,6 +60,7 @@ import powercraft.api.reflect.PC_FieldWithAnnotation;
 import powercraft.api.reflect.PC_IFieldAnnotationIterator;
 import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.registry.PC_BlockRegistry;
+import powercraft.api.registry.PC_BuildingRegistry;
 import powercraft.api.registry.PC_ChunkForcerRegistry;
 import powercraft.api.registry.PC_DataHandlerRegistry;
 import powercraft.api.registry.PC_EntityRegistry;
@@ -89,7 +92,7 @@ import powercraft.launcher.loader.PC_Module.PC_PostInit;
 import powercraft.launcher.loader.PC_Module.PC_PreInit;
 import powercraft.launcher.loader.PC_ModuleObject;
 
-@PC_Module(name = "Api", version = "3.5.0", modLoader = PC_ModLoader.RISUGAMIS_MODLOADER)
+@PC_Module(name = "Api", version = "3.5.2", modLoader = PC_ModLoader.RISUGAMIS_MODLOADER)
 public class PC_APIModule {
 	
 	private PC_FuelHandler fuelHandler;
@@ -101,6 +104,8 @@ public class PC_APIModule {
 	private PC_TickHandler tickHandler = new PC_TickHandler();
 	
 	private static List<KeyBinding> watchKeysForUp = new ArrayList<KeyBinding>();
+	
+	private PC_WorldGeneratorRegistry worldGenerator = new PC_WorldGeneratorRegistry();
 	
 	@PC_Instance
 	private static PC_ModuleObject instance;
@@ -148,6 +153,8 @@ public class PC_APIModule {
 		ModLoader.registerPacketChannel(PC_LauncherUtils.getMod(), "PowerCraft");
 		ModLoader.setInGUIHook(PC_LauncherUtils.getMod(), true, false);
 		ModLoader.setInGameHook(PC_LauncherUtils.getMod(), true, false);
+		PC_BuildingRegistry.register(new PC_CropHarvesting());
+		PC_BuildingRegistry.register(new PC_TreeHarvesting());
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserParticleFX.class);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserFX.class);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityFanFX.class);
@@ -286,7 +293,7 @@ public class PC_APIModule {
 		if (world instanceof WorldServer) {
 			chunkProvider = ((WorldServer) world).theChunkProviderServer;
 		}
-		PC_WorldGeneratorRegistry.onGenerate(random, chunkX, chunkZ, world, currentChunkProvider, chunkProvider);
+		worldGenerator.generate(random, chunkX, chunkZ, world, currentChunkProvider, chunkProvider);
 	}
 	
 	public int addFuel(int var1, int var2) {

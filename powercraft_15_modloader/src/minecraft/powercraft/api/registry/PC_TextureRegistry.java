@@ -26,8 +26,8 @@ public final class PC_TextureRegistry {
 		PC_RegistryServer.getInstance().onIconLoading(block, iconRegister);
 	}
 	
-	public static Icon registerIcon(String texture) {
-		return PC_RegistryServer.getInstance().registerIcon(texture);
+	public static Icon registerIcon(PC_ModuleObject module, String texture) {
+		return PC_RegistryServer.getInstance().registerIcon(getTextureName(module, texture));
 	}
 	
 }

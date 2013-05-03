@@ -17,6 +17,8 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import powercraft.api.PC_BeamTracer.BeamHitResult;
+import powercraft.api.PC_BeamTracer.BeamSettings;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.annotation.PC_Config;
 import powercraft.api.annotation.PC_OreInfo;
@@ -60,13 +62,21 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 		sideTextures = new String[] { texture };
 	}
 	
-	public PC_Block(int id, Material material, String[] textures) {
+	public PC_Block(int id, Material material, String... textures) {
 		this(id, material);
 		sideTextures = textures;
 	}
 	
+	public boolean showInCraftingTool() {
+		return true;
+	}
+	
 	public String getName() {
 		return blockInfo == null ? null : blockInfo.name();
+	}
+	
+	public boolean canPlacedRotated(){
+		return blockInfo.canPlacedRotated();
 	}
 	
 	public void initConfig(PC_Property config) {
@@ -286,6 +296,10 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 		return world.getIndirectPowerLevelTo(x + offset.x, y + offset.y, z + offset.z, dir.getMCDir());
 	}
 	
+	public int getRedstonePowereValue(World world, int x, int y, int z) {
+		return world.getStrongestIndirectPower(x, y, z);
+	}
+	
 	public int getRedstonePowereValueFromInputEx(World world, int x, int y, int z, PC_Direction dir) {
 		dir = dir.rotateRev(getRotation(PC_Utils.getMD(world, x, y, z)));
 		PC_VecI offset = dir.getOffset();
@@ -294,6 +308,17 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 			powerLevel = PC_Utils.getMD(world, x + offset.x, y + offset.y, z + offset.z);
 		}
 		return powerLevel;
+	}
+	
+	public int getRedstonePowereValueEx(World world, int x, int y, int z) {
+		int max = 0;
+		for(int i=0; i<6; i++){
+			int value = getRedstonePowereValueFromInputEx(world, x, y, z, PC_Direction.getFormMCDir(i));
+			if(value>max){
+				max = value;
+			}
+		}
+		return max;
 	}
 	
 	@Override
@@ -309,15 +334,15 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	}
 	
 	public boolean isFlammable(IBlockAccess world, int x, int y, int z, int md) {
-		return false;
+		return getFlammability(world, x, y, z, md)>0;
+	}
+	
+	public int getFlammability(IBlockAccess world, int x, int y, int z, int md) {
+		return 0;
 	}
 	
 	public boolean isBlockReplaceable(World world, int x, int y, int z) {
 		return false;
-	}
-	
-	public int getFlammability(World world, int x, int y, int z, int md) {
-		return 0;
 	}
 	
 	@Override
@@ -380,6 +405,18 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	
 	public boolean renderInventoryBlock(int metadata, Object renderer) {
 		return false;
+	}
+	
+	public PC_VecI moveBlockTryToPlaceOnSide(World world, int x, int y, int z, PC_Direction side, float xHit, float yHit, float zHit, Block block, ItemStack itemStack, EntityPlayer entityPlayer){
+		return null;
+	}
+	
+	public PC_VecI moveBlockTryToPlaceAt(World world, int x, int y, int z, PC_Direction dir, float xHit, float yHit, float zHit, ItemStack itemStack, EntityPlayer entityPlayer){
+		return null;
+	}
+	
+	public BeamHitResult onBlockHitByBeam(World world, int x, int y, int z, BeamSettings settings) {
+		return BeamHitResult.FALLBACK;
 	}
 	
 	private class InitConfigFieldAnnotationIterator implements PC_IFieldAnnotationIterator<PC_Config> {

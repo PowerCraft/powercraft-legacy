@@ -133,5 +133,9 @@ public class PC_RegistryServer implements PC_IPacketHandler {
 		}
 		return false;
 	}
+
+	public String getUsedLang() {
+		return null;
+	}
 	
 }

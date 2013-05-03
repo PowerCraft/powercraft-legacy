@@ -133,11 +133,8 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 			}
 		}
 		
-		if (i == Keyboard.KEY_ESCAPE || i == Keyboard.KEY_E) {
-			gui.onEscapePressed(this);
-		} else if (i == Keyboard.KEY_RETURN) {
-			gui.onReturnPressed(this);
-		}
+		gui.onKeyPressed(this, c, i);
+		
 	}
 	
 	@Override
@@ -391,14 +388,14 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 	 */
 	@Override
 	public void handleMouseInput() {
-		int var1 = Mouse.getEventX() * this.width / this.mc.displayWidth;
-		int var2 = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-		
-		if (Mouse.getEventButtonState()) {
-			this.mouseClicked(var1, var2, Mouse.getEventButton());
-		} else {
-			this.mouseMovedOrUp(var1, var2, Mouse.getEventButton());
-		}
+		PC_VecI mp = getMousePos();
+
+        if (Mouse.getEventButtonState())
+        {
+            this.mouseClicked(mp.x, mp.y, Mouse.getEventButton());
+        }else{
+            this.mouseMovedOrUp(mp.x, mp.y, Mouse.getEventButton());
+        }
 	}
 	
 	private void putSlotUnderMouse(int x, int y) {
@@ -407,14 +404,14 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 			s.xDisplayPosition = x - 999;
 			s.yDisplayPosition = y - 999;
 		}
-		Slot s = getSlotAtPosition(x, y);
+		Slot s = getSlotAt(x, y);
 		if (s != null) {
 			s.xDisplayPosition = x - guiLeft - 8;
 			s.yDisplayPosition = y - guiTop - 8;
 		}
 	}
 	
-	public Slot getSlotAtPosition(int x, int y) {
+	public Slot getSlotAt(int x, int y) {
 		PC_GresWidget w = child.getWidgetUnderMouse(new PC_VecI(x, y));
 		if (w == null)
 			return null;
@@ -443,6 +440,13 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 	
 	public static RenderItem getItemRenderer() {
 		return itemRenderer;
+	}
+	
+	@Override
+	public PC_VecI getMousePos() {
+		int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+	    int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+		return new PC_VecI(x, y);
 	}
 	
 }

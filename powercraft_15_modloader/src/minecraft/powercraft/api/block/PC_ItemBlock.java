@@ -10,9 +10,11 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
+import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
@@ -20,6 +22,7 @@ import powercraft.launcher.loader.PC_ModuleObject;
 
 public class PC_ItemBlock extends ItemBlock implements PC_IItemInfo {
 	
+	private static final PC_Direction[] sides = {PC_Direction.BOTTOM, PC_Direction.TOP, PC_Direction.FRONT, PC_Direction.BACK, PC_Direction.LEFT, PC_Direction.RIGHT};
 	private PC_ModuleObject module;
 	
 	public PC_ItemBlock(int id) {
@@ -58,12 +61,23 @@ public class PC_ItemBlock extends ItemBlock implements PC_IItemInfo {
 	public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int dir, float xHit, float yHit, float zHit) {
 		int blockID = PC_Utils.getBID(world, x, y, z);
 		int metadata = PC_Utils.getMD(world, x, y, z);
+		Block block = Block.blocksList[blockID];
+		
+		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
 		
 		if (blockID == Block.snow.blockID && (metadata & 7) < 1) {
 			dir = 1;
 		} else if (!PC_Utils.isBlockReplaceable(world, x, y, z)) {
 			
-			PC_VecI offset = PC_Direction.getFormMCDir(dir).getOffset();
+			PC_VecI offset=null;
+			
+			if(block instanceof PC_Block){
+				offset = ((PC_Block) block).moveBlockTryToPlaceAt(world, x, y, z, pcDir, xHit, yHit, zHit, itemStack, entityPlayer);
+			}
+			
+			if(offset==null){
+				offset = pcDir.getOffset();
+			}
 			
 			x += offset.x;
 			y += offset.y;
@@ -71,12 +85,58 @@ public class PC_ItemBlock extends ItemBlock implements PC_IItemInfo {
 			
 		}
 		
-		blockID = getBlockID();
-		Block block = Block.blocksList[blockID];
-		
 		if (itemStack.stackSize == 0) {
 			return false;
-		} else if (!entityPlayer.canPlayerEdit(x, y, z, dir, itemStack)) {
+		} 
+
+		PC_VecI move;
+		do{
+			
+			move=null;
+			blockID = PC_Utils.getBID(world, x, y, z);
+			metadata = PC_Utils.getMD(world, x, y, z);
+			
+			if(blockID!=0){
+				block = Block.blocksList[blockID];
+				if (!((blockID == Block.snow.blockID && (metadata & 7) < 1) || PC_Utils.isBlockReplaceable(world, x, y, z))) {
+					if(block instanceof PC_Block){
+						move = ((PC_Block) block).moveBlockTryToPlaceAt(world, x, y, z, pcDir, xHit, yHit, zHit, itemStack, entityPlayer);
+					}
+					if(move==null){
+						return false;
+					}
+					x += move.x;
+					y += move.y;
+					z += move.z;
+					continue;
+				}
+				
+			}
+			
+			blockID = getBlockID();
+			block = Block.blocksList[blockID];
+			
+			for(int i=0; i<6; i++){
+				PC_VecI offset = sides[i].getOffset();
+				Block b = PC_Utils.getBlock(world, x+offset.x, y+offset.y, z+offset.z);
+				if(b instanceof PC_Block){
+					PC_Block pcBlock = (PC_Block)b;
+					move = pcBlock.moveBlockTryToPlaceOnSide(world, x, y, z, sides[i].mirror(), xHit, yHit, zHit, pcBlock, itemStack, entityPlayer);
+					if(move!=null)
+						break;
+				}
+			}
+			if(move!=null){
+				x += move.x;
+				y += move.y;
+				z += move.z;
+			}
+		}while(move!=null);
+		
+		blockID = getBlockID();
+		block = Block.blocksList[blockID];
+		
+		if (!entityPlayer.canPlayerEdit(x, y, z, dir, itemStack)) {
 			return false;
 		} else if (y == 255 && block.blockMaterial.isSolid()) {
 			return false;
@@ -140,6 +200,10 @@ public class PC_ItemBlock extends ItemBlock implements PC_IItemInfo {
 		
 		if (PC_Utils.getBID(world, x, y, z) == blockID) {
 			Block.blocksList[blockID].onBlockPlacedBy(world, x, y, z, player, stack);
+			TileEntity te = PC_Utils.getTE(world, x, y, z);
+			if(te instanceof PC_TileEntity){
+				((PC_TileEntity)te).create(stack, player, world, x, y, z, dir, hitX, hitY, hitZ);
+			}
 			Block.blocksList[blockID].onPostBlockPlaced(world, x, y, z, metadata);
 		}
 		

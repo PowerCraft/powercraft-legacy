@@ -88,4 +88,9 @@ public class PC_ClientUtils extends PC_Utils {
 		
 	}
 	
+	@Override
+	protected void iChatMsg(String tr) {
+		mc().ingameGUI.getChatGUI().printChatMessage(tr);
+	}
+	
 }

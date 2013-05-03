@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
@@ -39,6 +41,11 @@ public class PC_TileEntity extends TileEntity {
 		return worldObj;
 	}
 	
+	public void create(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int dir, float hitX, float hitY, float hitZ) {
+		
+	}
+	
 	@Override
 	public Packet getDescriptionPacket() {
 		PC_Struct2<String, Object>[] o = getData();
@@ -64,6 +71,49 @@ public class PC_TileEntity extends TileEntity {
 		
 		return new Packet250CustomPayload("PowerCraft", data.toByteArray());
 	}
+	
+	@Override
+    public void readFromNBT(NBTTagCompound nbtTagCompound) {
+            super.readFromNBT(nbtTagCompound);
+            final NBTTagCompound nbtTag = nbtTagCompound.getCompoundTag("map");
+            PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), this, PC_ClientServerSync.class, new PC_IFieldAnnotationIterator<PC_ClientServerSync>() {
+
+                    @Override
+                    public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_ClientServerSync> fieldWithAnnotation) {
+                            if(fieldWithAnnotation.getAnnotation().save()){
+                                    String fieldName = fieldWithAnnotation.getAnnotation().name();
+                                    if(fieldName.equals("")){
+                                            fieldName = fieldWithAnnotation.getFieldName();
+                                    }
+                                    Object o = PC_Utils.loadFromNBT(nbtTag, fieldName);
+                                    fieldWithAnnotation.setValue(o);
+                            }
+                            return false;
+                    }
+            });
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbtTagCompound) {
+            super.writeToNBT(nbtTagCompound);
+            final NBTTagCompound nbtTag = new NBTTagCompound();
+            PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), this, PC_ClientServerSync.class, new PC_IFieldAnnotationIterator<PC_ClientServerSync>() {
+
+                    @Override
+                    public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_ClientServerSync> fieldWithAnnotation) {
+                            if(fieldWithAnnotation.getAnnotation().save()){
+                                    String fieldName = fieldWithAnnotation.getAnnotation().name();
+                                    if(fieldName.equals("")){
+                                            fieldName = fieldWithAnnotation.getFieldName();
+                                    }
+                                    PC_Utils.saveToNBT(nbtTag, fieldName, fieldWithAnnotation.getValue());
+                            }
+                            return false;
+                    }
+            });
+            nbtTagCompound.setCompoundTag("map", nbtTag);
+    }
+
 	
 	public boolean canPlayerSetField(String fieldName, PC_FieldWithAnnotation<PC_ClientServerSync> fieldWithAnnotation, EntityPlayer player) {
 		if (!worldObj.isRemote) {

@@ -1,6 +1,7 @@
 package powercraft.api.reflect;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 public class PC_MethodWithAnnotation<T extends Annotation> {
 	
@@ -20,12 +21,16 @@ public class PC_MethodWithAnnotation<T extends Annotation> {
 		return annotation;
 	}
 	
-	public Class<?>[] getMethodParams() {
-		return c.getMethods()[index].getParameterTypes();
+	public Class<?>[] getMethodParams(){
+		return c.getDeclaredMethods()[index].getParameterTypes();
 	}
 	
-	public String getMethodName() {
-		return c.getMethods()[index].getName();
+	public String getMethodName(){
+		return c.getDeclaredMethods()[index].getName();
+	}
+	
+	public Method getMethod(){
+		return c.getDeclaredMethods()[index];
 	}
 	
 }
