@@ -103,7 +103,7 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 			for(EntityItem entity:list){
 				inv.collectItem(entity);
 			}
-			if(recipe.getStructRotation(worldObj, getCoord())==-1){
+			if(recipe.getStructRotation(worldObj, getCoord(), 0)){
 				breakStruct();
 			}
 		}

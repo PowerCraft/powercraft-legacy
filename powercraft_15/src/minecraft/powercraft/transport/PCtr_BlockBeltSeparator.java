@@ -37,9 +37,9 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
         PCtr_TileEntitySeparationBelt tes = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
         PC_Direction redir = tes.getDirection(entity);
         PC_Direction rotation = getRotation(world.getBlockMetadata(i, j, k));
-        rotation.rotate(redir);
+        redir = rotation.rotate(redir);
 
-        PC_VecI pos_leading_to = pos.offset(rotation.getOffset());
+        PC_VecI pos_leading_to = pos.offset(redir.getOffset());
         
         if (entity instanceof EntityItem && PCtr_BeltHelper.storeEntityItemAt(world, pos_leading_to, (EntityItem) entity, redir))
         {
@@ -53,8 +53,8 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
             PCtr_BeltHelper.entityPreventDespawning(world, pos, true, entity);
         }
 
-        leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, rotation, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
-        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, rotation, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
+        leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, redir, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
+        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, redir, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                 PCtr_BeltHelper.HORIZONTAL_BOOST);
     }
 
