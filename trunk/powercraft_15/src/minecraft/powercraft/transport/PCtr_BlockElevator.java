@@ -90,44 +90,44 @@ public class PCtr_BlockElevator extends PC_Block
         {
             if (entity instanceof EntityLiving)
             {
-                int side = -1;
+            	PC_Direction side = null;
 
                 if ((PCtr_BeltHelper.isConveyorAt(world, pos.offset(1, 0, 0)) && world.isAirBlock(i + 1, j + 1, k)))
                 {
-                    side = 1;
+                    side = PC_Direction.LEFT;
                 }
                 else if ((PCtr_BeltHelper.isConveyorAt(world, pos.offset(-1, 0, 0)) && world.isAirBlock(i - 1, j + 1, k)))
                 {
-                    side = 3;
+                    side = PC_Direction.RIGHT;
                 }
                 else if ((PCtr_BeltHelper.isConveyorAt(world, pos.offset(0, 0, 1)) && world.isAirBlock(i, j + 1, k + 1)))
                 {
-                    side = 2;
+                    side = PC_Direction.FRONT;
                 }
                 else if ((PCtr_BeltHelper.isConveyorAt(world, pos.offset(0, 0, -1)) && world.isAirBlock(i, j + 1, k - 1)))
                 {
-                    side = 0;
+                    side = PC_Direction.BACK;
                 }
                 else if ((world.isAirBlock(i + 1, j, k) && !world.isAirBlock(i + 1, j - 1, k)))
                 {
-                    side = 1;
+                    side = PC_Direction.LEFT;
                 }
                 else if ((world.isAirBlock(i - 1, j, k) && !world.isAirBlock(i - 1, j - 1, k)))
                 {
-                    side = 3;
+                    side = PC_Direction.RIGHT;
                 }
                 else if ((world.isAirBlock(i, j, k + 1) && !world.isAirBlock(i, j - 1, k + 1)))
                 {
-                    side = 2;
+                    side = PC_Direction.FRONT;
                 }
                 else if ((world.isAirBlock(i, j, k - 1) && !world.isAirBlock(i, j - 1, k - 1)))
                 {
-                    side = 0;
+                    side = PC_Direction.BACK;
                 }
 
-                if (side != -1)
+                if (side != null)
                 {
-                    PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, PC_Direction.getFormMCSide(side), PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
+                    PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, side, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                             PCtr_BeltHelper.HORIZONTAL_BOOST);
                 }
             }
@@ -137,17 +137,17 @@ public class PCtr_BlockElevator extends PC_Block
                 {
                     if (PCtr_BeltHelper.isConveyorAt(world, pos.offset(1, 0, 0)))
                     {
-                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, PC_Direction.RIGHT, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
+                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, PC_Direction.LEFT, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                                 PCtr_BeltHelper.HORIZONTAL_BOOST * (down ? 1.2D : 1));
                     }
                     else if (PCtr_BeltHelper.isConveyorAt(world, pos.offset(-1, 0, 0)))
                     {
-                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, PC_Direction.FRONT, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
+                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, PC_Direction.RIGHT, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                                 PCtr_BeltHelper.HORIZONTAL_BOOST * (down ? 1.2D : 1));
                     }
                     else if (PCtr_BeltHelper.isConveyorAt(world, pos.offset(0, 0, 1)))
                     {
-                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, PC_Direction.LEFT, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
+                        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, true, PC_Direction.FRONT, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                                 PCtr_BeltHelper.HORIZONTAL_BOOST * (down ? 1.2D : 1));
                     }
                     else if (PCtr_BeltHelper.isConveyorAt(world, pos.offset(0, 0, -1)))

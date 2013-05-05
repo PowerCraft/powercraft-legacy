@@ -135,56 +135,57 @@ public class PCtr_BeltHelper
 
     public static void packItems(World world, PC_VecI pos)
     {
+    	if(world.isRemote)
+    		return;
+    	
         List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class,
                 AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
-
+        
         if (items.size() < 5)
         {
             return;
         }
 
-        nextItem:
-
         for (EntityItem item1 : items)
         {
             if (item1 == null || item1.isDead || item1.getEntityItem() == null)
             {
-                continue nextItem;
+                continue;
             }
 
             if (item1.getEntityItem().stackSize < 1)
             {
                 item1.setDead();
-                continue nextItem;
+                continue;
             }
 
             if (item1.getEntityItem().isItemStackDamageable())
             {
-                continue nextItem;
+                continue;
             }
 
             if (item1.getEntityItem().isItemEnchanted())
             {
-                continue nextItem;
+                continue;
             }
 
             if (!item1.getEntityItem().isStackable())
             {
-                continue nextItem;
+                continue;
             }
 
             ItemStack stackTarget = item1.getEntityItem();
 
             if (stackTarget.stackSize == stackTarget.getMaxStackSize())
             {
-                continue nextItem;
+                continue;
             }
 
             for (EntityItem item2 : items)
             {
                 if (item2.isDead)
                 {
-                    continue nextItem;
+                    break;
                 }
 
                 ItemStack stackAdded = item2.getEntityItem();
@@ -209,7 +210,7 @@ public class PCtr_BeltHelper
                         {
                             stackTarget.stackSize = stackTarget.getMaxStackSize();
                             stackAdded.stackSize -= sizeRemain;
-                            continue nextItem;
+                            break;
                         }
                     }
                 }
@@ -729,7 +730,7 @@ public class PCtr_BeltHelper
 
                 break;
                 
-            case 4:
+            case 5:
             	
             	if (Math.abs(entity.motionY) > 0.4D)
                 {
@@ -772,7 +773,7 @@ public class PCtr_BeltHelper
 
                 break;
 
-            case 5:
+            case 4:
             	
             	if (Math.abs(entity.motionY) > 0.4D)
                 {

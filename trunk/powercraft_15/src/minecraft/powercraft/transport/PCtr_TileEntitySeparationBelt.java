@@ -148,7 +148,6 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntitySeparationBelt
 	                entityitem2.motionZ = entity.motionZ;
 	                worldObj.spawnEntityInWorld(entityitem2);
 	                setItemDirection(entityitem2, translate[2]);
-	                entity.setDead();
 	                EntityItem entityNew = new PC_EntityItem(worldObj, entity.posX, entity.posY, entity.posZ, itemstack);
 	                entityNew.motionX = entity.motionX;
 	                entityNew.motionY = entity.motionY;

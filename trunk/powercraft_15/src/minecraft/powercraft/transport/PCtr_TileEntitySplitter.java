@@ -14,22 +14,7 @@ public class PCtr_TileEntitySplitter extends PCtr_TileEntitySeparationBeltBase {
 	}
 	
 	private PC_Direction getDir(int dir){
-		switch(dir){
-		case 0:
-			return PC_Direction.BOTTOM;
-		case 1:
-			return PC_Direction.TOP;
-		case 2:
-			return PC_Direction.FRONT;
-		case 3:
-			return PC_Direction.BACK;
-		case 4:
-			return PC_Direction.RIGHT;
-		case 5:
-			return PC_Direction.LEFT;
-		default:
-			return PC_Direction.TOP;
-		}
+		return PC_Direction.getFormMCDir(dir);
 	}
 	
 	@Override
@@ -65,7 +50,9 @@ public class PCtr_TileEntitySplitter extends PCtr_TileEntitySeparationBeltBase {
         		else
         			break;
         	}
-        	if(s==6){
+        	if(s==5){
+        		if(dir==-1)
+        			dir = 0;
         		return getDir(dir);
         	}
         }
