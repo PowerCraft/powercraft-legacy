@@ -28,31 +28,30 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 	public static final int TOPBACKLEFT=0, TOPBACKRIGHT=1, TOPFRONTLEFT=2, TOPFRONTRIGHT=3, BOTTOMBACKLEFT=4, BOTTOMBACKRIGHT=5, BOTTOMFRONTLEFT=6, BOTTOMFRONTRIGHT=7;
 	
 	private static PC_3DRecipe recipe = new PC_3DRecipe(null, 
-				new String[]{
-				"g  g",
-				"    ",
-				"    ",
-				"g  g"},
-				new String[]{
-				"f  f",
-				"    ",
-				"    ",
-				"f  f"},
-				new String[]{
-				"f  f",
-				"    ",
-				"    ",
-				"f  f"},
-				new String[]{
-				"g  g",
-				"    ",
-				"    ",
-				"g  g"},
-				'g', PCis_App.bigChest, 'f', Block.fence, ' ', null);
+			new String[]{
+			"g  g",
+			"    ",
+			"    ",
+			"g  g"},
+			new String[]{
+			"f  f",
+			"    ",
+			"    ",
+			"f  f"},
+			new String[]{
+			"f  f",
+			"    ",
+			"    ",
+			"f  f"},
+			new String[]{
+			"g  g",
+			"    ",
+			"    ",
+			"g  g"},
+			'g', PCis_App.bigChest, 'f', Block.fence, ' ', null);
 	
 	private int pos;
 	private PCis_BigChestInventory inv;
-	
 	
 	@Override
 	public PCis_BigChestInventory getInventory() {
@@ -103,7 +102,7 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 			for(EntityItem entity:list){
 				inv.collectItem(entity);
 			}
-			if(recipe.getStructRotation(worldObj, getCoord(), 0)){
+			if(!recipe.getStructRotation(worldObj, getCoord(), 0)){
 				breakStruct();
 			}
 		}

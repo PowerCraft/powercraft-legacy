@@ -60,10 +60,17 @@ public class PCis_BlockBigChest extends PC_Block implements PC_I3DRecipeHandler 
 		PCis_TileEntityBigChest te = PC_Utils.getTE(world, x, y, z);
 		PC_VecI pos = new PC_VecI(x, y, z);
 		IInventory inv = te.getInventory();
+		
 		if(inv!=null && !world.isRemote){
-			PC_InventoryUtils.dropInventoryContents(inv, world, pos);
-			for(int i=0; i<inv.getSizeInventory(); i++){
-				inv.setInventorySlotContents(i, null);
+			if(!world.isRemote){
+				if(inv instanceof PCis_BigChestInventory){
+					((PCis_BigChestInventory)inv).destroy = true;
+				}
+				PC_InventoryUtils.dropInventoryContents(inv, world, pos);
+			}else{
+				for(int i=0; i<inv.getSizeInventory(); i++){
+					inv.setInventorySlotContents(i, null);
+				}
 			}
 		}
 		te.breakStruct();

@@ -24,6 +24,7 @@ public class PCis_BigChestInventory implements IInventory {
 	private World world;
 	private PC_VecI mid;
 	private PCis_TileEntityBigChest te;
+	public boolean destroy;
 	
 	public PCis_BigChestInventory(PCis_TileEntityBigChest te) {
 		this.te = te;
@@ -124,7 +125,7 @@ public class PCis_BigChestInventory implements IInventory {
 						makeEntity(world, new PC_VecF(mid).offset(rand.nextFloat()*2-1, rand.nextFloat()*2-1, rand.nextFloat()*2-1), mid, new PC_VecF(rand.nextFloat()*2-1, rand.nextFloat()*2-1, rand.nextFloat()*2-1).mul(10.0f), slot);
 					}
 				}
-			}else{
+			}else if(!destroy){
 				if(inv[slot]==null){
 					PC_PacketHandler.setTileEntity(te, new PC_Entry("slotChange", new PC_Struct2<Integer, byte[]>(slot, null)));
 				}else{
