@@ -98,6 +98,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	private static final int CooldownTime = 8;
 	
 	private int tick=0;
+	private boolean moveEnabled=true;
 	
 	/**
 	 * Create miner in world.
@@ -501,8 +502,6 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		public MinerCargoInventory() {
 			super(PC_LangRegistry.tr("pc.miner.chestName"), false, 11 * 5);
 		}
-
-		public boolean moveEnabled=true;
 		
 		/**
 	     * Called when an the contents of an Inventory change, usually
@@ -1007,7 +1006,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		@Override
 		public void onInventoryChanged(){
 			super.onInventoryChanged();
-			updateLevel();
+			if(moveEnabled){
+				updateLevel();
+			}
 		}
 		
 		@Override
@@ -3455,8 +3456,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 		
 		if (inv != null) {
+			moveEnabled=false;
 			PC_InventoryUtils.moveStacks(xtals, inv);
-			cargo.moveEnabled=false;
 			PC_InventoryUtils.moveStacks(cargo, inv);
 			PC_InventoryUtils.dropInventoryContents(cargo, worldObj, new PC_VecI((int)Math.round(posX), (int)Math.round(posY + 2.2F), (int)Math.round(posZ)));
 		} else {

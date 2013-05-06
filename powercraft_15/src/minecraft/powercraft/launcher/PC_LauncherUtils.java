@@ -75,6 +75,10 @@ public class PC_LauncherUtils {
 		return PC_ModLoader.FORGE_MODLOADER;
 	}
 	
+	public static boolean isDeveloperVersion(){
+		return PC_Launcher.isDeveloperVersion();
+	}
+	
 	public void openUpdateGui(boolean requestDownloadTarget){
 		
 	}

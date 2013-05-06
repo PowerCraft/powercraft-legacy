@@ -1,30 +1,27 @@
 package powercraft.projector;
 
+import java.nio.FloatBuffer;
+
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
 import powercraft.api.tileentity.PC_TileEntity;
 
-public class PCpj_TileEntityProjector extends PC_TileEntity implements PC_ITileEntityRenderer {
+public class PCpj_TileEntityProjector extends PC_TileEntity {
 
-	public int framebufferID;
-	public int depthRenderBufferID;
+	public static FloatBuffer projectionsMatrix;
+	public static FloatBuffer modelviewMatrix;
 	
 	@Override
 	public void invalidate() {
 		super.invalidate();
-		PCpj_App.sDestryFrameBuffer(this);
+		if(worldObj.isRemote)
+			PCpj_ProjectorRenderer.toRender.remove(this);
 	}
 
 	@Override
 	public void validate() {
 		super.validate();
-		PCpj_App.sCreateFrameBuffer(this);
-	}
-
-	@Override
-	public void renderTileEntityAt(double x, double y, double z, float timeStamp) {
-		if(PCpj_EntityRenderer.canAdd){
-			PCpj_EntityRenderer.toRender.add(this);
-		}
+		if(worldObj.isRemote)
+			PCpj_ProjectorRenderer.toRender.add(this);
 	}
 
 }
