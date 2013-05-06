@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import powercraft.launcher.PC_Launcher;
 import powercraft.launcher.PC_LauncherUtils;
 import powercraft.launcher.PC_Version;
 
@@ -97,7 +98,11 @@ public class PC_UpdateXMLFile {
 		
 		@Override
 		protected void readAttributes(Element element) {
-			powerCraftVersion = new PC_Version(element.getAttribute("version"));
+			if(PC_LauncherUtils.isDeveloperVersion()){
+				powerCraftVersion = new PC_Version(element.getAttribute("devversion"));
+			}else{
+				powerCraftVersion = new PC_Version(element.getAttribute("version"));
+			}
 		}
 
 		@Override
@@ -163,6 +168,11 @@ public class PC_UpdateXMLFile {
 			if (childName.equalsIgnoreCase("version")){
             	versions.add(new XMLVersionTag(this, childNode).read());
             }
+			if(PC_LauncherUtils.isDeveloperVersion()){
+				if (childName.equalsIgnoreCase("devversion")){
+					versions.add(new XMLVersionTag(this, childNode).read());
+				}
+			}
 		}
 		
 	}
@@ -256,6 +266,10 @@ public class PC_UpdateXMLFile {
             	modules.add(new XMLChildModuleTag(this, childNode).read());
             }else if (childName.equalsIgnoreCase("version")){
             	versions.add(new XMLVersionTag(this, childNode).read());
+            }else if(PC_LauncherUtils.isDeveloperVersion()){
+            	if (childName.equalsIgnoreCase("devversion")){
+            		versions.add(new XMLVersionTag(this, childNode).read());
+            	}
             }
 		}
 		

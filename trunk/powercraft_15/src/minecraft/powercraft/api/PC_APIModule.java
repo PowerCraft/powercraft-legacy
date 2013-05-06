@@ -84,7 +84,6 @@ public class PC_APIModule {
 		PC_Logger.enterSection("PreInit");
 		PC_GlobalVariables.loadConfig();
 		PC_Logger.enterSection("Register Hacks");
-		PC_ClientHacks.hackClient();
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module PreInit");
 		List<PC_ModuleObject> modules = PC_ModuleRegistry.getModuleList();
@@ -120,10 +119,6 @@ public class PC_APIModule {
 		PC_BuildingRegistry.register(new PC_TreeHarvesting());
 		List<PC_ModuleObject> modules = PC_ModuleRegistry.getModuleList();
 		creativeTab = new PC_CreativeTab();
-		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserParticleFX.class);
-		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserFX.class);
-		PC_ClientUtils.registerEnitiyFX(PC_EntityFanFX.class);
-		PC_ClientUtils.registerEnitiyFX("EntitySmokeFX", EntitySmokeFX.class);
 		PC_ThreadManager.init();
 		PC_Logger.enterSection("Module Init");
 		for (PC_ModuleObject module : modules) {

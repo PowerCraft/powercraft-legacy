@@ -176,6 +176,8 @@ public class PC_3DRecipe implements PC_IRecipe {
 		PC_Struct2<PC_VecI, Integer> structStart = getStructStart(world, pos);
 		if(structStart==null)
 			return false;
+		if(obj==null)
+			return true;
 		return obj.foundStructAt(entityplayer, world, structStart);
 	}
 
