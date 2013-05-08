@@ -33,7 +33,7 @@ public class PClo_ItemBlockSpecial extends PC_ItemBlock
     }
 
     @Override
-    public Icon getIconFromDamage(int i)
+    public Icon getBlockTextureFromSideAndMetadataFromDamage(int i)
     {
         return PClo_App.special.getBlockTextureFromSideAndMetadata(1, 0);
     }

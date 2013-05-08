@@ -133,9 +133,9 @@ public final class ItemStack
     /**
      * Returns the icon index of the current stack.
      */
-    public Icon getIconIndex()
+    public Icon getBlockTextureFromSideAndMetadataIndex()
     {
-        return this.getItem().getIconIndex(this);
+        return this.getItem().getBlockTextureFromSideAndMetadataIndex(this);
     }
 
     @SideOnly(Side.CLIENT)

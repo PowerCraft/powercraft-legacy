@@ -33,7 +33,7 @@ public class PClo_ItemBlockRepeater extends PC_ItemBlock
     }
 
     @Override
-    public Icon getIconFromDamage(int i)
+    public Icon getBlockTextureFromSideAndMetadataFromDamage(int i)
     {
         return PClo_App.repeater.getBlockTextureFromSideAndMetadata(1, 0);
     }

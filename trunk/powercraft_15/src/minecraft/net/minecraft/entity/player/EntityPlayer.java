@@ -1982,7 +1982,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         {
             if (par1ItemStack.getItem().requiresMultipleRenderPasses())
             {
-                return par1ItemStack.getItem().getIcon(par1ItemStack, par2);
+                return par1ItemStack.getItem().getBlockTextureFromSideAndMetadata(par1ItemStack, par2);
             }
 
             if (this.itemInUse != null && par1ItemStack.itemID == Item.bow.itemID)
@@ -2004,7 +2004,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
                     return Item.bow.func_94599_c(0);
                 }
             }
-            icon = par1ItemStack.getItem().getIcon(par1ItemStack, par2, this, itemInUse, itemInUseCount);
+            icon = par1ItemStack.getItem().getBlockTextureFromSideAndMetadata(par1ItemStack, par2, this, itemInUse, itemInUseCount);
         }
 
         return icon;

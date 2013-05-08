@@ -47,7 +47,7 @@ public class ItemBlock extends Item
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getIconFromDamage(int par1)
+    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
     {
         return this.field_94588_b != null ? this.field_94588_b : Block.blocksList[this.blockID].getBlockTextureFromSide(1);
     }

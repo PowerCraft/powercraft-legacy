@@ -155,7 +155,7 @@ public class BlockGrass extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public static Icon getIconSideOverlay()
+    public static Icon getBlockTextureFromSideAndMetadataSideOverlay()
     {
         return Block.grass.iconGrassSideOverlay;
     }

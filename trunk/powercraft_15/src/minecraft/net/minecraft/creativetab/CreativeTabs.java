@@ -204,7 +204,7 @@ public class CreativeTabs
     /**
      * Get the ItemStack that will be rendered to the tab.
      */
-    public ItemStack getIconItemStack()
+    public ItemStack getBlockTextureFromSideAndMetadataItemStack()
     {
         return new ItemStack(getTabIconItem());
     }

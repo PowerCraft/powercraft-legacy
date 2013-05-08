@@ -27,7 +27,7 @@ public class PCnt_ItemBlockRadio extends PC_ItemBlock {
 	}
 
 	@Override
-	public Icon getIconFromDamage(int i) {
+	public Icon getBlockTextureFromSideAndMetadataFromDamage(int i) {
 		return Block.blocksList[getBlockID()].getBlockTextureFromSideAndMetadata(1, 0);
 	}
 
