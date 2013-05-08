@@ -14,7 +14,7 @@ public class EntityBreakingFX extends EntityFX
     public EntityBreakingFX(World par1World, double par2, double par4, double par6, Item par8Item, RenderEngine par9RenderEngine)
     {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-        this.func_94052_a(par9RenderEngine, par8Item.getIconFromDamage(0));
+        this.func_94052_a(par9RenderEngine, par8Item.getBlockTextureFromSideAndMetadataFromDamage(0));
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
         this.particleGravity = Block.blockSnow.blockParticleGravity;
         this.particleScale /= 2.0F;

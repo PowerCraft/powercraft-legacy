@@ -132,7 +132,7 @@ public class RenderItem extends Render
                     for (int k = 0; k < itemstack.getItem().getRenderPasses(itemstack.getItemDamage()); ++k)
                     {
                         this.random.setSeed(187L);
-                        Icon icon = itemstack.getItem().getIcon(itemstack, k);
+                        Icon icon = itemstack.getItem().getBlockTextureFromSideAndMetadata(itemstack, k);
                         f8 = 1.0F;
 
                         if (this.renderWithColor)
@@ -162,7 +162,7 @@ public class RenderItem extends Render
                         GL11.glScalef(0.5F, 0.5F, 0.5F);
                     }
 
-                    Icon icon1 = itemstack.getIconIndex();
+                    Icon icon1 = itemstack.getBlockTextureFromSideAndMetadataIndex();
 
                     if (itemstack.getItemSpriteNumber() == 0)
                     {
@@ -337,7 +337,7 @@ public class RenderItem extends Render
     {
         int k = par3ItemStack.itemID;
         int l = par3ItemStack.getItemDamage();
-        Icon icon = par3ItemStack.getIconIndex();
+        Icon icon = par3ItemStack.getBlockTextureFromSideAndMetadataIndex();
         float f;
         float f1;
         float f2;
@@ -380,7 +380,7 @@ public class RenderItem extends Render
 
                 for (j1 = 0; j1 < Item.itemsList[k].getRenderPasses(l); ++j1)
                 {
-                    Icon icon1 = Item.itemsList[k].getIcon(par3ItemStack, j1);
+                    Icon icon1 = Item.itemsList[k].getBlockTextureFromSideAndMetadata(par3ItemStack, j1);
                     int k1 = Item.itemsList[k].getColorFromItemStack(par3ItemStack, j1);
                     f = (float)(k1 >> 16 & 255) / 255.0F;
                     f1 = (float)(k1 >> 8 & 255) / 255.0F;

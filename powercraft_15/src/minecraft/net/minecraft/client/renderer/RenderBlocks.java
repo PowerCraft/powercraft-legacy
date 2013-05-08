@@ -4234,7 +4234,7 @@ public class RenderBlocks
         Tessellator tessellator = Tessellator.instance;
         tessellator.setBrightness(983055);
 
-        if (this.getBlockIcon(par1Block).getIconName().equals("grass_top"))
+        if (this.getBlockIcon(par1Block).getBlockTextureFromSideAndMetadataName().equals("grass_top"))
         {
             flag1 = false;
         }
@@ -4585,7 +4585,7 @@ public class RenderBlocks
             icon = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 2);
             this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, icon);
 
-            if (fancyGrass && icon.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (fancyGrass && icon.getBlockTextureFromSideAndMetadataName().equals("grass_side") && !this.hasOverrideBlockTexture())
             {
                 this.colorRedTopLeft *= par5;
                 this.colorRedBottomLeft *= par5;
@@ -4599,7 +4599,7 @@ public class RenderBlocks
                 this.colorBlueBottomLeft *= par7;
                 this.colorBlueBottomRight *= par7;
                 this.colorBlueTopRight *= par7;
-                this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+                this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getBlockTextureFromSideAndMetadataSideOverlay());
             }
 
             flag = true;
@@ -4719,7 +4719,7 @@ public class RenderBlocks
             icon = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3);
             this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3));
 
-            if (fancyGrass && icon.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (fancyGrass && icon.getBlockTextureFromSideAndMetadataName().equals("grass_side") && !this.hasOverrideBlockTexture())
             {
                 this.colorRedTopLeft *= par5;
                 this.colorRedBottomLeft *= par5;
@@ -4733,7 +4733,7 @@ public class RenderBlocks
                 this.colorBlueBottomLeft *= par7;
                 this.colorBlueBottomRight *= par7;
                 this.colorBlueTopRight *= par7;
-                this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+                this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getBlockTextureFromSideAndMetadataSideOverlay());
             }
 
             flag = true;
@@ -4853,7 +4853,7 @@ public class RenderBlocks
             icon = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 4);
             this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, icon);
 
-            if (fancyGrass && icon.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (fancyGrass && icon.getBlockTextureFromSideAndMetadataName().equals("grass_side") && !this.hasOverrideBlockTexture())
             {
                 this.colorRedTopLeft *= par5;
                 this.colorRedBottomLeft *= par5;
@@ -4867,7 +4867,7 @@ public class RenderBlocks
                 this.colorBlueBottomLeft *= par7;
                 this.colorBlueBottomRight *= par7;
                 this.colorBlueTopRight *= par7;
-                this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+                this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getBlockTextureFromSideAndMetadataSideOverlay());
             }
 
             flag = true;
@@ -4987,7 +4987,7 @@ public class RenderBlocks
             icon = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 5);
             this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, icon);
 
-            if (fancyGrass && icon.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (fancyGrass && icon.getBlockTextureFromSideAndMetadataName().equals("grass_side") && !this.hasOverrideBlockTexture())
             {
                 this.colorRedTopLeft *= par5;
                 this.colorRedBottomLeft *= par5;
@@ -5001,7 +5001,7 @@ public class RenderBlocks
                 this.colorBlueBottomLeft *= par7;
                 this.colorBlueBottomRight *= par7;
                 this.colorBlueTopRight *= par7;
-                this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+                this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getBlockTextureFromSideAndMetadataSideOverlay());
             }
 
             flag = true;
@@ -5024,7 +5024,7 @@ public class RenderBlocks
         Tessellator tessellator = Tessellator.instance;
         tessellator.setBrightness(983055);
 
-        if (this.getBlockIcon(par1Block).getIconName().equals("grass_top"))
+        if (this.getBlockIcon(par1Block).getBlockTextureFromSideAndMetadataName().equals("grass_top"))
         {
             flag1 = false;
         }
@@ -5391,7 +5391,7 @@ public class RenderBlocks
             icon = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 2);
             this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, icon);
 
-            if (fancyGrass && icon.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (fancyGrass && icon.getBlockTextureFromSideAndMetadataName().equals("grass_side") && !this.hasOverrideBlockTexture())
             {
                 this.colorRedTopLeft *= par5;
                 this.colorRedBottomLeft *= par5;
@@ -5405,7 +5405,7 @@ public class RenderBlocks
                 this.colorBlueBottomLeft *= par7;
                 this.colorBlueBottomRight *= par7;
                 this.colorBlueTopRight *= par7;
-                this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+                this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getBlockTextureFromSideAndMetadataSideOverlay());
             }
 
             flag = true;
@@ -5533,7 +5533,7 @@ public class RenderBlocks
             icon = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3);
             this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3));
 
-            if (fancyGrass && icon.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (fancyGrass && icon.getBlockTextureFromSideAndMetadataName().equals("grass_side") && !this.hasOverrideBlockTexture())
             {
                 this.colorRedTopLeft *= par5;
                 this.colorRedBottomLeft *= par5;
@@ -5547,7 +5547,7 @@ public class RenderBlocks
                 this.colorBlueBottomLeft *= par7;
                 this.colorBlueBottomRight *= par7;
                 this.colorBlueTopRight *= par7;
-                this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+                this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getBlockTextureFromSideAndMetadataSideOverlay());
             }
 
             flag = true;
@@ -5675,7 +5675,7 @@ public class RenderBlocks
             icon = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 4);
             this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, icon);
 
-            if (fancyGrass && icon.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (fancyGrass && icon.getBlockTextureFromSideAndMetadataName().equals("grass_side") && !this.hasOverrideBlockTexture())
             {
                 this.colorRedTopLeft *= par5;
                 this.colorRedBottomLeft *= par5;
@@ -5689,7 +5689,7 @@ public class RenderBlocks
                 this.colorBlueBottomLeft *= par7;
                 this.colorBlueBottomRight *= par7;
                 this.colorBlueTopRight *= par7;
-                this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+                this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getBlockTextureFromSideAndMetadataSideOverlay());
             }
 
             flag = true;
@@ -5817,7 +5817,7 @@ public class RenderBlocks
             icon = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 5);
             this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, icon);
 
-            if (fancyGrass && icon.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (fancyGrass && icon.getBlockTextureFromSideAndMetadataName().equals("grass_side") && !this.hasOverrideBlockTexture())
             {
                 this.colorRedTopLeft *= par5;
                 this.colorRedBottomLeft *= par5;
@@ -5831,7 +5831,7 @@ public class RenderBlocks
                 this.colorBlueBottomLeft *= par7;
                 this.colorBlueBottomRight *= par7;
                 this.colorBlueTopRight *= par7;
-                this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+                this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getBlockTextureFromSideAndMetadataSideOverlay());
             }
 
             flag = true;
@@ -5936,10 +5936,10 @@ public class RenderBlocks
             icon = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 2);
             this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, icon);
 
-            if (fancyGrass && icon.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (fancyGrass && icon.getBlockTextureFromSideAndMetadataName().equals("grass_side") && !this.hasOverrideBlockTexture())
             {
                 tessellator.setColorOpaque_F(f11 * par5, f14 * par6, f17 * par7);
-                this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+                this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getBlockTextureFromSideAndMetadataSideOverlay());
             }
 
             flag = true;
@@ -5952,10 +5952,10 @@ public class RenderBlocks
             icon = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3);
             this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, icon);
 
-            if (fancyGrass && icon.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (fancyGrass && icon.getBlockTextureFromSideAndMetadataName().equals("grass_side") && !this.hasOverrideBlockTexture())
             {
                 tessellator.setColorOpaque_F(f11 * par5, f14 * par6, f17 * par7);
-                this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+                this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getBlockTextureFromSideAndMetadataSideOverlay());
             }
 
             flag = true;
@@ -5968,10 +5968,10 @@ public class RenderBlocks
             icon = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 4);
             this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, icon);
 
-            if (fancyGrass && icon.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (fancyGrass && icon.getBlockTextureFromSideAndMetadataName().equals("grass_side") && !this.hasOverrideBlockTexture())
             {
                 tessellator.setColorOpaque_F(f12 * par5, f15 * par6, f18 * par7);
-                this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+                this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getBlockTextureFromSideAndMetadataSideOverlay());
             }
 
             flag = true;
@@ -5984,10 +5984,10 @@ public class RenderBlocks
             icon = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 5);
             this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, icon);
 
-            if (fancyGrass && icon.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (fancyGrass && icon.getBlockTextureFromSideAndMetadataName().equals("grass_side") && !this.hasOverrideBlockTexture())
             {
                 tessellator.setColorOpaque_F(f12 * par5, f15 * par6, f18 * par7);
-                this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+                this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getBlockTextureFromSideAndMetadataSideOverlay());
             }
 
             flag = true;
@@ -8138,25 +8138,25 @@ public class RenderBlocks
 
     public Icon getBlockIcon(Block par1Block, IBlockAccess par2IBlockAccess, int par3, int par4, int par5, int par6)
     {
-        return this.getIconSafe(par1Block.getBlockTexture(par2IBlockAccess, par3, par4, par5, par6));
+        return this.getBlockTextureFromSideAndMetadataSafe(par1Block.getBlockTexture(par2IBlockAccess, par3, par4, par5, par6));
     }
 
     public Icon getBlockIconFromSideAndMetadata(Block par1Block, int par2, int par3)
     {
-        return this.getIconSafe(par1Block.getBlockTextureFromSideAndMetadata(par2, par3));
+        return this.getBlockTextureFromSideAndMetadataSafe(par1Block.getBlockTextureFromSideAndMetadata(par2, par3));
     }
 
     public Icon getBlockIconFromSide(Block par1Block, int par2)
     {
-        return this.getIconSafe(par1Block.getBlockTextureFromSide(par2));
+        return this.getBlockTextureFromSideAndMetadataSafe(par1Block.getBlockTextureFromSide(par2));
     }
 
     public Icon getBlockIcon(Block par1Block)
     {
-        return this.getIconSafe(par1Block.getBlockTextureFromSide(1));
+        return this.getBlockTextureFromSideAndMetadataSafe(par1Block.getBlockTextureFromSide(1));
     }
 
-    public Icon getIconSafe(Icon par1Icon)
+    public Icon getBlockTextureFromSideAndMetadataSafe(Icon par1Icon)
     {
         return par1Icon == null ? this.minecraftRB.renderEngine.getMissingIcon(0) : par1Icon;
     }

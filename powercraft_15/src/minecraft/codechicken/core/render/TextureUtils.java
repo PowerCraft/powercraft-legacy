@@ -182,7 +182,7 @@ public class TextureUtils
         engine().bindTexture(string);
     }
 
-    public static Icon getIconFromTexture(String name, IconRegister iconRegister)
+    public static Icon getBlockTextureFromSideAndMetadataFromTexture(String name, IconRegister iconRegister)
     {
         TextureMap textureMap = (TextureMap)iconRegister;
         TextureSpecial icon = new TextureSpecial(name).setTextureFile(name);

@@ -2422,7 +2422,7 @@ public abstract class EntityLiving extends Entity
      */
     public Icon getItemIcon(ItemStack par1ItemStack, int par2)
     {
-        return par1ItemStack.getIconIndex();
+        return par1ItemStack.getBlockTextureFromSideAndMetadataIndex();
     }
 
     protected void updatePotionEffects()

@@ -120,7 +120,7 @@ public class TextureSpecial extends TextureStitched implements IIconRegister
     {
         if(selfRegister)
         {
-            ((TextureMap)register).setTextureEntry(getIconName(), this);
+            ((TextureMap)register).setTextureEntry(getBlockTextureFromSideAndMetadataName(), this);
         }
     }
 }

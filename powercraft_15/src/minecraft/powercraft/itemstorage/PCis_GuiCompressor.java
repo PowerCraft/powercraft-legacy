@@ -32,14 +32,14 @@ public class PCis_GuiCompressor extends PCis_ContainerCompressor implements PC_I
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(PCis_App.compressor.getUnlocalizedName(thePlayer.getCurrentEquippedItem())+".name");
 		
-		PC_GresWidgetTab wt = new PC_GresWidgetTab(0xBBBBBB, "/gui/items.png", Item.paper.getIconFromDamage(0));
+		PC_GresWidgetTab wt = new PC_GresWidgetTab(0xBBBBBB, "/gui/items.png", Item.paper.getBlockTextureFromSideAndMetadataFromDamage(0));
 		
 		wt.add(new PC_GresLabel("pc.gui.compressor.name"));
 		wt.add(name = new PC_GresTextEdit(PCis_ItemCompressor.getName(getItem()), 10));
 		
 		w.add(wt);
 		
-		wt = new PC_GresWidgetTab(0x684E1E, "/gui/items.png", Item.fishingRod.getIconFromDamage(0));
+		wt = new PC_GresWidgetTab(0x684E1E, "/gui/items.png", Item.fishingRod.getBlockTextureFromSideAndMetadataFromDamage(0));
 		
 		wt.add(takeStacks = new PC_GresCheckBox("pc.gui.compressor.takeStacks"));
 		takeStacks.check(PCis_ItemCompressor.isTakeStacks(getItem()));

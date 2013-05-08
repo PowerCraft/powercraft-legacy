@@ -137,9 +137,9 @@ public class ItemMonsterPlacer extends Item
     /**
      * Gets an icon index based on an item's damage value and the given render pass
      */
-    public Icon getIconFromDamageForRenderPass(int par1, int par2)
+    public Icon getBlockTextureFromSideAndMetadataFromDamageForRenderPass(int par1, int par2)
     {
-        return par2 > 0 ? this.theIcon : super.getIconFromDamageForRenderPass(par1, par2);
+        return par2 > 0 ? this.theIcon : super.getBlockTextureFromSideAndMetadataFromDamageForRenderPass(par1, par2);
     }
 
     @SideOnly(Side.CLIENT)

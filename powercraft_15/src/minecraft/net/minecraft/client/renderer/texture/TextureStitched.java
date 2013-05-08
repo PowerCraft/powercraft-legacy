@@ -143,7 +143,7 @@ public class TextureStitched implements Icon
         return this.minV + f * ((float)par1 / 16.0F);
     }
 
-    public String getIconName()
+    public String getBlockTextureFromSideAndMetadataName()
     {
         return this.textureName;
     }

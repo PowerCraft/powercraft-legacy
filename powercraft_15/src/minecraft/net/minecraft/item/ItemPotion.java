@@ -185,7 +185,7 @@ public class ItemPotion extends Item
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getIconFromDamage(int par1)
+    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
     {
         return isSplash(par1) ? this.field_94591_c : this.field_94590_d;
     }
@@ -195,9 +195,9 @@ public class ItemPotion extends Item
     /**
      * Gets an icon index based on an item's damage value and the given render pass
      */
-    public Icon getIconFromDamageForRenderPass(int par1, int par2)
+    public Icon getBlockTextureFromSideAndMetadataFromDamageForRenderPass(int par1, int par2)
     {
-        return par2 == 0 ? this.field_94592_ct : super.getIconFromDamageForRenderPass(par1, par2);
+        return par2 == 0 ? this.field_94592_ct : super.getBlockTextureFromSideAndMetadataFromDamageForRenderPass(par1, par2);
     }
 
     /**

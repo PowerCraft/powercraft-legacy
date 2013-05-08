@@ -191,7 +191,7 @@ public class ItemList
 		            		ItemStack itemstack = new ItemStack(item, 1, damage);
 		                    try
 		                    {
-		                        Icon icon = item.getIconIndex(itemstack);
+		                        Icon icon = item.getBlockTextureFromSideAndMetadataIndex(itemstack);
 		                    	String name = GuiContainerManager.concatenatedDisplayName(itemstack, false);		                    	
 		                        String s = name+"@"+(icon == null ? 0 : icon.hashCode());
 		                        if(!damageIconSet.contains(s))

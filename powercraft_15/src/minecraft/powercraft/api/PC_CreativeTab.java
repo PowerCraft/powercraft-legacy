@@ -16,7 +16,7 @@ public class PC_CreativeTab extends CreativeTabs {
 	}
 
 	@Override
-	public ItemStack getIconItemStack() {
+	public ItemStack getBlockTextureFromSideAndMetadataItemStack() {
 		return new ItemStack(
 				PC_ItemRegistry.getPCItemByName("PCco_ItemActivator"));
 	}

@@ -95,7 +95,7 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IIDChange
 		}
 	}
 	
-	public Icon getIconFromDamage(int par1) {
+	public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1) {
 		if (par1 >= icons.length) {
 			par1 = icons.length - 1;
 		}

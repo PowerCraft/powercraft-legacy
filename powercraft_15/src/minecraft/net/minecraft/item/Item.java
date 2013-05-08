@@ -279,7 +279,7 @@ public class Item
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getIconFromDamage(int par1)
+    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
     {
         return this.iconIndex;
     }
@@ -289,9 +289,9 @@ public class Item
     /**
      * Returns the icon index of the stack given as argument.
      */
-    public final Icon getIconIndex(ItemStack par1ItemStack)
+    public final Icon getBlockTextureFromSideAndMetadataIndex(ItemStack par1ItemStack)
     {
-        return this.getIconFromDamage(par1ItemStack.getItemDamage());
+        return this.getBlockTextureFromSideAndMetadataFromDamage(par1ItemStack.getItemDamage());
     }
 
     /**
@@ -673,9 +673,9 @@ public class Item
     /**
      * Gets an icon index based on an item's damage value and the given render pass
      */
-    public Icon getIconFromDamageForRenderPass(int par1, int par2)
+    public Icon getBlockTextureFromSideAndMetadataFromDamageForRenderPass(int par1, int par2)
     {
-        return this.getIconFromDamage(par1);
+        return this.getBlockTextureFromSideAndMetadataFromDamage(par1);
     }
 
     @SideOnly(Side.CLIENT)
@@ -836,7 +836,7 @@ public class Item
     }
 
     /**
-     * Player, Render pass, and item usage sensitive version of getIconIndex.
+     * Player, Render pass, and item usage sensitive version of getBlockTextureFromSideAndMetadataIndex.
      *
      * @param stack The item stack to get the icon for. (Usually this, and usingItem will be the same if usingItem is not null)
      * @param renderPass The pass to get the icon for, 0 is default.
@@ -845,9 +845,9 @@ public class Item
      * @param useRemaining The ticks remaining for the active item.
      * @return The icon index
      */
-    public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+    public Icon getBlockTextureFromSideAndMetadata(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
     {
-        return getIcon(stack, renderPass);
+        return getBlockTextureFromSideAndMetadata(stack, renderPass);
     }
 
     /**
@@ -948,14 +948,14 @@ public class Item
     /**
      * Return the correct icon for rendering based on the supplied ItemStack and render pass.
      *
-     * Defers to {@link #getIconFromDamageForRenderPass(int, int)}
+     * Defers to {@link #getBlockTextureFromSideAndMetadataFromDamageForRenderPass(int, int)}
      * @param stack to render for
      * @param pass the multi-render pass
      * @return the icon
      */
-    public Icon getIcon(ItemStack stack, int pass)
+    public Icon getBlockTextureFromSideAndMetadata(ItemStack stack, int pass)
     {
-    	return getIconFromDamageForRenderPass(stack.getItemDamage(), pass);
+    	return getBlockTextureFromSideAndMetadataFromDamageForRenderPass(stack.getItemDamage(), pass);
     }
 
     /**

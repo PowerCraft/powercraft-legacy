@@ -96,7 +96,7 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
 		}
 	}
 	
-	public Icon getIconFromDamage(int par1) {
+	public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1) {
 		if (par1 >= icons.length) {
 			par1 = icons.length - 1;
 		}

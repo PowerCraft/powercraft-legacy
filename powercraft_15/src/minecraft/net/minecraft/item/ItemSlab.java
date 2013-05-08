@@ -33,7 +33,7 @@ public class ItemSlab extends ItemBlock
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getIconFromDamage(int par1)
+    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
     {
         return Block.blocksList[this.itemID].getBlockTextureFromSideAndMetadata(2, par1);
     }

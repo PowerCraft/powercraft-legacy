@@ -903,7 +903,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         i1 += 8 + (flag1 ? 1 : -1);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        ItemStack itemstack = par1CreativeTabs.getIconItemStack();
+        ItemStack itemstack = par1CreativeTabs.getBlockTextureFromSideAndMetadataItemStack();
         itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, itemstack, l, i1);
         itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, itemstack, l, i1);
         GL11.glDisable(GL11.GL_LIGHTING);

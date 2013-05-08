@@ -35,7 +35,7 @@ public class ItemRecord extends Item
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getIconFromDamage(int par1)
+    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
     {
         return this.iconIndex;
     }

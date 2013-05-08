@@ -46,7 +46,7 @@ public class RenderUtils
 	    	Item liquidItem = Item.itemsList[liquidID];
 	    	if(liquidItem == null) 
                 return null;
-	    	return liquidItem.getIconFromDamage(liquidMeta);
+	    	return liquidItem.getBlockTextureFromSideAndMetadataFromDamage(liquidMeta);
 		}
 	}
 	

@@ -45,7 +45,7 @@ public class ItemMobSpawner extends ItemBlock
     public static int placedZ;
     
     @Override
-    public Icon getIconFromDamage(int par1)
+    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
     {
         return Block.mobSpawner.getBlockTextureFromSide(0);
     }
