@@ -436,7 +436,7 @@ public class RenderBlocks
         }
         else
         {
-            par1setBlockBounds(BasedOnState(this.blockAccess, par2, par3, par4);
+        	par1Block.setBlockBoundsBasedOnState(this.blockAccess, par2, par3, par4);
             this.setRenderBoundsFromBlock(par1Block);
 
             switch (l)
@@ -7643,7 +7643,7 @@ public class RenderBlocks
             {
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, -1.0F, 0.0F);
-                par1setBlockBounds(ForItemRender();
+                par1Block.setBlockBoundsForItemRender();
                 this.renderBlockStemSmall(par1Block, par2, this.renderMaxY, -0.5D, -0.5D, -0.5D);
                 tessellator.draw();
             }
@@ -7651,12 +7651,12 @@ public class RenderBlocks
             {
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, -1.0F, 0.0F);
-                par1setBlockBounds(ForItemRender();
+                par1Block.setBlockBoundsForItemRender();
                 tessellator.draw();
             }
             else if (j == 13)
             {
-                par1setBlockBounds(ForItemRender();
+            	par1Block.setBlockBoundsForItemRender();
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
                 f1 = 0.0625F;
                 tessellator.startDrawingQuads();
@@ -8062,7 +8062,7 @@ public class RenderBlocks
                 par2 = 1;
             }
 
-            par1setBlockBounds(ForItemRender();
+            par1Block.setBlockBoundsForItemRender();
             this.setRenderBoundsFromBlock(par1Block);
             GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
