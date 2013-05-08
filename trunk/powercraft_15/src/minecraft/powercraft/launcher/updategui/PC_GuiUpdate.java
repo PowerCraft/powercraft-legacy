@@ -17,6 +17,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 import powercraft.launcher.PC_LauncherClientUtils;
+import powercraft.launcher.PC_LauncherUtils;
 import powercraft.launcher.update.PC_UpdateManager;
 import powercraft.launcher.update.PC_UpdateManager.ModuleUpdateInfo;
 
@@ -60,7 +61,9 @@ public class PC_GuiUpdate extends GuiScreen {
         	drawInfo("There is a new Launcher update", isMouseOverInfo(par1, par2));
         }else if(!hasAPI()){
         	drawInfo("Please download the API", false);
-        }
+        } else if (PC_LauncherUtils.isDeveloperVersion()) {
+			drawInfo("You are using the Developer Version", false);
+		}
         
         drawTooltip(par1, par2, par3);
         
