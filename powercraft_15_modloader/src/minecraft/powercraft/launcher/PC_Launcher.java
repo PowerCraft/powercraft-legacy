@@ -21,6 +21,7 @@ public class PC_Launcher {
 	private static PC_Property config;
 	private static boolean autoUpdate;
 	private static boolean openAlwaysUpdateScreen;
+	private static boolean developerVersion;
 	private static PC_ModuleDiscovery modules;
 	
 	public static void loadConfig() {
@@ -39,6 +40,7 @@ public class PC_Launcher {
 		
 		autoUpdate = config.getBoolean("updater.autoUpdate", true, "Should PowerCraft look for updates");
 		openAlwaysUpdateScreen = config.getBoolean("updater.openAlwaysUpdateScreen", false, "Should PowerCraft show always the update screen");
+		developerVersion = config.getBoolean("updater.showDeveloperVersions", false, "Show developer Versions");
 		
 		saveConfig();
 		
@@ -150,6 +152,10 @@ public class PC_Launcher {
 	
 	public static boolean openAlwaysUpdateScreen() {
 		return openAlwaysUpdateScreen;
+	}
+	
+	public static boolean isDeveloperVersion() {
+		return developerVersion;
 	}
 	
 }
