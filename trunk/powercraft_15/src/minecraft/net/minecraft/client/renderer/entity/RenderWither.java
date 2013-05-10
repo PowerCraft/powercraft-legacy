@@ -54,7 +54,7 @@ public class RenderWither extends RenderLiving
     {
         if (par1EntityWither.isArmored())
         {
-            if (par1EntityWither.getHasActivePotion())
+            if (par1EntityWither.isInvisible())
             {
                 GL11.glDepthMask(false);
             }

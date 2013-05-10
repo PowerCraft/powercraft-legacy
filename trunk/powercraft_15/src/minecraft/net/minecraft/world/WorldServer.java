@@ -134,7 +134,10 @@ public class WorldServer extends World
             this.mapStorage.setData("scoreboard", scoreboardsavedata);
         }
 
-        scoreboardsavedata.func_96499_a(this.worldScoreboard);
+        if (!(this instanceof WorldServerMulti)) //Forge: We fix the global mapStorage, which causes us to share scoreboards early. So don't associate the save data with the temporary scoreboard
+        {
+            scoreboardsavedata.func_96499_a(this.worldScoreboard);
+        }
         ((ServerScoreboard)this.worldScoreboard).func_96547_a(scoreboardsavedata);
         DimensionManager.setWorld(par4, this);
     }
@@ -198,10 +201,10 @@ public class WorldServer extends World
         this.villageCollectionObj.tick();
         this.villageSiegeObj.tick();
         this.theProfiler.endStartSection("portalForcer");
-        this.field_85177_Q.func_85189_a(this.getTotalWorldTime());
+        this.field_85177_Q.removeStalePortalLocations(this.getTotalWorldTime());
         for (Teleporter tele : customTeleporters)
         {
-            tele.func_85189_a(getTotalWorldTime());
+            tele.removeStalePortalLocations(getTotalWorldTime());
         }
         this.theProfiler.endSection();
         this.sendAndApplyBlockEvents();
@@ -347,8 +350,8 @@ public class WorldServer extends World
             this.moodSoundAndLightCheck(k, l, chunk);
             this.theProfiler.endStartSection("tickChunk");
             //Limits and evenly distributes the lighting update time
-            if (System.nanoTime() - startTime <= 4000000 && doneChunks.add(chunkcoordintpair)) 
-            { 
+            if (System.nanoTime() - startTime <= 4000000 && doneChunks.add(chunkcoordintpair))
+            {
                 chunk.updateSkylight();
             }
             this.theProfiler.endStartSection("thunder");
@@ -902,6 +905,14 @@ public class WorldServer extends World
 
             this.chunkProvider.saveChunks(par1, par2IProgressUpdate);
             MinecraftForge.EVENT_BUS.post(new WorldEvent.Save(this));
+        }
+    }
+
+    public void func_104140_m()
+    {
+        if (this.chunkProvider.canSave())
+        {
+            this.chunkProvider.func_104112_b();
         }
     }
 

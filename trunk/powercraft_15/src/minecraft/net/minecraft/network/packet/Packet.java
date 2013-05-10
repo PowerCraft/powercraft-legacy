@@ -88,7 +88,7 @@ public abstract class Packet
         catch (Exception exception)
         {
             exception.printStackTrace();
-            par0ILogAgent.func_98232_c("Skipping packet with id " + par1);
+            par0ILogAgent.logSevere("Skipping packet with id " + par1);
             return null;
         }
     }
@@ -173,7 +173,7 @@ public abstract class Packet
         }
         catch (EOFException eofexception)
         {
-            par0ILogAgent.func_98232_c("Reached end of stream");
+            par0ILogAgent.logSevere("Reached end of stream");
             return null;
         }
 

@@ -1,0 +1,14 @@
+stone:bricks1:bricks0:false:0f
+stone:bricks2:bricks1:false:0f
+stone:bricks3:bricks2:false:0f
+stone:bricks4:bricks3:false:0f
+stone:bricks5:bricks4:false:1f
+stone:bricks6:bricks5:false:0f
+stone:bricks7:bricks6:false:0f
+stone:bricks8:bricks7:false:0f
+stone:bricks9:bricks8:false:0f
+stone:bricks10:bricks9:false:0f
+stone:bricks11:bricks10:false:0f
+stone:bricks12:bricks11:false:0f
+stone:bricks13:bricks12:false:0f
+stone:bricks14:bricks13:false:0f

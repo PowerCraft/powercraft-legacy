@@ -34,8 +34,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     private static InventoryBasic inventory = new InventoryBasic("tmp", true, 45);
 
     /** Currently selected creative inventory tab index. */
-    //NEI
-    public static int selectedTabIndex = CreativeTabs.tabBlock.getTabIndex();
+    private static int selectedTabIndex = CreativeTabs.tabBlock.getTabIndex();
 
     /** Amount scrolled in Creative mode inventory (0 = top, 1 = bottom) */
     private float currentScroll = 0.0F;
@@ -81,8 +80,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         }
     }
 
-    //NEI
-    public void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
+    protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
     {
         this.field_74234_w = true;
         boolean flag = par4 == 1;
@@ -200,7 +198,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
                         return;
                     }
 
-                    if (itemstack != null && itemstack2 != null && itemstack.isItemEqual(itemstack2))
+                    if (itemstack != null && itemstack2 != null && itemstack.isItemEqual(itemstack2) && ItemStack.areItemStackTagsEqual(itemstack, itemstack2)) //Forge: Bugfix, Compare NBT data, allow for deletion of enchanted books, MC-12770
                     {
                         if (par3 == 0)
                         {
@@ -314,7 +312,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     {
         if (selectedTabIndex != CreativeTabs.tabAllSearch.getTabIndex())
         {
-            if (GameSettings.func_100015_a(this.mc.gameSettings.keyBindChat))
+            if (GameSettings.isKeyDown(this.mc.gameSettings.keyBindChat))
             {
                 this.setCurrentCreativeTab(CreativeTabs.tabAllSearch);
             }
@@ -903,7 +901,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         i1 += 8 + (flag1 ? 1 : -1);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        ItemStack itemstack = par1CreativeTabs.getBlockTextureFromSideAndMetadataItemStack();
+        ItemStack itemstack = par1CreativeTabs.getIconItemStack();
         itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, itemstack, l, i1);
         itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, itemstack, l, i1);
         GL11.glDisable(GL11.GL_LIGHTING);

@@ -7,12 +7,16 @@ import net.minecraft.item.Item;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
 import powercraft.api.gres.PC_GresBaseWithInventory;
+import powercraft.api.interfaces.PC_IDataHandler;
 import powercraft.api.item.PC_Item;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.network.PC_IPacketHandler;
 import powercraft.api.recipes.PC_IRecipe;
 import powercraft.api.recipes.PC_ShapedRecipes;
 import powercraft.api.recipes.PC_ShapelessRecipes;
+import powercraft.api.tube.PC_BlockTube;
+import powercraft.api.tube.PC_CableNetworks;
+import powercraft.api.tube.PC_ItemCable;
 import powercraft.api.utils.PC_GlobalVariables;
 import powercraft.api.utils.PC_Struct2;
 import powercraft.launcher.PC_Property;
@@ -22,7 +26,7 @@ import powercraft.launcher.loader.PC_Module.PC_InitProperties;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_RegisterContainers;
 
-@PC_Module(name="Core", version="1.1.0")
+@PC_Module(name="Core", version="1.1.1")
 public class PCco_App {
 
 	@PC_FieldObject(clazz=PCco_BlockPowerCrystal.class)
@@ -40,6 +44,18 @@ public class PCco_App {
 	@PC_FieldObject(clazz=PCco_MobSpawnerSetter.class)
 	public static PCco_MobSpawnerSetter spawnerSetter;
 	
+	@PC_FieldObject(clazz=PC_BlockTube.class)
+	public static PC_BlockTube tube;
+	
+	@PC_FieldObject(clazz=PCco_ItemTubeCarbonNanotube.class)
+	public static PCco_ItemTubeCarbonNanotube carbonNanotube;
+	
+	@PC_FieldObject(clazz=PC_ItemCable.class)
+	public static PC_ItemCable itemCable;
+	
+	@PC_FieldObject(clazz=PC_CableNetworks.class)
+	public static PC_CableNetworks cableNetworks;
+	
 	@PC_InitProperties
 	public void initProperties(PC_Property config) {
 		PC_GlobalVariables.consts.put("recipes.recyclation", config.getBoolean("recipes.recyclation", true, "Add new recypes allowing easy material recyclation"));
@@ -52,7 +68,7 @@ public class PCco_App {
 				" r ",
                 "rIr",
                 " r ",
-                'r', Item.redstone, 'I', Block.blockSteel));
+                'r', Item.redstone, 'I', Block.blockIron));
 		recipes.add(new PC_ShapelessRecipes(new PC_ItemStack(powerDust, 24, 0), new PC_ItemStack(powerCrystal, 1, -1) ));
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(oreSniffer),
                     " G ",
@@ -75,7 +91,7 @@ public class PCco_App {
 		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Item.stick, 3), Block.fence));
 		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Item.stick, 2), Block.ladder));
 		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Block.planks, 6), Item.sign));
-		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Item.ingotIron, 6), Item.doorSteel));
+		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Item.ingotIron, 6), Item.doorIron));
 		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Block.cobblestone, 8), Block.furnaceIdle));
 		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Item.ingotIron, 5), Item.minecartEmpty));
 		recipes.add(new PC_ShapelessRecipes("recipes.recyclation", new PC_ItemStack(Item.ingotIron, 3), Item.bucketEmpty));
@@ -105,7 +121,7 @@ public class PCco_App {
 		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("CraftingToolCrafter", new PCco_CraftingToolCrafter()));
 		return packetHandlers;
 	}
-
+	
 	@PC_RegisterContainers
 	public List<PC_Struct2<String, Class<? extends PC_GresBaseWithInventory>>> registerContainers(List<PC_Struct2<String, Class<? extends PC_GresBaseWithInventory>>> guis) {
 		guis.add(new PC_Struct2<String, Class<? extends PC_GresBaseWithInventory>>("CraftingTool", PCco_ContainerCraftingTool.class));

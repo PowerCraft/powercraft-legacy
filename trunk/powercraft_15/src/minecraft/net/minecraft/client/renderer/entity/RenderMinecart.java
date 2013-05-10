@@ -89,9 +89,9 @@ public class RenderMinecart extends Render
             GL11.glRotatef(MathHelper.sin(f6) * f6 * f7 / 10.0F * (float)par1EntityMinecart.getRollingDirection(), 1.0F, 0.0F, 0.0F);
         }
 
-        int j = par1EntityMinecart.func_94099_q();
-        Block block = par1EntityMinecart.func_94089_m();
-        int k = par1EntityMinecart.func_94098_o();
+        int j = par1EntityMinecart.getDisplayTileOffset();
+        Block block = par1EntityMinecart.getDisplayTile();
+        int k = par1EntityMinecart.getDisplayTileData();
 
         if (block != null)
         {
@@ -100,7 +100,7 @@ public class RenderMinecart extends Render
             float f8 = 0.75F;
             GL11.glScalef(f8, f8, f8);
             GL11.glTranslatef(0.0F, (float)j / 16.0F, 0.0F);
-            this.func_94144_a(par1EntityMinecart, par9, block, k);
+            this.renderBlockInMinecart(par1EntityMinecart, par9, block, k);
             GL11.glPopMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
@@ -111,7 +111,10 @@ public class RenderMinecart extends Render
         GL11.glPopMatrix();
     }
 
-    protected void func_94144_a(EntityMinecart par1EntityMinecart, float par2, Block par3Block, int par4)
+    /**
+     * Renders the block that is inside the minecart.
+     */
+    protected void renderBlockInMinecart(EntityMinecart par1EntityMinecart, float par2, Block par3Block, int par4)
     {
         float f1 = par1EntityMinecart.getBrightness(par2);
         GL11.glPushMatrix();

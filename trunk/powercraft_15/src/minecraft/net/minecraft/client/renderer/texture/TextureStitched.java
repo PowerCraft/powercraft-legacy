@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer.texture;
 
+import cpw.mods.fml.client.TextureFXManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -70,6 +71,11 @@ public class TextureStitched implements Icon
         this.maxV = (float)(par4 + par6) / (float)par1Texture.getHeight() - f1;
         this.widthNorm = (float)par5 / 16.0F;
         this.heightNorm = (float)par6 / 16.0F;
+        TextureFXManager.instance().getHelper().doTextureUpload(this);
+        if (this.rotated)
+        {
+            TextureFXManager.instance().getHelper().rotateTexture(this.textureSheet, this.textureSheet.getTextureData());
+        }
     }
 
     public void copyFrom(TextureStitched par1TextureStitched)
@@ -143,7 +149,7 @@ public class TextureStitched implements Icon
         return this.minV + f * ((float)par1 / 16.0F);
     }
 
-    public String getBlockTextureFromSideAndMetadataName()
+    public String getIconName()
     {
         return this.textureName;
     }
@@ -181,7 +187,7 @@ public class TextureStitched implements Icon
 
                 if (i != j && j >= 0 && j < this.textureList.size())
                 {
-                    this.textureSheet.copyFrom(this.originX, this.originY, (Texture)this.textureList.get(j), this.rotated);
+                    this.textureSheet.func_104062_b(this.originX, this.originY, (Texture)this.textureList.get(j));
                 }
             }
         }
@@ -192,7 +198,7 @@ public class TextureStitched implements Icon
 
             if (k != this.frameCounter)
             {
-                this.textureSheet.copyFrom(this.originX, this.originY, (Texture)this.textureList.get(this.frameCounter), this.rotated);
+                this.textureSheet.func_104062_b(this.originX, this.originY, (Texture)this.textureList.get(this.frameCounter));
             }
         }
     }
@@ -240,6 +246,14 @@ public class TextureStitched implements Icon
         if (!arraylist.isEmpty() && arraylist.size() < 600)
         {
             this.listAnimationTuples = arraylist;
+        }
+    }
+
+    public void createAndUploadTextures()
+    {
+        for (Texture t : ((List<Texture>)textureList))
+        {
+            t.createAndUploadTexture();
         }
     }
 

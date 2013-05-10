@@ -7,10 +7,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 public class EntityEnderman extends EntityMob
 {
@@ -21,6 +24,7 @@ public class EntityEnderman extends EntityMob
      */
     private int teleportDelay = 0;
     private int field_70826_g = 0;
+    private boolean field_104003_g;
 
     public EntityEnderman(World par1World)
     {
@@ -76,6 +80,8 @@ public class EntityEnderman extends EntityMob
         {
             if (this.shouldAttackPlayer(entityplayer))
             {
+                this.field_104003_g = true;
+
                 if (this.field_70826_g == 0)
                 {
                     this.worldObj.playSoundAtEntity(entityplayer, "mob.endermen.stare", 1.0F, 1.0F);
@@ -185,6 +191,7 @@ public class EntityEnderman extends EntityMob
             {
                 this.entityToAttack = null;
                 this.setScreaming(false);
+                this.field_104003_g = false;
                 this.teleportRandomly();
             }
         }
@@ -193,7 +200,13 @@ public class EntityEnderman extends EntityMob
         {
             this.entityToAttack = null;
             this.setScreaming(false);
+            this.field_104003_g = false;
             this.teleportRandomly();
+        }
+
+        if (this.isScreaming() && !this.field_104003_g && this.rand.nextInt(100) == 0)
+        {
+            this.setScreaming(false);
         }
 
         this.isJumping = false;
@@ -264,12 +277,17 @@ public class EntityEnderman extends EntityMob
      */
     protected boolean teleportTo(double par1, double par3, double par5)
     {
+        EnderTeleportEvent event = new EnderTeleportEvent(this, par1, par3, par5, 0);
+        if (MinecraftForge.EVENT_BUS.post(event)){
+            return false;
+        }
+
         double d3 = this.posX;
         double d4 = this.posY;
         double d5 = this.posZ;
-        this.posX = par1;
-        this.posY = par3;
-        this.posZ = par5;
+        this.posX = event.targetX;
+        this.posY = event.targetY;
+        this.posZ = event.targetZ;
         boolean flag = false;
         int i = MathHelper.floor_double(this.posX);
         int j = MathHelper.floor_double(this.posY);
@@ -429,8 +447,15 @@ public class EntityEnderman extends EntityMob
         {
             this.setScreaming(true);
 
+            if (par1DamageSource instanceof EntityDamageSource && par1DamageSource.getEntity() instanceof EntityPlayer)
+            {
+                this.field_104003_g = true;
+            }
+
             if (par1DamageSource instanceof EntityDamageSourceIndirect)
             {
+                this.field_104003_g = false;
+
                 for (int j = 0; j < 64; ++j)
                 {
                     if (this.teleportRandomly())
@@ -439,7 +464,7 @@ public class EntityEnderman extends EntityMob
                     }
                 }
 
-                return false;
+                return super.attackEntityFrom(par1DamageSource, par2);
             }
             else
             {

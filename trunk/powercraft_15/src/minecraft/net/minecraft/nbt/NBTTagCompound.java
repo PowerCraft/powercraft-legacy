@@ -16,8 +16,7 @@ public class NBTTagCompound extends NBTBase
     /**
      * The key-value pairs for the tag. Each key is a UTF string, each value is a tag.
      */
-	//NEI
-    public Map tagMap = new HashMap();
+    private Map tagMap = new HashMap();
 
     public NBTTagCompound()
     {

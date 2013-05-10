@@ -39,25 +39,29 @@ import net.minecraftforge.common.ForgeHooks;
 @SideOnly(Side.CLIENT)
 public class GuiIngame extends Gui
 {
-    private static final RenderItem itemRenderer = new RenderItem();
-    private final Random rand = new Random();
-    private final Minecraft mc;
+    protected static final RenderItem itemRenderer = new RenderItem();
+    protected final Random rand = new Random();
+    protected final Minecraft mc;
 
     /** ChatGUI instance that retains all previous chat data */
-    private final GuiNewChat persistantChatGUI;
-    private int updateCounter = 0;
+    protected final GuiNewChat persistantChatGUI;
+    protected int updateCounter = 0;
 
     /** The string specifying which record music is playing */
-    private String recordPlaying = "";
+    protected String recordPlaying = "";
 
     /** How many ticks the record playing message will be displayed */
-    private int recordPlayingUpFor = 0;
-    private boolean recordIsPlaying = false;
+    protected int recordPlayingUpFor = 0;
+    protected boolean recordIsPlaying = false;
 
     /** Previous frame vignette brightness (slowly changes by 1% each frame) */
     public float prevVignetteBrightness = 1.0F;
-    private int field_92017_k;
-    private ItemStack field_92016_l;
+
+    /** Remaining ticks the item highlight should be visible */
+    protected int remainingHighlightTicks;
+
+    /** The ItemStack that is currently being highlighted */
+    protected ItemStack highlightingItemStack;
 
     public GuiIngame(Minecraft par1Minecraft)
     {
@@ -88,9 +92,16 @@ public class GuiIngame extends Gui
 
         ItemStack itemstack = this.mc.thePlayer.inventory.armorItemInSlot(3);
 
-        if (this.mc.gameSettings.thirdPersonView == 0 && itemstack != null && itemstack.itemID == Block.pumpkin.blockID)
+        if (this.mc.gameSettings.thirdPersonView == 0 && itemstack != null && itemstack.getItem() != null)
         {
-            this.renderPumpkinBlur(k, l);
+            if (itemstack.itemID == Block.pumpkin.blockID)
+            {
+                this.renderPumpkinBlur(k, l);
+            }
+            else
+            {
+                itemstack.getItem().renderHelmetOverlay(itemstack, mc.thePlayer, scaledresolution, par1, par2, par3, par4);
+            }
         }
 
         if (!this.mc.thePlayer.isPotionActive(Potion.confusion))
@@ -410,9 +421,9 @@ public class GuiIngame extends Gui
         {
             this.mc.mcProfiler.startSection("toolHighlight");
 
-            if (this.field_92017_k > 0 && this.field_92016_l != null)
+            if (this.remainingHighlightTicks > 0 && this.highlightingItemStack != null)
             {
-                s1 = this.field_92016_l.getDisplayName();
+                s1 = this.highlightingItemStack.getDisplayName();
                 i1 = (k - fontrenderer.getStringWidth(s1)) / 2;
                 j1 = l - 59;
 
@@ -421,7 +432,7 @@ public class GuiIngame extends Gui
                     j1 += 14;
                 }
 
-                j5 = (int)((float)this.field_92017_k * 256.0F / 10.0F);
+                j5 = (int)((float)this.remainingHighlightTicks * 256.0F / 10.0F);
 
                 if (j5 > 255)
                 {
@@ -433,7 +444,16 @@ public class GuiIngame extends Gui
                     GL11.glPushMatrix();
                     GL11.glEnable(GL11.GL_BLEND);
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                    fontrenderer.drawStringWithShadow(s1, i1, j1, 16777215 + (j5 << 24));
+                    FontRenderer font = highlightingItemStack.getItem().getFontRenderer(highlightingItemStack);
+                    if (font != null)
+                    {
+                        i1 = (k - font.getStringWidth(s1)) / 2;
+                        font.drawStringWithShadow(s1, i1, j1, 16777215 + (j5 << 24));
+                    }
+                    else
+                    {
+                        fontrenderer.drawStringWithShadow(s1, i1, j1, 16777215 + (j5 << 24));
+                    }
                     GL11.glDisable(GL11.GL_BLEND);
                     GL11.glPopMatrix();
                 }
@@ -465,7 +485,7 @@ public class GuiIngame extends Gui
         {
             this.mc.mcProfiler.startSection("debug");
             GL11.glPushMatrix();
-            fontrenderer.drawStringWithShadow("Minecraft 1.5.1 (" + this.mc.debug + ")", 2, 2, 16777215);
+            fontrenderer.drawStringWithShadow("Minecraft 1.5.2 (" + this.mc.debug + ")", 2, 2, 16777215);
             fontrenderer.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
             fontrenderer.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
             fontrenderer.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
@@ -583,7 +603,7 @@ public class GuiIngame extends Gui
                 if (j2 < list.size())
                 {
                     GuiPlayerInfo guiplayerinfo = (GuiPlayerInfo)list.get(j2);
-                    ScorePlayerTeam scoreplayerteam = this.mc.theWorld.getScoreboard().func_96509_i(guiplayerinfo.name);
+                    ScorePlayerTeam scoreplayerteam = this.mc.theWorld.getScoreboard().getPlayersTeam(guiplayerinfo.name);
                     String s3 = ScorePlayerTeam.func_96667_a(scoreplayerteam, guiplayerinfo.name);
                     fontrenderer.drawStringWithShadow(s3, k3, l2, 16777215);
 
@@ -594,7 +614,7 @@ public class GuiIngame extends Gui
 
                         if (l3 - j3 > 5)
                         {
-                            Score score = scoreobjective.func_96682_a().func_96529_a(guiplayerinfo.name, scoreobjective);
+                            Score score = scoreobjective.getScoreboard().func_96529_a(guiplayerinfo.name, scoreobjective);
                             String s4 = EnumChatFormatting.YELLOW + "" + score.func_96652_c();
                             fontrenderer.drawStringWithShadow(s4, l3 - fontrenderer.getStringWidth(s4), l2, 16777215);
                         }
@@ -642,20 +662,20 @@ public class GuiIngame extends Gui
         GL11.glEnable(GL11.GL_ALPHA_TEST);
     }
 
-    private void func_96136_a(ScoreObjective par1ScoreObjective, int par2, int par3, FontRenderer par4FontRenderer)
+    protected void func_96136_a(ScoreObjective par1ScoreObjective, int par2, int par3, FontRenderer par4FontRenderer)
     {
-        Scoreboard scoreboard = par1ScoreObjective.func_96682_a();
+        Scoreboard scoreboard = par1ScoreObjective.getScoreboard();
         Collection collection = scoreboard.func_96534_i(par1ScoreObjective);
 
         if (collection.size() <= 15)
         {
-            int k = par4FontRenderer.getStringWidth(par1ScoreObjective.func_96678_d());
+            int k = par4FontRenderer.getStringWidth(par1ScoreObjective.getDisplayName());
             String s;
 
             for (Iterator iterator = collection.iterator(); iterator.hasNext(); k = Math.max(k, par4FontRenderer.getStringWidth(s)))
             {
                 Score score = (Score)iterator.next();
-                ScorePlayerTeam scoreplayerteam = scoreboard.func_96509_i(score.func_96653_e());
+                ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.func_96653_e());
                 s = ScorePlayerTeam.func_96667_a(scoreplayerteam, score.func_96653_e()) + ": " + EnumChatFormatting.RED + score.func_96652_c();
             }
 
@@ -670,7 +690,7 @@ public class GuiIngame extends Gui
             {
                 Score score1 = (Score)iterator1.next();
                 ++k1;
-                ScorePlayerTeam scoreplayerteam1 = scoreboard.func_96509_i(score1.func_96653_e());
+                ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.func_96653_e());
                 String s1 = ScorePlayerTeam.func_96667_a(scoreplayerteam1, score1.func_96653_e());
                 String s2 = EnumChatFormatting.RED + "" + score1.func_96652_c();
                 int l1 = i1 - k1 * par4FontRenderer.FONT_HEIGHT;
@@ -681,7 +701,7 @@ public class GuiIngame extends Gui
 
                 if (k1 == collection.size())
                 {
-                    String s3 = par1ScoreObjective.func_96678_d();
+                    String s3 = par1ScoreObjective.getDisplayName();
                     drawRect(j1 - 2, l1 - par4FontRenderer.FONT_HEIGHT - 1, i2, l1 - 1, 1610612736);
                     drawRect(j1 - 2, l1 - 1, i2, l1, 1342177280);
                     par4FontRenderer.drawString(s3, j1 + k / 2 - par4FontRenderer.getStringWidth(s3) / 2, l1 - par4FontRenderer.FONT_HEIGHT, 553648127);
@@ -693,7 +713,7 @@ public class GuiIngame extends Gui
     /**
      * Renders dragon's (boss) health on the HUD
      */
-    private void renderBossHealth()
+    protected void renderBossHealth()
     {
         if (BossStatus.bossName != null && BossStatus.statusBarLength > 0)
         {
@@ -720,7 +740,7 @@ public class GuiIngame extends Gui
         }
     }
 
-    private void renderPumpkinBlur(int par1, int par2)
+    protected void renderPumpkinBlur(int par1, int par2)
     {
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false);
@@ -744,7 +764,7 @@ public class GuiIngame extends Gui
     /**
      * Renders the vignette. Args: vignetteBrightness, width, height
      */
-    private void renderVignette(float par1, int par2, int par3)
+    protected void renderVignette(float par1, int par2, int par3)
     {
         par1 = 1.0F - par1;
 
@@ -780,7 +800,7 @@ public class GuiIngame extends Gui
     /**
      * Renders the portal overlay. Args: portalStrength, width, height
      */
-    private void renderPortalOverlay(float par1, int par2, int par3)
+    protected void renderPortalOverlay(float par1, int par2, int par3)
     {
         if (par1 < 1.0F)
         {
@@ -816,7 +836,7 @@ public class GuiIngame extends Gui
     /**
      * Renders the specified item of the inventory slot at the specified location. Args: slot, x, y, partialTick
      */
-    private void renderInventorySlot(int par1, int par2, int par3, float par4)
+    protected void renderInventorySlot(int par1, int par2, int par3, float par4)
     {
         ItemStack itemstack = this.mc.thePlayer.inventory.mainInventory[par1];
 
@@ -862,21 +882,21 @@ public class GuiIngame extends Gui
 
             if (itemstack == null)
             {
-                this.field_92017_k = 0;
+                this.remainingHighlightTicks = 0;
             }
-            else if (this.field_92016_l != null && itemstack.itemID == this.field_92016_l.itemID && ItemStack.areItemStackTagsEqual(itemstack, this.field_92016_l) && (itemstack.isItemStackDamageable() || itemstack.getItemDamage() == this.field_92016_l.getItemDamage()))
+            else if (this.highlightingItemStack != null && itemstack.itemID == this.highlightingItemStack.itemID && ItemStack.areItemStackTagsEqual(itemstack, this.highlightingItemStack) && (itemstack.isItemStackDamageable() || itemstack.getItemDamage() == this.highlightingItemStack.getItemDamage()))
             {
-                if (this.field_92017_k > 0)
+                if (this.remainingHighlightTicks > 0)
                 {
-                    --this.field_92017_k;
+                    --this.remainingHighlightTicks;
                 }
             }
             else
             {
-                this.field_92017_k = 40;
+                this.remainingHighlightTicks = 40;
             }
 
-            this.field_92016_l = itemstack;
+            this.highlightingItemStack = itemstack;
         }
     }
 

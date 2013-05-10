@@ -17,15 +17,5 @@ public class PCpj_AppClient extends PCpj_App {
 	public void init(){
 		PC_ClientUtils.mc().entityRenderer = new PCpj_EntityRenderer(PC_ClientUtils.mc());
 	}
-
-	@Override
-	public void destryFrameBuffer(PCpj_TileEntityProjector tileEntityProjector) {
-		
-	}
-	
-	@Override
-	public void createFrameBuffer(PCpj_TileEntityProjector tileEntityProjector) {
-
-	}
 	
 }

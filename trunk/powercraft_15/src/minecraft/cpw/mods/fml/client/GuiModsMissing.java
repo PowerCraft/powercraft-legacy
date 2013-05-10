@@ -5,7 +5,7 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     cpw - implementation
  */
@@ -15,6 +15,7 @@ package cpw.mods.fml.client;
 import net.minecraft.client.gui.GuiErrorScreen;
 import cpw.mods.fml.common.MissingModsException;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
+import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 
 public class GuiModsMissing extends GuiErrorScreen
 {
@@ -51,6 +52,15 @@ public class GuiModsMissing extends GuiErrorScreen
         for (ArtifactVersion v : modsMissing.missingMods)
         {
             offset+=10;
+            if (v instanceof DefaultArtifactVersion)
+            {
+                DefaultArtifactVersion dav =  (DefaultArtifactVersion)v;
+                if (dav.getRange() != null && dav.getRange().isUnboundedAbove())
+                {
+                    this.drawCenteredString(this.fontRenderer, String.format("%s : minimum version required is %s", v.getLabel(), dav.getRange().getLowerBoundString()), this.width / 2, offset, 0xEEEEEE);
+                    continue;
+                }
+            }
             this.drawCenteredString(this.fontRenderer, String.format("%s : %s", v.getLabel(), v.getRangeString()), this.width / 2, offset, 0xEEEEEE);
         }
         offset+=20;

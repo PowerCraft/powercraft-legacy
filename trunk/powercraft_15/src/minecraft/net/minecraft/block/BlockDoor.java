@@ -17,8 +17,10 @@ import net.minecraft.world.World;
 
 public class BlockDoor extends Block
 {
-    private static final String[] field_94467_a = new String[] {"doorWood_lower", "doorWood_upper", "doorIron_lower", "doorIron_upper"};
-    private final int field_94465_b;
+    private static final String[] doorIconNames = new String[] {"doorWood_lower", "doorWood_upper", "doorIron_lower", "doorIron_upper"};
+
+    /** Used for pointing at icon names. */
+    private final int doorTypeForIcon;
     @SideOnly(Side.CLIENT)
     private Icon[] iconArray;
 
@@ -28,11 +30,11 @@ public class BlockDoor extends Block
 
         if (par2Material == Material.iron)
         {
-            this.field_94465_b = 2;
+            this.doorTypeForIcon = 2;
         }
         else
         {
-            this.field_94465_b = 0;
+            this.doorTypeForIcon = 0;
         }
 
         float f = 0.5F;
@@ -45,9 +47,9 @@ public class BlockDoor extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
-        return this.iconArray[this.field_94465_b];
+        return this.iconArray[this.doorTypeForIcon];
     }
 
     @SideOnly(Side.CLIENT)
@@ -109,11 +111,11 @@ public class BlockDoor extends Block
                 }
             }
 
-            return this.iconArray[this.field_94465_b + (flag1 ? field_94467_a.length : 0) + (flag2 ? 1 : 0)];
+            return this.iconArray[this.doorTypeForIcon + (flag1 ? doorIconNames.length : 0) + (flag2 ? 1 : 0)];
         }
         else
         {
-            return this.iconArray[this.field_94465_b];
+            return this.iconArray[this.doorTypeForIcon];
         }
     }
 
@@ -125,12 +127,12 @@ public class BlockDoor extends Block
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconArray = new Icon[field_94467_a.length * 2];
+        this.iconArray = new Icon[doorIconNames.length * 2];
 
-        for (int i = 0; i < field_94467_a.length; ++i)
+        for (int i = 0; i < doorIconNames.length; ++i)
         {
-            this.iconArray[i] = par1IconRegister.registerIcon(field_94467_a[i]);
-            this.iconArray[i + field_94467_a.length] = new IconFlipped(this.iconArray[i], true, false);
+            this.iconArray[i] = par1IconRegister.registerIcon(doorIconNames[i]);
+            this.iconArray[i + doorIconNames.length] = new IconFlipped(this.iconArray[i], true, false);
         }
     }
 
@@ -418,7 +420,7 @@ public class BlockDoor extends Block
      */
     public int idDropped(int par1, Random par2Random, int par3)
     {
-        return (par1 & 8) != 0 ? 0 : (this.blockMaterial == Material.iron ? Item.doorSteel.itemID : Item.doorWood.itemID);
+        return (par1 & 8) != 0 ? 0 : (this.blockMaterial == Material.iron ? Item.doorIron.itemID : Item.doorWood.itemID);
     }
 
     /**
@@ -480,7 +482,7 @@ public class BlockDoor extends Block
      */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
-        return this.blockMaterial == Material.iron ? Item.doorSteel.itemID : Item.doorWood.itemID;
+        return this.blockMaterial == Material.iron ? Item.doorIron.itemID : Item.doorWood.itemID;
     }
 
     /**

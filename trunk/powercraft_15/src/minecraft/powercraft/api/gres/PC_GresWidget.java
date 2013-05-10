@@ -605,8 +605,8 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	/**
 	 * Set size, recalculate position
 	 * 
-	 * @param width width
-	 * @param height height
+	 * @param gswidth width
+	 * @param gsheight height
 	 * @return this
 	 */
 	public PC_GresWidget setSize(PC_VecI size) {

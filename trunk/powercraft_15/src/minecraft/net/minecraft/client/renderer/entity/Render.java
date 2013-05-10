@@ -332,7 +332,7 @@ public abstract class Render
      */
     public void doRenderShadowAndFire(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        if (this.renderManager.options.fancyGraphics && this.shadowSize > 0.0F && !par1Entity.getHasActivePotion())
+        if (this.renderManager.options.fancyGraphics && this.shadowSize > 0.0F && !par1Entity.isInvisible())
         {
             double d3 = this.renderManager.getDistanceToCamera(par1Entity.posX, par1Entity.posY, par1Entity.posZ);
             float f2 = (float)((1.0D - d3 / 256.0D) * (double)this.shadowOpaque);

@@ -15,7 +15,7 @@ import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_RegisterContainers;
 
-@PC_Module(name="Checkpoints", version="1.1.0")
+@PC_Module(name="Checkpoints", version="1.1.1")
 public class PCcp_App {
 
 	@PC_FieldObject(clazz=PCcp_BlockCheckpoint.class)

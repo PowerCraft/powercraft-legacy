@@ -151,21 +151,6 @@ public class PCco_CraftingToolCraftingInventory implements PC_IInventory {
 	}
 
 	@Override
-	public int[] getSizeInventorySide(int var1) {
-		return null;
-	}
-
-	@Override
-	public boolean func_102007_a(int i, ItemStack itemstack, int j) {
-		return false;
-	}
-
-	@Override
-	public boolean func_102008_b(int i, ItemStack itemstack, int j) {
-		return false;
-	}
-
-	@Override
 	public boolean canPlayerInsertStackTo(int i, ItemStack itemstack) {
 		return false;
 	}
@@ -263,6 +248,21 @@ public class PCco_CraftingToolCraftingInventory implements PC_IInventory {
 			}
 		}
 		
+	}
+
+	@Override
+	public int[] getAccessibleSlotsFromSide(int var1) {
+		return null;
+	}
+
+	@Override
+	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
+		return false;
+	}
+
+	@Override
+	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+		return false;
 	}
 	
 }

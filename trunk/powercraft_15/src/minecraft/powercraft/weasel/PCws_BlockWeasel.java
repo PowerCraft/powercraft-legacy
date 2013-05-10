@@ -53,7 +53,7 @@ public class PCws_BlockWeasel extends PC_Block {
 	}
 	
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(PC_Direction par1, int par2) {
+	public Icon getIcon(PC_Direction par1, int par2) {
 		return PCws_WeaselManager.getPluginInfo(0).getTexture(PC_Direction.BOTTOM);
 	}
 	

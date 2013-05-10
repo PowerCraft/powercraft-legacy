@@ -145,7 +145,7 @@ public class PCde_App {
 				"X X", 
 				"X X", 
 				"X X", 
-					'X', new PC_ItemStack(Block.blockSteel, 1, 0)));
+					'X', new PC_ItemStack(Block.blockIron, 1, 0)));
 		
 		return recipes;
 	}

@@ -18,7 +18,7 @@ import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_Instance;
 import powercraft.launcher.loader.PC_ModuleObject;
 
-@PC_Module(name="Net", version="1.1.0")
+@PC_Module(name="Net", version="1.1.1")
 public class PCnt_App {
 
 	@PC_FieldObject(clazz=PCnt_BlockSensor.class)

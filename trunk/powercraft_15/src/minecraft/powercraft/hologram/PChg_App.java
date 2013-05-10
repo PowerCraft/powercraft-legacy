@@ -19,7 +19,7 @@ import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_Instance;
 import powercraft.launcher.loader.PC_ModuleObject;
 
-@PC_Module(name="Hologram", version="1.1.0")
+@PC_Module(name="Hologram", version="1.1.1")
 public class PChg_App {
 
 	@PC_FieldObject(clazz=PChg_BlockHologramBlockEmpty.class)

@@ -34,29 +34,29 @@ public class PCde_BlockChimney extends PC_Block {
 	}
 	
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(PC_Direction par1, int par2) {
+	public Icon getIcon(PC_Direction par1, int par2) {
 		if (par2 == 0) return Block.cobblestone.getBlockTextureFromSide(par1.getMCDir());
 		if (par2 == 1) return Block.brick.getBlockTextureFromSide(par1.getMCDir());
 		if (par2 == 2) return Block.stoneBrick.getBlockTextureFromSide(par1.getMCDir());
 		
-		if (par2 == 3) return Block.stoneBrick.getBlockTextureFromSideAndMetadata(par1.getMCDir(), 2);
-		if (par2 == 4) return Block.stoneBrick.getBlockTextureFromSideAndMetadata(par1.getMCDir(), 3);
+		if (par2 == 3) return Block.stoneBrick.getIcon(par1.getMCDir(), 2);
+		if (par2 == 4) return Block.stoneBrick.getIcon(par1.getMCDir(), 3);
 		
-		if (par2 == 5) return Block.sandStone.getBlockTextureFromSideAndMetadata(par1.getMCDir(), 0);
-		if (par2 == 6) return Block.sandStone.getBlockTextureFromSideAndMetadata(par1.getMCDir(), 1);
-		if (par2 == 7) return Block.sandStone.getBlockTextureFromSideAndMetadata(par1.getMCDir(), 2);
+		if (par2 == 5) return Block.sandStone.getIcon(par1.getMCDir(), 0);
+		if (par2 == 6) return Block.sandStone.getIcon(par1.getMCDir(), 1);
+		if (par2 == 7) return Block.sandStone.getIcon(par1.getMCDir(), 2);
 
-		if (par2 == 8) return Block.netherBrick.getBlockTextureFromSideAndMetadata(par1.getMCDir(), 1);
+		if (par2 == 8) return Block.netherBrick.getIcon(par1.getMCDir(), 1);
 
-		if (par2 == 9) return Block.blockNetherQuartz.getBlockTextureFromSideAndMetadata(par1.getMCDir(), 0);
-		if (par2 == 10) return Block.blockNetherQuartz.getBlockTextureFromSideAndMetadata(par1.getMCDir(), 1);
-		if (par2 == 11) return Block.blockNetherQuartz.getBlockTextureFromSideAndMetadata(par1.getMCDir(), 2);
+		if (par2 == 9) return Block.blockNetherQuartz.getIcon(par1.getMCDir(), 0);
+		if (par2 == 10) return Block.blockNetherQuartz.getIcon(par1.getMCDir(), 1);
+		if (par2 == 11) return Block.blockNetherQuartz.getIcon(par1.getMCDir(), 2);
 
 		if (par2 == 12) return Block.cobblestoneMossy.getBlockTextureFromSide(par1.getMCDir());
-		if (par2 == 13) return Block.stoneBrick.getBlockTextureFromSideAndMetadata(par1.getMCDir(), 1);
+		if (par2 == 13) return Block.stoneBrick.getIcon(par1.getMCDir(), 1);
 		
 		if (par2 == 14) return Block.blockClay.getBlockTextureFromSide(par1.getMCDir());
-		if (par2 == 15) return Block.blockSteel.getBlockTextureFromSide(par1.getMCDir());
+		if (par2 == 15) return Block.blockIron.getBlockTextureFromSide(par1.getMCDir());
 		
 		return null;
 	}

@@ -35,7 +35,7 @@ public class ItemHangingEntity extends Item
         }
         else
         {
-            int i1 = Direction.vineGrowth[par7];
+            int i1 = Direction.facingToDirection[par7];
             EntityHanging entityhanging = this.createHangingEntity(par3World, par4, par5, par6, i1);
 
             if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack))

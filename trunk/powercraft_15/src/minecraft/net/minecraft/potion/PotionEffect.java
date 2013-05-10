@@ -16,7 +16,7 @@ public class PotionEffect
     private int potionID;
 
     /** The duration of the potion effect */
-    private int duration;
+    public int duration;
 
     /** The amplifier of the potion effect */
     private int amplifier;
@@ -27,7 +27,9 @@ public class PotionEffect
     /** Whether the potion effect came from a beacon */
     private boolean isAmbient;
     @SideOnly(Side.CLIENT)
-    private boolean field_100013_f;
+
+    /** True if potion effect duration is at maximum, false otherwise. */
+    private boolean isPotionDurationMax;
 
     /** List of ItemStack that can cure the potion effect **/
     private List<ItemStack> curativeItems;
@@ -161,7 +163,7 @@ public class PotionEffect
         }
     }
 
-    public boolean func_102028_d()
+    public boolean isSplashPotionEffect()
     {
         return this.isSplashPotion;
     }
@@ -279,14 +281,18 @@ public class PotionEffect
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_100012_b(boolean par1)
+
+    /**
+     * Toggle the isPotionDurationMax field.
+     */
+    public void setPotionDurationMax(boolean par1)
     {
-        this.field_100013_f = par1;
+        this.isPotionDurationMax = par1;
     }
 
     @SideOnly(Side.CLIENT)
-    public boolean func_100011_g()
+    public boolean getIsPotionDurationMax()
     {
-        return this.field_100013_f;
+        return this.isPotionDurationMax;
     }
 }

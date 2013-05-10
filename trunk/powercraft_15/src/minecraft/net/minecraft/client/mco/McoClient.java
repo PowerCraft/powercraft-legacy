@@ -5,6 +5,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import net.minecraft.util.Session;
 
 @SideOnly(Side.CLIENT)
@@ -40,16 +43,44 @@ public class McoClient
         return McoServerAddress.func_98162_a(s1);
     }
 
-    public void func_96386_a(String par1Str, String par2Str, String par3Str) throws IOException, ExceptionMcoService, UnsupportedEncodingException
+    public void func_96386_a(String par1Str, String par2Str, String par3Str, String par4Str) throws ExceptionMcoService, UnsupportedEncodingException
     {
-        String s3 = field_96388_b + "worlds" + "/$NAME/$LOCATION_ID".replace("$NAME", this.func_96380_a(par1Str)).replace("$LOCATION_ID", par3Str);
+        StringBuilder stringbuilder = new StringBuilder();
+        stringbuilder.append(field_96388_b).append("worlds").append("/$NAME/$LOCATION_ID".replace("$NAME", this.func_96380_a(par1Str)).replace("$LOCATION_ID", par3Str));
+        HashMap hashmap = new HashMap();
 
         if (par2Str != null && !par2Str.trim().equals(""))
         {
-            s3 = s3 + "?motd=" + this.func_96380_a(par2Str);
+            hashmap.put("motd", par2Str);
         }
 
-        this.func_96377_a(Request.func_96361_b(s3, ""));
+        if (par4Str != null && !par4Str.equals(""))
+        {
+            hashmap.put("seed", par4Str);
+        }
+
+        if (!hashmap.isEmpty())
+        {
+            boolean flag = true;
+            Entry entry;
+
+            for (Iterator iterator = hashmap.entrySet().iterator(); iterator.hasNext(); stringbuilder.append((String)entry.getKey()).append("=").append(this.func_96380_a((String)entry.getValue())))
+            {
+                entry = (Entry)iterator.next();
+
+                if (flag)
+                {
+                    stringbuilder.append("?");
+                    flag = false;
+                }
+                else
+                {
+                    stringbuilder.append("&");
+                }
+            }
+        }
+
+        this.func_96377_a(Request.func_104064_a(stringbuilder.toString(), "", 5000, 30000));
     }
 
     public Boolean func_96375_b() throws ExceptionMcoService, IOException
@@ -79,16 +110,18 @@ public class McoClient
         return McoServer.func_98165_c(s2);
     }
 
-    public void func_96384_a(long par1, String par3Str, String par4Str) throws ExceptionMcoService, UnsupportedEncodingException
+    public void func_96384_a(long par1, String par3Str, String par4Str, int par5, int par6) throws ExceptionMcoService, UnsupportedEncodingException
     {
-        String s2 = field_96388_b + "worlds" + "/$WORLD_ID/$NAME".replace("$WORLD_ID", String.valueOf(par1)).replace("$NAME", this.func_96380_a(par3Str));
+        StringBuilder stringbuilder = new StringBuilder();
+        stringbuilder.append(field_96388_b).append("worlds").append("/$WORLD_ID/$NAME".replace("$WORLD_ID", String.valueOf(par1)).replace("$NAME", this.func_96380_a(par3Str)));
 
         if (par4Str != null && !par4Str.trim().equals(""))
         {
-            s2 = s2 + "?motd=" + this.func_96380_a(par4Str);
+            stringbuilder.append("?motd=").append(this.func_96380_a(par4Str));
         }
 
-        this.func_96377_a(Request.func_96363_c(s2, ""));
+        stringbuilder.append("&difficulty=").append(par5).append("&gameMode=").append(par6);
+        this.func_96377_a(Request.func_96363_c(stringbuilder.toString(), ""));
     }
 
     public Boolean func_96383_b(long par1) throws ExceptionMcoService, IOException
@@ -105,17 +138,18 @@ public class McoClient
         return Boolean.valueOf(s1);
     }
 
-    public Boolean func_96376_d(long par1) throws ExceptionMcoService, IOException
+    public Boolean func_96376_d(long par1, String par3Str) throws ExceptionMcoService, UnsupportedEncodingException
     {
-        String s = field_96388_b + "worlds" + "/$WORLD_ID/reset".replace("$WORLD_ID", String.valueOf(par1));
-        String s1 = this.func_96377_a(Request.func_96353_a(s, "", 30000, 80000));
-        return Boolean.valueOf(s1);
-    }
+        StringBuilder stringbuilder = new StringBuilder();
+        stringbuilder.append(field_96388_b).append("worlds").append("/$WORLD_ID/reset".replace("$WORLD_ID", String.valueOf(par1)));
 
-    public Locations func_96385_d() throws ExceptionMcoService, IOException
-    {
-        String s = this.func_96377_a(Request.func_96358_a(field_96388_b + "worlds" + "/locations"));
-        return Locations.func_98174_a(s);
+        if (par3Str != null && par3Str.length() > 0)
+        {
+            stringbuilder.append("?seed=").append(this.func_96380_a(par3Str));
+        }
+
+        String s1 = this.func_96377_a(Request.func_96353_a(stringbuilder.toString(), "", 30000, 80000));
+        return Boolean.valueOf(s1);
     }
 
     public ValueObjectSubscription func_98177_f(long par1) throws ExceptionMcoService, IOException

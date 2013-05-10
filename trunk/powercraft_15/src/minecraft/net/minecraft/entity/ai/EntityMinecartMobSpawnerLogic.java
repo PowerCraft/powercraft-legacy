@@ -6,35 +6,36 @@ import net.minecraft.world.World;
 
 class EntityMinecartMobSpawnerLogic extends MobSpawnerBaseLogic
 {
-    final EntityMinecartMobSpawner field_98296_a;
+    /** The spawner minecart using this mob spawner logic. */
+    final EntityMinecartMobSpawner spawnerMinecart;
 
     EntityMinecartMobSpawnerLogic(EntityMinecartMobSpawner par1EntityMinecartMobSpawner)
     {
-        this.field_98296_a = par1EntityMinecartMobSpawner;
+        this.spawnerMinecart = par1EntityMinecartMobSpawner;
     }
 
     public void func_98267_a(int par1)
     {
-        this.field_98296_a.worldObj.setEntityState(this.field_98296_a, (byte)par1);
+        this.spawnerMinecart.worldObj.setEntityState(this.spawnerMinecart, (byte)par1);
     }
 
     public World getSpawnerWorld()
     {
-        return this.field_98296_a.worldObj;
+        return this.spawnerMinecart.worldObj;
     }
 
     public int getSpawnerX()
     {
-        return MathHelper.floor_double(this.field_98296_a.posX);
+        return MathHelper.floor_double(this.spawnerMinecart.posX);
     }
 
     public int getSpawnerY()
     {
-        return MathHelper.floor_double(this.field_98296_a.posY);
+        return MathHelper.floor_double(this.spawnerMinecart.posY);
     }
 
     public int getSpawnerZ()
     {
-        return MathHelper.floor_double(this.field_98296_a.posZ);
+        return MathHelper.floor_double(this.spawnerMinecart.posZ);
     }
 }

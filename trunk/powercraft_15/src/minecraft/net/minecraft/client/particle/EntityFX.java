@@ -37,7 +37,9 @@ public class EntityFX extends Entity
 
     /** Particle alpha */
     protected float particleAlpha;
-    protected Icon particleTextureIndex;
+
+    /** The icon field from which the given particle pulls its texture. */
+    protected Icon particleIcon;
     public static double interpPosX;
     public static double interpPosY;
     public static double interpPosZ;
@@ -48,7 +50,7 @@ public class EntityFX extends Entity
         this.particleAge = 0;
         this.particleMaxAge = 0;
         this.particleAlpha = 1.0F;
-        this.particleTextureIndex = null;
+        this.particleIcon = null;
         this.setSize(0.2F, 0.2F);
         this.yOffset = this.height / 2.0F;
         this.setPosition(par2, par4, par6);
@@ -167,12 +169,12 @@ public class EntityFX extends Entity
         float f9 = f8 + 0.0624375F;
         float f10 = 0.1F * this.particleScale;
 
-        if (this.particleTextureIndex != null)
+        if (this.particleIcon != null)
         {
-            f6 = this.particleTextureIndex.getMinU();
-            f7 = this.particleTextureIndex.getMaxU();
-            f8 = this.particleTextureIndex.getMinV();
-            f9 = this.particleTextureIndex.getMaxV();
+            f6 = this.particleIcon.getMinU();
+            f7 = this.particleIcon.getMaxU();
+            f8 = this.particleIcon.getMinV();
+            f9 = this.particleIcon.getMaxV();
         }
 
         float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)par2 - interpPosX);
@@ -201,11 +203,11 @@ public class EntityFX extends Entity
      */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {}
 
-    public void func_94052_a(RenderEngine par1RenderEngine, Icon par2Icon)
+    public void setParticleIcon(RenderEngine par1RenderEngine, Icon par2Icon)
     {
         if (this.getFXLayer() == 1)
         {
-            this.particleTextureIndex = par2Icon;
+            this.particleIcon = par2Icon;
         }
         else
         {
@@ -214,7 +216,7 @@ public class EntityFX extends Entity
                 throw new RuntimeException("Invalid call to Particle.setTex, use coordinate methods");
             }
 
-            this.particleTextureIndex = par2Icon;
+            this.particleIcon = par2Icon;
         }
     }
 

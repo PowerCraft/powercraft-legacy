@@ -1,5 +1,7 @@
 package powercraft.launcher.updategui;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
@@ -11,22 +13,25 @@ import powercraft.launcher.PC_LauncherClientUtils;
 
 public abstract class PC_GuiScroll extends GuiScreen{
 
-	protected int x;
-	protected int y;
-	protected int width;
-	protected int height;
+	protected int gsx;
+	protected int gsy;
+	protected int gswidth;
+	protected int gsheight;
 	protected float scroll;
 	protected int my=-1;
 	protected boolean bar;
+	protected Minecraft gsmc;
+	protected FontRenderer gsfontRenderer;
 	
 	public PC_GuiScroll(int x, int y, int width, int height){
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		mc = PC_LauncherClientUtils.mc();
-		ScaledResolution resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-		setWorldAndResolution(mc, resolution.getScaledWidth(), resolution.getScaledHeight());
+		this.gsx = x;
+		this.gsy = y;
+		this.gswidth = width;
+		this.gsheight = height;
+		gsmc = PC_LauncherClientUtils.mc();
+		gsfontRenderer = gsmc.fontRenderer;
+		ScaledResolution resolution = new ScaledResolution(gsmc.gameSettings, gsmc.displayWidth, gsmc.displayHeight);
+		setWorldAndResolution(gsmc, resolution.getScaledWidth(), resolution.getScaledHeight());
 	}
 	
 	public abstract int getElementCount();
@@ -45,12 +50,12 @@ public abstract class PC_GuiScroll extends GuiScreen{
 	}
 	
 	public boolean displayScrollBar(){
-		return getTotalHeight()>height-4;
+		return getTotalHeight()>gsheight-4;
 	}
 	
 	private void bindAmountScrolled()
     {
-        int var1 = this.getTotalHeight() - height + 4;
+        int var1 = this.getTotalHeight() - gsheight + 4;
 
         if (var1 < 0)
         {
@@ -69,32 +74,32 @@ public abstract class PC_GuiScroll extends GuiScreen{
     } 
 	
 	public void drawScreen(int par1, int par2, float par3){
-		ScaledResolution resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+		ScaledResolution resolution = new ScaledResolution(gsmc.gameSettings, gsmc.displayWidth, gsmc.displayHeight);
 		int scale = resolution.getScaleFactor();
 		if(my!=-1){
-			int nmy = resolution.getScaledHeight() - Mouse.getY() * resolution.getScaledHeight() / this.mc.displayHeight - 1;
+			int nmy = resolution.getScaledHeight() - Mouse.getY() * resolution.getScaledHeight() / this.gsmc.displayHeight - 1;
 			float scrollMultiplier = 1;
 			if(bar){
-				int h = getTotalHeight()-height+4;
+				int h = getTotalHeight()-gsheight+4;
 	
 	            if (h < 1)
 	            {
 	                h = 1;
 	            }
 	
-	            int a = height*height / getTotalHeight();
+	            int a = gsheight*gsheight / getTotalHeight();
 	
 	            if (a < 32)
 	            {
 	                a = 32;
 	            }
 	
-	            if (a > height - 8)
+	            if (a > gsheight - 8)
 	            {
-	                a = height - 8;
+	                a = gsheight - 8;
 	            }
 	
-	            scrollMultiplier /= (float)(height - a) / (float)h;
+	            scrollMultiplier /= (float)(gsheight - a) / (float)h;
 			}else{
 				scrollMultiplier = -1;
 			}
@@ -105,28 +110,28 @@ public abstract class PC_GuiScroll extends GuiScreen{
 		GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
         Tessellator tessellator = Tessellator.instance;
-        mc.renderEngine.bindTexture("/gui/background.png");
+        gsmc.renderEngine.bindTexture("/gui/background.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float var17 = 32.0F;
         tessellator.startDrawingQuads();
         tessellator.setColorOpaque_I(2105376);
-        tessellator.addVertexWithUV(x, y+height, 0.0D, (float)x / var17, (float)(y+height + (int)this.scroll) / var17);
-        tessellator.addVertexWithUV(x+width, y+height, 0.0D, (float)(x+width) / var17, (float)(y+height + (int)this.scroll) / var17);
-        tessellator.addVertexWithUV(x+width, y, 0.0D, (float)(x+width) / var17, (float)(y + (int)this.scroll) / var17);
-        tessellator.addVertexWithUV(x, y, 0.0D, (float)x / var17, (float)(y + (int)this.scroll) / var17);
+        tessellator.addVertexWithUV(gsx, gsy+gsheight, 0.0D, (float)gsx / var17, (float)(gsy+gsheight + (int)this.scroll) / var17);
+        tessellator.addVertexWithUV(gsx+gswidth, gsy+gsheight, 0.0D, (float)(gsx+gswidth) / var17, (float)(gsy+gsheight + (int)this.scroll) / var17);
+        tessellator.addVertexWithUV(gsx+gswidth, gsy, 0.0D, (float)(gsx+gswidth) / var17, (float)(gsy + (int)this.scroll) / var17);
+        tessellator.addVertexWithUV(gsx, gsy, 0.0D, (float)gsx / var17, (float)(gsy + (int)this.scroll) / var17);
         tessellator.draw();
         
         int drawY=-(int)scroll;
-        int elementWidth=width-8;
+        int elementWidth=gswidth-8;
         
         int count = getElementCount();
         for(int i=0; i<count; i++){
         	int elementHeight = getElementHeight(i);
         	if(drawY+elementHeight>0){
         		GL11.glPushMatrix();
-        		GL11.glTranslatef(x + 4, y + drawY + 4, 0);
+        		GL11.glTranslatef(gsx + 4, gsy + drawY + 4, 0);
         		GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        		GL11.glScissor(x * scale, mc.displayHeight - (y + height) * scale, width * scale, height * scale);
+        		GL11.glScissor(gsx * scale, gsmc.displayHeight - (gsy + gsheight) * scale, gswidth * scale, gsheight * scale);
         		if(isElementActive(i)){
                      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                      GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -145,14 +150,14 @@ public abstract class PC_GuiScroll extends GuiScreen{
                      GL11.glEnable(GL11.GL_TEXTURE_2D);
         		}
         		int w = elementHeight * scale;
-        		int bottom = mc.displayHeight - (Math.max(y + drawY + 4, y) + elementHeight) * scale;
-        		if(height - drawY-4<elementHeight){
-        			w = (height - drawY-4)*scale;
-        			bottom += (elementHeight-(height - drawY - 4))*scale;
+        		int bottom = gsmc.displayHeight - (Math.max(gsy + drawY + 4, gsy) + elementHeight) * scale;
+        		if(gsheight - drawY-4<elementHeight){
+        			w = (gsheight - drawY-4)*scale;
+        			bottom += (elementHeight-(gsheight - drawY - 4))*scale;
         		}
         		if(elementWidth>8 && w>0){
-	        		GL11.glScissor((x + 4) * scale, bottom, (elementWidth - 8) * scale, w);
-	        		drawElement(i, par1-x, par2-y-drawY, par3);
+	        		GL11.glScissor((gsx + 4) * scale, bottom, (elementWidth - 8) * scale, w);
+	        		drawElement(i, par1-gsx, par2-gsy-drawY, par3);
         		}
         		GL11.glDisable(GL11.GL_SCISSOR_TEST);
         		GL11.glPopMatrix();
@@ -169,76 +174,76 @@ public abstract class PC_GuiScroll extends GuiScreen{
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_I(0, 0);
-        tessellator.addVertexWithUV(x, y + var20, 0.0D, 0.0D, 1.0D);
-        tessellator.addVertexWithUV(x+width, y + var20, 0.0D, 1.0D, 1.0D);
+        tessellator.addVertexWithUV(gsx, gsy + var20, 0.0D, 0.0D, 1.0D);
+        tessellator.addVertexWithUV(gsx+gswidth, gsy + var20, 0.0D, 1.0D, 1.0D);
         tessellator.setColorRGBA_I(0, 255);
-        tessellator.addVertexWithUV(x+width, y, 0.0D, 1.0D, 0.0D);
-        tessellator.addVertexWithUV(x, y, 0.0D, 0.0D, 0.0D);
+        tessellator.addVertexWithUV(gsx+gswidth, gsy, 0.0D, 1.0D, 0.0D);
+        tessellator.addVertexWithUV(gsx, gsy, 0.0D, 0.0D, 0.0D);
         tessellator.draw();
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_I(0, 255);
-        tessellator.addVertexWithUV(x, y+height, 0.0D, 0.0D, 1.0D);
-        tessellator.addVertexWithUV(x+width, y+height, 0.0D, 1.0D, 1.0D);
+        tessellator.addVertexWithUV(gsx, gsy+gsheight, 0.0D, 0.0D, 1.0D);
+        tessellator.addVertexWithUV(gsx+gswidth, gsy+gsheight, 0.0D, 1.0D, 1.0D);
         tessellator.setColorRGBA_I(0, 0);
-        tessellator.addVertexWithUV(x+width, y+height - var20, 0.0D, 1.0D, 0.0D);
-        tessellator.addVertexWithUV(x, y+height - var20, 0.0D, 0.0D, 0.0D);
+        tessellator.addVertexWithUV(gsx+gswidth, gsy+gsheight - var20, 0.0D, 1.0D, 0.0D);
+        tessellator.addVertexWithUV(gsx, gsy+gsheight - var20, 0.0D, 0.0D, 0.0D);
         tessellator.draw();
 
         if (displayScrollBar()){
-        	int var13 = height*height / getTotalHeight();
+        	int var13 = gsheight*gsheight / getTotalHeight();
 
             if (var13 < 32)
             {
                 var13 = 32;
             }
 
-            if (var13 > height - 8)
+            if (var13 > gsheight - 8)
             {
-                var13 = height - 8;
+                var13 = gsheight - 8;
             }
 
-            int var14 = (int)this.scroll * (height - var13) / (getTotalHeight() - height + 4) + y;
+            int var14 = (int)this.scroll * (gsheight - var13) / (getTotalHeight() - gsheight + 4) + gsy;
 
-            if (var14 < y)
+            if (var14 < gsy)
             {
-                var14 = y;
+                var14 = gsy;
             }
 
             tessellator.startDrawingQuads();
             tessellator.setColorRGBA_I(0, 255);
-            tessellator.addVertexWithUV(x+width-7, y+height, 0.0D, 0.0D, 1.0D);
-            tessellator.addVertexWithUV(x+width, y+height, 0.0D, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(x+width, y, 0.0D, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(x+width-7, y, 0.0D, 0.0D, 0.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-7, gsy+gsheight, 0.0D, 0.0D, 1.0D);
+            tessellator.addVertexWithUV(gsx+gswidth, gsy+gsheight, 0.0D, 1.0D, 1.0D);
+            tessellator.addVertexWithUV(gsx+gswidth, gsy, 0.0D, 1.0D, 0.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-7, gsy, 0.0D, 0.0D, 0.0D);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setColorRGBA_I(8421504, 255);
-            tessellator.addVertexWithUV(x+width-7, (double)(var14 + var13), 0.0D, 0.0D, 1.0D);
-            tessellator.addVertexWithUV(x+width, (double)(var14 + var13), 0.0D, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(x+width, (double)var14, 0.0D, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(x+width-7, (double)var14, 0.0D, 0.0D, 0.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-7, (double)(var14 + var13), 0.0D, 0.0D, 1.0D);
+            tessellator.addVertexWithUV(gsx+gswidth, (double)(var14 + var13), 0.0D, 1.0D, 1.0D);
+            tessellator.addVertexWithUV(gsx+gswidth, (double)var14, 0.0D, 1.0D, 0.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-7, (double)var14, 0.0D, 0.0D, 0.0D);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setColorRGBA_I(12632256, 255);
-            tessellator.addVertexWithUV(x+width-7, (double)(var14 + var13 - 1), 0.0D, 0.0D, 1.0D);
-            tessellator.addVertexWithUV(x+width-1, (double)(var14 + var13 - 1), 0.0D, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(x+width-1, (double)var14, 0.0D, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(x+width-7, (double)var14, 0.0D, 0.0D, 0.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-7, (double)(var14 + var13 - 1), 0.0D, 0.0D, 1.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-1, (double)(var14 + var13 - 1), 0.0D, 1.0D, 1.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-1, (double)var14, 0.0D, 1.0D, 0.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-7, (double)var14, 0.0D, 0.0D, 0.0D);
             tessellator.draw();
         }else{
 	        tessellator.startDrawingQuads();
             tessellator.setColorRGBA_I(8421504, 255);
-            tessellator.addVertexWithUV(x+width-7, y+height, 0.0D, 0.0D, 1.0D);
-            tessellator.addVertexWithUV(x+width, y+height, 0.0D, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(x+width, y, 0.0D, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(x+width-7, y, 0.0D, 0.0D, 0.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-7, gsy+gsheight, 0.0D, 0.0D, 1.0D);
+            tessellator.addVertexWithUV(gsx+gswidth, gsy+gsheight, 0.0D, 1.0D, 1.0D);
+            tessellator.addVertexWithUV(gsx+gswidth, gsy, 0.0D, 1.0D, 0.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-7, gsy, 0.0D, 0.0D, 0.0D);
             tessellator.draw();
             tessellator.startDrawingQuads();
             tessellator.setColorRGBA_I(12632256, 255);
-            tessellator.addVertexWithUV(x+width-7, y+height - 1, 0.0D, 0.0D, 1.0D);
-            tessellator.addVertexWithUV(x+width-1, y+height - 1, 0.0D, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(x+width-1, y, 0.0D, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(x+width-7, y, 0.0D, 0.0D, 0.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-7, gsy+gsheight - 1, 0.0D, 0.0D, 1.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-1, gsy+gsheight - 1, 0.0D, 1.0D, 1.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-1, gsy, 0.0D, 1.0D, 0.0D);
+            tessellator.addVertexWithUV(gsx+gswidth-7, gsy, 0.0D, 0.0D, 0.0D);
             tessellator.draw();
         }
 
@@ -255,21 +260,21 @@ public abstract class PC_GuiScroll extends GuiScreen{
 	
 	public void mouseClicked(int par1, int par2, int par3){
 		
-		par1 -= x;
-		par2 -= y;
-		if(!(par1>0 && par1<width && par2>0 && par2<height)){
+		par1 -= gsx;
+		par2 -= gsy;
+		if(!(par1>0 && par1<gswidth && par2>0 && par2<gsheight)){
 			return;
 		}
 		if(displayScrollBar()){
-			bar = par1>width-7;
-			my = par2+y;
+			bar = par1>gswidth-7;
+			my = par2+gsy;
 			if(bar){
 				return;
 			}
 		}
 		par1 -= 4;
 		par2 -= 2;
-		int elementWidth=width-8;
+		int elementWidth=gswidth-8;
 		if(par1<0 && par1>elementWidth-8){
 			clickElement(-1, -1, -1, -1);
 			return;

@@ -42,7 +42,7 @@ final class BehaviorDispenseMinecart extends BehaviorDefaultDispenseItem
             d3 = -1.0D;
         }
 
-        EntityMinecart entityminecart = EntityMinecart.func_94090_a(world, d0, d1 + d3, d2, ((ItemMinecart)par2ItemStack.getItem()).minecartType);
+        EntityMinecart entityminecart = EntityMinecart.createMinecart(world, d0, d1 + d3, d2, ((ItemMinecart)par2ItemStack.getItem()).minecartType);
         world.spawnEntityInWorld(entityminecart);
         par2ItemStack.splitStack(1);
         return par2ItemStack;

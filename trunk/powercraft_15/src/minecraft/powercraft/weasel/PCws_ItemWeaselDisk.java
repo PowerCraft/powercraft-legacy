@@ -70,7 +70,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 	 * @param pass pass 0-1
 	 */
 	@Override
-	public Icon getBlockTextureFromSideAndMetadataFromDamageForRenderPass(int dmg, int pass) {
+	public Icon getIconFromDamageForRenderPass(int dmg, int pass) {
 		return pass == 0 ? icons[0] : icons[1];
 	}
 	

@@ -25,7 +25,7 @@ final class DispenserBehaviorFire extends BehaviorDefaultDispenseItem
         {
             world.setBlock(i, j, k, Block.fire.blockID);
 
-            if (par2ItemStack.func_96631_a(1, world.rand))
+            if (par2ItemStack.attemptDamageItem(1, world.rand))
             {
                 par2ItemStack.stackSize = 0;
             }

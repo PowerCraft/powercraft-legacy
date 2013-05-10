@@ -39,7 +39,7 @@ public class ItemBlock extends Item
      */
     public int getSpriteNumber()
     {
-        return Block.blocksList[this.blockID].func_94327_t_() != null ? 1 : 0;
+        return Block.blocksList[this.blockID].getItemIconName() != null ? 1 : 0;
     }
 
     @SideOnly(Side.CLIENT)
@@ -47,7 +47,7 @@ public class ItemBlock extends Item
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
+    public Icon getIconFromDamage(int par1)
     {
         return this.field_94588_b != null ? this.field_94588_b : Block.blocksList[this.blockID].getBlockTextureFromSide(1);
     }
@@ -218,9 +218,9 @@ public class ItemBlock extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        String s = Block.blocksList[this.blockID].func_94327_t_();
+        String s = Block.blocksList[this.blockID].getItemIconName();
 
         if (s != null)
         {

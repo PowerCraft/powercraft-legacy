@@ -5,45 +5,46 @@ import net.minecraft.world.World;
 
 class TileEntityMobSpawnerLogic extends MobSpawnerBaseLogic
 {
-    final TileEntityMobSpawner field_98295_a;
+    /** The mob spawner we deal with */
+    final TileEntityMobSpawner mobSpawnerEntity;
 
     TileEntityMobSpawnerLogic(TileEntityMobSpawner par1TileEntityMobSpawner)
     {
-        this.field_98295_a = par1TileEntityMobSpawner;
+        this.mobSpawnerEntity = par1TileEntityMobSpawner;
     }
 
     public void func_98267_a(int par1)
     {
-        this.field_98295_a.worldObj.addBlockEvent(this.field_98295_a.xCoord, this.field_98295_a.yCoord, this.field_98295_a.zCoord, Block.mobSpawner.blockID, par1, 0);
+        this.mobSpawnerEntity.worldObj.addBlockEvent(this.mobSpawnerEntity.xCoord, this.mobSpawnerEntity.yCoord, this.mobSpawnerEntity.zCoord, Block.mobSpawner.blockID, par1, 0);
     }
 
     public World getSpawnerWorld()
     {
-        return this.field_98295_a.worldObj;
+        return this.mobSpawnerEntity.worldObj;
     }
 
     public int getSpawnerX()
     {
-        return this.field_98295_a.xCoord;
+        return this.mobSpawnerEntity.xCoord;
     }
 
     public int getSpawnerY()
     {
-        return this.field_98295_a.yCoord;
+        return this.mobSpawnerEntity.yCoord;
     }
 
     public int getSpawnerZ()
     {
-        return this.field_98295_a.zCoord;
+        return this.mobSpawnerEntity.zCoord;
     }
 
-    public void func_98277_a(WeightedRandomMinecart par1WeightedRandomMinecart)
+    public void setRandomMinecart(WeightedRandomMinecart par1WeightedRandomMinecart)
     {
-        super.func_98277_a(par1WeightedRandomMinecart);
+        super.setRandomMinecart(par1WeightedRandomMinecart);
 
         if (this.getSpawnerWorld() != null)
         {
-            this.getSpawnerWorld().markBlockForUpdate(this.field_98295_a.xCoord, this.field_98295_a.yCoord, this.field_98295_a.zCoord);
+            this.getSpawnerWorld().markBlockForUpdate(this.mobSpawnerEntity.xCoord, this.mobSpawnerEntity.yCoord, this.mobSpawnerEntity.zCoord);
         }
     }
 }

@@ -33,9 +33,9 @@ public class ItemSlab extends ItemBlock
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
+    public Icon getIconFromDamage(int par1)
     {
-        return Block.blocksList[this.itemID].getBlockTextureFromSideAndMetadata(2, par1);
+        return Block.blocksList[this.itemID].getIcon(2, par1);
     }
 
     /**
@@ -82,7 +82,7 @@ public class ItemSlab extends ItemBlock
 
             if ((par7 == 1 && !flag || par7 == 0 && flag) && i1 == this.theHalfSlab.blockID && k1 == par1ItemStack.getItemDamage())
             {
-                if (par3World.checkIfAABBIsClear(this.doubleSlab.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.doubleSlab.blockID, k1, 3))
+                if (par3World.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.doubleSlab.blockID, k1, 3))
                 {
                     par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getPitch() * 0.8F);
                     --par1ItemStack.stackSize;
@@ -194,7 +194,7 @@ public class ItemSlab extends ItemBlock
 
         if (i1 == this.theHalfSlab.blockID && k1 == par1ItemStack.getItemDamage())
         {
-            if (par3World.checkIfAABBIsClear(this.doubleSlab.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.doubleSlab.blockID, k1, 3))
+            if (par3World.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.doubleSlab.blockID, k1, 3))
             {
                 par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getPitch() * 0.8F);
                 --par1ItemStack.stackSize;

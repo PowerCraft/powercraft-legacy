@@ -49,7 +49,7 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
     }
     
     @Override
-	public Icon getBlockTextureFromSideAndMetadata(PC_Direction par1, int par2) {
+	public Icon getIcon(PC_Direction par1, int par2) {
 		if(renderSensor){
 			return sideIcons[3];
 		}

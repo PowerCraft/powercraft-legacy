@@ -42,11 +42,11 @@ public class FurnaceRecipes
         this.addSmelting(Block.wood.blockID, new ItemStack(Item.coal, 1, 1), 0.15F);
         this.addSmelting(Block.oreEmerald.blockID, new ItemStack(Item.emerald), 1.0F);
         this.addSmelting(Item.potato.itemID, new ItemStack(Item.bakedPotato), 0.35F);
-        this.addSmelting(Block.netherrack.blockID, new ItemStack(Item.field_94584_bZ), 0.1F);
+        this.addSmelting(Block.netherrack.blockID, new ItemStack(Item.netherrackBrick), 0.1F);
         this.addSmelting(Block.oreCoal.blockID, new ItemStack(Item.coal), 0.1F);
         this.addSmelting(Block.oreRedstone.blockID, new ItemStack(Item.redstone), 0.7F);
         this.addSmelting(Block.oreLapis.blockID, new ItemStack(Item.dyePowder, 1, 4), 0.2F);
-        this.addSmelting(Block.oreNetherQuartz.blockID, new ItemStack(Item.field_94583_ca), 0.2F);
+        this.addSmelting(Block.oreNetherQuartz.blockID, new ItemStack(Item.netherQuartz), 0.2F);
     }
 
     /**

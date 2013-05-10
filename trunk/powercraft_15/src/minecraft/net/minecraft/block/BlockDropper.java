@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class BlockDropper extends BlockDispenser
 {
-    private final IBehaviorDispenseItem field_96474_cR = new BehaviorDefaultDispenseItem();
+    private final IBehaviorDispenseItem dropperDefaultBehaviour = new BehaviorDefaultDispenseItem();
 
     protected BlockDropper(int par1)
     {
@@ -32,14 +32,17 @@ public class BlockDropper extends BlockDispenser
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("furnace_side");
-        this.field_94463_c = par1IconRegister.registerIcon("furnace_top");
-        this.field_94462_cO = par1IconRegister.registerIcon("dropper_front");
+        this.furnaceTopIcon = par1IconRegister.registerIcon("furnace_top");
+        this.furnaceFrontIcon = par1IconRegister.registerIcon("dropper_front");
         this.field_96473_e = par1IconRegister.registerIcon("dropper_front_vertical");
     }
 
-    protected IBehaviorDispenseItem func_96472_a(ItemStack par1ItemStack)
+    /**
+     * Returns the behavior for the given ItemStack.
+     */
+    protected IBehaviorDispenseItem getBehaviorForItemStack(ItemStack par1ItemStack)
     {
-        return this.field_96474_cR;
+        return this.dropperDefaultBehaviour;
     }
 
     /**
@@ -67,12 +70,12 @@ public class BlockDropper extends BlockDispenser
             {
                 ItemStack itemstack = tileentitydispenser.getStackInSlot(l);
                 int i1 = par1World.getBlockMetadata(par2, par3, par4) & 7;
-                IInventory iinventory = TileEntityHopper.func_96117_b(par1World, (double)(par2 + Facing.offsetsXForSide[i1]), (double)(par3 + Facing.offsetsYForSide[i1]), (double)(par4 + Facing.offsetsZForSide[i1]));
+                IInventory iinventory = TileEntityHopper.getInventoryAtLocation(par1World, (double)(par2 + Facing.offsetsXForSide[i1]), (double)(par3 + Facing.offsetsYForSide[i1]), (double)(par4 + Facing.offsetsZForSide[i1]));
                 ItemStack itemstack1;
 
                 if (iinventory != null)
                 {
-                    itemstack1 = TileEntityHopper.func_94117_a(iinventory, itemstack.copy().splitStack(1), Facing.faceToSide[i1]);
+                    itemstack1 = TileEntityHopper.insertStack(iinventory, itemstack.copy().splitStack(1), Facing.oppositeSide[i1]);
 
                     if (itemstack1 == null)
                     {
@@ -90,7 +93,7 @@ public class BlockDropper extends BlockDispenser
                 }
                 else
                 {
-                    itemstack1 = this.field_96474_cR.dispense(blocksourceimpl, itemstack);
+                    itemstack1 = this.dropperDefaultBehaviour.dispense(blocksourceimpl, itemstack);
 
                     if (itemstack1 != null && itemstack1.stackSize == 0)
                     {

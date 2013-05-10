@@ -117,7 +117,7 @@ public class TexturePackList
         HashMap hashmap = new HashMap();
         GuiProgress guiprogress = new GuiProgress();
         hashmap.put("X-Minecraft-Username", this.mc.session.username);
-        hashmap.put("X-Minecraft-Version", "1.5.1");
+        hashmap.put("X-Minecraft-Version", "1.5.2");
         hashmap.put("X-Minecraft-Supported-Resolutions", "16");
         this.isDownloading = true;
         this.mc.displayGuiScreen(guiprogress);

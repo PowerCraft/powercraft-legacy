@@ -25,11 +25,17 @@ import java.util.logging.Level;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
+import com.google.common.base.Joiner.MapJoiner;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.ImmutableTable.Builder;
@@ -40,6 +46,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
+import com.google.common.io.Files;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
@@ -54,6 +61,7 @@ public class GameData {
     private static boolean shouldContinue = true;
     private static boolean isSaveValid = true;
     private static ImmutableTable<String, String, Integer> modObjectTable;
+    private static Table<String, String, ItemStack> customItemStacks = HashBasedTable.create();
     private static Map<String,String> ignoredMods;
 
     private static boolean isModIgnoredForIdValidation(String modId)
@@ -277,7 +285,7 @@ public class GameData {
     }
     static Item findItem(String modId, String name)
     {
-        if (modObjectTable == null)
+        if (modObjectTable == null || !modObjectTable.contains(modId, name))
         {
             return null;
         }
@@ -293,10 +301,65 @@ public class GameData {
         }
 
         Integer blockId = modObjectTable.get(modId, name);
-        if (blockId >= Block.blocksList.length)
+        if (blockId == null || blockId >= Block.blocksList.length)
         {
             return null;
         }
         return Block.blocksList[blockId];
+    }
+
+    static ItemStack findItemStack(String modId, String name)
+    {
+        ItemStack is = customItemStacks.get(modId, name);
+        if (is == null)
+        {
+            Item i = findItem(modId, name);
+            if (i != null)
+            {
+                is = new ItemStack(i, 0 ,0);
+            }
+        }
+        if (is == null)
+        {
+            Block b = findBlock(modId, name);
+            if (b != null)
+            {
+                is = new ItemStack(b, 0, Short.MAX_VALUE);
+            }
+        }
+        return is;
+    }
+
+    static void registerCustomItemStack(String name, ItemStack itemStack)
+    {
+        customItemStacks.put(Loader.instance().activeModContainer().getModId(), name, itemStack);
+    }
+
+    public static void dumpRegistry(File minecraftDir)
+    {
+        if (customItemStacks == null)
+        {
+            return;
+        }
+        if (Boolean.valueOf(System.getProperty("fml.dumpRegistry", "false")).booleanValue())
+        {
+            ImmutableListMultimap.Builder<String, String> builder = ImmutableListMultimap.builder();
+            for (String modId : customItemStacks.rowKeySet())
+            {
+                builder.putAll(modId, customItemStacks.row(modId).keySet());
+            }
+
+            File f = new File(minecraftDir, "itemStackRegistry.csv");
+            MapJoiner mapJoiner = Joiner.on("\n").withKeyValueSeparator(",");
+            try
+            {
+                Files.write(mapJoiner.join(builder.build().entries()), f, Charsets.UTF_8);
+                FMLLog.log(Level.INFO, "Dumped item registry data to %s", f.getAbsolutePath());
+            }
+            catch (IOException e)
+            {
+                FMLLog.log(Level.SEVERE, e, "Failed to write registry data to %s", f.getAbsolutePath());
+            }
+        }
     }
 }

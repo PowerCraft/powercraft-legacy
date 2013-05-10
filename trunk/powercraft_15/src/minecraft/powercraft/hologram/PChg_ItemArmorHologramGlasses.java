@@ -3,6 +3,7 @@ package powercraft.hologram;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemStack;
 import powercraft.api.item.PC_ItemArmor;
@@ -18,9 +19,9 @@ public class PChg_ItemArmorHologramGlasses extends PC_ItemArmor {
 	}
 
 	@Override
-	public String getArmorTextureFile(ItemStack itemstack) {
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer) {
 		PC_Renderer.glEnable(0xbe2);//GL_BLEND
-		return super.getArmorTextureFile(itemstack);
+		return super.getArmorTexture(stack, entity, slot, layer);
 	}
 
 	@Override

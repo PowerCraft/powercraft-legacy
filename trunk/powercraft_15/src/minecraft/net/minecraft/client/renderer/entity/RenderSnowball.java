@@ -37,7 +37,7 @@ public class RenderSnowball extends Render
      */
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        Icon icon = this.field_94151_a.getBlockTextureFromSideAndMetadataFromDamage(this.field_94150_f);
+        Icon icon = this.field_94151_a.getIconFromDamage(this.field_94150_f);
 
         if (icon != null)
         {

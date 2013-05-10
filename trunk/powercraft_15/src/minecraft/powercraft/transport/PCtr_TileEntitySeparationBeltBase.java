@@ -193,17 +193,17 @@ public abstract class PCtr_TileEntitySeparationBeltBase extends
 	}
 	
 	@Override
-	public int[] getSizeInventorySide(int var1) {
-		return null;
+	public int[] getAccessibleSlotsFromSide(int var1) {
+		return PC_InventoryUtils.makeIndexList(0, 0);
 	}
 
 	@Override
-	public boolean func_102007_a(int i, ItemStack itemstack, int j) {
+	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
 		return false;
 	}
 
 	@Override
-	public boolean func_102008_b(int i, ItemStack itemstack, int j) {
+	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
 		return false;
 	}
 	

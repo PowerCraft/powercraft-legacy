@@ -157,7 +157,7 @@ public class EntityWolf extends EntityTameable
      */
     protected boolean canDespawn()
     {
-        return this.isAngry();
+        return this.isAngry() && !this.isTamed();
     }
 
     /**

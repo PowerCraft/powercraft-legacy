@@ -32,7 +32,9 @@ public class GuiEditSign extends GuiScreen
 
     /** The number of the line that is being edited. */
     private int editLine = 0;
-    private GuiButton field_100001_o;
+
+    /** "Done" button for the GUI. */
+    private GuiButton doneBtn;
 
     public GuiEditSign(TileEntitySign par1TileEntitySign)
     {
@@ -46,7 +48,7 @@ public class GuiEditSign extends GuiScreen
     {
         this.buttonList.clear();
         Keyboard.enableRepeatEvents(true);
-        this.buttonList.add(this.field_100001_o = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120, "Done"));
+        this.buttonList.add(this.doneBtn = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120, "Done"));
         this.entitySign.setEditable(false);
     }
 
@@ -116,7 +118,7 @@ public class GuiEditSign extends GuiScreen
 
         if (par2 == 1)
         {
-            this.actionPerformed(this.field_100001_o);
+            this.actionPerformed(this.doneBtn);
         }
     }
 

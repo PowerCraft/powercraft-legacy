@@ -66,7 +66,7 @@ public class TextureClock extends TextureStitched
         if (i != this.frameCounter)
         {
             this.frameCounter = i;
-            this.textureSheet.copyFrom(this.originX, this.originY, (Texture)this.textureList.get(this.frameCounter), this.rotated);
+            this.textureSheet.copyFrom(this.originX, this.originY, (Texture)this.textureList.get(this.frameCounter), false); //FML: We rotate the textures in init.
         }
     }
 }

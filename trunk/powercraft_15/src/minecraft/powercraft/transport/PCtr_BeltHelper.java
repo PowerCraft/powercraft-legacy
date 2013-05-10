@@ -945,7 +945,7 @@ public class PCtr_BeltHelper
         {
             if (!world.isRemote)
             {
-                world.spawnEntityInWorld(EntityMinecart.func_94090_a(world, i + 0.5F, j + 0.5F, k + 0.5F, ((ItemMinecart) equip_item).minecartType));
+                world.spawnEntityInWorld(EntityMinecart.createMinecart(world, i + 0.5F, j + 0.5F, k + 0.5F, ((ItemMinecart) equip_item).minecartType));
             }
 
             if (!PC_Utils.isCreative(entityplayer))

@@ -27,7 +27,7 @@ import powercraft.launcher.loader.PC_Module.PC_PreInit;
 import powercraft.launcher.loader.PC_Module.PC_RegisterContainers;
 import powercraft.launcher.loader.PC_ModuleObject;
 
-@PC_Module(name="Weasel", version="1.1.0")
+@PC_Module(name="Weasel", version="1.1.1")
 public class PCws_App {
 
 	@PC_FieldObject(clazz=PCws_WeaselManager.class)

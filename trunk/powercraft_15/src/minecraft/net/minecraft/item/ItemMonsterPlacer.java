@@ -137,9 +137,9 @@ public class ItemMonsterPlacer extends Item
     /**
      * Gets an icon index based on an item's damage value and the given render pass
      */
-    public Icon getBlockTextureFromSideAndMetadataFromDamageForRenderPass(int par1, int par2)
+    public Icon getIconFromDamageForRenderPass(int par1, int par2)
     {
-        return par2 > 0 ? this.theIcon : super.getBlockTextureFromSideAndMetadataFromDamageForRenderPass(par1, par2);
+        return par2 > 0 ? this.theIcon : super.getIconFromDamageForRenderPass(par1, par2);
     }
 
     @SideOnly(Side.CLIENT)
@@ -159,9 +159,9 @@ public class ItemMonsterPlacer extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        super.updateIcons(par1IconRegister);
+        super.registerIcons(par1IconRegister);
         this.theIcon = par1IconRegister.registerIcon("monsterPlacer_overlay");
     }
 }

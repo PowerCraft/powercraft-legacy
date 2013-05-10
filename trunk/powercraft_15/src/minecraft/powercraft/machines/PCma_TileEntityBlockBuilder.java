@@ -120,7 +120,7 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntityWithInventory  {
 			
 			if (PC_BlockRegistry.isBlock(worldObj, front, "PCtr_BlockBelt") || Block.blocksList[id] instanceof BlockRail) {
 				if (!worldObj.isRemote) {
-					worldObj.spawnEntityInWorld(EntityMinecart.func_94090_a(worldObj, front.x + 0.5F, front.y + 0.5F, front.z + 0.5F,
+					worldObj.spawnEntityInWorld(EntityMinecart.createMinecart(worldObj, front.x + 0.5F, front.y + 0.5F, front.z + 0.5F,
 							((ItemMinecart) itemstack.getItem()).minecartType));
 				}
 				return 1;

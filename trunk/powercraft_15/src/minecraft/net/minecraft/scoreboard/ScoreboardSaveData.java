@@ -98,7 +98,7 @@ public class ScoreboardSaveData extends WorldSavedData
             if (par1NBTTagCompound.hasKey("slot_" + i))
             {
                 String s = par1NBTTagCompound.getString("slot_" + i);
-                ScoreObjective scoreobjective = this.field_96507_a.func_96518_b(s);
+                ScoreObjective scoreobjective = this.field_96507_a.getObjective(s);
                 this.field_96507_a.func_96530_a(i, scoreobjective);
             }
         }
@@ -111,7 +111,7 @@ public class ScoreboardSaveData extends WorldSavedData
             NBTTagCompound nbttagcompound = (NBTTagCompound)par1NBTTagList.tagAt(i);
             ScoreObjectiveCriteria scoreobjectivecriteria = (ScoreObjectiveCriteria)ScoreObjectiveCriteria.field_96643_a.get(nbttagcompound.getString("CriteriaName"));
             ScoreObjective scoreobjective = this.field_96507_a.func_96535_a(nbttagcompound.getString("Name"), scoreobjectivecriteria);
-            scoreobjective.func_96681_a(nbttagcompound.getString("DisplayName"));
+            scoreobjective.setDisplayName(nbttagcompound.getString("DisplayName"));
         }
     }
 
@@ -120,7 +120,7 @@ public class ScoreboardSaveData extends WorldSavedData
         for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
         {
             NBTTagCompound nbttagcompound = (NBTTagCompound)par1NBTTagList.tagAt(i);
-            ScoreObjective scoreobjective = this.field_96507_a.func_96518_b(nbttagcompound.getString("Objective"));
+            ScoreObjective scoreobjective = this.field_96507_a.getObjective(nbttagcompound.getString("Objective"));
             Score score = this.field_96507_a.func_96529_a(nbttagcompound.getString("Name"), scoreobjective);
             score.func_96647_c(nbttagcompound.getInteger("Score"));
         }
@@ -161,7 +161,7 @@ public class ScoreboardSaveData extends WorldSavedData
             nbttagcompound.setBoolean("AllowFriendlyFire", scoreplayerteam.func_96665_g());
             nbttagcompound.setBoolean("SeeFriendlyInvisibles", scoreplayerteam.func_98297_h());
             NBTTagList nbttaglist1 = new NBTTagList();
-            Iterator iterator1 = scoreplayerteam.func_96670_d().iterator();
+            Iterator iterator1 = scoreplayerteam.getMembershipCollection().iterator();
 
             while (iterator1.hasNext())
             {
@@ -187,7 +187,7 @@ public class ScoreboardSaveData extends WorldSavedData
 
             if (scoreobjective != null)
             {
-                nbttagcompound1.setString("slot_" + i, scoreobjective.func_96679_b());
+                nbttagcompound1.setString("slot_" + i, scoreobjective.getName());
                 flag = true;
             }
         }
@@ -201,16 +201,16 @@ public class ScoreboardSaveData extends WorldSavedData
     protected NBTTagList func_96505_b()
     {
         NBTTagList nbttaglist = new NBTTagList();
-        Collection collection = this.field_96507_a.func_96514_c();
+        Collection collection = this.field_96507_a.getScoreObjectives();
         Iterator iterator = collection.iterator();
 
         while (iterator.hasNext())
         {
             ScoreObjective scoreobjective = (ScoreObjective)iterator.next();
             NBTTagCompound nbttagcompound = new NBTTagCompound();
-            nbttagcompound.setString("Name", scoreobjective.func_96679_b());
-            nbttagcompound.setString("CriteriaName", scoreobjective.func_96680_c().func_96636_a());
-            nbttagcompound.setString("DisplayName", scoreobjective.func_96678_d());
+            nbttagcompound.setString("Name", scoreobjective.getName());
+            nbttagcompound.setString("CriteriaName", scoreobjective.getCriteria().func_96636_a());
+            nbttagcompound.setString("DisplayName", scoreobjective.getDisplayName());
             nbttaglist.appendTag(nbttagcompound);
         }
 
@@ -228,7 +228,7 @@ public class ScoreboardSaveData extends WorldSavedData
             Score score = (Score)iterator.next();
             NBTTagCompound nbttagcompound = new NBTTagCompound();
             nbttagcompound.setString("Name", score.func_96653_e());
-            nbttagcompound.setString("Objective", score.func_96645_d().func_96679_b());
+            nbttagcompound.setString("Objective", score.func_96645_d().getName());
             nbttagcompound.setInteger("Score", score.func_96652_c());
             nbttaglist.appendTag(nbttagcompound);
         }

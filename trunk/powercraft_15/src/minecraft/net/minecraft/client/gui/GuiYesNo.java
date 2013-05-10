@@ -13,7 +13,7 @@ public class GuiYesNo extends GuiScreen
     protected GuiScreen parentScreen;
 
     /** First line of text. */
-    private String message1;
+    protected String message1;
 
     /** Second line of text. */
     private String message2;

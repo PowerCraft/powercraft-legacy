@@ -15,9 +15,9 @@ import net.minecraft.world.World;
 public class BlockCake extends Block
 {
     @SideOnly(Side.CLIENT)
-    private Icon field_94383_a;
+    private Icon cakeTopIcon;
     @SideOnly(Side.CLIENT)
-    private Icon field_94381_b;
+    private Icon cakeBottomIcon;
     @SideOnly(Side.CLIENT)
     private Icon field_94382_c;
 
@@ -89,9 +89,9 @@ public class BlockCake extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94383_a : (par1 == 0 ? this.field_94381_b : (par2 > 0 && par1 == 4 ? this.field_94382_c : this.blockIcon));
+        return par1 == 1 ? this.cakeTopIcon : (par1 == 0 ? this.cakeBottomIcon : (par2 > 0 && par1 == 4 ? this.field_94382_c : this.blockIcon));
     }
 
     @SideOnly(Side.CLIENT)
@@ -104,8 +104,8 @@ public class BlockCake extends Block
     {
         this.blockIcon = par1IconRegister.registerIcon("cake_side");
         this.field_94382_c = par1IconRegister.registerIcon("cake_inner");
-        this.field_94383_a = par1IconRegister.registerIcon("cake_top");
-        this.field_94381_b = par1IconRegister.registerIcon("cake_bottom");
+        this.cakeTopIcon = par1IconRegister.registerIcon("cake_top");
+        this.cakeBottomIcon = par1IconRegister.registerIcon("cake_bottom");
     }
 
     /**

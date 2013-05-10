@@ -19,16 +19,4 @@ public class PCpj_App {
 	@PC_Instance
 	public static PC_ModuleObject instance;
 	
-	public void destryFrameBuffer(PCpj_TileEntityProjector tileEntityProjector) {}
-	
-	public void createFrameBuffer(PCpj_TileEntityProjector tileEntityProjector) {}
-	
-	public static void sDestryFrameBuffer(PCpj_TileEntityProjector tileEntityProjector) {
-		((PCpj_App)instance.getModule()).destryFrameBuffer(tileEntityProjector);
-	}
-	
-	public static void sCreateFrameBuffer(PCpj_TileEntityProjector tileEntityProjector) {
-		((PCpj_App)instance.getModule()).createFrameBuffer(tileEntityProjector);
-	}
-	
 }

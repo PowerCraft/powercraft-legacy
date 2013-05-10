@@ -199,7 +199,7 @@ public class PClo_BlockDelayer extends PC_Block
     }
 
     @Override
-    public Icon getBlockTextureFromSideAndMetadata(PC_Direction side, int meta)
+    public Icon getIcon(PC_Direction side, int meta)
     {
         if (side == PC_Direction.BOTTOM)
         {

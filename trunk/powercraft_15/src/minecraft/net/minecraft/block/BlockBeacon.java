@@ -106,7 +106,7 @@ public class BlockBeacon extends BlockContainer
     }
 
     @SideOnly(Side.CLIENT)
-    public Icon func_94446_i()
+    public Icon getBeaconIcon()
     {
         return this.theIcon;
     }

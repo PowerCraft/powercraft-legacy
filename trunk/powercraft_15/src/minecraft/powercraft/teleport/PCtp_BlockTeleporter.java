@@ -53,8 +53,8 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 	}
 	
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(PC_Direction par1, int par2) {
-		return Block.portal.getBlockTextureFromSideAndMetadata(par1.getMCDir(), par2);
+	public Icon getIcon(PC_Direction par1, int par2) {
+		return Block.portal.getIcon(par1.getMCDir(), par2);
 	}
 
 	@Override
@@ -232,31 +232,31 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 		
 		PCtp_TileEntityTeleporter td = PC_Utils.getTE(world, x, y, z);
 		
-		PC_Utils.setBlockBounds(Block.blockSteel, 0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
-		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
+		PC_Utils.setBlockBounds(Block.blockIron, 0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
+		PC_Renderer.renderStandardBlock(renderer, Block.blockIron, x, y, z);
 		float m = 0.0625F * 6F;
 		float n = 0.0625F * 10F;
 		if(td!=null){
 			if (td.direction == PCtp_TeleporterData.N) {
-				PC_Utils.setBlockBounds(Block.blockSteel, m, 0, 0.0625F, n, 0.125F, 0.0625F * 2);
+				PC_Utils.setBlockBounds(Block.blockIron, m, 0, 0.0625F, n, 0.125F, 0.0625F * 2);
 			} else if (td.direction == PCtp_TeleporterData.S) {
-				PC_Utils.setBlockBounds(Block.blockSteel, m, 0, 1 - 0.0625F * 2, n, 0.125F, 1 - 0.0625F);
+				PC_Utils.setBlockBounds(Block.blockIron, m, 0, 1 - 0.0625F * 2, n, 0.125F, 1 - 0.0625F);
 			} else if (td.direction == PCtp_TeleporterData.E) {
-				PC_Utils.setBlockBounds(Block.blockSteel, 1 - 0.0625F * 2, 0, m, 1 - 0.0625F, 0.125F, n);
+				PC_Utils.setBlockBounds(Block.blockIron, 1 - 0.0625F * 2, 0, m, 1 - 0.0625F, 0.125F, n);
 			} else if (td.direction == PCtp_TeleporterData.W) {
-				PC_Utils.setBlockBounds(Block.blockSteel, 0.0625F, 0, m, 0.0625F * 2, 0.125F, n);
+				PC_Utils.setBlockBounds(Block.blockIron, 0.0625F, 0, m, 0.0625F * 2, 0.125F, n);
 			}
 		}
-		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
+		PC_Renderer.renderStandardBlock(renderer, Block.blockIron, x, y, z);
 
-		PC_Utils.setBlockBounds(Block.blockSteel, 0.4375F, 0.125F, 0.4375F, 1F - 0.4375F, 0.25F, 1F - 0.4375F);
-		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
+		PC_Utils.setBlockBounds(Block.blockIron, 0.4375F, 0.125F, 0.4375F, 1F - 0.4375F, 0.25F, 1F - 0.4375F);
+		PC_Renderer.renderStandardBlock(renderer, Block.blockIron, x, y, z);
 
 		float centr = 0.0625F * 4;
-		PC_Utils.setBlockBounds(Block.blockSteel, 0.5F - centr, 0.5F - centr, 0.5F - centr, 0.5F + centr, 0.5F + centr, 0.5F + centr);
-		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
+		PC_Utils.setBlockBounds(Block.blockIron, 0.5F - centr, 0.5F - centr, 0.5F - centr, 0.5F + centr, 0.5F + centr, 0.5F + centr);
+		PC_Renderer.renderStandardBlock(renderer, Block.blockIron, x, y, z);
 
-		PC_Utils.setBlockBounds(Block.blockSteel, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		PC_Utils.setBlockBounds(Block.blockIron, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
 		setBlockBounds(0.1875F, 0.1875F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
 		PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
@@ -269,17 +269,17 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 	}
 	
 	public boolean renderInventoryBlock(int modelID, Object renderer) {
-		PC_Utils.setBlockBounds(Block.blockSteel, 0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
-		PC_Renderer.renderInvBox(renderer, Block.blockSteel, 0);
+		PC_Utils.setBlockBounds(Block.blockIron, 0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
+		PC_Renderer.renderInvBox(renderer, Block.blockIron, 0);
 
-		PC_Utils.setBlockBounds(Block.blockSteel, 0.4375F, 0.125F, 0.4375F, 1F - 0.4375F, 0.25F, 1F - 0.4375F);
-		PC_Renderer.renderInvBox(renderer, Block.blockSteel, 0);
+		PC_Utils.setBlockBounds(Block.blockIron, 0.4375F, 0.125F, 0.4375F, 1F - 0.4375F, 0.25F, 1F - 0.4375F);
+		PC_Renderer.renderInvBox(renderer, Block.blockIron, 0);
 
 		float centr = 0.0625F * 4;
-		PC_Utils.setBlockBounds(Block.blockSteel, 0.5F - centr, 0.5F - centr, 0.5F - centr, 0.5F + centr, 0.5F + centr, 0.5F + centr);
-		PC_Renderer.renderInvBox(renderer, Block.blockSteel, 0);
+		PC_Utils.setBlockBounds(Block.blockIron, 0.5F - centr, 0.5F - centr, 0.5F - centr, 0.5F + centr, 0.5F + centr, 0.5F + centr);
+		PC_Renderer.renderInvBox(renderer, Block.blockIron, 0);
 
-		PC_Utils.setBlockBounds(Block.blockSteel, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		PC_Utils.setBlockBounds(Block.blockIron, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
 		setBlockBounds(0.1875F, 0.0F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
 		PC_Renderer.renderInvBox(renderer, this, 0);

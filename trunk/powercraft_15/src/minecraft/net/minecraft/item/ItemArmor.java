@@ -134,9 +134,9 @@ public class ItemArmor extends Item
     /**
      * Gets an icon index based on an item's damage value and the given render pass
      */
-    public Icon getBlockTextureFromSideAndMetadataFromDamageForRenderPass(int par1, int par2)
+    public Icon getIconFromDamageForRenderPass(int par1, int par2)
     {
-        return par2 == 1 ? this.field_94605_cw : super.getBlockTextureFromSideAndMetadataFromDamageForRenderPass(par1, par2);
+        return par2 == 1 ? this.field_94605_cw : super.getIconFromDamageForRenderPass(par1, par2);
     }
 
     /**
@@ -196,9 +196,9 @@ public class ItemArmor extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        super.updateIcons(par1IconRegister);
+        super.registerIcons(par1IconRegister);
 
         if (this.material == EnumArmorMaterial.CLOTH)
         {

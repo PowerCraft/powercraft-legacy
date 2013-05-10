@@ -7,17 +7,21 @@ import net.minecraft.scoreboard.ScoreObjective;
 
 public class Packet206SetObjective extends Packet
 {
-    public String field_96484_a;
-    public String field_96482_b;
-    public int field_96483_c;
+    public String objectiveName;
+    public String objectiveDisplayName;
+
+    /**
+     * 0 to create scoreboard, 1 to remove scoreboard, 2 to update display text.
+     */
+    public int change;
 
     public Packet206SetObjective() {}
 
     public Packet206SetObjective(ScoreObjective par1, int par2)
     {
-        this.field_96484_a = par1.func_96679_b();
-        this.field_96482_b = par1.func_96678_d();
-        this.field_96483_c = par2;
+        this.objectiveName = par1.getName();
+        this.objectiveDisplayName = par1.getDisplayName();
+        this.change = par2;
     }
 
     /**
@@ -25,9 +29,9 @@ public class Packet206SetObjective extends Packet
      */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
-        this.field_96484_a = readString(par1DataInputStream, 16);
-        this.field_96482_b = readString(par1DataInputStream, 32);
-        this.field_96483_c = par1DataInputStream.readByte();
+        this.objectiveName = readString(par1DataInputStream, 16);
+        this.objectiveDisplayName = readString(par1DataInputStream, 32);
+        this.change = par1DataInputStream.readByte();
     }
 
     /**
@@ -35,9 +39,9 @@ public class Packet206SetObjective extends Packet
      */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
-        writeString(this.field_96484_a, par1DataOutputStream);
-        writeString(this.field_96482_b, par1DataOutputStream);
-        par1DataOutputStream.writeByte(this.field_96483_c);
+        writeString(this.objectiveName, par1DataOutputStream);
+        writeString(this.objectiveDisplayName, par1DataOutputStream);
+        par1DataOutputStream.writeByte(this.change);
     }
 
     /**
@@ -45,7 +49,7 @@ public class Packet206SetObjective extends Packet
      */
     public void processPacket(NetHandler par1NetHandler)
     {
-        par1NetHandler.func_96436_a(this);
+        par1NetHandler.handleSetObjective(this);
     }
 
     /**
@@ -53,6 +57,6 @@ public class Packet206SetObjective extends Packet
      */
     public int getPacketSize()
     {
-        return 2 + this.field_96484_a.length() + 2 + this.field_96482_b.length() + 1;
+        return 2 + this.objectiveName.length() + 2 + this.objectiveDisplayName.length() + 1;
     }
 }

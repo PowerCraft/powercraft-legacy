@@ -182,7 +182,7 @@ public class Stitcher
 
             if (flag4 ^ flag5)
             {
-                flag1 = flag4 && flag2;
+                flag1 = flag5 && flag3; //Forge: Bug fix: Attempt to fill all downward space before expanding width
             }
             else
             {

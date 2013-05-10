@@ -27,7 +27,7 @@ public class RenderFireball extends Render
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         float f2 = this.field_77002_a;
         GL11.glScalef(f2 / 1.0F, f2 / 1.0F, f2 / 1.0F);
-        Icon icon = Item.fireballCharge.getBlockTextureFromSideAndMetadataFromDamage(0);
+        Icon icon = Item.fireballCharge.getIconFromDamage(0);
         this.loadTexture("/gui/items.png");
         Tessellator tessellator = Tessellator.instance;
         float f3 = icon.getMinU();

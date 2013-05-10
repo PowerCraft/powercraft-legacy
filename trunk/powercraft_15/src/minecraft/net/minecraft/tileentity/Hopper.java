@@ -10,9 +10,18 @@ public interface Hopper extends IInventory
      */
     World getWorldObj();
 
-    double func_96107_aA();
+    /**
+     * Gets the world X position for this hopper entity.
+     */
+    double getXPos();
 
-    double func_96109_aB();
+    /**
+     * Gets the world Y position for this hopper entity.
+     */
+    double getYPos();
 
-    double func_96108_aC();
+    /**
+     * Gets the world Z position for this hopper entity.
+     */
+    double getZPos();
 }

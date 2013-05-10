@@ -48,7 +48,7 @@ public class PCtr_BlockElevator extends PC_Block
     }
     
     @Override
-	public Icon getBlockTextureFromSideAndMetadata(PC_Direction side, int meta) {
+	public Icon getIcon(PC_Direction side, int meta) {
 		return meta==0?sideIcons[0]:sideIcons[1];
 	}
 

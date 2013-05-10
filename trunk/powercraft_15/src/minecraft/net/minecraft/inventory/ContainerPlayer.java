@@ -14,7 +14,7 @@ public class ContainerPlayer extends Container
 
     /** Determines if inventory manipulation should be handled. */
     public boolean isLocalWorld = false;
-    private final EntityPlayer thePlayer;
+    protected final EntityPlayer thePlayer;
 
     public ContainerPlayer(InventoryPlayer par1InventoryPlayer, boolean par2, EntityPlayer par3EntityPlayer)
     {

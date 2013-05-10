@@ -73,7 +73,11 @@ public class Packet41EntityEffect extends Packet
     }
 
     @SideOnly(Side.CLIENT)
-    public boolean func_100008_d()
+
+    /**
+     * Returns true if duration is at maximum, false otherwise.
+     */
+    public boolean isDurationMax()
     {
         return this.duration == 32767;
     }

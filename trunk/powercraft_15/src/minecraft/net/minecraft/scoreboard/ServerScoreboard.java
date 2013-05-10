@@ -83,9 +83,13 @@ public class ServerScoreboard extends Scoreboard
         this.func_96551_b();
     }
 
-    public void func_96512_b(String par1Str, ScorePlayerTeam par2ScorePlayerTeam)
+    /**
+     * Removes the given username from the given ScorePlayerTeam. If the player is not on the team then an
+     * IllegalStateException is thrown.
+     */
+    public void removePlayerFromTeam(String par1Str, ScorePlayerTeam par2ScorePlayerTeam)
     {
-        super.func_96512_b(par1Str, par2ScorePlayerTeam);
+        super.removePlayerFromTeam(par1Str, par2ScorePlayerTeam);
         this.field_96555_a.getConfigurationManager().sendPacketToAllPlayers(new Packet209SetPlayerTeam(par2ScorePlayerTeam, Arrays.asList(new String[] {par1Str}), 4));
         this.func_96551_b();
     }

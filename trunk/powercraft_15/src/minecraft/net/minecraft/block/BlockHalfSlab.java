@@ -140,9 +140,9 @@ public abstract class BlockHalfSlab extends Block
         }
         else
         {
-            int i1 = par2 + Facing.offsetsXForSide[Facing.faceToSide[par5]];
-            int j1 = par3 + Facing.offsetsYForSide[Facing.faceToSide[par5]];
-            int k1 = par4 + Facing.offsetsZForSide[Facing.faceToSide[par5]];
+            int i1 = par2 + Facing.offsetsXForSide[Facing.oppositeSide[par5]];
+            int j1 = par3 + Facing.offsetsYForSide[Facing.oppositeSide[par5]];
+            int k1 = par4 + Facing.offsetsZForSide[Facing.oppositeSide[par5]];
             boolean flag = (par1IBlockAccess.getBlockMetadata(i1, j1, k1) & 8) != 0;
             return flag ? (par5 == 0 ? true : (par5 == 1 && super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5) ? true : !isBlockSingleSlab(par1IBlockAccess.getBlockId(par2, par3, par4)) || (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) == 0)) : (par5 == 1 ? true : (par5 == 0 && super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5) ? true : !isBlockSingleSlab(par1IBlockAccess.getBlockId(par2, par3, par4)) || (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) != 0));
         }

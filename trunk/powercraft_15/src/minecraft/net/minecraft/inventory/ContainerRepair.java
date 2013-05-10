@@ -186,7 +186,7 @@ public class ContainerRepair extends Container
 
                         l1 = j2;
                         int k2 = l1 - k1;
-                        boolean flag1 = enchantment.func_92089_a(itemstack);
+                        boolean flag1 = enchantment.canApply(itemstack);
 
                         if (this.thePlayer.capabilities.isCreativeMode || itemstack.itemID == ItemEnchantedBook.enchantedBook.itemID)
                         {
@@ -249,7 +249,7 @@ public class ContainerRepair extends Container
                 }
             }
 
-            if (this.repairedItemName != null && !this.repairedItemName.equalsIgnoreCase(itemstack.getDisplayName()) && this.repairedItemName.length() > 0)
+            if (this.repairedItemName != null && this.repairedItemName.length() > 0 && !this.repairedItemName.equalsIgnoreCase(this.thePlayer.getTranslator().translateNamedKey(itemstack.getItemName())) && !this.repairedItemName.equals(itemstack.getDisplayName()))
             {
                 j = itemstack.isItemStackDamageable() ? 7 : itemstack.stackSize * 5;
                 i += j;

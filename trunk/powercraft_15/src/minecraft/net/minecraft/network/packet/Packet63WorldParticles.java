@@ -8,30 +8,55 @@ import java.io.IOException;
 
 public class Packet63WorldParticles extends Packet
 {
-    private String field_98209_a;
-    private float field_98207_b;
-    private float field_98208_c;
-    private float field_98205_d;
-    private float field_98206_e;
-    private float field_98203_f;
-    private float field_98204_g;
-    private float field_98210_h;
-    private int field_98211_i;
+    /**
+     * The name of the particle to create. A list can be found at https://gist.github.com/thinkofdeath/5110835
+     */
+    private String particleName;
+
+    /** X position of the particle. */
+    private float posX;
+
+    /** Y position of the particle. */
+    private float posY;
+
+    /** Z position of the particle. */
+    private float posZ;
+
+    /**
+     * This is added to the X position after being multiplied by random.nextGaussian()
+     */
+    private float offsetX;
+
+    /**
+     * This is added to the Y position after being multiplied by random.nextGaussian()
+     */
+    private float offsetY;
+
+    /**
+     * This is added to the Z position after being multiplied by random.nextGaussian()
+     */
+    private float offsetZ;
+
+    /** The speed of each particle. */
+    private float speed;
+
+    /** The number of particles to create. */
+    private int quantity;
 
     /**
      * Abstract. Reads the raw packet data from the data stream.
      */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
-        this.field_98209_a = readString(par1DataInputStream, 64);
-        this.field_98207_b = par1DataInputStream.readFloat();
-        this.field_98208_c = par1DataInputStream.readFloat();
-        this.field_98205_d = par1DataInputStream.readFloat();
-        this.field_98206_e = par1DataInputStream.readFloat();
-        this.field_98203_f = par1DataInputStream.readFloat();
-        this.field_98204_g = par1DataInputStream.readFloat();
-        this.field_98210_h = par1DataInputStream.readFloat();
-        this.field_98211_i = par1DataInputStream.readInt();
+        this.particleName = readString(par1DataInputStream, 64);
+        this.posX = par1DataInputStream.readFloat();
+        this.posY = par1DataInputStream.readFloat();
+        this.posZ = par1DataInputStream.readFloat();
+        this.offsetX = par1DataInputStream.readFloat();
+        this.offsetY = par1DataInputStream.readFloat();
+        this.offsetZ = par1DataInputStream.readFloat();
+        this.speed = par1DataInputStream.readFloat();
+        this.quantity = par1DataInputStream.readInt();
     }
 
     /**
@@ -39,15 +64,15 @@ public class Packet63WorldParticles extends Packet
      */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
-        writeString(this.field_98209_a, par1DataOutputStream);
-        par1DataOutputStream.writeFloat(this.field_98207_b);
-        par1DataOutputStream.writeFloat(this.field_98208_c);
-        par1DataOutputStream.writeFloat(this.field_98205_d);
-        par1DataOutputStream.writeFloat(this.field_98206_e);
-        par1DataOutputStream.writeFloat(this.field_98203_f);
-        par1DataOutputStream.writeFloat(this.field_98204_g);
-        par1DataOutputStream.writeFloat(this.field_98210_h);
-        par1DataOutputStream.writeInt(this.field_98211_i);
+        writeString(this.particleName, par1DataOutputStream);
+        par1DataOutputStream.writeFloat(this.posX);
+        par1DataOutputStream.writeFloat(this.posY);
+        par1DataOutputStream.writeFloat(this.posZ);
+        par1DataOutputStream.writeFloat(this.offsetX);
+        par1DataOutputStream.writeFloat(this.offsetY);
+        par1DataOutputStream.writeFloat(this.offsetZ);
+        par1DataOutputStream.writeFloat(this.speed);
+        par1DataOutputStream.writeInt(this.quantity);
     }
 
     /**
@@ -55,7 +80,7 @@ public class Packet63WorldParticles extends Packet
      */
     public void processPacket(NetHandler par1NetHandler)
     {
-        par1NetHandler.func_98182_a(this);
+        par1NetHandler.handleWorldParticles(this);
     }
 
     /**
@@ -67,56 +92,88 @@ public class Packet63WorldParticles extends Packet
     }
 
     @SideOnly(Side.CLIENT)
-    public String func_98195_d()
+    public String getParticleName()
     {
-        return this.field_98209_a;
+        return this.particleName;
     }
 
     @SideOnly(Side.CLIENT)
-    public double func_98200_f()
+
+    /**
+     * Gets the X position of the particle.
+     */
+    public double getPositionX()
     {
-        return (double)this.field_98207_b;
+        return (double)this.posX;
     }
 
     @SideOnly(Side.CLIENT)
-    public double func_98194_g()
+
+    /**
+     * Gets the Y position of the particle.
+     */
+    public double getPositionY()
     {
-        return (double)this.field_98208_c;
+        return (double)this.posY;
     }
 
     @SideOnly(Side.CLIENT)
-    public double func_98198_h()
+
+    /**
+     * Gets the Z position of the particle.
+     */
+    public double getPositionZ()
     {
-        return (double)this.field_98205_d;
+        return (double)this.posZ;
     }
 
     @SideOnly(Side.CLIENT)
-    public float func_98196_i()
+
+    /**
+     * This is added to the X position after being multiplied by random.nextGaussian()
+     */
+    public float getOffsetX()
     {
-        return this.field_98206_e;
+        return this.offsetX;
     }
 
     @SideOnly(Side.CLIENT)
-    public float func_98201_j()
+
+    /**
+     * This is added to the Y position after being multiplied by random.nextGaussian()
+     */
+    public float getOffsetY()
     {
-        return this.field_98203_f;
+        return this.offsetY;
     }
 
     @SideOnly(Side.CLIENT)
-    public float func_98199_k()
+
+    /**
+     * This is added to the Z position after being multiplied by random.nextGaussian()
+     */
+    public float getOffsetZ()
     {
-        return this.field_98204_g;
+        return this.offsetZ;
     }
 
     @SideOnly(Side.CLIENT)
-    public float func_98197_l()
+
+    /**
+     * Gets the speed of the particles.
+     */
+    public float getSpeed()
     {
-        return this.field_98210_h;
+        return this.speed;
     }
 
     @SideOnly(Side.CLIENT)
-    public int func_98202_m()
+
+    /**
+     * Gets the number of particles to create.
+     */
+    public int getQuantity()
     {
-        return this.field_98211_i;
+        return this.quantity;
     }
 }

@@ -26,7 +26,7 @@ final class HttpUtilRunnable implements Runnable
 
     final IDownloadSuccess downloadSuccess;
 
-    final int field_76173_f;
+    final int maxFileSize;
 
     HttpUtilRunnable(IProgressUpdate par1IProgressUpdate, String par2Str, Map par3Map, File par4File, IDownloadSuccess par5IDownloadSuccess, int par6)
     {
@@ -35,7 +35,7 @@ final class HttpUtilRunnable implements Runnable
         this.field_76177_c = par3Map;
         this.destinationFile = par4File;
         this.downloadSuccess = par5IDownloadSuccess;
-        this.field_76173_f = par6;
+        this.maxFileSize = par6;
     }
 
     public void run()
@@ -101,14 +101,14 @@ final class HttpUtilRunnable implements Runnable
 
             dataoutputstream = new DataOutputStream(new FileOutputStream(this.destinationFile));
 
-            if (this.field_76173_f > 0 && f1 > (float)this.field_76173_f)
+            if (this.maxFileSize > 0 && f1 > (float)this.maxFileSize)
             {
                 if (this.feedbackHook != null)
                 {
                     this.feedbackHook.onNoMoreProgress();
                 }
 
-                throw new IOException("Filesize is bigger than maximum allowed (file is " + f + ", limit is " + this.field_76173_f + ")");
+                throw new IOException("Filesize is bigger than maximum allowed (file is " + f + ", limit is " + this.maxFileSize + ")");
             }
 
             boolean flag = false;
@@ -123,14 +123,14 @@ final class HttpUtilRunnable implements Runnable
                     this.feedbackHook.setLoadingProgress((int)(f / f1 * 100.0F));
                 }
 
-                if (this.field_76173_f > 0 && f > (float)this.field_76173_f)
+                if (this.maxFileSize > 0 && f > (float)this.maxFileSize)
                 {
                     if (this.feedbackHook != null)
                     {
                         this.feedbackHook.onNoMoreProgress();
                     }
 
-                    throw new IOException("Filesize was bigger than maximum allowed (got >= " + f + ", limit was " + this.field_76173_f + ")");
+                    throw new IOException("Filesize was bigger than maximum allowed (got >= " + f + ", limit was " + this.maxFileSize + ")");
                 }
 
                 dataoutputstream.write(abyte, 0, k);

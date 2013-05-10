@@ -63,4 +63,6 @@ public interface IChunkProvider
     int getLoadedChunkCount();
 
     void recreateStructures(int i, int j);
+
+    void func_104112_b();
 }

@@ -9,18 +9,18 @@ public interface ILogAgent
     void logInfo(String s);
 
     @SideOnly(Side.SERVER)
-    Logger func_98076_a();
+    Logger getServerLogger();
 
     void logWarning(String s);
 
-    void func_98231_b(String s, Object ... var2);
+    void logWarningFormatted(String s, Object ... var2);
 
-    void func_98235_b(String s, Throwable throwable);
+    void logWarningException(String s, Throwable throwable);
 
-    void func_98232_c(String s);
+    void logSevere(String s);
 
-    void func_98234_c(String s, Throwable throwable);
+    void logSevereException(String s, Throwable throwable);
 
     @SideOnly(Side.CLIENT)
-    void func_98230_d(String s);
+    void logFine(String s);
 }

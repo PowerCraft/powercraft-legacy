@@ -60,7 +60,7 @@ public class BlockFarmland extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return par1 == 1 ? (par2 > 0 ? this.field_94441_a : this.field_94440_b) : Block.dirt.getBlockTextureFromSide(par1);
     }

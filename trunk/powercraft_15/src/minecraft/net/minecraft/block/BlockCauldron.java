@@ -23,9 +23,9 @@ public class BlockCauldron extends Block
     @SideOnly(Side.CLIENT)
     private Icon field_94378_a;
     @SideOnly(Side.CLIENT)
-    private Icon field_94376_b;
+    private Icon cauldronTopIcon;
     @SideOnly(Side.CLIENT)
-    private Icon field_94377_c;
+    private Icon cauldronBottomIcon;
 
     public BlockCauldron(int par1)
     {
@@ -37,9 +37,9 @@ public class BlockCauldron extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94376_b : (par1 == 0 ? this.field_94377_c : this.blockIcon);
+        return par1 == 1 ? this.cauldronTopIcon : (par1 == 0 ? this.cauldronBottomIcon : this.blockIcon);
     }
 
     @SideOnly(Side.CLIENT)
@@ -51,8 +51,8 @@ public class BlockCauldron extends Block
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.field_94378_a = par1IconRegister.registerIcon("cauldron_inner");
-        this.field_94376_b = par1IconRegister.registerIcon("cauldron_top");
-        this.field_94377_c = par1IconRegister.registerIcon("cauldron_bottom");
+        this.cauldronTopIcon = par1IconRegister.registerIcon("cauldron_top");
+        this.cauldronBottomIcon = par1IconRegister.registerIcon("cauldron_bottom");
         this.blockIcon = par1IconRegister.registerIcon("cauldron_side");
     }
 
@@ -79,7 +79,7 @@ public class BlockCauldron extends Block
     @SideOnly(Side.CLIENT)
     public static Icon func_94375_b(String par0Str)
     {
-        return par0Str == "cauldron_inner" ? Block.cauldron.field_94378_a : (par0Str == "cauldron_bottom" ? Block.cauldron.field_94377_c : null);
+        return par0Str == "cauldron_inner" ? Block.cauldron.field_94378_a : (par0Str == "cauldron_bottom" ? Block.cauldron.cauldronBottomIcon : null);
     }
 
     /**

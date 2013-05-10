@@ -24,9 +24,9 @@ public class BlockBed extends BlockDirectional
     @SideOnly(Side.CLIENT)
     private Icon[] field_94472_b;
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94473_c;
+    private Icon[] bedSideIcons;
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94471_cO;
+    private Icon[] bedTopIcons;
 
     public BlockBed(int par1)
     {
@@ -142,7 +142,7 @@ public class BlockBed extends BlockDirectional
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         if (par1 == 0)
         {
@@ -153,7 +153,7 @@ public class BlockBed extends BlockDirectional
             int k = getDirection(par2);
             int l = Direction.bedDirection[k][par1];
             int i1 = isBlockHeadOfBed(par2) ? 1 : 0;
-            return (i1 != 1 || l != 2) && (i1 != 0 || l != 3) ? (l != 5 && l != 4 ? this.field_94471_cO[i1] : this.field_94473_c[i1]) : this.field_94472_b[i1];
+            return (i1 != 1 || l != 2) && (i1 != 0 || l != 3) ? (l != 5 && l != 4 ? this.bedTopIcons[i1] : this.bedSideIcons[i1]) : this.field_94472_b[i1];
         }
     }
 
@@ -165,9 +165,9 @@ public class BlockBed extends BlockDirectional
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94471_cO = new Icon[] {par1IconRegister.registerIcon("bed_feet_top"), par1IconRegister.registerIcon("bed_head_top")};
+        this.bedTopIcons = new Icon[] {par1IconRegister.registerIcon("bed_feet_top"), par1IconRegister.registerIcon("bed_head_top")};
         this.field_94472_b = new Icon[] {par1IconRegister.registerIcon("bed_feet_end"), par1IconRegister.registerIcon("bed_head_end")};
-        this.field_94473_c = new Icon[] {par1IconRegister.registerIcon("bed_feet_side"), par1IconRegister.registerIcon("bed_head_side")};
+        this.bedSideIcons = new Icon[] {par1IconRegister.registerIcon("bed_feet_side"), par1IconRegister.registerIcon("bed_head_side")};
     }
 
     /**

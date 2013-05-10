@@ -8,25 +8,30 @@ import net.minecraft.world.World;
 
 public class BlockPressurePlateWeighted extends BlockBasePressurePlate
 {
-    private final int field_94357_a;
+    /** The maximum number of items the plate weights. */
+    private final int maxItemsWeighted;
 
     protected BlockPressurePlateWeighted(int par1, String par2Str, Material par3Material, int par4)
     {
         super(par1, par2Str, par3Material);
-        this.field_94357_a = par4;
+        this.maxItemsWeighted = par4;
     }
 
-    protected int func_94351_d(World par1World, int par2, int par3, int par4)
+    /**
+     * Returns the current state of the pressure plate. Returns a value between 0 and 15 based on the number of items on
+     * it.
+     */
+    protected int getPlateState(World par1World, int par2, int par3, int par4)
     {
         int l = 0;
-        Iterator iterator = par1World.getEntitiesWithinAABB(EntityItem.class, this.func_94352_a(par2, par3, par4)).iterator();
+        Iterator iterator = par1World.getEntitiesWithinAABB(EntityItem.class, this.getSensitiveAABB(par2, par3, par4)).iterator();
 
         while (iterator.hasNext())
         {
             EntityItem entityitem = (EntityItem)iterator.next();
             l += entityitem.getEntityItem().stackSize;
 
-            if (l >= this.field_94357_a)
+            if (l >= this.maxItemsWeighted)
             {
                 break;
             }
@@ -38,17 +43,23 @@ public class BlockPressurePlateWeighted extends BlockBasePressurePlate
         }
         else
         {
-            float f = (float)Math.min(this.field_94357_a, l) / (float)this.field_94357_a;
+            float f = (float)Math.min(this.maxItemsWeighted, l) / (float)this.maxItemsWeighted;
             return MathHelper.ceiling_float_int(f * 15.0F);
         }
     }
 
-    protected int func_94350_c(int par1)
+    /**
+     * Argument is metadata. Returns power level (0-15)
+     */
+    protected int getPowerSupply(int par1)
     {
         return par1;
     }
 
-    protected int func_94355_d(int par1)
+    /**
+     * Argument is weight (0-15). Return the metadata to be set because of it.
+     */
+    protected int getMetaFromWeight(int par1)
     {
         return par1;
     }

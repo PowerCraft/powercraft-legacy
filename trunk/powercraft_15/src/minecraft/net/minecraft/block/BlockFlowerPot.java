@@ -110,7 +110,11 @@ public class BlockFlowerPot extends Block
     }
 
     @SideOnly(Side.CLIENT)
-    public boolean func_82505_u_()
+
+    /**
+     * Returns true only if block is flowerPot
+     */
+    public boolean isFlowerPot()
     {
         return true;
     }

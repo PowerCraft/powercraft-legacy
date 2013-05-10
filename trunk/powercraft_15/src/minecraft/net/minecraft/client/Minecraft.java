@@ -123,9 +123,13 @@ import org.lwjgl.util.glu.GLU;
 
 import com.google.common.collect.MapDifference;
 
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.event.world.WorldEvent;
 
 @SideOnly(Side.CLIENT)
 public abstract class Minecraft implements Runnable, IPlayerUsage
@@ -147,8 +151,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     private CrashReport crashReporter;
     public int displayWidth;
     public int displayHeight;
-    //NEI
-    public Timer timer = new Timer(20.0F);
+    private Timer timer = new Timer(20.0F);
 
     /** Instance of PlayerUsageSnooper. */
     private PlayerUsageSnooper usageSnooper = new PlayerUsageSnooper("client", this);
@@ -372,12 +375,12 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
         }
 
-        Display.setTitle("Minecraft Minecraft 1.5.1");
+        Display.setTitle("Minecraft Minecraft 1.5.2");
         this.getLogAgent().logInfo("LWJGL Version: " + Sys.getVersion());
 
         try
         {
-            Display.create((new PixelFormat()).withDepthBits(24));
+            ForgeHooksClient.createDisplay();
         }
         catch (LWJGLException lwjglexception)
         {
@@ -455,7 +458,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         }
 
         this.checkGLError("Post startup");
-        this.ingameGUI = new GuiIngame(this);
+        this.ingameGUI = new GuiIngameForge(this);
 
         if (this.serverName != null)
         {
@@ -656,9 +659,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         if (i != 0)
         {
             String s1 = GLU.gluErrorString(i);
-            this.getLogAgent().func_98232_c("########## GL ERROR ##########");
-            this.getLogAgent().func_98232_c("@ " + par1Str);
-            this.getLogAgent().func_98232_c(i + ": " + s1);
+            this.getLogAgent().logSevere("########## GL ERROR ##########");
+            this.getLogAgent().logSevere("@ " + par1Str);
+            this.getLogAgent().logSevere(i + ": " + s1);
         }
     }
 
@@ -1880,7 +1883,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
             if (!this.isGamePaused && this.theWorld != null)
             {
-                this.theWorld.func_73029_E(MathHelper.floor_double(this.thePlayer.posX), MathHelper.floor_double(this.thePlayer.posY), MathHelper.floor_double(this.thePlayer.posZ));
+                this.theWorld.doVoidFogParticles(MathHelper.floor_double(this.thePlayer.posX), MathHelper.floor_double(this.thePlayer.posY), MathHelper.floor_double(this.thePlayer.posZ));
             }
 
             this.mcProfiler.endStartSection("particles");
@@ -2016,6 +2019,11 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public void loadWorld(WorldClient par1WorldClient, String par2Str)
     {
         this.statFileWriter.syncStats();
+
+        if (theWorld != null)
+        {
+            MinecraftForge.EVENT_BUS.post(new WorldEvent.Unload(theWorld));
+        }
 
         if (par1WorldClient == null)
         {
@@ -2467,11 +2475,18 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         par1PlayerUsageSnooper.addData("gl_max_texture_size", Integer.valueOf(getGLMaximumTextureSize()));
     }
 
+    //Forge: Adds a optimization to the getGLMaximumTextureSize, only calculate it once.
+    private static int max_texture_size = -1;
     /**
      * Used in the usage snooper.
      */
     public static int getGLMaximumTextureSize()
     {
+        if (max_texture_size != -1)
+        {
+            return max_texture_size;
+        }
+
         for (int i = 16384; i > 0; i >>= 1)
         {
             GL11.glTexImage2D(GL11.GL_PROXY_TEXTURE_2D, 0, GL11.GL_RGBA, i, i, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)null);
@@ -2479,6 +2494,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
             if (j != 0)
             {
+                max_texture_size = i;
                 return i;
             }
         }

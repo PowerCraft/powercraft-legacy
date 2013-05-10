@@ -7,27 +7,38 @@ import net.minecraft.scoreboard.Score;
 
 public class Packet207SetScore extends Packet
 {
-    public String field_96488_a = "";
-    public String field_96486_b = "";
-    public int field_96487_c = 0;
-    public int field_96485_d = 0;
+    /** An unique name to be displayed in the list. */
+    public String itemName = "";
+
+    /**
+     * The unique name for the scoreboard to be updated. Only sent when updateOrRemove does not equal 1.
+     */
+    public String scoreName = "";
+
+    /**
+     * The score to be displayed next to the entry. Only sent when Update/Remove does not equal 1.
+     */
+    public int value = 0;
+
+    /** 0 to create/update an item. 1 to remove an item. */
+    public int updateOrRemove = 0;
 
     public Packet207SetScore() {}
 
     public Packet207SetScore(Score par1, int par2)
     {
-        this.field_96488_a = par1.func_96653_e();
-        this.field_96486_b = par1.func_96645_d().func_96679_b();
-        this.field_96487_c = par1.func_96652_c();
-        this.field_96485_d = par2;
+        this.itemName = par1.func_96653_e();
+        this.scoreName = par1.func_96645_d().getName();
+        this.value = par1.func_96652_c();
+        this.updateOrRemove = par2;
     }
 
     public Packet207SetScore(String par1)
     {
-        this.field_96488_a = par1;
-        this.field_96486_b = "";
-        this.field_96487_c = 0;
-        this.field_96485_d = 1;
+        this.itemName = par1;
+        this.scoreName = "";
+        this.value = 0;
+        this.updateOrRemove = 1;
     }
 
     /**
@@ -35,13 +46,13 @@ public class Packet207SetScore extends Packet
      */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
-        this.field_96488_a = readString(par1DataInputStream, 16);
-        this.field_96485_d = par1DataInputStream.readByte();
+        this.itemName = readString(par1DataInputStream, 16);
+        this.updateOrRemove = par1DataInputStream.readByte();
 
-        if (this.field_96485_d != 1)
+        if (this.updateOrRemove != 1)
         {
-            this.field_96486_b = readString(par1DataInputStream, 16);
-            this.field_96487_c = par1DataInputStream.readInt();
+            this.scoreName = readString(par1DataInputStream, 16);
+            this.value = par1DataInputStream.readInt();
         }
     }
 
@@ -50,13 +61,13 @@ public class Packet207SetScore extends Packet
      */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
-        writeString(this.field_96488_a, par1DataOutputStream);
-        par1DataOutputStream.writeByte(this.field_96485_d);
+        writeString(this.itemName, par1DataOutputStream);
+        par1DataOutputStream.writeByte(this.updateOrRemove);
 
-        if (this.field_96485_d != 1)
+        if (this.updateOrRemove != 1)
         {
-            writeString(this.field_96486_b, par1DataOutputStream);
-            par1DataOutputStream.writeInt(this.field_96487_c);
+            writeString(this.scoreName, par1DataOutputStream);
+            par1DataOutputStream.writeInt(this.value);
         }
     }
 
@@ -65,7 +76,7 @@ public class Packet207SetScore extends Packet
      */
     public void processPacket(NetHandler par1NetHandler)
     {
-        par1NetHandler.func_96437_a(this);
+        par1NetHandler.handleSetScore(this);
     }
 
     /**
@@ -73,6 +84,6 @@ public class Packet207SetScore extends Packet
      */
     public int getPacketSize()
     {
-        return 2 + this.field_96488_a.length() + 2 + this.field_96486_b.length() + 4 + 1;
+        return 2 + this.itemName.length() + 2 + this.scoreName.length() + 4 + 1;
     }
 }

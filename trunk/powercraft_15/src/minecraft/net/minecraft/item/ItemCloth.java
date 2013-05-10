@@ -20,9 +20,9 @@ public class ItemCloth extends ItemBlock
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
+    public Icon getIconFromDamage(int par1)
     {
-        return Block.cloth.getBlockTextureFromSideAndMetadata(2, BlockCloth.getBlockFromDye(par1));
+        return Block.cloth.getIcon(2, BlockCloth.getBlockFromDye(par1));
     }
 
     /**

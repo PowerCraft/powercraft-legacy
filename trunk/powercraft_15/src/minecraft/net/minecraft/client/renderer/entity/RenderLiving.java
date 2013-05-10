@@ -15,6 +15,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.common.MinecraftForge;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -25,6 +28,8 @@ public class RenderLiving extends Render
 
     /** The model to be used during the render passes. */
     protected ModelBase renderPassModel;
+    public static float NAME_TAG_RANGE = 64.0f;
+    public static float NAME_TAG_RANGE_SNEAK = 32.0f;
 
     public RenderLiving(ModelBase par1ModelBase, float par2)
     {
@@ -257,7 +262,7 @@ public class RenderLiving extends Render
     {
         this.func_98190_a(par1EntityLiving);
 
-        if (!par1EntityLiving.getHasActivePotion())
+        if (!par1EntityLiving.isInvisible())
         {
             this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
         }
@@ -413,16 +418,17 @@ public class RenderLiving extends Render
      */
     protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6)
     {
+        if (MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Specials.Pre(par1EntityLiving, this))) return;
         if (Minecraft.isGuiEnabled() && par1EntityLiving != this.renderManager.livingPlayer && !par1EntityLiving.func_98034_c(Minecraft.getMinecraft().thePlayer) && (par1EntityLiving.func_94059_bO() || par1EntityLiving.func_94056_bM() && par1EntityLiving == this.renderManager.field_96451_i))
         {
             float f = 1.6F;
             float f1 = 0.016666668F * f;
             double d3 = par1EntityLiving.getDistanceSqToEntity(this.renderManager.livingPlayer);
-            float f2 = par1EntityLiving.isSneaking() ? 32.0F : 64.0F;
+            float f2 = par1EntityLiving.isSneaking() ? NAME_TAG_RANGE_SNEAK : NAME_TAG_RANGE;
 
             if (d3 < (double)(f2 * f2))
             {
-                String s = par1EntityLiving.func_96090_ax();
+                String s = par1EntityLiving.getTranslatedEntityName();
 
                 if (par1EntityLiving.isSneaking())
                 {
@@ -462,6 +468,7 @@ public class RenderLiving extends Render
                 }
             }
         }
+        MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Specials.Post(par1EntityLiving, this));
     }
 
     protected void func_96449_a(EntityLiving par1EntityLiving, double par2, double par4, double par6, String par8Str, float par9, double par10)

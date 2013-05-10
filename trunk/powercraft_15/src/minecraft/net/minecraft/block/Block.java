@@ -47,6 +47,7 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.RotationHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -135,7 +136,7 @@ public class Block
     public static final BlockFlower mushroomBrown = (BlockFlower)(new BlockMushroom(39, "mushroom_brown")).setHardness(0.0F).setStepSound(soundGrassFootstep).setLightValue(0.125F).setUnlocalizedName("mushroom");
     public static final BlockFlower mushroomRed = (BlockFlower)(new BlockMushroom(40, "mushroom_red")).setHardness(0.0F).setStepSound(soundGrassFootstep).setUnlocalizedName("mushroom");
     public static final Block blockGold = (new BlockOreStorage(41)).setHardness(3.0F).setResistance(10.0F).setStepSound(soundMetalFootstep).setUnlocalizedName("blockGold");
-    public static final Block blockSteel = (new BlockOreStorage(42)).setHardness(5.0F).setResistance(10.0F).setStepSound(soundMetalFootstep).setUnlocalizedName("blockIron");
+    public static final Block blockIron = (new BlockOreStorage(42)).setHardness(5.0F).setResistance(10.0F).setStepSound(soundMetalFootstep).setUnlocalizedName("blockIron");
 
     /** stoneDoubleSlab */
     public static final BlockHalfSlab stoneDoubleSlab = (BlockHalfSlab)(new BlockStep(43, true)).setHardness(2.0F).setResistance(10.0F).setStepSound(soundStoneFootstep).setUnlocalizedName("stoneSlab");
@@ -168,7 +169,7 @@ public class Block
     public static final Block signWall = (new BlockSign(68, TileEntitySign.class, false)).setHardness(1.0F).setStepSound(soundWoodFootstep).setUnlocalizedName("sign").disableStats();
     public static final Block lever = (new BlockLever(69)).setHardness(0.5F).setStepSound(soundWoodFootstep).setUnlocalizedName("lever");
     public static final Block pressurePlateStone = (new BlockPressurePlate(70, "stone", Material.rock, EnumMobType.mobs)).setHardness(0.5F).setStepSound(soundStoneFootstep).setUnlocalizedName("pressurePlate");
-    public static final Block doorSteel = (new BlockDoor(71, Material.iron)).setHardness(5.0F).setStepSound(soundMetalFootstep).setUnlocalizedName("doorIron").disableStats();
+    public static final Block doorIron = (new BlockDoor(71, Material.iron)).setHardness(5.0F).setStepSound(soundMetalFootstep).setUnlocalizedName("doorIron").disableStats();
     public static final Block pressurePlatePlanks = (new BlockPressurePlate(72, "wood", Material.wood, EnumMobType.everything)).setHardness(0.5F).setStepSound(soundWoodFootstep).setUnlocalizedName("pressurePlate");
     public static final Block oreRedstone = (new BlockRedstoneOre(73, false)).setHardness(3.0F).setResistance(5.0F).setStepSound(soundStoneFootstep).setUnlocalizedName("oreRedstone").setCreativeTab(CreativeTabs.tabBlock);
     public static final Block oreRedstoneGlowing = (new BlockRedstoneOre(74, true)).setLightValue(0.625F).setHardness(3.0F).setResistance(5.0F).setStepSound(soundStoneFootstep).setUnlocalizedName("oreRedstone");
@@ -261,7 +262,7 @@ public class Block
     public static final Block oreNetherQuartz = (new BlockOre(153)).setHardness(3.0F).setResistance(5.0F).setStepSound(soundStoneFootstep).setUnlocalizedName("netherquartz");
     public static final BlockHopper hopperBlock = (BlockHopper)(new BlockHopper(154)).setHardness(3.0F).setResistance(8.0F).setStepSound(soundWoodFootstep).setUnlocalizedName("hopper");
     public static final Block blockNetherQuartz = (new BlockQuartz(155)).setStepSound(soundStoneFootstep).setHardness(0.8F).setUnlocalizedName("quartzBlock");
-    public static final Block stairCompactNetherQuartz = (new BlockStairs(156, blockNetherQuartz, 0)).setUnlocalizedName("stairsQuartz");
+    public static final Block stairsNetherQuartz = (new BlockStairs(156, blockNetherQuartz, 0)).setUnlocalizedName("stairsQuartz");
     public static final Block railActivator = (new BlockRailPowered(157)).setHardness(0.7F).setStepSound(soundMetalFootstep).setUnlocalizedName("activatorRail");
     public static final Block dropper = (new BlockDropper(158)).setHardness(3.5F).setStepSound(soundStoneFootstep).setUnlocalizedName("dropper");
 
@@ -269,10 +270,10 @@ public class Block
     public final int blockID;
 
     /** Indicates how many hits it takes to break a block. */
-    protected float blockHardness;
+    public float blockHardness;
 
     /** Indicates the blocks resistance to explosions. */
-    protected float blockResistance;
+    public float blockResistance;
 
     /**
      * set to true when Block's constructor is called through the chain of super()'s. Note: Never used
@@ -536,7 +537,7 @@ public class Block
      */
     public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        return this.getBlockTextureFromSideAndMetadata(par5, par1IBlockAccess.getBlockMetadata(par2, par3, par4));
+        return this.getIcon(par5, par1IBlockAccess.getBlockMetadata(par2, par3, par4));
     }
 
     @SideOnly(Side.CLIENT)
@@ -544,7 +545,7 @@ public class Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return this.blockIcon;
     }
@@ -570,7 +571,7 @@ public class Block
      */
     public final Icon getBlockTextureFromSide(int par1)
     {
-        return this.getBlockTextureFromSideAndMetadata(par1, 0);
+        return this.getIcon(par1, 0);
     }
 
     @SideOnly(Side.CLIENT)
@@ -944,7 +945,8 @@ public class Block
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         int l = par1World.getBlockId(par2, par3, par4);
-        return l == 0 || blocksList[l].blockMaterial.isReplaceable();
+        Block block = Block.blocksList[l];
+        return block == null || block.isBlockReplaceable(par1World, par2, par3, par4);
     }
 
     /**
@@ -1316,7 +1318,11 @@ public class Block
     public void fillWithRain(World par1World, int par2, int par3, int par4) {}
 
     @SideOnly(Side.CLIENT)
-    public boolean func_82505_u_()
+
+    /**
+     * Returns true only if block is flowerPot
+     */
+    public boolean isFlowerPot()
     {
         return false;
     }
@@ -1381,7 +1387,11 @@ public class Block
     }
 
     @SideOnly(Side.CLIENT)
-    public String func_94327_t_()
+
+    /**
+     * Gets the icon name of the ItemBlock corresponding to this block. Used by hoppers.
+     */
+    public String getItemIconName()
     {
         return null;
     }
@@ -1554,7 +1564,7 @@ public class Block
      */
     public boolean isBlockReplaceable(World world, int x, int y, int z)
     {
-        return false;
+        return blockMaterial.isReplaceable();
     }
 
     /**
@@ -2019,6 +2029,23 @@ public class Block
     }
 
     /**
+     * Called when the block is destroyed by an explosion.
+     * Useful for allowing the block to take into account tile entities,
+     * metadata, etc. when exploded, before it is removed.
+     *
+     * @param world The current world
+     * @param x X Position
+     * @param y Y Position
+     * @param z Z Position
+     * @param Explosion The explosion instance affecting the block
+     */
+    public void onBlockExploded(World world, int x, int y, int z, Explosion explosion)
+    {
+        world.setBlockToAir(x, y, z);
+        onBlockDestroyedByExplosion(world, x, y, z, explosion);
+    }
+
+    /**
      * Determine if this block can make a redstone connection on the side provided,
      * Useful to control which sides are inputs and outputs for redstone wires.
      *
@@ -2301,6 +2328,80 @@ public class Block
      */
     public boolean isBeaconBase(World worldObj, int x, int y, int z, int beaconX, int beaconY, int beaconZ)
     {
-        return (blockID == blockEmerald.blockID || blockID == blockGold.blockID || blockID == blockDiamond.blockID || blockID == blockSteel.blockID);
+        return (blockID == blockEmerald.blockID || blockID == blockGold.blockID || blockID == blockDiamond.blockID || blockID == blockIron.blockID);
+    }
+
+    /**
+     * Rotate the block. For vanilla blocks this rotates around the axis passed in (generally, it should be the "face" that was hit).
+     * Note: for mod blocks, this is up to the block and modder to decide. It is not mandated that it be a rotation around the
+     * face, but could be a rotation to orient *to* that face, or a visiting of possible rotations.
+     * The method should return true if the rotation was successful though.
+     *
+     * @param worldObj The world
+     * @param x X position
+     * @param y Y position
+     * @param z Z position
+     * @param axis The axis to rotate around
+     * @return True if the rotation was successful, False if the rotation failed, or is not possible
+     */
+    public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)
+    {
+        return RotationHelper.rotateVanillaBlock(this, worldObj, x, y, z, axis);
+    }
+
+    /**
+     * Get the rotations that can apply to the block at the specified coordinates. Null means no rotations are possible.
+     * Note, this is up to the block to decide. It may not be accurate or representative.
+     * @param worldObj The world
+     * @param x X position
+     * @param y Y position
+     * @param z Z position
+     * @return An array of valid axes to rotate around, or null for none or unknown
+     */
+    public ForgeDirection[] getValidRotations(World worldObj, int x, int y, int z)
+    {
+        return RotationHelper.getValidVanillaBlockRotations(this);
+    }
+
+    /**
+     * Determines the amount of enchanting power this block can provide to an enchanting table.
+     * @param world The World
+     * @param x X position
+     * @param y Y position
+     * @param z Z position
+     * @return The amount of enchanting power this block produces.
+     */
+    public float getEnchantPowerBonus(World world, int x, int y, int z)
+    {
+        return getEnchantPower(world, x, y, z);
+    }
+
+    @Deprecated //Changed return to float, see above.
+    public int getEnchantPower(World world, int x, int y, int z)
+    {
+        return blockID == bookShelf.blockID ? 1 : 0;
+    }
+    /**
+     * Common way to recolour a block with an external tool
+     * @param world The world
+     * @param x X
+     * @param y Y
+     * @param z Z
+     * @param side The side hit with the colouring tool
+     * @param colour The colour to change to
+     * @return If the recolouring was successful
+     */
+    public boolean recolourBlock(World world, int x, int y, int z, ForgeDirection side, int colour)
+    {
+        if (blockID == cloth.blockID)
+        {
+            int meta = world.getBlockMetadata(x, y, z);
+            if (meta != colour)
+            {
+                world.setBlockMetadataWithNotify(x, y, z, colour, 3);
+                return true;
+            }
+        }
+        return false;
     }
 }

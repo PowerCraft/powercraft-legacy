@@ -20,7 +20,7 @@ public class PCli_DamageSourceLaser extends DamageSource {
 	
 	@Override
 	public String getDeathMessage(EntityLiving par1EntityLiving){
-        return PC_LangRegistry.tr("pc.damage.laser", par1EntityLiving.func_96090_ax());
+        return PC_LangRegistry.tr("pc.damage.laser", par1EntityLiving.getTranslatedEntityName());
     }
 	
 }

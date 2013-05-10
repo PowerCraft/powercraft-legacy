@@ -42,7 +42,7 @@ public final class ItemStack
     public NBTTagCompound stackTagCompound;
 
     /** Damage dealt to the item or number of use. Raise when using items. */
-    private int itemDamage;
+    int itemDamage;
 
     /** Item frame this stack is on, or null if not on an item frame. */
     private EntityItemFrame itemFrame;
@@ -133,9 +133,9 @@ public final class ItemStack
     /**
      * Returns the icon index of the current stack.
      */
-    public Icon getBlockTextureFromSideAndMetadataIndex()
+    public Icon getIconIndex()
     {
-        return this.getItem().getBlockTextureFromSideAndMetadataIndex(this);
+        return this.getItem().getIconIndex(this);
     }
 
     @SideOnly(Side.CLIENT)
@@ -249,7 +249,7 @@ public final class ItemStack
      */
     public boolean isItemDamaged()
     {
-        return this.isItemStackDamageable() && this.itemDamage > 0;
+        return this.isItemStackDamageable() && this.getItem().isItemStackDamaged(this);
     }
 
     /**
@@ -257,7 +257,7 @@ public final class ItemStack
      */
     public int getItemDamageForDisplay()
     {
-        return this.itemDamage;
+        return this.getItem().getItemDamageFromStackForDisplay(this);
     }
 
     /**
@@ -265,7 +265,7 @@ public final class ItemStack
      */
     public int getItemDamage()
     {
-        return this.itemDamage;
+        return this.getItem().getItemDamageFromStack(this);
     }
 
     /**
@@ -273,12 +273,7 @@ public final class ItemStack
      */
     public void setItemDamage(int par1)
     {
-        this.itemDamage = par1;
-
-        if (this.itemDamage < 0)
-        {
-            this.itemDamage = 0;
-        }
+        this.getItem().setItemDamageForStack(this, par1);
     }
 
     /**
@@ -286,10 +281,16 @@ public final class ItemStack
      */
     public int getMaxDamage()
     {
-        return Item.itemsList[this.itemID].getMaxDamage();
+        return this.getItem().getItemMaxDamageFromStack(this);
     }
 
-    public boolean func_96631_a(int par1, Random par2Random)
+    /**
+     * Attempts to damage the ItemStack with par1 amount of damage, If the ItemStack has the Unbreaking enchantment
+     * there is a chance for each point of damage to be negated. Returns true if it takes more damage than
+     * getMaxDamage(). Returns false otherwise or if the ItemStack can't be damaged or if all points of damage are
+     * negated.
+     */
+    public boolean attemptDamageItem(int par1, Random par2Random)
     {
         if (!this.isItemStackDamageable())
         {
@@ -304,7 +305,7 @@ public final class ItemStack
 
                 for (int l = 0; j > 0 && l < par1; ++l)
                 {
-                    if (EnchantmentDurability.func_92097_a(this, j, par2Random))
+                    if (EnchantmentDurability.negateDamage(this, j, par2Random))
                     {
                         ++k;
                     }
@@ -332,7 +333,7 @@ public final class ItemStack
         {
             if (this.isItemStackDamageable())
             {
-                if (this.func_96631_a(par1, par2EntityLiving.getRNG()))
+                if (this.attemptDamageItem(par1, par2EntityLiving.getRNG()))
                 {
                     par2EntityLiving.renderBrokenItemStack(this);
 
@@ -382,7 +383,7 @@ public final class ItemStack
      */
     public int getDamageVsEntity(Entity par1Entity)
     {
-        return Item.itemsList[this.itemID].getDamageVsEntity(par1Entity);
+        return Item.itemsList[this.itemID].getDamageVsEntity(par1Entity, this);
     }
 
     /**

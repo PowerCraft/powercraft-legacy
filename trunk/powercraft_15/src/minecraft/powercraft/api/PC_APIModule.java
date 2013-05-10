@@ -267,6 +267,9 @@ public class PC_APIModule {
 			if (object instanceof PC_ISpecialHarvesting) {
 				PC_BuildingRegistry.register((PC_ISpecialHarvesting) object);
 			}
+			if (object instanceof PC_IDataHandler) {
+				PC_DataHandlerRegistry.regsterDataHandler(((PC_IDataHandler)object).getName(), (PC_IDataHandler)object);
+			}
 		}
 		
 	}

@@ -71,7 +71,7 @@ public class Packet52MultiBlockChange extends Packet
         }
         catch (IOException ioexception)
         {
-            this.field_98193_m.func_98234_c("Couldn\'t create chunk packet", ioexception);
+            this.field_98193_m.logSevereException("Couldn\'t create chunk packet", ioexception);
             this.metadataArray = null;
         }
     }

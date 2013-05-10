@@ -14,7 +14,7 @@ public class TileEntityMobSpawner extends TileEntity
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        this.field_98050_a.func_98270_a(par1NBTTagCompound);
+        this.field_98050_a.readFromNBT(par1NBTTagCompound);
     }
 
     /**
@@ -23,7 +23,7 @@ public class TileEntityMobSpawner extends TileEntity
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        this.field_98050_a.func_98280_b(par1NBTTagCompound);
+        this.field_98050_a.writeToNBT(par1NBTTagCompound);
     }
 
     /**
@@ -52,7 +52,7 @@ public class TileEntityMobSpawner extends TileEntity
      */
     public boolean receiveClientEvent(int par1, int par2)
     {
-        return this.field_98050_a.func_98268_b(par1) ? true : super.receiveClientEvent(par1, par2);
+        return this.field_98050_a.setDelayToMin(par1) ? true : super.receiveClientEvent(par1, par2);
     }
 
     public MobSpawnerBaseLogic func_98049_a()

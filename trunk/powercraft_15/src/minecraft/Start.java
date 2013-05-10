@@ -33,8 +33,8 @@ public class Start
             try
             {
                 String parameters = "http://login.minecraft.net/?user=" + URLEncoder.encode(args[0], "UTF-8") +
-                        "&password=" + URLEncoder.encode(args[1], "UTF-8") +
-                        "&version=" + 13;
+                                    "&password=" + URLEncoder.encode(args[1], "UTF-8") +
+                                    "&version=" + 13;
                 String result = openUrl(parameters);
 
                 if (result == null)

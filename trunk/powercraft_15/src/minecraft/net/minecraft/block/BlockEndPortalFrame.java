@@ -31,7 +31,7 @@ public class BlockEndPortalFrame extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return par1 == 1 ? this.field_94400_a : (par1 == 0 ? Block.whiteStone.getBlockTextureFromSide(par1) : this.blockIcon);
     }
