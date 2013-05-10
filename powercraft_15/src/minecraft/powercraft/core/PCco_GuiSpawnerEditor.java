@@ -69,7 +69,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 				PC_GresRadioButton rb = new PC_GresRadioButton(e.getValue(), rg);
 				entityIds.add(e.getValue());
 				rb.setId(entityIds.size());
-				if(e.getValue().equalsIgnoreCase(tems.func_98049_a().func_98276_e()))
+				if(e.getValue().equalsIgnoreCase(tems.func_98049_a().getEntityNameToSpawn()))
 					rb.check(true);
 				lv.add(rb);
 			}

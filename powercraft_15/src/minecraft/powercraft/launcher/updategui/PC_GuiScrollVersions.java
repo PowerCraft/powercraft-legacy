@@ -19,8 +19,8 @@ public class PC_GuiScrollVersions extends PC_GuiScroll {
 		super(x, y, width, height);
 		this.moduleAndPack = moduleAndPack;
 		this.guiUpdate = guiUpdate;
-		if(this.width-12>10){
-			lText = fontRenderer.listFormattedStringToWidth("Select module or pack", this.width-12);
+		if(this.gswidth-12>10){
+			lText = gsfontRenderer.listFormattedStringToWidth("Select module or pack", this.gswidth-12);
 		}
 	}
 
@@ -57,10 +57,10 @@ public class PC_GuiScrollVersions extends PC_GuiScroll {
 		Object obj = moduleAndPack.getSelection();
 		String disp = getObjectString(obj, element);
 		if(disp!=null){
-			drawString(fontRenderer, disp, 2, 2, 0xffffff);
+			drawString(gsfontRenderer, disp, 2, 2, 0xffffff);
 		}else{
 			for(int i=0; i<lText.size(); i++){
-				fontRenderer.drawString(lText.get(i), 2, i*10+2, 0xFFFFFFFF);
+				gsfontRenderer.drawString(lText.get(i), 2, i*10+2, 0xFFFFFFFF);
 			}
 		}
 	}

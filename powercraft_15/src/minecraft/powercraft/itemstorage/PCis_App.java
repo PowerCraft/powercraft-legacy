@@ -19,7 +19,7 @@ import powercraft.launcher.loader.PC_Module.PC_InitPacketHandlers;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_RegisterContainers;
 
-@PC_Module(name="ItemStorage", version="1.1.0")
+@PC_Module(name="ItemStorage", version="1.1.1")
 public class PCis_App {
 
 	@PC_FieldObject(clazz=PCis_BlockBigChest.class)

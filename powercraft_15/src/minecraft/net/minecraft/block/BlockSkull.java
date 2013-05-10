@@ -310,13 +310,17 @@ public class BlockSkull extends BlockContainer
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return Block.slowSand.getBlockTextureFromSide(par1);
     }
 
     @SideOnly(Side.CLIENT)
-    public String func_94327_t_()
+
+    /**
+     * Gets the icon name of the ItemBlock corresponding to this block. Used by hoppers.
+     */
+    public String getItemIconName()
     {
         return ItemSkull.field_94587_a[0];
     }

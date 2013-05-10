@@ -17,7 +17,7 @@ public class CallableMinecraftVersion implements Callable
      */
     public String minecraftVersion()
     {
-        return "1.5.1";
+        return "1.5.2";
     }
 
     public Object call()

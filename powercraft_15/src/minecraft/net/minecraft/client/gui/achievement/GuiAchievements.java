@@ -286,7 +286,7 @@ public class GuiAchievements extends GuiScreen
                 random.setSeed((long)(1234 + i2 + k3));
                 random.nextInt();
                 j3 = random.nextInt(1 + j2 + i3) + (j2 + i3) / 2;
-                Icon icon = Block.sand.getBlockTextureFromSideAndMetadata(0, 0);
+                Icon icon = Block.sand.getIcon(0, 0);
 
                 if (j3 <= 37 && j2 + i3 != 35)
                 {
@@ -294,33 +294,33 @@ public class GuiAchievements extends GuiScreen
                     {
                         if (random.nextInt(2) == 0)
                         {
-                            icon = Block.oreDiamond.getBlockTextureFromSideAndMetadata(0, 0);
+                            icon = Block.oreDiamond.getIcon(0, 0);
                         }
                         else
                         {
-                            icon = Block.oreRedstone.getBlockTextureFromSideAndMetadata(0, 0);
+                            icon = Block.oreRedstone.getIcon(0, 0);
                         }
                     }
                     else if (j3 == 10)
                     {
-                        icon = Block.oreIron.getBlockTextureFromSideAndMetadata(0, 0);
+                        icon = Block.oreIron.getIcon(0, 0);
                     }
                     else if (j3 == 8)
                     {
-                        icon = Block.oreCoal.getBlockTextureFromSideAndMetadata(0, 0);
+                        icon = Block.oreCoal.getIcon(0, 0);
                     }
                     else if (j3 > 4)
                     {
-                        icon = Block.stone.getBlockTextureFromSideAndMetadata(0, 0);
+                        icon = Block.stone.getIcon(0, 0);
                     }
                     else if (j3 > 0)
                     {
-                        icon = Block.dirt.getBlockTextureFromSideAndMetadata(0, 0);
+                        icon = Block.dirt.getIcon(0, 0);
                     }
                 }
                 else
                 {
-                    icon = Block.bedrock.getBlockTextureFromSideAndMetadata(0, 0);
+                    icon = Block.bedrock.getIcon(0, 0);
                 }
 
                 this.drawTexturedModelRectFromIcon(k1 + k3 * 16 - k2, l1 + i3 * 16 - l2, icon, 16, 16);

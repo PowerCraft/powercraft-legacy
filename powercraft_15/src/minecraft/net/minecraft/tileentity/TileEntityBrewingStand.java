@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionHelper;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.brewing.PotionBrewedEvent;
 
 public class TileEntityBrewingStand extends TileEntity implements ISidedInventory
 {
@@ -122,7 +124,7 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
 
                 for (int i = 0; i < 3; ++i)
                 {
-                    if (this.brewingItemStacks[i] != null && this.brewingItemStacks[i].itemID == Item.potion.itemID)
+                    if (this.brewingItemStacks[i] != null && this.brewingItemStacks[i].getItem() instanceof ItemPotion)
                     {
                         int j = this.brewingItemStacks[i].getItemDamage();
                         int k = this.getPotionResult(j, itemstack);
@@ -161,7 +163,7 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
 
             for (int i = 0; i < 3; ++i)
             {
-                if (this.brewingItemStacks[i] != null && this.brewingItemStacks[i].itemID == Item.potion.itemID)
+                if (this.brewingItemStacks[i] != null && this.brewingItemStacks[i].getItem() instanceof ItemPotion)
                 {
                     int j = this.brewingItemStacks[i].getItemDamage();
                     int k = this.getPotionResult(j, itemstack);
@@ -195,6 +197,8 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
                     this.brewingItemStacks[3] = null;
                 }
             }
+            
+            MinecraftForge.EVENT_BUS.post(new PotionBrewedEvent(brewingItemStacks));
         }
     }
 
@@ -343,7 +347,7 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
      */
     public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
     {
-        return par1 == 3 ? Item.itemsList[par2ItemStack.itemID].isPotionIngredient() : par2ItemStack.itemID == Item.potion.itemID || par2ItemStack.itemID == Item.glassBottle.itemID;
+        return par1 == 3 ? Item.itemsList[par2ItemStack.itemID].isPotionIngredient() : par2ItemStack.getItem() instanceof ItemPotion || par2ItemStack.itemID == Item.glassBottle.itemID;
     }
 
     @SideOnly(Side.CLIENT)
@@ -371,19 +375,28 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
     }
 
     /**
-     * Get the size of the side inventory.
+     * Returns an array containing the indices of the slots that can be accessed by automation on the given side of this
+     * block.
      */
-    public int[] getSizeInventorySide(int par1)
+    public int[] getAccessibleSlotsFromSide(int par1)
     {
         return par1 == 1 ? field_102017_a : field_102016_b;
     }
 
-    public boolean func_102007_a(int par1, ItemStack par2ItemStack, int par3)
+    /**
+     * Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item,
+     * side
+     */
+    public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3)
     {
         return this.isStackValidForSlot(par1, par2ItemStack);
     }
 
-    public boolean func_102008_b(int par1, ItemStack par2ItemStack, int par3)
+    /**
+     * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item,
+     * side
+     */
+    public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3)
     {
         return true;
     }

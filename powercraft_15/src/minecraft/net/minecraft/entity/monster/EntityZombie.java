@@ -311,11 +311,11 @@ public class EntityZombie extends EntityMob
 
             if (i == 0)
             {
-                this.setCurrentItemOrArmor(0, new ItemStack(Item.swordSteel));
+                this.setCurrentItemOrArmor(0, new ItemStack(Item.swordIron));
             }
             else
             {
-                this.setCurrentItemOrArmor(0, new ItemStack(Item.shovelSteel));
+                this.setCurrentItemOrArmor(0, new ItemStack(Item.shovelIron));
             }
         }
     }

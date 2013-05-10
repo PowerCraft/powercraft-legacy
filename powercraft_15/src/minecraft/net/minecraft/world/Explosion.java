@@ -222,8 +222,7 @@ public class Explosion
                         block.dropBlockAsItemWithChance(this.worldObj, i, j, k, this.worldObj.getBlockMetadata(i, j, k), 1.0F / this.explosionSize, 0);
                     }
 
-                    this.worldObj.setBlock(i, j, k, 0, 0, 3);
-                    block.onBlockDestroyedByExplosion(this.worldObj, i, j, k, this);
+                    block.onBlockExploded(this.worldObj, i, j, k, this);
                 }
             }
         }
@@ -256,6 +255,6 @@ public class Explosion
 
     public EntityLiving func_94613_c()
     {
-        return this.exploder == null ? null : (this.exploder instanceof EntityTNTPrimed ? ((EntityTNTPrimed)this.exploder).func_94083_c() : (this.exploder instanceof EntityLiving ? (EntityLiving)this.exploder : null));
+        return this.exploder == null ? null : (this.exploder instanceof EntityTNTPrimed ? ((EntityTNTPrimed)this.exploder).getTntPlacedBy() : (this.exploder instanceof EntityLiving ? (EntityLiving)this.exploder : null));
     }
 }

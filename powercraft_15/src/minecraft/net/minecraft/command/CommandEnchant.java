@@ -53,7 +53,7 @@ public class CommandEnchant extends CommandBase
                 {
                     throw new NumberInvalidException("commands.enchant.notFound", new Object[] {Integer.valueOf(i)});
                 }
-                else if (!enchantment.func_92089_a(itemstack))
+                else if (!enchantment.canApply(itemstack))
                 {
                     notifyAdmins(par1ICommandSender, "commands.enchant.cantEnchant", new Object[0]);
                 }

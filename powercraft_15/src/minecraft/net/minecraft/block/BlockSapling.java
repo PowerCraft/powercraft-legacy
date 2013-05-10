@@ -23,7 +23,7 @@ public class BlockSapling extends BlockFlower
     public static final String[] WOOD_TYPES = new String[] {"oak", "spruce", "birch", "jungle"};
     private static final String[] field_94370_b = new String[] {"sapling", "sapling_spruce", "sapling_birch", "sapling_jungle"};
     @SideOnly(Side.CLIENT)
-    private Icon[] field_94371_c;
+    private Icon[] saplingIcon;
 
     protected BlockSapling(int par1)
     {
@@ -44,7 +44,7 @@ public class BlockSapling extends BlockFlower
 
             if (par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9 && par5Random.nextInt(7) == 0)
             {
-                this.func_96477_c(par1World, par2, par3, par4, par5Random);
+                this.markOrGrowMarked(par1World, par2, par3, par4, par5Random);
             }
         }
     }
@@ -54,13 +54,13 @@ public class BlockSapling extends BlockFlower
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         par2 &= 3;
-        return this.field_94371_c[par2];
+        return this.saplingIcon[par2];
     }
 
-    public void func_96477_c(World par1World, int par2, int par3, int par4, Random par5Random)
+    public void markOrGrowMarked(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         int l = par1World.getBlockMetadata(par2, par3, par4);
 
@@ -197,11 +197,11 @@ public class BlockSapling extends BlockFlower
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94371_c = new Icon[field_94370_b.length];
+        this.saplingIcon = new Icon[field_94370_b.length];
 
-        for (int i = 0; i < this.field_94371_c.length; ++i)
+        for (int i = 0; i < this.saplingIcon.length; ++i)
         {
-            this.field_94371_c[i] = par1IconRegister.registerIcon(field_94370_b[i]);
+            this.saplingIcon[i] = par1IconRegister.registerIcon(field_94370_b[i]);
         }
     }
 }

@@ -68,7 +68,7 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	
 	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
-		return Block.blockSteel.blockID;
+		return Block.blockIron.blockID;
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	
 	@Override
 	public int idPicked(World par1World, int par2, int par3, int par4){
-		return Block.blockSteel.blockID;
+		return Block.blockIron.blockID;
 	}
 	
 	public static boolean isStructOK(World world, PC_VecI pos){
@@ -133,8 +133,8 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	}
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(PC_Direction par1, int par2) {
-		return Block.blockSteel.getBlockTextureFromSideAndMetadata(par1.getMCDir(), par2);
+	public Icon getIcon(PC_Direction par1, int par2) {
+		return Block.blockIron.getIcon(par1.getMCDir(), par2);
 	}
 
 	@Override

@@ -126,7 +126,7 @@ public abstract class ServerConfigurationManager
         netserverhandler.sendPacketToPlayer(new Packet16BlockItemSwitch(par2EntityPlayerMP.inventory.currentItem));
         this.func_96456_a((ServerScoreboard)worldserver.getScoreboard(), par2EntityPlayerMP);
         this.updateTimeAndWeatherForPlayer(par2EntityPlayerMP, worldserver);
-        this.sendPacketToAllPlayers(new Packet3Chat(EnumChatFormatting.YELLOW + par2EntityPlayerMP.func_96090_ax() + EnumChatFormatting.YELLOW + " joined the game."));
+        this.sendPacketToAllPlayers(new Packet3Chat(EnumChatFormatting.YELLOW + par2EntityPlayerMP.getTranslatedEntityName() + EnumChatFormatting.YELLOW + " joined the game."));
         this.playerLoggedIn(par2EntityPlayerMP);
         netserverhandler.setPlayerLocation(par2EntityPlayerMP.posX, par2EntityPlayerMP.posY, par2EntityPlayerMP.posZ, par2EntityPlayerMP.rotationYaw, par2EntityPlayerMP.rotationPitch);
         this.mcServer.getNetworkThread().addPlayer(netserverhandler);
@@ -750,7 +750,7 @@ public abstract class ServerConfigurationManager
                         par10Str = par10Str.substring(1);
                     }
 
-                    ScorePlayerTeam scoreplayerteam = entityplayermp.func_96124_cp();
+                    ScorePlayerTeam scoreplayerteam = entityplayermp.getTeam();
                     String s2 = scoreplayerteam == null ? "" : scoreplayerteam.func_96661_b();
 
                     if (flag1 == par10Str.equalsIgnoreCase(s2))
@@ -820,15 +820,15 @@ public abstract class ServerConfigurationManager
                     s = s.substring(0, s.length() - 4);
                 }
 
-                Scoreboard scoreboard = par1EntityPlayer.func_96123_co();
-                ScoreObjective scoreobjective = scoreboard.func_96518_b(s);
+                Scoreboard scoreboard = par1EntityPlayer.getWorldScoreboard();
+                ScoreObjective scoreobjective = scoreboard.getObjective(s);
 
                 if (scoreobjective == null)
                 {
                     return false;
                 }
 
-                Score score = par1EntityPlayer.func_96123_co().func_96529_a(par1EntityPlayer.getEntityName(), scoreobjective);
+                Score score = par1EntityPlayer.getWorldScoreboard().func_96529_a(par1EntityPlayer.getEntityName(), scoreobjective);
                 i = score.func_96652_c();
 
                 if (i < ((Integer)entry.getValue()).intValue() && flag)

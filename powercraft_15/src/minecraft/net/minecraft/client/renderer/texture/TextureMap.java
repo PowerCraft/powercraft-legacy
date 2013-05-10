@@ -27,10 +27,10 @@ import net.minecraftforge.common.ForgeDummyContainer;
 public class TextureMap implements IconRegister
 {
     /** 0 = terrain.png, 1 = items.png */
-    private final int textureType;
-    private final String textureName;
-    private final String basePath;
-    private final String textureExt;
+    public final int textureType;
+    public final String textureName;
+    public final String basePath;
+    public final String textureExt;
     private final HashMap mapTexturesStiched = new HashMap();
     private BufferedImage missingImage = new BufferedImage(64, 64, 2);
     private TextureStitched missingTextureStiched;
@@ -82,7 +82,7 @@ public class TextureMap implements IconRegister
 
             if (item != null && item.getSpriteNumber() == this.textureType)
             {
-                item.updateIcons(this);
+                item.registerIcons(this);
             }
         }
 
@@ -203,7 +203,7 @@ public class TextureMap implements IconRegister
             this.atlasTexture.writeImage("debug.stitched_" + this.textureName + ".png");
         }
         ForgeHooksClient.onTextureStitchedPost(this);
-        this.atlasTexture.createTexture();
+        this.atlasTexture.uploadTexture();
     }
 
     public void updateAnimations()
@@ -227,6 +227,7 @@ public class TextureMap implements IconRegister
         if (par1Str == null)
         {
             (new RuntimeException("Don\'t register null!")).printStackTrace();
+            par1Str = "null"; //Don't allow things to actually register null..
         }
 
         TextureStitched texturestitched = (TextureStitched)this.textureStichedMap.get(par1Str);
@@ -249,9 +250,9 @@ public class TextureMap implements IconRegister
     //                                           Forge Start
     //===================================================================================================
     /**
-     * Grabs the registered entry for the specified name, returning null if there was not a entry. 
+     * Grabs the registered entry for the specified name, returning null if there was not a entry.
      * Opposed to registerIcon, this will not instantiate the entry, useful to test if a maping exists.
-     * 
+     *
      * @param name The name of the entry to find
      * @return The registered entry, null if nothing was registered.
      */
@@ -262,8 +263,8 @@ public class TextureMap implements IconRegister
 
     /**
      * Adds a texture registry entry to this map for the specified name if one does not already exist.
-     * Returns false if the map already contains a entry for the specified name. 
-     * 
+     * Returns false if the map already contains a entry for the specified name.
+     *
      * @param name Entry name
      * @param entry Entry instance
      * @return True if the entry was added to the map, false otherwise.

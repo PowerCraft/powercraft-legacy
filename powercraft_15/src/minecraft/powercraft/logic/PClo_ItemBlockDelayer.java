@@ -33,9 +33,9 @@ public class PClo_ItemBlockDelayer extends PC_ItemBlock
     }
 
     @Override
-    public Icon getBlockTextureFromSideAndMetadataFromDamage(int i)
+    public Icon getIconFromDamage(int i)
     {
-        return PClo_App.delayer.getBlockTextureFromSideAndMetadata(1, 0);
+        return PClo_App.delayer.getIcon(1, 0);
     }
 
     @Override

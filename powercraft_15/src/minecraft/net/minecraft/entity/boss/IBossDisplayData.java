@@ -7,7 +7,7 @@ public interface IBossDisplayData
     /**
      * Returns the health points of the dragon.
      */
-    int getDragonHealth();
+    int getBossHealth();
 
     /**
      * Gets the username of the entity.

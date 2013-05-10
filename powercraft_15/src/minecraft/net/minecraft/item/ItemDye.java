@@ -49,7 +49,7 @@ public class ItemDye extends Item
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
+    public Icon getIconFromDamage(int par1)
     {
         int j = MathHelper.clamp_int(par1, 0, 15);
         return this.field_94594_d[j];
@@ -79,7 +79,7 @@ public class ItemDye extends Item
         {
             if (par1ItemStack.getItemDamage() == 15)
             {
-                if (func_96604_a(par1ItemStack, par3World, par4, par5, par6))
+                if (applyBonemeal(par1ItemStack, par3World, par4, par5, par6, par2EntityPlayer))
                 {
                     if (!par3World.isRemote)
                     {
@@ -175,7 +175,7 @@ public class ItemDye extends Item
             {
                 if ((double)par1World.rand.nextFloat() < 0.45D)
                 {
-                    ((BlockSapling)Block.sapling).func_96477_c(par1World, par2, par3, par4, par1World.rand);
+                    ((BlockSapling)Block.sapling).markOrGrowMarked(par1World, par2, par3, par4, par1World.rand);
                 }
 
                 --par0ItemStack.stackSize;
@@ -327,7 +327,7 @@ public class ItemDye extends Item
 
         if (block != null)
         {
-        	block.setBlockBoundsBasedOnState(par0World, par1, par2, par3);
+            block.setBlockBoundsBasedOnState(par0World, par1, par2, par3);
 
             for (int j1 = 0; j1 < par4; ++j1)
             {
@@ -335,6 +335,16 @@ public class ItemDye extends Item
                 double d1 = itemRand.nextGaussian() * 0.02D;
                 double d2 = itemRand.nextGaussian() * 0.02D;
                 par0World.spawnParticle("happyVillager", (double)((float)par1 + itemRand.nextFloat()), (double)par2 + (double)itemRand.nextFloat() * block.getBlockBoundsMaxY(), (double)((float)par3 + itemRand.nextFloat()), d0, d1, d2);
+            }
+        }
+        else
+        {
+            for (int j1 = 0; j1 < par4; ++j1)
+            {
+                double d0 = itemRand.nextGaussian() * 0.02D;
+                double d1 = itemRand.nextGaussian() * 0.02D;
+                double d2 = itemRand.nextGaussian() * 0.02D;
+                par0World.spawnParticle("happyVillager", (double)((float)par1 + itemRand.nextFloat()), (double)par2 + (double)itemRand.nextFloat() * 1.0f, (double)((float)par3 + itemRand.nextFloat()), d0, d1, d2);
             }
         }
     }
@@ -377,7 +387,7 @@ public class ItemDye extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
         this.field_94594_d = new Icon[field_94595_b.length];
 

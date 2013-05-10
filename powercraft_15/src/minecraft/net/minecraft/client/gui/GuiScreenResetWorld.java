@@ -61,6 +61,11 @@ public class GuiScreenResetWorld extends GuiScreen
     protected void keyTyped(char par1, int par2)
     {
         this.field_96151_c.textboxKeyTyped(par1, par2);
+
+        if (par1 == 13)
+        {
+            this.actionPerformed(this.field_96154_o);
+        }
     }
 
     /**
@@ -76,7 +81,7 @@ public class GuiScreenResetWorld extends GuiScreen
             }
             else if (par1GuiButton.id == 1)
             {
-                TaskResetWorld taskresetworld = new TaskResetWorld(this, this.field_96150_b.field_96408_a);
+                TaskResetWorld taskresetworld = new TaskResetWorld(this, this.field_96150_b.field_96408_a, this.field_96151_c.getText());
                 GuiScreenLongRunningTask guiscreenlongrunningtask = new GuiScreenLongRunningTask(this.mc, this.field_96152_a, taskresetworld);
                 guiscreenlongrunningtask.func_98117_g();
                 this.mc.displayGuiScreen(guiscreenlongrunningtask);

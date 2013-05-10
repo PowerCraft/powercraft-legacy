@@ -9,8 +9,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class Gui
 {
-	//NEI
-    public float zLevel = 0.0F;
+    protected float zLevel = 0.0F;
 
     protected void drawHorizontalLine(int par1, int par2, int par3, int par4)
     {
@@ -79,8 +78,7 @@ public class Gui
     /**
      * Draws a rectangle with a vertical gradient between the specified colors.
      */
-    //NEI
-    public void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)
+    protected void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         float f = (float)(par5 >> 24 & 255) / 255.0F;
         float f1 = (float)(par5 >> 16 & 255) / 255.0F;

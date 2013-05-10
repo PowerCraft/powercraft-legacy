@@ -52,7 +52,9 @@ public class GuiMainMenu extends GuiScreen
     private boolean field_96141_q = true;
     private static boolean field_96140_r = false;
     private static boolean field_96139_s = false;
+    private final Object field_104025_t = new Object();
     private String field_92025_p;
+    private String field_104024_v;
 
     /** An array of all the paths to the panorama pictures. */
     private static final String[] titlePanoramaPaths = new String[] {"/title/bg/panorama0.png", "/title/bg/panorama1.png", "/title/bg/panorama2.png", "/title/bg/panorama3.png", "/title/bg/panorama4.png", "/title/bg/panorama5.png"};
@@ -69,12 +71,12 @@ public class GuiMainMenu extends GuiScreen
     public GuiMainMenu()
     {
         BufferedReader bufferedreader = null;
+        String s;
 
         try
         {
             ArrayList arraylist = new ArrayList();
             bufferedreader = new BufferedReader(new InputStreamReader(GuiMainMenu.class.getResourceAsStream("/title/splashes.txt"), Charset.forName("UTF-8")));
-            String s;
 
             while ((s = bufferedreader.readLine()) != null)
             {
@@ -112,6 +114,25 @@ public class GuiMainMenu extends GuiScreen
         }
 
         this.updateCounter = rand.nextFloat();
+        this.field_92025_p = "";
+        String s1 = System.getProperty("os_architecture");
+        s = System.getProperty("java_version");
+
+        if ("ppc".equalsIgnoreCase(s1))
+        {
+            this.field_92025_p = "" + EnumChatFormatting.BOLD + "Notice!" + EnumChatFormatting.RESET + " PowerPC compatibility will be dropped in Minecraft 1.6";
+            this.field_104024_v = "http://tinyurl.com/javappc";
+        }
+        else if (s != null && s.startsWith("1.5"))
+        {
+            this.field_92025_p = "" + EnumChatFormatting.BOLD + "Notice!" + EnumChatFormatting.RESET + " Java 1.5 compatibility will be dropped in Minecraft 1.6";
+            this.field_104024_v = "http://tinyurl.com/javappc";
+        }
+
+        if (this.field_92025_p.length() == 0)
+        {
+            (new Thread(new RunnableTitleScreen(this), "1.6 Update Check Thread")).start();
+        }
     }
 
     /**
@@ -193,26 +214,18 @@ public class GuiMainMenu extends GuiScreen
         }
 
         this.buttonList.add(new GuiButtonLanguage(5, this.width / 2 - 124, i + 72 + 12));
-        this.field_92025_p = "";
-        String s = System.getProperty("os_architecture");
-        String s1 = System.getProperty("java_version");
+        Object object = this.field_104025_t;
 
-        if ("ppc".equalsIgnoreCase(s))
+        synchronized (this.field_104025_t)
         {
-            this.field_92025_p = "" + EnumChatFormatting.BOLD + "Notice!" + EnumChatFormatting.RESET + " PowerPC compatibility will be dropped in Minecraft 1.6";
+            this.field_92023_s = this.fontRenderer.getStringWidth(this.field_92025_p);
+            this.field_92024_r = this.fontRenderer.getStringWidth(field_96138_a);
+            int j = Math.max(this.field_92023_s, this.field_92024_r);
+            this.field_92022_t = (this.width - j) / 2;
+            this.field_92021_u = ((GuiButton)this.buttonList.get(0)).yPosition - 24;
+            this.field_92020_v = this.field_92022_t + j;
+            this.field_92019_w = this.field_92021_u + 24;
         }
-        else if (s1 != null && s1.startsWith("1.5"))
-        {
-            this.field_92025_p = "" + EnumChatFormatting.BOLD + "Notice!" + EnumChatFormatting.RESET + " Java 1.5 compatibility will be dropped in Minecraft 1.6";
-        }
-
-        this.field_92023_s = this.fontRenderer.getStringWidth(this.field_92025_p);
-        this.field_92024_r = this.fontRenderer.getStringWidth(field_96138_a);
-        int j = Math.max(this.field_92023_s, this.field_92024_r);
-        this.field_92022_t = (this.width - j) / 2;
-        this.field_92021_u = ((GuiButton)this.buttonList.get(0)).yPosition - 24;
-        this.field_92020_v = this.field_92022_t + j;
-        this.field_92019_w = this.field_92021_u + 24;
     }
 
     private void func_96137_a(StringTranslate par1StringTranslate, int par2, int par3)
@@ -343,7 +356,7 @@ public class GuiMainMenu extends GuiScreen
                 {
                     Class oclass = Class.forName("java.awt.Desktop");
                     Object object = oclass.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
-                    oclass.getMethod("browse", new Class[] {URI.class}).invoke(object, new Object[] {new URI("http://tinyurl.com/javappc")});
+                    oclass.getMethod("browse", new Class[] {URI.class}).invoke(object, new Object[] {new URI(this.field_104024_v)});
                 }
                 catch (Throwable throwable)
                 {
@@ -549,7 +562,7 @@ public class GuiMainMenu extends GuiScreen
         GL11.glScalef(f1, f1, f1);
         this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, 16776960);
         GL11.glPopMatrix();
-        String s = "Minecraft 1.5.1";
+        String s = "Minecraft 1.5.2";
 
         if (this.mc.isDemo())
         {
@@ -585,13 +598,102 @@ public class GuiMainMenu extends GuiScreen
     protected void mouseClicked(int par1, int par2, int par3)
     {
         super.mouseClicked(par1, par2, par3);
+        Object object = this.field_104025_t;
 
-        if (this.field_92025_p.length() > 0 && par1 >= this.field_92022_t && par1 <= this.field_92020_v && par2 >= this.field_92021_u && par2 <= this.field_92019_w)
+        synchronized (this.field_104025_t)
         {
-            GuiConfirmOpenLink guiconfirmopenlink = new GuiConfirmOpenLink(this, "http://tinyurl.com/javappc", 13);
-            guiconfirmopenlink.func_92026_h();
-            this.mc.displayGuiScreen(guiconfirmopenlink);
+            if (this.field_92025_p.length() > 0 && par1 >= this.field_92022_t && par1 <= this.field_92020_v && par2 >= this.field_92021_u && par2 <= this.field_92019_w)
+            {
+                GuiConfirmOpenLink guiconfirmopenlink = new GuiConfirmOpenLink(this, this.field_104024_v, 13, true);
+                guiconfirmopenlink.func_92026_h();
+                this.mc.displayGuiScreen(guiconfirmopenlink);
+            }
         }
+    }
+
+    static Object func_104004_a(GuiMainMenu par0GuiMainMenu)
+    {
+        return par0GuiMainMenu.field_104025_t;
+    }
+
+    static String func_104005_a(GuiMainMenu par0GuiMainMenu, String par1Str)
+    {
+        return par0GuiMainMenu.field_92025_p = par1Str;
+    }
+
+    static String func_104013_b(GuiMainMenu par0GuiMainMenu, String par1Str)
+    {
+        return par0GuiMainMenu.field_104024_v = par1Str;
+    }
+
+    static int func_104006_a(GuiMainMenu par0GuiMainMenu, int par1)
+    {
+        return par0GuiMainMenu.field_92023_s = par1;
+    }
+
+    static String func_104023_b(GuiMainMenu par0GuiMainMenu)
+    {
+        return par0GuiMainMenu.field_92025_p;
+    }
+
+    static FontRenderer func_104022_c(GuiMainMenu par0GuiMainMenu)
+    {
+        return par0GuiMainMenu.fontRenderer;
+    }
+
+    static int func_104014_b(GuiMainMenu par0GuiMainMenu, int par1)
+    {
+        return par0GuiMainMenu.field_92024_r = par1;
+    }
+
+    static FontRenderer func_104007_d(GuiMainMenu par0GuiMainMenu)
+    {
+        return par0GuiMainMenu.fontRenderer;
+    }
+
+    static int func_104016_e(GuiMainMenu par0GuiMainMenu)
+    {
+        return par0GuiMainMenu.field_92023_s;
+    }
+
+    static int func_104015_f(GuiMainMenu par0GuiMainMenu)
+    {
+        return par0GuiMainMenu.field_92024_r;
+    }
+
+    static int func_104008_c(GuiMainMenu par0GuiMainMenu, int par1)
+    {
+        return par0GuiMainMenu.field_92022_t = par1;
+    }
+
+    static int func_104009_d(GuiMainMenu par0GuiMainMenu, int par1)
+    {
+        return par0GuiMainMenu.field_92021_u = par1;
+    }
+
+    static List func_104019_g(GuiMainMenu par0GuiMainMenu)
+    {
+        return par0GuiMainMenu.buttonList;
+    }
+
+    static int func_104011_e(GuiMainMenu par0GuiMainMenu, int par1)
+    {
+        return par0GuiMainMenu.field_92020_v = par1;
+    }
+
+    static int func_104018_h(GuiMainMenu par0GuiMainMenu)
+    {
+        return par0GuiMainMenu.field_92022_t;
+    }
+
+    static int func_104012_f(GuiMainMenu par0GuiMainMenu, int par1)
+    {
+        return par0GuiMainMenu.field_92019_w = par1;
+    }
+
+    static int func_104020_i(GuiMainMenu par0GuiMainMenu)
+    {
+        return par0GuiMainMenu.field_92021_u;
     }
 
     static Minecraft func_98058_a(GuiMainMenu par0GuiMainMenu)

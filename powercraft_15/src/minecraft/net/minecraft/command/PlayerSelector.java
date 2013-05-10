@@ -52,7 +52,7 @@ public class PlayerSelector
 
             for (int i = 0; i < astring.length; ++i)
             {
-                astring[i] = aentityplayermp[i].func_96090_ax();
+                astring[i] = aentityplayermp[i].getTranslatedEntityName();
             }
 
             return CommandBase.joinNiceString(astring);

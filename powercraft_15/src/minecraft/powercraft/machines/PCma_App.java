@@ -24,7 +24,7 @@ import powercraft.launcher.loader.PC_Module.PC_PostInit;
 import powercraft.launcher.loader.PC_Module.PC_RegisterContainers;
 import powercraft.launcher.loader.PC_ModuleObject;
 
-@PC_Module(name="Machines", version="1.1.0")
+@PC_Module(name="Machines", version="1.1.1")
 public class PCma_App{
 
 	@PC_FieldObject(clazz=PCma_BlockAutomaticWorkbench.class)
@@ -82,7 +82,7 @@ public class PCma_App{
 					"SOS", 
 					"OPO", 
 					"SOS",
-						'S', Block.blockSteel, 'O', Block.obsidian, 'P', Block.furnaceIdle));
+						'S', Block.blockIron, 'O', Block.obsidian, 'P', Block.furnaceIdle));
         
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(blockBuilder, 1),
 					"G", 
@@ -129,7 +129,7 @@ public class PCma_App{
 				" !c ",
 				"!cc!c",
 				" !c "},
-				'w', Block.waterMoving, Block.waterStill, 'f', Block.fence, 'p', Block.planks, 'c', Block.chest, 'i', Block.blockSteel));
+				'w', Block.waterMoving, Block.waterStill, 'f', Block.fence, 'p', Block.planks, 'c', Block.chest, 'i', Block.blockIron));
 		
 		recipes.add(new PC_3DRecipe((PC_I3DRecipeHandler)chunkLoader, 
 				new String[]{

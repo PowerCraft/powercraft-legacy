@@ -22,6 +22,7 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -156,7 +157,9 @@ public abstract class World implements IBlockAccess
     private final Vec3Pool vecPool = new Vec3Pool(300, 2000);
     private final Calendar theCalendar = Calendar.getInstance();
     protected Scoreboard worldScoreboard = new Scoreboard();
-    private final ILogAgent field_98181_L;
+
+    /** The log agent for this world. */
+    private final ILogAgent worldLogAgent;
     private ArrayList collidingBoundingBoxes = new ArrayList();
     private boolean scanningTileEntities;
 
@@ -222,7 +225,7 @@ public abstract class World implements IBlockAccess
         this.worldInfo = new WorldInfo(par4WorldSettings, par2Str);
         this.provider = par3WorldProvider;
         perWorldStorage = new MapStorage((ISaveHandler)null);
-        this.field_98181_L = par6ILogAgent;
+        this.worldLogAgent = par6ILogAgent;
     }
 
     // Broken up so that the WorldClient gets the chance to set the mapstorage object before the dimension initializes
@@ -256,7 +259,7 @@ public abstract class World implements IBlockAccess
         this.saveHandler = par1ISaveHandler;
         this.theProfiler = par5Profiler;
         this.mapStorage = getMapStorage(par1ISaveHandler);
-        this.field_98181_L = par6ILogAgent;
+        this.worldLogAgent = par6ILogAgent;
         this.worldInfo = par1ISaveHandler.loadWorldInfo();
 
         if (par4WorldProvider != null)
@@ -412,7 +415,7 @@ public abstract class World implements IBlockAccess
                     CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception getting block type in world");
                     CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
                     crashreportcategory.addCrashSection("Found chunk", Boolean.valueOf(chunk == null));
-                    crashreportcategory.addCrashSection("Location", CrashReportCategory.func_85071_a(par1, par2, par3));
+                    crashreportcategory.addCrashSection("Location", CrashReportCategory.getLocationInfo(par1, par2, par3));
                     throw new ReportedException(crashreport);
                 }
             }
@@ -523,10 +526,9 @@ public abstract class World implements IBlockAccess
     }
 
     /**
-     * Sets the block ID and metadata at a given location. Args: X, Y, Z, new block ID, new metadata, flags. Flag 0x02
-     * will trigger a block update both on server and on client, flag 0x04, if used with 0x02, will prevent a block
-     * update on client worlds. Flag 0x01 will pass the original block ID when notifying adjacent blocks, otherwise it
-     * will pass 0.
+     * Sets the block ID and metadata at a given location. Args: X, Y, Z, new block ID, new metadata, flags. Flag 1 will
+     * cause a block update. Flag 2 will send the change to clients (you almost always want this). Flag 4 prevents the
+     * block from being re-rendered, if this is a client world. Flags can be added together.
      */
     public boolean setBlock(int par1, int par2, int par3, int par4, int par5, int par6)
     {
@@ -1711,7 +1713,7 @@ public abstract class World implements IBlockAccess
     /**
      * calculates and returns a list of colliding bounding boxes within a given AABB
      */
-    public List getAllCollidingBoundingBoxes(AxisAlignedBB par1AxisAlignedBB)
+    public List getCollidingBlockBounds(AxisAlignedBB par1AxisAlignedBB)
     {
         this.collidingBoundingBoxes.clear();
         int i = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -2165,8 +2167,16 @@ public abstract class World implements IBlockAccess
 
             if (entity.isDead)
             {
-                // If it's dead, move it to the unloaded list for removal on the next tick
-                unloadedEntityList.add(entity);
+                j = entity.chunkCoordX;
+                k = entity.chunkCoordZ;
+
+                if (entity.addedToChunk && this.chunkExists(j, k))
+                {
+                    this.getChunkFromChunkCoords(j, k).removeEntity(entity);
+                }
+
+                this.loadedEntityList.remove(i--);
+                this.releaseEntitySkin(entity);
             }
 
             this.theProfiler.endSection();
@@ -2397,15 +2407,15 @@ public abstract class World implements IBlockAccess
     /**
      * Returns true if there are no solid, live entities in the specified AxisAlignedBB
      */
-    public boolean checkIfAABBIsClear(AxisAlignedBB par1AxisAlignedBB)
+    public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB)
     {
-        return this.checkIfAABBIsClearExcludingEntity(par1AxisAlignedBB, (Entity)null);
+        return this.checkNoEntityCollision(par1AxisAlignedBB, (Entity)null);
     }
 
     /**
      * Returns true if there are no solid, live entities in the specified AxisAlignedBB, excluding the given entity
      */
-    public boolean checkIfAABBIsClearExcludingEntity(AxisAlignedBB par1AxisAlignedBB, Entity par2Entity)
+    public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB, Entity par2Entity)
     {
         List list = this.getEntitiesWithinAABBExcludingEntity((Entity)null, par1AxisAlignedBB);
 
@@ -2425,7 +2435,7 @@ public abstract class World implements IBlockAccess
     /**
      * Returns true if there are any blocks in the region constrained by an AxisAlignedBB
      */
-    public boolean isAABBNonEmpty(AxisAlignedBB par1AxisAlignedBB)
+    public boolean checkBlockCollision(AxisAlignedBB par1AxisAlignedBB)
     {
         int i = MathHelper.floor_double(par1AxisAlignedBB.minX);
         int j = MathHelper.floor_double(par1AxisAlignedBB.maxX + 1.0D);
@@ -2883,7 +2893,7 @@ public abstract class World implements IBlockAccess
                 while (iterator.hasNext())
                 {
                     TileEntity tileentity1 = (TileEntity)iterator.next();
-    
+
                     if (tileentity1.xCoord == par1 && tileentity1.yCoord == par2 && tileentity1.zCoord == par3)
                     {
                         tileentity1.invalidate();
@@ -2966,8 +2976,12 @@ public abstract class World implements IBlockAccess
         return isBlockSolidOnSide(par1, par2, par3, ForgeDirection.UP);
     }
 
+    /**
+     * Performs check to see if the block is a normal, solid block, or if the metadata of the block indicates that its
+     * facing puts its solid side upwards. (inverted stairs, for example)
+     */
     @Deprecated //DO NOT USE THIS!!! USE doesBlockHaveSolidTopSurface
-    public boolean func_102026_a(Block par1Block, int par2)
+    public boolean isBlockTopFacingSurfaceSolid(Block par1Block, int par2)
     {
         // -.-  Mojang PLEASE make this location sensitive, you have no reason not to.
         return par1Block == null ? false : (par1Block.blockMaterial.isOpaque() && par1Block.renderAsNormalBlock() ? true : (par1Block instanceof BlockStairs ? (par2 & 4) == 4 : (par1Block instanceof BlockHalfSlab ? (par2 & 8) == 8 : (par1Block instanceof BlockHopper ? true : (par1Block instanceof BlockSnow ? (par2 & 7) == 7 : false)))));
@@ -3371,7 +3385,7 @@ public abstract class World implements IBlockAccess
         this.updateLightByType(EnumSkyBlock.Block, par1, par2, par3);
     }
 
-    private int func_98179_a(int par1, int par2, int par3, EnumSkyBlock par4EnumSkyBlock)
+    private int computeLightValue(int par1, int par2, int par3, EnumSkyBlock par4EnumSkyBlock)
     {
         if (par4EnumSkyBlock == EnumSkyBlock.Sky && this.canBlockSeeTheSky(par1, par2, par3))
         {
@@ -3436,7 +3450,7 @@ public abstract class World implements IBlockAccess
             int i1 = 0;
             this.theProfiler.startSection("getBrightness");
             int j1 = this.getSavedLightValue(par1EnumSkyBlock, par2, par3, par4);
-            int k1 = this.func_98179_a(par2, par3, par4, par1EnumSkyBlock);
+            int k1 = this.computeLightValue(par2, par3, par4, par1EnumSkyBlock);
             int l1;
             int i2;
             int j2;
@@ -3509,7 +3523,7 @@ public abstract class World implements IBlockAccess
                 j2 = (l1 >> 6 & 63) - 32 + par3;
                 k2 = (l1 >> 12 & 63) - 32 + par4;
                 l2 = this.getSavedLightValue(par1EnumSkyBlock, i2, j2, k2);
-                i3 = this.func_98179_a(i2, j2, k2, par1EnumSkyBlock);
+                i3 = this.computeLightValue(i2, j2, k2, par1EnumSkyBlock);
 
                 if (i3 != l2)
                 {
@@ -3580,10 +3594,10 @@ public abstract class World implements IBlockAccess
      */
     public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
     {
-        return this.func_94576_a(par1Entity, par2AxisAlignedBB, (IEntitySelector)null);
+        return this.getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB, (IEntitySelector)null);
     }
 
-    public List func_94576_a(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3IEntitySelector)
+    public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3IEntitySelector)
     {
         ArrayList arraylist = new ArrayList();
         int i = MathHelper.floor_double((par2AxisAlignedBB.minX - MAX_ENTITY_RADIUS) / 16.0D);
@@ -3697,7 +3711,7 @@ public abstract class World implements IBlockAccess
         {
             Entity entity = (Entity)this.loadedEntityList.get(j);
 
-            if (par1Class.isAssignableFrom(entity.getClass()))
+            if ((!(entity instanceof EntityLiving) || !((EntityLiving)entity).func_104002_bU()) && par1Class.isAssignableFrom(entity.getClass()))
             {
                 ++i;
             }
@@ -3745,7 +3759,7 @@ public abstract class World implements IBlockAccess
             axisalignedbb = null;
         }
 
-        if (axisalignedbb != null && !this.checkIfAABBIsClearExcludingEntity(axisalignedbb, par7Entity))
+        if (axisalignedbb != null && !this.checkNoEntityCollision(axisalignedbb, par7Entity))
         {
             return false;
         }
@@ -3986,7 +4000,7 @@ public abstract class World implements IBlockAccess
                     d6 = par7 * 0.800000011920929D;
                 }
 
-                if (entityplayer1.getHasActivePotion())
+                if (entityplayer1.isInvisible())
                 {
                     float f = entityplayer1.func_82243_bO();
 
@@ -4305,7 +4319,7 @@ public abstract class World implements IBlockAccess
         {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Playing level event");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Level event being played");
-            crashreportcategory.addCrashSection("Block coordinates", CrashReportCategory.func_85071_a(par3, par4, par5));
+            crashreportcategory.addCrashSection("Block coordinates", CrashReportCategory.getLocationInfo(par3, par4, par5));
             crashreportcategory.addCrashSection("Event source", par1EntityPlayer);
             crashreportcategory.addCrashSection("Event type", Integer.valueOf(par2));
             crashreportcategory.addCrashSection("Event data", Integer.valueOf(par6));
@@ -4470,7 +4484,7 @@ public abstract class World implements IBlockAccess
 
     public ILogAgent getWorldLogAgent()
     {
-        return this.field_98181_L;
+        return this.worldLogAgent;
     }
 
     /**
@@ -4546,7 +4560,7 @@ public abstract class World implements IBlockAccess
 
     /**
      * Readded as it was removed, very useful helper function
-     * 
+     *
      * @param x X position
      * @param y Y Position
      * @param z Z Position

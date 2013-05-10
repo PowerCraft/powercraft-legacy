@@ -15,12 +15,12 @@ public class GuiConfirmOpenLink extends GuiYesNo
     private String field_92028_p;
     private boolean field_92027_q = true;
 
-    public GuiConfirmOpenLink(GuiScreen par1GuiScreen, String par2Str, int par3)
+    public GuiConfirmOpenLink(GuiScreen par1GuiScreen, String par2Str, int par3, boolean par4)
     {
-        super(par1GuiScreen, StringTranslate.getInstance().translateKey("chat.link.confirm"), par2Str, par3);
+        super(par1GuiScreen, StringTranslate.getInstance().translateKey(par4 ? "chat.link.confirmTrusted" : "chat.link.confirm"), par2Str, par3);
         StringTranslate stringtranslate = StringTranslate.getInstance();
-        this.buttonText1 = stringtranslate.translateKey("gui.yes");
-        this.buttonText2 = stringtranslate.translateKey("gui.no");
+        this.buttonText1 = stringtranslate.translateKey(par4 ? "chat.link.open" : "gui.yes");
+        this.buttonText2 = stringtranslate.translateKey(par4 ? "gui.cancel" : "gui.no");
         this.copyLinkButtonText = stringtranslate.translateKey("chat.copy");
         this.openLinkWarning = stringtranslate.translateKey("chat.link.warning");
         this.field_92028_p = par2Str;

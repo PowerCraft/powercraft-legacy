@@ -16,8 +16,15 @@ public class Teleporter
 
     /** A private Random() function in Teleporter */
     private final Random random;
-    private final LongHashMap field_85191_c = new LongHashMap();
-    private final List field_85190_d = new ArrayList();
+
+    /** Stores successful portal placement locations for rapid lookup. */
+    private final LongHashMap destinationCoordinateCache = new LongHashMap();
+
+    /**
+     * A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players initial
+     * location.
+     */
+    private final List destinationCoordinateKeys = new ArrayList();
 
     public Teleporter(WorldServer par1WorldServer)
     {
@@ -83,14 +90,14 @@ public class Teleporter
         double d4;
         int k1;
 
-        if (this.field_85191_c.containsItem(j1))
+        if (this.destinationCoordinateCache.containsItem(j1))
         {
-            PortalPosition portalposition = (PortalPosition)this.field_85191_c.getValueByKey(j1);
+            PortalPosition portalposition = (PortalPosition)this.destinationCoordinateCache.getValueByKey(j1);
             d3 = 0.0D;
             i = portalposition.posX;
             j = portalposition.posY;
             k = portalposition.posZ;
-            portalposition.field_85087_d = this.worldServerInstance.getTotalWorldTime();
+            portalposition.lastUpdateTime = this.worldServerInstance.getTotalWorldTime();
             flag = false;
         }
         else
@@ -132,8 +139,8 @@ public class Teleporter
         {
             if (flag)
             {
-                this.field_85191_c.add(j1, new PortalPosition(this, i, j, k, this.worldServerInstance.getTotalWorldTime()));
-                this.field_85190_d.add(Long.valueOf(j1));
+                this.destinationCoordinateCache.add(j1, new PortalPosition(this, i, j, k, this.worldServerInstance.getTotalWorldTime()));
+                this.destinationCoordinateKeys.add(Long.valueOf(j1));
             }
 
             double d8 = (double)i + 0.5D;
@@ -161,11 +168,11 @@ public class Teleporter
                 j2 = 1;
             }
 
-            int k2 = par1Entity.func_82148_at();
+            int k2 = par1Entity.getTeleportDirection();
 
             if (j2 > -1)
             {
-                int l2 = Direction.field_71578_g[j2];
+                int l2 = Direction.rotateLeft[j2];
                 int i3 = Direction.offsetX[j2];
                 int j3 = Direction.offsetZ[j2];
                 int k3 = Direction.offsetX[l2];
@@ -175,8 +182,8 @@ public class Teleporter
 
                 if (flag1 && flag2)
                 {
-                    j2 = Direction.footInvisibleFaceRemap[j2];
-                    l2 = Direction.footInvisibleFaceRemap[l2];
+                    j2 = Direction.rotateOpposite[j2];
+                    l2 = Direction.rotateOpposite[l2];
                     i3 = Direction.offsetX[j2];
                     j3 = Direction.offsetZ[j2];
                     k3 = Direction.offsetX[l2];
@@ -217,12 +224,12 @@ public class Teleporter
                     f3 = 1.0F;
                     f4 = 1.0F;
                 }
-                else if (j2 == Direction.footInvisibleFaceRemap[k2])
+                else if (j2 == Direction.rotateOpposite[k2])
                 {
                     f3 = -1.0F;
                     f4 = -1.0F;
                 }
-                else if (j2 == Direction.enderEyeMetaToDirection[k2])
+                else if (j2 == Direction.rotateRight[k2])
                 {
                     f5 = 1.0F;
                     f6 = -1.0F;
@@ -476,22 +483,26 @@ public class Teleporter
         return true;
     }
 
-    public void func_85189_a(long par1)
+    /**
+     * called periodically to remove out-of-date portal locations from the cache list. Argument par1 is a
+     * WorldServer.getTotalWorldTime() value.
+     */
+    public void removeStalePortalLocations(long par1)
     {
         if (par1 % 100L == 0L)
         {
-            Iterator iterator = this.field_85190_d.iterator();
+            Iterator iterator = this.destinationCoordinateKeys.iterator();
             long j = par1 - 600L;
 
             while (iterator.hasNext())
             {
                 Long olong = (Long)iterator.next();
-                PortalPosition portalposition = (PortalPosition)this.field_85191_c.getValueByKey(olong.longValue());
+                PortalPosition portalposition = (PortalPosition)this.destinationCoordinateCache.getValueByKey(olong.longValue());
 
-                if (portalposition == null || portalposition.field_85087_d < j)
+                if (portalposition == null || portalposition.lastUpdateTime < j)
                 {
                     iterator.remove();
-                    this.field_85191_c.remove(olong.longValue());
+                    this.destinationCoordinateCache.remove(olong.longValue());
                 }
             }
         }

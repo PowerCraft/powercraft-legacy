@@ -70,7 +70,7 @@ public class ChatClickData
                 }
                 catch (URISyntaxException urisyntaxexception)
                 {
-                    Minecraft.getMinecraft().getLogAgent().func_98234_c("Couldn\'t create URI from chat", urisyntaxexception);
+                    Minecraft.getMinecraft().getLogAgent().logSevereException("Couldn\'t create URI from chat", urisyntaxexception);
                 }
             }
 

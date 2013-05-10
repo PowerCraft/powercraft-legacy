@@ -8,6 +8,8 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 public class EntityEnderPearl extends EntityThrowable
 {
@@ -50,9 +52,13 @@ public class EntityEnderPearl extends EntityThrowable
 
                 if (!entityplayermp.playerNetServerHandler.connectionClosed && entityplayermp.worldObj == this.worldObj)
                 {
-                    this.getThrower().setPositionAndUpdate(this.posX, this.posY, this.posZ);
-                    this.getThrower().fallDistance = 0.0F;
-                    this.getThrower().attackEntityFrom(DamageSource.fall, 5);
+                    EnderTeleportEvent event = new EnderTeleportEvent(entityplayermp, this.posX, this.posY, this.posZ, 5);
+                    if (!MinecraftForge.EVENT_BUS.post(event)){
+                        this.getThrower().setPositionAndUpdate(event.targetX, event.targetY, event.targetZ);
+                        this.getThrower().fallDistance = 0.0F;
+                        this.getThrower().attackEntityFrom(DamageSource.fall, event.attackDamage);
+                    }
+
                 }
             }
 

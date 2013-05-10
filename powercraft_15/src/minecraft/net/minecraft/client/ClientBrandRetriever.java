@@ -1,5 +1,6 @@
 package net.minecraft.client;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -8,6 +9,6 @@ public class ClientBrandRetriever
 {
     public static String getClientModName()
     {
-        return "forge,fml";
+        return FMLCommonHandler.instance().getModName();
     }
 }

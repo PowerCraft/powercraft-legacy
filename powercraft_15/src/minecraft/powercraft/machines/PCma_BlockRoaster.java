@@ -18,6 +18,9 @@ import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.tube.PC_ItemTube;
+import powercraft.api.tube.PC_TubeType;
+import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
 
@@ -207,5 +210,10 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
+
+	@Override
+	public boolean canTubeConnectTo(IBlockAccess world, int x, int y, int z, ItemStack tube, PC_Direction dir) {
+		return ((PC_ItemTube)tube.getItem()).getTubeType()==PC_TubeType.ENERGY && dir!=PC_Direction.TOP;
+	}
     
 }

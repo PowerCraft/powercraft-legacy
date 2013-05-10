@@ -559,7 +559,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					break;
 				}
 				if (stack.itemID == Item.ingotIron.itemID) {
-					out = new ItemStack(Block.blockSteel);
+					out = new ItemStack(Block.blockIron);
 					neededForOne = 9;
 					break;
 				}
@@ -971,17 +971,17 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		@Override
-		public int[] getSizeInventorySide(int var1) {
+		public int[] getAccessibleSlotsFromSide(int var1) {
 			return null;
 		}
 
 		@Override
-		public boolean func_102007_a(int i, ItemStack itemstack, int j) {
+		public boolean canInsertItem(int i, ItemStack itemstack, int j) {
 			return false;
 		}
 
 		@Override
-		public boolean func_102008_b(int i, ItemStack itemstack, int j) {
+		public boolean canExtractItem(int i, ItemStack itemstack, int j) {
 			return false;
 		}
 
@@ -1066,17 +1066,17 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		@Override
-		public int[] getSizeInventorySide(int var1) {
+		public int[] getAccessibleSlotsFromSide(int var1) {
 			return null;
 		}
 
 		@Override
-		public boolean func_102007_a(int i, ItemStack itemstack, int j) {
+		public boolean canInsertItem(int i, ItemStack itemstack, int j) {
 			return false;
 		}
 
 		@Override
-		public boolean func_102008_b(int i, ItemStack itemstack, int j) {
+		public boolean canExtractItem(int i, ItemStack itemstack, int j) {
 			return false;
 		}
 	}
@@ -3438,11 +3438,11 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		// building chests
 		for (int x = xl; x <= xh; x++) {
 			for (int z = zl; z <= zh; z++) {
-				PC_Utils.setBID(worldObj, x, y, z, Block.blockSteel.blockID, 0);
+				PC_Utils.setBID(worldObj, x, y, z, Block.blockIron.blockID, 0);
 				if ((yaw == 0 && x == xh) || (yaw == 1 && z == zh) || (yaw == 2 && x == xl) || (yaw == 3 && z == zl)) {
 					PC_Utils.setBID(worldObj, x, y+1, z, Block.chest.blockID, 0);
 				} else {
-					PC_Utils.setBID(worldObj, x, y+1, z, Block.blockSteel.blockID, 0);
+					PC_Utils.setBID(worldObj, x, y+1, z, Block.blockIron.blockID, 0);
 				}
 			}
 		}

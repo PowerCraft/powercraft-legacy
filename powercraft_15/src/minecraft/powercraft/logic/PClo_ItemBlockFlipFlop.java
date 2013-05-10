@@ -33,9 +33,9 @@ public class PClo_ItemBlockFlipFlop extends PC_ItemBlock
     }
 
     @Override
-    public Icon getBlockTextureFromSideAndMetadataFromDamage(int i)
+    public Icon getIconFromDamage(int i)
     {
-        return PClo_App.flipFlop.getBlockTextureFromSideAndMetadata(1, 0);
+        return PClo_App.flipFlop.getIcon(1, 0);
     }
 
     @Override

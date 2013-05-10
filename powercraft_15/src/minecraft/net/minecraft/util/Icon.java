@@ -62,7 +62,7 @@ public interface Icon
     float getInterpolatedV(double d0);
 
     @SideOnly(Side.CLIENT)
-    String getBlockTextureFromSideAndMetadataName();
+    String getIconName();
 
     @SideOnly(Side.CLIENT)
 

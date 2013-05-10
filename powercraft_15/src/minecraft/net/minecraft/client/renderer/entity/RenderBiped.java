@@ -65,7 +65,7 @@ public class RenderBiped extends RenderLiving
             if (item instanceof ItemArmor)
             {
                 ItemArmor itemarmor = (ItemArmor)item;
-                this.loadTexture(ForgeHooksClient.getArmorTexture(itemstack, "/armor/" + bipedArmorFilenamePrefix[itemarmor.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png"));
+                this.loadTexture(ForgeHooksClient.getArmorTexture(par1EntityLiving, itemstack, "/armor/" + bipedArmorFilenamePrefix[itemarmor.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png", par2, 1));
                 ModelBiped modelbiped = par2 == 2 ? this.field_82425_h : this.field_82423_g;
                 modelbiped.bipedHead.showModel = par2 == 0;
                 modelbiped.bipedHeadwear.showModel = par2 == 0;
@@ -74,6 +74,7 @@ public class RenderBiped extends RenderLiving
                 modelbiped.bipedLeftArm.showModel = par2 == 1;
                 modelbiped.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
                 modelbiped.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
+                modelbiped = ForgeHooksClient.getArmorModel(par1EntityLiving, itemstack, par2, modelbiped);
                 this.setRenderPassModel(modelbiped);
 
                 if (modelbiped != null)
@@ -93,9 +94,10 @@ public class RenderBiped extends RenderLiving
 
                 float f1 = 1.0F;
 
-                if (itemarmor.getArmorMaterial() == EnumArmorMaterial.CLOTH)
+                //Move out of if to allow for more then just CLOTH to have color
+                int j = itemarmor.getColor(itemstack);
+                if (j != -1)
                 {
-                    int j = itemarmor.getColor(itemstack);
                     float f2 = (float)(j >> 16 & 255) / 255.0F;
                     float f3 = (float)(j >> 8 & 255) / 255.0F;
                     float f4 = (float)(j & 255) / 255.0F;
@@ -134,7 +136,7 @@ public class RenderBiped extends RenderLiving
             if (item instanceof ItemArmor)
             {
                 ItemArmor itemarmor = (ItemArmor)item;
-                this.loadTexture("/armor/" + bipedArmorFilenamePrefix[itemarmor.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + "_b.png");
+                this.loadTexture(ForgeHooksClient.getArmorTexture(par1EntityLiving, itemstack, "/armor/" + bipedArmorFilenamePrefix[itemarmor.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + "_b.png", par2, 2));
                 float f1 = 1.0F;
                 GL11.glColor3f(f1, f1, f1);
             }

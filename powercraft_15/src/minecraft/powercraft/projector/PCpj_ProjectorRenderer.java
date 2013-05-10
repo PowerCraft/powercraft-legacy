@@ -9,6 +9,8 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -19,6 +21,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBFragmentShader;
@@ -42,7 +45,7 @@ public class PCpj_ProjectorRenderer {
 	private static int projectorPreShader;
 	private static int projectorPostShader;
 	
-	private static PC_Struct2<int[], PCpj_TileEntityProjector>[] framebuffer = new PC_Struct2[4];
+	private static PC_Struct2<int[], PCpj_TileEntityProjector>[] framebuffer = new PC_Struct2[3];
 	
 	public static List<PCpj_TileEntityProjector> toRender = new ArrayList<PCpj_TileEntityProjector>();
 	
@@ -91,7 +94,7 @@ public class PCpj_ProjectorRenderer {
 		double d0 = entityliving.lastTickPosX + (entityliving.posX - entityliving.lastTickPosX) * (double)par1;
 	    double d1 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par1;
 	    double d2 = entityliving.lastTickPosZ + (entityliving.posZ - entityliving.lastTickPosZ) * (double)par1;
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	    GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, dephtTextureID);
 		GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT24, 0, 0, 1024, 1024, 0);
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
@@ -190,28 +193,29 @@ public class PCpj_ProjectorRenderer {
 		}
 		initFBO();
 		
-		dephtTextureID = GL11.glGenTextures();
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, dephtTextureID);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-
-		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
-		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT24, 1024, 1024, 0, GL11.GL_DEPTH_COMPONENT, GL11.GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
-		
+		dephtTextureID =  makeDepthTexture(1024);
 	}
 	
 	private static int[] creaftFBO(){
 		int[] buffer = new int[2];
 		buffer[0] = EXTFramebufferObject.glGenFramebuffersEXT();
-		buffer[1] = GL11.glGenTextures();
 		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, buffer[0]);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer[1]);
-		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT24, 512, 512, 0, GL11.GL_DEPTH_COMPONENT, GL11.GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
+		buffer[1] = makeDepthTexture(512);
 		EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT, GL11.GL_TEXTURE_2D, buffer[1], 0);
 		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);  
 		return buffer;
+	}
+	
+	private static int makeDepthTexture(int size){
+		int id = GL11.glGenTextures();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT24, size, size, 0, GL11.GL_DEPTH_COMPONENT, GL11.GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
+		return id;
 	}
 	
 	private static void initFBO(){

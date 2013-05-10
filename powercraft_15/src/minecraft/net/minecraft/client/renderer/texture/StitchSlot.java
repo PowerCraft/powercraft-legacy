@@ -9,10 +9,10 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class StitchSlot
 {
-    public final int originX;
-    public final int originY;
-    public final int width;
-    public final int height;
+    private final int originX;
+    private final int originY;
+    private final int width;
+    private final int height;
     private List subSlots;
     private StitchHolder holder;
 

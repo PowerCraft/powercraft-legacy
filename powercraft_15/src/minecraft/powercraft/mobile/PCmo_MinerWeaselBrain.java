@@ -1461,7 +1461,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 				if (id == Block.blockClay.blockID || 
 						id == Block.blockSnow.blockID ||
 						id == Block.blockLapis.blockID ||
-						id == Block.blockSteel.blockID || 
+						id == Block.blockIron.blockID || 
 						id == Block.blockGold.blockID || 
 						id == Block.slowSand.blockID || 
 						id == Block.oreIron.blockID || 

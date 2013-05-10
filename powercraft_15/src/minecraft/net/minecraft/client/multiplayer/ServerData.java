@@ -24,10 +24,10 @@ public class ServerData
 
     /** last server ping that showed up in the server browser */
     public long pingToServer;
-    public int field_82821_f = 60;
+    public int field_82821_f = 61;
 
     /** Game version for this server. */
-    public String gameVersion = "1.5.1";
+    public String gameVersion = "1.5.2";
     public boolean field_78841_f = false;
     private boolean field_78842_g = true;
     private boolean acceptsTextures = false;

@@ -623,7 +623,7 @@ public class GuiTextField extends Gui
         this.enabledColor = par1;
     }
 
-    public void func_82266_h(int par1)
+    public void setDisabledTextColour(int par1)
     {
         this.disabledColor = par1;
     }
@@ -649,7 +649,7 @@ public class GuiTextField extends Gui
         return this.isFocused;
     }
 
-    public void func_82265_c(boolean par1)
+    public void setEnabled(boolean par1)
     {
         this.isEnabled = par1;
     }

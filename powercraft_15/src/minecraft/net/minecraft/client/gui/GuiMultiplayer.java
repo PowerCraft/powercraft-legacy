@@ -443,7 +443,7 @@ public class GuiMultiplayer extends GuiScreen
                 {
                     par1ServerData.gameVersion = "???";
                     par1ServerData.serverMOTD = "" + EnumChatFormatting.DARK_GRAY + "???";
-                    par1ServerData.field_82821_f = 61;
+                    par1ServerData.field_82821_f = 62;
                     par1ServerData.populationInfo = "" + EnumChatFormatting.DARK_GRAY + "???";
                 }
             }
@@ -476,7 +476,7 @@ public class GuiMultiplayer extends GuiScreen
                 }
 
                 par1ServerData.gameVersion = "1.3";
-                par1ServerData.field_82821_f = 59;
+                par1ServerData.field_82821_f = 60;
             }
         }
         finally

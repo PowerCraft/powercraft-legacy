@@ -193,7 +193,7 @@ public class BlockPistonMoving extends BlockContainer
                 return;
             }
 
-            setBlockBoundsBasedOnState(par1IBlockAccess, par2, par3, par4);
+            block.setBlockBoundsBasedOnState(par1IBlockAccess, par2, par3, par4);
             float f = tileentitypiston.getProgress(0.0F);
 
             if (tileentitypiston.isExtending())

@@ -61,7 +61,7 @@ public class CombatTracker
     {
         if (this.field_94556_a.size() == 0)
         {
-            return this.field_94554_b.func_96090_ax() + " died";
+            return this.field_94554_b.getTranslatedEntityName() + " died";
         }
         else
         {
@@ -84,11 +84,11 @@ public class CombatTracker
 
                         if (itemstack != null && itemstack.hasDisplayName())
                         {
-                            s = StatCollector.translateToLocalFormatted("death.fell.assist.item", new Object[] {this.field_94554_b.func_96090_ax(), s1, itemstack.getDisplayName()});
+                            s = StatCollector.translateToLocalFormatted("death.fell.assist.item", new Object[] {this.field_94554_b.getTranslatedEntityName(), s1, itemstack.getDisplayName()});
                         }
                         else
                         {
-                            s = StatCollector.translateToLocalFormatted("death.fell.assist", new Object[] {this.field_94554_b.func_96090_ax(), s2});
+                            s = StatCollector.translateToLocalFormatted("death.fell.assist", new Object[] {this.field_94554_b.getTranslatedEntityName(), s2});
                         }
                     }
                     else if (s1 != null)
@@ -97,21 +97,21 @@ public class CombatTracker
 
                         if (itemstack1 != null && itemstack1.hasDisplayName())
                         {
-                            s = StatCollector.translateToLocalFormatted("death.fell.finish.item", new Object[] {this.field_94554_b.func_96090_ax(), s1, itemstack1.getDisplayName()});
+                            s = StatCollector.translateToLocalFormatted("death.fell.finish.item", new Object[] {this.field_94554_b.getTranslatedEntityName(), s1, itemstack1.getDisplayName()});
                         }
                         else
                         {
-                            s = StatCollector.translateToLocalFormatted("death.fell.finish", new Object[] {this.field_94554_b.func_96090_ax(), s1});
+                            s = StatCollector.translateToLocalFormatted("death.fell.finish", new Object[] {this.field_94554_b.getTranslatedEntityName(), s1});
                         }
                     }
                     else
                     {
-                        s = StatCollector.translateToLocalFormatted("death.fell.killer", new Object[] {this.field_94554_b.func_96090_ax()});
+                        s = StatCollector.translateToLocalFormatted("death.fell.killer", new Object[] {this.field_94554_b.getTranslatedEntityName()});
                     }
                 }
                 else
                 {
-                    s = StatCollector.translateToLocalFormatted("death.fell.accident." + this.func_94548_b(combatentry), new Object[] {this.field_94554_b.func_96090_ax()});
+                    s = StatCollector.translateToLocalFormatted("death.fell.accident." + this.func_94548_b(combatentry), new Object[] {this.field_94554_b.getTranslatedEntityName()});
                 }
             }
             else

@@ -24,9 +24,9 @@ public class ItemMultiTextureTile extends ItemBlock
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
+    public Icon getIconFromDamage(int par1)
     {
-        return this.theBlock.getBlockTextureFromSideAndMetadata(2, par1);
+        return this.theBlock.getIcon(2, par1);
     }
 
     /**

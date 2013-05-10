@@ -1,7 +1,5 @@
 package net.minecraft.nbt;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -12,8 +10,7 @@ import java.util.List;
 public class NBTTagList extends NBTBase
 {
     /** The array list containing the tags encapsulated in this list. */
-	//NEI
-    public List tagList = new ArrayList();
+    private List tagList = new ArrayList();
 
     /**
      * The type byte for the tags in the list - they must all be of the same type.
@@ -92,8 +89,6 @@ public class NBTTagList extends NBTBase
         this.tagType = par1NBTBase.getId();
         this.tagList.add(par1NBTBase);
     }
-
-    @SideOnly(Side.CLIENT)
 
     /**
      * Removes a tag at the given index.

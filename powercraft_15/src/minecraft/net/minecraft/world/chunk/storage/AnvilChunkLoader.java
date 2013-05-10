@@ -90,12 +90,12 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
     {
         if (!par4NBTTagCompound.hasKey("Level"))
         {
-            par1World.getWorldLogAgent().func_98232_c("Chunk file at " + par2 + "," + par3 + " is missing level data, skipping");
+            par1World.getWorldLogAgent().logSevere("Chunk file at " + par2 + "," + par3 + " is missing level data, skipping");
             return null;
         }
         else if (!par4NBTTagCompound.getCompoundTag("Level").hasKey("Sections"))
         {
-            par1World.getWorldLogAgent().func_98232_c("Chunk file at " + par2 + "," + par3 + " is missing block data, skipping");
+            par1World.getWorldLogAgent().logSevere("Chunk file at " + par2 + "," + par3 + " is missing block data, skipping");
             return null;
         }
         else
@@ -104,7 +104,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
 
             if (!chunk.isAtLocation(par2, par3))
             {
-                par1World.getWorldLogAgent().func_98232_c("Chunk file at " + par2 + "," + par3 + " is in the wrong location; relocating. (Expected " + par2 + ", " + par3 + ", got " + chunk.xPosition + ", " + chunk.zPosition + ")");
+                par1World.getWorldLogAgent().logSevere("Chunk file at " + par2 + "," + par3 + " is in the wrong location; relocating. (Expected " + par2 + ", " + par3 + ", got " + chunk.xPosition + ", " + chunk.zPosition + ")");
                 par4NBTTagCompound.setInteger("xPos", par2);
                 par4NBTTagCompound.setInteger("zPos", par3);
                 chunk = this.readChunkFromNBT(par1World, par4NBTTagCompound.getCompoundTag("Level"));
@@ -126,7 +126,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
             nbttagcompound.setTag("Level", nbttagcompound1);
             this.writeChunkToNBT(par2Chunk, par1World, nbttagcompound1);
             MinecraftForge.EVENT_BUS.post(new ChunkDataEvent.Save(par2Chunk, nbttagcompound));
-            this.func_75824_a(par2Chunk.getChunkCoordIntPair(), nbttagcompound);
+            this.addChunkToPending(par2Chunk.getChunkCoordIntPair(), nbttagcompound);
         }
         catch (Exception exception)
         {
@@ -134,7 +134,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
         }
     }
 
-    protected void func_75824_a(ChunkCoordIntPair par1ChunkCoordIntPair, NBTTagCompound par2NBTTagCompound)
+    protected void addChunkToPending(ChunkCoordIntPair par1ChunkCoordIntPair, NBTTagCompound par2NBTTagCompound)
     {
         Object object = this.syncLockObject;
 
@@ -214,7 +214,13 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
      * Save extra data not associated with any Chunk.  Not saved during autosave, only during world unload.  Currently
      * unused.
      */
-    public void saveExtraData() {}
+    public void saveExtraData()
+    {
+        while (this.writeNextIO())
+        {
+            ;
+        }
+    }
 
     /**
      * Writes the Chunk passed as an argument to the NBTTagCompound also passed, using the World argument to retrieve

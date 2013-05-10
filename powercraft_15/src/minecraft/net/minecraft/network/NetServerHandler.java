@@ -380,7 +380,7 @@ public class NetServerHandler extends NetHandler
 
                 AxisAlignedBB axisalignedbb = this.playerEntity.boundingBox.copy().expand((double)f4, (double)f4, (double)f4).addCoord(0.0D, -0.55D, 0.0D);
 
-                if (!this.mcServer.isFlightAllowed() && !this.playerEntity.theItemInWorldManager.isCreative() && !worldserver.isAABBNonEmpty(axisalignedbb)  && !this.playerEntity.capabilities.allowFlying)
+                if (!this.mcServer.isFlightAllowed() && !this.playerEntity.theItemInWorldManager.isCreative() && !worldserver.checkBlockCollision(axisalignedbb)  && !this.playerEntity.capabilities.allowFlying)
                 {
                     if (d12 >= -0.03125D)
                     {
@@ -619,7 +619,7 @@ public class NetServerHandler extends NetHandler
     public void handleErrorMessage(String par1Str, Object[] par2ArrayOfObj)
     {
         this.mcServer.getLogAgent().logInfo(this.playerEntity.username + " lost connection: " + par1Str);
-        this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat(EnumChatFormatting.YELLOW + this.playerEntity.func_96090_ax() + " left the game."));
+        this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat(EnumChatFormatting.YELLOW + this.playerEntity.getTranslatedEntityName() + " left the game."));
         this.mcServer.getConfigurationManager().playerLoggedOut(this.playerEntity);
         this.connectionClosed = true;
 
@@ -728,7 +728,7 @@ public class NetServerHandler extends NetHandler
                     }
 
                     String old = s;
-                    s = "<" + this.playerEntity.func_96090_ax() + "> " + s;
+                    s = "<" + this.playerEntity.getTranslatedEntityName() + "> " + s;
                     ServerChatEvent event = new ServerChatEvent(this.playerEntity, old, s);
                     if (MinecraftForge.EVENT_BUS.post(event))
                     {
@@ -1263,7 +1263,7 @@ public class NetServerHandler extends NetHandler
             }
         }
     }
-    
+
 
     @Override
 

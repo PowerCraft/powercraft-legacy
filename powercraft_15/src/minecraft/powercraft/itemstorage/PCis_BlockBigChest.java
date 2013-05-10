@@ -131,8 +131,8 @@ public class PCis_BlockBigChest extends PC_Block implements PC_I3DRecipeHandler 
 	}
 	
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(PC_Direction dir, int metadata) {
-		return Block.glass.getBlockTextureFromSideAndMetadata(dir.getMCDir(), metadata);
+	public Icon getIcon(PC_Direction dir, int metadata) {
+		return Block.glass.getIcon(dir.getMCDir(), metadata);
 	}
 	
 }

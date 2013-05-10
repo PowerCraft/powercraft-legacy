@@ -35,9 +35,9 @@ public class ItemRecord extends Item
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
+    public Icon getIconFromDamage(int par1)
     {
-        return this.iconIndex;
+        return this.itemIcon;
     }
 
     /**
@@ -107,8 +107,8 @@ public class ItemRecord extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("record_" + this.recordName);
+        this.itemIcon = par1IconRegister.registerIcon("record_" + this.recordName);
     }
 }

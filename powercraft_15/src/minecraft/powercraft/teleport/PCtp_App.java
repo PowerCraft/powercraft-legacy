@@ -18,7 +18,7 @@ import powercraft.launcher.loader.PC_Module.PC_InitDataHandlers;
 import powercraft.launcher.loader.PC_Module.PC_InitPacketHandlers;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 
-@PC_Module(name="Teleport", version="1.1.0")
+@PC_Module(name="Teleport", version="1.1.1")
 public class PCtp_App {
 
 	public static PCtp_TeleporterManager teleporterManager = new PCtp_TeleporterManager();

@@ -12,9 +12,9 @@ import net.minecraft.world.World;
 public class BlockWorkbench extends Block
 {
     @SideOnly(Side.CLIENT)
-    private Icon field_94385_a;
+    private Icon workbenchIconTop;
     @SideOnly(Side.CLIENT)
-    private Icon field_94384_b;
+    private Icon workbenchIconFront;
 
     protected BlockWorkbench(int par1)
     {
@@ -27,9 +27,9 @@ public class BlockWorkbench extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94385_a : (par1 == 0 ? Block.planks.getBlockTextureFromSide(par1) : (par1 != 2 && par1 != 4 ? this.blockIcon : this.field_94384_b));
+        return par1 == 1 ? this.workbenchIconTop : (par1 == 0 ? Block.planks.getBlockTextureFromSide(par1) : (par1 != 2 && par1 != 4 ? this.blockIcon : this.workbenchIconFront));
     }
 
     @SideOnly(Side.CLIENT)
@@ -41,8 +41,8 @@ public class BlockWorkbench extends Block
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("workbench_side");
-        this.field_94385_a = par1IconRegister.registerIcon("workbench_top");
-        this.field_94384_b = par1IconRegister.registerIcon("workbench_front");
+        this.workbenchIconTop = par1IconRegister.registerIcon("workbench_top");
+        this.workbenchIconFront = par1IconRegister.registerIcon("workbench_front");
     }
 
     /**

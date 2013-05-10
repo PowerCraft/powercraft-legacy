@@ -240,7 +240,7 @@ public class PClo_BlockSpecial extends PC_Block
     }
 
     @Override
-    public Icon getBlockTextureFromSideAndMetadata(PC_Direction side, int meta)
+    public Icon getIcon(PC_Direction side, int meta)
     {
         if (side == PC_Direction.BOTTOM)
         {
@@ -352,7 +352,7 @@ public class PClo_BlockSpecial extends PC_Block
         TileEntityMobSpawner te = PC_Utils.getTE(world, x, y, z);
 
         if (te != null) {
-        	PC_Utils.spawnMobs(world, x, y, z, te.func_98049_a().func_98276_e());
+        	PC_Utils.spawnMobs(world, x, y, z, te.func_98049_a().getEntityNameToSpawn());
         }
     }
 
@@ -360,7 +360,7 @@ public class PClo_BlockSpecial extends PC_Block
         TileEntityMobSpawner te = PC_Utils.getTE(world, x, y, z);
 
         if (te != null) {
-        	te.func_98049_a().field_98286_b = 20;
+        	te.func_98049_a().spawnDelay = 20;
         }
 }
 

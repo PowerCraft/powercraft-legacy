@@ -84,9 +84,9 @@ public class IconFlipped implements Icon
         return this.getMinV() + f * ((float)par1 / 16.0F);
     }
 
-    public String getBlockTextureFromSideAndMetadataName()
+    public String getIconName()
     {
-        return this.baseIcon.getBlockTextureFromSideAndMetadataName();
+        return this.baseIcon.getIconName();
     }
 
     /**

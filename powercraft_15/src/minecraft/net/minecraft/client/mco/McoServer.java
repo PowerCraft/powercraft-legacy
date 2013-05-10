@@ -23,6 +23,7 @@ public class McoServer extends ValueObject
     public List field_96402_f;
     public String field_96403_g;
     public boolean field_98166_h;
+    public int field_104063_i;
     public int field_96415_h;
     public String field_96413_j = "";
     public String field_96414_k = "";
@@ -109,6 +110,7 @@ public class McoServer extends ValueObject
                 mcoserver.field_96402_f = new ArrayList();
             }
 
+            mcoserver.field_104063_i = Integer.parseInt(par0JsonNode.getNumberValue(new Object[] {"daysLeft"}));
             mcoserver.field_96403_g = par0JsonNode.getStringValue(new Object[] {"ip"});
             mcoserver.field_98166_h = par0JsonNode.getBooleanValue(new Object[] {"expired"}).booleanValue();
         }

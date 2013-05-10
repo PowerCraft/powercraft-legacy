@@ -20,7 +20,7 @@ final class CreativeTabTools extends CreativeTabs
      */
     public int getTabIconItemIndex()
     {
-        return Item.axeSteel.itemID;
+        return Item.axeIron.itemID;
     }
 
     @SideOnly(Side.CLIENT)

@@ -185,7 +185,7 @@ public final class SpawnerAnimals
                                                                 par0WorldServer.spawnEntityInWorld(entityliving);
                                                                 creatureSpecificInit(entityliving, par0WorldServer, f, f1, f2);
 
-                                                                if (j2 >= entityliving.getMaxSpawnedInChunk())
+                                                                if (j2 >= ForgeEventFactory.getMaxSpawnPackSize(entityliving))
                                                                 {
                                                                     continue label110;
                                                                 }

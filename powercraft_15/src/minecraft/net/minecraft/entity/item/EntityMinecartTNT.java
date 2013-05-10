@@ -24,12 +24,12 @@ public class EntityMinecartTNT extends EntityMinecart
         super(par1, par2, par4, par6);
     }
 
-    public int func_94087_l()
+    public int getMinecartType()
     {
         return 3;
     }
 
-    public Block func_94093_n()
+    public Block getDefaultDisplayTile()
     {
         return Block.tnt;
     }
@@ -48,7 +48,7 @@ public class EntityMinecartTNT extends EntityMinecart
         }
         else if (this.minecartTNTFuse == 0)
         {
-            this.func_94103_c(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            this.explodeCart(this.motionX * this.motionX + this.motionZ * this.motionZ);
         }
 
         if (this.isCollidedHorizontally)
@@ -57,14 +57,14 @@ public class EntityMinecartTNT extends EntityMinecart
 
             if (d0 >= 0.009999999776482582D)
             {
-                this.func_94103_c(d0);
+                this.explodeCart(d0);
             }
         }
     }
 
-    public void func_94095_a(DamageSource par1DamageSource)
+    public void killMinecart(DamageSource par1DamageSource)
     {
-        super.func_94095_a(par1DamageSource);
+        super.killMinecart(par1DamageSource);
         double d0 = this.motionX * this.motionX + this.motionZ * this.motionZ;
 
         if (!par1DamageSource.isExplosion())
@@ -74,11 +74,14 @@ public class EntityMinecartTNT extends EntityMinecart
 
         if (par1DamageSource.isFireDamage() || par1DamageSource.isExplosion() || d0 >= 0.009999999776482582D)
         {
-            this.func_94103_c(d0);
+            this.explodeCart(d0);
         }
     }
 
-    protected void func_94103_c(double par1)
+    /**
+     * Makes the minecart explode.
+     */
+    protected void explodeCart(double par1)
     {
         if (!this.worldObj.isRemote)
         {
@@ -102,17 +105,20 @@ public class EntityMinecartTNT extends EntityMinecart
         if (par1 >= 3.0F)
         {
             float f1 = par1 / 10.0F;
-            this.func_94103_c((double)(f1 * f1));
+            this.explodeCart((double)(f1 * f1));
         }
 
         super.fall(par1);
     }
 
-    public void func_96095_a(int par1, int par2, int par3, boolean par4)
+    /**
+     * Called every tick the minecart is on an activator rail.
+     */
+    public void onActivatorRailPass(int par1, int par2, int par3, boolean par4)
     {
         if (par4 && this.minecartTNTFuse < 0)
         {
-            this.func_94105_c();
+            this.ignite();
         }
     }
 
@@ -121,7 +127,7 @@ public class EntityMinecartTNT extends EntityMinecart
     {
         if (par1 == 10)
         {
-            this.func_94105_c();
+            this.ignite();
         }
         else
         {
@@ -129,7 +135,10 @@ public class EntityMinecartTNT extends EntityMinecart
         }
     }
 
-    public void func_94105_c()
+    /**
+     * Ignites this TNT cart.
+     */
+    public void ignite()
     {
         this.minecartTNTFuse = 80;
 
@@ -146,19 +155,22 @@ public class EntityMinecartTNT extends EntityMinecart
         return this.minecartTNTFuse;
     }
 
-    public boolean func_96096_ay()
+    /**
+     * Returns true if the TNT minecart is ignited.
+     */
+    public boolean isIgnited()
     {
         return this.minecartTNTFuse > -1;
     }
 
     public float func_82146_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, Block par6Block)
     {
-        return this.func_96096_ay() && (BlockRailBase.isRailBlock(par6Block.blockID) || BlockRailBase.isRailBlockAt(par2World, par3, par4 + 1, par5)) ? 0.0F : super.func_82146_a(par1Explosion, par2World, par3, par4, par5, par6Block);
+        return this.isIgnited() && (BlockRailBase.isRailBlock(par6Block.blockID) || BlockRailBase.isRailBlockAt(par2World, par3, par4 + 1, par5)) ? 0.0F : super.func_82146_a(par1Explosion, par2World, par3, par4, par5, par6Block);
     }
 
     public boolean func_96091_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, int par6, float par7)
     {
-        return this.func_96096_ay() && (BlockRailBase.isRailBlock(par6) || BlockRailBase.isRailBlockAt(par2World, par3, par4 + 1, par5)) ? false : super.func_96091_a(par1Explosion, par2World, par3, par4, par5, par6, par7);
+        return this.isIgnited() && (BlockRailBase.isRailBlock(par6) || BlockRailBase.isRailBlockAt(par2World, par3, par4 + 1, par5)) ? false : super.func_96091_a(par1Explosion, par2World, par3, par4, par5, par6, par7);
     }
 
     /**

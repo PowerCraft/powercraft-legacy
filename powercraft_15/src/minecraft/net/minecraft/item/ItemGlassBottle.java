@@ -24,9 +24,9 @@ public class ItemGlassBottle extends Item
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
+    public Icon getIconFromDamage(int par1)
     {
-        return Item.potion.getBlockTextureFromSideAndMetadataFromDamage(0);
+        return Item.potion.getIconFromDamage(0);
     }
 
     /**
@@ -79,5 +79,5 @@ public class ItemGlassBottle extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister) {}
+    public void registerIcons(IconRegister par1IconRegister) {}
 }

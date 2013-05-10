@@ -188,8 +188,7 @@ public class NetClientHandler extends NetHandler
     private boolean disconnected = false;
 
     /** Reference to the NetworkManager object. */
-    //NEI
-    public INetworkManager netManager;
+    private INetworkManager netManager;
     public String field_72560_a;
 
     /** Reference to the Minecraft object. */
@@ -352,7 +351,7 @@ public class NetClientHandler extends NetHandler
 
         if (par1Packet23VehicleSpawn.type == 10)
         {
-            object = EntityMinecart.func_94090_a(this.worldClient, d0, d1, d2, par1Packet23VehicleSpawn.throwerEntityId);
+            object = EntityMinecart.createMinecart(this.worldClient, d0, d1, d2, par1Packet23VehicleSpawn.throwerEntityId);
         }
         else if (par1Packet23VehicleSpawn.type == 90)
         {
@@ -446,8 +445,8 @@ public class NetClientHandler extends NetHandler
             ((Entity)object).serverPosX = par1Packet23VehicleSpawn.xPosition;
             ((Entity)object).serverPosY = par1Packet23VehicleSpawn.yPosition;
             ((Entity)object).serverPosZ = par1Packet23VehicleSpawn.zPosition;
-            ((Entity)object).rotationPitch = (float)(par1Packet23VehicleSpawn.field_92077_h * 360) / 256.0F;
-            ((Entity)object).rotationYaw = (float)(par1Packet23VehicleSpawn.field_92078_i * 360) / 256.0F;
+            ((Entity)object).rotationPitch = (float)(par1Packet23VehicleSpawn.pitch * 360) / 256.0F;
+            ((Entity)object).rotationYaw = (float)(par1Packet23VehicleSpawn.yaw * 360) / 256.0F;
             Entity[] aentity = ((Entity)object).getParts();
 
             if (aentity != null)
@@ -582,7 +581,7 @@ public class NetClientHandler extends NetHandler
 
         entityotherplayermp.setPositionAndRotation(d0, d1, d2, f, f1);
         this.worldClient.addEntityToWorld(par1Packet20NamedEntitySpawn.entityId, entityotherplayermp);
-        List list = par1Packet20NamedEntitySpawn.func_73509_c();
+        List list = par1Packet20NamedEntitySpawn.getWatchedMetadata();
 
         if (list != null)
         {
@@ -751,7 +750,7 @@ public class NetClientHandler extends NetHandler
 
         if (chunk != null)
         {
-            chunk.fillChunk(par1Packet51MapChunk.func_73593_d(), par1Packet51MapChunk.yChMin, par1Packet51MapChunk.yChMax, par1Packet51MapChunk.includeInitialize);
+            chunk.fillChunk(par1Packet51MapChunk.getCompressedChunkData(), par1Packet51MapChunk.yChMin, par1Packet51MapChunk.yChMax, par1Packet51MapChunk.includeInitialize);
             this.worldClient.markBlockRangeForRenderUpdate(par1Packet51MapChunk.xCh << 4, 0, par1Packet51MapChunk.zCh << 4, (par1Packet51MapChunk.xCh << 4) + 15, 256, (par1Packet51MapChunk.zCh << 4) + 15);
 
             if (!par1Packet51MapChunk.includeInitialize || !(this.worldClient.provider instanceof WorldProviderSurface))
@@ -960,7 +959,7 @@ public class NetClientHandler extends NetHandler
 
     public void handleUpdateTime(Packet4UpdateTime par1Packet4UpdateTime)
     {
-        this.mc.theWorld.func_82738_a(par1Packet4UpdateTime.field_82562_a);
+        this.mc.theWorld.func_82738_a(par1Packet4UpdateTime.worldAge);
         this.mc.theWorld.setWorldTime(par1Packet4UpdateTime.time);
     }
 
@@ -1060,9 +1059,9 @@ public class NetClientHandler extends NetHandler
         Explosion explosion = new Explosion(this.mc.theWorld, (Entity)null, par1Packet60Explosion.explosionX, par1Packet60Explosion.explosionY, par1Packet60Explosion.explosionZ, par1Packet60Explosion.explosionSize);
         explosion.affectedBlockPositions = par1Packet60Explosion.chunkPositionRecords;
         explosion.doExplosionB(true);
-        this.mc.thePlayer.motionX += (double)par1Packet60Explosion.func_73607_d();
-        this.mc.thePlayer.motionY += (double)par1Packet60Explosion.func_73609_f();
-        this.mc.thePlayer.motionZ += (double)par1Packet60Explosion.func_73608_g();
+        this.mc.thePlayer.motionX += (double)par1Packet60Explosion.getPlayerVelocityX();
+        this.mc.thePlayer.motionY += (double)par1Packet60Explosion.getPlayerVelocityY();
+        this.mc.thePlayer.motionZ += (double)par1Packet60Explosion.getPlayerVelocityZ();
     }
 
     public void handleOpenWindow(Packet100OpenWindow par1Packet100OpenWindow)
@@ -1072,7 +1071,7 @@ public class NetClientHandler extends NetHandler
         switch (par1Packet100OpenWindow.inventoryType)
         {
             case 0:
-                entityclientplayermp.displayGUIChest(new InventoryBasic(par1Packet100OpenWindow.windowTitle, par1Packet100OpenWindow.field_94500_e, par1Packet100OpenWindow.slotsCount));
+                entityclientplayermp.displayGUIChest(new InventoryBasic(par1Packet100OpenWindow.windowTitle, par1Packet100OpenWindow.useProvidedWindowTitle, par1Packet100OpenWindow.slotsCount));
                 entityclientplayermp.openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 1:
@@ -1082,7 +1081,7 @@ public class NetClientHandler extends NetHandler
             case 2:
                 TileEntityFurnace tileentityfurnace = new TileEntityFurnace();
 
-                if (par1Packet100OpenWindow.field_94500_e)
+                if (par1Packet100OpenWindow.useProvidedWindowTitle)
                 {
                     tileentityfurnace.func_94129_a(par1Packet100OpenWindow.windowTitle);
                 }
@@ -1093,22 +1092,22 @@ public class NetClientHandler extends NetHandler
             case 3:
                 TileEntityDispenser tileentitydispenser = new TileEntityDispenser();
 
-                if (par1Packet100OpenWindow.field_94500_e)
+                if (par1Packet100OpenWindow.useProvidedWindowTitle)
                 {
-                    tileentitydispenser.func_94049_a(par1Packet100OpenWindow.windowTitle);
+                    tileentitydispenser.setCustomName(par1Packet100OpenWindow.windowTitle);
                 }
 
                 entityclientplayermp.displayGUIDispenser(tileentitydispenser);
                 entityclientplayermp.openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 4:
-                entityclientplayermp.displayGUIEnchantment(MathHelper.floor_double(entityclientplayermp.posX), MathHelper.floor_double(entityclientplayermp.posY), MathHelper.floor_double(entityclientplayermp.posZ), par1Packet100OpenWindow.field_94500_e ? par1Packet100OpenWindow.windowTitle : null);
+                entityclientplayermp.displayGUIEnchantment(MathHelper.floor_double(entityclientplayermp.posX), MathHelper.floor_double(entityclientplayermp.posY), MathHelper.floor_double(entityclientplayermp.posZ), par1Packet100OpenWindow.useProvidedWindowTitle ? par1Packet100OpenWindow.windowTitle : null);
                 entityclientplayermp.openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 5:
                 TileEntityBrewingStand tileentitybrewingstand = new TileEntityBrewingStand();
 
-                if (par1Packet100OpenWindow.field_94500_e)
+                if (par1Packet100OpenWindow.useProvidedWindowTitle)
                 {
                     tileentitybrewingstand.func_94131_a(par1Packet100OpenWindow.windowTitle);
                 }
@@ -1117,14 +1116,14 @@ public class NetClientHandler extends NetHandler
                 entityclientplayermp.openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 6:
-                entityclientplayermp.displayGUIMerchant(new NpcMerchant(entityclientplayermp), par1Packet100OpenWindow.field_94500_e ? par1Packet100OpenWindow.windowTitle : null);
+                entityclientplayermp.displayGUIMerchant(new NpcMerchant(entityclientplayermp), par1Packet100OpenWindow.useProvidedWindowTitle ? par1Packet100OpenWindow.windowTitle : null);
                 entityclientplayermp.openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 7:
                 TileEntityBeacon tileentitybeacon = new TileEntityBeacon();
                 entityclientplayermp.displayGUIBeacon(tileentitybeacon);
 
-                if (par1Packet100OpenWindow.field_94500_e)
+                if (par1Packet100OpenWindow.useProvidedWindowTitle)
                 {
                     tileentitybeacon.func_94047_a(par1Packet100OpenWindow.windowTitle);
                 }
@@ -1138,20 +1137,20 @@ public class NetClientHandler extends NetHandler
             case 9:
                 TileEntityHopper tileentityhopper = new TileEntityHopper();
 
-                if (par1Packet100OpenWindow.field_94500_e)
+                if (par1Packet100OpenWindow.useProvidedWindowTitle)
                 {
-                    tileentityhopper.func_96115_a(par1Packet100OpenWindow.windowTitle);
+                    tileentityhopper.setInventoryName(par1Packet100OpenWindow.windowTitle);
                 }
 
-                entityclientplayermp.func_94064_a(tileentityhopper);
+                entityclientplayermp.displayGUIHopper(tileentityhopper);
                 entityclientplayermp.openContainer.windowId = par1Packet100OpenWindow.windowId;
                 break;
             case 10:
                 TileEntityDropper tileentitydropper = new TileEntityDropper();
 
-                if (par1Packet100OpenWindow.field_94500_e)
+                if (par1Packet100OpenWindow.useProvidedWindowTitle)
                 {
-                    tileentitydropper.func_94049_a(par1Packet100OpenWindow.windowTitle);
+                    tileentitydropper.setCustomName(par1Packet100OpenWindow.windowTitle);
                 }
 
                 entityclientplayermp.displayGUIDispenser(tileentitydropper);
@@ -1449,7 +1448,7 @@ public class NetClientHandler extends NetHandler
 
     public void handleDoorChange(Packet61DoorChange par1Packet61DoorChange)
     {
-        if (par1Packet61DoorChange.func_82560_d())
+        if (par1Packet61DoorChange.getRelativeVolumeDisabled())
         {
             this.mc.theWorld.func_82739_e(par1Packet61DoorChange.sfxID, par1Packet61DoorChange.posX, par1Packet61DoorChange.posY, par1Packet61DoorChange.posZ, par1Packet61DoorChange.auxData);
         }
@@ -1477,7 +1476,7 @@ public class NetClientHandler extends NetHandler
         if (entity instanceof EntityLiving)
         {
             PotionEffect potioneffect = new PotionEffect(par1Packet41EntityEffect.effectId, par1Packet41EntityEffect.duration, par1Packet41EntityEffect.effectAmplifier);
-            potioneffect.func_100012_b(par1Packet41EntityEffect.func_100008_d());
+            potioneffect.setPotionDurationMax(par1Packet41EntityEffect.isDurationMax());
             ((EntityLiving)entity).addPotionEffect(potioneffect);
         }
     }
@@ -1548,7 +1547,7 @@ public class NetClientHandler extends NetHandler
         entityclientplayermp.capabilities.disableDamage = par1Packet202PlayerAbilities.getDisableDamage();
         entityclientplayermp.capabilities.allowFlying = par1Packet202PlayerAbilities.getAllowFlying();
         entityclientplayermp.capabilities.setFlySpeed(par1Packet202PlayerAbilities.getFlySpeed());
-        entityclientplayermp.capabilities.setPlayerWalkSpeed(par1Packet202PlayerAbilities.func_82558_j());
+        entityclientplayermp.capabilities.setPlayerWalkSpeed(par1Packet202PlayerAbilities.getWalkSpeed());
     }
 
     public void handleAutoComplete(Packet203AutoComplete par1Packet203AutoComplete)
@@ -1614,90 +1613,102 @@ public class NetClientHandler extends NetHandler
         }
     }
 
-    public void func_96436_a(Packet206SetObjective par1Packet206SetObjective)
+    /**
+     * Handle a set objective packet.
+     */
+    public void handleSetObjective(Packet206SetObjective par1Packet206SetObjective)
     {
         Scoreboard scoreboard = this.worldClient.getScoreboard();
         ScoreObjective scoreobjective;
 
-        if (par1Packet206SetObjective.field_96483_c == 0)
+        if (par1Packet206SetObjective.change == 0)
         {
-            scoreobjective = scoreboard.func_96535_a(par1Packet206SetObjective.field_96484_a, ScoreObjectiveCriteria.field_96641_b);
-            scoreobjective.func_96681_a(par1Packet206SetObjective.field_96482_b);
+            scoreobjective = scoreboard.func_96535_a(par1Packet206SetObjective.objectiveName, ScoreObjectiveCriteria.field_96641_b);
+            scoreobjective.setDisplayName(par1Packet206SetObjective.objectiveDisplayName);
         }
         else
         {
-            scoreobjective = scoreboard.func_96518_b(par1Packet206SetObjective.field_96484_a);
+            scoreobjective = scoreboard.getObjective(par1Packet206SetObjective.objectiveName);
 
-            if (par1Packet206SetObjective.field_96483_c == 1)
+            if (par1Packet206SetObjective.change == 1)
             {
                 scoreboard.func_96519_k(scoreobjective);
             }
-            else if (par1Packet206SetObjective.field_96483_c == 2)
+            else if (par1Packet206SetObjective.change == 2)
             {
-                scoreobjective.func_96681_a(par1Packet206SetObjective.field_96482_b);
+                scoreobjective.setDisplayName(par1Packet206SetObjective.objectiveDisplayName);
             }
         }
     }
 
-    public void func_96437_a(Packet207SetScore par1Packet207SetScore)
+    /**
+     * Handle a set score packet.
+     */
+    public void handleSetScore(Packet207SetScore par1Packet207SetScore)
     {
         Scoreboard scoreboard = this.worldClient.getScoreboard();
-        ScoreObjective scoreobjective = scoreboard.func_96518_b(par1Packet207SetScore.field_96486_b);
+        ScoreObjective scoreobjective = scoreboard.getObjective(par1Packet207SetScore.scoreName);
 
-        if (par1Packet207SetScore.field_96485_d == 0)
+        if (par1Packet207SetScore.updateOrRemove == 0)
         {
-            Score score = scoreboard.func_96529_a(par1Packet207SetScore.field_96488_a, scoreobjective);
-            score.func_96647_c(par1Packet207SetScore.field_96487_c);
+            Score score = scoreboard.func_96529_a(par1Packet207SetScore.itemName, scoreobjective);
+            score.func_96647_c(par1Packet207SetScore.value);
         }
-        else if (par1Packet207SetScore.field_96485_d == 1)
+        else if (par1Packet207SetScore.updateOrRemove == 1)
         {
-            scoreboard.func_96515_c(par1Packet207SetScore.field_96488_a);
+            scoreboard.func_96515_c(par1Packet207SetScore.itemName);
         }
     }
 
-    public void func_96438_a(Packet208SetDisplayObjective par1Packet208SetDisplayObjective)
+    /**
+     * Handle a set display objective packet.
+     */
+    public void handleSetDisplayObjective(Packet208SetDisplayObjective par1Packet208SetDisplayObjective)
     {
         Scoreboard scoreboard = this.worldClient.getScoreboard();
 
-        if (par1Packet208SetDisplayObjective.field_96480_b.length() == 0)
+        if (par1Packet208SetDisplayObjective.scoreName.length() == 0)
         {
-            scoreboard.func_96530_a(par1Packet208SetDisplayObjective.field_96481_a, (ScoreObjective)null);
+            scoreboard.func_96530_a(par1Packet208SetDisplayObjective.scoreboardPosition, (ScoreObjective)null);
         }
         else
         {
-            ScoreObjective scoreobjective = scoreboard.func_96518_b(par1Packet208SetDisplayObjective.field_96480_b);
-            scoreboard.func_96530_a(par1Packet208SetDisplayObjective.field_96481_a, scoreobjective);
+            ScoreObjective scoreobjective = scoreboard.getObjective(par1Packet208SetDisplayObjective.scoreName);
+            scoreboard.func_96530_a(par1Packet208SetDisplayObjective.scoreboardPosition, scoreobjective);
         }
     }
 
-    public void func_96435_a(Packet209SetPlayerTeam par1Packet209SetPlayerTeam)
+    /**
+     * Handle a set player team packet.
+     */
+    public void handleSetPlayerTeam(Packet209SetPlayerTeam par1Packet209SetPlayerTeam)
     {
         Scoreboard scoreboard = this.worldClient.getScoreboard();
         ScorePlayerTeam scoreplayerteam;
 
-        if (par1Packet209SetPlayerTeam.field_96489_f == 0)
+        if (par1Packet209SetPlayerTeam.mode == 0)
         {
-            scoreplayerteam = scoreboard.func_96527_f(par1Packet209SetPlayerTeam.field_96495_a);
+            scoreplayerteam = scoreboard.func_96527_f(par1Packet209SetPlayerTeam.teamName);
         }
         else
         {
-            scoreplayerteam = scoreboard.func_96508_e(par1Packet209SetPlayerTeam.field_96495_a);
+            scoreplayerteam = scoreboard.func_96508_e(par1Packet209SetPlayerTeam.teamName);
         }
 
-        if (par1Packet209SetPlayerTeam.field_96489_f == 0 || par1Packet209SetPlayerTeam.field_96489_f == 2)
+        if (par1Packet209SetPlayerTeam.mode == 0 || par1Packet209SetPlayerTeam.mode == 2)
         {
-            scoreplayerteam.func_96664_a(par1Packet209SetPlayerTeam.field_96493_b);
-            scoreplayerteam.func_96666_b(par1Packet209SetPlayerTeam.field_96494_c);
-            scoreplayerteam.func_96662_c(par1Packet209SetPlayerTeam.field_96491_d);
-            scoreplayerteam.func_98298_a(par1Packet209SetPlayerTeam.field_98212_g);
+            scoreplayerteam.func_96664_a(par1Packet209SetPlayerTeam.teamDisplayName);
+            scoreplayerteam.func_96666_b(par1Packet209SetPlayerTeam.teamPrefix);
+            scoreplayerteam.func_96662_c(par1Packet209SetPlayerTeam.teamSuffix);
+            scoreplayerteam.func_98298_a(par1Packet209SetPlayerTeam.friendlyFire);
         }
 
         Iterator iterator;
         String s;
 
-        if (par1Packet209SetPlayerTeam.field_96489_f == 0 || par1Packet209SetPlayerTeam.field_96489_f == 3)
+        if (par1Packet209SetPlayerTeam.mode == 0 || par1Packet209SetPlayerTeam.mode == 3)
         {
-            iterator = par1Packet209SetPlayerTeam.field_96492_e.iterator();
+            iterator = par1Packet209SetPlayerTeam.playerNames.iterator();
 
             while (iterator.hasNext())
             {
@@ -1706,34 +1717,37 @@ public class NetClientHandler extends NetHandler
             }
         }
 
-        if (par1Packet209SetPlayerTeam.field_96489_f == 4)
+        if (par1Packet209SetPlayerTeam.mode == 4)
         {
-            iterator = par1Packet209SetPlayerTeam.field_96492_e.iterator();
+            iterator = par1Packet209SetPlayerTeam.playerNames.iterator();
 
             while (iterator.hasNext())
             {
                 s = (String)iterator.next();
-                scoreboard.func_96512_b(s, scoreplayerteam);
+                scoreboard.removePlayerFromTeam(s, scoreplayerteam);
             }
         }
 
-        if (par1Packet209SetPlayerTeam.field_96489_f == 1)
+        if (par1Packet209SetPlayerTeam.mode == 1)
         {
             scoreboard.func_96511_d(scoreplayerteam);
         }
     }
 
-    public void func_98182_a(Packet63WorldParticles par1Packet63WorldParticles)
+    /**
+     * Handle a world particles packet.
+     */
+    public void handleWorldParticles(Packet63WorldParticles par1Packet63WorldParticles)
     {
-        for (int i = 0; i < par1Packet63WorldParticles.func_98202_m(); ++i)
+        for (int i = 0; i < par1Packet63WorldParticles.getQuantity(); ++i)
         {
-            double d0 = this.rand.nextGaussian() * (double)par1Packet63WorldParticles.func_98196_i();
-            double d1 = this.rand.nextGaussian() * (double)par1Packet63WorldParticles.func_98201_j();
-            double d2 = this.rand.nextGaussian() * (double)par1Packet63WorldParticles.func_98199_k();
-            double d3 = this.rand.nextGaussian() * (double)par1Packet63WorldParticles.func_98197_l();
-            double d4 = this.rand.nextGaussian() * (double)par1Packet63WorldParticles.func_98197_l();
-            double d5 = this.rand.nextGaussian() * (double)par1Packet63WorldParticles.func_98197_l();
-            this.worldClient.spawnParticle(par1Packet63WorldParticles.func_98195_d(), par1Packet63WorldParticles.func_98200_f() + d0, par1Packet63WorldParticles.func_98194_g() + d1, par1Packet63WorldParticles.func_98198_h() + d2, d3, d4, d5);
+            double d0 = this.rand.nextGaussian() * (double)par1Packet63WorldParticles.getOffsetX();
+            double d1 = this.rand.nextGaussian() * (double)par1Packet63WorldParticles.getOffsetY();
+            double d2 = this.rand.nextGaussian() * (double)par1Packet63WorldParticles.getOffsetZ();
+            double d3 = this.rand.nextGaussian() * (double)par1Packet63WorldParticles.getSpeed();
+            double d4 = this.rand.nextGaussian() * (double)par1Packet63WorldParticles.getSpeed();
+            double d5 = this.rand.nextGaussian() * (double)par1Packet63WorldParticles.getSpeed();
+            this.worldClient.spawnParticle(par1Packet63WorldParticles.getParticleName(), par1Packet63WorldParticles.getPositionX() + d0, par1Packet63WorldParticles.getPositionY() + d1, par1Packet63WorldParticles.getPositionZ() + d2, d3, d4, d5);
         }
     }
 

@@ -478,7 +478,7 @@ public class BlockRedstoneWire extends Block
         else
         {
             int j1 = par0IBlockAccess.getBlockMetadata(par1, par2, par3);
-            return par4 == (j1 & 3) || par4 == Direction.footInvisibleFaceRemap[j1 & 3];
+            return par4 == (j1 & 3) || par4 == Direction.rotateOpposite[j1 & 3];
         }
     }
 

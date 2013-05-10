@@ -84,8 +84,8 @@ public class PCma_BlockChunkLoader extends PC_Block implements PC_I3DRecipeHandl
 	}
 	
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(PC_Direction par1, int par2) {
-		return Block.glass.getBlockTextureFromSideAndMetadata(par1.getMCDir(), par2);
+	public Icon getIcon(PC_Direction par1, int par2) {
+		return Block.glass.getIcon(par1.getMCDir(), par2);
 	}
 
 	@Override

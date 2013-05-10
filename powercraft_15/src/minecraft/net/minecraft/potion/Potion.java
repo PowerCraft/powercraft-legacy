@@ -104,7 +104,7 @@ public class Potion
     /**
      * Sets the index for the icon displayed in the player's inventory when the status is active.
      */
-    protected Potion setIconIndex(int par1, int par2)
+    public Potion setIconIndex(int par1, int par2)
     {
         this.statusIconIndex = par1 + par2 * 8;
         return this;
@@ -275,7 +275,7 @@ public class Potion
     @SideOnly(Side.CLIENT)
     public static String getDurationString(PotionEffect par0PotionEffect)
     {
-        if (par0PotionEffect.func_100011_g())
+        if (par0PotionEffect.getIsPotionDurationMax())
         {
             return "**:**";
         }

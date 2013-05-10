@@ -627,18 +627,18 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	}
 
 	@Override
-	public int[] getSizeInventorySide(int var1) {
+	public int[] getAccessibleSlotsFromSide(int var1) {
 		return PC_InventoryUtils.makeIndexList(0, 8);
 	}
 
 	@Override
-	public boolean func_102007_a(int i, ItemStack itemstack, int j) {
-		return true;
+	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
+		return isStackValidForSlot(i, itemstack);
 	}
 
 	@Override
-	public boolean func_102008_b(int i, ItemStack itemstack, int j) {
-		return true;
+	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+		return canDispenseStackFrom(i);
 	}
     
 }

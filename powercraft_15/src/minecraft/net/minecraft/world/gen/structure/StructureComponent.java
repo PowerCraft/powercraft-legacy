@@ -214,7 +214,7 @@ public abstract class StructureComponent
                 return 1;
             }
         }
-        else if (par1 != Block.doorWood.blockID && par1 != Block.doorSteel.blockID)
+        else if (par1 != Block.doorWood.blockID && par1 != Block.doorIron.blockID)
         {
             if (par1 != Block.stairsCobblestone.blockID && par1 != Block.stairsWoodOak.blockID && par1 != Block.stairsNetherBrick.blockID && par1 != Block.stairsStoneBrick.blockID && par1 != Block.stairsSandStone.blockID)
             {
@@ -344,7 +344,7 @@ public abstract class StructureComponent
                         {
                             if (par2 == 2 || par2 == 3)
                             {
-                                return Facing.faceToSide[par2];
+                                return Facing.oppositeSide[par2];
                             }
                         }
                         else if (this.coordBaseMode == 1)
@@ -397,7 +397,7 @@ public abstract class StructureComponent
                 {
                     if (par2 == 0 || par2 == 2)
                     {
-                        return Direction.footInvisibleFaceRemap[par2];
+                        return Direction.rotateOpposite[par2];
                     }
                 }
                 else if (this.coordBaseMode == 1)

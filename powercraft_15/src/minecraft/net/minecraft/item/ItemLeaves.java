@@ -29,9 +29,9 @@ public class ItemLeaves extends ItemBlock
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
+    public Icon getIconFromDamage(int par1)
     {
-        return Block.leaves.getBlockTextureFromSideAndMetadata(0, par1);
+        return Block.leaves.getIcon(0, par1);
     }
 
     @SideOnly(Side.CLIENT)

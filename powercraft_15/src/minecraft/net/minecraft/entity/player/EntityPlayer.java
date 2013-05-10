@@ -75,11 +75,13 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
+import net.minecraftforge.event.entity.player.PlayerFlyableFallEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 
 public abstract class EntityPlayer extends EntityLiving implements ICommandSender
 {
     public static final String PERSISTED_NBT_TAG = "PlayerPersisted";
+    public int maxHealth = 20;
 
     /** Inventory of the player */
     public InventoryPlayer inventory = new InventoryPlayer(this);
@@ -194,7 +196,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
     public int getMaxHealth()
     {
-        return 20;
+        return maxHealth <= 0 ? 20 : maxHealth;
     }
 
     protected void entityInit()
@@ -723,12 +725,12 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public void addToPlayerScore(Entity par1Entity, int par2)
     {
         this.addScore(par2);
-        Collection collection = this.func_96123_co().func_96520_a(ScoreObjectiveCriteria.field_96640_e);
+        Collection collection = this.getWorldScoreboard().func_96520_a(ScoreObjectiveCriteria.field_96640_e);
 
         if (par1Entity instanceof EntityPlayer)
         {
             this.addStat(StatList.playerKillsStat, 1);
-            collection.addAll(this.func_96123_co().func_96520_a(ScoreObjectiveCriteria.field_96639_d));
+            collection.addAll(this.getWorldScoreboard().func_96520_a(ScoreObjectiveCriteria.field_96639_d));
         }
         else
         {
@@ -740,7 +742,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         while (iterator.hasNext())
         {
             ScoreObjective scoreobjective = (ScoreObjective)iterator.next();
-            Score score = this.func_96123_co().func_96529_a(this.getEntityName(), scoreobjective);
+            Score score = this.getWorldScoreboard().func_96529_a(this.getEntityName(), scoreobjective);
             score.func_96648_a();
         }
     }
@@ -917,6 +919,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         this.experienceTotal = par1NBTTagCompound.getInteger("XpTotal");
         this.setScore(par1NBTTagCompound.getInteger("Score"));
 
+        int tmp = par1NBTTagCompound.getInteger("MaxHealth");
+        maxHealth = (tmp <= 0 ? 20 : tmp);
+
         if (this.sleeping)
         {
             this.playerLocation = new ChunkCoordinates(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
@@ -953,6 +958,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         par1NBTTagCompound.setInteger("XpLevel", this.experienceLevel);
         par1NBTTagCompound.setInteger("XpTotal", this.experienceTotal);
         par1NBTTagCompound.setInteger("Score", this.getScore());
+        par1NBTTagCompound.setInteger("MaxHealth", maxHealth);
 
         if (this.spawnChunk != null)
         {
@@ -972,9 +978,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     public void displayGUIChest(IInventory par1IInventory) {}
 
-    public void func_94064_a(TileEntityHopper par1TileEntityHopper) {}
+    public void displayGUIHopper(TileEntityHopper par1TileEntityHopper) {}
 
-    public void func_96125_a(EntityMinecartHopper par1EntityMinecartHopper) {}
+    public void displayGUIHopperMinecart(EntityMinecartHopper par1EntityMinecartHopper) {}
 
     public void displayGUIEnchantment(int par1, int par2, int par3, String par4Str) {}
 
@@ -1074,8 +1080,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
     public boolean func_96122_a(EntityPlayer par1EntityPlayer)
     {
-        ScorePlayerTeam scoreplayerteam = this.func_96124_cp();
-        ScorePlayerTeam scoreplayerteam1 = par1EntityPlayer.func_96124_cp();
+        ScorePlayerTeam scoreplayerteam = this.getTeam();
+        ScorePlayerTeam scoreplayerteam1 = par1EntityPlayer.getTeam();
         return scoreplayerteam != scoreplayerteam1 ? true : (scoreplayerteam != null ? scoreplayerteam.func_96665_g() : true);
     }
 
@@ -1941,6 +1947,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
             super.fall(par1);
         }
+        else
+        {
+            MinecraftForge.EVENT_BUS.post(new PlayerFlyableFallEvent(this, par1));
+        }
     }
 
     /**
@@ -1982,7 +1992,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         {
             if (par1ItemStack.getItem().requiresMultipleRenderPasses())
             {
-                return par1ItemStack.getItem().getBlockTextureFromSideAndMetadata(par1ItemStack, par2);
+                return par1ItemStack.getItem().getIcon(par1ItemStack, par2);
             }
 
             if (this.itemInUse != null && par1ItemStack.itemID == Item.bow.itemID)
@@ -1991,20 +2001,20 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
                 if (j >= 18)
                 {
-                    return Item.bow.func_94599_c(2);
+                    return Item.bow.getItemIconForUseDuration(2);
                 }
 
                 if (j > 13)
                 {
-                    return Item.bow.func_94599_c(1);
+                    return Item.bow.getItemIconForUseDuration(1);
                 }
 
                 if (j > 0)
                 {
-                    return Item.bow.func_94599_c(0);
+                    return Item.bow.getItemIconForUseDuration(0);
                 }
             }
-            icon = par1ItemStack.getItem().getBlockTextureFromSideAndMetadata(par1ItemStack, par2, this, itemInUse, itemInUseCount);
+            icon = par1ItemStack.getItem().getIcon(par1ItemStack, par2, this, itemInUse, itemInUseCount);
         }
 
         return icon;
@@ -2144,7 +2154,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             {
                 Block block = Block.blocksList[l];
 
-                if (block.blockMaterial.func_85157_q())
+                if (block.blockMaterial.isAlwaysHarvested())
                 {
                     return true;
                 }
@@ -2232,7 +2242,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             this.experienceTotal = par1EntityPlayer.experienceTotal;
             this.experience = par1EntityPlayer.experience;
             this.setScore(par1EntityPlayer.getScore());
-            this.field_82152_aq = par1EntityPlayer.field_82152_aq;
+            this.teleportDirection = par1EntityPlayer.teleportDirection;
         }
         else if (this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
         {
@@ -2336,14 +2346,14 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     @SideOnly(Side.CLIENT)
     public boolean func_98034_c(EntityPlayer par1EntityPlayer)
     {
-        if (!this.getHasActivePotion())
+        if (!this.isInvisible())
         {
             return false;
         }
         else
         {
-            ScorePlayerTeam scoreplayerteam = this.func_96124_cp();
-            return scoreplayerteam == null || par1EntityPlayer == null || par1EntityPlayer.func_96124_cp() != scoreplayerteam || !scoreplayerteam.func_98297_h();
+            ScorePlayerTeam scoreplayerteam = this.getTeam();
+            return scoreplayerteam == null || par1EntityPlayer == null || par1EntityPlayer.getTeam() != scoreplayerteam || !scoreplayerteam.func_98297_h();
         }
     }
 
@@ -2363,19 +2373,22 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         return !this.capabilities.isFlying;
     }
 
-    public Scoreboard func_96123_co()
+    public Scoreboard getWorldScoreboard()
     {
         return this.worldObj.getScoreboard();
     }
 
-    public ScorePlayerTeam func_96124_cp()
+    public ScorePlayerTeam getTeam()
     {
-        return this.func_96123_co().func_96509_i(this.username);
+        return this.getWorldScoreboard().getPlayersTeam(this.username);
     }
 
-    public String func_96090_ax()
+    /**
+     * Returns the translated name of the entity.
+     */
+    public String getTranslatedEntityName()
     {
-        return ScorePlayerTeam.func_96667_a(this.func_96124_cp(), this.username);
+        return ScorePlayerTeam.func_96667_a(this.getTeam(), this.username);
     }
 
     public void openGui(Object mod, int modGuiId, World world, int x, int y, int z)

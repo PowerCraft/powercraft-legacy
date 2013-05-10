@@ -1,8 +1,10 @@
 package net.minecraft.entity;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -38,6 +40,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.IExtendedEntityProperties;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityEvent;
 
 public abstract class Entity
 {
@@ -129,7 +134,7 @@ public abstract class Entity
 
     /** The distance walked multiplied by 0.6 */
     public float distanceWalkedModified;
-    public float field_82151_R;
+    public float distanceWalkedOnStepModified;
     public float fallDistance;
 
     /**
@@ -228,7 +233,7 @@ public abstract class Entity
 
     /** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
     public int dimension;
-    protected int field_82152_aq;
+    protected int teleportDirection;
     private boolean invulnerable;
     private UUID entityUniqueID;
     public EnumEntitySize myEntitySize;
@@ -237,6 +242,8 @@ public abstract class Entity
     public boolean captureDrops = false;
     public ArrayList<EntityItem> capturedDrops = new ArrayList<EntityItem>();
     private UUID persistentID;
+
+    private HashMap<String, IExtendedEntityProperties> extendedProperties;
 
     public Entity(World par1World)
     {
@@ -254,7 +261,7 @@ public abstract class Entity
         this.height = 1.8F;
         this.prevDistanceWalkedModified = 0.0F;
         this.distanceWalkedModified = 0.0F;
-        this.field_82151_R = 0.0F;
+        this.distanceWalkedOnStepModified = 0.0F;
         this.fallDistance = 0.0F;
         this.nextStepDistance = 1;
         this.ySize = 0.0F;
@@ -271,7 +278,7 @@ public abstract class Entity
         this.isImmuneToFire = false;
         this.dataWatcher = new DataWatcher();
         this.addedToChunk = false;
-        this.field_82152_aq = 0;
+        this.teleportDirection = 0;
         this.invulnerable = false;
         this.entityUniqueID = UUID.randomUUID();
         this.myEntitySize = EnumEntitySize.SIZE_2;
@@ -286,6 +293,15 @@ public abstract class Entity
         this.dataWatcher.addObject(0, Byte.valueOf((byte)0));
         this.dataWatcher.addObject(1, Short.valueOf((short)300));
         this.entityInit();
+
+        extendedProperties = new HashMap<String, IExtendedEntityProperties>();
+
+        MinecraftForge.EVENT_BUS.post(new EntityEvent.EntityConstructing(this));
+
+        for (IExtendedEntityProperties props : this.extendedProperties.values())
+        {
+            props.init(this, par1World);
+        }
     }
 
     protected abstract void entityInit();
@@ -925,11 +941,11 @@ public abstract class Entity
                 }
 
                 this.distanceWalkedModified = (float)((double)this.distanceWalkedModified + (double)MathHelper.sqrt_double(d12 * d12 + d11 * d11) * 0.6D);
-                this.field_82151_R = (float)((double)this.field_82151_R + (double)MathHelper.sqrt_double(d12 * d12 + d10 * d10 + d11 * d11) * 0.6D);
+                this.distanceWalkedOnStepModified = (float)((double)this.distanceWalkedOnStepModified + (double)MathHelper.sqrt_double(d12 * d12 + d10 * d10 + d11 * d11) * 0.6D);
 
-                if (this.field_82151_R > (float)this.nextStepDistance && j1 > 0)
+                if (this.distanceWalkedOnStepModified > (float)this.nextStepDistance && j1 > 0)
                 {
-                    this.nextStepDistance = (int)this.field_82151_R + 1;
+                    this.nextStepDistance = (int)this.distanceWalkedOnStepModified + 1;
 
                     if (this.isInWater())
                     {
@@ -1455,7 +1471,7 @@ public abstract class Entity
      */
     public void addToPlayerScore(Entity par1Entity, int par2) {}
 
-    public boolean func_98035_c(NBTTagCompound par1NBTTagCompound)
+    public boolean addNotRiddenEntityID(NBTTagCompound par1NBTTagCompound)
     {
         String s = this.getEntityString();
 
@@ -1550,13 +1566,24 @@ public abstract class Entity
             {
                 par1NBTTagCompound.setCompoundTag("ForgeData", customEntityData);
             }
+
+            for (String identifier : this.extendedProperties.keySet()){
+                try{
+                    IExtendedEntityProperties props = this.extendedProperties.get(identifier);
+                    props.saveNBTData(par1NBTTagCompound);
+                }catch (Throwable t){
+                    FMLLog.severe("Failed to save extended properties for %s.  This is a mod issue.", identifier);
+                    t.printStackTrace();
+                }
+            }
+
             this.writeEntityToNBT(par1NBTTagCompound);
 
             if (this.ridingEntity != null)
             {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound("Riding");
 
-                if (this.ridingEntity.func_98035_c(nbttagcompound1))
+                if (this.ridingEntity.addNotRiddenEntityID(nbttagcompound1))
                 {
                     par1NBTTagCompound.setTag("Riding", nbttagcompound1);
                 }
@@ -1624,6 +1651,17 @@ public abstract class Entity
             {
                 customEntityData = par1NBTTagCompound.getCompoundTag("ForgeData");
             }
+
+            for (String identifier : this.extendedProperties.keySet()){
+                try{
+                    IExtendedEntityProperties props = this.extendedProperties.get(identifier);
+                    props.loadNBTData(par1NBTTagCompound);
+                }catch (Throwable t){
+                    FMLLog.severe("Failed to load extended properties for %s.  This is a mod issue.", identifier);
+                    t.printStackTrace();
+                }
+            }
+
             //Rawr, legacy code, Vanilla added a UUID, keep this so older maps will convert properly
             if (par1NBTTagCompound.hasKey("PersistentIDMSB") && par1NBTTagCompound.hasKey("PersistentIDLSB"))
             {
@@ -1942,7 +1980,7 @@ public abstract class Entity
                     int j = (int)(this.posZ + d4);
                     AxisAlignedBB axisalignedbb = this.boundingBox.getOffsetBoundingBox(d3, 1.0D, d4);
 
-                    if (this.worldObj.getAllCollidingBoundingBoxes(axisalignedbb).isEmpty())
+                    if (this.worldObj.getCollidingBlockBounds(axisalignedbb).isEmpty())
                     {
                         if (this.worldObj.doesBlockHaveSolidTopSurface(i, (int)this.posY, j))
                         {
@@ -2024,7 +2062,7 @@ public abstract class Entity
 
             if (!this.worldObj.isRemote && !this.inPortal)
             {
-                this.field_82152_aq = Direction.getMovementDirection(d0, d1);
+                this.teleportDirection = Direction.getMovementDirection(d0, d1);
             }
 
             this.inPortal = true;
@@ -2123,7 +2161,7 @@ public abstract class Entity
         this.setFlag(3, par1);
     }
 
-    public boolean getHasActivePotion()
+    public boolean isInvisible()
     {
         return this.getFlag(5);
     }
@@ -2131,10 +2169,10 @@ public abstract class Entity
     @SideOnly(Side.CLIENT)
     public boolean func_98034_c(EntityPlayer par1EntityPlayer)
     {
-        return this.getHasActivePotion();
+        return this.isInvisible();
     }
 
-    public void setHasActivePotion(boolean par1)
+    public void setInvisible(boolean par1)
     {
         this.setFlag(5, par1);
     }
@@ -2216,7 +2254,7 @@ public abstract class Entity
         double d3 = par1 - (double)i;
         double d4 = par3 - (double)j;
         double d5 = par5 - (double)k;
-        List list = this.worldObj.getAllCollidingBoundingBoxes(this.boundingBox);
+        List list = this.worldObj.getCollidingBlockBounds(this.boundingBox);
 
         if (list.isEmpty() && !this.worldObj.func_85174_u(i, j, k))
         {
@@ -2393,7 +2431,7 @@ public abstract class Entity
         par1Entity.writeToNBT(nbttagcompound);
         this.readFromNBT(nbttagcompound);
         this.timeUntilPortal = par1Entity.timeUntilPortal;
-        this.field_82152_aq = par1Entity.field_82152_aq;
+        this.teleportDirection = par1Entity.teleportDirection;
     }
 
     /**
@@ -2445,9 +2483,9 @@ public abstract class Entity
         return 3;
     }
 
-    public int func_82148_at()
+    public int getTeleportDirection()
     {
-        return this.field_82152_aq;
+        return this.teleportDirection;
     }
 
     /**
@@ -2464,7 +2502,7 @@ public abstract class Entity
         par1CrashReportCategory.addCrashSection("Entity ID", Integer.valueOf(this.entityId));
         par1CrashReportCategory.addCrashSectionCallable("Entity Name", new CallableEntityName(this));
         par1CrashReportCategory.addCrashSection("Entity\'s Exact location", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)}));
-        par1CrashReportCategory.addCrashSection("Entity\'s Block location", CrashReportCategory.func_85071_a(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
+        par1CrashReportCategory.addCrashSection("Entity\'s Block location", CrashReportCategory.getLocationInfo(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
         par1CrashReportCategory.addCrashSection("Entity\'s Momentum", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.motionX), Double.valueOf(this.motionY), Double.valueOf(this.motionZ)}));
     }
 
@@ -2483,7 +2521,10 @@ public abstract class Entity
         return true;
     }
 
-    public String func_96090_ax()
+    /**
+     * Returns the translated name of the entity.
+     */
+    public String getTranslatedEntityName()
     {
         return this.getEntityName();
     }
@@ -2582,5 +2623,50 @@ public abstract class Entity
     public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount)
     {
         return type.getCreatureClass().isAssignableFrom(this.getClass());
+    }
+
+    /**
+     * Register the instance of IExtendedProperties into the entity's collection.
+     * @param identifier The identifier which you can use to retrieve these properties for the entity.
+     * @param properties The instanceof IExtendedProperties to register
+     * @return The identifier that was used to register the extended properties.  Empty String indicates an error.  If your requested key already existed, this will return a modified one that is unique.
+     */
+    public String registerExtendedProperties(String identifier, IExtendedEntityProperties properties)
+    {
+        if (identifier == null)
+        {
+            FMLLog.warning("Someone is attempting to register extended properties using a null identifier.  This is not allowed.  Aborting.  This may have caused instability.");
+            return "";
+        }
+        if (properties == null)
+        {
+            FMLLog.warning("Someone is attempting to register null extended properties.  This is not allowed.  Aborting.  This may have caused instability.");
+            return "";
+        }
+
+        String baseIdentifier = identifier;
+        int identifierModCount = 1;
+        while (this.extendedProperties.containsKey(identifier))
+        {
+            identifier = String.format("%s%d", baseIdentifier, identifierModCount++);
+        }
+
+        if (baseIdentifier != identifier)
+        {
+            FMLLog.info("An attempt was made to register exended properties using an existing key.  The duplicate identifier (%s) has been remapped to %s.", baseIdentifier, identifier);
+        }
+
+        this.extendedProperties.put(identifier, properties);
+        return identifier;
+    }
+
+    /**
+     * Gets the extended properties identified by the passed in key
+     * @param identifier The key that identifies the extended properties.
+     * @return The instance of IExtendedProperties that was found, or null.
+     */
+    public IExtendedEntityProperties getExtendedProperties(String identifier)
+    {
+        return this.extendedProperties.get(identifier);
     }
 }

@@ -36,13 +36,13 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 
 	protected void makeNetworkTab(PC_GresWindow win){
 		
-		PC_GresWidgetTab wt = new PC_GresWidgetTab(0xBBBBBB, "/gui/items.png", Item.paper.getBlockTextureFromSideAndMetadataFromDamage(0));
+		PC_GresWidgetTab wt = new PC_GresWidgetTab(0xBBBBBB, "/gui/items.png", Item.paper.getIconFromDamage(0));
 		wt.add(new PC_GresLabel("pc.gui.weasel.device.name"));
 		wt.add(deviceName = new PC_GresTextEdit((String)tileEntity.getData("deviceName"), 10));
 		wt.add(deviceRename = new PC_GresButton("pc.gui.weasel.device.rename"));
 		win.add(wt);
 		
-		wt = new PC_GresWidgetTab(0x70360F, "/gui/items.png", Item.sign.getBlockTextureFromSideAndMetadataFromDamage(0));
+		wt = new PC_GresWidgetTab(0x70360F, "/gui/items.png", Item.sign.getIconFromDamage(0));
 		wt.add(new PC_GresLabel("pc.gui.weasel.network.name"));
 		wt.add(networkName = new PC_GresTextEdit((String)tileEntity.getData("networkName"), 10));
 		wt.add(network1 = new PC_GresButton("pc.gui.weasel.network.join"));

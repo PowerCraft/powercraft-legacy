@@ -7,10 +7,15 @@ import java.util.List;
 import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,6 +32,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.IArmorTextureProvider;
 
 public class Item
 {
@@ -37,9 +43,9 @@ public class Item
 
     /** A 32000 elements Item array. */
     public static Item[] itemsList = new Item[32000];
-    public static Item shovelSteel = (new ItemSpade(0, EnumToolMaterial.IRON)).setUnlocalizedName("shovelIron");
-    public static Item pickaxeSteel = (new ItemPickaxe(1, EnumToolMaterial.IRON)).setUnlocalizedName("pickaxeIron");
-    public static Item axeSteel = (new ItemAxe(2, EnumToolMaterial.IRON)).setUnlocalizedName("hatchetIron");
+    public static Item shovelIron = (new ItemSpade(0, EnumToolMaterial.IRON)).setUnlocalizedName("shovelIron");
+    public static Item pickaxeIron = (new ItemPickaxe(1, EnumToolMaterial.IRON)).setUnlocalizedName("pickaxeIron");
+    public static Item axeIron = (new ItemAxe(2, EnumToolMaterial.IRON)).setUnlocalizedName("hatchetIron");
     public static Item flintAndSteel = (new ItemFlintAndSteel(3)).setUnlocalizedName("flintAndSteel");
     public static Item appleRed = (new ItemFood(4, 4, 0.3F, false)).setUnlocalizedName("apple");
     public static ItemBow bow = (ItemBow)(new ItemBow(5)).setUnlocalizedName("bow");
@@ -48,7 +54,7 @@ public class Item
     public static Item diamond = (new Item(8)).setUnlocalizedName("diamond").setCreativeTab(CreativeTabs.tabMaterials);
     public static Item ingotIron = (new Item(9)).setUnlocalizedName("ingotIron").setCreativeTab(CreativeTabs.tabMaterials);
     public static Item ingotGold = (new Item(10)).setUnlocalizedName("ingotGold").setCreativeTab(CreativeTabs.tabMaterials);
-    public static Item swordSteel = (new ItemSword(11, EnumToolMaterial.IRON)).setUnlocalizedName("swordIron");
+    public static Item swordIron = (new ItemSword(11, EnumToolMaterial.IRON)).setUnlocalizedName("swordIron");
     public static Item swordWood = (new ItemSword(12, EnumToolMaterial.WOOD)).setUnlocalizedName("swordWood");
     public static Item shovelWood = (new ItemSpade(13, EnumToolMaterial.WOOD)).setUnlocalizedName("shovelWood");
     public static Item pickaxeWood = (new ItemPickaxe(14, EnumToolMaterial.WOOD)).setUnlocalizedName("pickaxeWood");
@@ -73,7 +79,7 @@ public class Item
     public static Item gunpowder = (new Item(33)).setUnlocalizedName("sulphur").setPotionEffect(PotionHelper.gunpowderEffect).setCreativeTab(CreativeTabs.tabMaterials);
     public static Item hoeWood = (new ItemHoe(34, EnumToolMaterial.WOOD)).setUnlocalizedName("hoeWood");
     public static Item hoeStone = (new ItemHoe(35, EnumToolMaterial.STONE)).setUnlocalizedName("hoeStone");
-    public static Item hoeSteel = (new ItemHoe(36, EnumToolMaterial.IRON)).setUnlocalizedName("hoeIron");
+    public static Item hoeIron = (new ItemHoe(36, EnumToolMaterial.IRON)).setUnlocalizedName("hoeIron");
     public static Item hoeDiamond = (new ItemHoe(37, EnumToolMaterial.EMERALD)).setUnlocalizedName("hoeDiamond");
     public static Item hoeGold = (new ItemHoe(38, EnumToolMaterial.GOLD)).setUnlocalizedName("hoeGold");
     public static Item seeds = (new ItemSeeds(39, Block.crops.blockID, Block.tilledField.blockID)).setUnlocalizedName("seeds");
@@ -87,10 +93,10 @@ public class Item
     public static ItemArmor plateChain = (ItemArmor)(new ItemArmor(47, EnumArmorMaterial.CHAIN, 1, 1)).setUnlocalizedName("chestplateChain");
     public static ItemArmor legsChain = (ItemArmor)(new ItemArmor(48, EnumArmorMaterial.CHAIN, 1, 2)).setUnlocalizedName("leggingsChain");
     public static ItemArmor bootsChain = (ItemArmor)(new ItemArmor(49, EnumArmorMaterial.CHAIN, 1, 3)).setUnlocalizedName("bootsChain");
-    public static ItemArmor helmetSteel = (ItemArmor)(new ItemArmor(50, EnumArmorMaterial.IRON, 2, 0)).setUnlocalizedName("helmetIron");
-    public static ItemArmor plateSteel = (ItemArmor)(new ItemArmor(51, EnumArmorMaterial.IRON, 2, 1)).setUnlocalizedName("chestplateIron");
-    public static ItemArmor legsSteel = (ItemArmor)(new ItemArmor(52, EnumArmorMaterial.IRON, 2, 2)).setUnlocalizedName("leggingsIron");
-    public static ItemArmor bootsSteel = (ItemArmor)(new ItemArmor(53, EnumArmorMaterial.IRON, 2, 3)).setUnlocalizedName("bootsIron");
+    public static ItemArmor helmetIron = (ItemArmor)(new ItemArmor(50, EnumArmorMaterial.IRON, 2, 0)).setUnlocalizedName("helmetIron");
+    public static ItemArmor plateIron = (ItemArmor)(new ItemArmor(51, EnumArmorMaterial.IRON, 2, 1)).setUnlocalizedName("chestplateIron");
+    public static ItemArmor legsIron = (ItemArmor)(new ItemArmor(52, EnumArmorMaterial.IRON, 2, 2)).setUnlocalizedName("leggingsIron");
+    public static ItemArmor bootsIron = (ItemArmor)(new ItemArmor(53, EnumArmorMaterial.IRON, 2, 3)).setUnlocalizedName("bootsIron");
     public static ItemArmor helmetDiamond = (ItemArmor)(new ItemArmor(54, EnumArmorMaterial.DIAMOND, 3, 0)).setUnlocalizedName("helmetDiamond");
     public static ItemArmor plateDiamond = (ItemArmor)(new ItemArmor(55, EnumArmorMaterial.DIAMOND, 3, 1)).setUnlocalizedName("chestplateDiamond");
     public static ItemArmor legsDiamond = (ItemArmor)(new ItemArmor(56, EnumArmorMaterial.DIAMOND, 3, 2)).setUnlocalizedName("leggingsDiamond");
@@ -111,7 +117,7 @@ public class Item
     public static Item bucketLava = (new ItemBucket(71, Block.lavaMoving.blockID)).setUnlocalizedName("bucketLava").setContainerItem(bucketEmpty);
     public static Item minecartEmpty = (new ItemMinecart(72, 0)).setUnlocalizedName("minecart");
     public static Item saddle = (new ItemSaddle(73)).setUnlocalizedName("saddle");
-    public static Item doorSteel = (new ItemDoor(74, Material.iron)).setUnlocalizedName("doorIron");
+    public static Item doorIron = (new ItemDoor(74, Material.iron)).setUnlocalizedName("doorIron");
     public static Item redstone = (new ItemRedstone(75)).setUnlocalizedName("redstone").setPotionEffect(PotionHelper.redstoneEffect);
     public static Item snowball = (new ItemSnowball(76)).setUnlocalizedName("snowball");
     public static Item boat = (new ItemBoat(77)).setUnlocalizedName("boat");
@@ -189,7 +195,7 @@ public class Item
     public static Item bakedPotato = (new ItemFood(137, 6, 0.6F, false)).setUnlocalizedName("potatoBaked");
     public static Item poisonousPotato = (new ItemFood(138, 2, 0.3F, false)).setPotionEffect(Potion.poison.id, 5, 0, 0.6F).setUnlocalizedName("potatoPoisonous");
     public static ItemEmptyMap emptyMap = (ItemEmptyMap)(new ItemEmptyMap(139)).setUnlocalizedName("emptyMap");
-    public static Item goldenCarrot = (new ItemFood(140, 6, 1.2F, false)).setUnlocalizedName("carrotGolden").setPotionEffect(PotionHelper.field_82818_l);
+    public static Item goldenCarrot = (new ItemFood(140, 6, 1.2F, false)).setUnlocalizedName("carrotGolden").setPotionEffect(PotionHelper.goldenCarrotEffect);
     public static Item skull = (new ItemSkull(141)).setUnlocalizedName("skull");
     public static Item carrotOnAStick = (new ItemCarrotOnAStick(142)).setUnlocalizedName("carrotOnAStick");
     public static Item netherStar = (new ItemSimpleFoiled(143)).setUnlocalizedName("netherStar").setCreativeTab(CreativeTabs.tabMaterials);
@@ -197,11 +203,11 @@ public class Item
     public static Item firework = (new ItemFirework(145)).setUnlocalizedName("fireworks");
     public static Item fireworkCharge = (new ItemFireworkCharge(146)).setUnlocalizedName("fireworksCharge").setCreativeTab(CreativeTabs.tabMisc);
     public static ItemEnchantedBook enchantedBook = (ItemEnchantedBook)(new ItemEnchantedBook(147)).setMaxStackSize(1).setUnlocalizedName("enchantedBook");
-    public static Item field_94585_bY = (new ItemReed(148, Block.redstoneComparatorIdle)).setUnlocalizedName("comparator").setCreativeTab(CreativeTabs.tabRedstone);
-    public static Item field_94584_bZ = (new Item(149)).setUnlocalizedName("netherbrick").setCreativeTab(CreativeTabs.tabMaterials);
-    public static Item field_94583_ca = (new Item(150)).setUnlocalizedName("netherquartz").setCreativeTab(CreativeTabs.tabMaterials);
-    public static Item tntMinecart = (new ItemMinecart(151, 3)).setUnlocalizedName("minecartTnt");
-    public static Item hopperMinecart = (new ItemMinecart(152, 5)).setUnlocalizedName("minecartHopper");
+    public static Item comparator = (new ItemReed(148, Block.redstoneComparatorIdle)).setUnlocalizedName("comparator").setCreativeTab(CreativeTabs.tabRedstone);
+    public static Item netherrackBrick = (new Item(149)).setUnlocalizedName("netherbrick").setCreativeTab(CreativeTabs.tabMaterials);
+    public static Item netherQuartz = (new Item(150)).setUnlocalizedName("netherquartz").setCreativeTab(CreativeTabs.tabMaterials);
+    public static Item minecartTnt = (new ItemMinecart(151, 3)).setUnlocalizedName("minecartTnt");
+    public static Item minecartHopper = (new ItemMinecart(152, 5)).setUnlocalizedName("minecartHopper");
     public static Item record13 = (new ItemRecord(2000, "13")).setUnlocalizedName("record");
     public static Item recordCat = (new ItemRecord(2001, "cat")).setUnlocalizedName("record");
     public static Item recordBlocks = (new ItemRecord(2002, "blocks")).setUnlocalizedName("record");
@@ -239,7 +245,7 @@ public class Item
     @SideOnly(Side.CLIENT)
 
     /** Icon index in the icons table. */
-    protected Icon iconIndex;
+    protected Icon itemIcon;
 
     /** FORGE: To disable repair recipes. */
     protected boolean canRepair = true;
@@ -279,9 +285,9 @@ public class Item
     /**
      * Gets an icon index based on an item's damage value
      */
-    public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1)
+    public Icon getIconFromDamage(int par1)
     {
-        return this.iconIndex;
+        return this.itemIcon;
     }
 
     @SideOnly(Side.CLIENT)
@@ -289,9 +295,9 @@ public class Item
     /**
      * Returns the icon index of the stack given as argument.
      */
-    public final Icon getBlockTextureFromSideAndMetadataIndex(ItemStack par1ItemStack)
+    public final Icon getIconIndex(ItemStack par1ItemStack)
     {
-        return this.getBlockTextureFromSideAndMetadataFromDamage(par1ItemStack.getItemDamage());
+        return this.getIconFromDamage(par1ItemStack.getItemDamage());
     }
 
     /**
@@ -572,7 +578,7 @@ public class Item
     /**
      * Sets the string representing this item's effect on a potion when used as an ingredient.
      */
-    protected Item setPotionEffect(String par1Str)
+    public Item setPotionEffect(String par1Str)
     {
         this.potionEffect = par1Str;
         return this;
@@ -673,9 +679,9 @@ public class Item
     /**
      * Gets an icon index based on an item's damage value and the given render pass
      */
-    public Icon getBlockTextureFromSideAndMetadataFromDamageForRenderPass(int par1, int par2)
+    public Icon getIconFromDamageForRenderPass(int par1, int par2)
     {
-        return this.getBlockTextureFromSideAndMetadataFromDamage(par1);
+        return this.getIconFromDamage(par1);
     }
 
     @SideOnly(Side.CLIENT)
@@ -721,9 +727,9 @@ public class Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon(this.unlocalizedName);
+        this.itemIcon = par1IconRegister.registerIcon(this.unlocalizedName);
     }
 
     static
@@ -836,7 +842,7 @@ public class Item
     }
 
     /**
-     * Player, Render pass, and item usage sensitive version of getBlockTextureFromSideAndMetadataIndex.
+     * Player, Render pass, and item usage sensitive version of getIconIndex.
      *
      * @param stack The item stack to get the icon for. (Usually this, and usingItem will be the same if usingItem is not null)
      * @param renderPass The pass to get the icon for, 0 is default.
@@ -845,9 +851,9 @@ public class Item
      * @param useRemaining The ticks remaining for the active item.
      * @return The icon index
      */
-    public Icon getBlockTextureFromSideAndMetadata(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+    public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
     {
-        return getBlockTextureFromSideAndMetadata(stack, renderPass);
+        return getIcon(stack, renderPass);
     }
 
     /**
@@ -921,6 +927,18 @@ public class Item
     }
 
     /**
+     * Called by the default implemetation of EntityItem's onUpdate method, allowing for cleaner 
+     * control over the update of the item without having to write a subclass.
+     * 
+     * @param entityItem The entity Item
+     * @return Return true to skip any further update code.
+     */
+    public boolean onEntityItemUpdate(EntityItem entityItem)
+    {
+        return false;
+    }
+
+    /**
      * Gets a list of tabs that items belonging to this class can display on,
      * combined properly with getSubItems allows for a single item to span
      * many sub-items across many tabs.
@@ -948,14 +966,14 @@ public class Item
     /**
      * Return the correct icon for rendering based on the supplied ItemStack and render pass.
      *
-     * Defers to {@link #getBlockTextureFromSideAndMetadataFromDamageForRenderPass(int, int)}
+     * Defers to {@link #getIconFromDamageForRenderPass(int, int)}
      * @param stack to render for
      * @param pass the multi-render pass
      * @return the icon
      */
-    public Icon getBlockTextureFromSideAndMetadata(ItemStack stack, int pass)
+    public Icon getIcon(ItemStack stack, int pass)
     {
-    	return getBlockTextureFromSideAndMetadataFromDamageForRenderPass(stack.getItemDamage(), pass);
+    	return getIconFromDamageForRenderPass(stack.getItemDamage(), pass);
     }
 
     /**
@@ -1011,8 +1029,14 @@ public class Item
      *
      * @param stack The ItemStack
      * @param armorType Armor slot ID: 0: Helmet, 1: Chest, 2: Legs, 3: Boots
+     * @param entity The entity trying to equip the armor
      * @return True if the given ItemStack can be inserted in the slot
      */
+    public boolean isValidArmor(ItemStack stack, int armorType, Entity entity)
+    {
+        return isValidArmor(stack, armorType);
+    }
+    @Deprecated //Deprecated in 1.5.2, remove in 1.6, see EntityPlayer sensitive version above.
     public boolean isValidArmor(ItemStack stack, int armorType)
     {
         if (this instanceof ItemArmor)
@@ -1062,4 +1086,147 @@ public class Item
         return true;
     }
 
+    /**
+     * An itemstack sensitive version of getDamageVsEntity - allows items to handle damage based on
+     * itemstack data, like tags. Falls back to getDamageVsEntity.
+     *
+     * @param par1Entity The entity being attacked (or the attacking mob, if it's a mob - vanilla bug?)
+     * @param itemStack The itemstack
+     * @return the damage
+     */
+    public int getDamageVsEntity(Entity par1Entity, ItemStack itemStack)
+    {
+        return getDamageVsEntity(par1Entity);
+    }
+
+    @Deprecated private final boolean isArmorProvider = this instanceof IArmorTextureProvider;
+    /**
+     * Called by RenderBiped and RenderPlayer to determine the armor texture that 
+     * should be use for the currently equiped item.
+     * This will only be called on instances of ItemArmor. 
+     * 
+     * Returning null from this function will use the default value.
+     * 
+     * @param stack ItemStack for the equpt armor
+     * @param entity The entity wearing the armor
+     * @param slot The slot the armor is in
+     * @param layer The render layer, either 1 or 2, 2 is only used for CLOTH armor by default
+     * @return Path of texture to bind, or null to use default
+     */
+    public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
+    {
+        return isArmorProvider ? ((IArmorTextureProvider)this).getArmorTextureFile(stack) : null;
+    }
+
+    /**
+     * Returns the font renderer used to render tooltips and overlays for this item.
+     * Returning null will use the standard font renderer.
+     * 
+     * @param stack The current item stack
+     * @return A instance of FontRenderer or null to use default
+     */
+    @SideOnly(Side.CLIENT)
+    public FontRenderer getFontRenderer(ItemStack stack)
+    {
+        return null;
+    }
+
+    /**
+     * Override this method to have an item handle its own armor rendering.
+     * 
+     * @param  entityLiving  The entity wearing the armor 
+     * @param  itemStack  The itemStack to render the model of 
+     * @param  armorSlot  0=head, 1=torso, 2=legs, 3=feet
+     * 
+     * @return  A ModelBiped to render instead of the default
+     */
+    @SideOnly(Side.CLIENT)
+    public ModelBiped getArmorModel(EntityLiving entityLiving, ItemStack itemStack, int armorSlot)
+    {
+        return null;
+    }
+
+    /**
+     * Called when a entity tries to play the 'swing' animation.
+     *  
+     * @param entityLiving The entity swinging the item.
+     * @param stack The Item stack
+     * @return True to cancel any further processing by EntityLiving 
+     */
+    public boolean onEntitySwing(EntityLiving entityLiving, ItemStack stack)
+    {
+        return false;
+    }
+
+    /**
+     * Called when the client starts rendering the HUD, for whatever item the player currently has as a helmet. 
+     * This is where pumpkins would render there overlay.
+     *  
+     * @param stack The ItemStack that is equipped
+     * @param player Reference to the current client entity
+     * @param resolution Resolution information about the current viewport and configured GUI Scale
+     * @param partialTicks Partial ticks for the renderer, useful for interpolation
+     * @param hasScreen If the player has a screen up, which will be rendered after this.
+     * @param mouseX Mouse's X position on screen
+     * @param mouseY Mouse's Y position on screen
+     */
+    @SideOnly(Side.CLIENT)
+    public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY){}
+
+    /**
+     * Return the itemDamage represented by this ItemStack. Defaults to the itemDamage field on ItemStack, but can be overridden here for other sources such as NBT.
+     *
+     * @param stack The itemstack that is damaged
+     * @return the damage value
+     */
+    public int getItemDamageFromStack(ItemStack stack)
+    {
+        return stack.itemDamage;
+    }
+
+    /**
+     * Return the itemDamage display value represented by this itemstack.
+     * @param stack the stack
+     * @return the damage value
+     */
+    public int getItemDamageFromStackForDisplay(ItemStack stack)
+    {
+        return stack.itemDamage;
+    }
+    
+    /**
+     * Return the maxDamage for this ItemStack. Defaults to the maxDamage field in this item, but can be overridden here for other sources such as NBT.
+     *
+     * @param stack The itemstack that is damaged
+     * @return the damage value
+     */
+    public int getItemMaxDamageFromStack(ItemStack stack)
+    {
+        return maxDamage;
+    }
+
+    /**
+     * Return if this itemstack is damaged. Note only called if {@link #isDamageable()} is true.
+     * @param stack the stack
+     * @return if the stack is damaged
+     */
+    public boolean isItemStackDamaged(ItemStack stack)
+    {
+        return stack.itemDamage > 0;
+    }
+
+    /**
+     * Set the damage for this itemstack. Note, this method is responsible for zero checking.
+     * @param stack the stack
+     * @param damage the new damage value
+     */
+    public void setItemDamageForStack(ItemStack stack, int damage)
+    {
+        stack.itemDamage = damage;
+
+        if (stack.itemDamage < 0)
+        {
+            stack.itemDamage = 0;
+        }
+    }
 }

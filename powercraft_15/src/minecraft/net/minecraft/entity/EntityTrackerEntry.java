@@ -196,7 +196,7 @@ public class EntityTrackerEntry
                 boolean flag = Math.abs(j1) >= 4 || Math.abs(k1) >= 4 || Math.abs(l1) >= 4 || this.ticks % 60 == 0;
                 boolean flag1 = Math.abs(l - this.lastYaw) >= 4 || Math.abs(i1 - this.lastPitch) >= 4;
 
-                if (this.ticks > 0)
+                if (this.ticks > 0 || this.myEntity instanceof EntityArrow)
                 {
                     if (j1 >= -128 && j1 < 128 && k1 >= -128 && k1 < 128 && l1 >= -128 && l1 < 128 && this.ticksSinceLastForcedTeleport <= 400 && !this.ridingEntity)
                     {
@@ -484,7 +484,7 @@ public class EntityTrackerEntry
         else if (this.myEntity instanceof EntityMinecart)
         {
             EntityMinecart entityminecart = (EntityMinecart)this.myEntity;
-            return new Packet23VehicleSpawn(this.myEntity, 10, entityminecart.func_94087_l());
+            return new Packet23VehicleSpawn(this.myEntity, 10, entityminecart.getMinecartType());
         }
         else if (this.myEntity instanceof EntityBoat)
         {

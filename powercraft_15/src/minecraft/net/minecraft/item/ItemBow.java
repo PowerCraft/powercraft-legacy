@@ -156,9 +156,9 @@ public class ItemBow extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        super.updateIcons(par1IconRegister);
+        super.registerIcons(par1IconRegister);
         this.iconArray = new Icon[bowPullIconNameArray.length];
 
         for (int i = 0; i < this.iconArray.length; ++i)
@@ -168,7 +168,11 @@ public class ItemBow extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public Icon func_94599_c(int par1)
+
+    /**
+     * used to cycle through icons based on their used duration, i.e. for the bow
+     */
+    public Icon getItemIconForUseDuration(int par1)
     {
         return this.iconArray[par1];
     }

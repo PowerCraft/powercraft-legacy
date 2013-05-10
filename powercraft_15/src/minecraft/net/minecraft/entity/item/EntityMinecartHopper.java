@@ -14,8 +14,9 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 
 public class EntityMinecartHopper extends EntityMinecartContainer implements Hopper
 {
-    private boolean field_96113_a = true;
-    private int field_98044_b = -1;
+    /** Whether this hopper minecart is being blocked by an activator rail. */
+    private boolean isBlocked = true;
+    private int transferTicker = -1;
 
     public EntityMinecartHopper(World par1World)
     {
@@ -27,17 +28,17 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements Hop
         super(par1World, par2, par4, par6);
     }
 
-    public int func_94087_l()
+    public int getMinecartType()
     {
         return 5;
     }
 
-    public Block func_94093_n()
+    public Block getDefaultDisplayTile()
     {
         return Block.hopperBlock;
     }
 
-    public int func_94085_r()
+    public int getDefaultDisplayTileOffset()
     {
         return 1;
     }
@@ -61,30 +62,39 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements Hop
         }
         if (!this.worldObj.isRemote)
         {
-            par1EntityPlayer.func_96125_a(this);
+            par1EntityPlayer.displayGUIHopperMinecart(this);
         }
 
         return true;
     }
 
-    public void func_96095_a(int par1, int par2, int par3, boolean par4)
+    /**
+     * Called every tick the minecart is on an activator rail.
+     */
+    public void onActivatorRailPass(int par1, int par2, int par3, boolean par4)
     {
         boolean flag1 = !par4;
 
-        if (flag1 != this.func_96111_ay())
+        if (flag1 != this.getBlocked())
         {
-            this.func_96110_f(flag1);
+            this.setBlocked(flag1);
         }
     }
 
-    public boolean func_96111_ay()
+    /**
+     * Get whether this hopper minecart is being blocked by an activator rail.
+     */
+    public boolean getBlocked()
     {
-        return this.field_96113_a;
+        return this.isBlocked;
     }
 
-    public void func_96110_f(boolean par1)
+    /**
+     * Set whether this hopper minecart is being blocked by an activator rail.
+     */
+    public void setBlocked(boolean par1)
     {
-        this.field_96113_a = par1;
+        this.isBlocked = par1;
     }
 
     /**
@@ -95,17 +105,26 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements Hop
         return this.worldObj;
     }
 
-    public double func_96107_aA()
+    /**
+     * Gets the world X position for this hopper entity.
+     */
+    public double getXPos()
     {
         return this.posX;
     }
 
-    public double func_96109_aB()
+    /**
+     * Gets the world Y position for this hopper entity.
+     */
+    public double getYPos()
     {
         return this.posY;
     }
 
-    public double func_96108_aC()
+    /**
+     * Gets the world Z position for this hopper entity.
+     */
+    public double getZPos()
     {
         return this.posZ;
     }
@@ -117,17 +136,17 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements Hop
     {
         super.onUpdate();
 
-        if (!this.worldObj.isRemote && this.isEntityAlive() && this.func_96111_ay())
+        if (!this.worldObj.isRemote && this.isEntityAlive() && this.getBlocked())
         {
-            --this.field_98044_b;
+            --this.transferTicker;
 
-            if (!this.func_98043_aE())
+            if (!this.canTransfer())
             {
-                this.func_98042_n(0);
+                this.setTransferTicker(0);
 
                 if (this.func_96112_aD())
                 {
-                    this.func_98042_n(4);
+                    this.setTransferTicker(4);
                     this.onInventoryChanged();
                 }
             }
@@ -136,13 +155,13 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements Hop
 
     public boolean func_96112_aD()
     {
-        if (TileEntityHopper.func_96116_a(this))
+        if (TileEntityHopper.suckItemsIntoHopper(this))
         {
             return true;
         }
         else
         {
-            List list = this.worldObj.selectEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.25D, 0.0D, 0.25D), IEntitySelector.field_94557_a);
+            List list = this.worldObj.selectEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.25D, 0.0D, 0.25D), IEntitySelector.selectAnything);
 
             if (list.size() > 0)
             {
@@ -153,9 +172,9 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements Hop
         }
     }
 
-    public void func_94095_a(DamageSource par1DamageSource)
+    public void killMinecart(DamageSource par1DamageSource)
     {
-        super.func_94095_a(par1DamageSource);
+        super.killMinecart(par1DamageSource);
         this.dropItemWithOffset(Block.hopperBlock.blockID, 1, 0.0F);
     }
 
@@ -165,7 +184,7 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements Hop
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("TransferCooldown", this.field_98044_b);
+        par1NBTTagCompound.setInteger("TransferCooldown", this.transferTicker);
     }
 
     /**
@@ -174,16 +193,22 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements Hop
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
-        this.field_98044_b = par1NBTTagCompound.getInteger("TransferCooldown");
+        this.transferTicker = par1NBTTagCompound.getInteger("TransferCooldown");
     }
 
-    public void func_98042_n(int par1)
+    /**
+     * Sets the transfer ticker, used to determine the delay between transfers.
+     */
+    public void setTransferTicker(int par1)
     {
-        this.field_98044_b = par1;
+        this.transferTicker = par1;
     }
 
-    public boolean func_98043_aE()
+    /**
+     * Returns whether the hopper cart can currently transfer an item.
+     */
+    public boolean canTransfer()
     {
-        return this.field_98044_b > 0;
+        return this.transferTicker > 0;
     }
 }

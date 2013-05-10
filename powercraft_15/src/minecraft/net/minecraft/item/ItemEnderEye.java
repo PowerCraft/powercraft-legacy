@@ -56,7 +56,7 @@ public class ItemEnderEye extends Item
                 int i2 = 0;
                 boolean flag = false;
                 boolean flag1 = true;
-                int j2 = Direction.enderEyeMetaToDirection[k1];
+                int j2 = Direction.rotateRight[k1];
                 int k2;
                 int l2;
                 int i3;

@@ -91,6 +91,15 @@ public class EntityItem extends Entity
      */
     public void onUpdate()
     {
+        ItemStack stack = this.getDataWatcher().getWatchableObjectItemStack(10);
+        if (stack != null && stack.getItem() != null)
+        {
+            if (stack.getItem().onEntityItemUpdate(this))
+            {
+                return;
+            }
+        }
+
         super.onUpdate();
 
         if (this.delayBeforeCanPickup > 0)
@@ -432,7 +441,7 @@ public class EntityItem extends Entity
         {
             if (this.worldObj != null)
             {
-                this.worldObj.getWorldLogAgent().func_98232_c("Item entity " + this.entityId + " has no item?!");
+                this.worldObj.getWorldLogAgent().logSevere("Item entity " + this.entityId + " has no item?!");
             }
 
             return new ItemStack(Block.stone);

@@ -24,10 +24,13 @@ public class CrashReportCategory
     @SideOnly(Side.CLIENT)
     public static String func_85074_a(double par0, double par2, double par4)
     {
-        return String.format("%.2f,%.2f,%.2f - %s", new Object[] {Double.valueOf(par0), Double.valueOf(par2), Double.valueOf(par4), func_85071_a(MathHelper.floor_double(par0), MathHelper.floor_double(par2), MathHelper.floor_double(par4))});
+        return String.format("%.2f,%.2f,%.2f - %s", new Object[] {Double.valueOf(par0), Double.valueOf(par2), Double.valueOf(par4), getLocationInfo(MathHelper.floor_double(par0), MathHelper.floor_double(par2), MathHelper.floor_double(par4))});
     }
 
-    public static String func_85071_a(int par0, int par1, int par2)
+    /**
+     * Returns a string with world information on location.Args:x,y,z
+     */
+    public static String getLocationInfo(int par0, int par1, int par2)
     {
         StringBuilder stringbuilder = new StringBuilder();
 
@@ -127,8 +130,11 @@ public class CrashReportCategory
     public int func_85073_a(int par1)
     {
         StackTraceElement[] astacktraceelement = Thread.currentThread().getStackTrace();
-        this.stackTrace = new StackTraceElement[astacktraceelement.length - 3 - par1];
-        System.arraycopy(astacktraceelement, 3 + par1, this.stackTrace, 0, this.stackTrace.length);
+        //BugFix: Causes AIOOB for stacks < 3 + par1
+        int len = astacktraceelement.length - 3 - par1;
+        if (len <= 0) len = astacktraceelement.length;
+        this.stackTrace = new StackTraceElement[len];
+        System.arraycopy(astacktraceelement, astacktraceelement.length - len, this.stackTrace, 0, this.stackTrace.length);
         return this.stackTrace.length;
     }
 

@@ -19,13 +19,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.ForgeDirection;
-import powercraft.api.PC_BeamTracer.BeamSettings;
 import powercraft.api.PC_BeamTracer.BeamHitResult;
+import powercraft.api.PC_BeamTracer.BeamSettings;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.annotation.PC_Config;
 import powercraft.api.annotation.PC_OreInfo;
 import powercraft.api.interfaces.PC_IIDChangeAble;
 import powercraft.api.interfaces.PC_IWorldGenerator;
+import powercraft.api.item.PC_ItemInfo;
 import powercraft.api.reflect.PC_FieldWithAnnotation;
 import powercraft.api.reflect.PC_IFieldAnnotationIterator;
 import powercraft.api.reflect.PC_ReflectHelper;
@@ -48,15 +49,15 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	
 	private PC_BlockInfo blockInfo;
 	private PC_ModuleObject module;
-	private BlockInfo replaced = new BlockInfo();
-	private BlockInfo thisBlock;
+	private PC_ItemInfo replaced;
+	private PC_ItemInfo thisBlock;
 	private String[] sideTextures;
 	protected Icon[] sideIcons;
 	private int[] oreGens;
 	
 	public PC_Block(int id, Material material) {
 		super(id, material);
-		thisBlock = new BlockInfo(id);
+		thisBlock = new PC_ItemInfo(id);
 		blockInfo = getClass().getAnnotation(PC_BlockInfo.class);
 		disableStats();
 	}
@@ -123,11 +124,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	}
 	
 	public void setItemBlock(ItemBlock itemBlock) {
-		thisBlock.itemBlock = itemBlock;
+		thisBlock.item = itemBlock;
 	}
 	
 	public ItemBlock getItemBlock() {
-		return thisBlock.itemBlock;
+		return (ItemBlock)thisBlock.item;
 	}
 	
 	@Override
@@ -136,20 +137,23 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 		if (oldID == id)
 			return;
 		if (PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, id, int.class)) {
-			if (PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, id, int.class)) {
-				if (PC_ReflectHelper.setValue(ItemBlock.class, thisBlock.itemBlock, 0, id, int.class)) {
+			if (PC_ReflectHelper.setValue(Item.class, thisBlock.item, PC_GlobalVariables.indexItemSthiftedIndex, id, int.class)) {
+				if (PC_ReflectHelper.setValue(ItemBlock.class, thisBlock.item, 0, id, int.class)) {
 					if (oldID != -1) {
+						if(replaced==null){
+							replaced = new PC_ItemInfo(-1); 
+						}
 						replaced.storeToID(oldID);
 					}
 					if (id != -1) {
-						replaced = new BlockInfo(id);
+						replaced = new PC_ItemInfo(id);
 						thisBlock.storeToID(id);
 					} else {
-						new BlockInfo().storeToID(oldID);
+						new PC_ItemInfo(-1).storeToID(oldID);
 						replaced = null;
 					}
 				} else {
-					PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, oldID, int.class);
+					PC_ReflectHelper.setValue(Item.class, thisBlock.item, PC_GlobalVariables.indexItemSthiftedIndex, oldID, int.class);
 					PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID, int.class);
 				}
 			} else {
@@ -228,17 +232,17 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	}
 	
 	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
-		return getBlockTextureFromSideAndMetadata(dir, PC_Utils.getMD(world, x, y, z));
+		return getIcon(dir, PC_Utils.getMD(world, x, y, z));
 	}
 	
 	@Override
-	public final Icon getBlockTextureFromSideAndMetadata(int dir, int metadata) {
+	public final Icon getIcon(int dir, int metadata) {
 		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
 		pcDir = pcDir.rotate(getRotation(metadata));
-		return getBlockTextureFromSideAndMetadata(pcDir, metadata);
+		return getIcon(pcDir, metadata);
 	}
 	
-	public Icon getBlockTextureFromSideAndMetadata(PC_Direction dir, int metadata) {
+	public Icon getIcon(PC_Direction dir, int metadata) {
 		if (sideIcons != null) {
 			int index = dir.getMCDir();
 			if (index >= sideIcons.length)
@@ -434,6 +438,10 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 		return BeamHitResult.FALLBACK;
 	}
 	
+	public boolean canTubeConnectTo(IBlockAccess world, int x, int y, int z, ItemStack tube, PC_Direction dir){
+		return false;
+	}
+	
 	private class InitConfigFieldAnnotationIterator implements PC_IFieldAnnotationIterator<PC_Config> {
 		
 		private PC_Property config;
@@ -472,57 +480,20 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 		
 	}
 	
-	public static class BlockInfo {
-		public Block block = null;
-		public boolean opaqueCubeLookup = false;
-		public int lightOpacity = 0;
-		public boolean canBlockGrass = false;
-		public int lightValue = 0;
-		public boolean useNeighborBrightness = false;
-		public int blockFireSpreadSpeed = 0;
-		public int blockFlammability = 0;
-		public List<PC_Struct3<Integer, ItemStack, Float>> furnaceRecipes;
-		public ItemBlock itemBlock = null;
-		public ItemData itemData = null;
-
-		public BlockInfo() {
-		}
-
-		public BlockInfo(int id) {
-			block = Block.blocksList[id];
-			opaqueCubeLookup = Block.opaqueCubeLookup[id];
-			lightOpacity = Block.lightOpacity[id];
-			canBlockGrass = Block.canBlockGrass[id];
-			lightValue = Block.lightValue[id];
-			useNeighborBrightness = Block.useNeighborBrightness[id];
-			blockFireSpreadSpeed = Block.blockFireSpreadSpeed[id];
-			blockFlammability = Block.blockFlammability[id];
-
-			itemBlock = (ItemBlock) Item.itemsList[id];
-			Map<Integer, ItemData> map = PC_ReflectHelper.getValue(GameData.class, GameData.class, 0, Map.class);
-			itemData = map.get(id);
-		}
-
-		public void storeToID(int id) {
-			Block.blocksList[id] = block;
-			Block.opaqueCubeLookup[id] = opaqueCubeLookup;
-			Block.lightOpacity[id] = lightOpacity;
-			Block.canBlockGrass[id] = canBlockGrass;
-			Block.lightValue[id] = lightValue;
-			Block.useNeighborBrightness[id] = useNeighborBrightness;
-			Block.blockFireSpreadSpeed[id] = blockFireSpreadSpeed;
-			Block.blockFlammability[id] = blockFlammability;
-
-			Item.itemsList[id] = itemBlock;
-			Map<Integer, ItemData> map = PC_ReflectHelper.getValue(GameData.class, GameData.class, 0, Map.class);
-			if (itemData == null) {
-				map.remove(id);
-			} else {
-				PC_ReflectHelper.setValue(ItemData.class, itemData, 3, id, int.class);
-				map.put(id, itemData);
-			}
-		}
-
+	public static int getBlockFireSpreadSpeed(int id){
+		return blockFireSpreadSpeed[id];
+	}
+	
+	public static void setBlockFireSpreadSpeed(int id, int value){
+		blockFireSpreadSpeed[id] = value;
+	}
+	
+	public static int getBlockFlammability(int id){
+		return blockFlammability[id];
+	}
+	
+	public static void setBlockFlammability(int id, int value){
+		blockFlammability[id] = value;
 	}
 	
 }

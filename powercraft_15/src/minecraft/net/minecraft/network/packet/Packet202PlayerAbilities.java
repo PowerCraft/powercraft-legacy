@@ -160,7 +160,7 @@ public class Packet202PlayerAbilities extends Packet
     }
 
     @SideOnly(Side.CLIENT)
-    public float func_82558_j()
+    public float getWalkSpeed()
     {
         return this.walkSpeed;
     }

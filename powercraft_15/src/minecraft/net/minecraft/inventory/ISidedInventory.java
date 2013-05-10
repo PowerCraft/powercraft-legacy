@@ -5,11 +5,20 @@ import net.minecraft.item.ItemStack;
 public interface ISidedInventory extends IInventory
 {
     /**
-     * Get the size of the side inventory.
+     * Returns an array containing the indices of the slots that can be accessed by automation on the given side of this
+     * block.
      */
-    int[] getSizeInventorySide(int var1);
+    int[] getAccessibleSlotsFromSide(int var1);
 
-    boolean func_102007_a(int i, ItemStack itemstack, int j);
+    /**
+     * Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item,
+     * side
+     */
+    boolean canInsertItem(int i, ItemStack itemstack, int j);
 
-    boolean func_102008_b(int i, ItemStack itemstack, int j);
+    /**
+     * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item,
+     * side
+     */
+    boolean canExtractItem(int i, ItemStack itemstack, int j);
 }

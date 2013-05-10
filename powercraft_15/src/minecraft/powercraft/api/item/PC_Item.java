@@ -20,14 +20,17 @@ import powercraft.api.utils.PC_Utils;
 import powercraft.launcher.loader.PC_ModuleObject;
 
 public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IIDChangeAble {
+	
 	private PC_ModuleObject module;
 	private boolean canSetTextureFile = true;
-	private Item replacedItem = null;
+	private PC_ItemInfo replaced;
+	private PC_ItemInfo thisItem;
 	protected Icon[] icons;
 	private String[] textureNames;
 	
 	protected PC_Item(int id, String textureName, String... textureNames) {
 		super(id - 256);
+		thisItem = new PC_ItemInfo(id);
 		this.textureNames = new String[1 + textureNames.length];
 		icons = new Icon[1 + textureNames.length];
 		this.textureNames[0] = textureName;
@@ -43,13 +46,17 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IIDChange
 		int oldID = itemID;
 		if (PC_ReflectHelper.setValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id, int.class)) {
 			if (oldID != -1) {
-				Item.itemsList[oldID] = replacedItem;
+				if(replaced==null){
+					replaced = new PC_ItemInfo(-1); 
+				}
+				replaced.storeToID(oldID);
 			}
 			if (id != -1) {
-				replacedItem = Item.itemsList[id];
-				Item.itemsList[id] = this;
+				replaced = new PC_ItemInfo(id);
+				thisItem.storeToID(id);
 			} else {
-				replacedItem = null;
+				new PC_ItemInfo(-1).storeToID(oldID);
+				replaced = null;
 			}
 		}
 	}
@@ -89,13 +96,13 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IIDChange
 	}
 	
 	@Override
-	public void updateIcons(IconRegister par1IconRegister) {
+	public void registerIcons(IconRegister par1IconRegister) {
 		for (int i = 0; i < textureNames.length; i++) {
 			icons[i] = par1IconRegister.registerIcon(PC_TextureRegistry.getTextureName(module, textureNames[i]));
 		}
 	}
 	
-	public Icon getBlockTextureFromSideAndMetadataFromDamage(int par1) {
+	public Icon getIconFromDamage(int par1) {
 		if (par1 >= icons.length) {
 			par1 = icons.length - 1;
 		}

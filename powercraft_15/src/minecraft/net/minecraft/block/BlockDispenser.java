@@ -32,9 +32,9 @@ public class BlockDispenser extends BlockContainer
     public static final IRegistry dispenseBehaviorRegistry = new RegistryDefaulted(new BehaviorDefaultDispenseItem());
     protected Random random = new Random();
     @SideOnly(Side.CLIENT)
-    protected Icon field_94463_c;
+    protected Icon furnaceTopIcon;
     @SideOnly(Side.CLIENT)
-    protected Icon field_94462_cO;
+    protected Icon furnaceFrontIcon;
     @SideOnly(Side.CLIENT)
     protected Icon field_96473_e;
 
@@ -104,10 +104,10 @@ public class BlockDispenser extends BlockContainer
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         int k = par2 & 7;
-        return par1 == k ? (k != 1 && k != 0 ? this.field_94462_cO : this.field_96473_e) : (k != 1 && k != 0 ? (par1 != 1 && par1 != 0 ? this.blockIcon : this.field_94463_c) : this.field_94463_c);
+        return par1 == k ? (k != 1 && k != 0 ? this.furnaceFrontIcon : this.field_96473_e) : (k != 1 && k != 0 ? (par1 != 1 && par1 != 0 ? this.blockIcon : this.furnaceTopIcon) : this.furnaceTopIcon);
     }
 
     @SideOnly(Side.CLIENT)
@@ -119,8 +119,8 @@ public class BlockDispenser extends BlockContainer
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("furnace_side");
-        this.field_94463_c = par1IconRegister.registerIcon("furnace_top");
-        this.field_94462_cO = par1IconRegister.registerIcon("dispenser_front");
+        this.furnaceTopIcon = par1IconRegister.registerIcon("furnace_top");
+        this.furnaceFrontIcon = par1IconRegister.registerIcon("dispenser_front");
         this.field_96473_e = par1IconRegister.registerIcon("dispenser_front_vertical");
     }
 
@@ -162,7 +162,7 @@ public class BlockDispenser extends BlockContainer
             else
             {
                 ItemStack itemstack = tileentitydispenser.getStackInSlot(l);
-                IBehaviorDispenseItem ibehaviordispenseitem = this.func_96472_a(itemstack);
+                IBehaviorDispenseItem ibehaviordispenseitem = this.getBehaviorForItemStack(itemstack);
 
                 if (ibehaviordispenseitem != IBehaviorDispenseItem.itemDispenseBehaviorProvider)
                 {
@@ -173,7 +173,10 @@ public class BlockDispenser extends BlockContainer
         }
     }
 
-    protected IBehaviorDispenseItem func_96472_a(ItemStack par1ItemStack)
+    /**
+     * Returns the behavior for the given ItemStack.
+     */
+    protected IBehaviorDispenseItem getBehaviorForItemStack(ItemStack par1ItemStack)
     {
         return (IBehaviorDispenseItem)dispenseBehaviorRegistry.func_82594_a(par1ItemStack.getItem());
     }
@@ -228,7 +231,7 @@ public class BlockDispenser extends BlockContainer
 
         if (par6ItemStack.hasDisplayName())
         {
-            ((TileEntityDispenser)par1World.getBlockTileEntity(par2, par3, par4)).func_94049_a(par6ItemStack.getDisplayName());
+            ((TileEntityDispenser)par1World.getBlockTileEntity(par2, par3, par4)).setCustomName(par6ItemStack.getDisplayName());
         }
     }
 
@@ -312,6 +315,6 @@ public class BlockDispenser extends BlockContainer
      */
     public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
-        return Container.func_94526_b((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
+        return Container.calcRedstoneFromInventory((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
     }
 }

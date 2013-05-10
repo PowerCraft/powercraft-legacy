@@ -8,9 +8,11 @@ import java.util.Set;
 
 public class ScorePlayerTeam
 {
-    private final Scoreboard field_96677_a;
+    private final Scoreboard theScoreboard;
     private final String field_96675_b;
-    private final Set field_96676_c = new HashSet();
+
+    /** A set of all team member usernames. */
+    private final Set membershipSet = new HashSet();
     private String field_96673_d;
     private String field_96674_e = "";
     private String field_96671_f = "";
@@ -19,7 +21,7 @@ public class ScorePlayerTeam
 
     public ScorePlayerTeam(Scoreboard par1Scoreboard, String par2Str)
     {
-        this.field_96677_a = par1Scoreboard;
+        this.theScoreboard = par1Scoreboard;
         this.field_96675_b = par2Str;
         this.field_96673_d = par2Str;
     }
@@ -43,13 +45,13 @@ public class ScorePlayerTeam
         else
         {
             this.field_96673_d = par1Str;
-            this.field_96677_a.func_96538_b(this);
+            this.theScoreboard.func_96538_b(this);
         }
     }
 
-    public Collection func_96670_d()
+    public Collection getMembershipCollection()
     {
-        return this.field_96676_c;
+        return this.membershipSet;
     }
 
     public String func_96668_e()
@@ -66,7 +68,7 @@ public class ScorePlayerTeam
         else
         {
             this.field_96674_e = par1Str;
-            this.field_96677_a.func_96538_b(this);
+            this.theScoreboard.func_96538_b(this);
         }
     }
 
@@ -84,7 +86,7 @@ public class ScorePlayerTeam
         else
         {
             this.field_96671_f = par1Str;
-            this.field_96677_a.func_96538_b(this);
+            this.theScoreboard.func_96538_b(this);
         }
     }
 
@@ -101,7 +103,7 @@ public class ScorePlayerTeam
     public void func_96660_a(boolean par1)
     {
         this.field_96672_g = par1;
-        this.field_96677_a.func_96538_b(this);
+        this.theScoreboard.func_96538_b(this);
     }
 
     public boolean func_98297_h()
@@ -112,7 +114,7 @@ public class ScorePlayerTeam
     public void func_98300_b(boolean par1)
     {
         this.field_98301_h = par1;
-        this.field_96677_a.func_96538_b(this);
+        this.theScoreboard.func_96538_b(this);
     }
 
     public int func_98299_i()

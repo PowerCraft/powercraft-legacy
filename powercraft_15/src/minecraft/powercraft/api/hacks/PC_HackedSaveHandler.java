@@ -18,7 +18,7 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 	@Override
 	public void saveWorldInfoWithPlayer(WorldInfo par1WorldInfo, NBTTagCompound par2nbtTagCompound) {
 		saveBlockID();
-		PC_DataHandlerRegistry.savePowerCraftData(par1WorldInfo, getSaveDirectory());
+		PC_DataHandlerRegistry.savePowerCraftData(par1WorldInfo, getWorldDirectory());
 		super.saveWorldInfoWithPlayer(par1WorldInfo, par2nbtTagCompound);
 	}
 
@@ -26,7 +26,7 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 	public WorldInfo loadWorldInfo() {
 		loadBlockID();
 		WorldInfo worldInfo = super.loadWorldInfo();
-		PC_DataHandlerRegistry.loadPowerCraftData(worldInfo, getSaveDirectory());
+		PC_DataHandlerRegistry.loadPowerCraftData(worldInfo, getWorldDirectory());
 		return worldInfo;
 	}
 
@@ -42,16 +42,16 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 			PC_GlobalVariables.consts = PC_GlobalVariables.oldConsts;
 			PC_GlobalVariables.oldConsts = null;
 		}
-		if(!PC_IDResolver.loadPCObjectsIDs(getSaveDirectory())){
+		if(!PC_IDResolver.loadPCObjectsIDs(getWorldDirectory())){
 			PC_IDResolver.resetPCObjectsIDs();
 			saveBlockID();
 		}else{
-			PC_IDResolver.savePCObjectsIDs(getSaveDirectory());
+			PC_IDResolver.savePCObjectsIDs(getWorldDirectory());
 		}
 	}
 	
 	public void saveBlockID(){
-		PC_IDResolver.savePCObjectsIDs(getSaveDirectory());
+		PC_IDResolver.savePCObjectsIDs(getWorldDirectory());
 	}
 	
 }

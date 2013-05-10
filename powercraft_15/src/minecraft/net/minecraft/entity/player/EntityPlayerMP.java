@@ -190,7 +190,14 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
         if (par1NBTTagCompound.hasKey("playerGameType"))
         {
-            this.theItemInWorldManager.setGameType(EnumGameType.getByID(par1NBTTagCompound.getInteger("playerGameType")));
+            if (MinecraftServer.getServer().func_104056_am())
+            {
+                this.theItemInWorldManager.setGameType(MinecraftServer.getServer().getGameType());
+            }
+            else
+            {
+                this.theItemInWorldManager.setGameType(EnumGameType.getByID(par1NBTTagCompound.getInteger("playerGameType")));
+            }
         }
     }
 
@@ -302,13 +309,13 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public void setEntityHealth(int par1)
     {
         super.setEntityHealth(par1);
-        Collection collection = this.func_96123_co().func_96520_a(ScoreObjectiveCriteria.field_96638_f);
+        Collection collection = this.getWorldScoreboard().func_96520_a(ScoreObjectiveCriteria.field_96638_f);
         Iterator iterator = collection.iterator();
 
         while (iterator.hasNext())
         {
             ScoreObjective scoreobjective = (ScoreObjective)iterator.next();
-            this.func_96123_co().func_96529_a(this.getEntityName(), scoreobjective).func_96651_a(Arrays.asList(new EntityPlayer[] {this}));
+            this.getWorldScoreboard().func_96529_a(this.getEntityName(), scoreobjective).func_96651_a(Arrays.asList(new EntityPlayer[] {this}));
         }
     }
 
@@ -392,7 +399,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         while (iterator.hasNext())
         {
             ScoreObjective scoreobjective = (ScoreObjective)iterator.next();
-            Score score = this.func_96123_co().func_96529_a(this.getEntityName(), scoreobjective);
+            Score score = this.getWorldScoreboard().func_96529_a(this.getEntityName(), scoreobjective);
             score.func_96648_a();
         }
 
@@ -631,7 +638,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         this.openContainer.addCraftingToCrafters(this);
     }
 
-    public void func_94064_a(TileEntityHopper par1TileEntityHopper)
+    public void displayGUIHopper(TileEntityHopper par1TileEntityHopper)
     {
         this.incrementWindowID();
         this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 9, par1TileEntityHopper.getInvName(), par1TileEntityHopper.getSizeInventory(), par1TileEntityHopper.isInvNameLocalized()));
@@ -640,7 +647,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         this.openContainer.addCraftingToCrafters(this);
     }
 
-    public void func_96125_a(EntityMinecartHopper par1EntityMinecartHopper)
+    public void displayGUIHopperMinecart(EntityMinecartHopper par1EntityMinecartHopper)
     {
         this.incrementWindowID();
         this.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(this.currentWindowId, 9, par1EntityMinecartHopper.getInvName(), par1EntityMinecartHopper.getSizeInventory(), par1EntityMinecartHopper.isInvNameLocalized()));

@@ -203,7 +203,7 @@ public abstract class Enchantment
         return s + " " + StatCollector.translateToLocal("enchantment.level." + par1);
     }
 
-    public boolean func_92089_a(ItemStack par1ItemStack)
+    public boolean canApply(ItemStack par1ItemStack)
     {
         return this.type.canEnchantItem(par1ItemStack.getItem());
     }

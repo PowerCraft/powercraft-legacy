@@ -8,8 +8,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 
-//NEI
-public class SlotArmor extends Slot
+class SlotArmor extends Slot
 {
     /**
      * The armor type that can be placed on that slot, it uses the same values of armorType field on ItemArmor.
@@ -21,8 +20,7 @@ public class SlotArmor extends Slot
      */
     final ContainerPlayer parent;
 
-    //NEI
-    public SlotArmor(ContainerPlayer par1ContainerPlayer, IInventory par2IInventory, int par3, int par4, int par5, int par6)
+    SlotArmor(ContainerPlayer par1ContainerPlayer, IInventory par2IInventory, int par3, int par4, int par5, int par6)
     {
         super(par2IInventory, par3, par4, par5);
         this.parent = par1ContainerPlayer;
@@ -44,7 +42,7 @@ public class SlotArmor extends Slot
     public boolean isItemValid(ItemStack par1ItemStack)
     {
         Item item = (par1ItemStack == null ? null : par1ItemStack.getItem());
-        return item != null && item.isValidArmor(par1ItemStack, armorType);
+        return item != null && item.isValidArmor(par1ItemStack, armorType, parent.thePlayer);
     }
 
     @SideOnly(Side.CLIENT)

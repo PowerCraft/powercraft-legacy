@@ -46,6 +46,8 @@ import net.minecraft.util.MovementInput;
 import net.minecraft.util.Session;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 
 @SideOnly(Side.CLIENT)
 public class EntityPlayerSP extends EntityPlayer
@@ -376,12 +378,12 @@ public class EntityPlayerSP extends EntityPlayer
         this.mc.displayGuiScreen(new GuiChest(this.inventory, par1IInventory));
     }
 
-    public void func_94064_a(TileEntityHopper par1TileEntityHopper)
+    public void displayGUIHopper(TileEntityHopper par1TileEntityHopper)
     {
         this.mc.displayGuiScreen(new GuiHopper(this.inventory, par1TileEntityHopper));
     }
 
-    public void func_96125_a(EntityMinecartHopper par1EntityMinecartHopper)
+    public void displayGUIHopperMinecart(EntityMinecartHopper par1EntityMinecartHopper)
     {
         this.mc.displayGuiScreen(new GuiHopper(this.inventory, par1EntityMinecartHopper));
     }
@@ -661,6 +663,12 @@ public class EntityPlayerSP extends EntityPlayer
 
     public void playSound(String par1Str, float par2, float par3)
     {
+        PlaySoundAtEntityEvent event = new PlaySoundAtEntityEvent(this, par1Str, par2, par3);
+        if (MinecraftForge.EVENT_BUS.post(event))
+        {
+            return;
+        }
+        par1Str = event.name;
         this.worldObj.playSound(this.posX, this.posY - (double)this.yOffset, this.posZ, par1Str, par2, par3, false);
     }
 }

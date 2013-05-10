@@ -19,7 +19,7 @@ import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_Instance;
 import powercraft.launcher.loader.PC_ModuleObject;
 
-@PC_Module(name="Light", version="1.1.0")
+@PC_Module(name="Light", version="1.1.1")
 public class PCli_App{
 	
 	@PC_FieldObject(clazz=PCli_BlockLight.class)
@@ -48,7 +48,7 @@ public class PCli_App{
                 	" X ", 
                 	" X ", 
                 	"XXX",
-                        'X', Block.blockSteel));
+                        'X', Block.blockIron));
         
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laser, 1),
 					" WD", 

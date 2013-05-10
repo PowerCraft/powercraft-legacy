@@ -19,7 +19,7 @@ final class CallableBlockLocation implements Callable
 
     public String callBlockLocationInfo()
     {
-        return CrashReportCategory.func_85071_a(this.blockXCoord, this.blockYCoord, this.blockZCoord);
+        return CrashReportCategory.getLocationInfo(this.blockXCoord, this.blockYCoord, this.blockZCoord);
     }
 
     public Object call()

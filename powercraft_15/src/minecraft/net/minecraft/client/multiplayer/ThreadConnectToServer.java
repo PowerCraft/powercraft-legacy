@@ -37,7 +37,7 @@ class ThreadConnectToServer extends Thread
                 return;
             }
 
-            GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2ClientProtocol(60, GuiConnecting.func_74254_c(this.connectingGui).session.username, this.ip, this.port));
+            GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2ClientProtocol(61, GuiConnecting.func_74254_c(this.connectingGui).session.username, this.ip, this.port));
         }
         catch (UnknownHostException unknownhostexception)
         {

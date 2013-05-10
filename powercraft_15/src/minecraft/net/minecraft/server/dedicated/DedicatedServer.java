@@ -59,7 +59,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         DedicatedServerCommandThread dedicatedservercommandthread = new DedicatedServerCommandThread(this);
         dedicatedservercommandthread.setDaemon(true);
         dedicatedservercommandthread.start();
-        this.getLogAgent().logInfo("Starting minecraft server version 1.5.1");
+        this.getLogAgent().logInfo("Starting minecraft server version 1.5.2");
 
         if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L)
         {
@@ -87,6 +87,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         this.setAllowFlight(this.settings.getBooleanProperty("allow-flight", false));
         this.setTexturePack(this.settings.getProperty("texture-pack", ""));
         this.setMOTD(this.settings.getProperty("motd", "A Minecraft Server"));
+        this.func_104055_i(this.settings.getBooleanProperty("force-gamemode", false));
 
         if (this.settings.getIntProperty("difficulty", 1) < 0)
         {
@@ -124,7 +125,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         catch (IOException ioexception)
         {
             this.getLogAgent().logWarning("**** FAILED TO BIND TO PORT!");
-            this.getLogAgent().func_98231_b("The exception was: {0}", new Object[] {ioexception.toString()});
+            this.getLogAgent().logWarningFormatted("The exception was: {0}", new Object[] {ioexception.toString()});
             this.getLogAgent().logWarning("Perhaps a server is already running on that port?");
             return false;
         }

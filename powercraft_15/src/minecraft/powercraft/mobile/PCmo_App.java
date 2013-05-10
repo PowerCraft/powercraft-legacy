@@ -22,7 +22,7 @@ import powercraft.launcher.loader.PC_Module.PC_PreInit;
 import powercraft.launcher.loader.PC_Module.PC_RegisterContainers;
 import powercraft.launcher.loader.PC_ModuleObject;
 
-@PC_Module(name="Mobile", version="1.1.0")
+@PC_Module(name="Mobile", version="1.1.1")
 public class PCmo_App {
 
 	public static PCmo_MinerManager minerManager = new PCmo_MinerManager();
@@ -95,7 +95,7 @@ public class PCmo_App {
 				new String[]{
 				"ss",
 				"cc"},
-				's', Block.blockSteel, 'c', Block.chest));
+				's', Block.blockIron, 'c', Block.chest));
 		
 		recipes.add(new PC_3DRecipe(minerManager,
 				new String[]{

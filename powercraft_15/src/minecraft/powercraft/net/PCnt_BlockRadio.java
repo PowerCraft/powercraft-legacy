@@ -72,7 +72,7 @@ public class PCnt_BlockRadio extends PC_Block {
 	}
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(PC_Direction i, int j) {
+	public Icon getIcon(PC_Direction i, int j) {
 		if(i==PC_Direction.BOTTOM||i==PC_Direction.TOP)
 			return sideIcons[0];
 		return sideIcons[1];

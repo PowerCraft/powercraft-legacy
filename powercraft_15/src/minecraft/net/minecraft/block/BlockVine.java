@@ -292,7 +292,7 @@ public class BlockVine extends Block implements IShearable
 
             i1 = par1World.getBlockMetadata(par2, par3, par4);
             j1 = par1World.rand.nextInt(6);
-            k1 = Direction.vineGrowth[j1];
+            k1 = Direction.facingToDirection[j1];
             int l1;
             int i2;
 

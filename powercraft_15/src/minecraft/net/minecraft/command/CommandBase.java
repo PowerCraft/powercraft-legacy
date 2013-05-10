@@ -89,7 +89,10 @@ public abstract class CommandBase implements ICommand
         }
     }
 
-    public static double func_82363_b(ICommandSender par0ICommandSender, String par1Str)
+    /**
+     * Parses a double from the given string or throws an exception if it's not a double.
+     */
+    public static double parseDouble(ICommandSender par0ICommandSender, String par1Str)
     {
         try
         {

@@ -26,6 +26,6 @@ public class RecipesCrafting
         par1CraftingManager.addRecipe(new ItemStack(Block.thinGlass, 16), new Object[] {"###", "###", '#', Block.glass});
         par1CraftingManager.addRecipe(new ItemStack(Block.redstoneLampIdle, 1), new Object[] {" R ", "RGR", " R ", 'R', Item.redstone, 'G', Block.glowStone});
         par1CraftingManager.addRecipe(new ItemStack(Block.beacon, 1), new Object[] {"GGG", "GSG", "OOO", 'G', Block.glass, 'S', Item.netherStar, 'O', Block.obsidian});
-        par1CraftingManager.addRecipe(new ItemStack(Block.netherBrick, 1), new Object[] {"NN", "NN", 'N', Item.field_94584_bZ});
+        par1CraftingManager.addRecipe(new ItemStack(Block.netherBrick, 1), new Object[] {"NN", "NN", 'N', Item.netherrackBrick});
     }
 }

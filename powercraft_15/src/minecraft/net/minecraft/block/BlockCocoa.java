@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class BlockCocoa extends BlockDirectional
 {
-    public static final String[] field_94470_a = new String[] {"cocoa_0", "cocoa_1", "cocoa_2"};
+    public static final String[] cocoaIcons = new String[] {"cocoa_0", "cocoa_1", "cocoa_2"};
     @SideOnly(Side.CLIENT)
     private Icon[] iconArray;
 
@@ -34,7 +34,7 @@ public class BlockCocoa extends BlockDirectional
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return this.iconArray[2];
     }
@@ -178,7 +178,7 @@ public class BlockCocoa extends BlockDirectional
             par5 = 2;
         }
 
-        return Direction.footInvisibleFaceRemap[Direction.vineGrowth[par5]];
+        return Direction.rotateOpposite[Direction.facingToDirection[par5]];
     }
 
     /**
@@ -252,11 +252,11 @@ public class BlockCocoa extends BlockDirectional
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconArray = new Icon[field_94470_a.length];
+        this.iconArray = new Icon[cocoaIcons.length];
 
         for (int i = 0; i < this.iconArray.length; ++i)
         {
-            this.iconArray[i] = par1IconRegister.registerIcon(field_94470_a[i]);
+            this.iconArray[i] = par1IconRegister.registerIcon(cocoaIcons[i]);
         }
     }
 

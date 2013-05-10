@@ -47,14 +47,14 @@ public abstract class GenLayer
         }
         b0 = getModdedBiomeSize(par2WorldType, b0);
 
-        GenLayer genlayer = GenLayerZoom.func_75915_a(1000L, genlayeraddmushroomisland, 0);
+        GenLayer genlayer = GenLayerZoom.magnify(1000L, genlayeraddmushroomisland, 0);
         GenLayerRiverInit genlayerriverinit = new GenLayerRiverInit(100L, genlayer);
-        genlayer = GenLayerZoom.func_75915_a(1000L, genlayerriverinit, b0 + 2);
+        genlayer = GenLayerZoom.magnify(1000L, genlayerriverinit, b0 + 2);
         GenLayerRiver genlayerriver = new GenLayerRiver(1L, genlayer);
         GenLayerSmooth genlayersmooth = new GenLayerSmooth(1000L, genlayerriver);
-        GenLayer genlayer1 = GenLayerZoom.func_75915_a(1000L, genlayeraddmushroomisland, 0);
+        GenLayer genlayer1 = GenLayerZoom.magnify(1000L, genlayeraddmushroomisland, 0);
         GenLayerBiome genlayerbiome = new GenLayerBiome(200L, genlayer1, par2WorldType);
-        genlayer1 = GenLayerZoom.func_75915_a(1000L, genlayerbiome, 2);
+        genlayer1 = GenLayerZoom.magnify(1000L, genlayerbiome, 2);
         Object object = new GenLayerHills(1000L, genlayer1);
 
         for (int j = 0; j < b0; ++j)

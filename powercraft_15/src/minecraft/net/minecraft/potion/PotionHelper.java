@@ -21,11 +21,11 @@ public class PotionHelper
     public static final String redstoneEffect;
     public static final String glowstoneEffect;
     public static final String gunpowderEffect;
-    public static final String field_82818_l;
-    private static final HashMap potionRequirements = new HashMap();
+    public static final String goldenCarrotEffect;
+    public static final HashMap potionRequirements = new HashMap();
 
     /** Potion effect amplifier map */
-    private static final HashMap potionAmplifiers = new HashMap();
+    public static final HashMap potionAmplifiers = new HashMap();
     private static final HashMap field_77925_n;
 
     /** An array of possible potion prefix names, as translation IDs. */
@@ -591,7 +591,7 @@ public class PotionHelper
         potionRequirements.put(Integer.valueOf(Potion.moveSlowdown.getId()), "!0 & 1 & !2 & 3 & 3+6");
         blazePowderEffect = "+0-1-2+3&4-4+13";
         potionRequirements.put(Integer.valueOf(Potion.damageBoost.getId()), "0 & !1 & !2 & 3 & 3+6");
-        field_82818_l = "-0+1+2-3+13&4-4";
+        goldenCarrotEffect = "-0+1+2-3+13&4-4";
         potionRequirements.put(Integer.valueOf(Potion.nightVision.getId()), "!0 & 1 & 2 & !3 & 2+6");
         potionRequirements.put(Integer.valueOf(Potion.invisibility.getId()), "!0 & 1 & 2 & 3 & 2+6");
         glowstoneEffect = "+5-6-7";

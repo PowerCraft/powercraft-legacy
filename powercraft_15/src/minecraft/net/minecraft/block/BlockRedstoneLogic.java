@@ -81,7 +81,7 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return par1 == 0 ? (this.isRepeaterPowered ? Block.torchRedstoneActive.getBlockTextureFromSide(par1) : Block.torchRedstoneIdle.getBlockTextureFromSide(par1)) : (par1 == 1 ? this.blockIcon : Block.stoneDoubleSlab.getBlockTextureFromSide(1));
     }
@@ -217,7 +217,7 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
         int i1 = getDirection(par5);
         int j1 = par2 + Direction.offsetX[i1];
         int k1 = par4 + Direction.offsetZ[i1];
-        int l1 = par1World.getIndirectPowerLevelTo(j1, par3, k1, Direction.headInvisibleFace[i1]);
+        int l1 = par1World.getIndirectPowerLevelTo(j1, par3, k1, Direction.directionToFacing[i1]);
         return l1 >= 15 ? l1 : Math.max(l1, par1World.getBlockId(j1, par3, k1) == Block.redstoneWire.blockID ? par1World.getBlockMetadata(j1, par3, k1) : 0);
     }
 
