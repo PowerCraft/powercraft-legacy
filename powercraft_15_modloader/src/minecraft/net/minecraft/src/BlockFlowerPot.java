@@ -100,7 +100,10 @@ public class BlockFlowerPot extends Block
         return var5 == null ? Item.flowerPot.itemID : var5.getItemDamage();
     }
 
-    public boolean func_82505_u_()
+    /**
+     * Returns true only if block is flowerPot
+     */
+    public boolean isFlowerPot()
     {
         return true;
     }

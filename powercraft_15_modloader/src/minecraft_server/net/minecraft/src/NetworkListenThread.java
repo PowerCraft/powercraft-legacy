@@ -55,7 +55,7 @@ public abstract class NetworkListenThread
                     throw new ReportedException(var4);
                 }
 
-                this.mcServer.func_98033_al().func_98235_b("Failed to handle packet for " + var2.playerEntity.getEntityName() + "/" + var2.playerEntity.getPlayerIP() + ": " + var5, var5);
+                this.mcServer.getLogAgent().logWarningException("Failed to handle packet for " + var2.playerEntity.getEntityName() + "/" + var2.playerEntity.getPlayerIP() + ": " + var5, var5);
                 var2.kickPlayer("Internal server error");
             }
 

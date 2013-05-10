@@ -10,21 +10,27 @@ import java.util.Map;
 
 public class Scoreboard
 {
-    private final Map field_96545_a = new HashMap();
+    /** Map of objective names to ScoreObjective objects. */
+    private final Map scoreObjectives = new HashMap();
     private final Map field_96543_b = new HashMap();
     private final Map field_96544_c = new HashMap();
     private final ScoreObjective[] field_96541_d = new ScoreObjective[3];
     private final Map field_96542_e = new HashMap();
-    private final Map field_96540_f = new HashMap();
 
-    public ScoreObjective func_96518_b(String par1Str)
+    /** Map of usernames to ScorePlayerTeam objects. */
+    private final Map teamMemberships = new HashMap();
+
+    /**
+     * Returns a ScoreObjective for the objective name
+     */
+    public ScoreObjective getObjective(String par1Str)
     {
-        return (ScoreObjective)this.field_96545_a.get(par1Str);
+        return (ScoreObjective)this.scoreObjectives.get(par1Str);
     }
 
     public ScoreObjective func_96535_a(String par1Str, ScoreObjectiveCriteria par2ScoreObjectiveCriteria)
     {
-        ScoreObjective var3 = this.func_96518_b(par1Str);
+        ScoreObjective var3 = this.getObjective(par1Str);
 
         if (var3 != null)
         {
@@ -42,7 +48,7 @@ public class Scoreboard
             }
 
             ((List)var4).add(var3);
-            this.field_96545_a.put(par1Str, var3);
+            this.scoreObjectives.put(par1Str, var3);
             this.func_96522_a(var3);
             return var3;
         }
@@ -95,12 +101,12 @@ public class Scoreboard
         return var2;
     }
 
-    public Collection func_96514_c()
+    public Collection getScoreObjectives()
     {
-        return this.field_96545_a.values();
+        return this.scoreObjectives.values();
     }
 
-    public Collection func_96526_d()
+    public Collection getObjectiveNames()
     {
         return this.field_96544_c.keySet();
     }
@@ -148,7 +154,7 @@ public class Scoreboard
 
     public void func_96519_k(ScoreObjective par1ScoreObjective)
     {
-        this.field_96545_a.remove(par1ScoreObjective.func_96679_b());
+        this.scoreObjectives.remove(par1ScoreObjective.getName());
 
         for (int var2 = 0; var2 < 3; ++var2)
         {
@@ -158,7 +164,7 @@ public class Scoreboard
             }
         }
 
-        List var5 = (List)this.field_96543_b.get(par1ScoreObjective.func_96680_c());
+        List var5 = (List)this.field_96543_b.get(par1ScoreObjective.getCriteria());
 
         if (var5 != null)
         {
@@ -211,12 +217,12 @@ public class Scoreboard
     public void func_96511_d(ScorePlayerTeam par1ScorePlayerTeam)
     {
         this.field_96542_e.remove(par1ScorePlayerTeam.func_96661_b());
-        Iterator var2 = par1ScorePlayerTeam.func_96670_d().iterator();
+        Iterator var2 = par1ScorePlayerTeam.getMembershipCollection().iterator();
 
         while (var2.hasNext())
         {
             String var3 = (String)var2.next();
-            this.field_96540_f.remove(var3);
+            this.teamMemberships.remove(var3);
         }
 
         this.func_96513_c(par1ScorePlayerTeam);
@@ -224,22 +230,22 @@ public class Scoreboard
 
     public void func_96521_a(String par1Str, ScorePlayerTeam par2ScorePlayerTeam)
     {
-        if (this.func_96509_i(par1Str) != null)
+        if (this.getPlayersTeam(par1Str) != null)
         {
             this.func_96524_g(par1Str);
         }
 
-        this.field_96540_f.put(par1Str, par2ScorePlayerTeam);
-        par2ScorePlayerTeam.func_96670_d().add(par1Str);
+        this.teamMemberships.put(par1Str, par2ScorePlayerTeam);
+        par2ScorePlayerTeam.getMembershipCollection().add(par1Str);
     }
 
     public boolean func_96524_g(String par1Str)
     {
-        ScorePlayerTeam var2 = this.func_96509_i(par1Str);
+        ScorePlayerTeam var2 = this.getPlayersTeam(par1Str);
 
         if (var2 != null)
         {
-            this.func_96512_b(par1Str, var2);
+            this.removePlayerFromTeam(par1Str, var2);
             return true;
         }
         else
@@ -248,16 +254,20 @@ public class Scoreboard
         }
     }
 
-    public void func_96512_b(String par1Str, ScorePlayerTeam par2ScorePlayerTeam)
+    /**
+     * Removes the given username from the given ScorePlayerTeam. If the player is not on the team then an
+     * IllegalStateException is thrown.
+     */
+    public void removePlayerFromTeam(String par1Str, ScorePlayerTeam par2ScorePlayerTeam)
     {
-        if (this.func_96509_i(par1Str) != par2ScorePlayerTeam)
+        if (this.getPlayersTeam(par1Str) != par2ScorePlayerTeam)
         {
             throw new IllegalStateException("Player is either on another team or not on any team. Cannot remove from team \'" + par2ScorePlayerTeam.func_96661_b() + "\'.");
         }
         else
         {
-            this.field_96540_f.remove(par1Str);
-            par2ScorePlayerTeam.func_96670_d().remove(par1Str);
+            this.teamMemberships.remove(par1Str);
+            par2ScorePlayerTeam.getMembershipCollection().remove(par1Str);
         }
     }
 
@@ -271,9 +281,12 @@ public class Scoreboard
         return this.field_96542_e.values();
     }
 
-    public ScorePlayerTeam func_96509_i(String par1Str)
+    /**
+     * Gets the ScorePlayerTeam object for the given username.
+     */
+    public ScorePlayerTeam getPlayersTeam(String par1Str)
     {
-        return (ScorePlayerTeam)this.field_96540_f.get(par1Str);
+        return (ScorePlayerTeam)this.teamMemberships.get(par1Str);
     }
 
     public void func_96522_a(ScoreObjective par1ScoreObjective) {}
@@ -292,7 +305,10 @@ public class Scoreboard
 
     public void func_96513_c(ScorePlayerTeam par1ScorePlayerTeam) {}
 
-    public static String func_96517_b(int par0)
+    /**
+     * Returns 'list' for 0, 'sidebar' for 1, 'belowName for 2, otherwise null.
+     */
+    public static String getObjectiveDisplaySlot(int par0)
     {
         switch (par0)
         {
@@ -310,7 +326,10 @@ public class Scoreboard
         }
     }
 
-    public static int func_96537_j(String par0Str)
+    /**
+     * Returns 0 for (case-insensitive) 'list', 1 for 'sidebar', 2 for 'belowName', otherwise -1.
+     */
+    public static int getObjectiveDisplaySlotNumber(String par0Str)
     {
         return par0Str.equalsIgnoreCase("list") ? 0 : (par0Str.equalsIgnoreCase("sidebar") ? 1 : (par0Str.equalsIgnoreCase("belowName") ? 2 : -1));
     }

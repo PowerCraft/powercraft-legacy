@@ -206,7 +206,7 @@ public class RenderManager
 
             if (var10 != null && this.renderEngine != null)
             {
-                if (field_85095_o && !par1Entity.getHasActivePotion())
+                if (field_85095_o && !par1Entity.isInvisible())
                 {
                     try
                     {

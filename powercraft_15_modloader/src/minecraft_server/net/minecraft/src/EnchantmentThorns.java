@@ -56,7 +56,7 @@ public class EnchantmentThorns extends Enchantment
 
         if (func_92094_a(var3, par2Random))
         {
-            par0Entity.attackEntityFrom(DamageSource.func_92087_a(par1EntityLiving), func_92095_b(var3, par2Random));
+            par0Entity.attackEntityFrom(DamageSource.causeThornsDamage(par1EntityLiving), func_92095_b(var3, par2Random));
             par0Entity.playSound("damage.thorns", 0.5F, 1.0F);
 
             if (var4 != null)

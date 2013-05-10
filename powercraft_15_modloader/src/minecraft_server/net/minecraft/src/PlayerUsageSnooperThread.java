@@ -25,7 +25,7 @@ class PlayerUsageSnooperThread extends TimerTask
                 var1.put("snooper_count", Integer.valueOf(PlayerUsageSnooper.getSelfCounterFor(this.snooper)));
             }
 
-            HttpUtil.sendPost(PlayerUsageSnooper.getStatsCollectorFor(this.snooper).func_98033_al(), PlayerUsageSnooper.getServerUrlFor(this.snooper), var1, true);
+            HttpUtil.sendPost(PlayerUsageSnooper.getStatsCollectorFor(this.snooper).getLogAgent(), PlayerUsageSnooper.getServerUrlFor(this.snooper), var1, true);
         }
     }
 }

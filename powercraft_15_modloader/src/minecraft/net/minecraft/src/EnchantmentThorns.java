@@ -34,9 +34,9 @@ public class EnchantmentThorns extends Enchantment
         return 3;
     }
 
-    public boolean func_92089_a(ItemStack par1ItemStack)
+    public boolean canApply(ItemStack par1ItemStack)
     {
-        return par1ItemStack.getItem() instanceof ItemArmor ? true : super.func_92089_a(par1ItemStack);
+        return par1ItemStack.getItem() instanceof ItemArmor ? true : super.canApply(par1ItemStack);
     }
 
     public static boolean func_92094_a(int par0, Random par1Random)
@@ -56,7 +56,7 @@ public class EnchantmentThorns extends Enchantment
 
         if (func_92094_a(var3, par2Random))
         {
-            par0Entity.attackEntityFrom(DamageSource.func_92087_a(par1EntityLiving), func_92095_b(var3, par2Random));
+            par0Entity.attackEntityFrom(DamageSource.causeThornsDamage(par1EntityLiving), func_92095_b(var3, par2Random));
             par0Entity.playSound("damage.thorns", 0.5F, 1.0F);
 
             if (var4 != null)

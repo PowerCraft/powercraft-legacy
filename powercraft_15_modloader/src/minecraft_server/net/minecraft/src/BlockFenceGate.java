@@ -79,7 +79,7 @@ public class BlockFenceGate extends BlockDirectional
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
         int var7 = (MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) % 4;
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var7, 2);
+        par1World.setBlockMetadata(par2, par3, par4, var7, 2);
     }
 
     /**
@@ -91,7 +91,7 @@ public class BlockFenceGate extends BlockDirectional
 
         if (isFenceGateOpen(var10))
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var10 & -5, 2);
+            par1World.setBlockMetadata(par2, par3, par4, var10 & -5, 2);
         }
         else
         {
@@ -103,7 +103,7 @@ public class BlockFenceGate extends BlockDirectional
                 var10 = var11;
             }
 
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var10 | 4, 2);
+            par1World.setBlockMetadata(par2, par3, par4, var10 | 4, 2);
         }
 
         par1World.playAuxSFXAtEntity(par5EntityPlayer, 1003, par2, par3, par4, 0);
@@ -125,12 +125,12 @@ public class BlockFenceGate extends BlockDirectional
             {
                 if (var7 && !isFenceGateOpen(var6))
                 {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 | 4, 2);
+                    par1World.setBlockMetadata(par2, par3, par4, var6 | 4, 2);
                     par1World.playAuxSFXAtEntity((EntityPlayer)null, 1003, par2, par3, par4, 0);
                 }
                 else if (!var7 && isFenceGateOpen(var6))
                 {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 & -5, 2);
+                    par1World.setBlockMetadata(par2, par3, par4, var6 & -5, 2);
                     par1World.playAuxSFXAtEntity((EntityPlayer)null, 1003, par2, par3, par4, 0);
                 }
             }

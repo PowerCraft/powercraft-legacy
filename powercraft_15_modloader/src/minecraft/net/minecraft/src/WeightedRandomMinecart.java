@@ -3,7 +3,7 @@ package net.minecraft.src;
 public class WeightedRandomMinecart extends WeightedRandomItem
 {
     public final NBTTagCompound field_98222_b;
-    public final String field_98223_c;
+    public final String minecartName;
 
     final MobSpawnerBaseLogic field_98221_d;
 
@@ -39,7 +39,7 @@ public class WeightedRandomMinecart extends WeightedRandomItem
         }
 
         this.field_98222_b = var3;
-        this.field_98223_c = var4;
+        this.minecartName = var4;
     }
 
     public WeightedRandomMinecart(MobSpawnerBaseLogic par1MobSpawnerBaseLogic, NBTTagCompound par2NBTTagCompound, String par3Str)
@@ -72,14 +72,14 @@ public class WeightedRandomMinecart extends WeightedRandomItem
         }
 
         this.field_98222_b = par2NBTTagCompound;
-        this.field_98223_c = par3Str;
+        this.minecartName = par3Str;
     }
 
     public NBTTagCompound func_98220_a()
     {
         NBTTagCompound var1 = new NBTTagCompound();
         var1.setCompoundTag("Properties", this.field_98222_b);
-        var1.setString("Type", this.field_98223_c);
+        var1.setString("Type", this.minecartName);
         var1.setInteger("Weight", this.itemWeight);
         return var1;
     }

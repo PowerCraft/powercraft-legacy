@@ -13,7 +13,7 @@ class CallableLevelSpawnLocation implements Callable
 
     public String callLevelSpawnLocation()
     {
-        return CrashReportCategory.func_85071_a(WorldInfo.getSpawnXCoordinate(this.worldInfoInstance), WorldInfo.getSpawnYCoordinate(this.worldInfoInstance), WorldInfo.getSpawnZCoordinate(this.worldInfoInstance));
+        return CrashReportCategory.getLocationInfo(WorldInfo.getSpawnXCoordinate(this.worldInfoInstance), WorldInfo.getSpawnYCoordinate(this.worldInfoInstance), WorldInfo.getSpawnZCoordinate(this.worldInfoInstance));
     }
 
     public Object call()

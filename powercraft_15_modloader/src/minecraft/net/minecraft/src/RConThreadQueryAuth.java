@@ -12,7 +12,7 @@ class RConThreadQueryAuth
     /** A random challenge */
     private int randomChallenge;
 
-    /** A client-provided request ID associated with this query */
+    /** A client-provided request ID associated with this query. */
     private byte[] requestId;
 
     /** A unique string of bytes used to verify client auth */

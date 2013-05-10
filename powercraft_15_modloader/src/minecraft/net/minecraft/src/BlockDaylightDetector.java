@@ -47,7 +47,7 @@ public class BlockDaylightDetector extends BlockContainer
      */
     public void onBlockAdded(World par1World, int par2, int par3, int par4) {}
 
-    public void func_94444_j_(World par1World, int par2, int par3, int par4)
+    public void updateLightLevel(World par1World, int par2, int par3, int par4)
     {
         if (!par1World.provider.hasNoSky)
         {
@@ -119,7 +119,7 @@ public class BlockDaylightDetector extends BlockContainer
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return par1 == 1 ? this.iconArray[0] : this.iconArray[1];
     }

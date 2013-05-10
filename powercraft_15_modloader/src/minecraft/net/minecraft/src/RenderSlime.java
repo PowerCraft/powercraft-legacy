@@ -17,7 +17,7 @@ public class RenderSlime extends RenderLiving
      */
     protected int shouldSlimeRenderPass(EntitySlime par1EntitySlime, int par2, float par3)
     {
-        if (par1EntitySlime.getHasActivePotion())
+        if (par1EntitySlime.isInvisible())
         {
             return 0;
         }

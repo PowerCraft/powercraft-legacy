@@ -6,22 +6,25 @@ import java.io.IOException;
 
 public class Packet208SetDisplayObjective extends Packet
 {
-    public int field_96481_a;
-    public String field_96480_b;
+    /** The position of the scoreboard. 0 = list, 1 = sidebar, 2 = belowName. */
+    public int scoreboardPosition;
+
+    /** The unique name for the scoreboard to be displayed. */
+    public String scoreName;
 
     public Packet208SetDisplayObjective() {}
 
     public Packet208SetDisplayObjective(int par1, ScoreObjective par2ScoreObjective)
     {
-        this.field_96481_a = par1;
+        this.scoreboardPosition = par1;
 
         if (par2ScoreObjective == null)
         {
-            this.field_96480_b = "";
+            this.scoreName = "";
         }
         else
         {
-            this.field_96480_b = par2ScoreObjective.func_96679_b();
+            this.scoreName = par2ScoreObjective.getName();
         }
     }
 
@@ -30,8 +33,8 @@ public class Packet208SetDisplayObjective extends Packet
      */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
-        this.field_96481_a = par1DataInputStream.readByte();
-        this.field_96480_b = readString(par1DataInputStream, 16);
+        this.scoreboardPosition = par1DataInputStream.readByte();
+        this.scoreName = readString(par1DataInputStream, 16);
     }
 
     /**
@@ -39,8 +42,8 @@ public class Packet208SetDisplayObjective extends Packet
      */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
-        par1DataOutputStream.writeByte(this.field_96481_a);
-        writeString(this.field_96480_b, par1DataOutputStream);
+        par1DataOutputStream.writeByte(this.scoreboardPosition);
+        writeString(this.scoreName, par1DataOutputStream);
     }
 
     /**
@@ -48,7 +51,7 @@ public class Packet208SetDisplayObjective extends Packet
      */
     public void processPacket(NetHandler par1NetHandler)
     {
-        par1NetHandler.func_96438_a(this);
+        par1NetHandler.handleSetDisplayObjective(this);
     }
 
     /**
@@ -56,6 +59,6 @@ public class Packet208SetDisplayObjective extends Packet
      */
     public int getPacketSize()
     {
-        return 3 + this.field_96480_b.length();
+        return 3 + this.scoreName.length();
     }
 }

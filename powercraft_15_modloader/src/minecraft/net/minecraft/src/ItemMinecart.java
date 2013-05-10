@@ -26,7 +26,7 @@ public class ItemMinecart extends Item
         {
             if (!par3World.isRemote)
             {
-                EntityMinecart var12 = EntityMinecart.func_94090_a(par3World, (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.minecartType);
+                EntityMinecart var12 = EntityMinecart.createMinecart(par3World, (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.minecartType);
 
                 if (par1ItemStack.hasDisplayName())
                 {

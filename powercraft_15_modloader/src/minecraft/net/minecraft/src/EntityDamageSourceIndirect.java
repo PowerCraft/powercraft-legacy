@@ -25,10 +25,10 @@ public class EntityDamageSourceIndirect extends EntityDamageSource
      */
     public String getDeathMessage(EntityLiving par1EntityLiving)
     {
-        String var2 = this.indirectEntity == null ? this.damageSourceEntity.func_96090_ax() : this.indirectEntity.func_96090_ax();
+        String var2 = this.indirectEntity == null ? this.damageSourceEntity.getTranslatedEntityName() : this.indirectEntity.getTranslatedEntityName();
         ItemStack var3 = this.indirectEntity instanceof EntityLiving ? ((EntityLiving)this.indirectEntity).getHeldItem() : null;
         String var4 = "death.attack." + this.damageType;
         String var5 = var4 + ".item";
-        return var3 != null && var3.hasDisplayName() && StatCollector.func_94522_b(var5) ? StatCollector.translateToLocalFormatted(var5, new Object[] {par1EntityLiving.func_96090_ax(), var2, var3.getDisplayName()}): StatCollector.translateToLocalFormatted(var4, new Object[] {par1EntityLiving.func_96090_ax(), var2});
+        return var3 != null && var3.hasDisplayName() && StatCollector.func_94522_b(var5) ? StatCollector.translateToLocalFormatted(var5, new Object[] {par1EntityLiving.getTranslatedEntityName(), var2, var3.getDisplayName()}): StatCollector.translateToLocalFormatted(var4, new Object[] {par1EntityLiving.getTranslatedEntityName(), var2});
     }
 }

@@ -18,7 +18,7 @@ public class BlockStep extends BlockHalfSlab
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         int var3 = par2 & 7;
 
@@ -27,7 +27,7 @@ public class BlockStep extends BlockHalfSlab
             par1 = 1;
         }
 
-        return var3 == 0 ? (par1 != 1 && par1 != 0 ? this.theIcon : this.blockIcon) : (var3 == 1 ? Block.sandStone.getBlockTextureFromSide(par1) : (var3 == 2 ? Block.planks.getBlockTextureFromSide(par1) : (var3 == 3 ? Block.cobblestone.getBlockTextureFromSide(par1) : (var3 == 4 ? Block.brick.getBlockTextureFromSide(par1) : (var3 == 5 ? Block.stoneBrick.getBlockTextureFromSideAndMetadata(par1, 0) : (var3 == 6 ? Block.netherBrick.getBlockTextureFromSide(1) : (var3 == 7 ? Block.blockNetherQuartz.getBlockTextureFromSide(par1) : this.blockIcon)))))));
+        return var3 == 0 ? (par1 != 1 && par1 != 0 ? this.theIcon : this.blockIcon) : (var3 == 1 ? Block.sandStone.getBlockTextureFromSide(par1) : (var3 == 2 ? Block.planks.getBlockTextureFromSide(par1) : (var3 == 3 ? Block.cobblestone.getBlockTextureFromSide(par1) : (var3 == 4 ? Block.brick.getBlockTextureFromSide(par1) : (var3 == 5 ? Block.stoneBrick.getIcon(par1, 0) : (var3 == 6 ? Block.netherBrick.getBlockTextureFromSide(1) : (var3 == 7 ? Block.blockNetherQuartz.getBlockTextureFromSide(par1) : this.blockIcon)))))));
     }
 
     /**

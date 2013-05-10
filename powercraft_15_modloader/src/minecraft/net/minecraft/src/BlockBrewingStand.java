@@ -186,7 +186,7 @@ public class BlockBrewingStand extends BlockContainer
      */
     public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
-        return Container.func_94526_b((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
+        return Container.calcRedstoneFromInventory((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
     }
 
     /**
@@ -199,7 +199,7 @@ public class BlockBrewingStand extends BlockContainer
         this.theIcon = par1IconRegister.registerIcon("brewingStand_base");
     }
 
-    public Icon func_94448_e()
+    public Icon getBrewingStandIcon()
     {
         return this.theIcon;
     }

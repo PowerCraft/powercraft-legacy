@@ -142,7 +142,7 @@ public class PC_InventoryUtils {
 			return null;
 		int sideID = side.getMCSide();
 		if (inv instanceof ISidedInventory && sideID >= 0) {
-			return ((ISidedInventory) inv).getSizeInventorySide(sideID);
+			return ((ISidedInventory) inv).getAccessibleSlotsFromSide(sideID);
 		}
 		return null;
 	}

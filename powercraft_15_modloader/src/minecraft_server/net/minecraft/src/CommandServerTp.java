@@ -101,7 +101,7 @@ public class CommandServerTp extends CommandBase
                 par4Str = par4Str.substring(1);
             }
 
-            var8 += func_82363_b(par1ICommandSender, par4Str);
+            var8 += parseDouble(par1ICommandSender, par4Str);
 
             if (!var10 && !var7)
             {

@@ -11,5 +11,5 @@ public interface IPlayerUsage
      */
     boolean isSnooperEnabled();
 
-    ILogAgent func_98033_al();
+    ILogAgent getLogAgent();
 }

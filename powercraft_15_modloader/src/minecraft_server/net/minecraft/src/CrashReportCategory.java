@@ -18,7 +18,10 @@ public class CrashReportCategory
         this.field_85076_b = par2Str;
     }
 
-    public static String func_85071_a(int par0, int par1, int par2)
+    /**
+     * Returns a string with world information on location.Args:x,y,z
+     */
+    public static String getLocationInfo(int par0, int par1, int par2)
     {
         StringBuilder var3 = new StringBuilder();
 

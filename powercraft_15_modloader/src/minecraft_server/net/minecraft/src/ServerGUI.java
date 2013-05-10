@@ -90,7 +90,7 @@ public class ServerGUI extends JComponent
     {
         JPanel var1 = new JPanel(new BorderLayout());
         JTextArea var2 = new JTextArea();
-        this.serverInstance.func_98033_al().func_98076_a().addHandler(new GuiLogOutputHandler(var2));
+        this.serverInstance.getLogAgent().getServerLogger().addHandler(new GuiLogOutputHandler(var2));
         JScrollPane var3 = new JScrollPane(var2, 22, 30);
         var2.setEditable(false);
         JTextField var4 = new JTextField();

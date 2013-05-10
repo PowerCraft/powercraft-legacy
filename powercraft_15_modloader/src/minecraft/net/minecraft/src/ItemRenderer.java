@@ -448,7 +448,7 @@ public class ItemRenderer
 
             GL11.glPopMatrix();
         }
-        else if (!var3.getHasActivePotion())
+        else if (!var3.isInvisible())
         {
             GL11.glPushMatrix();
             var6 = 0.8F;

@@ -22,7 +22,7 @@ public class ItemLeaves extends ItemBlock
      */
     public Icon getIconFromDamage(int par1)
     {
-        return Block.leaves.getBlockTextureFromSideAndMetadata(0, par1);
+        return Block.leaves.getIcon(0, par1);
     }
 
     public int getColorFromItemStack(ItemStack par1ItemStack, int par2)

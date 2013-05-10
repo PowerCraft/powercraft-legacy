@@ -31,12 +31,12 @@ public class BlockCommandBlock extends BlockContainer
 
             if (var6 && !var8)
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var7 | 1, 4);
+                par1World.setBlockMetadata(par2, par3, par4, var7 | 1, 4);
                 par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World));
             }
             else if (!var6 && var8)
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var7 & -2, 4);
+                par1World.setBlockMetadata(par2, par3, par4, var7 & -2, 4);
             }
         }
     }
@@ -107,7 +107,7 @@ public class BlockCommandBlock extends BlockContainer
 
         if (par6ItemStack.hasDisplayName())
         {
-            var7.func_96104_c(par6ItemStack.getDisplayName());
+            var7.setCommandSenderName(par6ItemStack.getDisplayName());
         }
     }
 }

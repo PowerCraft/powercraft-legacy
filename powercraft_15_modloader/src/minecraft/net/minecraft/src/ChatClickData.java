@@ -66,7 +66,7 @@ public class ChatClickData
                 }
                 catch (URISyntaxException var4)
                 {
-                    Minecraft.getMinecraft().getLogAgent().func_98234_c("Couldn\'t create URI from chat", var4);
+                    Minecraft.getMinecraft().getLogAgent().logSevereException("Couldn\'t create URI from chat", var4);
                 }
             }
 

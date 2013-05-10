@@ -186,7 +186,7 @@ public class ComponentScatteredFeatureJunglePyramid extends ComponentScatteredFe
 
             if (!this.field_74947_h)
             {
-                this.field_74947_h = this.generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 8, -3, 3, WeightedRandomChestContent.func_92080_a(junglePyramidsChestContents, new WeightedRandomChestContent[] {Item.field_92105_bW.func_92114_b(par2Random)}), 2 + par2Random.nextInt(5));
+                this.field_74947_h = this.generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 8, -3, 3, WeightedRandomChestContent.func_92080_a(junglePyramidsChestContents, new WeightedRandomChestContent[] {Item.enchantedBook.func_92114_b(par2Random)}), 2 + par2Random.nextInt(5));
             }
 
             this.placeBlockAtCurrentPosition(par1World, Block.cobblestoneMossy.blockID, 0, 9, -3, 2, par3StructureBoundingBox);
@@ -219,7 +219,7 @@ public class ComponentScatteredFeatureJunglePyramid extends ComponentScatteredFe
 
             if (!this.field_74948_i)
             {
-                this.field_74948_i = this.generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 9, -3, 10, WeightedRandomChestContent.func_92080_a(junglePyramidsChestContents, new WeightedRandomChestContent[] {Item.field_92105_bW.func_92114_b(par2Random)}), 2 + par2Random.nextInt(5));
+                this.field_74948_i = this.generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 9, -3, 10, WeightedRandomChestContent.func_92080_a(junglePyramidsChestContents, new WeightedRandomChestContent[] {Item.enchantedBook.func_92114_b(par2Random)}), 2 + par2Random.nextInt(5));
             }
 
             return true;

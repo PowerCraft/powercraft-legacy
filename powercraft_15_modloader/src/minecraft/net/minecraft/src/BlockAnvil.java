@@ -6,7 +6,7 @@ public class BlockAnvil extends BlockSand
 {
     /** List of types/statues the Anvil can be in. */
     public static final String[] statuses = new String[] {"intact", "slightlyDamaged", "veryDamaged"};
-    private static final String[] field_94431_cO = new String[] {"anvil_top", "anvil_top_damaged_1", "anvil_top_damaged_2"};
+    private static final String[] anvilIconNames = new String[] {"anvil_top", "anvil_top_damaged_1", "anvil_top_damaged_2"};
     public int field_82521_b = 0;
     private Icon[] iconArray;
 
@@ -37,7 +37,7 @@ public class BlockAnvil extends BlockSand
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         if (this.field_82521_b == 3 && par1 == 1)
         {
@@ -57,11 +57,11 @@ public class BlockAnvil extends BlockSand
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("anvil_base");
-        this.iconArray = new Icon[field_94431_cO.length];
+        this.iconArray = new Icon[anvilIconNames.length];
 
         for (int var2 = 0; var2 < this.iconArray.length; ++var2)
         {
-            this.iconArray[var2] = par1IconRegister.registerIcon(field_94431_cO[var2]);
+            this.iconArray[var2] = par1IconRegister.registerIcon(anvilIconNames[var2]);
         }
     }
 

@@ -74,7 +74,7 @@ public final class ModLoader
     private static final Map packetChannels = new HashMap();
     public static final Properties props = new Properties();
     private static BiomeGenBase[] standardBiomes;
-    public static final String VERSION = "ModLoader 1.5.1";
+    public static final String VERSION = "ModLoader 1.5.2";
     private static NetClientHandler clientHandler = null;
     private static final List commandList = new LinkedList();
     private static final Map tradeItems = new HashMap();
@@ -772,8 +772,8 @@ public final class ModLoader
                 logger.addHandler(logHandler);
             }
 
-            logger.fine("ModLoader 1.5.1 Initializing...");
-            System.out.println("ModLoader 1.5.1 Initializing...");
+            logger.fine("ModLoader 1.5.2 Initializing...");
+            System.out.println("ModLoader 1.5.2 Initializing...");
             File var13 = new File(ModLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             modDir.mkdirs();
             readFromClassPath(var13);
@@ -2212,7 +2212,7 @@ public final class ModLoader
         var0.append("Mods loaded: ");
         var0.append(getLoadedMods().size() + 1);
         var0.append('\n');
-        var0.append("ModLoader 1.5.1");
+        var0.append("ModLoader 1.5.2");
         var0.append('\n');
         Iterator var1 = getLoadedMods().iterator();
 

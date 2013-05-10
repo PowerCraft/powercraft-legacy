@@ -149,12 +149,12 @@ public class BlockRailPowered extends BlockRailBase
 
         if (var8 && (par5 & 8) == 0)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, par6 | 8, 3);
+            par1World.setBlockMetadata(par2, par3, par4, par6 | 8, 3);
             var9 = true;
         }
         else if (!var8 && (par5 & 8) != 0)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, par6, 3);
+            par1World.setBlockMetadata(par2, par3, par4, par6, 3);
             var9 = true;
         }
 

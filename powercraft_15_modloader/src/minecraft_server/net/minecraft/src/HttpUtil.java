@@ -105,7 +105,7 @@ public class HttpUtil
             {
                 if (par0ILogAgent != null)
                 {
-                    par0ILogAgent.func_98234_c("Could not post to " + par1URL, var9);
+                    par0ILogAgent.logSevereException("Could not post to " + par1URL, var9);
                 }
                 else
                 {

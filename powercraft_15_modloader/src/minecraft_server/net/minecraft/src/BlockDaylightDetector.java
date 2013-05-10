@@ -47,13 +47,13 @@ public class BlockDaylightDetector extends BlockContainer
      */
     public void onBlockAdded(World par1World, int par2, int par3, int par4) {}
 
-    public void func_94444_j_(World par1World, int par2, int par3, int par4)
+    public void updateLightLevel(World par1World, int par2, int par3, int par4)
     {
         if (!par1World.provider.hasNoSky)
         {
             int var5 = par1World.getBlockMetadata(par2, par3, par4);
             int var6 = par1World.getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4) - par1World.skylightSubtracted;
-            float var7 = par1World.func_72929_e(1.0F);
+            float var7 = par1World.getCelestialAngleRadians(1.0F);
 
             if (var7 < (float)Math.PI)
             {
@@ -78,7 +78,7 @@ public class BlockDaylightDetector extends BlockContainer
 
             if (var5 != var6)
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var6, 3);
+                par1World.setBlockMetadata(par2, par3, par4, var6, 3);
             }
         }
     }

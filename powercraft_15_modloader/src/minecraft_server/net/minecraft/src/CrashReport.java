@@ -196,7 +196,7 @@ public class CrashReport
             }
             catch (Throwable var4)
             {
-                par2ILogAgent.func_98234_c("Could not save crash report to " + par1File, var4);
+                par2ILogAgent.logSevereException("Could not save crash report to " + par1File, var4);
                 return false;
             }
         }

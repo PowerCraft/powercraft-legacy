@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class BlockCactus extends Block
 {
-    private Icon field_94380_a;
-    private Icon field_94379_b;
+    private Icon cactusTopIcon;
+    private Icon cactusBottomIcon;
 
     protected BlockCactus(int par1)
     {
@@ -68,9 +68,9 @@ public class BlockCactus extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94380_a : (par1 == 0 ? this.field_94379_b : this.blockIcon);
+        return par1 == 1 ? this.cactusTopIcon : (par1 == 0 ? this.cactusBottomIcon : this.blockIcon);
     }
 
     /**
@@ -161,7 +161,7 @@ public class BlockCactus extends Block
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("cactus_side");
-        this.field_94380_a = par1IconRegister.registerIcon("cactus_top");
-        this.field_94379_b = par1IconRegister.registerIcon("cactus_bottom");
+        this.cactusTopIcon = par1IconRegister.registerIcon("cactus_top");
+        this.cactusBottomIcon = par1IconRegister.registerIcon("cactus_bottom");
     }
 }

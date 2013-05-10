@@ -74,7 +74,7 @@ public class BlockFurnace extends BlockContainer
                 var9 = 4;
             }
 
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var9, 2);
+            par1World.setBlockMetadata(par2, par3, par4, var9, 2);
         }
     }
 
@@ -119,7 +119,7 @@ public class BlockFurnace extends BlockContainer
         }
 
         keepFurnaceInventory = false;
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var5, 2);
+        par1World.setBlockMetadata(par2, par3, par4, var5, 2);
 
         if (var6 != null)
         {
@@ -145,22 +145,22 @@ public class BlockFurnace extends BlockContainer
 
         if (var7 == 0)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 2, 2);
         }
 
         if (var7 == 1)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 5, 2);
         }
 
         if (var7 == 2)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 3, 2);
         }
 
         if (var7 == 3)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 4, 2);
         }
 
         if (par6ItemStack.hasDisplayName())
@@ -204,7 +204,7 @@ public class BlockFurnace extends BlockContainer
 
                             if (var9.hasTagCompound())
                             {
-                                var14.func_92059_d().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
+                                var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
                             }
 
                             float var15 = 0.05F;
@@ -238,6 +238,6 @@ public class BlockFurnace extends BlockContainer
      */
     public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
-        return Container.func_94526_b((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
+        return Container.calcRedstoneFromInventory((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
     }
 }

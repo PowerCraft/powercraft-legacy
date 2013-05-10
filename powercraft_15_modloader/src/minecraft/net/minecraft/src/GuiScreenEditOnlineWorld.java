@@ -10,6 +10,10 @@ public class GuiScreenEditOnlineWorld extends GuiScreen
     private GuiTextField field_96201_d;
     private McoServer field_96205_n;
     private GuiButton field_96206_o;
+    private int field_104054_p;
+    private int field_104053_q;
+    private int field_104052_r;
+    private GuiScreenOnlineServersSubscreen field_104051_s;
 
     public GuiScreenEditOnlineWorld(GuiScreen par1GuiScreen, GuiScreen par2GuiScreen, McoServer par3McoServer)
     {
@@ -33,17 +37,22 @@ public class GuiScreenEditOnlineWorld extends GuiScreen
     public void initGui()
     {
         StringTranslate var1 = StringTranslate.getInstance();
+        this.field_104054_p = this.width / 4;
+        this.field_104053_q = this.width / 4 - 2;
+        this.field_104052_r = this.width / 2 + 4;
         Keyboard.enableRepeatEvents(true);
         this.buttonList.clear();
-        this.buttonList.add(this.field_96206_o = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, var1.translateKey("mco.configure.world.buttons.done")));
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, var1.translateKey("gui.cancel")));
-        this.field_96201_d = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 66, 200, 20);
+        this.buttonList.add(this.field_96206_o = new GuiButton(0, this.field_104054_p, this.height / 4 + 120 + 22, this.field_104053_q, 20, var1.translateKey("mco.configure.world.buttons.done")));
+        this.buttonList.add(new GuiButton(1, this.field_104052_r, this.height / 4 + 120 + 22, this.field_104053_q, 20, var1.translateKey("gui.cancel")));
+        this.field_96201_d = new GuiTextField(this.fontRenderer, this.field_104054_p, 56, 212, 20);
         this.field_96201_d.setFocused(true);
         this.field_96201_d.setMaxStringLength(32);
         this.field_96201_d.setText(this.field_96205_n.func_96398_b());
-        this.field_96203_c = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 106, 200, 20);
+        this.field_96203_c = new GuiTextField(this.fontRenderer, this.field_104054_p, 96, 212, 20);
         this.field_96203_c.setMaxStringLength(32);
         this.field_96203_c.setText(this.field_96205_n.func_96397_a());
+        this.field_104051_s = new GuiScreenOnlineServersSubscreen(this.width, this.height, this.field_104054_p, 122);
+        this.buttonList.addAll(this.field_104051_s.field_104079_a);
     }
 
     /**
@@ -69,6 +78,14 @@ public class GuiScreenEditOnlineWorld extends GuiScreen
             {
                 this.func_96200_g();
             }
+            else if (par1GuiButton.id == 2)
+            {
+                this.mc.displayGuiScreen(new GuiScreenResetWorld(this, this.field_96205_n));
+            }
+            else
+            {
+                this.field_104051_s.func_104069_a(par1GuiButton);
+            }
         }
     }
 
@@ -79,7 +96,7 @@ public class GuiScreenEditOnlineWorld extends GuiScreen
         try
         {
             String var2 = this.field_96203_c.getText() != null && !this.field_96203_c.getText().trim().equals("") ? this.field_96203_c.getText() : "";
-            var1.func_96384_a(this.field_96205_n.field_96408_a, this.field_96201_d.getText(), var2);
+            var1.func_96384_a(this.field_96205_n.field_96408_a, this.field_96201_d.getText(), var2, this.field_104051_s.field_104076_e, this.field_104051_s.field_104073_f);
             this.field_96205_n.func_96399_a(this.field_96201_d.getText());
             this.field_96205_n.func_96400_b(this.field_96203_c.getText());
             this.mc.displayGuiScreen(new GuiScreenConfigureWorld(this.field_96202_b, this.field_96205_n));
@@ -138,10 +155,11 @@ public class GuiScreenEditOnlineWorld extends GuiScreen
         StringTranslate var4 = StringTranslate.getInstance();
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRenderer, var4.translateKey("mco.configure.world.edit.title"), this.width / 2, 17, 16777215);
-        this.drawString(this.fontRenderer, var4.translateKey("mco.configure.world.name"), this.width / 2 - 100, 53, 10526880);
-        this.drawString(this.fontRenderer, var4.translateKey("mco.configure.world.description"), this.width / 2 - 100, 94, 10526880);
+        this.drawString(this.fontRenderer, var4.translateKey("mco.configure.world.name"), this.field_104054_p, 43, 10526880);
+        this.drawString(this.fontRenderer, var4.translateKey("mco.configure.world.description"), this.field_104054_p, 84, 10526880);
         this.field_96201_d.drawTextBox();
         this.field_96203_c.drawTextBox();
+        this.field_104051_s.func_104071_a(this, this.fontRenderer);
         super.drawScreen(par1, par2, par3);
     }
 }

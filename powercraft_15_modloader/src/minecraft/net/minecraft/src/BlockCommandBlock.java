@@ -107,7 +107,7 @@ public class BlockCommandBlock extends BlockContainer
 
         if (par6ItemStack.hasDisplayName())
         {
-            var7.func_96104_c(par6ItemStack.getDisplayName());
+            var7.setCommandSenderName(par6ItemStack.getDisplayName());
         }
     }
 }

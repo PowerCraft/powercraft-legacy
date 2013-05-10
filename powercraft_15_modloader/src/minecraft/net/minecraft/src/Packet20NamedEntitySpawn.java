@@ -31,7 +31,7 @@ public class Packet20NamedEntitySpawn extends Packet
     /** The current item the player is holding. */
     public int currentItem;
     private DataWatcher metadata;
-    private List field_73517_j;
+    private List metadataWatchableObjects;
 
     public Packet20NamedEntitySpawn() {}
 
@@ -62,7 +62,7 @@ public class Packet20NamedEntitySpawn extends Packet
         this.rotation = par1DataInputStream.readByte();
         this.pitch = par1DataInputStream.readByte();
         this.currentItem = par1DataInputStream.readShort();
-        this.field_73517_j = DataWatcher.readWatchableObjects(par1DataInputStream);
+        this.metadataWatchableObjects = DataWatcher.readWatchableObjects(par1DataInputStream);
     }
 
     /**
@@ -97,13 +97,13 @@ public class Packet20NamedEntitySpawn extends Packet
         return 28;
     }
 
-    public List func_73509_c()
+    public List getWatchedMetadata()
     {
-        if (this.field_73517_j == null)
+        if (this.metadataWatchableObjects == null)
         {
-            this.field_73517_j = this.metadata.getAllWatched();
+            this.metadataWatchableObjects = this.metadata.getAllWatched();
         }
 
-        return this.field_73517_j;
+        return this.metadataWatchableObjects;
     }
 }

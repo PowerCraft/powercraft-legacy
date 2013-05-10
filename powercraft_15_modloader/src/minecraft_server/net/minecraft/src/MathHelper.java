@@ -70,7 +70,7 @@ public class MathHelper
     /**
      * Returns the unsigned value of an int.
      */
-    public static int abs(int par0)
+    public static int abs_int(int par0)
     {
         return par0 >= 0 ? par0 : -par0;
     }

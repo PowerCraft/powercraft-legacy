@@ -167,7 +167,7 @@ public class ContainerEnchantment extends Container
 
                     if (var5)
                     {
-                        var3.itemID = Item.field_92105_bW.itemID;
+                        var3.itemID = Item.enchantedBook.itemID;
                     }
 
                     int var6 = var5 ? this.rand.nextInt(var4.size()) : -1;
@@ -180,7 +180,7 @@ public class ContainerEnchantment extends Container
                         {
                             if (var5)
                             {
-                                Item.field_92105_bW.func_92115_a(var3, var8);
+                                Item.enchantedBook.func_92115_a(var3, var8);
                             }
                             else
                             {

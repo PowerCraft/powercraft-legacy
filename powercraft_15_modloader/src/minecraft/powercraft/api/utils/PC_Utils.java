@@ -452,7 +452,7 @@ public class PC_Utils {
 			double d5 = z + (world.rand.nextDouble() - world.rand.nextDouble()) * 3D;
 			entityliving.setLocationAndAngles(d3, d4, d5, world.rand.nextFloat() * 360F, 0.0F);
 			
-			if (world.checkIfAABBIsClear(entityliving.boundingBox) && world.getCollidingBoundingBoxes(entityliving, entityliving.boundingBox).size() == 0) {
+			if (world.checkNoEntityCollision(entityliving.boundingBox) && world.getCollidingBoundingBoxes(entityliving, entityliving.boundingBox).size() == 0) {
 				world.spawnEntityInWorld(entityliving);
 				
 				if (spawnParticles) {

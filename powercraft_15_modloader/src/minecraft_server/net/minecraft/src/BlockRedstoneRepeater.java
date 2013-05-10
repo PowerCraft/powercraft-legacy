@@ -23,7 +23,7 @@ public class BlockRedstoneRepeater extends BlockRedstoneLogic
         int var10 = par1World.getBlockMetadata(par2, par3, par4);
         int var11 = (var10 & 12) >> 2;
         var11 = var11 + 1 << 2 & 12;
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var11 | var10 & 3, 3);
+        par1World.setBlockMetadata(par2, par3, par4, var11 | var10 & 3, 3);
         return true;
     }
 
@@ -65,7 +65,7 @@ public class BlockRedstoneRepeater extends BlockRedstoneLogic
 
     protected boolean func_94477_d(int par1)
     {
-        return func_82524_c(par1);
+        return isRedstoneRepeaterBlockID(par1);
     }
 
     /**

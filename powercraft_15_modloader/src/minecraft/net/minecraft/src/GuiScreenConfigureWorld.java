@@ -259,10 +259,23 @@ public class GuiScreenConfigureWorld extends GuiScreen
         this.drawString(this.fontRenderer, this.field_96280_b.func_96398_b(), this.field_96277_d, this.func_96264_a(2), 16777215);
         this.drawString(this.fontRenderer, var4.translateKey("mco.configure.world.description"), this.field_96277_d, this.func_96264_a(4), 10526880);
         this.drawString(this.fontRenderer, this.field_96280_b.func_96397_a(), this.field_96277_d, this.func_96264_a(5), 16777215);
-        this.drawString(this.fontRenderer, var4.translateKey("mco.configure.world.owner"), this.field_96277_d, this.func_96264_a(7), 10526880);
-        this.drawString(this.fontRenderer, this.field_96280_b.field_96405_e, this.field_96277_d, this.func_96264_a(8), 16777215);
+        this.drawString(this.fontRenderer, var4.translateKey("mco.configure.world.status"), this.field_96277_d, this.func_96264_a(7), 10526880);
+        this.drawString(this.fontRenderer, this.func_104045_j(), this.field_96277_d, this.func_96264_a(8), 16777215);
         this.drawString(this.fontRenderer, var4.translateKey("mco.configure.world.invited"), this.field_96287_o, this.func_96264_a(1), 10526880);
         super.drawScreen(par1, par2, par3);
+    }
+
+    private String func_104045_j()
+    {
+        if (this.field_96280_b.field_98166_h)
+        {
+            return "Expired";
+        }
+        else
+        {
+            String var1 = this.field_96280_b.field_96404_d.toLowerCase();
+            return Character.toUpperCase(var1.charAt(0)) + var1.substring(1);
+        }
     }
 
     static Minecraft func_96265_a(GuiScreenConfigureWorld par0GuiScreenConfigureWorld)

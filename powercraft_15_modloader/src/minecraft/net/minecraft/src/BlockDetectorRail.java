@@ -146,11 +146,11 @@ public class BlockDetectorRail extends BlockRailBase
         if ((par1World.getBlockMetadata(par2, par3, par4) & 8) > 0)
         {
             float var6 = 0.125F;
-            List var7 = par1World.selectEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getAABBPool().getAABB((double)((float)par2 + var6), (double)par3, (double)((float)par4 + var6), (double)((float)(par2 + 1) - var6), (double)((float)(par3 + 1) - var6), (double)((float)(par4 + 1) - var6)), IEntitySelector.field_96566_b);
+            List var7 = par1World.selectEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getAABBPool().getAABB((double)((float)par2 + var6), (double)par3, (double)((float)par4 + var6), (double)((float)(par2 + 1) - var6), (double)((float)(par3 + 1) - var6), (double)((float)(par4 + 1) - var6)), IEntitySelector.selectInventories);
 
             if (var7.size() > 0)
             {
-                return Container.func_94526_b((IInventory)var7.get(0));
+                return Container.calcRedstoneFromInventory((IInventory)var7.get(0));
             }
         }
 
@@ -171,7 +171,7 @@ public class BlockDetectorRail extends BlockRailBase
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return (par2 & 8) != 0 ? this.iconArray[1] : this.iconArray[0];
     }

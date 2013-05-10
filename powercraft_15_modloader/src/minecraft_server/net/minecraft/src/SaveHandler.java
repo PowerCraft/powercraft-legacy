@@ -258,7 +258,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
         catch (Exception var5)
         {
-            MinecraftServer.getServer().func_98033_al().func_98236_b("Failed to save player data for " + par1EntityPlayer.username);
+            MinecraftServer.getServer().getLogAgent().func_98236_b("Failed to save player data for " + par1EntityPlayer.username);
         }
     }
 
@@ -293,7 +293,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
         catch (Exception var3)
         {
-            MinecraftServer.getServer().func_98033_al().func_98236_b("Failed to load player data for " + par1Str);
+            MinecraftServer.getServer().getLogAgent().func_98236_b("Failed to load player data for " + par1Str);
         }
 
         return null;
@@ -338,7 +338,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
     /**
      * Returns the name of the directory where world information is saved.
      */
-    public String getSaveDirectoryName()
+    public String getWorldDirectoryName()
     {
         return this.saveDirectoryName;
     }

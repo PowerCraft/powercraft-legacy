@@ -278,11 +278,11 @@ public class EntityZombie extends EntityMob
 
             if (var1 == 0)
             {
-                this.setCurrentItemOrArmor(0, new ItemStack(Item.swordSteel));
+                this.setCurrentItemOrArmor(0, new ItemStack(Item.swordIron));
             }
             else
             {
-                this.setCurrentItemOrArmor(0, new ItemStack(Item.shovelSteel));
+                this.setCurrentItemOrArmor(0, new ItemStack(Item.shovelIron));
             }
         }
     }
@@ -365,7 +365,7 @@ public class EntityZombie extends EntityMob
      */
     public void initCreature()
     {
-        this.func_98053_h(this.rand.nextFloat() < pickUpLootProability[this.worldObj.difficultySetting]);
+        this.setCanPickUpLoot(this.rand.nextFloat() < pickUpLootProability[this.worldObj.difficultySetting]);
 
         if (this.worldObj.rand.nextFloat() < 0.05F)
         {

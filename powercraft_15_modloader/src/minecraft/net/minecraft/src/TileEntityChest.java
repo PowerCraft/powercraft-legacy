@@ -324,7 +324,7 @@ public class TileEntityChest extends TileEntity implements IInventory
     private boolean func_94044_a(int par1, int par2, int par3)
     {
         Block var4 = Block.blocksList[this.worldObj.getBlockId(par1, par2, par3)];
-        return var4 != null && var4 instanceof BlockChest ? ((BlockChest)var4).field_94443_a == this.func_98041_l() : false;
+        return var4 != null && var4 instanceof BlockChest ? ((BlockChest)var4).isTrapped == this.func_98041_l() : false;
     }
 
     /**
@@ -495,7 +495,7 @@ public class TileEntityChest extends TileEntity implements IInventory
                 return 0;
             }
 
-            this.field_94046_i = ((BlockChest)this.getBlockType()).field_94443_a;
+            this.field_94046_i = ((BlockChest)this.getBlockType()).isTrapped;
         }
 
         return this.field_94046_i;

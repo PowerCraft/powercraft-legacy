@@ -139,7 +139,7 @@ public class WorldServer extends World
         this.villageCollectionObj.tick();
         this.villageSiegeObj.tick();
         this.theProfiler.endStartSection("portalForcer");
-        this.field_85177_Q.func_85189_a(this.getTotalWorldTime());
+        this.field_85177_Q.removeStalePortalLocations(this.getTotalWorldTime());
         this.theProfiler.endSection();
         this.sendAndApplyBlockEvents();
     }
@@ -803,6 +803,14 @@ public class WorldServer extends World
             }
 
             this.chunkProvider.saveChunks(par1, par2IProgressUpdate);
+        }
+    }
+
+    public void func_104140_m()
+    {
+        if (this.chunkProvider.canSave())
+        {
+            this.chunkProvider.func_104112_b();
         }
     }
 

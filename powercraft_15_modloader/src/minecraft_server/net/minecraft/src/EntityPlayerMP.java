@@ -116,7 +116,14 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
         if (par1NBTTagCompound.hasKey("playerGameType"))
         {
-            this.theItemInWorldManager.setGameType(EnumGameType.getByID(par1NBTTagCompound.getInteger("playerGameType")));
+            if (MinecraftServer.getServer().func_104056_am())
+            {
+                this.theItemInWorldManager.setGameType(MinecraftServer.getServer().getGameType());
+            }
+            else
+            {
+                this.theItemInWorldManager.setGameType(EnumGameType.getByID(par1NBTTagCompound.getInteger("playerGameType")));
+            }
         }
     }
 
@@ -224,13 +231,13 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public void setEntityHealth(int par1)
     {
         super.setEntityHealth(par1);
-        Collection var2 = this.func_96123_co().func_96520_a(ScoreObjectiveCriteria.field_96638_f);
+        Collection var2 = this.getWorldScoreboard().func_96520_a(ScoreObjectiveCriteria.field_96638_f);
         Iterator var3 = var2.iterator();
 
         while (var3.hasNext())
         {
             ScoreObjective var4 = (ScoreObjective)var3.next();
-            this.func_96123_co().func_96529_a(this.getEntityName(), var4).func_96651_a(Arrays.asList(new EntityPlayer[] {this}));
+            this.getWorldScoreboard().func_96529_a(this.getEntityName(), var4).func_96651_a(Arrays.asList(new EntityPlayer[] {this}));
         }
     }
 
@@ -283,7 +290,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     public void onDeath(DamageSource par1DamageSource)
     {
-        this.mcServer.getConfigurationManager().func_92062_k(this.field_94063_bt.func_94546_b());
+        this.mcServer.getConfigurationManager().sendChatMsg(this.field_94063_bt.func_94546_b());
 
         if (!this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
         {
@@ -296,7 +303,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         while (var3.hasNext())
         {
             ScoreObjective var4 = (ScoreObjective)var3.next();
-            Score var5 = this.func_96123_co().func_96529_a(this.getEntityName(), var4);
+            Score var5 = this.getWorldScoreboard().func_96529_a(this.getEntityName(), var4);
             var5.func_96648_a();
         }
 
@@ -535,7 +542,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         this.openContainer.onCraftGuiOpened(this);
     }
 
-    public void func_94064_a(TileEntityHopper par1TileEntityHopper)
+    public void displayGUIHopper(TileEntityHopper par1TileEntityHopper)
     {
         this.getNextWindowId();
         this.playerNetServerHandler.sendPacket(new Packet100OpenWindow(this.currentWindowId, 9, par1TileEntityHopper.getInvName(), par1TileEntityHopper.getSizeInventory(), par1TileEntityHopper.isInvNameLocalized()));
@@ -544,7 +551,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         this.openContainer.onCraftGuiOpened(this);
     }
 
-    public void func_96125_a(EntityMinecartHopper par1EntityMinecartHopper)
+    public void displayGUIHopperMinecart(EntityMinecartHopper par1EntityMinecartHopper)
     {
         this.getNextWindowId();
         this.playerNetServerHandler.sendPacket(new Packet100OpenWindow(this.currentWindowId, 9, par1EntityMinecartHopper.getInvName(), par1EntityMinecartHopper.getSizeInventory(), par1EntityMinecartHopper.isInvNameLocalized()));

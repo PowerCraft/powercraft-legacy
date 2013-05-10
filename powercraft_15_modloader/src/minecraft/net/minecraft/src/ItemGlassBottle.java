@@ -65,5 +65,5 @@ public class ItemGlassBottle extends Item
         }
     }
 
-    public void updateIcons(IconRegister par1IconRegister) {}
+    public void registerIcons(IconRegister par1IconRegister) {}
 }

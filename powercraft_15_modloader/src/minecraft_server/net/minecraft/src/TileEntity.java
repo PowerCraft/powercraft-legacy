@@ -49,7 +49,10 @@ public class TileEntity
         }
     }
 
-    public World func_70314_l()
+    /**
+     * Returns the worldObj for this tileEntity.
+     */
+    public World getWorldObj()
     {
         return this.worldObj;
     }
@@ -130,7 +133,7 @@ public class TileEntity
         }
         else
         {
-            MinecraftServer.getServer().func_98033_al().func_98236_b("Skipping TileEntity with id " + par0NBTTagCompound.getString("id"));
+            MinecraftServer.getServer().getLogAgent().func_98236_b("Skipping TileEntity with id " + par0NBTTagCompound.getString("id"));
         }
 
         return var1;
@@ -237,7 +240,7 @@ public class TileEntity
         par1CrashReportCategory.addCrashSectionCallable("Actual block data value", new CallableTileEntityData(this));
     }
 
-    static Map func_85028_t()
+    static Map getClassToNameMap()
     {
         return classToNameMap;
     }

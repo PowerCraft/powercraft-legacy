@@ -86,7 +86,7 @@ public abstract class EntityFlying extends EntityLiving
         }
 
         this.limbYaw += (var7 - this.limbYaw) * 0.4F;
-        this.legSwing += this.limbYaw;
+        this.limbSwing += this.limbYaw;
     }
 
     /**

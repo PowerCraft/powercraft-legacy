@@ -22,6 +22,6 @@ public class StatCollector
 
     public static boolean func_94522_b(String par0Str)
     {
-        return localizedName.func_94520_b(par0Str);
+        return localizedName.isKeyTranslated(par0Str);
     }
 }

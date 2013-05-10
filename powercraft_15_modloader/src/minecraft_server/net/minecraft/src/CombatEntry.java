@@ -41,7 +41,7 @@ public class CombatEntry
 
     public String func_94558_h()
     {
-        return this.func_94560_a().getEntity() == null ? null : this.func_94560_a().getEntity().func_96090_ax();
+        return this.func_94560_a().getEntity() == null ? null : this.func_94560_a().getEntity().getTranslatedEntityName();
     }
 
     public float func_94561_i()

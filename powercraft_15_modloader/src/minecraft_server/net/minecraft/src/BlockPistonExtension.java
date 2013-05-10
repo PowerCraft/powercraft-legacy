@@ -21,7 +21,7 @@ public class BlockPistonExtension extends Block
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
-        int var7 = Facing.faceToSide[getDirectionMeta(par6)];
+        int var7 = Facing.oppositeSide[getDirectionMeta(par6)];
         par2 += Facing.offsetsXForSide[var7];
         par3 += Facing.offsetsYForSide[var7];
         par4 += Facing.offsetsZForSide[var7];

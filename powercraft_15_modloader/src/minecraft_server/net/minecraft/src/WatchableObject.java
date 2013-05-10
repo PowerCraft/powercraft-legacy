@@ -37,12 +37,12 @@ public class WatchableObject
         return this.objectType;
     }
 
-    public boolean getWatching()
+    public boolean isWatched()
     {
         return this.watched;
     }
 
-    public void setWatching(boolean par1)
+    public void setWatched(boolean par1)
     {
         this.watched = par1;
     }

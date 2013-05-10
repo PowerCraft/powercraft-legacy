@@ -77,7 +77,10 @@ public class DamageSource
         return (new EntityDamageSourceIndirect("indirectMagic", par0Entity, par1Entity)).setDamageBypassesArmor().setMagicDamage();
     }
 
-    public static DamageSource func_92087_a(Entity par0Entity)
+    /**
+     * Returns the EntityDamageSource of the Thorns enchantment
+     */
+    public static DamageSource causeThornsDamage(Entity par0Entity)
     {
         return (new EntityDamageSource("thorns", par0Entity)).setMagicDamage();
     }
@@ -178,7 +181,7 @@ public class DamageSource
         EntityLiving var2 = par1EntityLiving.func_94060_bK();
         String var3 = "death.attack." + this.damageType;
         String var4 = var3 + ".player";
-        return var2 != null && StatCollector.func_94522_b(var4) ? StatCollector.translateToLocalFormatted(var4, new Object[] {par1EntityLiving.func_96090_ax(), var2.func_96090_ax()}): StatCollector.translateToLocalFormatted(var3, new Object[] {par1EntityLiving.func_96090_ax()});
+        return var2 != null && StatCollector.func_94522_b(var4) ? StatCollector.translateToLocalFormatted(var4, new Object[] {par1EntityLiving.getTranslatedEntityName(), var2.getTranslatedEntityName()}): StatCollector.translateToLocalFormatted(var3, new Object[] {par1EntityLiving.getTranslatedEntityName()});
     }
 
     /**

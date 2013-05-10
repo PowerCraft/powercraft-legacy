@@ -52,10 +52,10 @@ public class ComponentStrongholdPrison extends ComponentStronghold
             this.fillWithBlocks(par1World, par3StructureBoundingBox, 5, 1, 5, 7, 3, 5, Block.fenceIron.blockID, Block.fenceIron.blockID, false);
             this.placeBlockAtCurrentPosition(par1World, Block.fenceIron.blockID, 0, 4, 3, 2, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, Block.fenceIron.blockID, 0, 4, 3, 8, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, Block.doorSteel.blockID, this.getMetadataWithOffset(Block.doorSteel.blockID, 3), 4, 1, 2, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, Block.doorSteel.blockID, this.getMetadataWithOffset(Block.doorSteel.blockID, 3) + 8, 4, 2, 2, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, Block.doorSteel.blockID, this.getMetadataWithOffset(Block.doorSteel.blockID, 3), 4, 1, 8, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, Block.doorSteel.blockID, this.getMetadataWithOffset(Block.doorSteel.blockID, 3) + 8, 4, 2, 8, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, Block.doorIron.blockID, this.getMetadataWithOffset(Block.doorIron.blockID, 3), 4, 1, 2, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, Block.doorIron.blockID, this.getMetadataWithOffset(Block.doorIron.blockID, 3) + 8, 4, 2, 2, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, Block.doorIron.blockID, this.getMetadataWithOffset(Block.doorIron.blockID, 3), 4, 1, 8, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, Block.doorIron.blockID, this.getMetadataWithOffset(Block.doorIron.blockID, 3) + 8, 4, 2, 8, par3StructureBoundingBox);
             return true;
         }
     }

@@ -14,7 +14,7 @@ public class ItemCloth extends ItemBlock
      */
     public Icon getIconFromDamage(int par1)
     {
-        return Block.cloth.getBlockTextureFromSideAndMetadata(2, BlockCloth.getBlockFromDye(par1));
+        return Block.cloth.getIcon(2, BlockCloth.getBlockFromDye(par1));
     }
 
     /**

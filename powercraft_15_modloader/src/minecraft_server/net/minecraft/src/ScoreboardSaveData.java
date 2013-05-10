@@ -94,7 +94,7 @@ public class ScoreboardSaveData extends WorldSavedData
             if (par1NBTTagCompound.hasKey("slot_" + var2))
             {
                 String var3 = par1NBTTagCompound.getString("slot_" + var2);
-                ScoreObjective var4 = this.field_96507_a.func_96518_b(var3);
+                ScoreObjective var4 = this.field_96507_a.getObjective(var3);
                 this.field_96507_a.func_96530_a(var2, var4);
             }
         }
@@ -107,7 +107,7 @@ public class ScoreboardSaveData extends WorldSavedData
             NBTTagCompound var3 = (NBTTagCompound)par1NBTTagList.tagAt(var2);
             ScoreObjectiveCriteria var4 = (ScoreObjectiveCriteria)ScoreObjectiveCriteria.field_96643_a.get(var3.getString("CriteriaName"));
             ScoreObjective var5 = this.field_96507_a.func_96535_a(var3.getString("Name"), var4);
-            var5.func_96681_a(var3.getString("DisplayName"));
+            var5.setDisplayName(var3.getString("DisplayName"));
         }
     }
 
@@ -116,7 +116,7 @@ public class ScoreboardSaveData extends WorldSavedData
         for (int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2)
         {
             NBTTagCompound var3 = (NBTTagCompound)par1NBTTagList.tagAt(var2);
-            ScoreObjective var4 = this.field_96507_a.func_96518_b(var3.getString("Objective"));
+            ScoreObjective var4 = this.field_96507_a.getObjective(var3.getString("Objective"));
             Score var5 = this.field_96507_a.func_96529_a(var3.getString("Name"), var4);
             var5.func_96647_c(var3.getInteger("Score"));
         }
@@ -129,7 +129,7 @@ public class ScoreboardSaveData extends WorldSavedData
     {
         if (this.field_96507_a == null)
         {
-            MinecraftServer.getServer().func_98033_al().func_98236_b("Tried to save scoreboard without having a scoreboard...");
+            MinecraftServer.getServer().getLogAgent().func_98236_b("Tried to save scoreboard without having a scoreboard...");
         }
         else
         {
@@ -157,7 +157,7 @@ public class ScoreboardSaveData extends WorldSavedData
             var5.setBoolean("AllowFriendlyFire", var4.func_96665_g());
             var5.setBoolean("SeeFriendlyInvisibles", var4.func_98297_h());
             NBTTagList var6 = new NBTTagList();
-            Iterator var7 = var4.func_96670_d().iterator();
+            Iterator var7 = var4.getMembershipCollection().iterator();
 
             while (var7.hasNext())
             {
@@ -183,7 +183,7 @@ public class ScoreboardSaveData extends WorldSavedData
 
             if (var5 != null)
             {
-                var2.setString("slot_" + var4, var5.func_96679_b());
+                var2.setString("slot_" + var4, var5.getName());
                 var3 = true;
             }
         }
@@ -197,16 +197,16 @@ public class ScoreboardSaveData extends WorldSavedData
     protected NBTTagList func_96505_b()
     {
         NBTTagList var1 = new NBTTagList();
-        Collection var2 = this.field_96507_a.func_96514_c();
+        Collection var2 = this.field_96507_a.getScoreObjectives();
         Iterator var3 = var2.iterator();
 
         while (var3.hasNext())
         {
             ScoreObjective var4 = (ScoreObjective)var3.next();
             NBTTagCompound var5 = new NBTTagCompound();
-            var5.setString("Name", var4.func_96679_b());
-            var5.setString("CriteriaName", var4.func_96680_c().func_96636_a());
-            var5.setString("DisplayName", var4.func_96678_d());
+            var5.setString("Name", var4.getName());
+            var5.setString("CriteriaName", var4.getCriteria().func_96636_a());
+            var5.setString("DisplayName", var4.getDisplayName());
             var1.appendTag(var5);
         }
 
@@ -224,7 +224,7 @@ public class ScoreboardSaveData extends WorldSavedData
             Score var4 = (Score)var3.next();
             NBTTagCompound var5 = new NBTTagCompound();
             var5.setString("Name", var4.func_96653_e());
-            var5.setString("Objective", var4.func_96645_d().func_96679_b());
+            var5.setString("Objective", var4.func_96645_d().getName());
             var5.setInteger("Score", var4.func_96652_c());
             var1.appendTag(var5);
         }

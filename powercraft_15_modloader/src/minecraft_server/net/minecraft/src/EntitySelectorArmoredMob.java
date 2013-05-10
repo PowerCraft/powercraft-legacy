@@ -25,7 +25,7 @@ public class EntitySelectorArmoredMob implements IEntitySelector
         else
         {
             EntityLiving var2 = (EntityLiving)par1Entity;
-            return var2.getEquipmentInSlot(EntityLiving.func_82159_b(this.field_96567_c)) != null ? false : var2.func_98052_bS() || var2 instanceof EntityPlayer;
+            return var2.getEquipmentInSlot(EntityLiving.getArmorPosition(this.field_96567_c)) != null ? false : var2.canPickUpLoot() || var2 instanceof EntityPlayer;
         }
     }
 }

@@ -10,7 +10,12 @@ public class Packet100OpenWindow extends Packet
     public int inventoryType;
     public String windowTitle;
     public int slotsCount;
-    public boolean field_94500_e;
+
+    /**
+     * If false, the client will look up a string like "window.minecart". If true, the client uses what the server
+     * provides.
+     */
+    public boolean useProvidedWindowTitle;
 
     public Packet100OpenWindow() {}
 
@@ -20,7 +25,7 @@ public class Packet100OpenWindow extends Packet
         this.inventoryType = par2;
         this.windowTitle = par3Str;
         this.slotsCount = par4;
-        this.field_94500_e = par5;
+        this.useProvidedWindowTitle = par5;
     }
 
     /**
@@ -40,7 +45,7 @@ public class Packet100OpenWindow extends Packet
         this.inventoryType = par1DataInputStream.readByte() & 255;
         this.windowTitle = readString(par1DataInputStream, 32);
         this.slotsCount = par1DataInputStream.readByte() & 255;
-        this.field_94500_e = par1DataInputStream.readBoolean();
+        this.useProvidedWindowTitle = par1DataInputStream.readBoolean();
     }
 
     /**
@@ -52,7 +57,7 @@ public class Packet100OpenWindow extends Packet
         par1DataOutputStream.writeByte(this.inventoryType & 255);
         writeString(this.windowTitle, par1DataOutputStream);
         par1DataOutputStream.writeByte(this.slotsCount & 255);
-        par1DataOutputStream.writeBoolean(this.field_94500_e);
+        par1DataOutputStream.writeBoolean(this.useProvidedWindowTitle);
     }
 
     /**

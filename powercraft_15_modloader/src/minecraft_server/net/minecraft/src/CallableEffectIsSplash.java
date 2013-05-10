@@ -16,7 +16,7 @@ class CallableEffectIsSplash implements Callable
 
     public String func_102041_a()
     {
-        return this.field_102043_a.func_102028_d() + "";
+        return this.field_102043_a.isSplashPotionEffect() + "";
     }
 
     public Object call()

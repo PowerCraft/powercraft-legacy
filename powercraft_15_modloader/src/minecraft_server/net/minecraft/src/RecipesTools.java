@@ -7,7 +7,7 @@ public class RecipesTools
 
     public RecipesTools()
     {
-        this.recipeItems = new Object[][] {{Block.planks, Block.cobblestone, Item.ingotIron, Item.diamond, Item.ingotGold}, {Item.pickaxeWood, Item.pickaxeStone, Item.pickaxeSteel, Item.pickaxeDiamond, Item.pickaxeGold}, {Item.shovelWood, Item.shovelStone, Item.shovelSteel, Item.shovelDiamond, Item.shovelGold}, {Item.axeWood, Item.axeStone, Item.axeSteel, Item.axeDiamond, Item.axeGold}, {Item.hoeWood, Item.hoeStone, Item.hoeSteel, Item.hoeDiamond, Item.hoeGold}};
+        this.recipeItems = new Object[][] {{Block.planks, Block.cobblestone, Item.ingotIron, Item.diamond, Item.ingotGold}, {Item.pickaxeWood, Item.pickaxeStone, Item.pickaxeIron, Item.pickaxeDiamond, Item.pickaxeGold}, {Item.shovelWood, Item.shovelStone, Item.shovelIron, Item.shovelDiamond, Item.shovelGold}, {Item.axeWood, Item.axeStone, Item.axeIron, Item.axeDiamond, Item.axeGold}, {Item.hoeWood, Item.hoeStone, Item.hoeIron, Item.hoeDiamond, Item.hoeGold}};
     }
 
     /**
@@ -22,10 +22,10 @@ public class RecipesTools
             for (int var4 = 0; var4 < this.recipeItems.length - 1; ++var4)
             {
                 Item var5 = (Item)this.recipeItems[var4 + 1][var2];
-                par1CraftingManager.func_92103_a(new ItemStack(var5), new Object[] {this.recipePatterns[var4], '#', Item.stick, 'X', var3});
+                par1CraftingManager.addRecipe(new ItemStack(var5), new Object[] {this.recipePatterns[var4], '#', Item.stick, 'X', var3});
             }
         }
 
-        par1CraftingManager.func_92103_a(new ItemStack(Item.shears), new Object[] {" #", "# ", '#', Item.ingotIron});
+        par1CraftingManager.addRecipe(new ItemStack(Item.shears), new Object[] {" #", "# ", '#', Item.ingotIron});
     }
 }

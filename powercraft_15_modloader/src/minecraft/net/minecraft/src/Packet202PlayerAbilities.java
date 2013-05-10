@@ -155,7 +155,7 @@ public class Packet202PlayerAbilities extends Packet
         this.flySpeed = par1;
     }
 
-    public float func_82558_j()
+    public float getWalkSpeed()
     {
         return this.walkSpeed;
     }

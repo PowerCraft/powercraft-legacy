@@ -114,7 +114,7 @@ public class BanEntry
                 }
                 catch (ParseException var6)
                 {
-                    MinecraftServer.getServer().func_98033_al().func_98235_b("Could not read creation date format for ban entry \'" + var2.getBannedUsername() + "\' (was: \'" + var1[var7] + "\')", var6);
+                    MinecraftServer.getServer().getLogAgent().logWarningException("Could not read creation date format for ban entry \'" + var2.getBannedUsername() + "\' (was: \'" + var1[var7] + "\')", var6);
                 }
 
                 var10000 = var1.length;
@@ -147,7 +147,7 @@ public class BanEntry
                         }
                         catch (ParseException var5)
                         {
-                            MinecraftServer.getServer().func_98033_al().func_98235_b("Could not read expiry date format for ban entry \'" + var2.getBannedUsername() + "\' (was: \'" + var1[var7] + "\')", var5);
+                            MinecraftServer.getServer().getLogAgent().logWarningException("Could not read expiry date format for ban entry \'" + var2.getBannedUsername() + "\' (was: \'" + var1[var7] + "\')", var5);
                         }
 
                         var10000 = var1.length;

@@ -31,7 +31,7 @@ public class Packet20NamedEntitySpawn extends Packet
     /** The current item the player is holding. */
     public int currentItem;
     private DataWatcher metadata;
-    private List field_73517_j;
+    private List metadataWatchableObjects;
 
     public Packet20NamedEntitySpawn() {}
 
@@ -62,7 +62,7 @@ public class Packet20NamedEntitySpawn extends Packet
         this.rotation = par1DataInputStream.readByte();
         this.pitch = par1DataInputStream.readByte();
         this.currentItem = par1DataInputStream.readShort();
-        this.field_73517_j = DataWatcher.readWatchableObjects(par1DataInputStream);
+        this.metadataWatchableObjects = DataWatcher.readWatchableObjects(par1DataInputStream);
     }
 
     /**

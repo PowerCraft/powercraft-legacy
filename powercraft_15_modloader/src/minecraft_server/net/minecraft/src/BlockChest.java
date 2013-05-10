@@ -6,12 +6,14 @@ import java.util.Random;
 public class BlockChest extends BlockContainer
 {
     private final Random random = new Random();
-    public final int field_94443_a;
+
+    /** Determines whether of not the chest is trapped. */
+    public final int isTrapped;
 
     protected BlockChest(int par1, int par2)
     {
         super(par1, Material.wood);
-        this.field_94443_a = par2;
+        this.isTrapped = par2;
         this.setCreativeTab(CreativeTabs.tabDecorations);
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
     }
@@ -135,7 +137,7 @@ public class BlockChest extends BlockContainer
 
         if (var7 != this.blockID && var8 != this.blockID && var9 != this.blockID && var10 != this.blockID)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var11, 3);
+            par1World.setBlockMetadata(par2, par3, par4, var11, 3);
         }
         else
         {
@@ -143,28 +145,28 @@ public class BlockChest extends BlockContainer
             {
                 if (var7 == this.blockID)
                 {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4 - 1, var11, 3);
+                    par1World.setBlockMetadata(par2, par3, par4 - 1, var11, 3);
                 }
                 else
                 {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4 + 1, var11, 3);
+                    par1World.setBlockMetadata(par2, par3, par4 + 1, var11, 3);
                 }
 
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var11, 3);
+                par1World.setBlockMetadata(par2, par3, par4, var11, 3);
             }
 
             if ((var9 == this.blockID || var10 == this.blockID) && (var11 == 2 || var11 == 3))
             {
                 if (var9 == this.blockID)
                 {
-                    par1World.setBlockMetadataWithNotify(par2 - 1, par3, par4, var11, 3);
+                    par1World.setBlockMetadata(par2 - 1, par3, par4, var11, 3);
                 }
                 else
                 {
-                    par1World.setBlockMetadataWithNotify(par2 + 1, par3, par4, var11, 3);
+                    par1World.setBlockMetadata(par2 + 1, par3, par4, var11, 3);
                 }
 
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var11, 3);
+                par1World.setBlockMetadata(par2, par3, par4, var11, 3);
             }
         }
 
@@ -282,7 +284,7 @@ public class BlockChest extends BlockContainer
                 }
             }
 
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var13, 3);
+            par1World.setBlockMetadata(par2, par3, par4, var13, 3);
         }
     }
 
@@ -376,7 +378,7 @@ public class BlockChest extends BlockContainer
 
                         if (var9.hasTagCompound())
                         {
-                            var14.func_92059_d().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
+                            var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
                         }
                     }
                 }
@@ -399,7 +401,7 @@ public class BlockChest extends BlockContainer
         }
         else
         {
-            IInventory var10 = this.func_94442_h_(par1World, par2, par3, par4);
+            IInventory var10 = this.getInventory(par1World, par2, par3, par4);
 
             if (var10 != null)
             {
@@ -410,7 +412,11 @@ public class BlockChest extends BlockContainer
         }
     }
 
-    public IInventory func_94442_h_(World par1World, int par2, int par3, int par4)
+    /**
+     * Gets the inventory of the chest at the specified coords, accounting for blocks or ocelots on top of the chest,
+     * and double chests.
+     */
+    public IInventory getInventory(World par1World, int par2, int par3, int par4)
     {
         Object var5 = (TileEntityChest)par1World.getBlockTileEntity(par2, par3, par4);
 
@@ -482,7 +488,7 @@ public class BlockChest extends BlockContainer
      */
     public boolean canProvidePower()
     {
-        return this.field_94443_a == 1;
+        return this.isTrapped == 1;
     }
 
     /**
@@ -551,6 +557,6 @@ public class BlockChest extends BlockContainer
      */
     public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
-        return Container.func_94526_b(this.func_94442_h_(par1World, par2, par3, par4));
+        return Container.calcRedstoneFromInventory(this.getInventory(par1World, par2, par3, par4));
     }
 }

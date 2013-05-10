@@ -20,7 +20,7 @@ public class Score
 
     public void func_96649_a(int par1)
     {
-        if (this.field_96657_c.func_96680_c().func_96637_b())
+        if (this.field_96657_c.getCriteria().isReadOnly())
         {
             throw new IllegalStateException("Cannot modify read-only score");
         }
@@ -32,7 +32,7 @@ public class Score
 
     public void func_96646_b(int par1)
     {
-        if (this.field_96657_c.func_96680_c().func_96637_b())
+        if (this.field_96657_c.getCriteria().isReadOnly())
         {
             throw new IllegalStateException("Cannot modify read-only score");
         }
@@ -44,7 +44,7 @@ public class Score
 
     public void func_96648_a()
     {
-        if (this.field_96657_c.func_96680_c().func_96637_b())
+        if (this.field_96657_c.getCriteria().isReadOnly())
         {
             throw new IllegalStateException("Cannot modify read-only score");
         }
@@ -87,6 +87,6 @@ public class Score
 
     public void func_96651_a(List par1List)
     {
-        this.func_96647_c(this.field_96657_c.func_96680_c().func_96635_a(par1List));
+        this.func_96647_c(this.field_96657_c.getCriteria().func_96635_a(par1List));
     }
 }

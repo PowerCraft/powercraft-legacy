@@ -92,7 +92,9 @@ public abstract class World implements IBlockAccess
     private final Vec3Pool vecPool = new Vec3Pool(300, 2000);
     private final Calendar theCalendar = Calendar.getInstance();
     protected Scoreboard worldScoreboard = new Scoreboard();
-    private final ILogAgent field_98181_L;
+
+    /** The log agent for this world. */
+    private final ILogAgent worldLogAgent;
     private ArrayList collidingBoundingBoxes = new ArrayList();
     private boolean scanningTileEntities;
 
@@ -150,7 +152,7 @@ public abstract class World implements IBlockAccess
         this.saveHandler = par1ISaveHandler;
         this.theProfiler = par5Profiler;
         this.mapStorage = new MapStorage(par1ISaveHandler);
-        this.field_98181_L = par6ILogAgent;
+        this.worldLogAgent = par6ILogAgent;
         this.worldInfo = par1ISaveHandler.loadWorldInfo();
 
         if (par4WorldProvider != null)
@@ -275,7 +277,7 @@ public abstract class World implements IBlockAccess
                     CrashReport var6 = CrashReport.makeCrashReport(var8, "Exception getting block type in world");
                     CrashReportCategory var7 = var6.makeCategory("Requested block coordinates");
                     var7.addCrashSection("Found chunk", Boolean.valueOf(var4 == null));
-                    var7.addCrashSection("Location", CrashReportCategory.func_85071_a(par1, par2, par3));
+                    var7.addCrashSection("Location", CrashReportCategory.getLocationInfo(par1, par2, par3));
                     throw new ReportedException(var6);
                 }
             }
@@ -384,10 +386,9 @@ public abstract class World implements IBlockAccess
     }
 
     /**
-     * Sets the block ID and metadata at a given location. Args: X, Y, Z, new block ID, new metadata, flags. Flag 0x02
-     * will trigger a block update both on server and on client, flag 0x04, if used with 0x02, will prevent a block
-     * update on client worlds. Flag 0x01 will pass the original block ID when notifying adjacent blocks, otherwise it
-     * will pass 0.
+     * Sets the block ID and metadata at a given location. Args: X, Y, Z, new block ID, new metadata, flags. Flag 1 will
+     * cause a block update. Flag 2 will send the change to clients (you almost always want this). Flag 4 prevents the
+     * block from being re-rendered, if this is a client world. Flags can be added together.
      */
     public boolean setBlock(int par1, int par2, int par3, int par4, int par5, int par6)
     {
@@ -486,7 +487,7 @@ public abstract class World implements IBlockAccess
      * Sets the blocks metadata and if set will then notify blocks that this block changed, depending on the flag. Args:
      * x, y, z, metadata, flag. See setBlock for flag description
      */
-    public boolean setBlockMetadataWithNotify(int par1, int par2, int par3, int par4, int par5)
+    public boolean setBlockMetadata(int par1, int par2, int par3, int par4, int par5)
     {
         if (par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000)
         {
@@ -1449,7 +1450,7 @@ public abstract class World implements IBlockAccess
     /**
      * calculates and returns a list of colliding bounding boxes within a given AABB
      */
-    public List getAllCollidingBoundingBoxes(AxisAlignedBB par1AxisAlignedBB)
+    public List getCollidingBlockBounds(AxisAlignedBB par1AxisAlignedBB)
     {
         this.collidingBoundingBoxes.clear();
         int var2 = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -1514,12 +1515,15 @@ public abstract class World implements IBlockAccess
         return this.provider.calculateCelestialAngle(this.worldInfo.getWorldTime(), par1);
     }
 
-    public int func_72853_d()
+    public int getMoonPhase()
     {
         return this.provider.func_76559_b(this.worldInfo.getWorldTime());
     }
 
-    public float func_72929_e(float par1)
+    /**
+     * Return getCelestialAngle()*2*PI
+     */
+    public float getCelestialAngleRadians(float par1)
     {
         float var2 = this.getCelestialAngle(par1);
         return var2 * (float)Math.PI * 2.0F;
@@ -1891,15 +1895,15 @@ public abstract class World implements IBlockAccess
     /**
      * Returns true if there are no solid, live entities in the specified AxisAlignedBB
      */
-    public boolean checkIfAABBIsClear(AxisAlignedBB par1AxisAlignedBB)
+    public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB)
     {
-        return this.checkIfAABBIsClearExcludingEntity(par1AxisAlignedBB, (Entity)null);
+        return this.checkNoEntityCollision(par1AxisAlignedBB, (Entity)null);
     }
 
     /**
      * Returns true if there are no solid, live entities in the specified AxisAlignedBB, excluding the given entity
      */
-    public boolean checkIfAABBIsClearExcludingEntity(AxisAlignedBB par1AxisAlignedBB, Entity par2Entity)
+    public boolean checkNoEntityCollision(AxisAlignedBB par1AxisAlignedBB, Entity par2Entity)
     {
         List var3 = this.getEntitiesWithinAABBExcludingEntity((Entity)null, par1AxisAlignedBB);
 
@@ -1919,7 +1923,7 @@ public abstract class World implements IBlockAccess
     /**
      * Returns true if there are any blocks in the region constrained by an AxisAlignedBB
      */
-    public boolean isAABBNonEmpty(AxisAlignedBB par1AxisAlignedBB)
+    public boolean checkBlockCollision(AxisAlignedBB par1AxisAlignedBB)
     {
         int var2 = MathHelper.floor_double(par1AxisAlignedBB.minX);
         int var3 = MathHelper.floor_double(par1AxisAlignedBB.maxX + 1.0D);
@@ -2446,10 +2450,14 @@ public abstract class World implements IBlockAccess
     public boolean doesBlockHaveSolidTopSurface(int par1, int par2, int par3)
     {
         Block var4 = Block.blocksList[this.getBlockId(par1, par2, par3)];
-        return this.func_102026_a(var4, this.getBlockMetadata(par1, par2, par3));
+        return this.isBlockTopFacingSurfaceSolid(var4, this.getBlockMetadata(par1, par2, par3));
     }
 
-    public boolean func_102026_a(Block par1Block, int par2)
+    /**
+     * Performs check to see if the block is a normal, solid block, or if the metadata of the block indicates that its
+     * facing puts its solid side upwards. (inverted stairs, for example)
+     */
+    public boolean isBlockTopFacingSurfaceSolid(Block par1Block, int par2)
     {
         return par1Block == null ? false : (par1Block.blockMaterial.isOpaque() && par1Block.renderAsNormalBlock() ? true : (par1Block instanceof BlockStairs ? (par2 & 4) == 4 : (par1Block instanceof BlockHalfSlab ? (par2 & 8) == 8 : (par1Block instanceof BlockHopper ? true : (par1Block instanceof BlockSnow ? (par2 & 7) == 7 : false)))));
     }
@@ -2834,7 +2842,7 @@ public abstract class World implements IBlockAccess
         this.updateLightByType(EnumSkyBlock.Block, par1, par2, par3);
     }
 
-    private int func_98179_a(int par1, int par2, int par3, EnumSkyBlock par4EnumSkyBlock)
+    private int computeLightValue(int par1, int par2, int par3, EnumSkyBlock par4EnumSkyBlock)
     {
         if (par4EnumSkyBlock == EnumSkyBlock.Sky && this.canBlockSeeTheSky(par1, par2, par3))
         {
@@ -2897,7 +2905,7 @@ public abstract class World implements IBlockAccess
             int var6 = 0;
             this.theProfiler.startSection("getBrightness");
             int var7 = this.getSavedLightValue(par1EnumSkyBlock, par2, par3, par4);
-            int var8 = this.func_98179_a(par2, par3, par4, par1EnumSkyBlock);
+            int var8 = this.computeLightValue(par2, par3, par4, par1EnumSkyBlock);
             int var9;
             int var10;
             int var11;
@@ -2931,9 +2939,9 @@ public abstract class World implements IBlockAccess
 
                         if (var13 > 0)
                         {
-                            var15 = MathHelper.abs(var10 - par2);
-                            var16 = MathHelper.abs(var11 - par3);
-                            var17 = MathHelper.abs(var12 - par4);
+                            var15 = MathHelper.abs_int(var10 - par2);
+                            var16 = MathHelper.abs_int(var11 - par3);
+                            var17 = MathHelper.abs_int(var12 - par4);
 
                             if (var15 + var16 + var17 < 17)
                             {
@@ -2968,7 +2976,7 @@ public abstract class World implements IBlockAccess
                 var11 = (var9 >> 6 & 63) - 32 + par3;
                 var12 = (var9 >> 12 & 63) - 32 + par4;
                 var13 = this.getSavedLightValue(par1EnumSkyBlock, var10, var11, var12);
-                var14 = this.func_98179_a(var10, var11, var12, par1EnumSkyBlock);
+                var14 = this.computeLightValue(var10, var11, var12, par1EnumSkyBlock);
 
                 if (var14 != var13)
                 {
@@ -3039,10 +3047,10 @@ public abstract class World implements IBlockAccess
      */
     public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
     {
-        return this.func_94576_a(par1Entity, par2AxisAlignedBB, (IEntitySelector)null);
+        return this.getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB, (IEntitySelector)null);
     }
 
-    public List func_94576_a(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3IEntitySelector)
+    public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3IEntitySelector)
     {
         ArrayList var4 = new ArrayList();
         int var5 = MathHelper.floor_double((par2AxisAlignedBB.minX - 2.0D) / 16.0D);
@@ -3146,7 +3154,7 @@ public abstract class World implements IBlockAccess
         {
             Entity var4 = (Entity)this.loadedEntityList.get(var3);
 
-            if (par1Class.isAssignableFrom(var4.getClass()))
+            if ((!(var4 instanceof EntityLiving) || !((EntityLiving)var4).func_104002_bU()) && par1Class.isAssignableFrom(var4.getClass()))
             {
                 ++var2;
             }
@@ -3191,7 +3199,7 @@ public abstract class World implements IBlockAccess
             var12 = null;
         }
 
-        if (var12 != null && !this.checkIfAABBIsClearExcludingEntity(var12, par7Entity))
+        if (var12 != null && !this.checkNoEntityCollision(var12, par7Entity))
         {
             return false;
         }
@@ -3427,7 +3435,7 @@ public abstract class World implements IBlockAccess
                     var16 = par7 * 0.800000011920929D;
                 }
 
-                if (var13.getHasActivePotion())
+                if (var13.isInvisible())
                 {
                     float var18 = var13.func_82243_bO();
 
@@ -3689,7 +3697,7 @@ public abstract class World implements IBlockAccess
         {
             CrashReport var8 = CrashReport.makeCrashReport(var10, "Playing level event");
             CrashReportCategory var9 = var8.makeCategory("Level event being played");
-            var9.addCrashSection("Block coordinates", CrashReportCategory.func_85071_a(par3, par4, par5));
+            var9.addCrashSection("Block coordinates", CrashReportCategory.getLocationInfo(par3, par4, par5));
             var9.addCrashSection("Event source", par1EntityPlayer);
             var9.addCrashSection("Event type", Integer.valueOf(par2));
             var9.addCrashSection("Event data", Integer.valueOf(par6));
@@ -3831,6 +3839,6 @@ public abstract class World implements IBlockAccess
 
     public ILogAgent getWorldLogAgent()
     {
-        return this.field_98181_L;
+        return this.worldLogAgent;
     }
 }

@@ -4,19 +4,21 @@ public class RConConsoleSource implements ICommandSender
 {
     /** only ever used by MinecraftServer.executeCommand */
     public static final RConConsoleSource consoleBuffer = new RConConsoleSource();
-    private StringBuffer chatBuffer = new StringBuffer();
+
+    /** RCon string buffer for log. */
+    private StringBuffer buffer = new StringBuffer();
 
     /**
      * Clears the RCon log
      */
     public void resetLog()
     {
-        this.chatBuffer.setLength(0);
+        this.buffer.setLength(0);
     }
 
     public String getChatBuffer()
     {
-        return this.chatBuffer.toString();
+        return this.buffer.toString();
     }
 
     /**
@@ -29,7 +31,7 @@ public class RConConsoleSource implements ICommandSender
 
     public void sendChatToPlayer(String par1Str)
     {
-        this.chatBuffer.append(par1Str);
+        this.buffer.append(par1Str);
     }
 
     /**

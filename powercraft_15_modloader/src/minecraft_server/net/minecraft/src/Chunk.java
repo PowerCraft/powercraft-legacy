@@ -760,7 +760,7 @@ public class Chunk
 
         if (var2 != this.xPosition || var3 != this.zPosition)
         {
-            this.worldObj.getWorldLogAgent().func_98232_c("Wrong location! " + par1Entity);
+            this.worldObj.getWorldLogAgent().logSevere("Wrong location! " + par1Entity);
             Thread.dumpStack();
         }
 

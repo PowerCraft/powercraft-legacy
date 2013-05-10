@@ -21,7 +21,7 @@ public class BlockMushroomCap extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return par2 == 10 && par1 > 1 ? this.field_94426_cO : (par2 >= 1 && par2 <= 9 && par1 == 1 ? this.iconArray[this.mushroomType] : (par2 >= 1 && par2 <= 3 && par1 == 2 ? this.iconArray[this.mushroomType] : (par2 >= 7 && par2 <= 9 && par1 == 3 ? this.iconArray[this.mushroomType] : ((par2 == 1 || par2 == 4 || par2 == 7) && par1 == 4 ? this.iconArray[this.mushroomType] : ((par2 == 3 || par2 == 6 || par2 == 9) && par1 == 5 ? this.iconArray[this.mushroomType] : (par2 == 14 ? this.iconArray[this.mushroomType] : (par2 == 15 ? this.field_94426_cO : this.field_94427_cP)))))));
     }

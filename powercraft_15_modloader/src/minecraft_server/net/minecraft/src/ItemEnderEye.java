@@ -25,7 +25,7 @@ public class ItemEnderEye extends Item
             }
             else
             {
-                par3World.setBlockMetadataWithNotify(par4, par5, par6, var12 + 4, 2);
+                par3World.setBlockMetadata(par4, par5, par6, var12 + 4, 2);
                 --par1ItemStack.stackSize;
                 int var13;
 

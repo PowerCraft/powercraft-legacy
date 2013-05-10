@@ -222,7 +222,7 @@ public class NetServerHandler extends NetHandler
                     if (!this.playerEntity.isPlayerSleeping() && (var13 > 1.65D || var13 < 0.1D))
                     {
                         this.kickPlayer("Illegal stance");
-                        this.mcServer.func_98033_al().func_98236_b(this.playerEntity.username + " had an illegal stance: " + var13);
+                        this.mcServer.getLogAgent().func_98236_b(this.playerEntity.username + " had an illegal stance: " + var13);
                         return;
                     }
 
@@ -258,7 +258,7 @@ public class NetServerHandler extends NetHandler
 
                 if (var25 > 100.0D && (!this.mcServer.isSinglePlayer() || !this.mcServer.getServerOwner().equals(this.playerEntity.username)))
                 {
-                    this.mcServer.func_98033_al().func_98236_b(this.playerEntity.username + " moved too quickly! " + var13 + "," + var15 + "," + var17 + " (" + var19 + ", " + var21 + ", " + var23 + ")");
+                    this.mcServer.getLogAgent().func_98236_b(this.playerEntity.username + " moved too quickly! " + var13 + "," + var15 + "," + var17 + " (" + var19 + ", " + var21 + ", " + var23 + ")");
                     this.setPlayerLocation(this.lastPosX, this.lastPosY, this.lastPosZ, this.playerEntity.rotationYaw, this.playerEntity.rotationPitch);
                     return;
                 }
@@ -290,7 +290,7 @@ public class NetServerHandler extends NetHandler
                 if (var25 > 0.0625D && !this.playerEntity.isPlayerSleeping() && !this.playerEntity.theItemInWorldManager.isCreative())
                 {
                     var31 = true;
-                    this.mcServer.func_98033_al().func_98236_b(this.playerEntity.username + " moved wrongly!");
+                    this.mcServer.getLogAgent().func_98236_b(this.playerEntity.username + " moved wrongly!");
                 }
 
                 this.playerEntity.setPositionAndRotation(var5, var7, var9, var11, var12);
@@ -304,7 +304,7 @@ public class NetServerHandler extends NetHandler
 
                 AxisAlignedBB var33 = this.playerEntity.boundingBox.copy().expand((double)var27, (double)var27, (double)var27).addCoord(0.0D, -0.55D, 0.0D);
 
-                if (!this.mcServer.isFlightAllowed() && !this.playerEntity.theItemInWorldManager.isCreative() && !var2.isAABBNonEmpty(var33))
+                if (!this.mcServer.isFlightAllowed() && !this.playerEntity.theItemInWorldManager.isCreative() && !var2.checkBlockCollision(var33))
                 {
                     if (var29 >= -0.03125D)
                     {
@@ -312,7 +312,7 @@ public class NetServerHandler extends NetHandler
 
                         if (this.playerInAirTime > 80)
                         {
-                            this.mcServer.func_98033_al().func_98236_b(this.playerEntity.username + " was kicked for floating too long!");
+                            this.mcServer.getLogAgent().func_98236_b(this.playerEntity.username + " was kicked for floating too long!");
                             this.kickPlayer("Flying is not enabled on this server");
                             return;
                         }
@@ -528,14 +528,14 @@ public class NetServerHandler extends NetHandler
 
     public void handleErrorMessage(String par1Str, Object[] par2ArrayOfObj)
     {
-        this.mcServer.func_98033_al().func_98233_a(this.playerEntity.username + " lost connection: " + par1Str);
-        this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat(EnumChatFormatting.YELLOW + this.playerEntity.func_96090_ax() + " left the game."));
+        this.mcServer.getLogAgent().func_98233_a(this.playerEntity.username + " lost connection: " + par1Str);
+        this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat(EnumChatFormatting.YELLOW + this.playerEntity.getTranslatedEntityName() + " left the game."));
         this.mcServer.getConfigurationManager().playerLoggedOut(this.playerEntity);
         this.connectionClosed = true;
 
         if (this.mcServer.isSinglePlayer() && this.playerEntity.username.equals(this.mcServer.getServerOwner()))
         {
-            this.mcServer.func_98033_al().func_98233_a("Stopping singleplayer server as player logged out");
+            this.mcServer.getLogAgent().func_98233_a("Stopping singleplayer server as player logged out");
             this.mcServer.initiateShutdown();
         }
     }
@@ -546,7 +546,7 @@ public class NetServerHandler extends NetHandler
      */
     public void unexpectedPacket(Packet par1Packet)
     {
-        this.mcServer.func_98033_al().func_98236_b(this.getClass() + " wasn\'t prepared to deal with a " + par1Packet.getClass());
+        this.mcServer.getLogAgent().func_98236_b(this.getClass() + " wasn\'t prepared to deal with a " + par1Packet.getClass());
         this.kickPlayer("Protocol error, unexpected packet");
     }
 
@@ -593,7 +593,7 @@ public class NetServerHandler extends NetHandler
         }
         else
         {
-            this.mcServer.func_98033_al().func_98236_b(this.playerEntity.username + " tried to set an invalid carried item");
+            this.mcServer.getLogAgent().func_98236_b(this.playerEntity.username + " tried to set an invalid carried item");
         }
     }
 
@@ -636,8 +636,8 @@ public class NetServerHandler extends NetHandler
                         return;
                     }
 
-                    var2 = "<" + this.playerEntity.func_96090_ax() + "> " + var2;
-                    this.mcServer.func_98033_al().func_98233_a(var2);
+                    var2 = "<" + this.playerEntity.getTranslatedEntityName() + "> " + var2;
+                    this.mcServer.getLogAgent().func_98233_a(var2);
                     this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat(var2, false));
                 }
 
@@ -865,7 +865,7 @@ public class NetServerHandler extends NetHandler
 
                 if (var7 != null)
                 {
-                    var7.func_70288_d();
+                    var7.setAgeToCreativeDespawnTime();
                 }
             }
         }

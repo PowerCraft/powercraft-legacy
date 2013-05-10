@@ -5,129 +5,134 @@ import java.util.List;
 
 public class BlockBaseRailLogic
 {
-    private World field_94516_b;
-    private int field_94517_c;
-    private int field_94514_d;
-    private int field_94515_e;
-    private final boolean field_94512_f;
-    private List field_94513_g;
+    private World logicWorld;
+    private int railX;
+    private int railY;
+    private int railZ;
+    private final boolean isStraightRail;
 
-    final BlockRailBase field_94518_a;
+    /** The chunk position the rail is at. */
+    private List railChunkPosition;
+
+    final BlockRailBase theRail;
 
     public BlockBaseRailLogic(BlockRailBase par1, World par2, int par3, int par4, int par5)
     {
-        this.field_94518_a = par1;
-        this.field_94513_g = new ArrayList();
-        this.field_94516_b = par2;
-        this.field_94517_c = par3;
-        this.field_94514_d = par4;
-        this.field_94515_e = par5;
+        this.theRail = par1;
+        this.railChunkPosition = new ArrayList();
+        this.logicWorld = par2;
+        this.railX = par3;
+        this.railY = par4;
+        this.railZ = par5;
         int var6 = par2.getBlockId(par3, par4, par5);
         int var7 = par2.getBlockMetadata(par3, par4, par5);
 
         if (((BlockRailBase)Block.blocksList[var6]).isPowered)
         {
-            this.field_94512_f = true;
+            this.isStraightRail = true;
             var7 &= -9;
         }
         else
         {
-            this.field_94512_f = false;
+            this.isStraightRail = false;
         }
 
-        this.func_94504_a(var7);
+        this.setBasicRail(var7);
     }
 
-    private void func_94504_a(int par1)
+    private void setBasicRail(int par1)
     {
-        this.field_94513_g.clear();
+        this.railChunkPosition.clear();
 
         if (par1 == 0)
         {
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c, this.field_94514_d, this.field_94515_e - 1));
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c, this.field_94514_d, this.field_94515_e + 1));
+            this.railChunkPosition.add(new ChunkPosition(this.railX, this.railY, this.railZ - 1));
+            this.railChunkPosition.add(new ChunkPosition(this.railX, this.railY, this.railZ + 1));
         }
         else if (par1 == 1)
         {
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c - 1, this.field_94514_d, this.field_94515_e));
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c + 1, this.field_94514_d, this.field_94515_e));
+            this.railChunkPosition.add(new ChunkPosition(this.railX - 1, this.railY, this.railZ));
+            this.railChunkPosition.add(new ChunkPosition(this.railX + 1, this.railY, this.railZ));
         }
         else if (par1 == 2)
         {
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c - 1, this.field_94514_d, this.field_94515_e));
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c + 1, this.field_94514_d + 1, this.field_94515_e));
+            this.railChunkPosition.add(new ChunkPosition(this.railX - 1, this.railY, this.railZ));
+            this.railChunkPosition.add(new ChunkPosition(this.railX + 1, this.railY + 1, this.railZ));
         }
         else if (par1 == 3)
         {
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c - 1, this.field_94514_d + 1, this.field_94515_e));
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c + 1, this.field_94514_d, this.field_94515_e));
+            this.railChunkPosition.add(new ChunkPosition(this.railX - 1, this.railY + 1, this.railZ));
+            this.railChunkPosition.add(new ChunkPosition(this.railX + 1, this.railY, this.railZ));
         }
         else if (par1 == 4)
         {
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c, this.field_94514_d + 1, this.field_94515_e - 1));
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c, this.field_94514_d, this.field_94515_e + 1));
+            this.railChunkPosition.add(new ChunkPosition(this.railX, this.railY + 1, this.railZ - 1));
+            this.railChunkPosition.add(new ChunkPosition(this.railX, this.railY, this.railZ + 1));
         }
         else if (par1 == 5)
         {
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c, this.field_94514_d, this.field_94515_e - 1));
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c, this.field_94514_d + 1, this.field_94515_e + 1));
+            this.railChunkPosition.add(new ChunkPosition(this.railX, this.railY, this.railZ - 1));
+            this.railChunkPosition.add(new ChunkPosition(this.railX, this.railY + 1, this.railZ + 1));
         }
         else if (par1 == 6)
         {
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c + 1, this.field_94514_d, this.field_94515_e));
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c, this.field_94514_d, this.field_94515_e + 1));
+            this.railChunkPosition.add(new ChunkPosition(this.railX + 1, this.railY, this.railZ));
+            this.railChunkPosition.add(new ChunkPosition(this.railX, this.railY, this.railZ + 1));
         }
         else if (par1 == 7)
         {
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c - 1, this.field_94514_d, this.field_94515_e));
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c, this.field_94514_d, this.field_94515_e + 1));
+            this.railChunkPosition.add(new ChunkPosition(this.railX - 1, this.railY, this.railZ));
+            this.railChunkPosition.add(new ChunkPosition(this.railX, this.railY, this.railZ + 1));
         }
         else if (par1 == 8)
         {
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c - 1, this.field_94514_d, this.field_94515_e));
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c, this.field_94514_d, this.field_94515_e - 1));
+            this.railChunkPosition.add(new ChunkPosition(this.railX - 1, this.railY, this.railZ));
+            this.railChunkPosition.add(new ChunkPosition(this.railX, this.railY, this.railZ - 1));
         }
         else if (par1 == 9)
         {
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c + 1, this.field_94514_d, this.field_94515_e));
-            this.field_94513_g.add(new ChunkPosition(this.field_94517_c, this.field_94514_d, this.field_94515_e - 1));
+            this.railChunkPosition.add(new ChunkPosition(this.railX + 1, this.railY, this.railZ));
+            this.railChunkPosition.add(new ChunkPosition(this.railX, this.railY, this.railZ - 1));
         }
     }
 
-    private void func_94509_b()
+    private void refreshConnectedTracks()
     {
-        for (int var1 = 0; var1 < this.field_94513_g.size(); ++var1)
+        for (int var1 = 0; var1 < this.railChunkPosition.size(); ++var1)
         {
-            BlockBaseRailLogic var2 = this.func_94501_a((ChunkPosition)this.field_94513_g.get(var1));
+            BlockBaseRailLogic var2 = this.getRailLogic((ChunkPosition)this.railChunkPosition.get(var1));
 
-            if (var2 != null && var2.func_94508_a(this))
+            if (var2 != null && var2.isRailChunkPositionCorrect(this))
             {
-                this.field_94513_g.set(var1, new ChunkPosition(var2.field_94517_c, var2.field_94514_d, var2.field_94515_e));
+                this.railChunkPosition.set(var1, new ChunkPosition(var2.railX, var2.railY, var2.railZ));
             }
             else
             {
-                this.field_94513_g.remove(var1--);
+                this.railChunkPosition.remove(var1--);
             }
         }
     }
 
-    private boolean func_94502_a(int par1, int par2, int par3)
+    private boolean isMinecartTrack(int par1, int par2, int par3)
     {
-        return BlockRailBase.isRailBlockAt(this.field_94516_b, par1, par2, par3) ? true : (BlockRailBase.isRailBlockAt(this.field_94516_b, par1, par2 + 1, par3) ? true : BlockRailBase.isRailBlockAt(this.field_94516_b, par1, par2 - 1, par3));
+        return BlockRailBase.isRailBlockAt(this.logicWorld, par1, par2, par3) ? true : (BlockRailBase.isRailBlockAt(this.logicWorld, par1, par2 + 1, par3) ? true : BlockRailBase.isRailBlockAt(this.logicWorld, par1, par2 - 1, par3));
     }
 
-    private BlockBaseRailLogic func_94501_a(ChunkPosition par1ChunkPosition)
+    private BlockBaseRailLogic getRailLogic(ChunkPosition par1ChunkPosition)
     {
-        return BlockRailBase.isRailBlockAt(this.field_94516_b, par1ChunkPosition.x, par1ChunkPosition.y, par1ChunkPosition.z) ? new BlockBaseRailLogic(this.field_94518_a, this.field_94516_b, par1ChunkPosition.x, par1ChunkPosition.y, par1ChunkPosition.z) : (BlockRailBase.isRailBlockAt(this.field_94516_b, par1ChunkPosition.x, par1ChunkPosition.y + 1, par1ChunkPosition.z) ? new BlockBaseRailLogic(this.field_94518_a, this.field_94516_b, par1ChunkPosition.x, par1ChunkPosition.y + 1, par1ChunkPosition.z) : (BlockRailBase.isRailBlockAt(this.field_94516_b, par1ChunkPosition.x, par1ChunkPosition.y - 1, par1ChunkPosition.z) ? new BlockBaseRailLogic(this.field_94518_a, this.field_94516_b, par1ChunkPosition.x, par1ChunkPosition.y - 1, par1ChunkPosition.z) : null));
+        return BlockRailBase.isRailBlockAt(this.logicWorld, par1ChunkPosition.x, par1ChunkPosition.y, par1ChunkPosition.z) ? new BlockBaseRailLogic(this.theRail, this.logicWorld, par1ChunkPosition.x, par1ChunkPosition.y, par1ChunkPosition.z) : (BlockRailBase.isRailBlockAt(this.logicWorld, par1ChunkPosition.x, par1ChunkPosition.y + 1, par1ChunkPosition.z) ? new BlockBaseRailLogic(this.theRail, this.logicWorld, par1ChunkPosition.x, par1ChunkPosition.y + 1, par1ChunkPosition.z) : (BlockRailBase.isRailBlockAt(this.logicWorld, par1ChunkPosition.x, par1ChunkPosition.y - 1, par1ChunkPosition.z) ? new BlockBaseRailLogic(this.theRail, this.logicWorld, par1ChunkPosition.x, par1ChunkPosition.y - 1, par1ChunkPosition.z) : null));
     }
 
-    private boolean func_94508_a(BlockBaseRailLogic par1BlockBaseRailLogic)
+    /**
+     * Checks if the rail is at the chunk position it is expected to be.
+     */
+    private boolean isRailChunkPositionCorrect(BlockBaseRailLogic par1BlockBaseRailLogic)
     {
-        for (int var2 = 0; var2 < this.field_94513_g.size(); ++var2)
+        for (int var2 = 0; var2 < this.railChunkPosition.size(); ++var2)
         {
-            ChunkPosition var3 = (ChunkPosition)this.field_94513_g.get(var2);
+            ChunkPosition var3 = (ChunkPosition)this.railChunkPosition.get(var2);
 
-            if (var3.x == par1BlockBaseRailLogic.field_94517_c && var3.z == par1BlockBaseRailLogic.field_94515_e)
+            if (var3.x == par1BlockBaseRailLogic.railX && var3.z == par1BlockBaseRailLogic.railZ)
             {
                 return true;
             }
@@ -136,11 +141,11 @@ public class BlockBaseRailLogic
         return false;
     }
 
-    private boolean func_94510_b(int par1, int par2, int par3)
+    private boolean isPartOfTrack(int par1, int par2, int par3)
     {
-        for (int var4 = 0; var4 < this.field_94513_g.size(); ++var4)
+        for (int var4 = 0; var4 < this.railChunkPosition.size(); ++var4)
         {
-            ChunkPosition var5 = (ChunkPosition)this.field_94513_g.get(var4);
+            ChunkPosition var5 = (ChunkPosition)this.railChunkPosition.get(var4);
 
             if (var5.x == par1 && var5.z == par3)
             {
@@ -151,26 +156,26 @@ public class BlockBaseRailLogic
         return false;
     }
 
-    protected int func_94505_a()
+    protected int getNumberOfAdjacentTracks()
     {
         int var1 = 0;
 
-        if (this.func_94502_a(this.field_94517_c, this.field_94514_d, this.field_94515_e - 1))
+        if (this.isMinecartTrack(this.railX, this.railY, this.railZ - 1))
         {
             ++var1;
         }
 
-        if (this.func_94502_a(this.field_94517_c, this.field_94514_d, this.field_94515_e + 1))
+        if (this.isMinecartTrack(this.railX, this.railY, this.railZ + 1))
         {
             ++var1;
         }
 
-        if (this.func_94502_a(this.field_94517_c - 1, this.field_94514_d, this.field_94515_e))
+        if (this.isMinecartTrack(this.railX - 1, this.railY, this.railZ))
         {
             ++var1;
         }
 
-        if (this.func_94502_a(this.field_94517_c + 1, this.field_94514_d, this.field_94515_e))
+        if (this.isMinecartTrack(this.railX + 1, this.railY, this.railZ))
         {
             ++var1;
         }
@@ -178,18 +183,18 @@ public class BlockBaseRailLogic
         return var1;
     }
 
-    private boolean func_94507_b(BlockBaseRailLogic par1BlockBaseRailLogic)
+    private boolean canConnectTo(BlockBaseRailLogic par1BlockBaseRailLogic)
     {
-        return this.func_94508_a(par1BlockBaseRailLogic) ? true : (this.field_94513_g.size() == 2 ? false : (this.field_94513_g.isEmpty() ? true : true));
+        return this.isRailChunkPositionCorrect(par1BlockBaseRailLogic) ? true : (this.railChunkPosition.size() == 2 ? false : (this.railChunkPosition.isEmpty() ? true : true));
     }
 
-    private void func_94506_c(BlockBaseRailLogic par1BlockBaseRailLogic)
+    private void connectToNeighbor(BlockBaseRailLogic par1BlockBaseRailLogic)
     {
-        this.field_94513_g.add(new ChunkPosition(par1BlockBaseRailLogic.field_94517_c, par1BlockBaseRailLogic.field_94514_d, par1BlockBaseRailLogic.field_94515_e));
-        boolean var2 = this.func_94510_b(this.field_94517_c, this.field_94514_d, this.field_94515_e - 1);
-        boolean var3 = this.func_94510_b(this.field_94517_c, this.field_94514_d, this.field_94515_e + 1);
-        boolean var4 = this.func_94510_b(this.field_94517_c - 1, this.field_94514_d, this.field_94515_e);
-        boolean var5 = this.func_94510_b(this.field_94517_c + 1, this.field_94514_d, this.field_94515_e);
+        this.railChunkPosition.add(new ChunkPosition(par1BlockBaseRailLogic.railX, par1BlockBaseRailLogic.railY, par1BlockBaseRailLogic.railZ));
+        boolean var2 = this.isPartOfTrack(this.railX, this.railY, this.railZ - 1);
+        boolean var3 = this.isPartOfTrack(this.railX, this.railY, this.railZ + 1);
+        boolean var4 = this.isPartOfTrack(this.railX - 1, this.railY, this.railZ);
+        boolean var5 = this.isPartOfTrack(this.railX + 1, this.railY, this.railZ);
         byte var6 = -1;
 
         if (var2 || var3)
@@ -202,7 +207,7 @@ public class BlockBaseRailLogic
             var6 = 1;
         }
 
-        if (!this.field_94512_f)
+        if (!this.isStraightRail)
         {
             if (var3 && var5 && !var2 && !var4)
             {
@@ -227,12 +232,12 @@ public class BlockBaseRailLogic
 
         if (var6 == 0)
         {
-            if (BlockRailBase.isRailBlockAt(this.field_94516_b, this.field_94517_c, this.field_94514_d + 1, this.field_94515_e - 1))
+            if (BlockRailBase.isRailBlockAt(this.logicWorld, this.railX, this.railY + 1, this.railZ - 1))
             {
                 var6 = 4;
             }
 
-            if (BlockRailBase.isRailBlockAt(this.field_94516_b, this.field_94517_c, this.field_94514_d + 1, this.field_94515_e + 1))
+            if (BlockRailBase.isRailBlockAt(this.logicWorld, this.railX, this.railY + 1, this.railZ + 1))
             {
                 var6 = 5;
             }
@@ -240,12 +245,12 @@ public class BlockBaseRailLogic
 
         if (var6 == 1)
         {
-            if (BlockRailBase.isRailBlockAt(this.field_94516_b, this.field_94517_c + 1, this.field_94514_d + 1, this.field_94515_e))
+            if (BlockRailBase.isRailBlockAt(this.logicWorld, this.railX + 1, this.railY + 1, this.railZ))
             {
                 var6 = 2;
             }
 
-            if (BlockRailBase.isRailBlockAt(this.field_94516_b, this.field_94517_c - 1, this.field_94514_d + 1, this.field_94515_e))
+            if (BlockRailBase.isRailBlockAt(this.logicWorld, this.railX - 1, this.railY + 1, this.railZ))
             {
                 var6 = 3;
             }
@@ -258,17 +263,17 @@ public class BlockBaseRailLogic
 
         int var7 = var6;
 
-        if (this.field_94512_f)
+        if (this.isStraightRail)
         {
-            var7 = this.field_94516_b.getBlockMetadata(this.field_94517_c, this.field_94514_d, this.field_94515_e) & 8 | var6;
+            var7 = this.logicWorld.getBlockMetadata(this.railX, this.railY, this.railZ) & 8 | var6;
         }
 
-        this.field_94516_b.setBlockMetadataWithNotify(this.field_94517_c, this.field_94514_d, this.field_94515_e, var7, 3);
+        this.logicWorld.setBlockMetadataWithNotify(this.railX, this.railY, this.railZ, var7, 3);
     }
 
-    private boolean func_94503_c(int par1, int par2, int par3)
+    private boolean canConnectFrom(int par1, int par2, int par3)
     {
-        BlockBaseRailLogic var4 = this.func_94501_a(new ChunkPosition(par1, par2, par3));
+        BlockBaseRailLogic var4 = this.getRailLogic(new ChunkPosition(par1, par2, par3));
 
         if (var4 == null)
         {
@@ -276,17 +281,17 @@ public class BlockBaseRailLogic
         }
         else
         {
-            var4.func_94509_b();
-            return var4.func_94507_b(this);
+            var4.refreshConnectedTracks();
+            return var4.canConnectTo(this);
         }
     }
 
     public void func_94511_a(boolean par1, boolean par2)
     {
-        boolean var3 = this.func_94503_c(this.field_94517_c, this.field_94514_d, this.field_94515_e - 1);
-        boolean var4 = this.func_94503_c(this.field_94517_c, this.field_94514_d, this.field_94515_e + 1);
-        boolean var5 = this.func_94503_c(this.field_94517_c - 1, this.field_94514_d, this.field_94515_e);
-        boolean var6 = this.func_94503_c(this.field_94517_c + 1, this.field_94514_d, this.field_94515_e);
+        boolean var3 = this.canConnectFrom(this.railX, this.railY, this.railZ - 1);
+        boolean var4 = this.canConnectFrom(this.railX, this.railY, this.railZ + 1);
+        boolean var5 = this.canConnectFrom(this.railX - 1, this.railY, this.railZ);
+        boolean var6 = this.canConnectFrom(this.railX + 1, this.railY, this.railZ);
         byte var7 = -1;
 
         if ((var3 || var4) && !var5 && !var6)
@@ -299,7 +304,7 @@ public class BlockBaseRailLogic
             var7 = 1;
         }
 
-        if (!this.field_94512_f)
+        if (!this.isStraightRail)
         {
             if (var4 && var6 && !var3 && !var5)
             {
@@ -334,7 +339,7 @@ public class BlockBaseRailLogic
                 var7 = 1;
             }
 
-            if (!this.field_94512_f)
+            if (!this.isStraightRail)
             {
                 if (par1)
                 {
@@ -385,12 +390,12 @@ public class BlockBaseRailLogic
 
         if (var7 == 0)
         {
-            if (BlockRailBase.isRailBlockAt(this.field_94516_b, this.field_94517_c, this.field_94514_d + 1, this.field_94515_e - 1))
+            if (BlockRailBase.isRailBlockAt(this.logicWorld, this.railX, this.railY + 1, this.railZ - 1))
             {
                 var7 = 4;
             }
 
-            if (BlockRailBase.isRailBlockAt(this.field_94516_b, this.field_94517_c, this.field_94514_d + 1, this.field_94515_e + 1))
+            if (BlockRailBase.isRailBlockAt(this.logicWorld, this.railX, this.railY + 1, this.railZ + 1))
             {
                 var7 = 5;
             }
@@ -398,12 +403,12 @@ public class BlockBaseRailLogic
 
         if (var7 == 1)
         {
-            if (BlockRailBase.isRailBlockAt(this.field_94516_b, this.field_94517_c + 1, this.field_94514_d + 1, this.field_94515_e))
+            if (BlockRailBase.isRailBlockAt(this.logicWorld, this.railX + 1, this.railY + 1, this.railZ))
             {
                 var7 = 2;
             }
 
-            if (BlockRailBase.isRailBlockAt(this.field_94516_b, this.field_94517_c - 1, this.field_94514_d + 1, this.field_94515_e))
+            if (BlockRailBase.isRailBlockAt(this.logicWorld, this.railX - 1, this.railY + 1, this.railZ))
             {
                 var7 = 3;
             }
@@ -414,29 +419,29 @@ public class BlockBaseRailLogic
             var7 = 0;
         }
 
-        this.func_94504_a(var7);
+        this.setBasicRail(var7);
         int var8 = var7;
 
-        if (this.field_94512_f)
+        if (this.isStraightRail)
         {
-            var8 = this.field_94516_b.getBlockMetadata(this.field_94517_c, this.field_94514_d, this.field_94515_e) & 8 | var7;
+            var8 = this.logicWorld.getBlockMetadata(this.railX, this.railY, this.railZ) & 8 | var7;
         }
 
-        if (par2 || this.field_94516_b.getBlockMetadata(this.field_94517_c, this.field_94514_d, this.field_94515_e) != var8)
+        if (par2 || this.logicWorld.getBlockMetadata(this.railX, this.railY, this.railZ) != var8)
         {
-            this.field_94516_b.setBlockMetadataWithNotify(this.field_94517_c, this.field_94514_d, this.field_94515_e, var8, 3);
+            this.logicWorld.setBlockMetadataWithNotify(this.railX, this.railY, this.railZ, var8, 3);
 
-            for (int var9 = 0; var9 < this.field_94513_g.size(); ++var9)
+            for (int var9 = 0; var9 < this.railChunkPosition.size(); ++var9)
             {
-                BlockBaseRailLogic var10 = this.func_94501_a((ChunkPosition)this.field_94513_g.get(var9));
+                BlockBaseRailLogic var10 = this.getRailLogic((ChunkPosition)this.railChunkPosition.get(var9));
 
                 if (var10 != null)
                 {
-                    var10.func_94509_b();
+                    var10.refreshConnectedTracks();
 
-                    if (var10.func_94507_b(this))
+                    if (var10.canConnectTo(this))
                     {
-                        var10.func_94506_c(this);
+                        var10.connectToNeighbor(this);
                     }
                 }
             }

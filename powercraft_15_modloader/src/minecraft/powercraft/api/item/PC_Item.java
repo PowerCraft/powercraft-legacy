@@ -89,7 +89,7 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IIDChange
 	}
 	
 	@Override
-	public void updateIcons(IconRegister par1IconRegister) {
+	public void registerIcons(IconRegister par1IconRegister) {
 		for (int i = 0; i < textureNames.length; i++) {
 			icons[i] = par1IconRegister.registerIcon(PC_TextureRegistry.getTextureName(module, textureNames[i]));
 		}

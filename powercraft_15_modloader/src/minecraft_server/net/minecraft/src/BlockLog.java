@@ -6,7 +6,7 @@ public class BlockLog extends Block
 {
     /** The type of tree this log came from. */
     public static final String[] woodType = new String[] {"oak", "spruce", "birch", "jungle"};
-    public static final String[] field_94389_b = new String[] {"tree_side", "tree_spruce", "tree_birch", "tree_jungle"};
+    public static final String[] treeTextureTypes = new String[] {"tree_side", "tree_spruce", "tree_birch", "tree_jungle"};
 
     protected BlockLog(int par1)
     {
@@ -62,7 +62,7 @@ public class BlockLog extends Block
 
                             if ((var13 & 8) == 0)
                             {
-                                par1World.setBlockMetadataWithNotify(par2 + var9, par3 + var10, par4 + var11, var13 | 8, 4);
+                                par1World.setBlockMetadata(par2 + var9, par3 + var10, par4 + var11, var13 | 8, 4);
                             }
                         }
                     }

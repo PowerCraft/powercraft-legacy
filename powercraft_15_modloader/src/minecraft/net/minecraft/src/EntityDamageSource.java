@@ -23,7 +23,7 @@ public class EntityDamageSource extends DamageSource
         ItemStack var2 = this.damageSourceEntity instanceof EntityLiving ? ((EntityLiving)this.damageSourceEntity).getHeldItem() : null;
         String var3 = "death.attack." + this.damageType;
         String var4 = var3 + ".item";
-        return var2 != null && var2.hasDisplayName() && StatCollector.func_94522_b(var4) ? StatCollector.translateToLocalFormatted(var4, new Object[] {par1EntityLiving.func_96090_ax(), this.damageSourceEntity.func_96090_ax(), var2.getDisplayName()}): StatCollector.translateToLocalFormatted(var3, new Object[] {par1EntityLiving.func_96090_ax(), this.damageSourceEntity.func_96090_ax()});
+        return var2 != null && var2.hasDisplayName() && StatCollector.func_94522_b(var4) ? StatCollector.translateToLocalFormatted(var4, new Object[] {par1EntityLiving.getTranslatedEntityName(), this.damageSourceEntity.getTranslatedEntityName(), var2.getDisplayName()}): StatCollector.translateToLocalFormatted(var3, new Object[] {par1EntityLiving.getTranslatedEntityName(), this.damageSourceEntity.getTranslatedEntityName()});
     }
 
     /**

@@ -85,7 +85,7 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
         if (var1 != this.filledSlots)
         {
             this.filledSlots = var1;
-            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, var1, 2);
+            this.worldObj.setBlockMetadata(this.xCoord, this.yCoord, this.zCoord, var1, 2);
         }
 
         super.updateEntity();
@@ -355,19 +355,27 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
     }
 
     /**
-     * Get the size of the side inventory.
+     * param side
      */
-    public int[] getSizeInventorySide(int par1)
+    public int[] getSlotsForFace(int par1)
     {
         return par1 == 1 ? field_102017_a : field_102016_b;
     }
 
-    public boolean func_102007_a(int par1, ItemStack par2ItemStack, int par3)
+    /**
+     * Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item,
+     * side
+     */
+    public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3)
     {
         return this.isStackValidForSlot(par1, par2ItemStack);
     }
 
-    public boolean func_102008_b(int par1, ItemStack par2ItemStack, int par3)
+    /**
+     * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item,
+     * side
+     */
+    public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3)
     {
         return true;
     }

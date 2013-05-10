@@ -36,7 +36,7 @@ public class BlockJukeBox extends BlockContainer
             if (var6 != null)
             {
                 var6.func_96098_a(par5ItemStack.copy());
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
+                par1World.setBlockMetadata(par2, par3, par4, 1, 2);
             }
         }
     }
@@ -59,7 +59,7 @@ public class BlockJukeBox extends BlockContainer
                     par1World.playAuxSFX(1005, par2, par3, par4, 0);
                     par1World.playRecord((String)null, par2, par3, par4);
                     var5.func_96098_a((ItemStack)null);
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 2);
+                    par1World.setBlockMetadata(par2, par3, par4, 0, 2);
                     float var7 = 0.7F;
                     double var8 = (double)(par1World.rand.nextFloat() * var7) + (double)(1.0F - var7) * 0.5D;
                     double var10 = (double)(par1World.rand.nextFloat() * var7) + (double)(1.0F - var7) * 0.2D + 0.6D;

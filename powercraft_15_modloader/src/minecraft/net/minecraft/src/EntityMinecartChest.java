@@ -12,9 +12,9 @@ public class EntityMinecartChest extends EntityMinecartContainer
         super(par1, par2, par4, par6);
     }
 
-    public void func_94095_a(DamageSource par1DamageSource)
+    public void killMinecart(DamageSource par1DamageSource)
     {
-        super.func_94095_a(par1DamageSource);
+        super.killMinecart(par1DamageSource);
         this.dropItemWithOffset(Block.chest.blockID, 1, 0.0F);
     }
 
@@ -26,17 +26,17 @@ public class EntityMinecartChest extends EntityMinecartContainer
         return 27;
     }
 
-    public int func_94087_l()
+    public int getMinecartType()
     {
         return 1;
     }
 
-    public Block func_94093_n()
+    public Block getDefaultDisplayTile()
     {
         return Block.chest;
     }
 
-    public int func_94085_r()
+    public int getDefaultDisplayTileOffset()
     {
         return 8;
     }

@@ -41,14 +41,14 @@ public abstract class GenLayer
             var4 = 6;
         }
 
-        GenLayer var5 = GenLayerZoom.func_75915_a(1000L, var16, 0);
+        GenLayer var5 = GenLayerZoom.magnify(1000L, var16, 0);
         GenLayerRiverInit var13 = new GenLayerRiverInit(100L, var5);
-        var5 = GenLayerZoom.func_75915_a(1000L, var13, var4 + 2);
+        var5 = GenLayerZoom.magnify(1000L, var13, var4 + 2);
         GenLayerRiver var14 = new GenLayerRiver(1L, var5);
         GenLayerSmooth var15 = new GenLayerSmooth(1000L, var14);
-        GenLayer var6 = GenLayerZoom.func_75915_a(1000L, var16, 0);
+        GenLayer var6 = GenLayerZoom.magnify(1000L, var16, 0);
         GenLayerBiome var17 = new GenLayerBiome(200L, var6, par2WorldType);
-        var6 = GenLayerZoom.func_75915_a(1000L, var17, 2);
+        var6 = GenLayerZoom.magnify(1000L, var17, 2);
         Object var18 = new GenLayerHills(1000L, var6);
 
         for (int var7 = 0; var7 < var4; ++var7)

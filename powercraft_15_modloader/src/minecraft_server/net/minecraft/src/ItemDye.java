@@ -115,7 +115,7 @@ public class ItemDye extends Item
             {
                 if ((double)par1World.rand.nextFloat() < 0.45D)
                 {
-                    ((BlockSapling)Block.sapling).func_96477_c(par1World, par2, par3, par4, par1World.rand);
+                    ((BlockSapling)Block.sapling).markOrGrowMarked(par1World, par2, par3, par4, par1World.rand);
                 }
 
                 --par0ItemStack.stackSize;
@@ -165,7 +165,7 @@ public class ItemDye extends Item
                             if (!par1World.isRemote)
                             {
                                 ++var8;
-                                par1World.setBlockMetadataWithNotify(par2, par3, par4, var8 << 2 | var7, 2);
+                                par1World.setBlockMetadata(par2, par3, par4, var8 << 2 | var7, 2);
                                 --par0ItemStack.stackSize;
                             }
 

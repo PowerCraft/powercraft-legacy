@@ -364,7 +364,7 @@ public class EntityItem extends Entity
         {
             if (this.worldObj != null)
             {
-                this.worldObj.getWorldLogAgent().func_98232_c("Item entity " + this.entityId + " has no item?!");
+                this.worldObj.getWorldLogAgent().logSevere("Item entity " + this.entityId + " has no item?!");
             }
 
             return new ItemStack(Block.stone);

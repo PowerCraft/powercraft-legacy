@@ -121,7 +121,7 @@ public class BlockFlowing extends BlockFluid
                 }
                 else
                 {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, var10, 2);
+                    par1World.setBlockMetadata(par2, par3, par4, var10, 2);
                     par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World));
                     par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this.blockID);
                 }
@@ -346,7 +346,7 @@ public class BlockFlowing extends BlockFluid
     {
         int var5 = par1World.getBlockId(par2, par3, par4);
 
-        if (var5 != Block.doorWood.blockID && var5 != Block.doorSteel.blockID && var5 != Block.signPost.blockID && var5 != Block.ladder.blockID && var5 != Block.reed.blockID)
+        if (var5 != Block.doorWood.blockID && var5 != Block.doorIron.blockID && var5 != Block.signPost.blockID && var5 != Block.ladder.blockID && var5 != Block.reed.blockID)
         {
             if (var5 == 0)
             {

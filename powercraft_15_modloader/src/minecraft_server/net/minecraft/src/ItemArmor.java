@@ -148,7 +148,7 @@ public class ItemArmor extends Item
      */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-        int var4 = EntityLiving.func_82159_b(par1ItemStack) - 1;
+        int var4 = EntityLiving.getArmorPosition(par1ItemStack) - 1;
         ItemStack var5 = par3EntityPlayer.getCurrentArmor(var4);
 
         if (var5 == null)

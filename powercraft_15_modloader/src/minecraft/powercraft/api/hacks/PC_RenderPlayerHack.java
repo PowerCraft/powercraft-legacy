@@ -30,7 +30,7 @@ public class PC_RenderPlayerHack extends RenderPlayer {
 			
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor) var5;
-				this.loadTexture(PC_Hacks.getArmorTextureFile(var4, "/armor/" + PC_Hacks.getArmorFilenamePrefix(var6.renderIndex) + "_" + (par2 == 2 ? 2 : 1) + ".png"));
+				this.loadTexture(PC_Hooks.getArmorTexture(var6, var4, par1EntityPlayer, par2, 1, null));
 				ModelBiped var7 = par2 == 2 ? this.modelArmor : this.modelArmorChestplate;
 				var7.bipedHead.showModel = par2 == 0;
 				var7.bipedHeadwear.showModel = par2 == 0;
@@ -39,6 +39,7 @@ public class PC_RenderPlayerHack extends RenderPlayer {
 				var7.bipedLeftArm.showModel = par2 == 1;
 				var7.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
 				var7.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
+				var7 = PC_Hooks.getArmorModel(var6, var4, par1EntityPlayer, par2, var7);
 				this.setRenderPassModel(var7);
 				
 				if (var7 != null) {
@@ -91,7 +92,7 @@ public class PC_RenderPlayerHack extends RenderPlayer {
 			
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor) var5;
-				this.loadTexture(PC_Hacks.getArmorTextureFile(var4, "/armor/" + PC_Hacks.getArmorFilenamePrefix(var6.renderIndex) + "_" + (par2 == 2 ? 2 : 1) + "_b.png"));
+				this.loadTexture(PC_Hooks.getArmorTexture(var6, var4, par1EntityPlayer, par2, 2, null));
 				float var7 = 1.0F;
 				GL11.glColor3f(var7, var7, var7);
 			}

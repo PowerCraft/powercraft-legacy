@@ -2,7 +2,8 @@ package net.minecraft.src;
 
 public class EntitySlime extends EntityLiving implements IMob
 {
-    private static final float[] field_100000_e = new float[] {1.0F, 0.75F, 0.5F, 0.25F, 0.0F, 0.25F, 0.5F, 0.75F};
+    /** Chances for slimes to spawn in swamps for every moon phase. */
+    private static final float[] spawnChances = new float[] {1.0F, 0.75F, 0.5F, 0.25F, 0.0F, 0.25F, 0.5F, 0.75F};
     public float field_70813_a;
     public float field_70811_b;
     public float field_70812_c;
@@ -289,7 +290,7 @@ public class EntitySlime extends EntityLiving implements IMob
             {
                 BiomeGenBase var2 = this.worldObj.getBiomeGenForCoords(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ));
 
-                if (var2 == BiomeGenBase.swampland && this.posY > 50.0D && this.posY < 70.0D && this.rand.nextFloat() < 0.5F && this.rand.nextFloat() < field_100000_e[this.worldObj.func_72853_d()] && this.worldObj.getBlockLightValue(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) <= this.rand.nextInt(8))
+                if (var2 == BiomeGenBase.swampland && this.posY > 50.0D && this.posY < 70.0D && this.rand.nextFloat() < 0.5F && this.rand.nextFloat() < spawnChances[this.worldObj.getMoonPhase()] && this.worldObj.getBlockLightValue(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) <= this.rand.nextInt(8))
                 {
                     return super.getCanSpawnHere();
                 }

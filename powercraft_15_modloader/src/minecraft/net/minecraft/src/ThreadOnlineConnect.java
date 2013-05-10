@@ -30,7 +30,7 @@ class ThreadOnlineConnect extends Thread
             }
 
             this.field_96594_c.func_96576_b(StringTranslate.getInstance().translateKey("mco.connect.authorizing"));
-            TaskOnlineConnect.func_96580_a(this.field_96594_c).addToSendQueue(new Packet2ClientProtocol(60, this.field_96594_c.func_96578_b().session.username, this.field_96595_a, this.field_96593_b));
+            TaskOnlineConnect.func_96580_a(this.field_96594_c).addToSendQueue(new Packet2ClientProtocol(61, this.field_96594_c.func_96578_b().session.username, this.field_96595_a, this.field_96593_b));
         }
         catch (UnknownHostException var2)
         {

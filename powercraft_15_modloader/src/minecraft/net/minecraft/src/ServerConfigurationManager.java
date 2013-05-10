@@ -83,7 +83,7 @@ public abstract class ServerConfigurationManager
         var7.sendPacketToPlayer(new Packet16BlockItemSwitch(par2EntityPlayerMP.inventory.currentItem));
         this.func_96456_a((ServerScoreboard)var5.getScoreboard(), par2EntityPlayerMP);
         this.updateTimeAndWeatherForPlayer(par2EntityPlayerMP, var5);
-        this.sendPacketToAllPlayers(new Packet3Chat(EnumChatFormatting.YELLOW + par2EntityPlayerMP.func_96090_ax() + EnumChatFormatting.YELLOW + " joined the game."));
+        this.sendPacketToAllPlayers(new Packet3Chat(EnumChatFormatting.YELLOW + par2EntityPlayerMP.getTranslatedEntityName() + EnumChatFormatting.YELLOW + " joined the game."));
         this.playerLoggedIn(par2EntityPlayerMP);
         var7.setPlayerLocation(par2EntityPlayerMP.posX, par2EntityPlayerMP.posY, par2EntityPlayerMP.posZ, par2EntityPlayerMP.rotationYaw, par2EntityPlayerMP.rotationPitch);
         this.mcServer.getNetworkThread().addPlayer(var7);
@@ -700,7 +700,7 @@ public abstract class ServerConfigurationManager
                         par10Str = par10Str.substring(1);
                     }
 
-                    ScorePlayerTeam var18 = var16.func_96124_cp();
+                    ScorePlayerTeam var18 = var16.getTeam();
                     String var19 = var18 == null ? "" : var18.func_96661_b();
 
                     if (var17 == par10Str.equalsIgnoreCase(var19))
@@ -770,15 +770,15 @@ public abstract class ServerConfigurationManager
                     var5 = var5.substring(0, var5.length() - 4);
                 }
 
-                Scoreboard var7 = par1EntityPlayer.func_96123_co();
-                ScoreObjective var8 = var7.func_96518_b(var5);
+                Scoreboard var7 = par1EntityPlayer.getWorldScoreboard();
+                ScoreObjective var8 = var7.getObjective(var5);
 
                 if (var8 == null)
                 {
                     return false;
                 }
 
-                Score var9 = par1EntityPlayer.func_96123_co().func_96529_a(par1EntityPlayer.getEntityName(), var8);
+                Score var9 = par1EntityPlayer.getWorldScoreboard().func_96529_a(par1EntityPlayer.getEntityName(), var8);
                 var10 = var9.func_96652_c();
 
                 if (var10 < ((Integer)var4.getValue()).intValue() && var6)

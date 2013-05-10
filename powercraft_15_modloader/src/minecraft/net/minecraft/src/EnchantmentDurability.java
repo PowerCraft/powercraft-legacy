@@ -34,12 +34,17 @@ public class EnchantmentDurability extends Enchantment
         return 3;
     }
 
-    public boolean func_92089_a(ItemStack par1ItemStack)
+    public boolean canApply(ItemStack par1ItemStack)
     {
-        return par1ItemStack.isItemStackDamageable() ? true : super.func_92089_a(par1ItemStack);
+        return par1ItemStack.isItemStackDamageable() ? true : super.canApply(par1ItemStack);
     }
 
-    public static boolean func_92097_a(ItemStack par0ItemStack, int par1, Random par2Random)
+    /**
+     * Used by ItemStack.attemptDamageItem. Randomly determines if a point of damage should be negated using the
+     * enchantment level (par1). If the ItemStack is Armor then there is a flat 60% chance for damage to be negated no
+     * matter the enchantment level, otherwise there is a 1-(par/1) chance for damage to be negated.
+     */
+    public static boolean negateDamage(ItemStack par0ItemStack, int par1, Random par2Random)
     {
         return par0ItemStack.getItem() instanceof ItemArmor && par2Random.nextFloat() < 0.6F ? false : par2Random.nextInt(par1 + 1) > 0;
     }

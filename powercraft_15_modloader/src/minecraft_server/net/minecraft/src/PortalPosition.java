@@ -2,14 +2,16 @@ package net.minecraft.src;
 
 public class PortalPosition extends ChunkCoordinates
 {
-    public long field_85087_d;
+    /** The worldtime at which this PortalPosition was last verified */
+    public long lastUpdateTime;
 
-    final Teleporter field_85088_e;
+    /** The teleporter to which this PortalPosition applies */
+    final Teleporter teleporterInstance;
 
     public PortalPosition(Teleporter par1Teleporter, int par2, int par3, int par4, long par5)
     {
         super(par2, par3, par4);
-        this.field_85088_e = par1Teleporter;
-        this.field_85087_d = par5;
+        this.teleporterInstance = par1Teleporter;
+        this.lastUpdateTime = par5;
     }
 }

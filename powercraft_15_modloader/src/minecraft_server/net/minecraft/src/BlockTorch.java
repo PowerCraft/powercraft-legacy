@@ -126,23 +126,23 @@ public class BlockTorch extends Block
         {
             if (par1World.isBlockNormalCubeDefault(par2 - 1, par3, par4, true))
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
+                par1World.setBlockMetadata(par2, par3, par4, 1, 2);
             }
             else if (par1World.isBlockNormalCubeDefault(par2 + 1, par3, par4, true))
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
+                par1World.setBlockMetadata(par2, par3, par4, 2, 2);
             }
             else if (par1World.isBlockNormalCubeDefault(par2, par3, par4 - 1, true))
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+                par1World.setBlockMetadata(par2, par3, par4, 3, 2);
             }
             else if (par1World.isBlockNormalCubeDefault(par2, par3, par4 + 1, true))
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
+                par1World.setBlockMetadata(par2, par3, par4, 4, 2);
             }
             else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
+                par1World.setBlockMetadata(par2, par3, par4, 5, 2);
             }
         }
 

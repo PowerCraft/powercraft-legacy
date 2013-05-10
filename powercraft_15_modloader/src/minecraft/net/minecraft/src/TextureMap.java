@@ -70,7 +70,7 @@ public class TextureMap implements IconRegister
 
             if (var22 != null && var22.getSpriteNumber() == this.textureType)
             {
-                var22.updateIcons(this);
+                var22.registerIcons(this);
             }
         }
 
@@ -169,7 +169,7 @@ public class TextureMap implements IconRegister
         }
 
         this.atlasTexture.writeImage("debug.stitched_" + this.textureName + ".png");
-        this.atlasTexture.createTexture();
+        this.atlasTexture.uploadTexture();
     }
 
     public void updateAnimations()

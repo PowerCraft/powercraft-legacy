@@ -19,7 +19,7 @@ public class ItemMultiTextureTile extends ItemBlock
      */
     public Icon getIconFromDamage(int par1)
     {
-        return this.theBlock.getBlockTextureFromSideAndMetadata(2, par1);
+        return this.theBlock.getIcon(2, par1);
     }
 
     /**

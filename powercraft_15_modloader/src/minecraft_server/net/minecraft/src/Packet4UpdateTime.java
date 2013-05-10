@@ -6,7 +6,8 @@ import java.io.IOException;
 
 public class Packet4UpdateTime extends Packet
 {
-    public long field_82562_a;
+    /** World age in ticks. */
+    public long worldAge;
 
     /** The world time in minutes. */
     public long time;
@@ -15,7 +16,7 @@ public class Packet4UpdateTime extends Packet
 
     public Packet4UpdateTime(long par1, long par3)
     {
-        this.field_82562_a = par1;
+        this.worldAge = par1;
         this.time = par3;
     }
 
@@ -24,7 +25,7 @@ public class Packet4UpdateTime extends Packet
      */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
-        this.field_82562_a = par1DataInputStream.readLong();
+        this.worldAge = par1DataInputStream.readLong();
         this.time = par1DataInputStream.readLong();
     }
 
@@ -33,7 +34,7 @@ public class Packet4UpdateTime extends Packet
      */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
-        par1DataOutputStream.writeLong(this.field_82562_a);
+        par1DataOutputStream.writeLong(this.worldAge);
         par1DataOutputStream.writeLong(this.time);
     }
 

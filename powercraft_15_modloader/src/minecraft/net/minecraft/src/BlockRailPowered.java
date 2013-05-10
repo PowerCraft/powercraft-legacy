@@ -12,7 +12,7 @@ public class BlockRailPowered extends BlockRailBase
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         return (par2 & 8) == 0 ? this.blockIcon : this.theIcon;
     }

@@ -91,9 +91,9 @@ public class NetLoginHandler extends NetHandler
         {
             PublicKey var2 = this.mcServer.getKeyPair().getPublic();
 
-            if (par1Packet2ClientProtocol.getProtocolVersion() != 60)
+            if (par1Packet2ClientProtocol.getProtocolVersion() != 61)
             {
-                if (par1Packet2ClientProtocol.getProtocolVersion() > 60)
+                if (par1Packet2ClientProtocol.getProtocolVersion() > 61)
                 {
                     this.raiseErrorAndDisconnect("Outdated server!");
                 }
@@ -190,9 +190,9 @@ public class NetLoginHandler extends NetHandler
             ServerConfigurationManager var2 = this.mcServer.getConfigurationManager();
             String var3 = null;
 
-            if (par1Packet254ServerPing.field_82559_a == 1)
+            if (par1Packet254ServerPing.readSuccessfully == 1)
             {
-                List var4 = Arrays.asList(new Serializable[] {Integer.valueOf(1), Integer.valueOf(60), this.mcServer.getMinecraftVersion(), this.mcServer.getMOTD(), Integer.valueOf(var2.getCurrentPlayerCount()), Integer.valueOf(var2.getMaxPlayers())});
+                List var4 = Arrays.asList(new Serializable[] {Integer.valueOf(1), Integer.valueOf(61), this.mcServer.getMinecraftVersion(), this.mcServer.getMOTD(), Integer.valueOf(var2.getCurrentPlayerCount()), Integer.valueOf(var2.getMaxPlayers())});
                 Object var6;
 
                 for (Iterator var5 = var4.iterator(); var5.hasNext(); var3 = var3 + var6.toString().replaceAll("\u0000", ""))

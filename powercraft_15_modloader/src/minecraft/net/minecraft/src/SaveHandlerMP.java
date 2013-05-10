@@ -59,7 +59,7 @@ public class SaveHandlerMP implements ISaveHandler
     /**
      * Returns the name of the directory where world information is saved.
      */
-    public String getSaveDirectoryName()
+    public String getWorldDirectoryName()
     {
         return "none";
     }

@@ -8,7 +8,7 @@ public class EntityDiggingFX extends EntityFX
     {
         super(par1World, par2, par4, par6, par8, par10, par12);
         this.blockInstance = par14Block;
-        this.func_94052_a(par17RenderEngine, par14Block.getBlockTextureFromSideAndMetadata(0, par16));
+        this.setParticleIcon(par17RenderEngine, par14Block.getIcon(0, par16));
         this.particleGravity = par14Block.blockParticleGravity;
         this.particleRed = this.particleGreen = this.particleBlue = 0.6F;
         this.particleScale /= 2.0F;
@@ -62,12 +62,12 @@ public class EntityDiggingFX extends EntityFX
         float var11 = var10 + 0.015609375F;
         float var12 = 0.1F * this.particleScale;
 
-        if (this.particleTextureIndex != null)
+        if (this.particleIcon != null)
         {
-            var8 = this.particleTextureIndex.getInterpolatedU((double)(this.particleTextureJitterX / 4.0F * 16.0F));
-            var9 = this.particleTextureIndex.getInterpolatedU((double)((this.particleTextureJitterX + 1.0F) / 4.0F * 16.0F));
-            var10 = this.particleTextureIndex.getInterpolatedV((double)(this.particleTextureJitterY / 4.0F * 16.0F));
-            var11 = this.particleTextureIndex.getInterpolatedV((double)((this.particleTextureJitterY + 1.0F) / 4.0F * 16.0F));
+            var8 = this.particleIcon.getInterpolatedU((double)(this.particleTextureJitterX / 4.0F * 16.0F));
+            var9 = this.particleIcon.getInterpolatedU((double)((this.particleTextureJitterX + 1.0F) / 4.0F * 16.0F));
+            var10 = this.particleIcon.getInterpolatedV((double)(this.particleTextureJitterY / 4.0F * 16.0F));
+            var11 = this.particleIcon.getInterpolatedV((double)((this.particleTextureJitterY + 1.0F) / 4.0F * 16.0F));
         }
 
         float var13 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)par2 - interpPosX);

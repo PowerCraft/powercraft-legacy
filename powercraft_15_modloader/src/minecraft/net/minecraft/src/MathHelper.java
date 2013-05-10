@@ -75,6 +75,9 @@ public class MathHelper
         return par0 >= 0.0F ? par0 : -par0;
     }
 
+    /**
+     * Returns the unsigned value of an int.
+     */
     public static int abs_int(int par0)
     {
         return par0 >= 0 ? par0 : -par0;

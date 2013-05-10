@@ -31,7 +31,7 @@ public class BlockPistonExtension extends Block
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
-        int var7 = Facing.faceToSide[getDirectionMeta(par6)];
+        int var7 = Facing.oppositeSide[getDirectionMeta(par6)];
         par2 += Facing.offsetsXForSide[var7];
         par3 += Facing.offsetsYForSide[var7];
         par4 += Facing.offsetsZForSide[var7];
@@ -52,10 +52,10 @@ public class BlockPistonExtension extends Block
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         int var3 = getDirectionMeta(par2);
-        return par1 == var3 ? (this.headTexture != null ? this.headTexture : ((par2 & 8) != 0 ? BlockPistonBase.func_94496_b("piston_top_sticky") : BlockPistonBase.func_94496_b("piston_top"))) : (var3 < 6 && par1 == Facing.faceToSide[var3] ? BlockPistonBase.func_94496_b("piston_top") : BlockPistonBase.func_94496_b("piston_side"));
+        return par1 == var3 ? (this.headTexture != null ? this.headTexture : ((par2 & 8) != 0 ? BlockPistonBase.func_94496_b("piston_top_sticky") : BlockPistonBase.func_94496_b("piston_top"))) : (var3 < 6 && par1 == Facing.oppositeSide[var3] ? BlockPistonBase.func_94496_b("piston_top") : BlockPistonBase.func_94496_b("piston_side"));
     }
 
     /**

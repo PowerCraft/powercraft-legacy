@@ -21,11 +21,11 @@ public class Material
     public static final Material fire = (new MaterialTransparent(MapColor.airColor)).setNoPushMobility();
     public static final Material sand = new Material(MapColor.sandColor);
     public static final Material circuits = (new MaterialLogic(MapColor.airColor)).setNoPushMobility();
-    public static final Material glass = (new Material(MapColor.airColor)).setTranslucent().func_85158_p();
-    public static final Material redstoneLight = (new Material(MapColor.airColor)).func_85158_p();
+    public static final Material glass = (new Material(MapColor.airColor)).setTranslucent().setAlwaysHarvested();
+    public static final Material redstoneLight = (new Material(MapColor.airColor)).setAlwaysHarvested();
     public static final Material tnt = (new Material(MapColor.tntColor)).setBurning().setTranslucent();
     public static final Material coral = (new Material(MapColor.foliageColor)).setNoPushMobility();
-    public static final Material ice = (new Material(MapColor.iceColor)).setTranslucent().func_85158_p();
+    public static final Material ice = (new Material(MapColor.iceColor)).setTranslucent().setAlwaysHarvested();
     public static final Material snow = (new MaterialLogic(MapColor.snowColor)).setReplaceable().setTranslucent().setRequiresTool().setNoPushMobility();
 
     /** The material for crafted snow. */
@@ -205,13 +205,19 @@ public class Material
         return this;
     }
 
-    protected Material func_85158_p()
+    /**
+     * Set as harvestable in any case.
+     */
+    protected Material setAlwaysHarvested()
     {
         this.field_85159_M = true;
         return this;
     }
 
-    public boolean func_85157_q()
+    /**
+     * Check to see if we can harvest it in any case.
+     */
+    public boolean isAlwaysHarvested()
     {
         return this.field_85159_M;
     }

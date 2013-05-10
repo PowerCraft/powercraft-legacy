@@ -18,7 +18,7 @@ public abstract class EntityLiving extends Entity
     private static final float[] armorEnchantmentProbability = new float[] {0.0F, 0.0F, 0.25F, 0.5F};
 
     /** Probability to get armor */
-    private static final float[] armorProbability = new float[] {0.0F, 0.0F, 0.05F, 0.02F};
+    private static final float[] armorProbability = new float[] {0.0F, 0.0F, 0.05F, 0.07F};
 
     /** Probability to pick up loot */
     public static final float[] pickUpLootProability = new float[] {0.0F, 0.1F, 0.15F, 0.45F};
@@ -110,7 +110,7 @@ public abstract class EntityLiving extends Entity
     public float limbYaw;
 
     /**
-     * Only relevant when legYaw is not 0(the entity is moving). Influences where in its swing legs and arms currently
+     * Only relevant when limbYaw is not 0(the entity is moving). Influences where in its swing legs and arms currently
      * are.
      */
     public float limbSwing;
@@ -158,7 +158,9 @@ public abstract class EntityLiving extends Entity
 
     /** Chances for each equipment piece from dropping when this entity dies. */
     protected float[] equipmentDropChances = new float[5];
-    private ItemStack[] field_82180_bT = new ItemStack[5];
+
+    /** The equipment this mob was previously wearing, used for syncing. */
+    private ItemStack[] previousEquipment = new ItemStack[5];
 
     /** Whether an arm swing is currently in progress. */
     public boolean isSwingInProgress = false;
@@ -765,10 +767,10 @@ public abstract class EntityLiving extends Entity
             {
                 ItemStack var2 = this.getCurrentItemOrArmor(var1);
 
-                if (!ItemStack.areItemStacksEqual(var2, this.field_82180_bT[var1]))
+                if (!ItemStack.areItemStacksEqual(var2, this.previousEquipment[var1]))
                 {
                     ((WorldServer)this.worldObj).getEntityTracker().sendPacketToAllPlayersTrackingEntity(this, new Packet5PlayerInventory(this.entityId, var1, var2));
-                    this.field_82180_bT[var1] = var2 == null ? null : var2.copy();
+                    this.previousEquipment[var1] = var2 == null ? null : var2.copy();
                 }
             }
 
@@ -2165,7 +2167,7 @@ public abstract class EntityLiving extends Entity
      */
     public boolean getCanSpawnHere()
     {
-        return this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox);
+        return this.worldObj.checkNoEntityCollision(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox);
     }
 
     /**
@@ -2361,14 +2363,14 @@ public abstract class EntityLiving extends Entity
                 {
                     this.dataWatcher.updateObject(9, Byte.valueOf((byte)0));
                     this.dataWatcher.updateObject(8, Integer.valueOf(0));
-                    this.setHasActivePotion(false);
+                    this.setInvisible(false);
                 }
                 else
                 {
                     var12 = PotionHelper.calcPotionLiquidColor(this.activePotionsMap.values());
                     this.dataWatcher.updateObject(9, Byte.valueOf((byte)(PotionHelper.func_82817_b(this.activePotionsMap.values()) ? 1 : 0)));
                     this.dataWatcher.updateObject(8, Integer.valueOf(var12));
-                    this.setHasActivePotion(this.isPotionActive(Potion.invisibility.id));
+                    this.setInvisible(this.isPotionActive(Potion.invisibility.id));
                 }
             }
 
@@ -2382,7 +2384,7 @@ public abstract class EntityLiving extends Entity
         {
             boolean var4 = false;
 
-            if (!this.getHasActivePotion())
+            if (!this.isInvisible())
             {
                 var4 = this.rand.nextBoolean();
             }
@@ -2809,7 +2811,7 @@ public abstract class EntityLiving extends Entity
                 }
                 else if (par1 == 3)
                 {
-                    return Item.helmetSteel;
+                    return Item.helmetIron;
                 }
                 else if (par1 == 4)
                 {
@@ -2831,7 +2833,7 @@ public abstract class EntityLiving extends Entity
                 }
                 else if (par1 == 3)
                 {
-                    return Item.plateSteel;
+                    return Item.plateIron;
                 }
                 else if (par1 == 4)
                 {
@@ -2853,7 +2855,7 @@ public abstract class EntityLiving extends Entity
                 }
                 else if (par1 == 3)
                 {
-                    return Item.legsSteel;
+                    return Item.legsIron;
                 }
                 else if (par1 == 4)
                 {
@@ -2875,7 +2877,7 @@ public abstract class EntityLiving extends Entity
                 }
                 else if (par1 == 3)
                 {
-                    return Item.bootsSteel;
+                    return Item.bootsIron;
                 }
                 else if (par1 == 4)
                 {
@@ -3017,5 +3019,10 @@ public abstract class EntityLiving extends Entity
     public void setCanPickUpLoot(boolean par1)
     {
         this.canPickUpLoot = par1;
+    }
+
+    public boolean func_104002_bU()
+    {
+        return this.persistenceRequired;
     }
 }

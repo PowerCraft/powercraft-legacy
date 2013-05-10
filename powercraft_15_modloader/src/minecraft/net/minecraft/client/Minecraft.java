@@ -371,7 +371,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
         }
 
-        Display.setTitle("Minecraft Minecraft 1.5.1");
+        Display.setTitle("Minecraft Minecraft 1.5.2");
         this.getLogAgent().logInfo("LWJGL Version: " + Sys.getVersion());
 
         try
@@ -652,9 +652,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         if (var2 != 0)
         {
             String var3 = GLU.gluErrorString(var2);
-            this.getLogAgent().func_98232_c("########## GL ERROR ##########");
-            this.getLogAgent().func_98232_c("@ " + par1Str);
-            this.getLogAgent().func_98232_c(var2 + ": " + var3);
+            this.getLogAgent().logSevere("########## GL ERROR ##########");
+            this.getLogAgent().logSevere("@ " + par1Str);
+            this.getLogAgent().logSevere(var2 + ": " + var3);
         }
     }
 
@@ -1868,7 +1868,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
             if (!this.isGamePaused && this.theWorld != null)
             {
-                this.theWorld.func_73029_E(MathHelper.floor_double(this.thePlayer.posX), MathHelper.floor_double(this.thePlayer.posY), MathHelper.floor_double(this.thePlayer.posZ));
+                this.theWorld.doVoidFogParticles(MathHelper.floor_double(this.thePlayer.posX), MathHelper.floor_double(this.thePlayer.posY), MathHelper.floor_double(this.thePlayer.posZ));
             }
 
             this.mcProfiler.endStartSection("particles");
@@ -2347,7 +2347,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 }
 
                 var4 = Item.itemsList[var2].getHasSubtypes();
-                int var9 = var2 < 256 && !Block.blocksList[var8.blockID].func_82505_u_() ? var2 : var8.blockID;
+                int var9 = var2 < 256 && !Block.blocksList[var8.blockID].isFlowerPot() ? var2 : var8.blockID;
                 var3 = Block.blocksList[var9].getDamageValue(this.theWorld, var5, var6, var7);
             }
             else
@@ -2380,21 +2380,21 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
                 {
                     EntityMinecart var11 = (EntityMinecart)this.objectMouseOver.entityHit;
 
-                    if (var11.func_94087_l() == 2)
+                    if (var11.getMinecartType() == 2)
                     {
                         var2 = Item.minecartPowered.itemID;
                     }
-                    else if (var11.func_94087_l() == 1)
+                    else if (var11.getMinecartType() == 1)
                     {
                         var2 = Item.minecartCrate.itemID;
                     }
-                    else if (var11.func_94087_l() == 3)
+                    else if (var11.getMinecartType() == 3)
                     {
-                        var2 = Item.tntMinecart.itemID;
+                        var2 = Item.minecartTnt.itemID;
                     }
-                    else if (var11.func_94087_l() == 5)
+                    else if (var11.getMinecartType() == 5)
                     {
-                        var2 = Item.hopperMinecart.itemID;
+                        var2 = Item.minecartHopper.itemID;
                     }
                     else
                     {

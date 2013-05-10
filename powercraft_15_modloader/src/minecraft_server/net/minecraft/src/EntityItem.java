@@ -93,7 +93,7 @@ public class EntityItem extends Entity
 
             if (!this.worldObj.isRemote)
             {
-                this.func_85054_d();
+                this.searchForOtherItemsNearby();
             }
         }
 
@@ -127,7 +127,10 @@ public class EntityItem extends Entity
         }
     }
 
-    private void func_85054_d()
+    /**
+     * Looks for other itemstacks nearby and tries to stack them together
+     */
+    private void searchForOtherItemsNearby()
     {
         Iterator var1 = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
 
@@ -150,8 +153,8 @@ public class EntityItem extends Entity
         }
         else if (par1EntityItem.isEntityAlive() && this.isEntityAlive())
         {
-            ItemStack var2 = this.func_92059_d();
-            ItemStack var3 = par1EntityItem.func_92059_d();
+            ItemStack var2 = this.getEntityItem();
+            ItemStack var3 = par1EntityItem.getEntityItem();
 
             if (var3.getItem() != var2.getItem())
             {
@@ -193,7 +196,11 @@ public class EntityItem extends Entity
         }
     }
 
-    public void func_70288_d()
+    /**
+     * sets the age of the item so that it'll despawn one minute after it has been dropped (instead of five). Used when
+     * items are dropped from players in creative mode
+     */
+    public void setAgeToCreativeDespawnTime()
     {
         this.age = 4800;
     }
@@ -224,7 +231,7 @@ public class EntityItem extends Entity
         {
             return false;
         }
-        else if (this.func_92059_d() != null && this.func_92059_d().itemID == Item.netherStar.itemID && par1DamageSource.isExplosion())
+        else if (this.getEntityItem() != null && this.getEntityItem().itemID == Item.netherStar.itemID && par1DamageSource.isExplosion())
         {
             return false;
         }
@@ -250,9 +257,9 @@ public class EntityItem extends Entity
         par1NBTTagCompound.setShort("Health", (short)((byte)this.health));
         par1NBTTagCompound.setShort("Age", (short)this.age);
 
-        if (this.func_92059_d() != null)
+        if (this.getEntityItem() != null)
         {
-            par1NBTTagCompound.setCompoundTag("Item", this.func_92059_d().writeToNBT(new NBTTagCompound()));
+            par1NBTTagCompound.setCompoundTag("Item", this.getEntityItem().writeToNBT(new NBTTagCompound()));
         }
     }
 
@@ -266,7 +273,7 @@ public class EntityItem extends Entity
         NBTTagCompound var2 = par1NBTTagCompound.getCompoundTag("Item");
         this.setEntityItemStack(ItemStack.loadItemStackFromNBT(var2));
 
-        if (this.func_92059_d() == null)
+        if (this.getEntityItem() == null)
         {
             this.setDead();
         }
@@ -279,7 +286,7 @@ public class EntityItem extends Entity
     {
         if (!this.worldObj.isRemote)
         {
-            ItemStack var2 = this.func_92059_d();
+            ItemStack var2 = this.getEntityItem();
             int var3 = var2.stackSize;
 
             if (this.delayBeforeCanPickup == 0 && par1EntityPlayer.inventory.addItemStackToInventory(var2))
@@ -320,7 +327,7 @@ public class EntityItem extends Entity
      */
     public String getEntityName()
     {
-        return StatCollector.translateToLocal("item." + this.func_92059_d().getItemName());
+        return StatCollector.translateToLocal("item." + this.getEntityItem().getItemName());
     }
 
     /**
@@ -337,11 +344,15 @@ public class EntityItem extends Entity
 
         if (!this.worldObj.isRemote)
         {
-            this.func_85054_d();
+            this.searchForOtherItemsNearby();
         }
     }
 
-    public ItemStack func_92059_d()
+    /**
+     * Returns the ItemStack corresponding to the Entity (Note: if no item exists, will log an error but still return an
+     * ItemStack containing Block.stone)
+     */
+    public ItemStack getEntityItem()
     {
         ItemStack var1 = this.getDataWatcher().getWatchableObjectItemStack(10);
 
@@ -349,7 +360,7 @@ public class EntityItem extends Entity
         {
             if (this.worldObj != null)
             {
-                this.worldObj.getWorldLogAgent().func_98232_c("Item entity " + this.entityId + " has no item?!");
+                this.worldObj.getWorldLogAgent().logSevere("Item entity " + this.entityId + " has no item?!");
             }
 
             return new ItemStack(Block.stone);
@@ -366,6 +377,6 @@ public class EntityItem extends Entity
     public void setEntityItemStack(ItemStack par1ItemStack)
     {
         this.getDataWatcher().updateObject(10, par1ItemStack);
-        this.getDataWatcher().func_82708_h(10);
+        this.getDataWatcher().setObjectWatched(10);
     }
 }

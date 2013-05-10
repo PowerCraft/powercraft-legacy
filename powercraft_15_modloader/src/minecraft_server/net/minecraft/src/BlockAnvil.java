@@ -4,7 +4,7 @@ public class BlockAnvil extends BlockSand
 {
     /** List of types/statues the Anvil can be in. */
     public static final String[] statuses = new String[] {"intact", "slightlyDamaged", "veryDamaged"};
-    private static final String[] field_94431_cO = new String[] {"anvil_top", "anvil_top_damaged_1", "anvil_top_damaged_2"};
+    private static final String[] anvilIconNames = new String[] {"anvil_top", "anvil_top_damaged_1", "anvil_top_damaged_2"};
     public int field_82521_b = 0;
 
     protected BlockAnvil(int par1)
@@ -43,22 +43,22 @@ public class BlockAnvil extends BlockSand
 
         if (var7 == 0)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2 | var8 << 2, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 2 | var8 << 2, 2);
         }
 
         if (var7 == 1)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3 | var8 << 2, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 3 | var8 << 2, 2);
         }
 
         if (var7 == 2)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 0 | var8 << 2, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 0 | var8 << 2, 2);
         }
 
         if (var7 == 3)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1 | var8 << 2, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 1 | var8 << 2, 2);
         }
     }
 

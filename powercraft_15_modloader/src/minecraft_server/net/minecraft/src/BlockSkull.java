@@ -82,7 +82,7 @@ public class BlockSkull extends BlockContainer
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
         int var7 = MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var7, 2);
+        par1World.setBlockMetadata(par2, par3, par4, var7, 2);
     }
 
     /**
@@ -123,7 +123,7 @@ public class BlockSkull extends BlockContainer
         if (par6EntityPlayer.capabilities.isCreativeMode)
         {
             par5 |= 8;
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, par5, 4);
+            par1World.setBlockMetadata(par2, par3, par4, par5, 4);
         }
 
         super.onBlockHarvested(par1World, par2, par3, par4, par5, par6EntityPlayer);
@@ -178,9 +178,9 @@ public class BlockSkull extends BlockContainer
             {
                 if (par1World.getBlockId(par2, par3 - 1, par4 + var7) == var6 && par1World.getBlockId(par2, par3 - 1, par4 + var7 + 1) == var6 && par1World.getBlockId(par2, par3 - 2, par4 + var7 + 1) == var6 && par1World.getBlockId(par2, par3 - 1, par4 + var7 + 2) == var6 && this.func_82528_d(par1World, par2, par3, par4 + var7, 1) && this.func_82528_d(par1World, par2, par3, par4 + var7 + 1, 1) && this.func_82528_d(par1World, par2, par3, par4 + var7 + 2, 1))
                 {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4 + var7, 8, 2);
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4 + var7 + 1, 8, 2);
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4 + var7 + 2, 8, 2);
+                    par1World.setBlockMetadata(par2, par3, par4 + var7, 8, 2);
+                    par1World.setBlockMetadata(par2, par3, par4 + var7 + 1, 8, 2);
+                    par1World.setBlockMetadata(par2, par3, par4 + var7 + 2, 8, 2);
                     par1World.setBlock(par2, par3, par4 + var7, 0, 0, 2);
                     par1World.setBlock(par2, par3, par4 + var7 + 1, 0, 0, 2);
                     par1World.setBlock(par2, par3, par4 + var7 + 2, 0, 0, 2);
@@ -218,9 +218,9 @@ public class BlockSkull extends BlockContainer
             {
                 if (par1World.getBlockId(par2 + var7, par3 - 1, par4) == var6 && par1World.getBlockId(par2 + var7 + 1, par3 - 1, par4) == var6 && par1World.getBlockId(par2 + var7 + 1, par3 - 2, par4) == var6 && par1World.getBlockId(par2 + var7 + 2, par3 - 1, par4) == var6 && this.func_82528_d(par1World, par2 + var7, par3, par4, 1) && this.func_82528_d(par1World, par2 + var7 + 1, par3, par4, 1) && this.func_82528_d(par1World, par2 + var7 + 2, par3, par4, 1))
                 {
-                    par1World.setBlockMetadataWithNotify(par2 + var7, par3, par4, 8, 2);
-                    par1World.setBlockMetadataWithNotify(par2 + var7 + 1, par3, par4, 8, 2);
-                    par1World.setBlockMetadataWithNotify(par2 + var7 + 2, par3, par4, 8, 2);
+                    par1World.setBlockMetadata(par2 + var7, par3, par4, 8, 2);
+                    par1World.setBlockMetadata(par2 + var7 + 1, par3, par4, 8, 2);
+                    par1World.setBlockMetadata(par2 + var7 + 2, par3, par4, 8, 2);
                     par1World.setBlock(par2 + var7, par3, par4, 0, 0, 2);
                     par1World.setBlock(par2 + var7 + 1, par3, par4, 0, 0, 2);
                     par1World.setBlock(par2 + var7 + 2, par3, par4, 0, 0, 2);

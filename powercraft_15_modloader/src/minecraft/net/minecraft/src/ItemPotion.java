@@ -374,7 +374,7 @@ public class ItemPotion extends Item
         }
     }
 
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
         this.field_94590_d = par1IconRegister.registerIcon("potion");
         this.field_94591_c = par1IconRegister.registerIcon("potion_splash");

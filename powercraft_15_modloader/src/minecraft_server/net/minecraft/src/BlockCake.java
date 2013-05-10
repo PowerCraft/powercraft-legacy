@@ -95,7 +95,7 @@ public class BlockCake extends Block
             }
             else
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var6, 2);
+                par1World.setBlockMetadata(par2, par3, par4, var6, 2);
             }
         }
     }
