@@ -64,7 +64,7 @@ public class EnchantmentHelper
     public static Map getEnchantments(ItemStack par0ItemStack)
     {
         LinkedHashMap var1 = new LinkedHashMap();
-        NBTTagList var2 = par0ItemStack.itemID == Item.field_92105_bW.itemID ? Item.field_92105_bW.func_92110_g(par0ItemStack) : par0ItemStack.getEnchantmentTagList();
+        NBTTagList var2 = par0ItemStack.itemID == Item.enchantedBook.itemID ? Item.enchantedBook.func_92110_g(par0ItemStack) : par0ItemStack.getEnchantmentTagList();
 
         if (var2 != null)
         {
@@ -95,15 +95,15 @@ public class EnchantmentHelper
             var5.setShort("lvl", (short)((Integer)par0Map.get(Integer.valueOf(var4))).intValue());
             var2.appendTag(var5);
 
-            if (par1ItemStack.itemID == Item.field_92105_bW.itemID)
+            if (par1ItemStack.itemID == Item.enchantedBook.itemID)
             {
-                Item.field_92105_bW.func_92115_a(par1ItemStack, new EnchantmentData(var4, ((Integer)par0Map.get(Integer.valueOf(var4))).intValue()));
+                Item.enchantedBook.func_92115_a(par1ItemStack, new EnchantmentData(var4, ((Integer)par0Map.get(Integer.valueOf(var4))).intValue()));
             }
         }
 
         if (var2.tagCount() > 0)
         {
-            if (par1ItemStack.itemID != Item.field_92105_bW.itemID)
+            if (par1ItemStack.itemID != Item.enchantedBook.itemID)
             {
                 par1ItemStack.setTagInfo("ench", var2);
             }
@@ -331,7 +331,7 @@ public class EnchantmentHelper
 
         if (var4)
         {
-            par1ItemStack.itemID = Item.field_92105_bW.itemID;
+            par1ItemStack.itemID = Item.enchantedBook.itemID;
         }
 
         if (var3 != null)
@@ -344,7 +344,7 @@ public class EnchantmentHelper
 
                 if (var4)
                 {
-                    Item.field_92105_bW.func_92115_a(par1ItemStack, var6);
+                    Item.enchantedBook.func_92115_a(par1ItemStack, var6);
                 }
                 else
                 {

@@ -475,22 +475,22 @@ public class BlockStairs extends Block
 
         if (var7 == 0)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2 | var8, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 2 | var8, 2);
         }
 
         if (var7 == 1)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1 | var8, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 1 | var8, 2);
         }
 
         if (var7 == 2)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3 | var8, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 3 | var8, 2);
         }
 
         if (var7 == 3)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 0 | var8, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 0 | var8, 2);
         }
     }
 

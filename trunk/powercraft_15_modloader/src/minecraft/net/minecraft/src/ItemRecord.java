@@ -26,7 +26,7 @@ public class ItemRecord extends Item
      */
     public Icon getIconFromDamage(int par1)
     {
-        return this.iconIndex;
+        return this.itemIcon;
     }
 
     /**
@@ -87,8 +87,8 @@ public class ItemRecord extends Item
         return (ItemRecord)records.get(par0Str);
     }
 
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("record_" + this.recordName);
+        this.itemIcon = par1IconRegister.registerIcon("record_" + this.recordName);
     }
 }

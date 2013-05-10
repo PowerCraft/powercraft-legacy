@@ -36,7 +36,7 @@ public class EntityMinecartEmpty extends EntityMinecart
         }
     }
 
-    public int func_94087_l()
+    public int getMinecartType()
     {
         return 0;
     }

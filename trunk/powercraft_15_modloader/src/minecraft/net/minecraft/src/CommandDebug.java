@@ -75,7 +75,7 @@ public class CommandDebug extends CommandBase
         }
         catch (Throwable var6)
         {
-            MinecraftServer.getServer().getLogAgent().func_98234_c("Could not save profiler results to " + var4, var6);
+            MinecraftServer.getServer().getLogAgent().logSevereException("Could not save profiler results to " + var4, var6);
         }
     }
 

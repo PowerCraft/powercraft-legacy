@@ -4,8 +4,10 @@ import java.util.Random;
 
 public class BlockDoor extends Block
 {
-    private static final String[] field_94467_a = new String[] {"doorWood_lower", "doorWood_upper", "doorIron_lower", "doorIron_upper"};
-    private final int field_94465_b;
+    private static final String[] doorIconNames = new String[] {"doorWood_lower", "doorWood_upper", "doorIron_lower", "doorIron_upper"};
+
+    /** Used for pointing at icon names. */
+    private final int doorTypeForIcon;
 
     protected BlockDoor(int par1, Material par2Material)
     {
@@ -13,11 +15,11 @@ public class BlockDoor extends Block
 
         if (par2Material == Material.iron)
         {
-            this.field_94465_b = 2;
+            this.doorTypeForIcon = 2;
         }
         else
         {
-            this.field_94465_b = 0;
+            this.doorTypeForIcon = 0;
         }
 
         float var3 = 0.5F;
@@ -191,12 +193,12 @@ public class BlockDoor extends Block
 
             if ((var10 & 8) == 0)
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var11, 2);
+                par1World.setBlockMetadata(par2, par3, par4, var11, 2);
                 par1World.markBlockRangeForRenderUpdate(par2, par3, par4, par2, par3, par4);
             }
             else
             {
-                par1World.setBlockMetadataWithNotify(par2, par3 - 1, par4, var11, 2);
+                par1World.setBlockMetadata(par2, par3 - 1, par4, var11, 2);
                 par1World.markBlockRangeForRenderUpdate(par2, par3 - 1, par4, par2, par3, par4);
             }
 
@@ -220,12 +222,12 @@ public class BlockDoor extends Block
 
             if ((var6 & 8) == 0)
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var8, 2);
+                par1World.setBlockMetadata(par2, par3, par4, var8, 2);
                 par1World.markBlockRangeForRenderUpdate(par2, par3, par4, par2, par3, par4);
             }
             else
             {
-                par1World.setBlockMetadataWithNotify(par2, par3 - 1, par4, var8, 2);
+                par1World.setBlockMetadata(par2, par3 - 1, par4, var8, 2);
                 par1World.markBlockRangeForRenderUpdate(par2, par3 - 1, par4, par2, par3, par4);
             }
 
@@ -298,7 +300,7 @@ public class BlockDoor extends Block
      */
     public int idDropped(int par1, Random par2Random, int par3)
     {
-        return (par1 & 8) != 0 ? 0 : (this.blockMaterial == Material.iron ? Item.doorSteel.itemID : Item.doorWood.itemID);
+        return (par1 & 8) != 0 ? 0 : (this.blockMaterial == Material.iron ? Item.doorIron.itemID : Item.doorWood.itemID);
     }
 
     /**

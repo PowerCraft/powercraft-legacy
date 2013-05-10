@@ -14,9 +14,15 @@ public class Packet60Explosion extends Packet
     public double explosionZ;
     public float explosionSize;
     public List chunkPositionRecords;
-    private float field_73610_f;
-    private float field_73611_g;
-    private float field_73617_h;
+
+    /** X velocity of the player being pushed by the explosion */
+    private float playerVelocityX;
+
+    /** Y velocity of the player being pushed by the explosion */
+    private float playerVelocityY;
+
+    /** Z velocity of the player being pushed by the explosion */
+    private float playerVelocityZ;
 
     public Packet60Explosion() {}
 
@@ -30,9 +36,9 @@ public class Packet60Explosion extends Packet
 
         if (par9Vec3 != null)
         {
-            this.field_73610_f = (float)par9Vec3.xCoord;
-            this.field_73611_g = (float)par9Vec3.yCoord;
-            this.field_73617_h = (float)par9Vec3.zCoord;
+            this.playerVelocityX = (float)par9Vec3.xCoord;
+            this.playerVelocityY = (float)par9Vec3.yCoord;
+            this.playerVelocityZ = (float)par9Vec3.zCoord;
         }
     }
 
@@ -59,9 +65,9 @@ public class Packet60Explosion extends Packet
             this.chunkPositionRecords.add(new ChunkPosition(var7, var8, var9));
         }
 
-        this.field_73610_f = par1DataInputStream.readFloat();
-        this.field_73611_g = par1DataInputStream.readFloat();
-        this.field_73617_h = par1DataInputStream.readFloat();
+        this.playerVelocityX = par1DataInputStream.readFloat();
+        this.playerVelocityY = par1DataInputStream.readFloat();
+        this.playerVelocityZ = par1DataInputStream.readFloat();
     }
 
     /**
@@ -90,9 +96,9 @@ public class Packet60Explosion extends Packet
             par1DataOutputStream.writeByte(var9);
         }
 
-        par1DataOutputStream.writeFloat(this.field_73610_f);
-        par1DataOutputStream.writeFloat(this.field_73611_g);
-        par1DataOutputStream.writeFloat(this.field_73617_h);
+        par1DataOutputStream.writeFloat(this.playerVelocityX);
+        par1DataOutputStream.writeFloat(this.playerVelocityY);
+        par1DataOutputStream.writeFloat(this.playerVelocityZ);
     }
 
     /**
@@ -111,18 +117,27 @@ public class Packet60Explosion extends Packet
         return 32 + this.chunkPositionRecords.size() * 3 + 3;
     }
 
-    public float func_73607_d()
+    /**
+     * Gets the X velocity of the player being pushed by the explosion.
+     */
+    public float getPlayerVelocityX()
     {
-        return this.field_73610_f;
+        return this.playerVelocityX;
     }
 
-    public float func_73609_f()
+    /**
+     * Gets the Y velocity of the player being pushed by the explosion.
+     */
+    public float getPlayerVelocityY()
     {
-        return this.field_73611_g;
+        return this.playerVelocityY;
     }
 
-    public float func_73608_g()
+    /**
+     * Gets the Z velocity of the player being pushed by the explosion.
+     */
+    public float getPlayerVelocityZ()
     {
-        return this.field_73617_h;
+        return this.playerVelocityZ;
     }
 }

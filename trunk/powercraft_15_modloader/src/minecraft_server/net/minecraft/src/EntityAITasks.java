@@ -69,7 +69,7 @@ public class EntityAITasks
 
                 if (var4)
                 {
-                    if (this.func_75775_b(var3) && this.func_75773_a(var3))
+                    if (this.canUse(var3) && this.canContinue(var3))
                     {
                         continue;
                     }
@@ -78,7 +78,7 @@ public class EntityAITasks
                     this.executingTaskEntries.remove(var3);
                 }
 
-                if (this.func_75775_b(var3) && var3.action.shouldExecute())
+                if (this.canUse(var3) && var3.action.shouldExecute())
                 {
                     var1.add(var3);
                     this.executingTaskEntries.add(var3);
@@ -125,7 +125,10 @@ public class EntityAITasks
         this.theProfiler.endSection();
     }
 
-    private boolean func_75773_a(EntityAITaskEntry par1EntityAITaskEntry)
+    /**
+     * Determine if a specific AI Task should continue being executed.
+     */
+    private boolean canContinue(EntityAITaskEntry par1EntityAITaskEntry)
     {
         this.theProfiler.startSection("canContinue");
         boolean var2 = par1EntityAITaskEntry.action.continueExecuting();
@@ -133,7 +136,11 @@ public class EntityAITasks
         return var2;
     }
 
-    private boolean func_75775_b(EntityAITaskEntry par1EntityAITaskEntry)
+    /**
+     * Determine if a specific AI Task can be executed, which means that all running higher (= lower int value) priority
+     * tasks are compatible with it or all lower priority tasks can be interrupted.
+     */
+    private boolean canUse(EntityAITaskEntry par1EntityAITaskEntry)
     {
         this.theProfiler.startSection("canUse");
         Iterator var2 = this.taskEntries.iterator();

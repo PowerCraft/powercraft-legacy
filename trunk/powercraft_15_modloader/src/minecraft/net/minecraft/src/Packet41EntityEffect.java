@@ -53,7 +53,10 @@ public class Packet41EntityEffect extends Packet
         par1DataOutputStream.writeShort(this.duration);
     }
 
-    public boolean func_100008_d()
+    /**
+     * Returns true if duration is at maximum, false otherwise.
+     */
+    public boolean isDurationMax()
     {
         return this.duration == 32767;
     }

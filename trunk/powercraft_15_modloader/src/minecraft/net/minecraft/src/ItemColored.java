@@ -27,7 +27,7 @@ public class ItemColored extends ItemBlock
      */
     public Icon getIconFromDamage(int par1)
     {
-        return this.blockRef.getBlockTextureFromSideAndMetadata(0, par1);
+        return this.blockRef.getIcon(0, par1);
     }
 
     /**

@@ -164,7 +164,7 @@ public class PlayerControllerMP
                 clickBlockCreative(this.mc, this, par1, par2, par3, par4);
                 this.blockHitDelay = 5;
             }
-            else if (!this.isHittingBlock || !this.func_85182_a(par1, par2, par3))
+            else if (!this.isHittingBlock || !this.sameToolAndBlock(par1, par2, par3))
             {
                 if (this.isHittingBlock)
                 {
@@ -232,7 +232,7 @@ public class PlayerControllerMP
         }
         else
         {
-            if (this.func_85182_a(par1, par2, par3))
+            if (this.sameToolAndBlock(par1, par2, par3))
             {
                 int var5 = this.mc.theWorld.getBlockId(par1, par2, par3);
 
@@ -285,7 +285,7 @@ public class PlayerControllerMP
         this.mc.sndManager.playRandomMusicIfReady();
     }
 
-    private boolean func_85182_a(int par1, int par2, int par3)
+    private boolean sameToolAndBlock(int par1, int par2, int par3)
     {
         ItemStack var4 = this.mc.thePlayer.getHeldItem();
         boolean var5 = this.field_85183_f == null && var4 == null;

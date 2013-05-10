@@ -23,7 +23,7 @@ public class PCmltm_BlockTestRotate extends PC_Block {
 	public void onIconLoading() {
 		sideIcons = new Icon[6];
 		for (int i = 0; i < 6; i++) {
-			sideIcons[i] = Block.blocksList[i + 1].getBlockTextureFromSideAndMetadata(i, 0);
+			sideIcons[i] = Block.blocksList[i + 1].getIcon(i, 0);
 		}
 	}
 	

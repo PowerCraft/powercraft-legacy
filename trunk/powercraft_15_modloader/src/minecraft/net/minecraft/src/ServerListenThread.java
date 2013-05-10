@@ -50,7 +50,7 @@ public class ServerListenThread extends Thread
                 catch (Exception var6)
                 {
                     var3.raiseErrorAndDisconnect("Internal server error");
-                    this.myNetworkListenThread.getServer().getLogAgent().func_98235_b("Failed to handle packet for " + var3.getUsernameAndAddress() + ": " + var6, var6);
+                    this.myNetworkListenThread.getServer().getLogAgent().logWarningException("Failed to handle packet for " + var3.getUsernameAndAddress() + ": " + var6, var6);
                 }
 
                 if (var3.connectionComplete)

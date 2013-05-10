@@ -46,7 +46,7 @@ public class NetLoginHandler extends NetHandler
     public NetLoginHandler(MinecraftServer par1MinecraftServer, Socket par2Socket, String par3Str) throws IOException
     {
         this.mcServer = par1MinecraftServer;
-        this.myTCPConnection = new TcpConnection(par1MinecraftServer.func_98033_al(), par2Socket, par3Str, this, par1MinecraftServer.getKeyPair().getPrivate());
+        this.myTCPConnection = new TcpConnection(par1MinecraftServer.getLogAgent(), par2Socket, par3Str, this, par1MinecraftServer.getKeyPair().getPrivate());
         this.myTCPConnection.field_74468_e = 0;
     }
 
@@ -78,7 +78,7 @@ public class NetLoginHandler extends NetHandler
     {
         try
         {
-            this.mcServer.func_98033_al().func_98233_a("Disconnecting " + this.getUsernameAndAddress() + ": " + par1Str);
+            this.mcServer.getLogAgent().func_98233_a("Disconnecting " + this.getUsernameAndAddress() + ": " + par1Str);
             this.myTCPConnection.addToSendQueue(new Packet255KickDisconnect(par1Str));
             this.myTCPConnection.serverShutdown();
             this.finishedProcessing = true;
@@ -101,9 +101,9 @@ public class NetLoginHandler extends NetHandler
         {
             PublicKey var2 = this.mcServer.getKeyPair().getPublic();
 
-            if (par1Packet2ClientProtocol.getProtocolVersion() != 60)
+            if (par1Packet2ClientProtocol.getProtocolVersion() != 61)
             {
-                if (par1Packet2ClientProtocol.getProtocolVersion() > 60)
+                if (par1Packet2ClientProtocol.getProtocolVersion() > 61)
                 {
                     this.kickUser("Outdated server!");
                 }
@@ -186,7 +186,7 @@ public class NetLoginHandler extends NetHandler
 
     public void handleErrorMessage(String par1Str, Object[] par2ArrayOfObj)
     {
-        this.mcServer.func_98033_al().func_98233_a(this.getUsernameAndAddress() + " lost connection");
+        this.mcServer.getLogAgent().func_98233_a(this.getUsernameAndAddress() + " lost connection");
         this.finishedProcessing = true;
     }
 
@@ -200,9 +200,9 @@ public class NetLoginHandler extends NetHandler
             ServerConfigurationManager var2 = this.mcServer.getConfigurationManager();
             String var3 = null;
 
-            if (par1Packet254ServerPing.field_82559_a == 1)
+            if (par1Packet254ServerPing.readSuccessfully == 1)
             {
-                List var4 = Arrays.asList(new Serializable[] {Integer.valueOf(1), Integer.valueOf(60), this.mcServer.getMinecraftVersion(), this.mcServer.getMOTD(), Integer.valueOf(var2.getCurrentPlayerCount()), Integer.valueOf(var2.getMaxPlayers())});
+                List var4 = Arrays.asList(new Serializable[] {Integer.valueOf(1), Integer.valueOf(61), this.mcServer.getMinecraftVersion(), this.mcServer.getMOTD(), Integer.valueOf(var2.getCurrentPlayerCount()), Integer.valueOf(var2.getMaxPlayers())});
                 Object var6;
 
                 for (Iterator var5 = var4.iterator(); var5.hasNext(); var3 = var3 + var6.toString().replaceAll("\u0000", ""))

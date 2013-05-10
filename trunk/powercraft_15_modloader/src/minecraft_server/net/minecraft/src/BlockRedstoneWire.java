@@ -158,7 +158,7 @@ public class BlockRedstoneWire extends Block
 
         if (var8 != var15)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var15, 2);
+            par1World.setBlockMetadata(par2, par3, par4, var15, 2);
             this.blocksNeedingUpdate.add(new ChunkPosition(par2, par3, par4));
             this.blocksNeedingUpdate.add(new ChunkPosition(par2 - 1, par3, par4));
             this.blocksNeedingUpdate.add(new ChunkPosition(par2 + 1, par3, par4));

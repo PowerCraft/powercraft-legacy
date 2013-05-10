@@ -138,7 +138,10 @@ public class GenLayerZoom extends GenLayer
         }
     }
 
-    public static GenLayer func_75915_a(long par0, GenLayer par2GenLayer, int par3)
+    /**
+     * Magnify a layer. Parms are seed adjustment, layer, number of times to magnify
+     */
+    public static GenLayer magnify(long par0, GenLayer par2GenLayer, int par3)
     {
         Object var4 = par2GenLayer;
 

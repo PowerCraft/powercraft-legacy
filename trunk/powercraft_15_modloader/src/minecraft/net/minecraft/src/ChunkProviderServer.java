@@ -231,6 +231,7 @@ public class ChunkProviderServer implements IChunkProvider
             if (this.currentChunkProvider != null)
             {
                 this.currentChunkProvider.populate(par1IChunkProvider, par2, par3);
+                ModLoader.populateChunk(this.currentChunkProvider, par2, par3, this.worldObj);
                 var4.setChunkModified();
             }
         }
@@ -266,17 +267,15 @@ public class ChunkProviderServer implements IChunkProvider
             }
         }
 
-        if (par1)
-        {
-            if (this.currentChunkLoader == null)
-            {
-                return true;
-            }
+        return true;
+    }
 
+    public void func_104112_b()
+    {
+        if (this.currentChunkLoader != null)
+        {
             this.currentChunkLoader.saveExtraData();
         }
-
-        return true;
     }
 
     /**

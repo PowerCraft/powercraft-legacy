@@ -4,15 +4,15 @@ import java.util.Random;
 
 public abstract class BlockBasePressurePlate extends Block
 {
-    private String field_94356_a;
+    private String pressurePlateIconName;
 
     protected BlockBasePressurePlate(int par1, String par2Str, Material par3Material)
     {
         super(par1, par3Material);
-        this.field_94356_a = par2Str;
+        this.pressurePlateIconName = par2Str;
         this.setCreativeTab(CreativeTabs.tabRedstone);
         this.setTickRandomly(true);
-        this.func_94353_c_(this.func_94355_d(15));
+        this.func_94353_c_(this.getMetaFromWeight(15));
     }
 
     /**
@@ -25,7 +25,7 @@ public abstract class BlockBasePressurePlate extends Block
 
     protected void func_94353_c_(int par1)
     {
-        boolean var2 = this.func_94350_c(par1) > 0;
+        boolean var2 = this.getPowerSupply(par1) > 0;
         float var3 = 0.0625F;
 
         if (var2)
@@ -112,7 +112,7 @@ public abstract class BlockBasePressurePlate extends Block
     {
         if (!par1World.isRemote)
         {
-            int var6 = this.func_94350_c(par1World.getBlockMetadata(par2, par3, par4));
+            int var6 = this.getPowerSupply(par1World.getBlockMetadata(par2, par3, par4));
 
             if (var6 > 0)
             {
@@ -128,7 +128,7 @@ public abstract class BlockBasePressurePlate extends Block
     {
         if (!par1World.isRemote)
         {
-            int var6 = this.func_94350_c(par1World.getBlockMetadata(par2, par3, par4));
+            int var6 = this.getPowerSupply(par1World.getBlockMetadata(par2, par3, par4));
 
             if (var6 == 0)
             {
@@ -142,13 +142,13 @@ public abstract class BlockBasePressurePlate extends Block
      */
     protected void setStateIfMobInteractsWithPlate(World par1World, int par2, int par3, int par4, int par5)
     {
-        int var6 = this.func_94351_d(par1World, par2, par3, par4);
+        int var6 = this.getPlateState(par1World, par2, par3, par4);
         boolean var7 = par5 > 0;
         boolean var8 = var6 > 0;
 
         if (par5 != var6)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, this.func_94355_d(var6), 2);
+            par1World.setBlockMetadata(par2, par3, par4, this.getMetaFromWeight(var6), 2);
             this.func_94354_b_(par1World, par2, par3, par4);
             par1World.markBlockRangeForRenderUpdate(par2, par3, par4, par2, par3, par4);
         }
@@ -168,7 +168,7 @@ public abstract class BlockBasePressurePlate extends Block
         }
     }
 
-    protected AxisAlignedBB func_94352_a(int par1, int par2, int par3)
+    protected AxisAlignedBB getSensitiveAABB(int par1, int par2, int par3)
     {
         float var4 = 0.125F;
         return AxisAlignedBB.getAABBPool().getAABB((double)((float)par1 + var4), (double)par2, (double)((float)par3 + var4), (double)((float)(par1 + 1) - var4), (double)par2 + 0.25D, (double)((float)(par3 + 1) - var4));
@@ -179,7 +179,7 @@ public abstract class BlockBasePressurePlate extends Block
      */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
-        if (this.func_94350_c(par6) > 0)
+        if (this.getPowerSupply(par6) > 0)
         {
             this.func_94354_b_(par1World, par2, par3, par4);
         }
@@ -200,7 +200,7 @@ public abstract class BlockBasePressurePlate extends Block
      */
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        return this.func_94350_c(par1IBlockAccess.getBlockMetadata(par2, par3, par4));
+        return this.getPowerSupply(par1IBlockAccess.getBlockMetadata(par2, par3, par4));
     }
 
     /**
@@ -209,7 +209,7 @@ public abstract class BlockBasePressurePlate extends Block
      */
     public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        return par5 == 1 ? this.func_94350_c(par1IBlockAccess.getBlockMetadata(par2, par3, par4)) : 0;
+        return par5 == 1 ? this.getPowerSupply(par1IBlockAccess.getBlockMetadata(par2, par3, par4)) : 0;
     }
 
     /**
@@ -240,9 +240,19 @@ public abstract class BlockBasePressurePlate extends Block
         return 1;
     }
 
-    protected abstract int func_94351_d(World var1, int var2, int var3, int var4);
+    /**
+     * Returns the current state of the pressure plate. Returns a value between 0 and 15 based on the number of items on
+     * it.
+     */
+    protected abstract int getPlateState(World var1, int var2, int var3, int var4);
 
-    protected abstract int func_94350_c(int var1);
+    /**
+     * Argument is metadata. Returns power level (0-15)
+     */
+    protected abstract int getPowerSupply(int var1);
 
-    protected abstract int func_94355_d(int var1);
+    /**
+     * Argument is weight (0-15). Return the metadata to be set because of it.
+     */
+    protected abstract int getMetaFromWeight(int var1);
 }

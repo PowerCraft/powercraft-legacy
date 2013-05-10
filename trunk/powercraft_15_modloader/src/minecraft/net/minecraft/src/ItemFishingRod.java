@@ -55,9 +55,9 @@ public class ItemFishingRod extends Item
         return par1ItemStack;
     }
 
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        super.updateIcons(par1IconRegister);
+        super.registerIcons(par1IconRegister);
         this.theIcon = par1IconRegister.registerIcon("fishingRod_empty");
     }
 

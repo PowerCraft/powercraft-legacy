@@ -173,7 +173,7 @@ public class TextureStitched implements Icon
 
                 if (var2 != var3 && var3 >= 0 && var3 < this.textureList.size())
                 {
-                    this.textureSheet.copyFrom(this.originX, this.originY, (Texture)this.textureList.get(var3), this.rotated);
+                    this.textureSheet.func_104062_b(this.originX, this.originY, (Texture)this.textureList.get(var3));
                 }
             }
         }
@@ -184,7 +184,7 @@ public class TextureStitched implements Icon
 
             if (var4 != this.frameCounter)
             {
-                this.textureSheet.copyFrom(this.originX, this.originY, (Texture)this.textureList.get(this.frameCounter), this.rotated);
+                this.textureSheet.func_104062_b(this.originX, this.originY, (Texture)this.textureList.get(this.frameCounter));
             }
         }
     }

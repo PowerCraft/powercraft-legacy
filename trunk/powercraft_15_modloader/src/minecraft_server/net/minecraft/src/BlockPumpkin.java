@@ -40,10 +40,10 @@ public class BlockPumpkin extends BlockDirectional
                 par1World.spawnParticle("snowshovel", (double)par2 + par1World.rand.nextDouble(), (double)(par3 - 2) + par1World.rand.nextDouble() * 2.5D, (double)par4 + par1World.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
             }
         }
-        else if (par1World.getBlockId(par2, par3 - 1, par4) == Block.blockSteel.blockID && par1World.getBlockId(par2, par3 - 2, par4) == Block.blockSteel.blockID)
+        else if (par1World.getBlockId(par2, par3 - 1, par4) == Block.blockIron.blockID && par1World.getBlockId(par2, par3 - 2, par4) == Block.blockIron.blockID)
         {
-            boolean var5 = par1World.getBlockId(par2 - 1, par3 - 1, par4) == Block.blockSteel.blockID && par1World.getBlockId(par2 + 1, par3 - 1, par4) == Block.blockSteel.blockID;
-            boolean var6 = par1World.getBlockId(par2, par3 - 1, par4 - 1) == Block.blockSteel.blockID && par1World.getBlockId(par2, par3 - 1, par4 + 1) == Block.blockSteel.blockID;
+            boolean var5 = par1World.getBlockId(par2 - 1, par3 - 1, par4) == Block.blockIron.blockID && par1World.getBlockId(par2 + 1, par3 - 1, par4) == Block.blockIron.blockID;
+            boolean var6 = par1World.getBlockId(par2, par3 - 1, par4 - 1) == Block.blockIron.blockID && par1World.getBlockId(par2, par3 - 1, par4 + 1) == Block.blockIron.blockID;
 
             if (var5 || var6)
             {
@@ -105,6 +105,6 @@ public class BlockPumpkin extends BlockDirectional
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
         int var7 = MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var7, 2);
+        par1World.setBlockMetadata(par2, par3, par4, var7, 2);
     }
 }

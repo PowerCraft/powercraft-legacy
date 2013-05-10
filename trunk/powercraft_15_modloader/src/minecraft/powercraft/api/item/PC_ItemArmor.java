@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.Entity;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.Icon;
 import net.minecraft.src.IconRegister;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.ModelBiped;
 import powercraft.api.interfaces.PC_IIDChangeAble;
-import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.registry.PC_TextureRegistry;
@@ -78,7 +79,7 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
 		this.armorTexture = armorTexture;
 	}
 	
-	public String getArmorTextureFile(ItemStack itemstack) {
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer) {
 		return PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(module, armorTexture);
 	}
 	
@@ -88,7 +89,7 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
 	}
 	
 	@Override
-	public void updateIcons(IconRegister par1IconRegister) {
+	public void registerIcons(IconRegister par1IconRegister) {
 		for (int i = 0; i < textureNames.length; i++) {
 			icons[i] = par1IconRegister.registerIcon(PC_TextureRegistry.getTextureName(module, textureNames[i]));
 		}
@@ -103,6 +104,10 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
 	
 	public int getBurnTime(ItemStack fuel) {
 		return 0;
+	}
+
+	public ModelBiped getArmorModel(Entity entity, ItemStack stack, int slot) {
+		return null;
 	}
 	
 }

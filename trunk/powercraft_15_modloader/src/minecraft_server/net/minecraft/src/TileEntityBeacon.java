@@ -104,7 +104,7 @@ public class TileEntityBeacon extends TileEntity implements IInventory
                     {
                         int var6 = this.worldObj.getBlockId(var4, var2, var5);
 
-                        if (var6 != Block.blockEmerald.blockID && var6 != Block.blockGold.blockID && var6 != Block.blockDiamond.blockID && var6 != Block.blockSteel.blockID)
+                        if (var6 != Block.blockEmerald.blockID && var6 != Block.blockGold.blockID && var6 != Block.blockDiamond.blockID && var6 != Block.blockIron.blockID)
                         {
                             var3 = false;
                             break;

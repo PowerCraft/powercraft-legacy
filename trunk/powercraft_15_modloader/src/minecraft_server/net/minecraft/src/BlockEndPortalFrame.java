@@ -76,6 +76,6 @@ public class BlockEndPortalFrame extends Block
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
         int var7 = ((MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) + 2) % 4;
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var7, 2);
+        par1World.setBlockMetadata(par2, par3, par4, var7, 2);
     }
 }

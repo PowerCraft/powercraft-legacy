@@ -64,7 +64,7 @@ public class ItemSlab extends ItemBlock
 
             if ((par7 == 1 && !var14 || par7 == 0 && var14) && var11 == this.theHalfSlab.blockID && var13 == par1ItemStack.getItemDamage())
             {
-                if (par3World.checkIfAABBIsClear(this.doubleSlab.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.doubleSlab.blockID, var13, 3))
+                if (par3World.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.doubleSlab.blockID, var13, 3))
                 {
                     par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getPitch() * 0.8F);
                     --par1ItemStack.stackSize;
@@ -117,7 +117,7 @@ public class ItemSlab extends ItemBlock
 
         if (var8 == this.theHalfSlab.blockID && var10 == par1ItemStack.getItemDamage())
         {
-            if (par3World.checkIfAABBIsClear(this.doubleSlab.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.doubleSlab.blockID, var10, 3))
+            if (par3World.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.doubleSlab.blockID, var10, 3))
             {
                 par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getPitch() * 0.8F);
                 --par1ItemStack.stackSize;

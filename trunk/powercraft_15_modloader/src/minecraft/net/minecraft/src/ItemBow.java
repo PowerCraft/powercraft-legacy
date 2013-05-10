@@ -123,9 +123,9 @@ public class ItemBow extends Item
         return 1;
     }
 
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        super.updateIcons(par1IconRegister);
+        super.registerIcons(par1IconRegister);
         this.iconArray = new Icon[bowPullIconNameArray.length];
 
         for (int var2 = 0; var2 < this.iconArray.length; ++var2)
@@ -134,7 +134,10 @@ public class ItemBow extends Item
         }
     }
 
-    public Icon func_94599_c(int par1)
+    /**
+     * used to cycle through icons based on their used duration, i.e. for the bow
+     */
+    public Icon getItemIconForUseDuration(int par1)
     {
         return this.iconArray[par1];
     }

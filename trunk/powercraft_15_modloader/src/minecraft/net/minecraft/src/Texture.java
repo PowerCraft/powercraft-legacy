@@ -30,8 +30,17 @@ public class Texture
     private final String textureName;
     private Rect2i textureRect;
     private boolean transferred;
+
+    /**
+     * Uninitialized boolean. If true, the texture is re-uploaded every time it's modified. If false, every tick after
+     * it's been modified at least once in that tick.
+     */
     private boolean autoCreate;
-    private boolean textureCreated;
+
+    /**
+     * False if the texture has been modified since it was last uploaded to the GPU.
+     */
+    private boolean textureNotModified;
     private ByteBuffer textureData;
 
     private Texture(String par1Str, int par2, int par3, int par4, int par5, int par6, int par7, int par8, int par9)
@@ -106,11 +115,11 @@ public class Texture
 
                 if (this.autoCreate)
                 {
-                    this.createTexture();
+                    this.uploadTexture();
                 }
                 else
                 {
-                    this.textureCreated = false;
+                    this.textureNotModified = false;
                 }
             }
             else
@@ -125,7 +134,7 @@ public class Texture
 
             if (par2 != 2)
             {
-                this.createTexture();
+                this.uploadTexture();
                 this.autoCreate = false;
             }
         }
@@ -159,11 +168,11 @@ public class Texture
 
             if (this.autoCreate)
             {
-                this.createTexture();
+                this.uploadTexture();
             }
             else
             {
-                this.textureCreated = false;
+                this.textureNotModified = false;
             }
         }
     }
@@ -242,13 +251,20 @@ public class Texture
 
             if (this.autoCreate)
             {
-                this.createTexture();
+                this.uploadTexture();
             }
             else
             {
-                this.textureCreated = false;
+                this.textureNotModified = false;
             }
         }
+    }
+
+    public void func_104062_b(int par1, int par2, Texture par3Texture)
+    {
+        GL11.glBindTexture(this.textureTarget, this.glTextureId);
+        GL11.glTexSubImage2D(this.textureTarget, 0, par1, par2, par3Texture.getWidth(), par3Texture.getHeight(), this.textureFormat, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)par3Texture.getTextureData().position(0));
+        this.textureNotModified = true;
     }
 
     public void transferFromImage(BufferedImage par1BufferedImage)
@@ -288,11 +304,11 @@ public class Texture
 
                 if (this.autoCreate)
                 {
-                    this.createTexture();
+                    this.uploadTexture();
                 }
                 else
                 {
-                    this.textureCreated = false;
+                    this.textureNotModified = false;
                 }
             }
             else
@@ -341,13 +357,13 @@ public class Texture
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit + par1);
         GL11.glBindTexture(this.textureTarget, this.glTextureId);
 
-        if (!this.textureCreated)
+        if (!this.textureNotModified)
         {
-            this.createTexture();
+            this.uploadTexture();
         }
     }
 
-    public void createTexture()
+    public void uploadTexture()
     {
         this.textureData.flip();
 
@@ -364,7 +380,7 @@ public class Texture
             GL11.glTexImage1D(this.textureTarget, 0, this.textureFormat, this.width, 0, this.textureFormat, GL11.GL_UNSIGNED_BYTE, this.textureData);
         }
 
-        this.textureCreated = true;
+        this.textureNotModified = true;
     }
 
     public ByteBuffer getTextureData()

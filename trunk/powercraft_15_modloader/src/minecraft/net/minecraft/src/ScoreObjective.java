@@ -3,43 +3,43 @@ package net.minecraft.src;
 public class ScoreObjective
 {
     private final Scoreboard theScoreboard;
-    private final String field_96684_b;
+    private final String name;
 
     /** The ScoreObjectiveCriteria for this objetive */
     private final ScoreObjectiveCriteria objectiveCriteria;
-    private String field_96683_d;
+    private String displayName;
 
     public ScoreObjective(Scoreboard par1Scoreboard, String par2Str, ScoreObjectiveCriteria par3ScoreObjectiveCriteria)
     {
         this.theScoreboard = par1Scoreboard;
-        this.field_96684_b = par2Str;
+        this.name = par2Str;
         this.objectiveCriteria = par3ScoreObjectiveCriteria;
-        this.field_96683_d = par2Str;
+        this.displayName = par2Str;
     }
 
-    public Scoreboard func_96682_a()
+    public Scoreboard getScoreboard()
     {
         return this.theScoreboard;
     }
 
-    public String func_96679_b()
+    public String getName()
     {
-        return this.field_96684_b;
+        return this.name;
     }
 
-    public ScoreObjectiveCriteria func_96680_c()
+    public ScoreObjectiveCriteria getCriteria()
     {
         return this.objectiveCriteria;
     }
 
-    public String func_96678_d()
+    public String getDisplayName()
     {
-        return this.field_96683_d;
+        return this.displayName;
     }
 
-    public void func_96681_a(String par1Str)
+    public void setDisplayName(String par1Str)
     {
-        this.field_96683_d = par1Str;
+        this.displayName = par1Str;
         this.theScoreboard.func_96532_b(this);
     }
 }

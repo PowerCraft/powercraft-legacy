@@ -59,7 +59,7 @@ public class EntityItemFrame extends EntityHanging
         par1ItemStack.stackSize = 1;
         par1ItemStack.setItemFrame(this);
         this.getDataWatcher().updateObject(2, par1ItemStack);
-        this.getDataWatcher().func_82708_h(2);
+        this.getDataWatcher().setObjectWatched(2);
     }
 
     /**

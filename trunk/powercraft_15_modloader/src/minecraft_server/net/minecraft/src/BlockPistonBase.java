@@ -47,7 +47,7 @@ public class BlockPistonBase extends Block
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
         int var7 = determineOrientation(par1World, par2, par3, par4, par5EntityLiving);
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var7, 2);
+        par1World.setBlockMetadata(par2, par3, par4, var7, 2);
 
         if (!par1World.isRemote)
         {
@@ -99,7 +99,7 @@ public class BlockPistonBase extends Block
             }
             else if (!var7 && isExtended(var5))
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var6, 2);
+                par1World.setBlockMetadata(par2, par3, par4, var6, 2);
                 par1World.addBlockEvent(par2, par3, par4, this.blockID, 1, var6);
             }
         }
@@ -125,7 +125,7 @@ public class BlockPistonBase extends Block
 
             if (var7 && par5 == 1)
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, par6 | 8, 2);
+                par1World.setBlockMetadata(par2, par3, par4, par6 | 8, 2);
                 return false;
             }
 
@@ -142,7 +142,7 @@ public class BlockPistonBase extends Block
                 return false;
             }
 
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, par6 | 8, 2);
+            par1World.setBlockMetadata(par2, par3, par4, par6 | 8, 2);
             par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "tile.piston.out", 0.5F, par1World.rand.nextFloat() * 0.25F + 0.6F);
         }
         else if (par5 == 1)

@@ -42,7 +42,7 @@ public class BlockNetherStalk extends BlockFlower
         if (var6 < 3 && par5Random.nextInt(10) == 0)
         {
             ++var6;
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var6, 2);
+            par1World.setBlockMetadata(par2, par3, par4, var6, 2);
         }
 
         super.updateTick(par1World, par2, par3, par4, par5Random);

@@ -5,7 +5,7 @@ public class RConConsoleSource implements ICommandSender
     /** Single instance of RConConsoleSource */
     public static final RConConsoleSource instance = new RConConsoleSource();
 
-    /** RCon string buffer for log */
+    /** RCon string buffer for log. */
     private StringBuffer buffer = new StringBuffer();
 
     /**

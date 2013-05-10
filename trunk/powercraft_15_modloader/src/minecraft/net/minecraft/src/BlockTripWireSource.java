@@ -178,7 +178,7 @@ public class BlockTripWireSource extends Block
             {
                 var24 = par1World.getBlockMetadata(var21, par3, var22);
 
-                if ((var24 & 3) == Direction.footInvisibleFaceRemap[var10])
+                if ((var24 & 3) == Direction.rotateOpposite[var10])
                 {
                     var18 = var20;
                 }
@@ -218,7 +218,7 @@ public class BlockTripWireSource extends Block
         {
             var21 = par2 + var16 * var18;
             var22 = par4 + var17 * var18;
-            var23 = Direction.footInvisibleFaceRemap[var10];
+            var23 = Direction.rotateOpposite[var10];
             par1World.setBlockMetadataWithNotify(var21, par3, var22, var23 | var20, 3);
             this.notifyNeighborOfChange(par1World, var21, par3, var22, var23);
             this.playSoundEffect(par1World, var21, par3, var22, var13, var14, var11, var12);

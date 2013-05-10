@@ -150,22 +150,20 @@ public class PC_TileEntityWithInventory extends PC_TileEntity implements PC_IInv
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		return true;
 	}
-	
+
 	@Override
-	public int[] getSizeInventorySide(int var1) {
+	public int[] getAccessibleSlotsFromSide(int side) {
 		return PC_InventoryUtils.makeIndexList(0, getSizeInventory());
 	}
-	
+
 	@Override
-	public boolean func_102007_a(int i, ItemStack itemstack, int j) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean canInsertItem(int slot, ItemStack itemStack, int side) {
+		return isStackValidForSlot(slot, itemStack);
 	}
-	
+
 	@Override
-	public boolean func_102008_b(int i, ItemStack itemstack, int j) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean canExtractItem(int slot, ItemStack itemStack, int side) {
+		return canDispenseStackFrom(slot);
 	}
 	
 }

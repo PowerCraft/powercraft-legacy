@@ -216,7 +216,7 @@ public class ComponentScatteredFeatureDesertPyramid extends ComponentScatteredFe
             {
                 int var11 = Direction.offsetX[var10] * 2;
                 int var12 = Direction.offsetZ[var10] * 2;
-                this.field_74940_h[var10] = this.generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 10 + var11, -11, 10 + var12, WeightedRandomChestContent.func_92080_a(itemsToGenerateInTemple, new WeightedRandomChestContent[] {Item.field_92105_bW.func_92114_b(par2Random)}), 2 + par2Random.nextInt(5));
+                this.field_74940_h[var10] = this.generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 10 + var11, -11, 10 + var12, WeightedRandomChestContent.func_92080_a(itemsToGenerateInTemple, new WeightedRandomChestContent[] {Item.enchantedBook.func_92114_b(par2Random)}), 2 + par2Random.nextInt(5));
             }
         }
 

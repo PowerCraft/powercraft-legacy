@@ -100,7 +100,7 @@ public class ContainerRepair extends Container
 
             if (var6 != null)
             {
-                var8 = var6.itemID == Item.field_92105_bW.itemID && Item.field_92105_bW.func_92110_g(var6).tagCount() > 0;
+                var8 = var6.itemID == Item.enchantedBook.itemID && Item.enchantedBook.func_92110_g(var6).tagCount() > 0;
 
                 if (var5.isItemStackDamageable() && Item.itemsList[var5.itemID].getIsRepairable(var1, var6))
                 {
@@ -177,7 +177,7 @@ public class ContainerRepair extends Container
                         int var15 = var14 - var13;
                         boolean var16 = var22.func_92089_a(var1);
 
-                        if (this.thePlayer.capabilities.isCreativeMode || var1.itemID == ItemEnchantedBook.field_92105_bW.itemID)
+                        if (this.thePlayer.capabilities.isCreativeMode || var1.itemID == ItemEnchantedBook.enchantedBook.itemID)
                         {
                             var16 = true;
                         }
@@ -242,7 +242,7 @@ public class ContainerRepair extends Container
                 }
             }
 
-            if (this.repairedItemName != null && !this.repairedItemName.equalsIgnoreCase(var1.getDisplayName()) && this.repairedItemName.length() > 0)
+            if (this.repairedItemName != null && this.repairedItemName.length() > 0 && !this.repairedItemName.equalsIgnoreCase(this.thePlayer.getTranslator().translateNamedKey(var1.getItemName())) && !this.repairedItemName.equals(var1.getDisplayName()))
             {
                 var4 = var1.isItemStackDamageable() ? 7 : var1.stackSize * 5;
                 var2 += var4;

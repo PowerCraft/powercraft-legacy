@@ -88,7 +88,7 @@ public class BlockEnderChest extends BlockContainer
             var7 = 4;
         }
 
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var7, 2);
+        par1World.setBlockMetadata(par2, par3, par4, var7, 2);
     }
 
     /**

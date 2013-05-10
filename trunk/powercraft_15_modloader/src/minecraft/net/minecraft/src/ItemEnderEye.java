@@ -45,7 +45,7 @@ public class ItemEnderEye extends Item
                 int var15 = 0;
                 boolean var27 = false;
                 boolean var17 = true;
-                int var28 = Direction.enderEyeMetaToDirection[var13];
+                int var28 = Direction.rotateRight[var13];
                 int var19;
                 int var21;
                 int var23;

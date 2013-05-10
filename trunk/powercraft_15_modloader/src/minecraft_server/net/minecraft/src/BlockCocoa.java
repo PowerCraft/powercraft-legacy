@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class BlockCocoa extends BlockDirectional
 {
-    public static final String[] field_94470_a = new String[] {"cocoa_0", "cocoa_1", "cocoa_2"};
+    public static final String[] cocoaIcons = new String[] {"cocoa_0", "cocoa_1", "cocoa_2"};
 
     public BlockCocoa(int par1)
     {
@@ -30,7 +30,7 @@ public class BlockCocoa extends BlockDirectional
             if (var7 < 2)
             {
                 ++var7;
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var7 << 2 | getDirection(var6), 2);
+                par1World.setBlockMetadata(par2, par3, par4, var7 << 2 | getDirection(var6), 2);
             }
         }
     }
@@ -119,7 +119,7 @@ public class BlockCocoa extends BlockDirectional
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
         int var7 = ((MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) + 0) % 4;
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var7, 2);
+        par1World.setBlockMetadata(par2, par3, par4, var7, 2);
     }
 
     /**
@@ -132,7 +132,7 @@ public class BlockCocoa extends BlockDirectional
             par5 = 2;
         }
 
-        return Direction.footInvisibleFaceRemap[Direction.vineGrowth[par5]];
+        return Direction.footInvisibleFaceRemap[Direction.facingToDirection[par5]];
     }
 
     /**

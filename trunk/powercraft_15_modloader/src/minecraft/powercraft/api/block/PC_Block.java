@@ -227,7 +227,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	}
 	
 	@Override
-	public final Icon getBlockTextureFromSideAndMetadata(int dir, int metadata) {
+	public final Icon getIcon(int dir, int metadata) {
 		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
 		pcDir = pcDir.rotate(getRotation(metadata));
 		return getBlockTextureFromSideAndMetadata(pcDir, metadata);

@@ -282,7 +282,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     {
         if (selectedTabIndex != CreativeTabs.tabAllSearch.getTabIndex())
         {
-            if (GameSettings.func_100015_a(this.mc.gameSettings.keyBindChat))
+            if (GameSettings.isKeyDown(this.mc.gameSettings.keyBindChat))
             {
                 this.setCurrentCreativeTab(CreativeTabs.tabAllSearch);
             }

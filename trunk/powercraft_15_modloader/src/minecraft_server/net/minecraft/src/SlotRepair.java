@@ -83,7 +83,7 @@ class SlotRepair extends Slot
             }
             else
             {
-                this.theWorld.setBlockMetadataWithNotify(this.blockPosX, this.blockPosY, this.blockPosZ, var4 | var5 << 2, 2);
+                this.theWorld.setBlockMetadata(this.blockPosX, this.blockPosY, this.blockPosZ, var4 | var5 << 2, 2);
                 this.theWorld.playAuxSFX(1021, this.blockPosX, this.blockPosY, this.blockPosZ, 0);
             }
         }

@@ -95,7 +95,7 @@ public class BlockDetectorRail extends BlockRailBase
 
         if (var7 && !var6)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, par5 | 8, 3);
+            par1World.setBlockMetadata(par2, par3, par4, par5 | 8, 3);
             par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this.blockID);
             par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this.blockID);
             par1World.markBlockRangeForRenderUpdate(par2, par3, par4, par2, par3, par4);
@@ -103,7 +103,7 @@ public class BlockDetectorRail extends BlockRailBase
 
         if (!var7 && var6)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, par5 & 7, 3);
+            par1World.setBlockMetadata(par2, par3, par4, par5 & 7, 3);
             par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this.blockID);
             par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this.blockID);
             par1World.markBlockRangeForRenderUpdate(par2, par3, par4, par2, par3, par4);
@@ -144,11 +144,11 @@ public class BlockDetectorRail extends BlockRailBase
         if ((par1World.getBlockMetadata(par2, par3, par4) & 8) > 0)
         {
             float var6 = 0.125F;
-            List var7 = par1World.selectEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getAABBPool().getAABB((double)((float)par2 + var6), (double)par3, (double)((float)par4 + var6), (double)((float)(par2 + 1) - var6), (double)((float)(par3 + 1) - var6), (double)((float)(par4 + 1) - var6)), IEntitySelector.field_96566_b);
+            List var7 = par1World.selectEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getAABBPool().getAABB((double)((float)par2 + var6), (double)par3, (double)((float)par4 + var6), (double)((float)(par2 + 1) - var6), (double)((float)(par3 + 1) - var6), (double)((float)(par4 + 1) - var6)), IEntitySelector.selectInventories);
 
             if (var7.size() > 0)
             {
-                return Container.func_94526_b((IInventory)var7.get(0));
+                return Container.calcRedstoneFromInventory((IInventory)var7.get(0));
             }
         }
 

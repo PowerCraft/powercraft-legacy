@@ -255,7 +255,7 @@ public class Potion
 
     public static String getDurationString(PotionEffect par0PotionEffect)
     {
-        if (par0PotionEffect.func_100011_g())
+        if (par0PotionEffect.getIsPotionDurationMax())
         {
             return "**:**";
         }

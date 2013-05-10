@@ -171,7 +171,7 @@ public class BlockTripWire extends Block
                     {
                         int var11 = par1World.getBlockMetadata(var8, par3, var9) & 3;
 
-                        if (var11 == Direction.footInvisibleFaceRemap[var6])
+                        if (var11 == Direction.rotateOpposite[var6])
                         {
                             Block.tripWireSource.func_72143_a(par1World, var8, par3, var9, var10, par1World.getBlockMetadata(var8, par3, var9), true, var7, par5);
                         }
@@ -274,7 +274,7 @@ public class BlockTripWire extends Block
         {
             var11 = par0IBlockAccess.getBlockMetadata(var6, par2, var8);
             int var13 = var11 & 3;
-            return var13 == Direction.footInvisibleFaceRemap[par5];
+            return var13 == Direction.rotateOpposite[par5];
         }
         else if (var9 == Block.tripWire.blockID)
         {

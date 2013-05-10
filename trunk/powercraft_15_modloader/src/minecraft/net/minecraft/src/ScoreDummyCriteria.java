@@ -22,7 +22,7 @@ public class ScoreDummyCriteria implements ScoreObjectiveCriteria
         return 0;
     }
 
-    public boolean func_96637_b()
+    public boolean isReadOnly()
     {
         return false;
     }

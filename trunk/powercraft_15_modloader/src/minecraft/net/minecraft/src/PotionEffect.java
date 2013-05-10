@@ -16,7 +16,9 @@ public class PotionEffect
 
     /** Whether the potion effect came from a beacon */
     private boolean isAmbient;
-    private boolean field_100013_f;
+
+    /** True if potion effect duration is at maximum, false otherwise. */
+    private boolean isPotionDurationMax;
 
     public PotionEffect(int par1, int par2)
     {
@@ -87,7 +89,7 @@ public class PotionEffect
         return this.amplifier;
     }
 
-    public boolean func_102028_d()
+    public boolean isSplashPotionEffect()
     {
         return this.isSplashPotion;
     }
@@ -204,13 +206,16 @@ public class PotionEffect
         return new PotionEffect(var1, var3, var2, var4);
     }
 
-    public void func_100012_b(boolean par1)
+    /**
+     * Toggle the isPotionDurationMax field.
+     */
+    public void setPotionDurationMax(boolean par1)
     {
-        this.field_100013_f = par1;
+        this.isPotionDurationMax = par1;
     }
 
-    public boolean func_100011_g()
+    public boolean getIsPotionDurationMax()
     {
-        return this.field_100013_f;
+        return this.isPotionDurationMax;
     }
 }

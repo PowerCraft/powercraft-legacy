@@ -44,5 +44,5 @@ public interface ISaveHandler
     /**
      * Returns the name of the directory where world information is saved.
      */
-    String getSaveDirectoryName();
+    String getWorldDirectoryName();
 }

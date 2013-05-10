@@ -5,7 +5,7 @@ public class MaterialLogic extends Material
     public MaterialLogic(MapColor par1MapColor)
     {
         super(par1MapColor);
-        this.func_85158_p();
+        this.setAlwaysHarvested();
     }
 
     public boolean isSolid()

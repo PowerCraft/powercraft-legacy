@@ -17,5 +17,5 @@ public interface ScoreObjectiveCriteria
 
     int func_96635_a(List var1);
 
-    boolean func_96637_b();
+    boolean isReadOnly();
 }

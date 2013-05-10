@@ -54,8 +54,8 @@ abstract class ComponentStronghold extends StructureComponent
                 this.placeBlockAtCurrentPosition(par1World, Block.stoneBrick.blockID, 0, par5 + 2, par6 + 2, par7, par3StructureBoundingBox);
                 this.placeBlockAtCurrentPosition(par1World, Block.stoneBrick.blockID, 0, par5 + 2, par6 + 1, par7, par3StructureBoundingBox);
                 this.placeBlockAtCurrentPosition(par1World, Block.stoneBrick.blockID, 0, par5 + 2, par6, par7, par3StructureBoundingBox);
-                this.placeBlockAtCurrentPosition(par1World, Block.doorSteel.blockID, 0, par5 + 1, par6, par7, par3StructureBoundingBox);
-                this.placeBlockAtCurrentPosition(par1World, Block.doorSteel.blockID, 8, par5 + 1, par6 + 1, par7, par3StructureBoundingBox);
+                this.placeBlockAtCurrentPosition(par1World, Block.doorIron.blockID, 0, par5 + 1, par6, par7, par3StructureBoundingBox);
+                this.placeBlockAtCurrentPosition(par1World, Block.doorIron.blockID, 8, par5 + 1, par6 + 1, par7, par3StructureBoundingBox);
                 this.placeBlockAtCurrentPosition(par1World, Block.stoneButton.blockID, this.getMetadataWithOffset(Block.stoneButton.blockID, 4), par5 + 2, par6 + 1, par7 + 1, par3StructureBoundingBox);
                 this.placeBlockAtCurrentPosition(par1World, Block.stoneButton.blockID, this.getMetadataWithOffset(Block.stoneButton.blockID, 3), par5 + 2, par6 + 1, par7 - 1, par3StructureBoundingBox);
         }

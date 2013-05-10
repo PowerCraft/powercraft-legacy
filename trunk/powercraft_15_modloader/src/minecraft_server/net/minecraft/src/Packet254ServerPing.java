@@ -6,7 +6,8 @@ import java.io.IOException;
 
 public class Packet254ServerPing extends Packet
 {
-    public int field_82559_a = 0;
+    /** Always 1, unless readByte threw an exception. */
+    public int readSuccessfully = 0;
 
     /**
      * Abstract. Reads the raw packet data from the data stream.
@@ -15,11 +16,11 @@ public class Packet254ServerPing extends Packet
     {
         try
         {
-            this.field_82559_a = par1DataInputStream.readByte();
+            this.readSuccessfully = par1DataInputStream.readByte();
         }
         catch (Throwable var3)
         {
-            this.field_82559_a = 0;
+            this.readSuccessfully = 0;
         }
     }
 

@@ -225,7 +225,7 @@ public class BlockBed extends BlockDirectional
             var5 &= -5;
         }
 
-        par0World.setBlockMetadataWithNotify(par1, par2, par3, var5, 4);
+        par0World.setBlockMetadata(par1, par2, par3, var5, 4);
     }
 
     /**

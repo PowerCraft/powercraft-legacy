@@ -7,6 +7,6 @@ public class TileEntityDropper extends TileEntityDispenser
      */
     public String getInvName()
     {
-        return this.isInvNameLocalized() ? this.field_94050_c : "container.dropper";
+        return this.isInvNameLocalized() ? this.customName : "container.dropper";
     }
 }

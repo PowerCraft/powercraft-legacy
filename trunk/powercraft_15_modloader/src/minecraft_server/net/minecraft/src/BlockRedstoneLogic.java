@@ -174,7 +174,7 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
         int var6 = getDirection(par5);
         int var7 = par2 + Direction.offsetX[var6];
         int var8 = par4 + Direction.offsetZ[var6];
-        int var9 = par1World.getIndirectPowerLevelTo(var7, par3, var8, Direction.headInvisibleFace[var6]);
+        int var9 = par1World.getIndirectPowerLevelTo(var7, par3, var8, Direction.directionToFacing[var6]);
         return var9 >= 15 ? var9 : Math.max(var9, par1World.getBlockId(var7, par3, var8) == Block.redstoneWire.blockID ? par1World.getBlockMetadata(var7, par3, var8) : 0);
     }
 
@@ -217,7 +217,7 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
         int var7 = ((MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) + 2) % 4;
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var7, 3);
+        par1World.setBlockMetadata(par2, par3, par4, var7, 3);
         boolean var8 = this.func_94478_d(par1World, par2, par3, par4, var7);
 
         if (var8)
@@ -301,7 +301,7 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
         return 15;
     }
 
-    public static boolean func_82524_c(int par0)
+    public static boolean isRedstoneRepeaterBlockID(int par0)
     {
         return Block.redstoneRepeaterIdle.func_94487_f(par0) || Block.redstoneComparatorIdle.func_94487_f(par0);
     }
@@ -315,7 +315,7 @@ public abstract class BlockRedstoneLogic extends BlockDirectional
     {
         int var6 = getDirection(par5);
 
-        if (func_82524_c(par1World.getBlockId(par2 - Direction.offsetX[var6], par3, par4 - Direction.offsetZ[var6])))
+        if (isRedstoneRepeaterBlockID(par1World.getBlockId(par2 - Direction.offsetX[var6], par3, par4 - Direction.offsetZ[var6])))
         {
             int var7 = par1World.getBlockMetadata(par2 - Direction.offsetX[var6], par3, par4 - Direction.offsetZ[var6]);
             int var8 = getDirection(var7);

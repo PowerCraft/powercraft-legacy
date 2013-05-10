@@ -44,7 +44,7 @@ public class BlockStem extends BlockFlower
                 if (var7 < 7)
                 {
                     ++var7;
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, var7, 2);
+                    par1World.setBlockMetadata(par2, par3, par4, var7, 2);
                 }
                 else
                 {
@@ -112,7 +112,7 @@ public class BlockStem extends BlockFlower
             var5 = 7;
         }
 
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var5, 2);
+        par1World.setBlockMetadata(par2, par3, par4, var5, 2);
     }
 
     private float getGrowthModifier(World par1World, int par2, int par3, int par4)

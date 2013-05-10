@@ -3,13 +3,13 @@ package net.minecraft.src;
 public class BlockBreakable extends Block
 {
     private boolean localFlag;
-    private String field_94430_b;
+    private String breakableBlockIcon;
 
     protected BlockBreakable(int par1, String par2Str, Material par3Material, boolean par4)
     {
         super(par1, par3Material);
         this.localFlag = par4;
-        this.field_94430_b = par2Str;
+        this.breakableBlockIcon = par2Str;
     }
 
     /**
@@ -37,6 +37,6 @@ public class BlockBreakable extends Block
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon(this.field_94430_b);
+        this.blockIcon = par1IconRegister.registerIcon(this.breakableBlockIcon);
     }
 }

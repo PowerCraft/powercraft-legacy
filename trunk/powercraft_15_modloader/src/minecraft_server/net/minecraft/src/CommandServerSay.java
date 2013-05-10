@@ -28,7 +28,7 @@ public class CommandServerSay extends CommandBase
         if (par2ArrayOfStr.length > 0 && par2ArrayOfStr[0].length() > 0)
         {
             String var3 = func_82361_a(par1ICommandSender, par2ArrayOfStr, 0, true);
-            MinecraftServer.getServer().getConfigurationManager().func_92062_k(String.format("[%s] %s", new Object[] {par1ICommandSender.getCommandSenderName(), var3}));
+            MinecraftServer.getServer().getConfigurationManager().sendChatMsg(String.format("[%s] %s", new Object[] {par1ICommandSender.getCommandSenderName(), var3}));
         }
         else
         {

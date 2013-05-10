@@ -20,7 +20,7 @@ final class BehaviorDispenseArmor extends BehaviorDefaultDispenseItem
         {
             EntityLiving var9 = (EntityLiving)var8.get(0);
             int var10 = var9 instanceof EntityPlayer ? 1 : 0;
-            int var11 = EntityLiving.func_82159_b(par2ItemStack);
+            int var11 = EntityLiving.getArmorPosition(par2ItemStack);
             ItemStack var12 = par2ItemStack.copy();
             var12.stackSize = 1;
             var9.setCurrentItemOrArmor(var11 - var10, var12);

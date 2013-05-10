@@ -41,7 +41,7 @@ public class ScoreHealthCriteria extends ScoreDummyCriteria
         return MathHelper.floor_float(var2 * 19.0F) + (var2 > 0.0F ? 1 : 0);
     }
 
-    public boolean func_96637_b()
+    public boolean isReadOnly()
     {
         return true;
     }

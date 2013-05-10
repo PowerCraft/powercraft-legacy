@@ -196,7 +196,7 @@ public class BlockVine extends Block
         {
             if (var6 != var5)
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var6, 2);
+                par1World.setBlockMetadata(par2, par3, par4, var6, 2);
             }
 
             return true;
@@ -253,7 +253,7 @@ public class BlockVine extends Block
 
             var9 = par1World.getBlockMetadata(par2, par3, par4);
             var10 = par1World.rand.nextInt(6);
-            var11 = Direction.vineGrowth[var10];
+            var11 = Direction.facingToDirection[var10];
             int var12;
             int var13;
 
@@ -299,7 +299,7 @@ public class BlockVine extends Block
                     {
                         if (Block.blocksList[var12].blockMaterial.isOpaque() && Block.blocksList[var12].renderAsNormalBlock())
                         {
-                            par1World.setBlockMetadataWithNotify(par2, par3, par4, var9 | 1 << var11, 2);
+                            par1World.setBlockMetadata(par2, par3, par4, var9 | 1 << var11, 2);
                         }
                     }
                     else
@@ -349,7 +349,7 @@ public class BlockVine extends Block
 
                         if (var14 != (var14 | var13))
                         {
-                            par1World.setBlockMetadataWithNotify(par2, par3 - 1, par4, var14 | var13, 2);
+                            par1World.setBlockMetadata(par2, par3 - 1, par4, var14 | var13, 2);
                         }
                     }
                 }

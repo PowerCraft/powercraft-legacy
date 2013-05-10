@@ -6,9 +6,9 @@ import java.util.Random;
 public class BlockHopper extends BlockContainer
 {
     private final Random field_94457_a = new Random();
-    private Icon field_94455_b;
-    private Icon field_94456_c;
-    private Icon field_94454_cO;
+    private Icon hopperIcon;
+    private Icon hopperTopIcon;
+    private Icon hopperInsideIcon;
 
     public BlockHopper(int par1)
     {
@@ -50,7 +50,7 @@ public class BlockHopper extends BlockContainer
      */
     public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
-        int var10 = Facing.faceToSide[par5];
+        int var10 = Facing.oppositeSide[par5];
 
         if (var10 == 1)
         {
@@ -77,8 +77,8 @@ public class BlockHopper extends BlockContainer
 
         if (par6ItemStack.hasDisplayName())
         {
-            TileEntityHopper var7 = func_98213_d(par1World, par2, par3, par4);
-            var7.func_96115_a(par6ItemStack.getDisplayName());
+            TileEntityHopper var7 = getHopperTile(par1World, par2, par3, par4);
+            var7.setInventoryName(par6ItemStack.getDisplayName());
         }
     }
 
@@ -88,7 +88,7 @@ public class BlockHopper extends BlockContainer
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);
-        this.func_96471_k(par1World, par2, par3, par4);
+        this.updateMetadata(par1World, par2, par3, par4);
     }
 
     /**
@@ -102,11 +102,11 @@ public class BlockHopper extends BlockContainer
         }
         else
         {
-            TileEntityHopper var10 = func_98213_d(par1World, par2, par3, par4);
+            TileEntityHopper var10 = getHopperTile(par1World, par2, par3, par4);
 
             if (var10 != null)
             {
-                par5EntityPlayer.func_94064_a(var10);
+                par5EntityPlayer.displayGUIHopper(var10);
             }
 
             return true;
@@ -119,15 +119,18 @@ public class BlockHopper extends BlockContainer
      */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
-        this.func_96471_k(par1World, par2, par3, par4);
+        this.updateMetadata(par1World, par2, par3, par4);
     }
 
-    private void func_96471_k(World par1World, int par2, int par3, int par4)
+    /**
+     * Updates the Metadata to include if the Hopper gets powered by Redstone or not
+     */
+    private void updateMetadata(World par1World, int par2, int par3, int par4)
     {
         int var5 = par1World.getBlockMetadata(par2, par3, par4);
-        int var6 = func_94451_c(var5);
+        int var6 = getDirectionFromMetadata(var5);
         boolean var7 = !par1World.isBlockIndirectlyGettingPowered(par2, par3, par4);
-        boolean var8 = func_94452_d(var5);
+        boolean var8 = getIsBlockNotPoweredFromMetadata(var5);
 
         if (var7 != var8)
         {
@@ -223,17 +226,17 @@ public class BlockHopper extends BlockContainer
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94456_c : this.field_94455_b;
+        return par1 == 1 ? this.hopperTopIcon : this.hopperIcon;
     }
 
-    public static int func_94451_c(int par0)
+    public static int getDirectionFromMetadata(int par0)
     {
         return par0 & 7;
     }
 
-    public static boolean func_94452_d(int par0)
+    public static boolean getIsBlockNotPoweredFromMetadata(int par0)
     {
         return (par0 & 8) != 8;
     }
@@ -253,7 +256,7 @@ public class BlockHopper extends BlockContainer
      */
     public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
-        return Container.func_94526_b(func_98213_d(par1World, par2, par3, par4));
+        return Container.calcRedstoneFromInventory(getHopperTile(par1World, par2, par3, par4));
     }
 
     /**
@@ -262,22 +265,25 @@ public class BlockHopper extends BlockContainer
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94455_b = par1IconRegister.registerIcon("hopper");
-        this.field_94456_c = par1IconRegister.registerIcon("hopper_top");
-        this.field_94454_cO = par1IconRegister.registerIcon("hopper_inside");
+        this.hopperIcon = par1IconRegister.registerIcon("hopper");
+        this.hopperTopIcon = par1IconRegister.registerIcon("hopper_top");
+        this.hopperInsideIcon = par1IconRegister.registerIcon("hopper_inside");
     }
 
-    public static Icon func_94453_b(String par0Str)
+    public static Icon getHopperIcon(String par0Str)
     {
-        return par0Str == "hopper" ? Block.hopperBlock.field_94455_b : (par0Str == "hopper_inside" ? Block.hopperBlock.field_94454_cO : null);
+        return par0Str == "hopper" ? Block.hopperBlock.hopperIcon : (par0Str == "hopper_inside" ? Block.hopperBlock.hopperInsideIcon : null);
     }
 
-    public String func_94327_t_()
+    /**
+     * Gets the icon name of the ItemBlock corresponding to this block. Used by hoppers.
+     */
+    public String getItemIconName()
     {
         return "hopper";
     }
 
-    public static TileEntityHopper func_98213_d(IBlockAccess par0IBlockAccess, int par1, int par2, int par3)
+    public static TileEntityHopper getHopperTile(IBlockAccess par0IBlockAccess, int par1, int par2, int par3)
     {
         return (TileEntityHopper)par0IBlockAccess.getBlockTileEntity(par1, par2, par3);
     }

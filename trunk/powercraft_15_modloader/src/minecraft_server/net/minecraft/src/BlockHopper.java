@@ -47,7 +47,7 @@ public class BlockHopper extends BlockContainer
      */
     public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
-        int var10 = Facing.faceToSide[par5];
+        int var10 = Facing.oppositeSide[par5];
 
         if (var10 == 1)
         {
@@ -74,8 +74,8 @@ public class BlockHopper extends BlockContainer
 
         if (par6ItemStack.hasDisplayName())
         {
-            TileEntityHopper var7 = func_98213_d(par1World, par2, par3, par4);
-            var7.func_96115_a(par6ItemStack.getDisplayName());
+            TileEntityHopper var7 = getHopperTile(par1World, par2, par3, par4);
+            var7.setInventoryName(par6ItemStack.getDisplayName());
         }
     }
 
@@ -85,7 +85,7 @@ public class BlockHopper extends BlockContainer
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);
-        this.func_96471_k(par1World, par2, par3, par4);
+        this.updateMetadata(par1World, par2, par3, par4);
     }
 
     /**
@@ -99,11 +99,11 @@ public class BlockHopper extends BlockContainer
         }
         else
         {
-            TileEntityHopper var10 = func_98213_d(par1World, par2, par3, par4);
+            TileEntityHopper var10 = getHopperTile(par1World, par2, par3, par4);
 
             if (var10 != null)
             {
-                par5EntityPlayer.func_94064_a(var10);
+                par5EntityPlayer.displayGUIHopper(var10);
             }
 
             return true;
@@ -116,19 +116,22 @@ public class BlockHopper extends BlockContainer
      */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
-        this.func_96471_k(par1World, par2, par3, par4);
+        this.updateMetadata(par1World, par2, par3, par4);
     }
 
-    private void func_96471_k(World par1World, int par2, int par3, int par4)
+    /**
+     * Updates the Metadata to include if the Hopper gets powered by Redstone or not
+     */
+    private void updateMetadata(World par1World, int par2, int par3, int par4)
     {
         int var5 = par1World.getBlockMetadata(par2, par3, par4);
-        int var6 = func_94451_c(var5);
+        int var6 = getDirectionFromMetadata(var5);
         boolean var7 = !par1World.isBlockIndirectlyGettingPowered(par2, par3, par4);
-        boolean var8 = func_94452_d(var5);
+        boolean var8 = getIsBlockNotPoweredFromMetadata(var5);
 
         if (var7 != var8)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 | (var7 ? 0 : 8), 4);
+            par1World.setBlockMetadata(par2, par3, par4, var6 | (var7 ? 0 : 8), 4);
         }
     }
 
@@ -165,7 +168,7 @@ public class BlockHopper extends BlockContainer
 
                         if (var9.hasTagCompound())
                         {
-                            var14.func_92059_d().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
+                            var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
                         }
 
                         float var15 = 0.05F;
@@ -208,12 +211,12 @@ public class BlockHopper extends BlockContainer
         return false;
     }
 
-    public static int func_94451_c(int par0)
+    public static int getDirectionFromMetadata(int par0)
     {
         return par0 & 7;
     }
 
-    public static boolean func_94452_d(int par0)
+    public static boolean getIsBlockNotPoweredFromMetadata(int par0)
     {
         return (par0 & 8) != 8;
     }
@@ -233,10 +236,10 @@ public class BlockHopper extends BlockContainer
      */
     public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
-        return Container.func_94526_b(func_98213_d(par1World, par2, par3, par4));
+        return Container.calcRedstoneFromInventory(getHopperTile(par1World, par2, par3, par4));
     }
 
-    public static TileEntityHopper func_98213_d(IBlockAccess par0IBlockAccess, int par1, int par2, int par3)
+    public static TileEntityHopper getHopperTile(IBlockAccess par0IBlockAccess, int par1, int par2, int par3)
     {
         return (TileEntityHopper)par0IBlockAccess.getBlockTileEntity(par1, par2, par3);
     }

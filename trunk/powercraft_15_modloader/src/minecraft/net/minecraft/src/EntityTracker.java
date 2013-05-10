@@ -8,6 +8,10 @@ import java.util.Set;
 public class EntityTracker
 {
     private final WorldServer theWorld;
+
+    /**
+     * List of tracked entities, used for iteration operations on tracked entities.
+     */
     private Set trackedEntities = new HashSet();
     private IntHashMap trackedEntityIDs = new IntHashMap();
     private int entityViewDistance;

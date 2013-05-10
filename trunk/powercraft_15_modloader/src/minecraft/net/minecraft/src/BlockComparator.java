@@ -15,7 +15,7 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
      */
     public int idDropped(int par1, Random par2Random, int par3)
     {
-        return Item.field_94585_bY.itemID;
+        return Item.comparator.itemID;
     }
 
     /**
@@ -23,7 +23,7 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
      */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
-        return Item.field_94585_bY.itemID;
+        return Item.comparator.itemID;
     }
 
     protected int func_94481_j_(int par1)
@@ -52,7 +52,7 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
         boolean var3 = this.isRepeaterPowered || (par2 & 8) != 0;
         return par1 == 0 ? (var3 ? Block.torchRedstoneActive.getBlockTextureFromSide(par1) : Block.torchRedstoneIdle.getBlockTextureFromSide(par1)) : (par1 == 1 ? (var3 ? Block.redstoneComparatorActive.blockIcon : this.blockIcon) : Block.stoneDoubleSlab.getBlockTextureFromSide(1));
@@ -65,7 +65,7 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
 
     protected int func_94480_d(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        return this.func_96475_a_(par1IBlockAccess, par2, par3, par4).func_96100_a();
+        return this.getTileEntityComparator(par1IBlockAccess, par2, par3, par4).func_96100_a();
     }
 
     private int func_94491_m(World par1World, int par2, int par3, int par4, int par5)
@@ -112,7 +112,7 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
         {
             if (Block.blocksList[var10].hasComparatorInputOverride())
             {
-                var6 = Block.blocksList[var10].getComparatorInputOverride(par1World, var8, par3, var9, Direction.footInvisibleFaceRemap[var7]);
+                var6 = Block.blocksList[var10].getComparatorInputOverride(par1World, var8, par3, var9, Direction.rotateOpposite[var7]);
             }
             else if (var6 < 15 && Block.isNormalCube(var10))
             {
@@ -122,7 +122,7 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
 
                 if (var10 > 0 && Block.blocksList[var10].hasComparatorInputOverride())
                 {
-                    var6 = Block.blocksList[var10].getComparatorInputOverride(par1World, var8, par3, var9, Direction.footInvisibleFaceRemap[var7]);
+                    var6 = Block.blocksList[var10].getComparatorInputOverride(par1World, var8, par3, var9, Direction.rotateOpposite[var7]);
                 }
             }
         }
@@ -130,7 +130,10 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
         return var6;
     }
 
-    public TileEntityComparator func_96475_a_(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    /**
+     * Returns the blockTileEntity at given coordinates.
+     */
+    public TileEntityComparator getTileEntityComparator(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         return (TileEntityComparator)par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
     }
@@ -157,7 +160,7 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
         {
             int var6 = par1World.getBlockMetadata(par2, par3, par4);
             int var7 = this.func_94491_m(par1World, par2, par3, par4, var6);
-            int var8 = this.func_96475_a_(par1World, par2, par3, par4).func_96100_a();
+            int var8 = this.getTileEntityComparator(par1World, par2, par3, par4).func_96100_a();
 
             if (var7 != var8 || this.func_96470_c(var6) != this.func_94478_d(par1World, par2, par3, par4, var6))
             {
@@ -177,8 +180,8 @@ public class BlockComparator extends BlockRedstoneLogic implements ITileEntityPr
     {
         int var6 = par1World.getBlockMetadata(par2, par3, par4);
         int var7 = this.func_94491_m(par1World, par2, par3, par4, var6);
-        int var8 = this.func_96475_a_(par1World, par2, par3, par4).func_96100_a();
-        this.func_96475_a_(par1World, par2, par3, par4).func_96099_a(var7);
+        int var8 = this.getTileEntityComparator(par1World, par2, par3, par4).func_96100_a();
+        this.getTileEntityComparator(par1World, par2, par3, par4).func_96099_a(var7);
 
         if (var8 != var7 || !this.func_94490_c(var6))
         {

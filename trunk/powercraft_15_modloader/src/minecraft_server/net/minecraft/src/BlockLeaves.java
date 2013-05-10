@@ -37,7 +37,7 @@ public class BlockLeaves extends BlockLeavesBase
                         if (var12 == Block.leaves.blockID)
                         {
                             int var13 = par1World.getBlockMetadata(par2 + var9, par3 + var10, par4 + var11);
-                            par1World.setBlockMetadataWithNotify(par2 + var9, par3 + var10, par4 + var11, var13 | 8, 4);
+                            par1World.setBlockMetadata(par2 + var9, par3 + var10, par4 + var11, var13 | 8, 4);
                         }
                     }
                 }
@@ -149,7 +149,7 @@ public class BlockLeaves extends BlockLeavesBase
 
                 if (var12 >= 0)
                 {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 & -9, 4);
+                    par1World.setBlockMetadata(par2, par3, par4, var6 & -9, 4);
                 }
                 else
                 {

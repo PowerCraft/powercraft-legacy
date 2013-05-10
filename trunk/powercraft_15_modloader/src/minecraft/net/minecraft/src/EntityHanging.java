@@ -45,7 +45,7 @@ public abstract class EntityHanging extends Entity
         else
         {
             var4 = 0.5F;
-            this.rotationYaw = this.prevRotationYaw = (float)(Direction.footInvisibleFaceRemap[par1] * 90);
+            this.rotationYaw = this.prevRotationYaw = (float)(Direction.rotateOpposite[par1] * 90);
         }
 
         var2 /= 32.0F;

@@ -26,18 +26,18 @@ public class BlockSapling extends BlockFlower
 
             if (par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9 && par5Random.nextInt(7) == 0)
             {
-                this.func_96477_c(par1World, par2, par3, par4, par5Random);
+                this.markOrGrowMarked(par1World, par2, par3, par4, par5Random);
             }
         }
     }
 
-    public void func_96477_c(World par1World, int par2, int par3, int par4, Random par5Random)
+    public void markOrGrowMarked(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         int var6 = par1World.getBlockMetadata(par2, par3, par4);
 
         if ((var6 & 8) == 0)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 | 8, 4);
+            par1World.setBlockMetadata(par2, par3, par4, var6 | 8, 4);
         }
         else
         {

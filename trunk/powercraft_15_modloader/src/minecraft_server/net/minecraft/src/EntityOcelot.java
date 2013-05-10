@@ -296,7 +296,7 @@ public class EntityOcelot extends EntityTameable
         }
         else
         {
-            if (this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox))
+            if (this.worldObj.checkNoEntityCollision(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox))
             {
                 int var1 = MathHelper.floor_double(this.posX);
                 int var2 = MathHelper.floor_double(this.boundingBox.minY);

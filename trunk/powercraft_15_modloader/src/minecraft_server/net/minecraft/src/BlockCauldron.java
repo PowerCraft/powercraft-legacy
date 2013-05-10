@@ -93,7 +93,7 @@ public class BlockCauldron extends Block
                             par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, new ItemStack(Item.bucketEmpty));
                         }
 
-                        par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+                        par1World.setBlockMetadata(par2, par3, par4, 3, 2);
                     }
 
                     return true;
@@ -122,14 +122,14 @@ public class BlockCauldron extends Block
                                 par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack)null);
                             }
 
-                            par1World.setBlockMetadataWithNotify(par2, par3, par4, var11 - 1, 2);
+                            par1World.setBlockMetadata(par2, par3, par4, var11 - 1, 2);
                         }
                     }
                     else if (var11 > 0 && var10.getItem() instanceof ItemArmor && ((ItemArmor)var10.getItem()).getArmorMaterial() == EnumArmorMaterial.CLOTH)
                     {
                         ItemArmor var13 = (ItemArmor)var10.getItem();
                         var13.removeColor(var10);
-                        par1World.setBlockMetadataWithNotify(par2, par3, par4, var11 - 1, 2);
+                        par1World.setBlockMetadata(par2, par3, par4, var11 - 1, 2);
                         return true;
                     }
 
@@ -150,7 +150,7 @@ public class BlockCauldron extends Block
 
             if (var5 < 3)
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var5 + 1, 2);
+                par1World.setBlockMetadata(par2, par3, par4, var5 + 1, 2);
             }
         }
     }

@@ -13,7 +13,7 @@ class CallableTileEntityName implements Callable
 
     public String callTileEntityName()
     {
-        return (String)TileEntity.func_85028_t().get(this.theTileEntity.getClass()) + " // " + this.theTileEntity.getClass().getCanonicalName();
+        return (String)TileEntity.getClassToNameMap().get(this.theTileEntity.getClass()) + " // " + this.theTileEntity.getClass().getCanonicalName();
     }
 
     public Object call()

@@ -18,7 +18,7 @@ public class PC_BlockFireHack extends BlockFire {
 		if (PC_Utils.getBID(world, x, y, z) < 256) {
 			return super.canBlockCatchFire(world, x, y, z);
 		} else {
-			return PC_Hacks.canBlockCatchFire(world, x, y, z);
+			return PC_Hooks.canBlockCatchFire(world, x, y, z);
 		}
 	}
 	
@@ -27,7 +27,7 @@ public class PC_BlockFireHack extends BlockFire {
 		if (PC_Utils.getBID(world, x, y, z) < 256) {
 			return super.getChanceToEncourageFire(world, x, y, z, chance);
 		}else{
-			return PC_Hacks.getChanceToEncourageFire(world, x, y, z, chance);
+			return PC_Hooks.getChanceToEncourageFire(world, x, y, z, chance);
 		}
 	}
 	

@@ -11,7 +11,10 @@ class CallableCrashMemoryReport implements Callable
         this.theCrashReport = par1CrashReport;
     }
 
-    public String func_83003_a()
+    /**
+     * Returns a string with allocated and used memory.
+     */
+    public String getMemoryReport()
     {
         int var1 = AxisAlignedBB.getAABBPool().getlistAABBsize();
         int var2 = 56 * var1;
@@ -24,6 +27,6 @@ class CallableCrashMemoryReport implements Callable
 
     public Object call()
     {
-        return this.func_83003_a();
+        return this.getMemoryReport();
     }
 }

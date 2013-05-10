@@ -110,7 +110,7 @@ public class HttpUtil
             {
                 if (par0ILogAgent != null)
                 {
-                    par0ILogAgent.func_98234_c("Could not post to " + par1URL, var9);
+                    par0ILogAgent.logSevereException("Could not post to " + par1URL, var9);
                 }
                 else
                 {
@@ -213,5 +213,23 @@ public class HttpUtil
 
             return null;
         }
+    }
+
+    public static String func_104145_a(URL par0URL) throws IOException
+    {
+        HttpURLConnection var1 = (HttpURLConnection)par0URL.openConnection();
+        var1.setRequestMethod("GET");
+        BufferedReader var2 = new BufferedReader(new InputStreamReader(var1.getInputStream()));
+        StringBuilder var4 = new StringBuilder();
+        String var3;
+
+        while ((var3 = var2.readLine()) != null)
+        {
+            var4.append(var3);
+            var4.append('\r');
+        }
+
+        var2.close();
+        return var4.toString();
     }
 }

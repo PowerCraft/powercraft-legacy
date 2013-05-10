@@ -538,7 +538,7 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
     /**
      * Returns the health points of the dragon.
      */
-    public int getDragonHealth()
+    public int getBossHealth()
     {
         return this.dataWatcher.getWatchableObjectInt(16);
     }
@@ -595,7 +595,7 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
      */
     public boolean isArmored()
     {
-        return this.getDragonHealth() <= this.getMaxHealth() / 2;
+        return this.getBossHealth() <= this.getMaxHealth() / 2;
     }
 
     /**

@@ -29,7 +29,7 @@ public class RecipeFireworks implements IRecipe
                 {
                     ++var4;
                 }
-                else if (var10.itemID == Item.field_92106_bV.itemID)
+                else if (var10.itemID == Item.fireworkCharge.itemID)
                 {
                     ++var6;
                 }
@@ -82,7 +82,7 @@ public class RecipeFireworks implements IRecipe
 
             if (var4 >= 1 && var3 == 1 && var7 == 0)
             {
-                this.field_92102_a = new ItemStack(Item.field_92104_bU);
+                this.field_92102_a = new ItemStack(Item.firework);
 
                 if (var6 > 0)
                 {
@@ -94,7 +94,7 @@ public class RecipeFireworks implements IRecipe
                     {
                         ItemStack var26 = par1InventoryCrafting.getStackInSlot(var22);
 
-                        if (var26 != null && var26.itemID == Item.field_92106_bV.itemID && var26.hasTagCompound() && var26.getTagCompound().hasKey("Explosion"))
+                        if (var26 != null && var26.itemID == Item.fireworkCharge.itemID && var26.hasTagCompound() && var26.getTagCompound().hasKey("Explosion"))
                         {
                             var25.appendTag(var26.getTagCompound().getCompoundTag("Explosion"));
                         }
@@ -110,7 +110,7 @@ public class RecipeFireworks implements IRecipe
             }
             else if (var4 == 1 && var3 == 0 && var6 == 0 && var5 > 0 && var8 <= 1)
             {
-                this.field_92102_a = new ItemStack(Item.field_92106_bV);
+                this.field_92102_a = new ItemStack(Item.fireworkCharge);
                 var15 = new NBTTagCompound();
                 var18 = new NBTTagCompound("Explosion");
                 byte var21 = 0;
@@ -180,7 +180,7 @@ public class RecipeFireworks implements IRecipe
                         {
                             var16.add(Integer.valueOf(ItemDye.dyeColors[var11.getItemDamage()]));
                         }
-                        else if (var11.itemID == Item.field_92106_bV.itemID)
+                        else if (var11.itemID == Item.fireworkCharge.itemID)
                         {
                             this.field_92102_a = var11.copy();
                             this.field_92102_a.stackSize = 1;

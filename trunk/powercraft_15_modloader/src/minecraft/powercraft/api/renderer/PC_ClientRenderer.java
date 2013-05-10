@@ -122,7 +122,7 @@ public class PC_ClientRenderer extends PC_Renderer {
 			}
 		} else {
 			for (int a = 0; a < 6; a++) {
-				textures[a] = block.getBlockTextureFromSideAndMetadata(a, metadata);
+				textures[a] = block.getIcon(a, metadata);
 			}
 		}
 		
@@ -130,17 +130,17 @@ public class PC_ClientRenderer extends PC_Renderer {
 		renderblocks.setRenderBoundsFromBlock(block);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		tessellator.startDrawingQuads();
-		renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, textures[0]);
+		renderblocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, textures[0]);
 		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, textures[1]);
+		renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, textures[1]);
 		tessellator.setNormal(0.0F, 0.0F, -1F);
-		renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, textures[2]);
+		renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, textures[2]);
 		tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, textures[3]);
+		renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, textures[3]);
 		tessellator.setNormal(-1F, 0.0F, 0.0F);
-		renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, textures[4]);
+		renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, textures[4]);
 		tessellator.setNormal(1.0F, 0.0F, 0.0F);
-		renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, textures[5]);
+		renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, textures[5]);
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		renderblocks.unlockBlockBounds();
@@ -183,17 +183,17 @@ public class PC_ClientRenderer extends PC_Renderer {
 				GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0.0F, -1F, 0.0F);
-				renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 0 : 0, metadata));
+				renderblocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(renderOnSide ? 0 : 0, metadata));
 				tessellator.setNormal(0.0F, 1.0F, 0.0F);
-				renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 1 : 0, metadata));
+				renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(renderOnSide ? 1 : 0, metadata));
 				tessellator.setNormal(0.0F, 0.0F, -1F);
-				renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 2 : 0, metadata));
+				renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(renderOnSide ? 2 : 0, metadata));
 				tessellator.setNormal(0.0F, 0.0F, 1.0F);
-				renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 3 : 1, metadata));
+				renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(renderOnSide ? 3 : 1, metadata));
 				tessellator.setNormal(-1F, 0.0F, 0.0F);
-				renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 4 : 0, metadata));
+				renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(renderOnSide ? 4 : 0, metadata));
 				tessellator.setNormal(1.0F, 0.0F, 0.0F);
-				renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 5 : 0, metadata));
+				renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(renderOnSide ? 5 : 0, metadata));
 				tessellator.draw();
 				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 				renderblocks.unlockBlockBounds();
@@ -219,17 +219,17 @@ public class PC_ClientRenderer extends PC_Renderer {
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, -1F, 0.0F);
-		renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(0, metadata));
+		renderblocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(0, metadata));
 		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(1, metadata));
+		renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(1, metadata));
 		tessellator.setNormal(0.0F, 0.0F, -1F);
-		renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(2, metadata));
+		renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(2, metadata));
 		tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(3, metadata));
+		renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(3, metadata));
 		tessellator.setNormal(-1F, 0.0F, 0.0F);
-		renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(4, metadata));
+		renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(4, metadata));
 		tessellator.setNormal(1.0F, 0.0F, 0.0F);
-		renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(5, metadata));
+		renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, metadata));
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		renderblocks.unlockBlockBounds();
@@ -244,17 +244,17 @@ public class PC_ClientRenderer extends PC_Renderer {
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, -1F, 0.0F);
-		renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, icon);
+		renderblocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, icon);
 		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, icon);
+		renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, icon);
 		tessellator.setNormal(0.0F, 0.0F, -1F);
-		renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, icon);
+		renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, icon);
 		tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, icon);
+		renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, icon);
 		tessellator.setNormal(-1F, 0.0F, 0.0F);
-		renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, icon);
+		renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, icon);
 		tessellator.setNormal(1.0F, 0.0F, 0.0F);
-		renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, icon);
+		renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, icon);
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		renderblocks.unlockBlockBounds();
@@ -271,27 +271,27 @@ public class PC_ClientRenderer extends PC_Renderer {
 		tessellator.startDrawingQuads();
 		if (icon[0] != null) {
 			tessellator.setNormal(0.0F, -1F, 0.0F);
-			renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, icon[0]);
+			renderblocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, icon[0]);
 		}
 		if (icon[1] != null) {
 			tessellator.setNormal(0.0F, 1.0F, 0.0F);
-			renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, icon[1]);
+			renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, icon[1]);
 		}
 		if (icon[2] != null) {
 			tessellator.setNormal(0.0F, 0.0F, -1F);
-			renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, icon[2]);
+			renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, icon[2]);
 		}
 		if (icon[3] != null) {
 			tessellator.setNormal(0.0F, 0.0F, 1.0F);
-			renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, icon[3]);
+			renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, icon[3]);
 		}
 		if (icon[4] != null) {
 			tessellator.setNormal(-1F, 0.0F, 0.0F);
-			renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, icon[4]);
+			renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, icon[4]);
 		}
 		if (icon[5] != null) {
 			tessellator.setNormal(1.0F, 0.0F, 0.0F);
-			renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, icon[5]);
+			renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, icon[5]);
 		}
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);

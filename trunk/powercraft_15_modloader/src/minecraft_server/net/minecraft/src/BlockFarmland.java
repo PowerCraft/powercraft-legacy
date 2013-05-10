@@ -49,7 +49,7 @@ public class BlockFarmland extends Block
 
             if (var6 > 0)
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 - 1, 2);
+                par1World.setBlockMetadata(par2, par3, par4, var6 - 1, 2);
             }
             else if (!this.isCropsNearby(par1World, par2, par3, par4))
             {
@@ -58,7 +58,7 @@ public class BlockFarmland extends Block
         }
         else
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 7, 2);
+            par1World.setBlockMetadata(par2, par3, par4, 7, 2);
         }
     }
 

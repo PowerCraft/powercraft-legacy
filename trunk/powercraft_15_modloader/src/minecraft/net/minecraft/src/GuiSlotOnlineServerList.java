@@ -1,9 +1,8 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 
-class GuiSlotOnlineServerList extends GuiSlot
+class GuiSlotOnlineServerList extends GuiScreenSelectLocation
 {
     final GuiScreenOnlineServers field_96294_a;
 
@@ -48,6 +47,11 @@ class GuiSlotOnlineServerList extends GuiSlot
         return par1 == GuiScreenOnlineServers.func_98072_d(this.field_96294_a);
     }
 
+    protected boolean func_104086_b(int par1)
+    {
+        return par1 < GuiScreenOnlineServers.func_98094_c(this.field_96294_a).size() && ((McoServer)GuiScreenOnlineServers.func_98094_c(this.field_96294_a).get(par1)).field_96405_e.toLowerCase().equals(GuiScreenOnlineServers.func_98091_h(this.field_96294_a).session.username);
+    }
+
     /**
      * return the height of the content being scrolled
      */
@@ -72,21 +76,26 @@ class GuiSlotOnlineServerList extends GuiSlot
     private void func_96292_b(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
     {
         McoServer var6 = (McoServer)GuiScreenOnlineServers.func_98094_c(this.field_96294_a).get(par1);
-        this.field_96294_a.drawString(GuiScreenOnlineServers.func_98091_h(this.field_96294_a), var6.func_96398_b(), par2 + 2, par3 + 1, 16777215);
+        this.field_96294_a.drawString(GuiScreenOnlineServers.func_104038_i(this.field_96294_a), var6.func_96398_b(), par2 + 2, par3 + 1, 16777215);
         short var7 = 207;
         byte var8 = 1;
 
         if (var6.field_98166_h)
         {
-            GuiScreenOnlineServers.func_101003_a(this.field_96294_a, par2 + var7, par3 + var8, this.mouseX, this.mouseY);
+            GuiScreenOnlineServers.func_101012_b(this.field_96294_a, par2 + var7, par3 + var8, this.field_104094_d, this.field_104095_e);
         }
         else if (var6.field_96404_d.equals("CLOSED"))
         {
-            GuiScreenOnlineServers.func_101012_b(this.field_96294_a, par2 + var7, par3 + var8, this.mouseX, this.mouseY);
+            GuiScreenOnlineServers.func_101009_c(this.field_96294_a, par2 + var7, par3 + var8, this.field_104094_d, this.field_104095_e);
         }
-        else
+        else if (var6.field_96405_e.equals(GuiScreenOnlineServers.func_104032_j(this.field_96294_a).session.username) && var6.field_104063_i < 7)
         {
-            GuiScreenOnlineServers.func_101009_c(this.field_96294_a, par2 + var7, par3 + var8, this.mouseX, this.mouseY);
+            this.func_96293_a(par1, par2 - 14, par3, var6);
+            GuiScreenOnlineServers.func_104030_a(this.field_96294_a, par2 + var7, par3 + var8, this.field_104094_d, this.field_104095_e, var6.field_104063_i);
+        }
+        else if (var6.field_96404_d.equals("OPEN"))
+        {
+            GuiScreenOnlineServers.func_104031_c(this.field_96294_a, par2 + var7, par3 + var8, this.field_104094_d, this.field_104095_e);
             this.func_96293_a(par1, par2 - 14, par3, var6);
         }
 
@@ -106,13 +115,13 @@ class GuiSlotOnlineServerList extends GuiSlot
                 }
             }
 
-            boolean var5 = par4McoServer.field_96415_h > 60;
-            boolean var6 = par4McoServer.field_96415_h < 60;
+            boolean var5 = par4McoServer.field_96415_h > 61;
+            boolean var6 = par4McoServer.field_96415_h < 61;
             boolean var7 = var5 || var6;
 
             if (par4McoServer.field_96414_k != null)
             {
-                this.field_96294_a.drawString(GuiScreenOnlineServers.func_98079_k(this.field_96294_a), par4McoServer.field_96414_k, par2 + 215 - GuiScreenOnlineServers.func_98087_l(this.field_96294_a).getStringWidth(par4McoServer.field_96414_k), par3 + 12, 8421504);
+                this.field_96294_a.drawString(GuiScreenOnlineServers.func_98079_k(this.field_96294_a), par4McoServer.field_96414_k, par2 + 215 - GuiScreenOnlineServers.func_98087_l(this.field_96294_a).getStringWidth(par4McoServer.field_96414_k), par3 + 1, 8421504);
             }
 
             if (var7)
@@ -125,68 +134,18 @@ class GuiSlotOnlineServerList extends GuiSlot
             GuiScreenOnlineServers.func_101004_o(this.field_96294_a).renderEngine.bindTexture("/gui/icons.png");
             byte var13 = 0;
             boolean var9 = false;
-            String var10 = "";
-            int var14;
+            String var10 = null;
 
             if (var7)
             {
                 var10 = var5 ? "Client out of date!" : "Server out of date!";
-                var14 = 5;
-            }
-            else if (par4McoServer.field_96411_l && par4McoServer.field_96412_m != -2L)
-            {
-                if (par4McoServer.field_96412_m < 0L)
-                {
-                    var14 = 5;
-                }
-                else if (par4McoServer.field_96412_m < 150L)
-                {
-                    var14 = 0;
-                }
-                else if (par4McoServer.field_96412_m < 300L)
-                {
-                    var14 = 1;
-                }
-                else if (par4McoServer.field_96412_m < 600L)
-                {
-                    var14 = 2;
-                }
-                else if (par4McoServer.field_96412_m < 1000L)
-                {
-                    var14 = 3;
-                }
-                else
-                {
-                    var14 = 4;
-                }
-
-                if (par4McoServer.field_96412_m < 0L)
-                {
-                    var10 = "(no connection)";
-                    par4McoServer.field_96411_l = false;
-                }
-                else
-                {
-                    var10 = par4McoServer.field_96412_m + "ms";
-                }
-            }
-            else
-            {
-                var13 = 1;
-                var14 = (int)(Minecraft.getSystemTime() / 100L + (long)(par1 * 2) & 7L);
-
-                if (var14 > 4)
-                {
-                    var14 = 8 - var14;
-                }
-
-                var10 = "Polling..";
+                byte var14 = 5;
+                this.field_96294_a.drawTexturedModalRect(par2 + 205, par3, var13 * 10, 176 + var14 * 8, 10, 8);
             }
 
-            this.field_96294_a.drawTexturedModalRect(par2 + 205, par3, var13 * 10, 176 + var14 * 8, 10, 8);
             byte var11 = 4;
 
-            if (this.mouseX >= par2 + 205 - var11 && this.mouseY >= par3 - var11 && this.mouseX <= par2 + 205 + 10 + var11 && this.mouseY <= par3 + 8 + var11)
+            if (this.field_104094_d >= par2 + 205 - var11 && this.field_104095_e >= par3 - var11 && this.field_104094_d <= par2 + 205 + 10 + var11 && this.field_104095_e <= par3 + 8 + var11)
             {
                 GuiScreenOnlineServers.func_101011_a(this.field_96294_a, var10);
             }

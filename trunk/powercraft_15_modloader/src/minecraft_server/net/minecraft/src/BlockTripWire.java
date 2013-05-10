@@ -109,7 +109,7 @@ public class BlockTripWire extends Block
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         int var5 = par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) ? 0 : 2;
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var5, 3);
+        par1World.setBlockMetadata(par2, par3, par4, var5, 3);
         this.func_72149_e(par1World, par2, par3, par4, var5);
     }
 
@@ -130,7 +130,7 @@ public class BlockTripWire extends Block
         {
             if (par6EntityPlayer.getCurrentEquippedItem() != null && par6EntityPlayer.getCurrentEquippedItem().itemID == Item.shears.itemID)
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, par5 | 8, 4);
+                par1World.setBlockMetadata(par2, par3, par4, par5 | 8, 4);
             }
         }
     }
@@ -236,7 +236,7 @@ public class BlockTripWire extends Block
 
         if (var7 != var6)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var5, 3);
+            par1World.setBlockMetadata(par2, par3, par4, var5, 3);
             this.func_72149_e(par1World, par2, par3, par4, var5);
         }
 

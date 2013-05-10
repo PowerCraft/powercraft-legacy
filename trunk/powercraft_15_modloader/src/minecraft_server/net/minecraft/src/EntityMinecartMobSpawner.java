@@ -2,7 +2,8 @@ package net.minecraft.src;
 
 public class EntityMinecartMobSpawner extends EntityMinecart
 {
-    private final MobSpawnerBaseLogic field_98040_a = new EntityMinecartMobSpawnerLogic(this);
+    /** Mob spawner logic for this spawner minecart. */
+    private final MobSpawnerBaseLogic mobSpawnerLogic = new EntityMinecartMobSpawnerLogic(this);
 
     public EntityMinecartMobSpawner(World par1World)
     {
@@ -14,12 +15,12 @@ public class EntityMinecartMobSpawner extends EntityMinecart
         super(par1World, par2, par4, par6);
     }
 
-    public int func_94087_l()
+    public int getMinecartType()
     {
         return 4;
     }
 
-    public Block func_94093_n()
+    public Block getDefaultDisplayTile()
     {
         return Block.mobSpawner;
     }
@@ -30,7 +31,7 @@ public class EntityMinecartMobSpawner extends EntityMinecart
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
-        this.field_98040_a.func_98270_a(par1NBTTagCompound);
+        this.mobSpawnerLogic.readFromNBT(par1NBTTagCompound);
     }
 
     /**
@@ -39,7 +40,7 @@ public class EntityMinecartMobSpawner extends EntityMinecart
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
-        this.field_98040_a.func_98280_b(par1NBTTagCompound);
+        this.mobSpawnerLogic.writeToNBT(par1NBTTagCompound);
     }
 
     /**
@@ -48,6 +49,6 @@ public class EntityMinecartMobSpawner extends EntityMinecart
     public void onUpdate()
     {
         super.onUpdate();
-        this.field_98040_a.updateSpawner();
+        this.mobSpawnerLogic.updateSpawner();
     }
 }

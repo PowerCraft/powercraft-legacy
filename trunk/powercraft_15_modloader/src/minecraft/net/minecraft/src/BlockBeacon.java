@@ -76,7 +76,7 @@ public class BlockBeacon extends BlockContainer
         this.theIcon = par1IconRegister.registerIcon("beacon");
     }
 
-    public Icon func_94446_i()
+    public Icon getBeaconIcon()
     {
         return this.theIcon;
     }

@@ -152,7 +152,7 @@ public class EntityTrackerEntry
                 boolean var11 = Math.abs(var7) >= 4 || Math.abs(var8) >= 4 || Math.abs(var9) >= 4 || this.updateCounter % 60 == 0;
                 boolean var12 = Math.abs(var5 - this.encodedRotationYaw) >= 4 || Math.abs(var6 - this.encodedRotationPitch) >= 4;
 
-                if (this.updateCounter > 0)
+                if (this.updateCounter > 0 || this.trackedEntity instanceof EntityArrow)
                 {
                     if (var7 >= -128 && var7 < 128 && var8 >= -128 && var8 < 128 && var9 >= -128 && var9 < 128 && this.ticksSinceLastForcedTeleport <= 400 && !this.ridingEntity)
                     {
@@ -322,7 +322,7 @@ public class EntityTrackerEntry
                     Packet var6 = this.getSpawnPacket();
                     par1EntityPlayerMP.playerNetServerHandler.sendPacket(var6);
 
-                    if (!this.trackedEntity.getDataWatcher().func_92085_d())
+                    if (!this.trackedEntity.getDataWatcher().getIsBlank())
                     {
                         par1EntityPlayerMP.playerNetServerHandler.sendPacket(new Packet40EntityMetadata(this.trackedEntity.entityId, this.trackedEntity.getDataWatcher(), true));
                     }
@@ -416,7 +416,7 @@ public class EntityTrackerEntry
         else if (this.trackedEntity instanceof EntityMinecart)
         {
             EntityMinecart var8 = (EntityMinecart)this.trackedEntity;
-            return new Packet23VehicleSpawn(this.trackedEntity, 10, var8.func_94087_l());
+            return new Packet23VehicleSpawn(this.trackedEntity, 10, var8.getMinecartType());
         }
         else if (this.trackedEntity instanceof EntityBoat)
         {

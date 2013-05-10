@@ -86,7 +86,7 @@ public class PotionEffect
         return this.amplifier;
     }
 
-    public boolean func_102028_d()
+    public boolean isSplashPotionEffect()
     {
         return this.isSplashPotion;
     }

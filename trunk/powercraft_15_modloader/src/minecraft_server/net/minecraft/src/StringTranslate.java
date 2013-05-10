@@ -182,7 +182,10 @@ public class StringTranslate
         }
     }
 
-    public synchronized boolean func_94520_b(String par1Str)
+    /**
+     * Returns true if the passed key is in the translation table.
+     */
+    public synchronized boolean isKeyTranslated(String par1Str)
     {
         return this.translateTable.containsKey(par1Str);
     }

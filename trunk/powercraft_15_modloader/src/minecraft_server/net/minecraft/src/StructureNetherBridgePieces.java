@@ -10,7 +10,7 @@ public class StructureNetherBridgePieces
 
     private static ComponentNetherBridgePiece createNextComponentRandom(StructureNetherBridgePieceWeight par0StructureNetherBridgePieceWeight, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
-        Class var8 = par0StructureNetherBridgePieceWeight.theClass;
+        Class var8 = par0StructureNetherBridgePieceWeight.weightClass;
         Object var9 = null;
 
         if (var8 == ComponentNetherBridgeStraight.class)

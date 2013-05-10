@@ -163,22 +163,27 @@ public abstract class Request
 
     public static Request func_96358_a(String par0Str)
     {
-        return new RequestGet(par0Str, 5000, 5000);
+        return new RequestGet(par0Str, 5000, 10000);
     }
 
     public static Request func_96361_b(String par0Str, String par1Str)
     {
-        return new RequestPost(par0Str, par1Str.getBytes(), 5000, 5000);
+        return new RequestPost(par0Str, par1Str.getBytes(), 5000, 10000);
+    }
+
+    public static Request func_104064_a(String par0Str, String par1Str, int par2, int par3)
+    {
+        return new RequestPost(par0Str, par1Str.getBytes(), par2, par3);
     }
 
     public static Request func_96355_b(String par0Str)
     {
-        return new RequestDelete(par0Str, 5000, 5000);
+        return new RequestDelete(par0Str, 5000, 10000);
     }
 
     public static Request func_96363_c(String par0Str, String par1Str)
     {
-        return new RequestPut(par0Str, par1Str.getBytes(), 5000, 5000);
+        return new RequestPut(par0Str, par1Str.getBytes(), 5000, 10000);
     }
 
     public static Request func_96353_a(String par0Str, String par1Str, int par2, int par3)

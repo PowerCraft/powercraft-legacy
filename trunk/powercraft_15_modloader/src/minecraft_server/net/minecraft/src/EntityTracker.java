@@ -12,7 +12,7 @@ public class EntityTracker
     /**
      * List of tracked entities, used for iteration operations on tracked entities.
      */
-    private Set trackedEntitySet = new HashSet();
+    private Set trackedEntities = new HashSet();
 
     /** Used for identity lookup of tracked entities. */
     private IntHashMap trackedEntityHashTable = new IntHashMap();
@@ -30,7 +30,7 @@ public class EntityTracker
         {
             this.trackEntity(par1Entity, 512, 2);
             EntityPlayerMP var2 = (EntityPlayerMP)par1Entity;
-            Iterator var3 = this.trackedEntitySet.iterator();
+            Iterator var3 = this.trackedEntities.iterator();
 
             while (var3.hasNext())
             {
@@ -164,7 +164,7 @@ public class EntityTracker
             }
 
             EntityTrackerEntry var5 = new EntityTrackerEntry(par1Entity, par2, par3, par4);
-            this.trackedEntitySet.add(var5);
+            this.trackedEntities.add(var5);
             this.trackedEntityHashTable.addKey(par1Entity.entityId, var5);
             var5.updatePlayerEntities(this.theWorld.playerEntities);
         }
@@ -195,7 +195,7 @@ public class EntityTracker
         if (par1Entity instanceof EntityPlayerMP)
         {
             EntityPlayerMP var2 = (EntityPlayerMP)par1Entity;
-            Iterator var3 = this.trackedEntitySet.iterator();
+            Iterator var3 = this.trackedEntities.iterator();
 
             while (var3.hasNext())
             {
@@ -208,7 +208,7 @@ public class EntityTracker
 
         if (var5 != null)
         {
-            this.trackedEntitySet.remove(var5);
+            this.trackedEntities.remove(var5);
             var5.sendDestroyEntityPacketToTrackedPlayers();
         }
     }
@@ -216,7 +216,7 @@ public class EntityTracker
     public void updateTrackedEntities()
     {
         ArrayList var1 = new ArrayList();
-        Iterator var2 = this.trackedEntitySet.iterator();
+        Iterator var2 = this.trackedEntities.iterator();
 
         while (var2.hasNext())
         {
@@ -232,7 +232,7 @@ public class EntityTracker
         for (int var6 = 0; var6 < var1.size(); ++var6)
         {
             EntityPlayerMP var7 = (EntityPlayerMP)var1.get(var6);
-            Iterator var4 = this.trackedEntitySet.iterator();
+            Iterator var4 = this.trackedEntities.iterator();
 
             while (var4.hasNext())
             {
@@ -268,7 +268,7 @@ public class EntityTracker
 
     public void removePlayerFromTrackers(EntityPlayerMP par1EntityPlayerMP)
     {
-        Iterator var2 = this.trackedEntitySet.iterator();
+        Iterator var2 = this.trackedEntities.iterator();
 
         while (var2.hasNext())
         {
@@ -279,7 +279,7 @@ public class EntityTracker
 
     public void func_85172_a(EntityPlayerMP par1EntityPlayerMP, Chunk par2Chunk)
     {
-        Iterator var3 = this.trackedEntitySet.iterator();
+        Iterator var3 = this.trackedEntities.iterator();
 
         while (var3.hasNext())
         {

@@ -219,7 +219,7 @@ public class BlockTripWireSource extends Block
             var21 = par2 + var16 * var18;
             var22 = par4 + var17 * var18;
             var23 = Direction.footInvisibleFaceRemap[var10];
-            par1World.setBlockMetadataWithNotify(var21, par3, var22, var23 | var20, 3);
+            par1World.setBlockMetadata(var21, par3, var22, var23 | var20, 3);
             this.notifyNeighborOfChange(par1World, var21, par3, var22, var23);
             this.playSoundEffect(par1World, var21, par3, var22, var13, var14, var11, var12);
         }
@@ -228,7 +228,7 @@ public class BlockTripWireSource extends Block
 
         if (par5 > 0)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, par6, 3);
+            par1World.setBlockMetadata(par2, par3, par4, par6, 3);
 
             if (par7)
             {
@@ -255,7 +255,7 @@ public class BlockTripWireSource extends Block
                         var24 &= -5;
                     }
 
-                    par1World.setBlockMetadataWithNotify(var22, par3, var23, var24, 3);
+                    par1World.setBlockMetadata(var22, par3, var23, var24, 3);
                 }
             }
         }

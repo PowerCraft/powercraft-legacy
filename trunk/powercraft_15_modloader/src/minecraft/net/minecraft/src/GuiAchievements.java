@@ -243,7 +243,7 @@ public class GuiAchievements extends GuiScreen
                 var19.setSeed((long)(1234 + var10 + var22));
                 var19.nextInt();
                 var23 = var19.nextInt(1 + var11 + var20) + (var11 + var20) / 2;
-                Icon var24 = Block.sand.getBlockTextureFromSideAndMetadata(0, 0);
+                Icon var24 = Block.sand.getIcon(0, 0);
 
                 if (var23 <= 37 && var11 + var20 != 35)
                 {
@@ -251,33 +251,33 @@ public class GuiAchievements extends GuiScreen
                     {
                         if (var19.nextInt(2) == 0)
                         {
-                            var24 = Block.oreDiamond.getBlockTextureFromSideAndMetadata(0, 0);
+                            var24 = Block.oreDiamond.getIcon(0, 0);
                         }
                         else
                         {
-                            var24 = Block.oreRedstone.getBlockTextureFromSideAndMetadata(0, 0);
+                            var24 = Block.oreRedstone.getIcon(0, 0);
                         }
                     }
                     else if (var23 == 10)
                     {
-                        var24 = Block.oreIron.getBlockTextureFromSideAndMetadata(0, 0);
+                        var24 = Block.oreIron.getIcon(0, 0);
                     }
                     else if (var23 == 8)
                     {
-                        var24 = Block.oreCoal.getBlockTextureFromSideAndMetadata(0, 0);
+                        var24 = Block.oreCoal.getIcon(0, 0);
                     }
                     else if (var23 > 4)
                     {
-                        var24 = Block.stone.getBlockTextureFromSideAndMetadata(0, 0);
+                        var24 = Block.stone.getIcon(0, 0);
                     }
                     else if (var23 > 0)
                     {
-                        var24 = Block.dirt.getBlockTextureFromSideAndMetadata(0, 0);
+                        var24 = Block.dirt.getIcon(0, 0);
                     }
                 }
                 else
                 {
-                    var24 = Block.bedrock.getBlockTextureFromSideAndMetadata(0, 0);
+                    var24 = Block.bedrock.getIcon(0, 0);
                 }
 
                 this.drawTexturedModelRectFromIcon(var8 + var22 * 16 - var12, var9 + var20 * 16 - var13, var24, 16, 16);

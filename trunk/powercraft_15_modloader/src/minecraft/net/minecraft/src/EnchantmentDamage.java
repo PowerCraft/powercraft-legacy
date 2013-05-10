@@ -80,8 +80,8 @@ public class EnchantmentDamage extends Enchantment
         return !(par1Enchantment instanceof EnchantmentDamage);
     }
 
-    public boolean func_92089_a(ItemStack par1ItemStack)
+    public boolean canApply(ItemStack par1ItemStack)
     {
-        return par1ItemStack.getItem() instanceof ItemAxe ? true : super.func_92089_a(par1ItemStack);
+        return par1ItemStack.getItem() instanceof ItemAxe ? true : super.canApply(par1ItemStack);
     }
 }

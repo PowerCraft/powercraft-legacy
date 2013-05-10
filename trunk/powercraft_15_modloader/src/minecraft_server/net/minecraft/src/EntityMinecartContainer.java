@@ -3,7 +3,11 @@ package net.minecraft.src;
 public abstract class EntityMinecartContainer extends EntityMinecart implements IInventory
 {
     private ItemStack[] minecartContainerItems = new ItemStack[36];
-    private boolean field_94112_b = true;
+
+    /**
+     * Whether the minecart should not drop its content when flagged as dead.
+     */
+    private boolean preventContentDropping = true;
 
     public EntityMinecartContainer(World par1World)
     {
@@ -15,9 +19,9 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
         super(par1World, par2, par4, par6);
     }
 
-    public void func_94095_a(DamageSource par1DamageSource)
+    public void killMinecart(DamageSource par1DamageSource)
     {
-        super.func_94095_a(par1DamageSource);
+        super.killMinecart(par1DamageSource);
 
         for (int var2 = 0; var2 < this.getSizeInventory(); ++var2)
         {
@@ -167,7 +171,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
 
     public void travelToTheEnd(int par1)
     {
-        this.field_94112_b = false;
+        this.preventContentDropping = false;
         super.travelToTheEnd(par1);
     }
 
@@ -176,7 +180,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
      */
     public void setDead()
     {
-        if (this.field_94112_b)
+        if (this.preventContentDropping)
         {
             for (int var1 = 0; var1 < this.getSizeInventory(); ++var1)
             {
@@ -202,7 +206,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
 
                         if (var2.hasTagCompound())
                         {
-                            var7.func_92059_d().setTagCompound((NBTTagCompound)var2.getTagCompound().copy());
+                            var7.getEntityItem().setTagCompound((NBTTagCompound)var2.getTagCompound().copy());
                         }
 
                         float var8 = 0.05F;
@@ -274,9 +278,9 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
         return true;
     }
 
-    protected void func_94101_h()
+    protected void applyDrag()
     {
-        int var1 = 15 - Container.func_94526_b(this);
+        int var1 = 15 - Container.calcRedstoneFromInventory(this);
         float var2 = 0.98F + (float)var1 * 0.001F;
         this.motionX *= (double)var2;
         this.motionY *= 0.0D;

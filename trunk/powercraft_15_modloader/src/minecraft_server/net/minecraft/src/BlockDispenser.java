@@ -65,7 +65,7 @@ public class BlockDispenser extends BlockContainer
                 var9 = 4;
             }
 
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var9, 2);
+            par1World.setBlockMetadata(par2, par3, par4, var9, 2);
         }
     }
 
@@ -107,7 +107,7 @@ public class BlockDispenser extends BlockContainer
             else
             {
                 ItemStack var8 = var6.getStackInSlot(var7);
-                IBehaviorDispenseItem var9 = this.func_96472_a(var8);
+                IBehaviorDispenseItem var9 = this.getBehaviorForItemStack(var8);
 
                 if (var9 != IBehaviorDispenseItem.itemDispenseBehaviorProvider)
                 {
@@ -118,7 +118,10 @@ public class BlockDispenser extends BlockContainer
         }
     }
 
-    protected IBehaviorDispenseItem func_96472_a(ItemStack par1ItemStack)
+    /**
+     * Returns the behavior for the given ItemStack.
+     */
+    protected IBehaviorDispenseItem getBehaviorForItemStack(ItemStack par1ItemStack)
     {
         return (IBehaviorDispenseItem)dispenseBehaviorRegistry.func_82594_a(par1ItemStack.getItem());
     }
@@ -136,11 +139,11 @@ public class BlockDispenser extends BlockContainer
         if (var6 && !var8)
         {
             par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World));
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var7 | 8, 4);
+            par1World.setBlockMetadata(par2, par3, par4, var7 | 8, 4);
         }
         else if (!var6 && var8)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var7 & -9, 4);
+            par1World.setBlockMetadata(par2, par3, par4, var7 & -9, 4);
         }
     }
 
@@ -169,7 +172,7 @@ public class BlockDispenser extends BlockContainer
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
         int var7 = BlockPistonBase.determineOrientation(par1World, par2, par3, par4, par5EntityLiving);
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var7, 2);
+        par1World.setBlockMetadata(par2, par3, par4, var7, 2);
 
         if (par6ItemStack.hasDisplayName())
         {
@@ -210,7 +213,7 @@ public class BlockDispenser extends BlockContainer
 
                         if (var9.hasTagCompound())
                         {
-                            var14.func_92059_d().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
+                            var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
                         }
 
                         float var15 = 0.05F;
@@ -257,6 +260,6 @@ public class BlockDispenser extends BlockContainer
      */
     public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
-        return Container.func_94526_b((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
+        return Container.calcRedstoneFromInventory((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
     }
 }

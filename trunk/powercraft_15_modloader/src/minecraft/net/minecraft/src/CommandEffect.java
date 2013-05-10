@@ -91,10 +91,10 @@ public class CommandEffect extends CommandBase
      */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
-        return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.func_98152_d()) : null;
+        return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getAllUsernames()) : null;
     }
 
-    protected String[] func_98152_d()
+    protected String[] getAllUsernames()
     {
         return MinecraftServer.getServer().getAllUsernames();
     }

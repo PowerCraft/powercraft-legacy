@@ -22,7 +22,10 @@ public class GuiControls extends GuiScreen
         this.options = par2GameSettings;
     }
 
-    private int func_73907_g()
+    /**
+     * Gets the distance from the left border of the window to left border of the controls screen
+     */
+    private int getLeftBorder()
     {
         return this.width / 2 - 155;
     }
@@ -33,7 +36,7 @@ public class GuiControls extends GuiScreen
     public void initGui()
     {
         StringTranslate var1 = StringTranslate.getInstance();
-        int var2 = this.func_73907_g();
+        int var2 = this.getLeftBorder();
 
         for (int var3 = 0; var3 < this.options.keyBindings.length; ++var3)
         {
@@ -108,7 +111,7 @@ public class GuiControls extends GuiScreen
     {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 20, 16777215);
-        int var4 = this.func_73907_g();
+        int var4 = this.getLeftBorder();
         int var5 = 0;
 
         while (var5 < this.options.keyBindings.length)

@@ -63,7 +63,7 @@ public final class PC_BlockRegistry {
 				blockOff = PC_ReflectHelper.create(blockClass, idOff, false);
 				PC_ReflectHelper.setFieldsWithAnnotationTo(blockClass, blockClass, PC_Shining.ON.class, block);
 				PC_ReflectHelper.setFieldsWithAnnotationTo(blockClass, blockClass, PC_Shining.OFF.class, blockOff);
-				blockOff.getIndirectPowerOutput(blockClass.getSimpleName());
+				blockOff.setUnlocalizedName(blockClass.getSimpleName());
 				blockOff.setModule(module);
 				blocks.put(blockClass.getSimpleName() + ".Off", blockOff);
 				registerBlock(blockOff, null);
@@ -82,7 +82,7 @@ public final class PC_BlockRegistry {
 			}
 			
 			blocks.put(blockClass.getSimpleName(), block);
-			block.getIndirectPowerOutput(blockClass.getSimpleName());
+			block.setUnlocalizedName(blockClass.getSimpleName());
 			block.setModule(module);
 			block.initConfig(config);
 			

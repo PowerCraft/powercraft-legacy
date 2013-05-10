@@ -13,7 +13,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class DataWatcher
 {
-    private boolean field_92086_a = true;
+    /** When isBlank is true the DataWatcher is not watching any objects */
+    private boolean isBlank = true;
     private static final HashMap dataTypes = new HashMap();
     private final Map watchedObjects = new HashMap();
 
@@ -47,7 +48,7 @@ public class DataWatcher
             this.lock.writeLock().lock();
             this.watchedObjects.put(Integer.valueOf(par1), var4);
             this.lock.writeLock().unlock();
-            this.field_92086_a = false;
+            this.isBlank = false;
         }
     }
 
@@ -60,7 +61,7 @@ public class DataWatcher
         this.lock.writeLock().lock();
         this.watchedObjects.put(Integer.valueOf(par1), var3);
         this.lock.writeLock().unlock();
-        this.field_92086_a = false;
+        this.isBlank = false;
     }
 
     /**
@@ -134,12 +135,12 @@ public class DataWatcher
         if (!par2Obj.equals(var3.getObject()))
         {
             var3.setObject(par2Obj);
-            var3.setWatching(true);
+            var3.setWatched(true);
             this.objectChanged = true;
         }
     }
 
-    public void func_82708_h(int par1)
+    public void setObjectWatched(int par1)
     {
         WatchableObject.setWatchableObjectWatched(this.getWatchedObject(par1), true);
         this.objectChanged = true;
@@ -185,9 +186,9 @@ public class DataWatcher
             {
                 WatchableObject var3 = (WatchableObject)var2.next();
 
-                if (var3.getWatching())
+                if (var3.isWatched())
                 {
-                    var3.setWatching(false);
+                    var3.setWatched(false);
 
                     if (var1 == null)
                     {
@@ -334,9 +335,9 @@ public class DataWatcher
         return var1;
     }
 
-    public boolean func_92085_d()
+    public boolean getIsBlank()
     {
-        return this.field_92086_a;
+        return this.isBlank;
     }
 
     static

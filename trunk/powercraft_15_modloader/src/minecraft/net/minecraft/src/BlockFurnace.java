@@ -17,8 +17,8 @@ public class BlockFurnace extends BlockContainer
      * furnace block changes from idle to active and vice-versa.
      */
     private static boolean keepFurnaceInventory = false;
-    private Icon field_94458_cO;
-    private Icon field_94459_cP;
+    private Icon furnaceIconTop;
+    private Icon furnaceIconFront;
 
     protected BlockFurnace(int par1, boolean par2)
     {
@@ -83,9 +83,9 @@ public class BlockFurnace extends BlockContainer
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94458_cO : (par1 == 0 ? this.field_94458_cO : (par1 != par2 ? this.blockIcon : this.field_94459_cP));
+        return par1 == 1 ? this.furnaceIconTop : (par1 == 0 ? this.furnaceIconTop : (par1 != par2 ? this.blockIcon : this.furnaceIconFront));
     }
 
     /**
@@ -95,8 +95,8 @@ public class BlockFurnace extends BlockContainer
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("furnace_side");
-        this.field_94459_cP = par1IconRegister.registerIcon(this.isActive ? "furnace_front_lit" : "furnace_front");
-        this.field_94458_cO = par1IconRegister.registerIcon("furnace_top");
+        this.furnaceIconFront = par1IconRegister.registerIcon(this.isActive ? "furnace_front_lit" : "furnace_front");
+        this.furnaceIconTop = par1IconRegister.registerIcon("furnace_top");
     }
 
     /**
@@ -296,6 +296,14 @@ public class BlockFurnace extends BlockContainer
      */
     public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
-        return Container.func_94526_b((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
+        return Container.calcRedstoneFromInventory((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
+    }
+
+    /**
+     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
+     */
+    public int idPicked(World par1World, int par2, int par3, int par4)
+    {
+        return Block.furnaceIdle.blockID;
     }
 }

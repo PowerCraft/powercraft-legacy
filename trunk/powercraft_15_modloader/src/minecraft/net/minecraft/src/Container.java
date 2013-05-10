@@ -410,7 +410,7 @@ public abstract class Container
                     if (var16.getHasStack() && var18)
                     {
                         var23 = var16.getStack();
-                        var6.setInventorySlotContents(par2, var23);
+                        var6.setInventorySlotContents(par2, var23.copy());
 
                         if ((var16.inventory != var6 || !var16.isItemValid(var17)) && var17 != null)
                         {
@@ -451,7 +451,7 @@ public abstract class Container
             {
                 var16 = (Slot)this.inventorySlots.get(par1);
 
-                if (var16 != null && var16.getHasStack())
+                if (var16 != null && var16.getHasStack() && var16.canTakeStack(par4EntityPlayer))
                 {
                     var17 = var16.decrStackSize(par2 == 0 ? 1 : var16.getStack().stackSize);
                     var16.onPickupFromSlot(par4EntityPlayer, var17);
@@ -737,7 +737,7 @@ public abstract class Container
         return true;
     }
 
-    public static int func_94526_b(IInventory par0IInventory)
+    public static int calcRedstoneFromInventory(IInventory par0IInventory)
     {
         if (par0IInventory == null)
         {

@@ -48,7 +48,7 @@ public class PlayerSelector
 
             for (int var4 = 0; var4 < var3.length; ++var4)
             {
-                var3[var4] = var2[var4].func_96090_ax();
+                var3[var4] = var2[var4].getTranslatedEntityName();
             }
 
             return CommandBase.joinNiceString(var3);

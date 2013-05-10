@@ -716,7 +716,7 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     /**
      * Returns the health points of the dragon.
      */
-    public int getDragonHealth()
+    public int getBossHealth()
     {
         return this.dataWatcher.getWatchableObjectInt(16);
     }

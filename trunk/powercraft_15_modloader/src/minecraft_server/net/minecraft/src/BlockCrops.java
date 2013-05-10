@@ -43,7 +43,7 @@ public class BlockCrops extends BlockFlower
                 if (par5Random.nextInt((int)(25.0F / var7) + 1) == 0)
                 {
                     ++var6;
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, var6, 2);
+                    par1World.setBlockMetadata(par2, par3, par4, var6, 2);
                 }
             }
         }
@@ -61,7 +61,7 @@ public class BlockCrops extends BlockFlower
             var5 = 7;
         }
 
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var5, 2);
+        par1World.setBlockMetadata(par2, par3, par4, var5, 2);
     }
 
     /**

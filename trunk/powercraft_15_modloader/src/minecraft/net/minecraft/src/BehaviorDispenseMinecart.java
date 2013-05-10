@@ -34,7 +34,7 @@ final class BehaviorDispenseMinecart extends BehaviorDefaultDispenseItem
             var15 = -1.0D;
         }
 
-        EntityMinecart var17 = EntityMinecart.func_94090_a(var4, var5, var7 + var15, var9, ((ItemMinecart)par2ItemStack.getItem()).minecartType);
+        EntityMinecart var17 = EntityMinecart.createMinecart(var4, var5, var7 + var15, var9, ((ItemMinecart)par2ItemStack.getItem()).minecartType);
         var4.spawnEntityInWorld(var17);
         par2ItemStack.splitStack(1);
         return par2ItemStack;

@@ -10,7 +10,7 @@ public class TileEntityDispenser extends TileEntity implements IInventory
      * random number generator for instance. Used in random item stack selection.
      */
     private Random dispenserRandom = new Random();
-    protected String field_94050_c;
+    protected String customName;
 
     /**
      * Returns the number of slots in the inventory.
@@ -135,12 +135,12 @@ public class TileEntityDispenser extends TileEntity implements IInventory
      */
     public String getInvName()
     {
-        return this.isInvNameLocalized() ? this.field_94050_c : "container.dispenser";
+        return this.isInvNameLocalized() ? this.customName : "container.dispenser";
     }
 
-    public void func_94049_a(String par1Str)
+    public void setCustomName(String par1Str)
     {
-        this.field_94050_c = par1Str;
+        this.customName = par1Str;
     }
 
     /**
@@ -149,7 +149,7 @@ public class TileEntityDispenser extends TileEntity implements IInventory
      */
     public boolean isInvNameLocalized()
     {
-        return this.field_94050_c != null;
+        return this.customName != null;
     }
 
     /**
@@ -174,7 +174,7 @@ public class TileEntityDispenser extends TileEntity implements IInventory
 
         if (par1NBTTagCompound.hasKey("CustomName"))
         {
-            this.field_94050_c = par1NBTTagCompound.getString("CustomName");
+            this.customName = par1NBTTagCompound.getString("CustomName");
         }
     }
 
@@ -201,7 +201,7 @@ public class TileEntityDispenser extends TileEntity implements IInventory
 
         if (this.isInvNameLocalized())
         {
-            par1NBTTagCompound.setString("CustomName", this.field_94050_c);
+            par1NBTTagCompound.setString("CustomName", this.customName);
         }
     }
 

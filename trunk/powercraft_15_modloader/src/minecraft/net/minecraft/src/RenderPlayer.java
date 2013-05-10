@@ -218,7 +218,7 @@ public class RenderPlayer extends RenderLiving
 
         float var11;
 
-        if (this.loadDownloadableImageTexture(par1EntityPlayer.cloakUrl, (String)null) && !par1EntityPlayer.getHasActivePotion() && !par1EntityPlayer.getHideCape())
+        if (this.loadDownloadableImageTexture(par1EntityPlayer.cloakUrl, (String)null) && !par1EntityPlayer.isInvisible() && !par1EntityPlayer.getHideCape())
         {
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, 0.0F, 0.125F);
@@ -375,7 +375,7 @@ public class RenderPlayer extends RenderLiving
     {
         if (par10 < 100.0D)
         {
-            Scoreboard var12 = par1EntityPlayer.func_96123_co();
+            Scoreboard var12 = par1EntityPlayer.getWorldScoreboard();
             ScoreObjective var13 = var12.func_96539_a(2);
 
             if (var13 != null)
@@ -384,11 +384,11 @@ public class RenderPlayer extends RenderLiving
 
                 if (par1EntityPlayer.isPlayerSleeping())
                 {
-                    this.renderLivingLabel(par1EntityPlayer, var14.func_96652_c() + " " + var13.func_96678_d(), par2, par4 - 1.5D, par6, 64);
+                    this.renderLivingLabel(par1EntityPlayer, var14.func_96652_c() + " " + var13.getDisplayName(), par2, par4 - 1.5D, par6, 64);
                 }
                 else
                 {
-                    this.renderLivingLabel(par1EntityPlayer, var14.func_96652_c() + " " + var13.func_96678_d(), par2, par4, par6, 64);
+                    this.renderLivingLabel(par1EntityPlayer, var14.func_96652_c() + " " + var13.getDisplayName(), par2, par4, par6, 64);
                 }
 
                 par4 += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * par9);

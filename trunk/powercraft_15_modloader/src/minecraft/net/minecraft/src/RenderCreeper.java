@@ -76,7 +76,7 @@ public class RenderCreeper extends RenderLiving
     {
         if (par1EntityCreeper.getPowered())
         {
-            if (par1EntityCreeper.getHasActivePotion())
+            if (par1EntityCreeper.isInvisible())
             {
                 GL11.glDepthMask(false);
             }

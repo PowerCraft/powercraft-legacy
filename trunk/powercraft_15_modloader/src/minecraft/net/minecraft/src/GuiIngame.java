@@ -28,8 +28,12 @@ public class GuiIngame extends Gui
 
     /** Previous frame vignette brightness (slowly changes by 1% each frame) */
     public float prevVignetteBrightness = 1.0F;
-    private int field_92017_k;
-    private ItemStack field_92016_l;
+
+    /** Remaining ticks the item highlight should be visible */
+    private int remainingHighlightTicks;
+
+    /** The ItemStack that is currently being highlighted */
+    private ItemStack highlightingItemStack;
 
     public GuiIngame(Minecraft par1Minecraft)
     {
@@ -382,9 +386,9 @@ public class GuiIngame extends Gui
         {
             this.mc.mcProfiler.startSection("toolHighlight");
 
-            if (this.field_92017_k > 0 && this.field_92016_l != null)
+            if (this.remainingHighlightTicks > 0 && this.highlightingItemStack != null)
             {
-                var35 = this.field_92016_l.getDisplayName();
+                var35 = this.highlightingItemStack.getDisplayName();
                 var12 = (var6 - var8.getStringWidth(var35)) / 2;
                 var13 = var7 - 59;
 
@@ -393,7 +397,7 @@ public class GuiIngame extends Gui
                     var13 += 14;
                 }
 
-                var38 = (int)((float)this.field_92017_k * 256.0F / 10.0F);
+                var38 = (int)((float)this.remainingHighlightTicks * 256.0F / 10.0F);
 
                 if (var38 > 255)
                 {
@@ -437,7 +441,7 @@ public class GuiIngame extends Gui
         {
             this.mc.mcProfiler.startSection("debug");
             GL11.glPushMatrix();
-            var8.drawStringWithShadow("Minecraft 1.5.1 (" + this.mc.debug + ")", 2, 2, 16777215);
+            var8.drawStringWithShadow("Minecraft 1.5.2 (" + this.mc.debug + ")", 2, 2, 16777215);
             var8.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
             var8.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
             var8.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
@@ -555,7 +559,7 @@ public class GuiIngame extends Gui
                 if (var20 < var41.size())
                 {
                     GuiPlayerInfo var49 = (GuiPlayerInfo)var41.get(var20);
-                    ScorePlayerTeam var48 = this.mc.theWorld.getScoreboard().func_96509_i(var49.name);
+                    ScorePlayerTeam var48 = this.mc.theWorld.getScoreboard().getPlayersTeam(var49.name);
                     String var53 = ScorePlayerTeam.func_96667_a(var48, var49.name);
                     var8.drawStringWithShadow(var53, var47, var22, 16777215);
 
@@ -566,7 +570,7 @@ public class GuiIngame extends Gui
 
                         if (var50 - var26 > 5)
                         {
-                            Score var56 = var42.func_96682_a().func_96529_a(var49.name, var42);
+                            Score var56 = var42.getScoreboard().func_96529_a(var49.name, var42);
                             String var57 = EnumChatFormatting.YELLOW + "" + var56.func_96652_c();
                             var8.drawStringWithShadow(var57, var50 - var8.getStringWidth(var57), var22, 16777215);
                         }
@@ -616,18 +620,18 @@ public class GuiIngame extends Gui
 
     private void func_96136_a(ScoreObjective par1ScoreObjective, int par2, int par3, FontRenderer par4FontRenderer)
     {
-        Scoreboard var5 = par1ScoreObjective.func_96682_a();
+        Scoreboard var5 = par1ScoreObjective.getScoreboard();
         Collection var6 = var5.func_96534_i(par1ScoreObjective);
 
         if (var6.size() <= 15)
         {
-            int var7 = par4FontRenderer.getStringWidth(par1ScoreObjective.func_96678_d());
+            int var7 = par4FontRenderer.getStringWidth(par1ScoreObjective.getDisplayName());
             String var11;
 
             for (Iterator var8 = var6.iterator(); var8.hasNext(); var7 = Math.max(var7, par4FontRenderer.getStringWidth(var11)))
             {
                 Score var9 = (Score)var8.next();
-                ScorePlayerTeam var10 = var5.func_96509_i(var9.func_96653_e());
+                ScorePlayerTeam var10 = var5.getPlayersTeam(var9.func_96653_e());
                 var11 = ScorePlayerTeam.func_96667_a(var10, var9.func_96653_e()) + ": " + EnumChatFormatting.RED + var9.func_96652_c();
             }
 
@@ -642,7 +646,7 @@ public class GuiIngame extends Gui
             {
                 Score var14 = (Score)var13.next();
                 ++var12;
-                ScorePlayerTeam var15 = var5.func_96509_i(var14.func_96653_e());
+                ScorePlayerTeam var15 = var5.getPlayersTeam(var14.func_96653_e());
                 String var16 = ScorePlayerTeam.func_96667_a(var15, var14.func_96653_e());
                 String var17 = EnumChatFormatting.RED + "" + var14.func_96652_c();
                 int var19 = var23 - var12 * par4FontRenderer.FONT_HEIGHT;
@@ -653,7 +657,7 @@ public class GuiIngame extends Gui
 
                 if (var12 == var6.size())
                 {
-                    String var21 = par1ScoreObjective.func_96678_d();
+                    String var21 = par1ScoreObjective.getDisplayName();
                     drawRect(var24 - 2, var19 - par4FontRenderer.FONT_HEIGHT - 1, var20, var19 - 1, 1610612736);
                     drawRect(var24 - 2, var19 - 1, var20, var19, 1342177280);
                     par4FontRenderer.drawString(var21, var24 + var7 / 2 - par4FontRenderer.getStringWidth(var21) / 2, var19 - par4FontRenderer.FONT_HEIGHT, 553648127);
@@ -834,21 +838,21 @@ public class GuiIngame extends Gui
 
             if (var1 == null)
             {
-                this.field_92017_k = 0;
+                this.remainingHighlightTicks = 0;
             }
-            else if (this.field_92016_l != null && var1.itemID == this.field_92016_l.itemID && ItemStack.areItemStackTagsEqual(var1, this.field_92016_l) && (var1.isItemStackDamageable() || var1.getItemDamage() == this.field_92016_l.getItemDamage()))
+            else if (this.highlightingItemStack != null && var1.itemID == this.highlightingItemStack.itemID && ItemStack.areItemStackTagsEqual(var1, this.highlightingItemStack) && (var1.isItemStackDamageable() || var1.getItemDamage() == this.highlightingItemStack.getItemDamage()))
             {
-                if (this.field_92017_k > 0)
+                if (this.remainingHighlightTicks > 0)
                 {
-                    --this.field_92017_k;
+                    --this.remainingHighlightTicks;
                 }
             }
             else
             {
-                this.field_92017_k = 40;
+                this.remainingHighlightTicks = 40;
             }
 
-            this.field_92016_l = var1;
+            this.highlightingItemStack = var1;
         }
     }
 

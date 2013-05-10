@@ -132,7 +132,7 @@ public class BlockFire extends Block
 
                 if (var7 < 15)
                 {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, var7 + par5Random.nextInt(3) / 2, 4);
+                    par1World.setBlockMetadata(par2, par3, par4, var7 + par5Random.nextInt(3) / 2, 4);
                 }
 
                 par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World) + par5Random.nextInt(10));

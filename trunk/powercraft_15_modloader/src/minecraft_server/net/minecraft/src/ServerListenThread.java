@@ -50,7 +50,7 @@ public class ServerListenThread extends Thread
                 catch (Exception var6)
                 {
                     var3.kickUser("Internal server error");
-                    this.myNetworkListenThread.getServer().func_98033_al().func_98235_b("Failed to handle packet for " + var3.getUsernameAndAddress() + ": " + var6, var6);
+                    this.myNetworkListenThread.getServer().getLogAgent().logWarningException("Failed to handle packet for " + var3.getUsernameAndAddress() + ": " + var6, var6);
                 }
 
                 if (var3.finishedProcessing)
@@ -79,7 +79,7 @@ public class ServerListenThread extends Thread
             }
         }
 
-        this.myNetworkListenThread.getServer().func_98033_al().func_98233_a("Closing listening thread");
+        this.myNetworkListenThread.getServer().getLogAgent().func_98233_a("Closing listening thread");
     }
 
     private void addPendingConnection(NetLoginHandler par1NetLoginHandler)
