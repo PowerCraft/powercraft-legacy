@@ -20,8 +20,8 @@ public class PC_GuiElementScroll extends PC_GuiScroll {
 	}
 	
 	public void add(ScrollElement element){
-		ScaledResolution resolution = new ScaledResolution(gsmc.gameSettings, gsmc.displayWidth, gsmc.displayHeight);
-		element.setWorldAndResolution(gsmc, resolution.getScaledWidth(), resolution.getScaledHeight());
+		ScaledResolution resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+		element.setWorldAndResolution(mc, resolution.getScaledWidth(), resolution.getScaledHeight());
 		element.setElementWidth(gswidth-8);
 		elements.add(element);
 	}

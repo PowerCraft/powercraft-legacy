@@ -23,7 +23,7 @@ import powercraft.launcher.update.PC_UpdateManager.ModuleUpdateInfo;
 
 public class PC_GuiUpdate extends GuiScreen {
 
-	private static Minecraft mc = PC_LauncherClientUtils.mc();
+	private static Minecraft smc = PC_LauncherClientUtils.mc();
 	private static boolean stop;
 	private static PC_GuiUpdate gui;
 	
@@ -91,7 +91,7 @@ public class PC_GuiUpdate extends GuiScreen {
 		}else{
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		}
-		mc.renderEngine.bindTexture("/gui/inventory.png");
+		smc.renderEngine.bindTexture("/gui/inventory.png");
 		drawTexturedModalRect(width-120, 0, 0, 166, 120, 32);
 		List<String> lines = fontRenderer.listFormattedStringToWidth(info, 100);
 		if(lines.size()==1){
@@ -212,30 +212,30 @@ public class PC_GuiUpdate extends GuiScreen {
 	
 	public static void show(boolean requestDownloadTarget) {
 		gui = new PC_GuiUpdate();
-		ScaledResolution resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+		ScaledResolution resolution = new ScaledResolution(smc.gameSettings, smc.displayWidth, smc.displayHeight);
 		int width = resolution.getScaledWidth();
 		int height = resolution.getScaledHeight();
-		gui.setWorldAndResolution(mc, width, height);
+		gui.setWorldAndResolution(smc, width, height);
 		while(!stop){
-			if (mc.mcCanvas != null && !mc.isFullScreen() && (mc.mcCanvas.getWidth() != mc.displayWidth || mc.mcCanvas.getHeight() != mc.displayHeight)){
-				mc.displayWidth = mc.mcCanvas.getWidth();
-				mc.displayHeight = mc.mcCanvas.getHeight();
+			if (smc.mcCanvas != null && !smc.isFullScreen() && (smc.mcCanvas.getWidth() != smc.displayWidth || smc.mcCanvas.getHeight() != smc.displayHeight)){
+				smc.displayWidth = smc.mcCanvas.getWidth();
+				smc.displayHeight = smc.mcCanvas.getHeight();
 
-                if (mc.displayWidth <= 0)
+                if (smc.displayWidth <= 0)
                 {
-                	mc.displayWidth = 1;
+                	smc.displayWidth = 1;
                 }
 
-                if (mc.displayHeight <= 0)
+                if (smc.displayHeight <= 0)
                 {
-                	mc.displayHeight = 1;
+                	smc.displayHeight = 1;
                 }
 
-                resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+                resolution = new ScaledResolution(smc.gameSettings, smc.displayWidth, smc.displayHeight);
                 width = resolution.getScaledWidth();
                 height = resolution.getScaledHeight();
-                gui.setWorldAndResolution(mc, width, height);
-                GL11.glViewport(0, 0, mc.displayWidth, mc.displayHeight);
+                gui.setWorldAndResolution(smc, width, height);
+                GL11.glViewport(0, 0, smc.displayWidth, smc.displayHeight);
                 GL11.glMatrixMode(GL11.GL_PROJECTION);
                 GL11.glLoadIdentity();
                 GL11.glOrtho(0.0D, resolution.getScaledWidth_double(), resolution.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);
@@ -245,7 +245,7 @@ public class PC_GuiUpdate extends GuiScreen {
             }
 			gui.handleInput();
 			gui.drawDefaultBackground();
-			gui.drawScreen(Mouse.getX()*width/mc.displayWidth, height-Mouse.getY()*height/mc.displayHeight-1, 0.0f);
+			gui.drawScreen(Mouse.getX()*width/smc.displayWidth, height-Mouse.getY()*height/smc.displayHeight-1, 0.0f);
 			Display.update();
 			Display.sync(60);
 			if(Display.isCloseRequested()){
@@ -261,32 +261,32 @@ public class PC_GuiUpdate extends GuiScreen {
 		Display.sync(-1);
 		gui = null;
 		PC_UpdateManager.stopWatchDirectory();
-		resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+		resolution = new ScaledResolution(smc.gameSettings, smc.displayWidth, smc.displayHeight);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         GL11.glOrtho(0.0D, resolution.getScaledWidth_double(), resolution.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
         GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
-        GL11.glViewport(0, 0, mc.displayWidth, mc.displayHeight);
+        GL11.glViewport(0, 0, smc.displayWidth, smc.displayHeight);
         GL11.glClearColor(0.0F, 0.0F, 0.0F, 0.0F);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_FOG);
         Tessellator var2 = Tessellator.instance;
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/title/mojang.png"));
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, smc.renderEngine.getTexture("/title/mojang.png"));
         var2.startDrawingQuads();
         var2.setColorOpaque_I(16777215);
-        var2.addVertexWithUV(0.0D, (double)mc.displayHeight, 0.0D, 0.0D, 0.0D);
-        var2.addVertexWithUV((double)mc.displayWidth, (double)mc.displayHeight, 0.0D, 0.0D, 0.0D);
-        var2.addVertexWithUV((double)mc.displayWidth, 0.0D, 0.0D, 0.0D, 0.0D);
+        var2.addVertexWithUV(0.0D, (double)smc.displayHeight, 0.0D, 0.0D, 0.0D);
+        var2.addVertexWithUV((double)smc.displayWidth, (double)smc.displayHeight, 0.0D, 0.0D, 0.0D);
+        var2.addVertexWithUV((double)smc.displayWidth, 0.0D, 0.0D, 0.0D, 0.0D);
         var2.addVertexWithUV(0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
         var2.draw();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         var2.setColorOpaque_I(16777215);
         short var3 = 256;
         short var4 = 256;
-        mc.scaledTessellator((resolution.getScaledWidth() - var3) / 2, (resolution.getScaledHeight() - var4) / 2, 0, 0, var3, var4);
+        smc.scaledTessellator((resolution.getScaledWidth() - var3) / 2, (resolution.getScaledHeight() - var4) / 2, 0, 0, var3, var4);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
         GL11.glEnable(GL11.GL_ALPHA_TEST);

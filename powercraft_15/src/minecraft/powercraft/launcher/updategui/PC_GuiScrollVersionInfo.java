@@ -31,14 +31,14 @@ public class PC_GuiScrollVersionInfo extends PC_GuiScroll {
 	public void drawElement(int element, int par1, int par2, float par3) {
 		List<String>lText = getInfoText();
 		for(int i=0; i<lText.size(); i++){
-			gsfontRenderer.drawString(lText.get(i), 2, i*10+2, 0xFFFFFFFF);
+			fontRenderer.drawString(lText.get(i), 2, i*10+2, 0xFFFFFFFF);
 		}
 	}
 
 	public List<String> getInfoText(){
 		String info = version.getActiveVersionInfo();
 		if(this.gswidth-12>10){
-			return gsfontRenderer.listFormattedStringToWidth(info, this.gswidth-12);
+			return fontRenderer.listFormattedStringToWidth(info, this.gswidth-12);
 		}else{
 			return new ArrayList<String>();
 		}
