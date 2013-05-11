@@ -45,14 +45,14 @@ public class PCpj_ProjectorRenderer {
 	private static int projectorPreShader;
 	private static int projectorPostShader;
 	
-	private static PC_Struct2<int[], PCpj_TileEntityProjector>[] framebuffer = new PC_Struct2[3];
+	private static PC_Struct2<int[], PCpj_TileEntityProjector>[] framebuffer = new PC_Struct2[1];
 	
 	public static List<PCpj_TileEntityProjector> toRender = new ArrayList<PCpj_TileEntityProjector>();
 	
 	public static int dephtTextureID;
 	
-	private static int textureWidth=512;
-	private static int textureHeight=512;
+	private static int fboDephtTextureSize = 512;
+	private static int dephtTextureSize = 512;
 	
 	public static void preRendering(float par1){
 		ARBShaderObjects.glUseProgramObjectARB(projectorPreShader);
@@ -94,45 +94,54 @@ public class PCpj_ProjectorRenderer {
 		double d0 = entityliving.lastTickPosX + (entityliving.posX - entityliving.lastTickPosX) * (double)par1;
 	    double d1 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par1;
 	    double d2 = entityliving.lastTickPosZ + (entityliving.posZ - entityliving.lastTickPosZ) * (double)par1;
-	    GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, dephtTextureID);
-		GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT24, 0, 0, 1024, 1024, 0);
-		GL13.glActiveTexture(GL13.GL_TEXTURE1);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, dephtTextureID);
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glTranslated(-d0, -d1, -d2);
-		ARBShaderObjects.glUseProgramObjectARB(projectorPostShader);
-		int firstX=0, firstY=0, firstZ=0;
-		boolean init=false;
-		for(int i=framebuffer.length-1; i>=0; i--){
-			if(framebuffer[i].b!=null){
-				GL11.glPushMatrix();
-				if(init){
-					GL11.glTranslatef(firstX-framebuffer[i].b.xCoord, firstY-framebuffer[i].b.yCoord, firstZ-framebuffer[i].b.zCoord);
-				}else{
-					firstX = framebuffer[i].b.xCoord;
-					firstY = framebuffer[i].b.yCoord;
-					firstZ = framebuffer[i].b.zCoord;
+	    for(int x=0; x<mc.displayWidth/dephtTextureSize+(mc.displayWidth%dephtTextureSize==0?0:1); x++){
+	    	for(int y=0; y<mc.displayHeight/dephtTextureSize+(mc.displayHeight%dephtTextureSize==0?0:1); y++){
+			    GL11.glEnable(GL11.GL_TEXTURE_2D);
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, dephtTextureID);
+				GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT24, x*dephtTextureSize, y*dephtTextureSize, dephtTextureSize, dephtTextureSize, 0);
+				GL13.glActiveTexture(GL13.GL_TEXTURE1);
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, dephtTextureID);
+				GL13.glActiveTexture(GL13.GL_TEXTURE0);
+				GL11.glTranslated(-d0, -d1, -d2);
+				ARBShaderObjects.glUseProgramObjectARB(projectorPostShader);
+				int xPos = GL20.glGetUniformLocation(projectorPostShader, "x");
+				int yPos = GL20.glGetUniformLocation(projectorPostShader, "y");
+				GL20.glUniform1f(xPos, x*dephtTextureSize/(float)mc.displayWidth);
+				GL20.glUniform1f(yPos, y*dephtTextureSize/(float)mc.displayHeight);
+				int firstX=0, firstY=0, firstZ=0;
+				boolean init=false;
+				for(int i=framebuffer.length-1; i>=0; i--){
+					if(framebuffer[i].b!=null){
+						GL11.glPushMatrix();
+						if(init){
+							GL11.glTranslatef(firstX-framebuffer[i].b.xCoord, firstY-framebuffer[i].b.yCoord, firstZ-framebuffer[i].b.zCoord);
+						}else{
+							firstX = framebuffer[i].b.xCoord;
+							firstY = framebuffer[i].b.yCoord;
+							firstZ = framebuffer[i].b.zCoord;
+						}
+						init=true;
+						doPostRendering(x*dephtTextureSize, y*dephtTextureSize, framebuffer[i].b, framebuffer[i].a);
+						GL11.glPopMatrix();
+					}
 				}
-				init=true;
-				doPostRendering(framebuffer[i].b, framebuffer[i].a);
-				GL11.glPopMatrix();
-			}
-		}
-		GL13.glActiveTexture(GL13.GL_TEXTURE1);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glTranslated(d0, d1, d2);
+				GL13.glActiveTexture(GL13.GL_TEXTURE1);
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
+				GL13.glActiveTexture(GL13.GL_TEXTURE0);
+				GL11.glTranslated(d0, d1, d2);
+	    	}
+	    }
 		ARBShaderObjects.glUseProgramObjectARB(0);
 		mc.renderEngine.resetBoundTexture();
 	}
 	
-	private static void doPostRendering(PCpj_TileEntityProjector projector, int[] buffer) {
+	private static void doPostRendering(int x, int y, PCpj_TileEntityProjector projector, int[] buffer) {
 		Minecraft mc = PC_ClientUtils.mc();
 		int tex0 = GL20.glGetUniformLocation(projectorPostShader, "texture0");
 		int tex1 = GL20.glGetUniformLocation(projectorPostShader, "texture1");
 		int tex2 = GL20.glGetUniformLocation(projectorPostShader, "texture2");
+		int tex3 = GL20.glGetUniformLocation(projectorPostShader, "texture3");
 		int width = GL20.glGetUniformLocation(projectorPostShader, "width");
 		int height = GL20.glGetUniformLocation(projectorPostShader, "height");
 		int f = GL20.glGetUniformLocation(projectorPostShader, "f");
@@ -149,8 +158,9 @@ public class PCpj_ProjectorRenderer {
 		GL20.glUniform1i(tex0, 0);
 		GL20.glUniform1i(tex1, 1);
 		GL20.glUniform1i(tex2, 2);
-		GL20.glUniform1f(width, mc.displayWidth/1024.0f);
-		GL20.glUniform1f(height, mc.displayHeight/1024.0f);
+		GL20.glUniform1i(tex3, 3);
+		GL20.glUniform1f(width, mc.displayWidth/(float)dephtTextureSize);
+		GL20.glUniform1f(height, mc.displayHeight/(float)dephtTextureSize);
 		GL20.glUniform1f(f, 10.0f);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer[1]);
@@ -158,6 +168,9 @@ public class PCpj_ProjectorRenderer {
 		GL13.glActiveTexture(GL13.GL_TEXTURE2);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/textures/PowerCraft.png"));
+		GL13.glActiveTexture(GL13.GL_TEXTURE3);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer[2]);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
@@ -165,16 +178,18 @@ public class PCpj_ProjectorRenderer {
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		tessellator.setTextureUV(0, 0);
-		tessellator.addVertex(0, 0, 0);
+		tessellator.addVertex(x/(float)mc.displayWidth, y/(float)mc.displayHeight, 0);
 		tessellator.setTextureUV(1, 0);
-		tessellator.addVertex(1, 0, 0);
+		tessellator.addVertex((x+fboDephtTextureSize)/(float)mc.displayWidth, y/(float)mc.displayHeight, 0);
 		tessellator.setTextureUV(1, 1);
-		tessellator.addVertex(1, 1, 0);
+		tessellator.addVertex((x+fboDephtTextureSize)/(float)mc.displayWidth, (y+fboDephtTextureSize)/(float)mc.displayHeight, 0);
 		tessellator.setTextureUV(0, 1);
-		tessellator.addVertex(0, 1, 0);
+		tessellator.addVertex(x/(float)mc.displayWidth, (y+fboDephtTextureSize)/(float)mc.displayHeight, 0);
 		tessellator.draw();
 		GL11.glDepthMask(true);
 		GL11.glDisable(GL11.GL_BLEND);
+		GL13.glActiveTexture(GL13.GL_TEXTURE3);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL13.glActiveTexture(GL13.GL_TEXTURE2);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -193,15 +208,17 @@ public class PCpj_ProjectorRenderer {
 		}
 		initFBO();
 		
-		dephtTextureID =  makeDepthTexture(1024);
+		dephtTextureID =  makeDepthTexture(dephtTextureSize);
 	}
 	
 	private static int[] creaftFBO(){
-		int[] buffer = new int[2];
+		int[] buffer = new int[3];
 		buffer[0] = EXTFramebufferObject.glGenFramebuffersEXT();
 		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, buffer[0]);
-		buffer[1] = makeDepthTexture(512);
+		buffer[1] = makeDepthTexture(fboDephtTextureSize);
+		buffer[2] = makeColorTexture(fboDephtTextureSize);
 		EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT, GL11.GL_TEXTURE_2D, buffer[1], 0);
+		EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, buffer[2], 0);
 		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);  
 		return buffer;
 	}
@@ -215,6 +232,18 @@ public class PCpj_ProjectorRenderer {
 		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
 		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT24, size, size, 0, GL11.GL_DEPTH_COMPONENT, GL11.GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
+		return id;
+	}
+	
+	private static int makeColorTexture(int size){
+		int id = GL11.glGenTextures();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, size, size, 0, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
 		return id;
 	}
 	
@@ -334,16 +363,16 @@ public class PCpj_ProjectorRenderer {
 		return source.toString();
 	}
 	
-	private static void setupCameraTransform(float par1) {
+	private static void setupCameraTransform(PCpj_ProjectorEntity entity, float par1) {
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         
-        GLU.gluPerspective(45, (float)textureWidth / (float)textureHeight, 0.5F, 10.0f);
+        GLU.gluPerspective(45, 1, 0.5F, 10.0f);
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
 
-        GL11.glRotatef(0, 0, 0, 1);
+        GL11.glRotatef(entity.rotationYaw, 0, 1, 0);
 
     }
 	
@@ -362,9 +391,9 @@ public class PCpj_ProjectorRenderer {
         double d1 = projector.yCoord+0.5;
         double d2 = projector.zCoord+0.5;
 
-        GL11.glViewport(0, 0, textureWidth, textureHeight);
+        GL11.glViewport(0, 0, fboDephtTextureSize, fboDephtTextureSize);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        setupCameraTransform(par1);
+        setupCameraTransform(entity, par1);
         ClippingHelperImpl.getInstance();
         
         Frustrum frustrum = new Frustrum();

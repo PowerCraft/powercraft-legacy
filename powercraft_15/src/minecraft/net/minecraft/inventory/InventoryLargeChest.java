@@ -9,10 +9,12 @@ public class InventoryLargeChest implements IInventory
     private String name;
 
     /** Inventory object corresponding to double chest upper part */
-    private IInventory upperChest;
+    /** NEI **/
+    public IInventory upperChest;
 
     /** Inventory object corresponding to double chest lower part */
-    private IInventory lowerChest;
+    /** NEI **/
+    public IInventory lowerChest;
 
     public InventoryLargeChest(String par1Str, IInventory par2IInventory, IInventory par3IInventory)
     {
