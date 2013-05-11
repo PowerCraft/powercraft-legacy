@@ -20,18 +20,15 @@ public abstract class PC_GuiScroll extends GuiScreen{
 	protected float scroll;
 	protected int my=-1;
 	protected boolean bar;
-	protected Minecraft gsmc;
-	protected FontRenderer gsfontRenderer;
 	
 	public PC_GuiScroll(int x, int y, int width, int height){
 		this.gsx = x;
 		this.gsy = y;
 		this.gswidth = width;
 		this.gsheight = height;
-		gsmc = PC_LauncherClientUtils.mc();
-		gsfontRenderer = gsmc.fontRenderer;
-		ScaledResolution resolution = new ScaledResolution(gsmc.gameSettings, gsmc.displayWidth, gsmc.displayHeight);
-		setWorldAndResolution(gsmc, resolution.getScaledWidth(), resolution.getScaledHeight());
+		mc = PC_LauncherClientUtils.mc();
+		ScaledResolution resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+		setWorldAndResolution(mc, resolution.getScaledWidth(), resolution.getScaledHeight());
 	}
 	
 	public abstract int getElementCount();
@@ -74,10 +71,10 @@ public abstract class PC_GuiScroll extends GuiScreen{
     } 
 	
 	public void drawScreen(int par1, int par2, float par3){
-		ScaledResolution resolution = new ScaledResolution(gsmc.gameSettings, gsmc.displayWidth, gsmc.displayHeight);
+		ScaledResolution resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
 		int scale = resolution.getScaleFactor();
 		if(my!=-1){
-			int nmy = resolution.getScaledHeight() - Mouse.getY() * resolution.getScaledHeight() / this.gsmc.displayHeight - 1;
+			int nmy = resolution.getScaledHeight() - Mouse.getY() * resolution.getScaledHeight() / this.mc.displayHeight - 1;
 			float scrollMultiplier = 1;
 			if(bar){
 				int h = getTotalHeight()-gsheight+4;
@@ -110,7 +107,7 @@ public abstract class PC_GuiScroll extends GuiScreen{
 		GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);
         Tessellator tessellator = Tessellator.instance;
-        gsmc.renderEngine.bindTexture("/gui/background.png");
+        mc.renderEngine.bindTexture("/gui/background.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float var17 = 32.0F;
         tessellator.startDrawingQuads();
@@ -131,7 +128,7 @@ public abstract class PC_GuiScroll extends GuiScreen{
         		GL11.glPushMatrix();
         		GL11.glTranslatef(gsx + 4, gsy + drawY + 4, 0);
         		GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        		GL11.glScissor(gsx * scale, gsmc.displayHeight - (gsy + gsheight) * scale, gswidth * scale, gsheight * scale);
+        		GL11.glScissor(gsx * scale, mc.displayHeight - (gsy + gsheight) * scale, gswidth * scale, gsheight * scale);
         		if(isElementActive(i)){
                      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                      GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -150,7 +147,7 @@ public abstract class PC_GuiScroll extends GuiScreen{
                      GL11.glEnable(GL11.GL_TEXTURE_2D);
         		}
         		int w = elementHeight * scale;
-        		int bottom = gsmc.displayHeight - (Math.max(gsy + drawY + 4, gsy) + elementHeight) * scale;
+        		int bottom = mc.displayHeight - (Math.max(gsy + drawY + 4, gsy) + elementHeight) * scale;
         		if(gsheight - drawY-4<elementHeight){
         			w = (gsheight - drawY-4)*scale;
         			bottom += (elementHeight-(gsheight - drawY - 4))*scale;

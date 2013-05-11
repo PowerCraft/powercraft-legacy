@@ -42,23 +42,23 @@ public class PC_GuiScrollModuleAndPackScroll extends PC_GuiScroll{
 			displayText = "\u2193 Modules \u2193";
 		}
 		if(displayText!=null){
-			int width = gsfontRenderer.getStringWidth(displayText);
+			int width = fontRenderer.getStringWidth(displayText);
 			drawHorizontalLine(0, (this.gswidth-8-width)/2-2, 6, 0xFFFFFFFF);
 			drawHorizontalLine((this.gswidth-8+width)/2+2, this.gswidth-8, 6, 0xFFFFFFFF);
-			drawCenteredString(gsfontRenderer, displayText, (this.gswidth-8)/2, 1, 0xFFFFFFFF);
+			drawCenteredString(fontRenderer, displayText, (this.gswidth-8)/2, 1, 0xFFFFFFFF);
 		}else if(element==0){
-			drawString(gsfontRenderer, "API", 2, 2, 0xffffff);
+			drawString(fontRenderer, "API", 2, 2, 0xffffff);
 		}else if(element<PC_UpdateManager.updateInfo.getPacks().size()+2){
 			XMLPackTag pack = PC_UpdateManager.updateInfo.getPacks().get(element-2);
-			drawString(gsfontRenderer, pack.getName(), 2, 2, 0xffffff);
+			drawString(fontRenderer, pack.getName(), 2, 2, 0xffffff);
 		}else{
 			ModuleUpdateInfo module = getModuleInfo(element);
 			if(module.oldVersion==null){
-				drawString(gsfontRenderer, module.xmlModule.getName(), 2, 2, 0xffffff);
-				drawString(gsfontRenderer, "*NEW*", 2, 12, 0xffffff);
+				drawString(fontRenderer, module.xmlModule.getName(), 2, 2, 0xffffff);
+				drawString(fontRenderer, "*NEW*", 2, 12, 0xffffff);
 			}else{
-				drawString(gsfontRenderer, module.module.getModuleName(), 2, 2, 0xffffff);
-				drawString(gsfontRenderer, module.oldVersion.toString(), 2, 12, 0xffffff);
+				drawString(fontRenderer, module.module.getModuleName(), 2, 2, 0xffffff);
+				drawString(fontRenderer, module.oldVersion.toString(), 2, 12, 0xffffff);
 			}
 		}
 	}
