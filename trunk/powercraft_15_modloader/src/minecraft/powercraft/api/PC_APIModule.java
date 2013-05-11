@@ -1,10 +1,13 @@
 package powercraft.api;
 
+import java.lang.instrument.ClassDefinition;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import javax.sound.midi.Instrument;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.BaseMod;
@@ -44,9 +47,9 @@ import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.hacks.PC_ClientHacks;
 import powercraft.api.hacks.PC_MainMenuHacks;
 import powercraft.api.hacks.PC_ModInfo;
-import powercraft.api.hacks.PC_RenderPlayerHack;
-import powercraft.api.hacks.PC_RenderSkeletonHack;
-import powercraft.api.hacks.PC_RenderZombieHack;
+import powercraft.api.hacks.PC_RenderPlayerHook;
+import powercraft.api.hacks.PC_RenderSkeletonHook;
+import powercraft.api.hacks.PC_RenderZombieHook;
 import powercraft.api.interfaces.PC_IDataHandler;
 import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.interfaces.PC_IWorldGenerator;
@@ -349,9 +352,9 @@ public class PC_APIModule {
 					}
 				}
 			}
-			map.put(EntityPlayer.class, new PC_RenderPlayerHack());
-			map.put(EntitySkeleton.class, new PC_RenderSkeletonHack());
-			map.put(EntityZombie.class, new PC_RenderZombieHack());
+			map.put(EntityPlayer.class, new PC_RenderPlayerHook());
+			map.put(EntitySkeleton.class, new PC_RenderSkeletonHook());
+			map.put(EntityZombie.class, new PC_RenderZombieHook());
 			PC_Logger.exitSection();
 		}
 	}
