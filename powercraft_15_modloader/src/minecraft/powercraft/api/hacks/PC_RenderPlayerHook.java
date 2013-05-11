@@ -1,32 +1,37 @@
 package powercraft.api.hacks;
 
-import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.ModelBiped;
-import net.minecraft.src.RenderZombie;
+import net.minecraft.src.RenderPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-public class PC_RenderZombieHack extends RenderZombie {
+import powercraft.api.reflect.PC_ReflectHelper;
+
+public class PC_RenderPlayerHook extends RenderPlayer {
 	
+	private ModelBiped modelArmorChestplate;
+	private ModelBiped modelArmor;
 	
-	/**
-	 * Queries whether should render the specified pass or not.
-	 */
-	@Override
-	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3) {
-		ItemStack var4 = par1EntityLiving.getCurrentArmor(3 - par2);
+	public PC_RenderPlayerHook() {
+		modelArmorChestplate = PC_ReflectHelper.getValue(RenderPlayer.class, this, 1, ModelBiped.class);
+		modelArmor = PC_ReflectHelper.getValue(RenderPlayer.class, this, 2, ModelBiped.class);
+	}
+	
+	protected int setArmorModel(EntityPlayer par1EntityPlayer, int par2, float par3) {
+		ItemStack var4 = par1EntityPlayer.inventory.armorItemInSlot(3 - par2);
 		
 		if (var4 != null) {
 			Item var5 = var4.getItem();
 			
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor) var5;
-				this.loadTexture(PC_Hooks.getArmorTexture(var6, var4, par1EntityLiving, par2, 1, null));
-				ModelBiped var7 = par2 == 2 ? this.field_82425_h : this.field_82423_g;
+				this.loadTexture(PC_Hooks.getArmorTexture(var6, var4, par1EntityPlayer, par2, 1, null));
+				ModelBiped var7 = par2 == 2 ? this.modelArmor : this.modelArmorChestplate;
 				var7.bipedHead.showModel = par2 == 0;
 				var7.bipedHeadwear.showModel = par2 == 0;
 				var7.bipedBody.showModel = par2 == 1 || par2 == 2;
@@ -34,7 +39,7 @@ public class PC_RenderZombieHack extends RenderZombie {
 				var7.bipedLeftArm.showModel = par2 == 1;
 				var7.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
 				var7.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
-				var7 = PC_Hooks.getArmorModel(var6, var4, par1EntityLiving, par2, var7);
+				var7 = PC_Hooks.getArmorModel(var6, var4, par1EntityPlayer, par2, var7);
 				this.setRenderPassModel(var7);
 				
 				if (var7 != null) {
@@ -79,15 +84,15 @@ public class PC_RenderZombieHack extends RenderZombie {
 	}
 	
 	@Override
-	protected void func_82408_c(EntityLiving par1EntityLiving, int par2, float par3) {
-		ItemStack var4 = par1EntityLiving.getCurrentArmor(3 - par2);
+	protected void func_82439_b(EntityPlayer par1EntityPlayer, int par2, float par3) {
+		ItemStack var4 = par1EntityPlayer.inventory.armorItemInSlot(3 - par2);
 		
 		if (var4 != null) {
 			Item var5 = var4.getItem();
 			
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor) var5;
-				this.loadTexture(PC_Hooks.getArmorTexture(var6, var4, par1EntityLiving, par2, 2, null));
+				this.loadTexture(PC_Hooks.getArmorTexture(var6, var4, par1EntityPlayer, par2, 2, null));
 				float var7 = 1.0F;
 				GL11.glColor3f(var7, var7, var7);
 			}

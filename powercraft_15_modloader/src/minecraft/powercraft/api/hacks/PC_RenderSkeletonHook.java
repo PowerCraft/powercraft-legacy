@@ -10,7 +10,7 @@ import net.minecraft.src.RenderSkeleton;
 
 import org.lwjgl.opengl.GL11;
 
-public class PC_RenderSkeletonHack extends RenderSkeleton {
+public class PC_RenderSkeletonHook extends RenderSkeleton {
 	
 /**
 	 * Queries whether should render the specified pass or not.
