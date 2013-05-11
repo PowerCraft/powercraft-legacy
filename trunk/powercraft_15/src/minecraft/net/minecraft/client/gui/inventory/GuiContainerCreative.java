@@ -80,7 +80,8 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         }
     }
 
-    protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
+    /** NEI **/
+    public void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
     {
         this.field_74234_w = true;
         boolean flag = par4 == 1;

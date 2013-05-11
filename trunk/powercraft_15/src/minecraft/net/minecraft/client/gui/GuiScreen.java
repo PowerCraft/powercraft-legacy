@@ -22,7 +22,8 @@ public class GuiScreen extends Gui
     public static final boolean isMacOs = Minecraft.getOs() == EnumOS.MACOS;
 
     /** Reference to the Minecraft object. */
-    protected Minecraft mc;
+    /** NEI **/
+    public Minecraft mc;
 
     /** The width of the screen object. */
     public int width;
@@ -31,11 +32,13 @@ public class GuiScreen extends Gui
     public int height;
 
     /** A list of all the buttons in this container. */
-    protected List buttonList = new ArrayList();
+    /** NEI **/
+    public List buttonList = new ArrayList();
     public boolean allowUserInput = false;
 
     /** The FontRenderer used by GuiScreen */
-    protected FontRenderer fontRenderer;
+    /** NEI **/
+    public FontRenderer fontRenderer;
     public GuiParticle guiParticles;
 
     /** The button that was just pressed. */

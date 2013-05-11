@@ -31,6 +31,9 @@ public class MovingObjectPosition
     /** Used to determine what sub-segment is hit */
     public int subHit = -1;
 
+    /** NEI **/
+	public Object hitInfo;
+
     public MovingObjectPosition(int par1, int par2, int par3, int par4, Vec3 par5Vec3)
     {
         this.typeOfHit = EnumMovingObjectType.TILE;
