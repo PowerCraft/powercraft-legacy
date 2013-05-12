@@ -1,13 +1,10 @@
 package powercraft.api;
 
-import java.lang.instrument.ClassDefinition;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import javax.sound.midi.Instrument;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.BaseMod;
@@ -44,12 +41,12 @@ import powercraft.api.entity.PC_EntityFanFX;
 import powercraft.api.entity.PC_EntityLaserFX;
 import powercraft.api.entity.PC_EntityLaserParticleFX;
 import powercraft.api.gres.PC_GresBaseWithInventory;
-import powercraft.api.hacks.PC_ClientHacks;
-import powercraft.api.hacks.PC_MainMenuHacks;
-import powercraft.api.hacks.PC_ModInfo;
-import powercraft.api.hacks.PC_RenderPlayerHook;
-import powercraft.api.hacks.PC_RenderSkeletonHook;
-import powercraft.api.hacks.PC_RenderZombieHook;
+import powercraft.api.hooks.PC_ClientHooks;
+import powercraft.api.hooks.PC_Hooks;
+import powercraft.api.hooks.PC_ModInfo;
+import powercraft.api.hooks.PC_RenderPlayerHook;
+import powercraft.api.hooks.PC_RenderSkeletonHook;
+import powercraft.api.hooks.PC_RenderZombieHook;
 import powercraft.api.interfaces.PC_IDataHandler;
 import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.interfaces.PC_IWorldGenerator;
@@ -100,7 +97,7 @@ public class PC_APIModule {
 	
 	private PC_FuelHandler fuelHandler;
 	
-	private PC_MainMenuHacks mainMenuHacks = new PC_MainMenuHacks();
+	private PC_ClientHooks clientHooks = new PC_ClientHooks();
 	
 	protected PC_PacketHandler packetHandler;
 	
@@ -120,7 +117,8 @@ public class PC_APIModule {
 		PC_Logger.enterSection("PreInit");
 		PC_GlobalVariables.loadConfig();
 		PC_Logger.enterSection("Register Hacks");
-		PC_ClientHacks.hackClient();
+		PC_ClientHooks.registerClientHooks();
+		PC_Hooks.registerHooks();
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module PreInit");
 		List<PC_ModuleObject> modules = PC_ModuleRegistry.getModuleList();
@@ -151,7 +149,7 @@ public class PC_APIModule {
 	public void init() {
 		PC_Logger.enterSection("Init");
 		fuelHandler = new PC_FuelHandler();
-		mainMenuHacks = new PC_MainMenuHacks();
+		clientHooks = new PC_ClientHooks();
 		packetHandler = new PC_ClientPacketHandler();
 		ModLoader.registerPacketChannel(PC_LauncherUtils.getMod(), "PowerCraft");
 		ModLoader.setInGUIHook(PC_LauncherUtils.getMod(), true, false);
@@ -318,7 +316,7 @@ public class PC_APIModule {
 	}
 	
 	public boolean onTickInGUI(float var1, Minecraft var2, GuiScreen var3) {
-		mainMenuHacks.tickStart();
+		clientHooks.tickStart();
 		return true;
 	}
 	

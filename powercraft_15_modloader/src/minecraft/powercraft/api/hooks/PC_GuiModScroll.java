@@ -1,4 +1,4 @@
-package powercraft.api.hacks;
+package powercraft.api.hooks;
 
 import powercraft.launcher.updategui.PC_GuiScroll;
 

@@ -1,4 +1,4 @@
-package powercraft.api.hacks;
+package powercraft.api.hooks;
 
 import net.minecraft.src.GameSettings;
 import net.minecraft.src.GuiButton;
@@ -6,13 +6,13 @@ import net.minecraft.src.GuiControls;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.StringTranslate;
 
-public class PC_GuiControlsHack extends GuiControls {
+public class PC_GuiControlsFix extends GuiControls {
 	
 	private GuiScreen parentScreen;
 	private final GameSettings options;
-	private PC_GuiControlsScrollPanelHack scrollPane;
+	private PC_GuiControlsScrollPanel scrollPane;
 	
-	public PC_GuiControlsHack(GuiScreen par1GuiScreen, GameSettings par2GameSettings) {
+	public PC_GuiControlsFix(GuiScreen par1GuiScreen, GameSettings par2GameSettings) {
 		super(par1GuiScreen, par2GameSettings);
 		parentScreen = par1GuiScreen;
 		options = par2GameSettings;
@@ -20,7 +20,7 @@ public class PC_GuiControlsHack extends GuiControls {
 	
 	@Override
 	public void initGui() {
-		scrollPane = new PC_GuiControlsScrollPanelHack(this, options, mc);
+		scrollPane = new PC_GuiControlsScrollPanel(this, options, mc);
 		StringTranslate var1 = StringTranslate.getInstance();
 		int var2 = width / 2 - 155;
 		

@@ -164,18 +164,80 @@ public class PC_ItemBlock extends ItemBlock implements PC_IItemInfo {
 	 */
 	public boolean canPlaceItemBlockOnSide(World world, int x, int y, int z, int dir, EntityPlayer entityPlayer, ItemStack itemStack) {
 		int blockID = PC_Utils.getBID(world, x, y, z);
+		int metadata = PC_Utils.getMD(world, x, y, z);
+		Block block = Block.blocksList[blockID];
 		
-		if (blockID == Block.snow.blockID) {
+		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
+		
+		if (blockID == Block.snow.blockID && (metadata & 7) < 1) {
 			dir = 1;
 		} else if (!PC_Utils.isBlockReplaceable(world, x, y, z)) {
-			PC_VecI offset = PC_Direction.getFormMCDir(dir).getOffset();
+			
+			PC_VecI offset=null;
+			
+			if(block instanceof PC_Block){
+				offset = ((PC_Block) block).moveBlockTryToPlaceAt(world, x, y, z, pcDir, -1, -1, -1, itemStack, entityPlayer);
+			}
+			
+			if(offset==null){
+				offset = pcDir.getOffset();
+			}
 			
 			x += offset.x;
 			y += offset.y;
 			z += offset.z;
+			
 		}
 		
-		return world.canPlaceEntityOnSide(getBlockID(), x, y, z, false, dir, (Entity) null, itemStack);
+		if (itemStack.stackSize == 0) {
+			return false;
+		} 
+
+		PC_VecI move;
+		do{
+			
+			move=null;
+			blockID = PC_Utils.getBID(world, x, y, z);
+			metadata = PC_Utils.getMD(world, x, y, z);
+			
+			if(blockID!=0){
+				block = Block.blocksList[blockID];
+				if (!((blockID == Block.snow.blockID && (metadata & 7) < 1) || PC_Utils.isBlockReplaceable(world, x, y, z))) {
+					if(block instanceof PC_Block){
+						move = ((PC_Block) block).moveBlockTryToPlaceAt(world, x, y, z, pcDir, -1, -1, -1, itemStack, entityPlayer);
+					}
+					if(move==null){
+						return false;
+					}
+					x += move.x;
+					y += move.y;
+					z += move.z;
+					continue;
+				}
+				
+			}
+			
+			blockID = getBlockID();
+			block = Block.blocksList[blockID];
+			
+			for(int i=0; i<6; i++){
+				PC_VecI offset = sides[i].getOffset();
+				Block b = PC_Utils.getBlock(world, x+offset.x, y+offset.y, z+offset.z);
+				if(b instanceof PC_Block){
+					PC_Block pcBlock = (PC_Block)b;
+					move = pcBlock.moveBlockTryToPlaceOnSide(world, x, y, z, sides[i].mirror(), -1, -1, -1, pcBlock, itemStack, entityPlayer);
+					if(move!=null)
+						break;
+				}
+			}
+			if(move!=null){
+				x += move.x;
+				y += move.y;
+				z += move.z;
+			}
+		}while(move!=null);
+		
+		return world.canPlaceEntityOnSide(getBlockID(), x, y, z, false, dir, (Entity)null, itemStack);
 	}
 	
 	/**

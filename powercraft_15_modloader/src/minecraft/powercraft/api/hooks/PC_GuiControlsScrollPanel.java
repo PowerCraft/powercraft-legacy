@@ -1,4 +1,4 @@
-package powercraft.api.hacks;
+package powercraft.api.hooks;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GameSettings;
@@ -10,7 +10,7 @@ import net.minecraft.src.Tessellator;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-public class PC_GuiControlsScrollPanelHack extends GuiSlot {
+public class PC_GuiControlsScrollPanel extends GuiSlot {
 	
 	private GuiControls controls;
 	private GameSettings options;
@@ -20,7 +20,7 @@ public class PC_GuiControlsScrollPanelHack extends GuiSlot {
 	private int _mouseY;
 	private int selected = -1;
 	
-	public PC_GuiControlsScrollPanelHack(GuiControls controls, GameSettings options, Minecraft mc) {
+	public PC_GuiControlsScrollPanel(GuiControls controls, GameSettings options, Minecraft mc) {
 		super(mc, controls.width, controls.height, 16, (controls.height - 32) + 4, 25);
 		this.controls = controls;
 		this.options = options;
