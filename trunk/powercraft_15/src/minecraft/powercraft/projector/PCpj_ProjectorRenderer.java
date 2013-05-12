@@ -3,11 +3,15 @@ package powercraft.projector;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -19,7 +23,9 @@ import net.minecraft.client.renderer.culling.ClippingHelperImpl;
 import net.minecraft.client.renderer.culling.Frustrum;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 
@@ -41,6 +47,65 @@ import powercraft.api.utils.PC_Struct3;
 import powercraft.api.utils.PC_Utils;
 
 public class PCpj_ProjectorRenderer {
+	
+	private static final String projectorPreShaderDefaultVert = 
+			"void main(){\n"+
+			"	gl_Position = gl_ModelViewProjectionMatrix*gl_Vertex;\n"+
+			"	gl_FrontColor = gl_Color;\n"+
+			"	gl_TexCoord[0] = gl_MultiTexCoord0;\n"+
+			"}\n";
+	private static final String projectorPreShaderDefaultFrag = 
+			"uniform sampler2D Texture0;\n"+
+			"void main()\n{"+
+			"	vec4 color = texture2D(Texture0, gl_TexCoord[0].xy);\n"+
+			"	if(color.a<=0.5){\n"+
+			"		discard;\n"+
+			"	}\n"+
+			"	gl_FragColor = vec4(color.rgb, 1.0);\n"+
+			"}\n";
+	private static final String projectorPostShaderDefaultVert = 
+			"varying mat4 matrixInv;\n"+
+			"varying vec4 pos;\n"+
+			"void main(){\n"+
+			"	pos = gl_Vertex;\n"+
+			"	gl_Position = pos*2.0-1.0;\n"+
+			"	matrixInv = gl_ModelViewProjectionMatrixInverse;\n"+
+			"}\n";
+	private static final String projectorPostShaderDefaultFrag = 
+			"uniform sampler2D texture0;\n"+
+			"uniform sampler2D texture1;\n"+
+			"uniform sampler2D texture2;\n"+
+			"uniform sampler2D texture3;\n"+
+			"uniform float width;\n"+
+			"uniform float height;\n"+
+			"uniform float f;\n"+
+			"uniform float x;\n"+
+			"uniform float y;\n"+
+			"varying mat4 matrixInv;\n"+
+			"varying vec4 pos;\n"+
+			"const float n = 0.5;\n"+
+			"void main(){\n"+
+			"	float rDepht = texture2D(texture1, (pos.xy - vec2(x, y)) * vec2(width, height)).x;\n"+
+			"	vec4 rPos = vec4(pos.xy, rDepht, 1.0);\n"+
+			"	rPos = rPos*2.0-1.0;\n"+
+			"	rPos = matrixInv * rPos;\n"+
+			"	rPos /= rPos.w;\n"+
+			"	vec4 nPos = gl_TextureMatrix[0] * rPos;\n"+
+			"	nPos /= nPos.w;\n"+
+			"	nPos = (nPos+1.0)/2.0;\n"+
+			"	if(nPos.x>1.0||nPos.x<0.0||nPos.y>1.0||nPos.y<0.0){\n"+
+			"		discard;\n"+
+			"	}\n"+
+			"	float depth = texture2D(texture0, nPos.xy).x;\n"+
+			"	float depht2 = (2.0*n)/(f+n-depth*(f-n));\n"+
+			"	float depht3 = depht2*(f-n)+n;\n"+
+			"	if(nPos.z>depth+0.001 || depht3>10.0){\n"+
+			"		discard;\n"+
+			"	}\n"+
+			"	vec4 color = texture2D(texture2, vec2(nPos.x, 1.0-nPos.y));\n"+
+			"	color *= texture2D(texture3, nPos.xy);\n"+
+			"	gl_FragColor = color;\n"+
+			"}\n";
 	
 	private static int projectorPreShader;
 	private static int projectorPostShader;
@@ -201,10 +266,10 @@ public class PCpj_ProjectorRenderer {
 	
 	public static void init(){
 		if(projectorPreShader==0){
-			projectorPreShader = loadShader("ProjectorPre");
+			projectorPreShader = loadShader("ProjectorPre", projectorPreShaderDefaultVert, projectorPreShaderDefaultFrag);
 		}
 		if(projectorPostShader==0){
-			projectorPostShader = loadShader("ProjectorPost");
+			projectorPostShader = loadShader("ProjectorPost", projectorPostShaderDefaultVert, projectorPostShaderDefaultFrag);
 		}
 		initFBO();
 		
@@ -253,12 +318,12 @@ public class PCpj_ProjectorRenderer {
 		}
 	}
 	
-	private static int loadShader(String filename){
+	private static int loadShader(String filename, String defaultvert, String defaultfrag){
 		int program=0;
 		int vertShader = 0, fragShader = 0; 
 		try {
-			vertShader = createShader(filename+".vert", ARBVertexShader.GL_VERTEX_SHADER_ARB);
-			fragShader = createShader(filename+".frag", ARBFragmentShader.GL_FRAGMENT_SHADER_ARB);
+			vertShader = createShader(filename+".vert", ARBVertexShader.GL_VERTEX_SHADER_ARB, defaultvert);
+			fragShader = createShader(filename+".frag", ARBFragmentShader.GL_FRAGMENT_SHADER_ARB, defaultfrag);
 		}catch(Exception exc) {
 			exc.printStackTrace();
 			return 0;
@@ -286,14 +351,14 @@ public class PCpj_ProjectorRenderer {
 		return program;
 	}
 	
-	private static int createShader(String filename, int shaderType) throws Exception {
+	private static int createShader(String filename, int shaderType, String defaultShaderSource) throws Exception {
 		int shader = 0;
 		try {
 			shader = ARBShaderObjects.glCreateShaderObjectARB(shaderType);
 			if(shader == 0)
 				return 0;
 			
-			ARBShaderObjects.glShaderSourceARB(shader, readFileAsString(filename));
+			ARBShaderObjects.glShaderSourceARB(shader, readFileAsString(filename, defaultShaderSource));
 			ARBShaderObjects.glCompileShaderARB(shader);
 			
 			if (ARBShaderObjects.glGetObjectParameteriARB(shader, ARBShaderObjects.GL_OBJECT_COMPILE_STATUS_ARB) == GL11.GL_FALSE)
@@ -310,16 +375,24 @@ public class PCpj_ProjectorRenderer {
 		return ARBShaderObjects.glGetInfoLogARB(obj, ARBShaderObjects.glGetObjectParameteriARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
 	}
 	
-	private static String readFileAsString(String filename) throws Exception {
+	private static String readFileAsString(String filename, String defaultFile) throws Exception {
 		StringBuilder source = new StringBuilder();
 		
 		File file = new File(PC_Utils.getPowerCraftFile(), "shader");
 		
-		if(file.exists()){
+		if(!file.exists()){
 			file.mkdirs();
 		}
 		
-		FileInputStream in = new FileInputStream(new File(file, filename));
+		file = new File(file, filename);
+		if(!file.exists()){
+			FileOutputStream out = new FileOutputStream(file);
+			PrintStream ps = new PrintStream(out);
+			ps.print(defaultFile);
+			out.close();
+		}
+		
+		FileInputStream in = new FileInputStream(file);
 		 
 		Exception exception = null;
 		 
@@ -404,6 +477,7 @@ public class PCpj_ProjectorRenderer {
         renderBlocks(renderglobal, entity);
         RenderHelper.enableStandardItemLighting();
         ForgeHooksClient.setRenderPass(0);
+        deleteTileEntitys(renderglobal.theWorld, renderglobal.tileEntities);
         renderglobal.renderEntities(entity.getPosition(0), frustrum, par1);
         ForgeHooksClient.setRenderPass(-1);
         RenderHelper.disableStandardItemLighting();
@@ -440,6 +514,16 @@ public class PCpj_ProjectorRenderer {
             GL11.glPopMatrix();
 		}
 		GL11.glTranslated(entity.posX, entity.posY, entity.posZ);
+	}
+	
+	private static void deleteTileEntitys(World world, List list){
+		Iterator<?> i = list.iterator();
+		while(i.hasNext()){
+			TileEntity te = (TileEntity)i.next();
+			if(te==null || te.isInvalid() || PC_Utils.getBID(world, te.xCoord, te.yCoord, te.zCoord)==0){
+				i.remove();
+			}
+		}
 	}
 	
 }
