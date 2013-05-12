@@ -1,4 +1,4 @@
-package powercraft.api.hacks;
+package powercraft.api.hooks;
 
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EnumArmorMaterial;

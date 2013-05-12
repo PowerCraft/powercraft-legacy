@@ -1,10 +1,10 @@
-package powercraft.api.hacks;
+package powercraft.api.hooks;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.BlockFire;
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityEnderman;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.ModelBiped;
@@ -16,6 +16,27 @@ import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.utils.PC_Utils;
 
 public class PC_Hooks {
+	
+	public static void registerHooks() {
+		registerFireHook();
+		fixEnderman();
+	}
+	
+	private static void registerFireHook() {
+		int fireID = Block.fire.blockID;
+		Block.blocksList[fireID] = null;
+		Block fireHook = new PC_BlockFireHook(Block.fire);
+		PC_ReflectHelper.setValue(Block.class, Block.class, 69, fireHook, BlockFire.class);
+	}
+	
+	private static void fixEnderman(){
+		boolean[] carriableBlocks = (boolean[])PC_ReflectHelper.getValue(EntityEnderman.class, EntityEnderman.class, 0, boolean[].class);
+		boolean[] newCarriableBlocks = new boolean[Block.blocksList.length];
+		for(int i=0; i<carriableBlocks.length; i++){
+			newCarriableBlocks[i] = carriableBlocks[i];
+		}
+		PC_ReflectHelper.setValue(EntityEnderman.class, EntityEnderman.class, 0, newCarriableBlocks, boolean[].class);
+	}
 	
 	public static String getArmorTexture(ItemArmor itemArmor, ItemStack stack, Entity entity, int slot, int layer, String _default){
 		if (itemArmor instanceof PC_ItemArmor) {

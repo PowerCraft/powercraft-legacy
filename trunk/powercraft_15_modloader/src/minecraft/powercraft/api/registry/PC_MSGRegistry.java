@@ -74,6 +74,8 @@ public final class PC_MSGRegistry {
 	
 	public static boolean hasFlag(World world, PC_VecI pos, String flag) {
 		Block b = PC_Utils.getBlock(world, pos);
+		if(b==null)
+			return false;
 		if(b.getClass().isAnnotationPresent(PC_BlockFlag.class)){
 			String[] list = b.getClass().getAnnotation(PC_BlockFlag.class).flags();
 			for(String key:list){

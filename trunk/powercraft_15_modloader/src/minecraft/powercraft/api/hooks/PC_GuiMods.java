@@ -1,4 +1,4 @@
-package powercraft.api.hacks;
+package powercraft.api.hooks;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class PC_GuiMods extends GuiScreen {
 	
 	private String screenTitle = "Mods";
 	
-	public PC_GuiMods(PC_GuiMainMenuHack parentScreen) {
+	public PC_GuiMods(PC_GuiMainMenuHook parentScreen) {
 		this.parentScreen = parentScreen;
 	}
 	

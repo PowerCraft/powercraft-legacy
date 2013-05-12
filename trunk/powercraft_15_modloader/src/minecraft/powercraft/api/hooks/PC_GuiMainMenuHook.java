@@ -1,4 +1,4 @@
-package powercraft.api.hacks;
+package powercraft.api.hooks;
 
 import java.util.List;
 
@@ -8,12 +8,12 @@ import net.minecraft.src.GuiMainMenu;
 import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.registry.PC_LangRegistry;
 
-public class PC_GuiMainMenuHack extends GuiMainMenu {
+public class PC_GuiMainMenuHook extends GuiMainMenu {
 	
 	private boolean resetDrawPos = false;
 	private List<String> brandings;
 	
-	public PC_GuiMainMenuHack(List<String> brandings) {
+	public PC_GuiMainMenuHook(List<String> brandings) {
 		this.brandings = brandings;
 	}
 	
@@ -47,7 +47,7 @@ public class PC_GuiMainMenuHack extends GuiMainMenu {
 		if (guiButton.id == 100) {
 			mc.displayGuiScreen(new PC_GuiMods(this));
 		} else if (guiButton.id == 0) {
-			mc.displayGuiScreen(new PC_GuiOptionsHack(this, this.mc.gameSettings));
+			mc.displayGuiScreen(new PC_GuiOptionsHook(this, this.mc.gameSettings));
 		} else {
 			super.actionPerformed(guiButton);
 		}

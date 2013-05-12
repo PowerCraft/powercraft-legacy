@@ -1,4 +1,4 @@
-package powercraft.api.hacks;
+package powercraft.api.hooks;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFire;
@@ -7,9 +7,9 @@ import net.minecraft.src.World;
 import powercraft.api.block.PC_Block;
 import powercraft.api.utils.PC_Utils;
 
-public class PC_BlockFireHack extends BlockFire {
+public class PC_BlockFireHook extends BlockFire {
 	
-	public PC_BlockFireHack(Block fire) {
+	public PC_BlockFireHook(Block fire) {
 		super(fire.blockID);
 	}
 	
