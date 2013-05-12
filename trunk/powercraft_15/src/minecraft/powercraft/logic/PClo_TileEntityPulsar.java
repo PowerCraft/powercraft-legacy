@@ -5,6 +5,7 @@ import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.registry.PC_SoundRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_Utils;
 
 public class PClo_TileEntityPulsar extends PC_TileEntity{
@@ -131,8 +132,6 @@ public class PClo_TileEntityPulsar extends PC_TileEntity{
     	}
 	}
     
-    
-    
 	@Override
 	protected void onCall(String key, Object[] value) {
 		if(key.equals("change")){
@@ -149,4 +148,5 @@ public class PClo_TileEntityPulsar extends PC_TileEntity{
 	public boolean getShould() {
 		return should;
 	}
+	
 }

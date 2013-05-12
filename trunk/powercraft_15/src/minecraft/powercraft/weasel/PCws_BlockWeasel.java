@@ -27,7 +27,7 @@ import powercraft.api.utils.PC_MathHelper;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(name="Weasel", itemBlock=PCws_ItemBlockWeasel.class, tileEntity=PCws_TileEntityWeasel.class)
+@PC_BlockInfo(name="Weasel", itemBlock=PCws_ItemBlockWeasel.class, tileEntity=PCws_TileEntityWeasel.class, canPlacedRotated=true)
 public class PCws_BlockWeasel extends PC_Block {
 
 	public PCws_BlockWeasel(int id) {
@@ -286,16 +286,6 @@ public class PCws_BlockWeasel extends PC_Block {
 				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.BOTTOM)
 			};
 		
-	}
-
-	public static int gettingPowerFrom(World world, int x, int y, int z, int rot){
-		if(world.getIndirectPowerLevelTo(x, y, z, rot)>0){
-			return world.getIndirectPowerLevelTo(x, y, z, rot);
-		}
-		if(PC_Utils.getBID(world, x, y, z) == Block.redstoneWire.blockID){
-			return PC_Utils.getMD(world, x, y, z);
-		}
-		return 0;
 	}
 	
 }

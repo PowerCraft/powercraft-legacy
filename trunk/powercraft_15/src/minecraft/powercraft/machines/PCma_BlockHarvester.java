@@ -56,7 +56,7 @@ public class PCma_BlockHarvester extends PC_Block implements PC_IBeamHandler, PC
 	private ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
 	
 	public PCma_BlockHarvester(int id) {
-		super(id, Material.ground, "side", "side", "harvester_front", "harvester_back", "side", "side");
+		super(id, Material.ground, "side", "side", "harvester_back", "harvester_front", "side", "side");
 		setHardness(0.7F);
 		setResistance(10.0F);
 		setStepSound(Block.soundStoneFootstep);
@@ -137,7 +137,7 @@ public class PCma_BlockHarvester extends PC_Block implements PC_IBeamHandler, PC
 		PC_BeamTracer beamTracer = new PC_BeamTracer(world, this);
 
 		beamTracer.setStartCoord(cnt);
-		beamTracer.setStartMove(getRotation(deviceMeta).getOffset().mul(-1));
+		beamTracer.setStartMove(getRotation(deviceMeta).getOffset());
 		beamTracer.setCanChangeColor(false);
 		beamTracer.setDetectEntities(true);
 		beamTracer.setTotalLengthLimit(8000);
@@ -321,7 +321,7 @@ public class PCma_BlockHarvester extends PC_Block implements PC_IBeamHandler, PC
 			return;
 		}
 
-		PC_VecI offset = getRotation(PC_Utils.getMD(world, devPos)).getOffset();
+		PC_VecI offset = getRotation(PC_Utils.getMD(world, devPos)).getOffset().mul(-1);
 
 		double dx = devPos.x + offset.x * 1.0D + 0.5D;
 		double dy = devPos.y + 0.5D;

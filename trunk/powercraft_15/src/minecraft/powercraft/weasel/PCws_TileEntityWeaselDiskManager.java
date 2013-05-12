@@ -12,11 +12,9 @@ public class PCws_TileEntityWeaselDiskManager extends PC_TileEntity implements P
 	@Override
 	public void renderTileEntityAt(double x, double y, double z, float rot) {
 
-		// push 1
-		PC_Renderer.glPushMatrix();
 		float f = 1.0F;
 		
-		PC_Renderer.glTranslatef((float) x + 0.5F, ((float) y), (float) z + 0.5F);
+		PC_Renderer.glTranslatef(0, -0.5f, 0);
 		
 		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCws_App.instance, "block_chip.png"));
 
@@ -33,9 +31,6 @@ public class PCws_TileEntityWeaselDiskManager extends PC_TileEntity implements P
 
 
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
-		// pop1
-		PC_Renderer.glPopMatrix();
 	}
 
 }

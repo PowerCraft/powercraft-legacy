@@ -70,21 +70,10 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
     @Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
     {
-        ItemStack ihold = entityplayer.getCurrentEquippedItem();
-
-        if (ihold != null)
-        {
-            if (ihold.getItem() instanceof ItemBlock && ihold.getItem().itemID != blockID)
-            {
-                return false;
-            }
-        }
-
         if (world.isRemote)
         {
             return true;
         }
-
         PC_GresRegistry.openGres("Roaster", entityplayer, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
         return true;
     }

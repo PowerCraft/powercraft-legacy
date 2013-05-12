@@ -28,9 +28,9 @@ public class PClo_RepeaterType
     	textures[n++] = "crossing1";
     	textures[n++] = "crossing2";
     	textures[n++] = "crossing3";
-    	textures[n++] = "splitter_2_s";
-    	textures[n++] = "splitter_2_l";
     	textures[n++] = "splitter_3";
+    	textures[n++] = "splitter_2_l";
+    	textures[n++] = "splitter_2_s";
     	textures[n++] = "splitter_2_r";
     	textures[n++] = "repeaterStraight_on";
     	textures[n++] = "repeaterStraight_off";

@@ -14,6 +14,7 @@ import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.tileentity.PC_ITileEntityRenderer;
 import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.utils.PC_Color;
+import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
 
@@ -153,6 +154,11 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		PC_Renderer.glPopMatrix();
+	}
+
+	@Override
+	public int getProvidingStrongRedstonePowerValue(PC_Direction dir) {
+		return isActive()?15:0;
 	}
 	
 }

@@ -40,7 +40,7 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_IItemInfo, PC
 	public static final int ENDBLOCK = 98;
 	
 	public PCma_BlockBlockBuilder(int id) {
-		super(id, Material.ground, "side", "side", "builder_front", "side", "side", "side");
+		super(id, Material.ground, "side", "side", "side", "builder_front", "side", "side");
 		setHardness(0.7F);
 		setResistance(10.0F);
 		setStepSound(Block.soundStoneFootstep);
@@ -56,47 +56,9 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_IItemInfo, PC
 	public int tickRate(World world) {
 		return 1;
 	}
-	
-	@Override
-	public void onBlockAdded(World world, int i, int j, int k) {
-		super.onBlockAdded(world, i, j, k);
-		setDispenserDefaultDirection(world, i, j, k);
-	}
-
-	private void setDispenserDefaultDirection(World world, int i, int j, int k) {
-		if (!world.isRemote) {
-			int l = world.getBlockId(i, j, k - 1);
-			int i1 = world.getBlockId(i, j, k + 1);
-			int j1 = world.getBlockId(i - 1, j, k);
-			int k1 = world.getBlockId(i + 1, j, k);
-			byte byte0 = 3;
-			if (Block.opaqueCubeLookup[l] && !Block.opaqueCubeLookup[i1]) {
-				byte0 = 3;
-			}
-			if (Block.opaqueCubeLookup[i1] && !Block.opaqueCubeLookup[l]) {
-				byte0 = 2;
-			}
-			if (Block.opaqueCubeLookup[j1] && !Block.opaqueCubeLookup[k1]) {
-				byte0 = 5;
-			}
-			if (Block.opaqueCubeLookup[k1] && !Block.opaqueCubeLookup[j1]) {
-				byte0 = 4;
-			}
-			PC_Utils.setMD(world, i, j, k, byte0);
-		}
-	}
 
 	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
-		ItemStack ihold = entityplayer.getCurrentEquippedItem();
-		if (ihold != null) {
-			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().itemID != blockID) {
-
-				Block bhold = Block.blocksList[ihold.getItem().itemID];
-				return false;
-
-			}
-		}
 
 		if (world.isRemote) {
 			return true;
@@ -142,7 +104,7 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_IItemInfo, PC
 		PC_BeamTracer beamTracer = new PC_BeamTracer(world, this);
 
 		beamTracer.setStartCoord(cnt);
-		beamTracer.setStartMove(getRotation(deviceMeta).getOffset().mul(-1));
+		beamTracer.setStartMove(getRotation(deviceMeta).getOffset());
 		beamTracer.setCanChangeColor(false);
 		beamTracer.setDetectEntities(true);
 		beamTracer.setTotalLengthLimit(8000);

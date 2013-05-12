@@ -73,18 +73,6 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7,
 			float par8, float par9) {
-		ItemStack ihold = player.getCurrentEquippedItem();
-
-        if (ihold != null)
-        {
-            if (ihold.getItem() instanceof ItemBlock)
-            {
-                if (ihold.itemID == blockID)
-                {
-                    return false;
-                }
-            }
-        }
 
         PC_GresRegistry.openGres("WeaselDiskManager", player, PC_Utils.<PC_TileEntity>getTE(world, x, y, z));
         

@@ -20,10 +20,10 @@ public class PClo_DelayerType
     	textures[0] = "bottomplate";
     	textures[1] = "sideplate";
     	for(int i=0; i<TOTAL_DELAYER_COUNT; i++){
-    		textures[i+2+TOTAL_DELAYER_COUNT] = names[i]+"_on";
+    		textures[i+2] = names[i]+"_on";
     	}
     	for(int i=0; i<TOTAL_DELAYER_COUNT; i++){
-    		textures[i+2] = names[i]+"_off";
+    		textures[i+2+TOTAL_DELAYER_COUNT] = names[i]+"_off";
     	}
     	return textures;
     }

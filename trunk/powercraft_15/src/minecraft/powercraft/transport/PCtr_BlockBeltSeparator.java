@@ -67,18 +67,6 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
         }
         else
         {
-            ItemStack ihold = entityplayer.getCurrentEquippedItem();
-
-            if (ihold != null)
-            {
-                if (ihold.getItem() instanceof ItemBlock)
-                {
-                    if (ihold.itemID == blockID)
-                    {
-                        return false;
-                    }
-                }
-            }
 
             PC_GresRegistry.openGres("SeperationBelt", entityplayer, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
             return true;

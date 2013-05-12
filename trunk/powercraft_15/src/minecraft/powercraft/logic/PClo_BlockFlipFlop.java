@@ -68,20 +68,25 @@ public class PClo_BlockFlipFlop extends PC_Block
         boolean i1 = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.RIGHT)>0;
         boolean i2 = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
         boolean i3 = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.LEFT)>0;
-        boolean shouldState = false;
+        boolean shouldState = state;
 
         switch (te.getType())
         {
             case PClo_FlipFlopType.D:
-                if (i3)
+            	
+            	if (i3){
+            		shouldState = false;
+            	}
+            	
+                if (i1)
                 {
                     shouldState = i2;
                 }
+                	
 
                 break;
 
             case PClo_FlipFlopType.RS:
-                shouldState = state;
 
                 if (i1)
                 {
@@ -96,7 +101,6 @@ public class PClo_BlockFlipFlop extends PC_Block
                 break;
 
             case PClo_FlipFlopType.T:
-                shouldState = state;
 
                 if (i2)
                 {
@@ -122,7 +126,6 @@ public class PClo_BlockFlipFlop extends PC_Block
                 break;
 
             case PClo_FlipFlopType.RANDOM:
-                shouldState = state;
 
                 if (i2)
                 {
@@ -166,21 +169,19 @@ public class PClo_BlockFlipFlop extends PC_Block
     
     @Override
 	public int getProvidingStrongRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
-    	PC_Direction rotation = getRotation(PC_Utils.getMD(world, x, y, z));
-
-        if (!isActive(world, x, y, z))
+    	if (!isActive(world, x, y, z))
         {
             return 0;
         }
 
-        if (rotation == dir)
+        if (PC_Direction.FRONT == dir)
         {
             return 15;
         }
 
         if (getType(world, x, y, z) == PClo_FlipFlopType.RS)
         {
-            if (rotation == dir.mirror())
+            if (PC_Direction.BACK == dir)
             {
                 return 15;
             }
