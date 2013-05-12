@@ -5,17 +5,20 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityEnderEye;
+import net.minecraft.entity.item.EntityFireworkRocket;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
-import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_Utils;
-import powercraft.api.utils.PC_VecI;
 
 @PC_BlockInfo(name="Chimney", itemBlock=PCde_ItemBlockChimney.class, tileEntity=PCde_TileEntityChimney.class)
 public class PCde_BlockChimney extends PC_Block {
@@ -96,6 +99,34 @@ public class PCde_BlockChimney extends PC_Block {
 		setBlockBounds(0, 0, 0, 1, 1, 1);
 		
 		return true;
+	}
+
+	@Override
+	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisAlignedBB, List list, Entity entity) {
+		if(entity instanceof EntityEnderEye)
+			return;
+		if(entity instanceof EntityFireworkRocket)
+			return;
+		if(entity instanceof EntityItem)
+			return;
+		if(entity instanceof EntityXPOrb)
+			return;
+		if(PC_Utils.isEntityFX(entity))
+			return;
+		if(entity==null)
+			return;
+		setBlockBounds(0, 0, 0, 1, 1, 1);
+		AxisAlignedBB axisalignedbb1 = super.getCollisionBoundingBoxFromPool(world, x, y, z);
+
+        if (axisalignedbb1 != null && axisAlignedBB.intersectsWith(axisalignedbb1))
+        {
+        	list.add(axisalignedbb1);
+        }
+	}
+
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+		return null;
 	}
 	
 }

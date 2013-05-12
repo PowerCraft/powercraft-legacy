@@ -50,6 +50,15 @@ public class PCde_BlockPlatform extends PC_Block {
 		return true;
 	}
 	
+	public void addACollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List arraylist, Entity entity) {
+		AxisAlignedBB axisalignedbb1 = super.getCollisionBoundingBoxFromPool(world, x, y, z);
+
+        if (axisalignedbb1 != null && axisalignedbb.intersectsWith(axisalignedbb1))
+        {
+        	arraylist.add(axisalignedbb1);
+        }
+	}
+	
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List arraylist, Entity entity) {
 
@@ -57,27 +66,33 @@ public class PCde_BlockPlatform extends PC_Block {
 
 		if (fences[0]) {
 			setBlockBounds(1 - 0.0625F, 0, 0, 1, 1.5F, 1);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 		if (fences[1]) {
 			setBlockBounds(0, 0, 0, 0.0625F, 1.5F, 1);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 		if (fences[2]) {
 			setBlockBounds(0, 0, 1 - 0.0625F, 1, 1.5F, 1);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 		if (fences[3]) {
 			setBlockBounds(0, 0, 0, 1, 1.5F, 0.0625F);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 		if (fences[4]) {
 			setBlockBounds(0, 0, 0, 1, 0.0625F, 1);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 
 		setBlockBounds(0, 0, 0, 1, 1, 1);
 		
+	}
+	
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+		setBlockBounds(0, 0, 0, 1, 1, 1);
+		return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
 	}
 
 	@Override

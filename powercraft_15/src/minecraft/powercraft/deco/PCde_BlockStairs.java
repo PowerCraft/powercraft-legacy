@@ -123,29 +123,38 @@ public class PCde_BlockStairs extends PC_Block {
 		setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
+	public void addACollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List arraylist, Entity entity) {
+		AxisAlignedBB axisalignedbb1 = super.getCollisionBoundingBoxFromPool(world, x, y, z);
+
+        if (axisalignedbb1 != null && axisalignedbb.intersectsWith(axisalignedbb1))
+        {
+        	arraylist.add(axisalignedbb1);
+        }
+	}
+	
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List arraylist, Entity entity) {
 
 		PC_Direction dir = getRotation(PC_Utils.getMD(world, x, y, z)).mirror();
 
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-		super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+		addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 
 		if (dir == PC_Direction.FRONT) {
 			setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 1.0F, 0.5F);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 
 		} else if (dir == PC_Direction.RIGHT) {
 			setBlockBounds(0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 
 		} else if (dir == PC_Direction.BACK) {
 			setBlockBounds(0.0F, 0.5F, 0.5F, 1.0F, 1.0F, 1.0F);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 
 		} else if (dir == PC_Direction.LEFT) {
 			setBlockBounds(0.0F, 0.5F, 0.0F, 0.5F, 1.0F, 1.0F);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 
 		// X+, X-, Z+, Z-
@@ -153,19 +162,19 @@ public class PCde_BlockStairs extends PC_Block {
 
 		if (fences[0]) {
 			setBlockBounds(1 - 0.0625F, 0, 0, 1, 1.8F, 1);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 		if (fences[1]) {
 			setBlockBounds(0, 0, 0, 0.0625F, 1.8F, 1);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 		if (fences[2]) {
 			setBlockBounds(0, 0, 1 - 0.0625F, 1, 1.8F, 1);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 		if (fences[3]) {
 			setBlockBounds(0, 0, 0, 1, 1.8F, 0.0625F);
-			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
+			addACollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 
 		setBlockBounds(0, 0, 0, 1, 1, 1);
@@ -227,6 +236,12 @@ public class PCde_BlockStairs extends PC_Block {
 			return offset;
 		}
 		return null;
+	}
+	
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+		setBlockBounds(0, 0, 0, 1, 1.5f, 1);
+		return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
 	}
 	
 }

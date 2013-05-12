@@ -13,7 +13,7 @@ public class PCde_TileEntityPlatform extends PC_TileEntity implements
 	@Override
 	public void renderTileEntityAt(double x, double y, double z, float f0) {
 		float f = 1.0F;
-
+		
 		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCde_App.instance, "block_deco.png"));
 
 		PC_Renderer.glPushMatrix();
