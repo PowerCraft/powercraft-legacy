@@ -222,7 +222,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 			entity.motionY = 0;
 			entity.motionZ = 0;
 			PC_PacketHandler.sendToPacketHandler(true, entity.worldObj, "Teleporter", "teleport", entity.entityId, s.a, s.b);
-			entity.worldObj.updateEntityWithOptionalForce(entity, true);
+			//entity.worldObj.updateEntityWithOptionalForce(entity, true);
 		}
         return true;
     }
