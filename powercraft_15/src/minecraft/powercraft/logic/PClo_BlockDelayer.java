@@ -59,7 +59,7 @@ public class PClo_BlockDelayer extends PC_Block
 		on.setLightValue(config.getInt("brightness", 7) * 0.0625F);
 	}
 
-    @Override
+	@Override
     public void updateTick(World world, int x, int y, int z, Random random)
     {
         PClo_TileEntityDelayer te = getTE(world, x, y, z);
@@ -241,6 +241,8 @@ public class PClo_BlockDelayer extends PC_Block
         {
             PC_GresRegistry.openGres("Delayer", (EntityPlayer)entityliving, PC_Utils.<PC_TileEntity>getTE(world, x, y, z));
         }
+        world.scheduleBlockUpdate(x, y, z, blockID, tickRate(world));
+        PC_Utils.hugeUpdate(world, x, y, z);
     }
 
     @Override

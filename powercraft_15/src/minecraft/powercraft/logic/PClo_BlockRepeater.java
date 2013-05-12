@@ -52,6 +52,12 @@ public class PClo_BlockRepeater extends PC_Block
             setCreativeTab(CreativeTabs.tabRedstone);
         }
     }
+    
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving, ItemStack itmeStack){
+        world.scheduleBlockUpdate(x, y, z, blockID, tickRate(world));
+        PC_Utils.hugeUpdate(world, x, y, z);
+    }
 
     @Override
 	public void initConfig(PC_Property config) {

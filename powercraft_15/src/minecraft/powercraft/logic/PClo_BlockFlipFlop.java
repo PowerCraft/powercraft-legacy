@@ -19,9 +19,11 @@ import powercraft.api.annotation.PC_Shining;
 import powercraft.api.annotation.PC_Shining.OFF;
 import powercraft.api.annotation.PC_Shining.ON;
 import powercraft.api.block.PC_Block;
+import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_KeyRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.renderer.PC_Renderer;
+import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_MathHelper;
 import powercraft.api.utils.PC_Utils;
@@ -166,6 +168,12 @@ public class PClo_BlockFlipFlop extends PC_Block
 	public int getProvidingWeakRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
 		return getProvidingStrongRedstonePowerValue(world, x, y, z, dir);
 	}
+    
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving, ItemStack itmeStack){
+        world.scheduleBlockUpdate(x, y, z, blockID, tickRate(world));
+        PC_Utils.hugeUpdate(world, x, y, z);
+    }
     
     @Override
 	public int getProvidingStrongRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
