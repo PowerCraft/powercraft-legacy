@@ -1,4 +1,4 @@
-package powercraft.api.hacks;
+package powercraft.api.hooks;
 
 import java.io.File;
 
@@ -9,9 +9,9 @@ import powercraft.api.PC_IDResolver;
 import powercraft.api.registry.PC_DataHandlerRegistry;
 import powercraft.api.utils.PC_GlobalVariables;
 
-public class PC_HackedSaveHandler extends AnvilSaveHandler {
+public class PC_SaveHandlerHook extends AnvilSaveHandler {
 
-	public PC_HackedSaveHandler(File par1File, String par2Str, boolean par3) {
+	public PC_SaveHandlerHook(File par1File, String par2Str, boolean par3) {
 		super(par1File, par2Str, par3);
 	}
 

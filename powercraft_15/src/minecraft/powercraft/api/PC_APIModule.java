@@ -3,22 +3,16 @@ package powercraft.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.particle.EntitySmokeFX;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
-import powercraft.api.building.PC_BuildingManager;
 import powercraft.api.building.PC_CropHarvesting;
 import powercraft.api.building.PC_ISpecialHarvesting;
 import powercraft.api.building.PC_TreeHarvesting;
-import powercraft.api.entity.PC_EntityFanFX;
-import powercraft.api.entity.PC_EntityLaserFX;
-import powercraft.api.entity.PC_EntityLaserParticleFX;
 import powercraft.api.gres.PC_GresBaseWithInventory;
-import powercraft.api.hacks.PC_ClientHacks;
-import powercraft.api.hacks.PC_MainMenuHacks;
+import powercraft.api.hooks.PC_Hooks;
+import powercraft.api.hooks.PC_ServerHooks;
 import powercraft.api.interfaces.PC_IDataHandler;
 import powercraft.api.interfaces.PC_IMSG;
 import powercraft.api.interfaces.PC_IWorldGenerator;
@@ -48,7 +42,6 @@ import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.thread.PC_ThreadManager;
 import powercraft.api.tick.PC_ITickHandler;
 import powercraft.api.tick.PC_TickHandler;
-import powercraft.api.utils.PC_ClientUtils;
 import powercraft.api.utils.PC_GlobalVariables;
 import powercraft.api.utils.PC_Struct2;
 import powercraft.api.utils.PC_Utils;
@@ -107,6 +100,8 @@ public class PC_APIModule {
 	}
 	
 	protected void clientPreInit(List<PC_ModuleObject> modules) {
+		PC_ServerHooks.registerServerHooks();
+		PC_Hooks.registerHooks();
 	}
 	
 	@PC_Init

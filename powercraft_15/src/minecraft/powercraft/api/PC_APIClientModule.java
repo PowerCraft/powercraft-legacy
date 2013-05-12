@@ -11,8 +11,8 @@ import powercraft.api.entity.PC_EntityFanFX;
 import powercraft.api.entity.PC_EntityLaserFX;
 import powercraft.api.entity.PC_EntityLaserParticleFX;
 import powercraft.api.gres.PC_IGresClient;
-import powercraft.api.hacks.PC_ClientHacks;
-import powercraft.api.hacks.PC_MainMenuHacks;
+import powercraft.api.hooks.PC_ClientHooks;
+import powercraft.api.hooks.PC_Hooks;
 import powercraft.api.network.PC_ClientPacketHandler;
 import powercraft.api.network.PC_ConnectionHandler;
 import powercraft.api.registry.PC_GresRegistry;
@@ -48,7 +48,8 @@ public class PC_APIClientModule extends PC_APIModule {
 	
 	@Override
 	protected void clientPreInit(List<PC_ModuleObject> modules) {
-		PC_ClientHacks.hackClient();
+		PC_ClientHooks.registerClientHooks();
+		PC_Hooks.registerHooks();
 		PC_Logger.enterSection("Module Language Init");
 		new PC_ThreadLangUpdates();
 		for (PC_ModuleObject module : modules) {
@@ -89,7 +90,7 @@ public class PC_APIClientModule extends PC_APIModule {
 		PC_ClientUtils.registerEnitiyFX("EntitySmokeFX", EntitySmokeFX.class);
 		RenderingRegistry.registerBlockHandler(new PC_ClientRenderer(true));
 		RenderingRegistry.registerBlockHandler(new PC_ClientRenderer(false));
-		TickRegistry.registerTickHandler(new PC_MainMenuHacks(), Side.CLIENT);
+		TickRegistry.registerTickHandler(new PC_ClientHooks(), Side.CLIENT);
 		TickRegistry.registerTickHandler(new PC_ClientTickHandler(),
 				Side.CLIENT);
 		TickRegistry.registerTickHandler(new PC_ClientTickHandler(),
