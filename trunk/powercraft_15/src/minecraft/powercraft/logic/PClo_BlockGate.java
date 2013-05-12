@@ -53,6 +53,12 @@ public class PClo_BlockGate extends PC_Block
     }
     
     @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving, ItemStack itmeStack){
+        world.scheduleBlockUpdate(x, y, z, blockID, tickRate(world));
+        PC_Utils.hugeUpdate(world, x, y, z);
+    }
+    
+    @Override
 	public void initConfig(PC_Property config) {
 		super.initConfig(config);
 		on.setLightValue(config.getInt("brightness", 7) * 0.0625F);

@@ -34,7 +34,7 @@ public class PClo_TileEntitySpecial extends PC_TileEntityWithInventory
     public void updateEntity()
     {
     	PC_Block block = PC_Utils.getBlock(worldObj, xCoord, yCoord, zCoord);
-    	if(block==null){
+    	if(block==null || worldObj.isRemote){
     		return;
     	}
         int nextUpdate = 0;
@@ -57,14 +57,14 @@ public class PClo_TileEntitySpecial extends PC_TileEntityWithInventory
                 break;
 
             case PClo_SpecialType.CHEST_EMPTY:{
-            	IInventory inv = PC_InventoryUtils.getInventoryAt(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd);
+            	IInventory inv = PC_InventoryUtils.getInventoryAt(worldObj, xCoord - xAdd, yCoord, zCoord - zAdd);
             	if(inv!=null){
             		shouldState = PC_InventoryUtils.getInventoryCountOf(inv, getStackInSlot(0))==0;
             	}
             	break;
 
             }case PClo_SpecialType.CHEST_FULL:{
-            	IInventory inv = PC_InventoryUtils.getInventoryAt(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd);
+            	IInventory inv = PC_InventoryUtils.getInventoryAt(worldObj, xCoord - xAdd, yCoord, zCoord - zAdd);
             	if(inv!=null){
             		shouldState = PC_InventoryUtils.getInventorySpaceFor(inv, getStackInSlot(0))==0;
             	}

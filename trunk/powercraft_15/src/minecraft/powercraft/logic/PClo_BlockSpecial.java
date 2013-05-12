@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBlock;
@@ -53,6 +54,12 @@ public class PClo_BlockSpecial extends PC_Block
     }
 
     @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving, ItemStack itmeStack){
+        world.scheduleBlockUpdate(x, y, z, blockID, tickRate(world));
+        PC_Utils.hugeUpdate(world, x, y, z);
+    }
+    
+    @Override
 	public void initConfig(PC_Property config) {
 		super.initConfig(config);
 		on.setLightValue(config.getInt("brightness", 7) * 0.0625F);
@@ -65,7 +72,7 @@ public class PClo_BlockSpecial extends PC_Block
         boolean shouldState = false;
         boolean state = isActive(world, x, y, z);
         PC_Direction rot = getRotation(PC_Utils.getMD(world, x, y, z));
-        int xAdd = rot.getOffset().x, zAdd = rot.getOffset().y;
+        int xAdd = rot.getOffset().x, zAdd = rot.getOffset().z;
 
         switch (te.getType())
         {
@@ -82,14 +89,14 @@ public class PClo_BlockSpecial extends PC_Block
                 break;
 
             case PClo_SpecialType.CHEST_EMPTY:{
-            	IInventory inv = PC_InventoryUtils.getInventoryAt(world, x + xAdd, y, z + zAdd);
+            	IInventory inv = PC_InventoryUtils.getInventoryAt(world, x - xAdd, y, z - zAdd);
             	if(inv!=null){
             		shouldState = PC_InventoryUtils.getInventoryCountOf(inv, te.getStackInSlot(0))==0;
             	}
             	break;
 
             }case PClo_SpecialType.CHEST_FULL:{
-            	IInventory inv = PC_InventoryUtils.getInventoryAt(world, x + xAdd, y, z + zAdd);
+            	IInventory inv = PC_InventoryUtils.getInventoryAt(world, x - xAdd, y, z - zAdd);
             	if(inv!=null){
             		shouldState = PC_InventoryUtils.getInventorySpaceFor(inv, te.getStackInSlot(0))==0;
             	}
