@@ -56,35 +56,20 @@ public class PCde_ItemBlockChimney extends PC_ItemBlock {
 		names.add(new LangEntry(getUnlocalizedName() + ".type0", "Cobblestone Chimney"));
 		names.add(new LangEntry(getUnlocalizedName() + ".type1", "Brick Chimney"));
 		names.add(new LangEntry(getUnlocalizedName() + ".type2", "StoneBrick Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type3", "CrackedStoneBrick Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type4", "ChiseledStoneBrick Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type5", "Sandstone Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type6", "ChiseledSandstone Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type7", "SmothSandstone Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type8", "NetherBrick Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type9", "QuartzBlock Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type10", "ChiseledQuartzBlock Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type11", "PillarQuartzBlock Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type12", "MossStone Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type13", "MossyStoneBrick Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type14", "Clay Chimney"));
+		names.add(new LangEntry(getUnlocalizedName() + ".type15", "IronBlock Chimney"));
         return names;
-	}
-	
-	
-	
-	public Object msg(int msg, Object... obj) {
-		switch(msg){
-		case PC_MSGRegistry.MSG_DEFAULT_NAME:
-			List<LangEntry> names = (List<LangEntry>)obj[0];
-			names.add(new LangEntry(getUnlocalizedName() + ".type0", "Cobblestone Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type1", "Brick Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type2", "StoneBrick Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type3", "CrackedStoneBrick Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type4", "ChiseledStoneBrick Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type5", "Sandstone Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type6", "ChiseledSandstone Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type7", "SmothSandstone Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type8", "NetherBrick Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type9", "QuartzBlock Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type10", "ChiseledQuartzBlock Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type11", "PillarQuartzBlock Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type12", "MossStone Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type13", "MossyStoneBrick Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type14", "Clay Chimney"));
-			names.add(new LangEntry(getUnlocalizedName() + ".type15", "IronBlock Chimney"));
-			
-            return names;
-		}
-		return null;
 	}
 	
 }
