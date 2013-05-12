@@ -76,19 +76,19 @@ public class PClo_BlockRepeater extends PC_Block
             switch (variant)
             {
                 case 0:
-                    shouldState = inp[2] | inp[3] << 1;
+                    shouldState = inp[0] | inp[1] << 1;
                     break;
 
                 case 1:
-                    shouldState = inp[3] | inp[0] << 1;
-                    break;
-
-                case 2:
                     shouldState = inp[1] | inp[2] << 1;
                     break;
 
+                case 2:
+                    shouldState = inp[0] | inp[3] << 1;
+                    break;
+
                 case 3:
-                    shouldState = inp[0] | inp[1] << 1;
+                    shouldState = inp[2] | inp[3] << 1;
                     break;
             }
 
@@ -125,7 +125,7 @@ public class PClo_BlockRepeater extends PC_Block
             updateTick(world, x, y, z, new Random());
         }else{
         	boolean shouldState = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
-        	if (isActive(world, x, y, z) != shouldState){
+        	if (isActive(world, x, y, z) != shouldState || te.getType() == PClo_RepeaterType.CROSSING){
         		world.scheduleBlockUpdate(x, y, z, blockID, tickRate(world));
         	}
         }
@@ -142,7 +142,6 @@ public class PClo_BlockRepeater extends PC_Block
         int type = te.getType();
         boolean L = false, R = false, F = false, B = false;
         int variant = te.getInp();
-        int s = dir.getMCDir();
         
         if (type == PClo_RepeaterType.CROSSING)
         {
@@ -153,12 +152,12 @@ public class PClo_BlockRepeater extends PC_Block
             switch (variant)
             {
                 case 0:
-                    if (s == 5)
+                    if (dir == PC_Direction.RIGHT)
                     {
                         return power1?15:0;
                     }
 
-                    if (s == 2)
+                    if (dir == PC_Direction.FRONT)
                     {
                         return power2?15:0;
                     }
@@ -166,12 +165,12 @@ public class PClo_BlockRepeater extends PC_Block
                     break;
 
                 case 1:
-                    if (s == 2)
+                    if (dir == PC_Direction.FRONT)
                     {
                         return power1?15:0;
                     }
 
-                    if (s == 4)
+                    if (dir == PC_Direction.LEFT)
                     {
                         return power2?15:0;
                     }
@@ -179,12 +178,12 @@ public class PClo_BlockRepeater extends PC_Block
                     break;
 
                 case 2:
-                    if (s == 3)
+                    if (dir == PC_Direction.RIGHT)
                     {
                         return power1?15:0;
                     }
 
-                    if (s == 5)
+                    if (dir == PC_Direction.BACK)
                     {
                         return power2?15:0;
                     }
@@ -192,12 +191,12 @@ public class PClo_BlockRepeater extends PC_Block
                     break;
 
                 case 3:
-                    if (s == 4)
+                    if (dir == PC_Direction.LEFT)
                     {
                         return power1?15:0;
                     }
 
-                    if (s == 3)
+                    if (dir == PC_Direction.BACK)
                     {
                         return power2?15:0;
                     }

@@ -77,8 +77,12 @@ public class PCli_ItemLaserComposition extends PC_Item
     	TileEntity te = PC_Utils.getTE(world, i, j, k);
     	
     	if(te instanceof PCli_TileEntityLaser){
+    		PCli_TileEntityLaser tel = (PCli_TileEntityLaser)te;
     		
-    		((PCli_TileEntityLaser)te).setItemStack(new PC_ItemStack(itemstack));
+    		if(tel.getItemStack()!=null && !PC_Utils.isCreative(entityplayer)){
+	    		PC_Utils.dropItemStack(world, i, j, k, tel.getItemStack().toItemStack());
+    		}
+    		tel.setItemStack(new PC_ItemStack(itemstack));
     		
     		itemstack.stackSize = 0;
     		

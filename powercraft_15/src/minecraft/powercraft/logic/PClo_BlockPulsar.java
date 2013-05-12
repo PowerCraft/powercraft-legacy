@@ -22,6 +22,7 @@ import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
 import powercraft.launcher.PC_Property;
@@ -72,14 +73,6 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
     {
         return false;
     }
-    
-    @Override
-	public void updateTick(World world, int x, int y, int z, Random par5Random) {
-    	PClo_TileEntityPulsar tep = PC_Utils.getTE(world, x, y, z);
-    	if(tep.getShould() != tep.isActive()){
-    		PC_Utils.setBlockState(world, x, y, z, tep.getShould());
-    	}
-	}
 
 	@Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9)
@@ -88,15 +81,6 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
 
         if (ihold != null)
         {
-            if (ihold.getItem() instanceof ItemBlock && ihold.getItem().itemID != blockID)
-            {
-                Block bhold = Block.blocksList[ihold.getItem().itemID];
-
-                if (bhold instanceof PC_Block)
-                {
-                    return false;
-                }
-            }
 
             if (ihold.getItem().itemID == Item.stick.itemID)
             {
@@ -147,15 +131,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
 
     public boolean isActive(IBlockAccess iblockaccess, int x, int y, int z)
     {
-        TileEntity te = iblockaccess.getBlockTileEntity(x, y, z);
-
-        if (te == null || !(te instanceof PClo_TileEntityPulsar))
-        {
-            return false;
-        }
-
-        PClo_TileEntityPulsar tep = (PClo_TileEntityPulsar) te;
-        return tep.isActive();
+        return PC_Utils.getBID(iblockaccess, x, y, z) == PClo_BlockPulsar.on.blockID;
     }
 
     @Override
@@ -177,5 +153,15 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
+
+	@Override
+	public int getProvidingWeakRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
+		return getProvidingStrongRedstonePowerValue(world, x, y, z, dir);
+	}
+
+	@Override
+	public int getProvidingStrongRedstonePowerValue(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
+		return isActive(world, x, y, z)?15:0;
+	}
     
 }

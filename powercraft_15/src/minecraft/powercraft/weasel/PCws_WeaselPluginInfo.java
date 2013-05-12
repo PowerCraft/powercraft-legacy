@@ -70,12 +70,17 @@ public abstract class PCws_WeaselPluginInfo {
 		if(color==null)
 			color = new PC_Color(0.3f, 0.3f, 0.3f);
 
-		// push 1
-		PC_Renderer.glPushMatrix();
 		float f = 1.0F;
-		
-		PC_Renderer.glTranslatef((float) x + 0.5F, ((float) y), (float) z + 0.5F);
 
+		if(hasSpecialRot()){
+			PC_Renderer.glPopMatrix();
+			PC_Renderer.glPushMatrix();
+			PC_Renderer.glTranslatef((float)(x+0.5), (float)(y), (float)(z+0.5));
+		}else{
+			PC_Renderer.glRotatef(-90, 0.0F, 1.0F, 0.0F);
+			PC_Renderer.glTranslatef(0, -0.5f, 0);
+		}
+		
 		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir() + PC_TextureRegistry.getTextureName(PCws_App.instance, "block_chip.png"));
 
 		// push 2
@@ -90,18 +95,12 @@ public abstract class PCws_WeaselPluginInfo {
 				f1 = (Integer)o * 360 / 16F;
 				PC_Renderer.glRotatef(f1, 0.0F, 1.0F, 0.0F);
 			}
-		}else{
-			PC_Renderer.glRotatef(90 * (PC_Utils.getMD(te.getWorldObj(), te.getCoord()) & 3), 0, 1, 0);
 		}
 		model.renderDevice(te);
 
 		PC_Renderer.glColor4f(color.x, color.y, color.z, 1f);
 
 		model.renderColorMark(te);
-
-		// pop 2
-		PC_Renderer.glPopMatrix();
-
 
 
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

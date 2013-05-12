@@ -331,36 +331,26 @@ public class PClo_BlockSpecial extends PC_Block
             return false;
         }
 
-        ItemStack ihold = entityplayer.getCurrentEquippedItem();
-
-        if (ihold != null)
-        {
-            if (ihold.getItem() instanceof ItemBlock)
-            {
-                if (ihold.itemID == blockID)
-                {
-                    return false;
-                }
-            }
-        }
-
         PC_GresRegistry.openGres("Special", entityplayer, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
         return true;
     }
 
     public static void spawnMobFromSpawner(World world, int x, int y, int z) {
-        TileEntityMobSpawner te = PC_Utils.getTE(world, x, y, z);
-
-        if (te != null) {
-        	PC_Utils.spawnMobs(world, x, y, z, te.func_98049_a().getEntityNameToSpawn());
-        }
+    	TileEntity te = PC_Utils.getTE(world, x, y, z);
+    	if(te instanceof TileEntityMobSpawner){
+	        TileEntityMobSpawner tems = (TileEntityMobSpawner)te;
+	
+	        if (te != null) {
+	        	PC_Utils.spawnMobs(world, x, y, z, tems.func_98049_a().getEntityNameToSpawn());
+	        }
+    	}
     }
 
     public static void preventSpawnerSpawning(World world, int x, int y, int z) {
-        TileEntityMobSpawner te = PC_Utils.getTE(world, x, y, z);
-
-        if (te != null) {
-        	te.func_98049_a().spawnDelay = 20;
+    	TileEntity te = PC_Utils.getTE(world, x, y, z);
+    	if(te instanceof TileEntityMobSpawner){
+	        TileEntityMobSpawner tems = (TileEntityMobSpawner)te;
+	        tems.func_98049_a().spawnDelay = 20;
         }
 }
 

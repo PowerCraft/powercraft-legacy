@@ -35,7 +35,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_IItemIn
 
     public PCma_BlockAutomaticWorkbench(int id)
     {
-        super(id, Material.ground, "workbench_top", "side", "workbench_front", "side", "side", "side");
+        super(id, Material.ground, "workbench_top", "side", "side", "workbench_front", "side", "side");
         setHardness(0.7F);
         setResistance(10.0F);
         setStepSound(Block.soundMetalFootstep);
@@ -95,15 +95,6 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_IItemIn
     @Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
     {
-        ItemStack ihold = entityplayer.getCurrentEquippedItem();
-
-        if (ihold != null)
-        {
-            if (ihold.getItem() instanceof ItemBlock && ihold.getItem().itemID != blockID)
-            {
-                return false;
-            }
-        }
 
         PC_GresRegistry.openGres("AutomaticWorkbench", entityplayer, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
         return true;

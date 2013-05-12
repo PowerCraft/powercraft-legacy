@@ -87,10 +87,7 @@ public class PCnt_BlockRadio extends PC_Block {
 
 
 		if (ihold != null) {
-			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().itemID != blockID) {
-				Block bhold = Block.blocksList[ihold.getItem().itemID];
-				return false;
-			} else if (ihold.getItem().itemID == PC_ItemRegistry.getPCItemIDByName("PCco_ItemActivator")) {
+			if (ihold.getItem().itemID == PC_ItemRegistry.getPCItemIDByName("PCco_ItemActivator")) {
 
 				if (ter.isTransmitter()) {
 

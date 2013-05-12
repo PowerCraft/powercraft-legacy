@@ -23,10 +23,10 @@ public class PClo_FlipFlopType
     	textures[0] = "bottomplate";
     	textures[1] = "sideplate";
     	for(int i=0; i<TOTAL_FLIPFLOP_COUNT; i++){
-    		textures[i+2+TOTAL_FLIPFLOP_COUNT] = names[i]+"_on";
+    		textures[i+2] = names[i]+"_on";
     	}
     	for(int i=0; i<TOTAL_FLIPFLOP_COUNT; i++){
-    		textures[i+2] = names[i]+"_off";
+    		textures[i+2+TOTAL_FLIPFLOP_COUNT] = names[i]+"_off";
     	}
     	return textures;
     }

@@ -8,15 +8,19 @@ import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
 import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.item.PC_ItemStack;
+import powercraft.api.network.PC_IPacketHandler;
 import powercraft.api.recipes.PC_3DRecipe;
 import powercraft.api.recipes.PC_I3DRecipeHandler;
 import powercraft.api.recipes.PC_IRecipe;
 import powercraft.api.recipes.PC_ShapedRecipes;
 import powercraft.api.utils.PC_Struct2;
 import powercraft.api.utils.PC_Utils;
+import powercraft.core.PCco_CraftingToolCrafter;
+import powercraft.core.PCco_DeleteAllPlayerStacks;
 import powercraft.launcher.PC_Property;
 import powercraft.launcher.loader.PC_Module;
 import powercraft.launcher.loader.PC_Module.PC_Init;
+import powercraft.launcher.loader.PC_Module.PC_InitPacketHandlers;
 import powercraft.launcher.loader.PC_Module.PC_InitProperties;
 import powercraft.launcher.loader.PC_Module.PC_InitRecipes;
 import powercraft.launcher.loader.PC_Module.PC_Instance;
@@ -145,6 +149,14 @@ public class PCma_App{
 		return recipes;
 	}
 
+	@PC_InitPacketHandlers
+	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
+			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
+		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("PCma_BlockBlockBuilder", (PC_IPacketHandler) blockBuilder));
+		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("PCma_BlockHarvester", (PC_IPacketHandler) harvester));
+		return packetHandlers;
+	}
+	
 	@PC_RegisterContainers
 	public List<PC_Struct2<String, Class<? extends PC_GresBaseWithInventory>>> registerContainers(
 			List<PC_Struct2<String, Class<? extends PC_GresBaseWithInventory>>> guis) {

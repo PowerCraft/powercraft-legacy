@@ -75,14 +75,6 @@ public class PCnt_BlockSensor extends PC_Block {
 
 	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		ItemStack ihold = player.getCurrentEquippedItem();
-		if (ihold != null) {
-			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().itemID != blockID) {
-				Block bhold = Block.blocksList[ihold.getItem().itemID];
-				
-				return false;
-			}
-		}
 
 		PC_GresRegistry.openGres("Sensor", player, PC_Utils.<PC_TileEntity>getTE(world, i, j, k));
 		//PC_Utils.openGres(player, new PClo_GuiSensor((PClo_TileEntitySensor) new PC_CoordI(i, j, k).getTileEntity(world)));
