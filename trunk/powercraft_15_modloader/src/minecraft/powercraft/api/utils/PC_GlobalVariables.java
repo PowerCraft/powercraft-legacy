@@ -24,7 +24,7 @@ public class PC_GlobalVariables {
 	public static int indexRecentlyHit = 46;
 	public static int indexItemSthiftedIndex = 168;
 	public static int indexBlockID = 177;
-	public static TileEntity tileEntity;
+	public static List<TileEntity> tileEntity = new ArrayList<TileEntity>();
 	public static HashMap<String, Object> consts = new HashMap<String, Object>();
 	public static HashMap<String, Object> oldConsts = null;
 	public static boolean idResolve;

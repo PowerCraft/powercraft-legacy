@@ -101,10 +101,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		if (PC_GlobalVariables.tileEntity != null && !world.isRemote) {
-			if (PC_GlobalVariables.tileEntity.isInvalid())
-				PC_GlobalVariables.tileEntity.validate();
-			return PC_GlobalVariables.tileEntity;
+		if (PC_GlobalVariables.tileEntity.size() > 0 && !world.isRemote) {
+			TileEntity tileEntity = PC_GlobalVariables.tileEntity.get(0);
+			if (tileEntity.isInvalid())
+				tileEntity.validate();
+			return tileEntity;
 		}
 		return newTileEntity(world);
 	}
@@ -293,7 +294,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	public int getRedstonePowereValueFromInput(World world, int x, int y, int z, PC_Direction dir) {
 		dir = dir.rotateRev(getRotation(PC_Utils.getMD(world, x, y, z)));
 		PC_VecI offset = dir.getOffset();
-		return world.getIndirectPowerLevelTo(x + offset.x, y + offset.y, z + offset.z, dir.getMCDir());
+		int value = world.getIndirectPowerLevelTo(x + offset.x, y + offset.y, z + offset.z, dir.getMCDir());
+		if(canProvidePower() && value==0 && PC_Utils.getBID(world, x + offset.x, y + offset.y, z + offset.z) == Block.redstoneWire.blockID){
+			return PC_Utils.getMD(world, x + offset.x, y + offset.y, z + offset.z);
+		}
+		return value;
 	}
 	
 	public int getRedstonePowereValue(World world, int x, int y, int z) {
