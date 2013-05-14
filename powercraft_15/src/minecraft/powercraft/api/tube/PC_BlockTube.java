@@ -367,7 +367,7 @@ public class PC_BlockTube extends PC_Block {
 		int cables = tileEntityTube.getCable(dir);
 		if((cables&1<<cableID)==0){
 			if(tileEntityTube.getTube()==null){
-				dir = dir.mirror();
+				//dir = dir.mirror();
 				PC_VecI offset = dir.getOffset();
 				Block block = PC_Utils.getBlock(world, x+offset.x, y+offset.y, z+offset.z);
 				if(block==null || !block.isOpaqueCube()){

@@ -20,7 +20,7 @@ public class PC_CableNetwork implements PC_INBT<PC_CableNetwork> {
 	private int powerValue;
 	private int cable;
 	private int count;
-	private boolean repeat;
+	private int repeat;
 	
 	public PC_CableNetwork(){
 		
@@ -54,7 +54,7 @@ public class PC_CableNetwork implements PC_INBT<PC_CableNetwork> {
 		if(value==powerValue)
 			return;
 		if(ioToAdd!=null){
-			repeat = true;
+			repeat = repeat<value?repeat:value;
 			return;
 		}
 		if(value>powerValue){
@@ -62,11 +62,11 @@ public class PC_CableNetwork implements PC_INBT<PC_CableNetwork> {
 			updateOutputs();
 		}else{
 			do{
-				repeat = false;
+				repeat = 15;
 				updatePowerValue();
-			}while(repeat);
+			}while(repeat<powerValue);
 		}
-		repeat = false;
+		repeat = 0;
 	}
 	
 	public int getPowerValue(){
@@ -83,6 +83,7 @@ public class PC_CableNetwork implements PC_INBT<PC_CableNetwork> {
 	}
 	
 	public void updatePowerValue(){
+		System.out.println("updatePowerValue");
 		powerValue = 0;
 		World world = getWorld();
 		for(PC_VecI pos:io){

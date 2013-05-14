@@ -133,7 +133,7 @@ public class PCnt_BlockRadio extends PC_Block {
 
 				channel = PC_Utils.<PCnt_TileEntityRadio>getTE(world, x, y, z).getChannel();
 
-				PCnt_ItemRadioRemote.setChannel(holditem, channel);
+				PCnt_ItemRadioRemote.setChannel(holditem, channel, world.isRemote);
 				world.playSoundAtEntity(entityplayer, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F,
 						1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
 				return true;
@@ -189,7 +189,6 @@ public class PCnt_BlockRadio extends PC_Block {
 
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
-		int meta = world.getBlockMetadata(i, j, k);
 
 		PCnt_TileEntityRadio ter = PC_Utils.getTE(world, i, j, k);
 

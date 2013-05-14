@@ -2712,14 +2712,14 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mBridgeOn)) {
-			if (sendCommandToMiners(PCmo_Command.BRIDGE_ENABLE)) {
+			if (!getFlag(bridgeEnabled) && sendCommandToMiners(PCmo_Command.BRIDGE_ENABLE)) {
 				PC_Utils.chatMsg(PC_LangRegistry.tr("pc.miner.bridgeOn"));
 			}
 			return;
 		}
 
 		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mBridgeOff)) {
-			if (sendCommandToMiners(PCmo_Command.BRIDGE_DISABLE)) {
+			if (getFlag(bridgeEnabled) && sendCommandToMiners(PCmo_Command.BRIDGE_DISABLE)) {
 				PC_Utils.chatMsg(PC_LangRegistry.tr("pc.miner.bridgeOff"));
 			}
 			return;
@@ -2749,14 +2749,14 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mMiningOn)) {
-			if (sendCommandToMiners(PCmo_Command.MINING_ENABLE)) {
+			if (!getFlag(miningEnabled) && sendCommandToMiners(PCmo_Command.MINING_ENABLE)) {
 				PC_Utils.chatMsg(PC_LangRegistry.tr("pc.miner.miningOn"));
 			}
 			return;
 		}
 
 		if (PC_KeyRegistry.isKeyPressed(player, PCmo_App.pk_mMiningOff)) {
-			if (sendCommandToMiners(PCmo_Command.MINING_DISABLE)) {
+			if (getFlag(miningEnabled) && sendCommandToMiners(PCmo_Command.MINING_DISABLE)) {
 				PC_Utils.chatMsg(PC_LangRegistry.tr("pc.miner.miningOff"));
 			}
 			return;

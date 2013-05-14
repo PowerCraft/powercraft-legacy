@@ -89,6 +89,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity{
         {
             delayTimer = -1;
         }
+        
     }
 
     @Override

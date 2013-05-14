@@ -48,11 +48,6 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_IItemInfo, PC
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
-	
-	@Override
 	public int tickRate(World world) {
 		return 1;
 	}

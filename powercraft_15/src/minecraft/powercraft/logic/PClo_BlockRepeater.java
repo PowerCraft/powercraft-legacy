@@ -101,7 +101,9 @@ public class PClo_BlockRepeater extends PC_Block
             if (te.getState() != shouldState)
             {
                 te.setState(shouldState);
-                PC_Utils.setBlockState(world, x, y, z, shouldState != 0);
+            }
+            if((shouldState != 0) != isActive(world, x, y, z)){
+            	PC_Utils.setBlockState(world, x, y, z, shouldState != 0);
             }
         }
         else

@@ -65,11 +65,6 @@ public class PCma_BlockHarvester extends PC_Block implements PC_IBeamHandler, PC
 	}
 	
 	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
-	
-	@Override
 	public boolean isBlockSolid(IBlockAccess iblockaccess, int i, int j, int k, int l) {
 		return true;
 	}

@@ -24,7 +24,7 @@ public class PCco_ItemPowerDust extends PC_Item {
 
 	@Override
 	public List<LangEntry> getNames(ArrayList<LangEntry> names) {
-		names.add(new LangEntry(getUnlocalizedName(), "Ore Sniffer"));
+		names.add(new LangEntry(getUnlocalizedName(), "Power dust"));
         return names;
 	}
 

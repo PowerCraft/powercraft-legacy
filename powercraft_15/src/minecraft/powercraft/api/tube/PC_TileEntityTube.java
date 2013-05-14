@@ -57,14 +57,16 @@ public class PC_TileEntityTube extends PC_TileEntity {
 			}
 			PC_CableNetworks.addRef(nw);
 			cable[dir.getMCDir()][cableID] = nw;
-			setNigboutNetwork(dir, cableID, nw);
+			setNigboutNetwork(dir, cableID, nw, false);
 			if(isCableIO(dir, cableID)){
 				PC_CableNetworks.getNetwork(nw).addIO(getCoord());
 				PC_CableNetworks.getNetwork(nw).setPowerValue(PC_BlockTube.tube.getRedstonePowereValueEx(worldObj, xCoord, yCoord, zCoord));
 			}
 		}else{
-			PC_CableNetworks.release(cable[dir.getMCDir()][cableID], getCoord());
+			int nw;
+			PC_CableNetworks.release(nw = cable[dir.getMCDir()][cableID], getCoord());
 			cable[dir.getMCDir()][cableID] = 0;
+			setNigboutNetwork(dir, cableID, nw, true);
 		}
 		if(!worldObj.isRemote)
 			notifyChanges("cable");
@@ -120,20 +122,35 @@ public class PC_TileEntityTube extends PC_TileEntity {
 		return 0;
 	}
 
-	private void setNigboutNetwork(PC_Direction dir, int cableID, int nw){
+	private void setNigboutNetwork(PC_Direction dir, int cableID, int nw, boolean change){
 		for(int i=0; i<6; i++){
 			PC_Direction dir2 = PC_Direction.getFormMCDir(i);
 			if(dir==dir2||dir==dir2.mirror())
 				continue;
-			setNetwork(dir2, cableID, nw);
+			if(getNetwork(dir2, cableID)!=0){
+				setNetwork(dir2, cableID, nw);
+				if(change){
+					nw = -1;
+				}
+			}
 			PC_VecI offset = dir2.getOffset();
 			int x = xCoord, y=yCoord, z=zCoord;
 			int x1=xCoord+offset.x, y1=yCoord+offset.y, z1=zCoord+offset.z;
 			PC_TileEntityTube tileEntityTubeOther;
 			if(PC_Utils.getBlock(worldObj, x1, y1, z1)==getBlockType()){
 				tileEntityTubeOther = PC_Utils.getTE(worldObj, x1, y1, z1);
-				tileEntityTubeOther.setNetwork(dir2.mirror(), cableID, nw);
-				tileEntityTubeOther.setNetwork(dir, cableID, nw);
+				if(tileEntityTubeOther.getNetwork(dir2.mirror(), cableID)!=0){
+					tileEntityTubeOther.setNetwork(dir2.mirror(), cableID, nw);
+					if(change){
+						nw = -1;
+					}
+				}
+				if(tileEntityTubeOther.getNetwork(dir, cableID)!=0){
+					tileEntityTubeOther.setNetwork(dir, cableID, nw);
+					if(change){
+						nw = -1;
+					}
+				}
 			}
 			offset = dir.getOffset();
 			x += offset.x;
@@ -145,12 +162,22 @@ public class PC_TileEntityTube extends PC_TileEntity {
 				z1 += offset.z;
 				if(PC_Utils.getBlock(worldObj, x1, y1, z1)==getBlockType()){
 					tileEntityTubeOther = PC_Utils.getTE(worldObj, x1, y1, z1);
-					tileEntityTubeOther.setNetwork(dir2.mirror(), cableID, nw);
+					if(tileEntityTubeOther.getNetwork(dir2.mirror(), cableID)!=0){
+						tileEntityTubeOther.setNetwork(dir2.mirror(), cableID, nw);
+						if(change){
+							nw = -1;
+						}
+					}
 				}
 			}
 			if(PC_Utils.getBlock(worldObj, x, y, z)==getBlockType()){
 				tileEntityTubeOther = PC_Utils.getTE(worldObj, x, y, z);
-				tileEntityTubeOther.setNetwork(dir2, cableID, nw);
+				if(tileEntityTubeOther.getNetwork(dir2, cableID)!=0){
+					tileEntityTubeOther.setNetwork(dir2, cableID, nw);
+					if(change){
+						nw = -1;
+					}
+				}
 			}
 		}
 	}
@@ -158,13 +185,16 @@ public class PC_TileEntityTube extends PC_TileEntity {
 	private void setNetwork(PC_Direction dir, int cableID, int nw) {
 		int oldNw = cable[dir.getMCDir()][cableID];
 		if(oldNw != nw && oldNw!=0){
+			if(nw==-1){
+				nw = PC_CableNetworks.getNetworkID(new PC_CableNetwork(worldObj, cableID));
+			}
 			PC_CableNetworks.release(oldNw, getCoord());
 			PC_CableNetworks.addRef(nw);
 			if(isCableIO(dir, cableID)){
 				PC_CableNetworks.getNetwork(nw).addIO(getCoord());
 			}
 			cable[dir.getMCDir()][cableID] = nw;
-			setNigboutNetwork(dir, cableID, nw);
+			setNigboutNetwork(dir, cableID, nw, false);
 		}
 	}
 

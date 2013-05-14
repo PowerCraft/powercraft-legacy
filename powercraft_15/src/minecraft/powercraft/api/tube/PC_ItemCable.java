@@ -47,6 +47,7 @@ public final class PC_ItemCable extends PC_Item {
 					x += offset.x;
 					y += offset.y;
 					z += offset.z;
+					dir = dir.mirror();
 				}
 			}
 			
@@ -67,13 +68,13 @@ public final class PC_ItemCable extends PC_Item {
 					}
 					
 				} 
-			}else{
-				PC_TileEntityTube teTube = PC_Utils.getTE(world, x, y, z);
-				if(teTube.getTube()!=null){
-					dir = dir.mirror();
-				}
 			}
 			
+		}else{
+			PC_TileEntityTube teTube = PC_Utils.getTE(world, x, y, z);
+			if(teTube.getTube()==null){
+				dir = dir.mirror();
+			}
 		}
 			
 		block = PC_Utils.getBlock(world, x, y, z);

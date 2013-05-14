@@ -187,8 +187,8 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 		if(isRunning())
 			rotation += (int)((currentTime-lastTime)/1000.0f*360);
 		lastTime = currentTime;
+		PC_Renderer.glTranslatef(0, -0.5f, 0);
 		PC_Renderer.glPushMatrix();
-		PC_Renderer.glTranslatef((float) x + 0.5f, (float) y, (float) z + 0.5f);
 		float f4 = 0.75F;
 		PC_Renderer.bindTexture(PC_TextureRegistry.getPowerCraftImageDir()+PC_TextureRegistry.getTextureName(PCma_App.instance, "fisher.png"));
 		int rota = PC_Utils.getMD(worldObj, getCoord().offset(0, 1, 0));
@@ -214,7 +214,6 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glDisable(3553 /* GL_TEXTURE_2D */);
 		PC_Renderer.glDisable(2896 /* GL_LIGHTING */);
-		PC_Renderer.glTranslatef((float) x + 0.5f, (float) y, (float) z + 0.5f);
 
 		double diameter = 0.6D;
 

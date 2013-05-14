@@ -181,7 +181,7 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 
 	@Override
 	public int getProvidingStrongRedstonePowerValue(PC_Direction dir) {
-		return isActive()?15:0;
+		return isTransmitter()?0:isActive()?15:0;
 	}
 
 	@Override

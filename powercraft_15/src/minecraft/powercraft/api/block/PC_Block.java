@@ -302,7 +302,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	public int getRedstonePowereValueFromInput(World world, int x, int y, int z, PC_Direction dir) {
 		dir = dir.rotateRev(getRotation(PC_Utils.getMD(world, x, y, z)));
 		PC_VecI offset = dir.getOffset();
-		return world.getIndirectPowerLevelTo(x + offset.x, y + offset.y, z + offset.z, dir.getMCDir());
+		int value = world.getIndirectPowerLevelTo(x + offset.x, y + offset.y, z + offset.z, dir.getMCDir());
+		if(canProvidePower() && value==0 && PC_Utils.getBID(world, x + offset.x, y + offset.y, z + offset.z) == Block.redstoneWire.blockID){
+			return PC_Utils.getMD(world, x + offset.x, y + offset.y, z + offset.z);
+		}
+		return value;
 	}
 	
 	public int getRedstonePowereValue(World world, int x, int y, int z) {

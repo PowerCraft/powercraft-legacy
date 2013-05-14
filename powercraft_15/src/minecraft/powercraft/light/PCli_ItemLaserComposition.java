@@ -82,9 +82,11 @@ public class PCli_ItemLaserComposition extends PC_Item
     		if(tel.getItemStack()!=null && !PC_Utils.isCreative(entityplayer)){
 	    		PC_Utils.dropItemStack(world, i, j, k, tel.getItemStack().toItemStack());
     		}
+    		int ss = itemstack.stackSize;
+    		itemstack.stackSize=1;
     		tel.setItemStack(new PC_ItemStack(itemstack));
     		
-    		itemstack.stackSize = 0;
+    		itemstack.stackSize=ss-1;
     		
     		return true;
     		
