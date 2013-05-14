@@ -155,7 +155,7 @@ public class PC_InventoryUtils {
 	}
 	
 	public static int[] makeIndexList(int start, int end) {
-		int[] indexes = new int[end - start + 1];
+		int[] indexes = new int[end - start];
 		for (int i = 0; i < indexes.length; i++) {
 			indexes[i] = i + start;
 		}
