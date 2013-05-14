@@ -35,7 +35,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_IItemIn
 
     public PCma_BlockAutomaticWorkbench(int id)
     {
-        super(id, Material.ground, "workbench_top", "side", "side", "workbench_front", "side", "side");
+        super(id, Material.ground, "side", "workbench_top", "side", "workbench_front", "side", "side");
         setHardness(0.7F);
         setResistance(10.0F);
         setStepSound(Block.soundMetalFootstep);
@@ -84,12 +84,6 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_IItemIn
         {
             ((PCma_TileEntityAutomaticWorkbench)PC_Utils.getTE(world, i, j, k)).doCrafting();
         }
-    }
-
-    @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
     }
 
     @Override

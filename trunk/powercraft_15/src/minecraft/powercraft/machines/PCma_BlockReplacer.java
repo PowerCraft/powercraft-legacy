@@ -42,12 +42,6 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public boolean renderAsNormalBlock()
-    {
-        return true;
-    }
-
-    @Override
     public void onBlockClicked(World world, int i, int j, int k, EntityPlayer entityplayer)
     {
         PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
@@ -67,17 +61,13 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
         
         if (ihold != null)
         {
-            if (ihold.getItem() instanceof ItemBlock && ihold.getItem().itemID != blockID)
-            {
-                Block bhold = Block.blocksList[ihold.getItem().itemID];
-            }
-            else if (ihold.getItem().itemID == PC_ItemRegistry.getPCItemIDByName("PCco_ItemActivator"))
+           if (ihold.getItem().itemID == PC_ItemRegistry.getPCItemIDByName("PCco_ItemActivator"))
             {
                 int l = MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
                 if (PC_KeyRegistry.isPlacingReversed(entityplayer))
                 {
-                	/** TODO l = PC_Utils.reverseSide(l);*/
+                	l = (((l+4)%4)+2)%4;
                 }
 
                 if (entityplayer.isSneaking())

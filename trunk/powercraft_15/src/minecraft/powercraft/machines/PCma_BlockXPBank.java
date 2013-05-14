@@ -45,7 +45,7 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
     @Override
     public boolean renderAsNormalBlock()
     {
-        return true;
+        return false;
     }
 
     private float calculateHeightMultiplier(int xp)

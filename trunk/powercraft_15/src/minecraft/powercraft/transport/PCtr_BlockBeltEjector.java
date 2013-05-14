@@ -66,7 +66,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
 
     private boolean isPowered(World world, PC_VecI pos)
     {
-    	return getRedstonePowereValue(world, pos.x, pos.y, pos.z)>0;
+    	return getRedstonePowereValueEx(world, pos.x, pos.y, pos.z)>0;
     }
 
     @Override

@@ -39,8 +39,10 @@ public class PCnt_ItemRadioRemote extends PC_Item {
 			onCreated(itemstack, world, entityplayer);
 		}
 
-		if(!world.isRemote)
+		if(!world.isRemote && !itemstack.getTagCompound().getBoolean("inUse")){
 			PCnt_RadioManager.remoteOn(itemstack.getTagCompound().getString("channel"));
+			itemstack.getTagCompound().setBoolean("inUse", true);
+		}
 		world.playSoundAtEntity(entityplayer, "random.click", (world.rand.nextFloat() + 0.7F) / 2.0F,
 				1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
 		
@@ -56,8 +58,10 @@ public class PCnt_ItemRadioRemote extends PC_Item {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityPlayer entityplayer, int i) {
 		super.onPlayerStoppedUsing(itemstack, world, entityplayer, i);
-		if(!world.isRemote)
+		if(!world.isRemote){
 			PCnt_RadioManager.remoteOff(itemstack.getTagCompound().getString("channel"));
+			itemstack.getTagCompound().setBoolean("inUse", false);
+		}
 		world.playSoundAtEntity(entityplayer, "random.click", (world.rand.nextFloat() + 0.7F) / 2.0F,
 				1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
 	}
@@ -77,8 +81,9 @@ public class PCnt_ItemRadioRemote extends PC_Item {
 	 * 
 	 * @param itemstack stack
 	 * @param channel new channel
+	 * @param output 
 	 */
-	public static void setChannel(ItemStack itemstack, String channel) {
+	public static void setChannel(ItemStack itemstack, String channel, boolean output) {
 			
 		NBTTagCompound tag = itemstack.getTagCompound();
 		if(tag==null){
@@ -87,8 +92,9 @@ public class PCnt_ItemRadioRemote extends PC_Item {
 		}
 
 		tag.setString("channel", channel == null ? "default" : channel);
-
-		PC_Utils.chatMsg(PC_LangRegistry.tr("pc.radioRemote.connected", new String[] { channel }));
+		if(output){
+			PC_Utils.chatMsg(PC_LangRegistry.tr("pc.radioRemote.connected", new String[] { channel }));
+		}
 	}
 
 	@Override

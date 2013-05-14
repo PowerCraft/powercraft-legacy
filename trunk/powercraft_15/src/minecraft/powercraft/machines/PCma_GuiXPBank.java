@@ -79,6 +79,8 @@ public class PCma_GuiXPBank implements PC_IGresClient {
 	private void updateCounters() {
 		txStoragePoints.setText(xpbank.getXP() + "").setMinWidth(0);
 		txPlayerLevels.setText(player.experienceLevel + "").setMinWidth(0);
+		txPlayerLevels.getParent().calcChildPositions();
+		txStoragePoints.getParent().calcChildPositions();
 	}
 	
 	@Override
@@ -135,7 +137,6 @@ public class PCma_GuiXPBank implements PC_IGresClient {
 
 
 		}
-
 		updateCounters();
 	}
 

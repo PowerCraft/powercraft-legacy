@@ -628,7 +628,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1) {
-		return PC_InventoryUtils.makeIndexList(0, 8);
+		return PC_InventoryUtils.makeIndexList(0, 9);
 	}
 
 	@Override

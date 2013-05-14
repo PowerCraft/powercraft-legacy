@@ -93,7 +93,7 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	}
 	
 	public static boolean isStructOK(World world, PC_VecI pos){
-		return !struct.getStructRotation(world, pos.offset(-1, -5, -1), 0);
+		return struct.getStructRotation(world, pos.offset(-1, -5, -1), 0);
 	}
 	
 	@Override

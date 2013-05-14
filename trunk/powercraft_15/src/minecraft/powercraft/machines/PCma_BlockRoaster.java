@@ -38,12 +38,6 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public boolean renderAsNormalBlock()
-    {
-        return true;
-    }
-
-    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k)
     {
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);

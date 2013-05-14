@@ -262,11 +262,13 @@ public class PC_Utils {
 						PC_GlobalVariables.tileEntity.add(0, te);
 					}
 					
-					setBID(world, x, y, z, b.blockID, meta);
+					setBID(world, x, y, z, b.blockID, meta, BLOCK_UPDATE);
 					
 					if(!world.isRemote){
 						PC_GlobalVariables.tileEntity.remove(0);
 					}
+					
+					world.notifyBlocksOfNeighborChange(x, y, z, b.blockID);
 					
 					if (te != null) {
 						PC_PacketHandler.sendTileEntity(te);

@@ -57,7 +57,6 @@ public class PCli_TileEntityMirror extends PC_TileEntity implements PC_ITileEnti
 		} else if (worldObj.getBlockMaterial(i, j, k - 1).isSolid()) {
 			modelMirror.stickZminus.showModel = true;
 		}
-
 		PC_Renderer.glPushMatrix();
 		float f = 0.6666667F;
 
@@ -83,6 +82,7 @@ public class PCli_TileEntityMirror extends PC_TileEntity implements PC_ITileEnti
 		PC_Renderer.glPopMatrix();
 
 		PC_Renderer.glPushMatrix();
+		PC_Renderer.glRotatef(90, 0, 1, 0);
 		PC_Renderer.glScalef(f, -f, -f);
 		modelMirror.renderMirrorSideSticks();
 		PC_Renderer.glPopMatrix();
