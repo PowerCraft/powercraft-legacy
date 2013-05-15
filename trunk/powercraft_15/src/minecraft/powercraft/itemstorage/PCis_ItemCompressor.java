@@ -94,14 +94,14 @@ public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
 	}
 	
 	@Override
-	public void onUpdate(ItemStack itemStack, World world, Entity entity, int par4, boolean par5) {
+	public void onUpdate(ItemStack itemStack, World world, Entity entity, int slot, boolean isCurrentItem) {
 		if(entity instanceof EntityPlayer){
 			EntityPlayer player = (EntityPlayer)entity;
-			if(player.openContainer instanceof PCis_ContainerCompressor && par5)
+			if(player.openContainer instanceof PCis_ContainerCompressor && isCurrentItem)
 				return;
 			boolean takeStacks = isTakeStacks(itemStack);
 			int putStacks = getPutStacks(itemStack);
-			PCis_CompressorInventory compressorinv = getInventoryFor(player, par4);
+			PCis_CompressorInventory compressorinv = getInventoryFor(player, slot);
 			if(takeStacks){
 				for(int i=0; i<compressorinv.getSizeInventory(); i++){
 					ItemStack is = compressorinv.getStackInSlot(i);
@@ -147,6 +147,12 @@ public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
 							playerSlot = findSlotInPlayerInvForStore(is, player, putStacks, playerSlot+1);
 						}
 					}
+				}
+			}
+			for(int i=0; i<compressorinv.getSizeInventory(); i++){
+				ItemStack is = compressorinv.getStackInSlot(i);
+				if(is!=null){
+					is.getItem().onUpdate(is, world, entity, slot, isCurrentItem);
 				}
 			}
 			compressorinv.closeChest();
