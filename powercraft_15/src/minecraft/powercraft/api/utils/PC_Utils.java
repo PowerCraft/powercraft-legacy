@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,6 +38,8 @@ import powercraft.api.block.PC_Block;
 import powercraft.api.interfaces.PC_INBT;
 import powercraft.api.network.PC_PacketHandler;
 import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.registry.PC_BlockRegistry;
+import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_RegistryServer;
 import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.launcher.PC_LauncherUtils;
@@ -682,6 +685,37 @@ public class PC_Utils {
 
 	public static void chatMsg(String tr) {
 		instance.iChatMsg(tr);
+	}
+
+	public static ItemStack extractAndRemoveTileEntity(World world, PC_VecI pos) {
+		if (PC_MSGRegistry.hasFlag(world, pos, PC_MSGRegistry.NO_HARVEST)) {
+            return null;
+		}
+		
+		TileEntity te = PC_Utils.getTE(world, pos);
+		
+		if (te == null) {
+			return null;
+		}
+		
+		ItemStack stack = new ItemStack(PC_BlockRegistry.getPCBlockByName("PCco_BlockBlockSaver"));
+		NBTTagCompound blocktag = new NBTTagCompound();
+		te.writeToNBT(blocktag);
+		int dmg = PC_Utils.getBID(world, pos);
+		stack.setItemDamage(dmg);
+		blocktag.setInteger("BlockMeta", PC_Utils.getMD(world, pos));
+		stack.setTagCompound(blocktag);
+		
+		if (te instanceof IInventory) {
+		        IInventory ic = (IInventory) te;
+		        for (int i = 0; i < ic.getSizeInventory(); i++) {
+		                ic.setInventorySlotContents(i, null);
+		        }
+		}
+		
+		te.invalidate();
+		setBID(world, pos, 0, 0);
+		return stack;
 	}
 	
 }

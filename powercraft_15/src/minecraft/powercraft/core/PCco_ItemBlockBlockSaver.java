@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import powercraft.api.block.PC_ItemBlock;
@@ -153,5 +157,19 @@ public class PCco_ItemBlockBlockSaver extends PC_ItemBlock {
 		ItemStack is = new ItemStack(i);
 		list.add(i.getItemDisplayName(is));
 	}
+
+	@Override
+	public void onUpdate(ItemStack itemStack, World world, Entity entity, int slot, boolean isCurrentItem) {
+		if(entity instanceof EntityLiving){
+			EntityLiving living = (EntityLiving)entity;
+			living.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 100, 1));
+			living.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, 100, 1));
+			living.addPotionEffect(new PotionEffect(Potion.hunger.id, 100, 1));
+			living.addPotionEffect(new PotionEffect(Potion.weakness.id, 100, 1));
+			living.addPotionEffect(new PotionEffect(Potion.jump.id, 100, -2));
+		}
+	}
+	
+	
 	
 }

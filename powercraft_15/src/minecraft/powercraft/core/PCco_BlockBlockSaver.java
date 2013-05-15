@@ -24,7 +24,7 @@ public class PCco_BlockBlockSaver extends PC_Block implements PC_IItemInfo {
 
 	@Override
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
-		return new ArrayList<ItemStack>();
+		return arrayList;
 	}
 
 	@Override

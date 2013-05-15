@@ -62,7 +62,7 @@ public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		ItemStack ihold = player.getCurrentEquippedItem();
-		if (ihold != null) {
+		if (ihold != null && ihold.itemID<Block.blocksList.length) {
 			if (Block.blocksList[ihold.itemID] == PC_BlockRegistry.getPCBlockByName("PCco_BlockPowerCrystal")) {
 
 				PCli_TileEntityMirror teo = PC_Utils.getTE(world, i, j, k);

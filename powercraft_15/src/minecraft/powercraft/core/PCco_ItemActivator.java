@@ -71,11 +71,11 @@ public class PCco_ItemActivator extends PC_Item{
 				break;
 			}
 
-			/*ItemStack stackchest = PC_InventoryUtils.extractAndRemoveChest(world, pos);
+			ItemStack stackchest = PC_Utils.extractAndRemoveTileEntity(world, pos);
 			if (stackchest != null) {
 				PC_Utils.dropItemStack(world, pos, stackchest);
 				return true;
-			}*/
+			}
 		}
 
         return false;
