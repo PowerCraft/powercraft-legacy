@@ -217,7 +217,6 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 	            }
 			}
 	        entity.setPositionAndRotation(s.a.x + 0.5, s.a.y + 0.1, s.a.z + 0.5, s.b, 0);
-	        entity.setPositionAndRotation2(s.a.x + 0.5, s.a.y + 0.1, s.a.z + 0.5, s.b, 0, 0);
 			entity.motionX = 0;
 			entity.motionY = 0;
 			entity.motionZ = 0;
