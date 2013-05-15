@@ -44,7 +44,7 @@ public class PCco_App {
 	@PC_FieldObject(clazz=PCco_MobSpawnerSetter.class)
 	public static PCco_MobSpawnerSetter spawnerSetter;
 	
-	@PC_FieldObject(clazz=PC_BlockTube.class)
+	/*@PC_FieldObject(clazz=PC_BlockTube.class)
 	public static PC_BlockTube tube;
 	
 	@PC_FieldObject(clazz=PCco_ItemTubeCarbonNanotube.class)
@@ -54,7 +54,7 @@ public class PCco_App {
 	public static PC_ItemCable itemCable;
 	
 	@PC_FieldObject(clazz=PC_CableNetworks.class)
-	public static PC_CableNetworks cableNetworks;
+	public static PC_CableNetworks cableNetworks;*/
 	
 	@PC_InitProperties
 	public void initProperties(PC_Property config) {
