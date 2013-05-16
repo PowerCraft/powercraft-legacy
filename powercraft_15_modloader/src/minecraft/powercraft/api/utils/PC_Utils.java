@@ -3,16 +3,12 @@ package powercraft.api.utils;
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
-import net.minecraft.src.CraftingManager;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
@@ -21,9 +17,9 @@ import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.EnumGameType;
-import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.IRecipe;
+import net.minecraft.src.IInventory;
+import net.minecraft.src.ITileEntityProvider;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagByte;
@@ -34,25 +30,19 @@ import net.minecraft.src.NBTTagInt;
 import net.minecraft.src.NBTTagLong;
 import net.minecraft.src.NBTTagShort;
 import net.minecraft.src.NBTTagString;
-import net.minecraft.src.ShapedRecipes;
-import net.minecraft.src.ShapelessRecipes;
 import net.minecraft.src.TileEntity;
-import net.minecraft.src.TileEntityFurnace;
 import net.minecraft.src.World;
 import powercraft.api.annotation.PC_Shining;
 import powercraft.api.block.PC_Block;
 import powercraft.api.interfaces.PC_INBT;
-import powercraft.api.item.PC_IItemInfo;
-import powercraft.api.item.PC_ItemStack;
 import powercraft.api.network.PC_PacketHandler;
-import powercraft.api.recipes.PC_IRecipeInfo;
 import powercraft.api.reflect.PC_ReflectHelper;
+import powercraft.api.registry.PC_BlockRegistry;
+import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_RegistryServer;
 import powercraft.api.tileentity.PC_TileEntity;
-import powercraft.launcher.PC_Launcher;
 import powercraft.launcher.PC_LauncherUtils;
 import powercraft.launcher.loader.PC_ModLoader;
-import powercraft.launcher.loader.PC_ModuleObject;
 
 public class PC_Utils {
 	
@@ -689,6 +679,44 @@ public class PC_Utils {
 	
 	public static void chatMsg(String tr) {
 		instance.iChatMsg(tr);
+	}
+	
+	public static ItemStack extractAndRemoveTileEntity(World world, PC_VecI pos) {
+		if (PC_MSGRegistry.hasFlag(world, pos, PC_MSGRegistry.NO_HARVEST)) {
+            return null;
+		}
+		
+		TileEntity te = PC_Utils.getTE(world, pos);
+		
+		if (te == null) {
+			return null;
+		}
+		
+		ItemStack stack = new ItemStack(PC_BlockRegistry.getPCBlockByName("PCco_BlockBlockSaver"));
+		NBTTagCompound blocktag = new NBTTagCompound();
+		te.writeToNBT(blocktag);
+		int dmg = PC_Utils.getBID(world, pos);
+		stack.setItemDamage(dmg);
+		blocktag.setInteger("BlockMeta", PC_Utils.getMD(world, pos));
+		stack.setTagCompound(blocktag);
+		
+		if (te instanceof IInventory) {
+		        IInventory ic = (IInventory) te;
+		        for (int i = 0; i < ic.getSizeInventory(); i++) {
+		                ic.setInventorySlotContents(i, null);
+		        }
+		}
+		
+		te.invalidate();
+		setBID(world, pos, 0, 0);
+		return stack;
+	}
+	
+	public static TileEntity createTileEntity(Block block, World world, int metadata){
+		if(block instanceof ITileEntityProvider){
+			return ((ITileEntityProvider) block).createNewTileEntity(world);
+		}
+		return null;
 	}
 	
 }

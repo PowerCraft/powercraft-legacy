@@ -103,17 +103,16 @@ public class PC_ClientRenderer extends PC_Renderer {
 	}
 	
 	@Override
-	protected void iRenderStandardBlock(Object renderer, Block block, int x, int y, int z) {
-		RenderBlocks renderblocks = (RenderBlocks) renderer;
-		renderblocks.setRenderBoundsFromBlock(block);
-		renderblocks.renderStandardBlock(block, x, y, z);
-		renderblocks.unlockBlockBounds();
+	protected void iRenderStandardBlock(Object renderer, Block block, int x, int y, int z){
+		((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
+		((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
+		((RenderBlocks)renderer).unlockBlockBounds();
 	}
-	
+
 	@Override
-	protected void iRenderInvBox(Object renderer, Block block, int metadata) {
+	protected void iRenderInvBox(Object renderer, Block block, int metadata){
 		Tessellator tessellator = Tessellator.instance;
-		RenderBlocks renderblocks = (RenderBlocks) renderer;
+		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		
 		Icon[] textures = new Icon[6];
 		if (block instanceof PC_ISpecialInventoryTextures) {
@@ -127,183 +126,195 @@ public class PC_ClientRenderer extends PC_Renderer {
 		}
 		
 		block.setBlockBoundsForItemRender();
-		renderblocks.setRenderBoundsFromBlock(block);
+		((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		tessellator.startDrawingQuads();
-		renderblocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, textures[0]);
-		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, textures[1]);
-		tessellator.setNormal(0.0F, 0.0F, -1F);
-		renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, textures[2]);
-		tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, textures[3]);
-		tessellator.setNormal(-1F, 0.0F, 0.0F);
-		renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, textures[4]);
-		tessellator.setNormal(1.0F, 0.0F, 0.0F);
-		renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, textures[5]);
+		if(textures[0]!=null){
+			tessellator.setNormal(0.0F, -1F, 0.0F);
+			renderblocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, textures[0]);
+		}
+		if(textures[1]!=null){
+			tessellator.setNormal(0.0F, 1.0F, 0.0F);
+			renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, textures[1]);
+		}
+		if(textures[2]!=null){
+			tessellator.setNormal(0.0F, 0.0F, -1F);
+			renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, textures[2]);
+		}
+		if(textures[3]!=null){
+			tessellator.setNormal(0.0F, 0.0F, 1.0F);
+			renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, textures[3]);
+		}
+		if(textures[4]!=null){
+			tessellator.setNormal(-1F, 0.0F, 0.0F);
+			renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, textures[4]);
+		}
+		if(textures[5]!=null){
+			tessellator.setNormal(1.0F, 0.0F, 0.0F);
+			renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, textures[5]);
+		}
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		renderblocks.unlockBlockBounds();
+		((RenderBlocks)renderer).unlockBlockBounds();
 	}
 	
 	@Override
-	protected void iRenderBlockRotatedBox(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
-		if (block instanceof PC_Block) {
-			RenderBlocks renderblocks = (RenderBlocks) renderer;
-			Tessellator tessellator = Tessellator.instance;
-			int metaAt = PC_Utils.getMD(world, x, y, z);
+	protected void iRenderBlockRotatedBox(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer){
+		RenderBlocks renderblocks = (RenderBlocks)renderer;
+		if(block instanceof PC_Block){
 			block.setBlockBoundsBasedOnState(world, x, y, z);
 			renderblocks.setRenderBoundsFromBlock(block);
-			PC_Direction dir = ((PC_Block) block).getRotation(metaAt);
-			renderblocks.uvRotateTop = ((PC_Direction) dir).getMCSide();
+			renderblocks.uvRotateTop = ((PC_Block)block).getRotation2(PC_Utils.getMD(world, x, y, z)).getMCSide();
 			renderblocks.renderStandardBlock(block, x, y, z);
 			renderblocks.uvRotateTop = 0;
+		}else{
+			iRenderBlock(world, x, y, z, block, modelId, renderblocks);
 		}
-		
+
 	}
 	
 	@Override
-	protected void iRenderInvBlockRotatedBox(Block block, int metadata, int modelID, Object renderer) {
-		RenderBlocks renderblocks = (RenderBlocks) renderer;
-		Tessellator tessellator = Tessellator.instance;
-		
-		if (block instanceof PC_IMSG) {
-			
-			Object o = ((PC_IMSG) block).msg(PC_MSGRegistry.MSG_RENDER_ITEM_HORIZONTAL);
-			if (o instanceof Boolean) {
-				boolean renderOnSide = (Boolean) o;
-				
-				if (renderOnSide) {
-					block.setBlockBoundsForItemRender();
-				} else {
-					PC_Utils.setBlockBounds(block, -0.1F, -0.1F, 0.4F, 1.1F, 1.1F, 0.6F);
-				}
-				
-				renderblocks.setRenderBoundsFromBlock(block);
-				GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-				tessellator.startDrawingQuads();
-				tessellator.setNormal(0.0F, -1F, 0.0F);
-				renderblocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(renderOnSide ? 0 : 0, metadata));
-				tessellator.setNormal(0.0F, 1.0F, 0.0F);
-				renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(renderOnSide ? 1 : 0, metadata));
-				tessellator.setNormal(0.0F, 0.0F, -1F);
-				renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(renderOnSide ? 2 : 0, metadata));
-				tessellator.setNormal(0.0F, 0.0F, 1.0F);
-				renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(renderOnSide ? 3 : 1, metadata));
-				tessellator.setNormal(-1F, 0.0F, 0.0F);
-				renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(renderOnSide ? 4 : 0, metadata));
-				tessellator.setNormal(1.0F, 0.0F, 0.0F);
-				renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(renderOnSide ? 5 : 0, metadata));
-				tessellator.draw();
-				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-				renderblocks.unlockBlockBounds();
-			} else {
-				iRenderInvBox(renderer, block, metadata);
-			}
-			return;
-		}
+	protected void iRenderInvBlockRotatedBox(Block block, int metadata, int modelID, Object renderer){
+
+		iRenderInvBox(renderer, block, metadata);
+
 	}
 	
 	protected void iRenderBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		Tessellator tessellator = Tessellator.instance;
+		tessellator.draw();
+		tessellator.startDrawingQuads();
 		block.setBlockBoundsBasedOnState(world, x, y, z);
 		iRenderStandardBlock(renderer, block, x, y, z);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
 	}
 	
 	protected void iRenderInvBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-		RenderBlocks renderblocks = (RenderBlocks) renderer;
+		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		Tessellator tessellator = Tessellator.instance;
 		
 		block.setBlockBoundsForItemRender();
-		renderblocks.setRenderBoundsFromBlock(block);
+		((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, -1F, 0.0F);
 		renderblocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(0, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 1.0F, 0.0F);
 		renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(1, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 0.0F, -1F);
 		renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(2, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 0.0F, 1.0F);
 		renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(3, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
 		tessellator.setNormal(-1F, 0.0F, 0.0F);
 		renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(4, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
 		tessellator.setNormal(1.0F, 0.0F, 0.0F);
 		renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, metadata));
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		renderblocks.unlockBlockBounds();
-		
+		((RenderBlocks)renderer).unlockBlockBounds();
+
 	}
 	
 	@Override
-	protected void iRenderInvBoxWithTexture(Object renderer, Block block, Icon icon) {
-		RenderBlocks renderblocks = (RenderBlocks) renderer;
+	protected void iRenderInvBoxWithTexture(Object renderer, Block block, Icon icon){
+		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		Tessellator tessellator = Tessellator.instance;
-		renderblocks.setRenderBoundsFromBlock(block);
+		((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, -1F, 0.0F);
 		renderblocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, icon);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 1.0F, 0.0F);
 		renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, icon);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 0.0F, -1F);
 		renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, icon);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 0.0F, 1.0F);
 		renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, icon);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
 		tessellator.setNormal(-1F, 0.0F, 0.0F);
 		renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, icon);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
 		tessellator.setNormal(1.0F, 0.0F, 0.0F);
 		renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, icon);
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		renderblocks.unlockBlockBounds();
+		((RenderBlocks)renderer).unlockBlockBounds();
 	}
 	
 	@Override
 	protected void iRenderInvBoxWithTextures(Object renderer, Block block, Icon[] icon) {
-		RenderBlocks renderblocks = (RenderBlocks) renderer;
+		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		Tessellator tessellator = Tessellator.instance;
-		renderblocks.setRenderBoundsFromBlock(block);
+		((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
 		
 		block.setBlockBoundsForItemRender();
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-		tessellator.startDrawingQuads();
-		if (icon[0] != null) {
+		if(icon[0]!=null){
+			tessellator.startDrawingQuads();
 			tessellator.setNormal(0.0F, -1F, 0.0F);
 			renderblocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, icon[0]);
+			tessellator.draw();
 		}
-		if (icon[1] != null) {
+		if(icon[1]!=null){
+			tessellator.startDrawingQuads();
 			tessellator.setNormal(0.0F, 1.0F, 0.0F);
 			renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, icon[1]);
+			tessellator.draw();
 		}
-		if (icon[2] != null) {
+		if(icon[2]!=null){
+			tessellator.startDrawingQuads();
 			tessellator.setNormal(0.0F, 0.0F, -1F);
 			renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, icon[2]);
+			tessellator.draw();
 		}
-		if (icon[3] != null) {
+		if(icon[3]!=null){
+			tessellator.startDrawingQuads();
 			tessellator.setNormal(0.0F, 0.0F, 1.0F);
 			renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, icon[3]);
+			tessellator.draw();
 		}
-		if (icon[4] != null) {
+		if(icon[4]!=null){
+			tessellator.startDrawingQuads();
 			tessellator.setNormal(-1F, 0.0F, 0.0F);
 			renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, icon[4]);
+			tessellator.draw();
 		}
-		if (icon[5] != null) {
+		if(icon[5]!=null){
+			tessellator.startDrawingQuads();
 			tessellator.setNormal(1.0F, 0.0F, 0.0F);
 			renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, icon[5]);
+			tessellator.draw();
 		}
-		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		
-		renderblocks.unlockBlockBounds();
+		((RenderBlocks)renderer).unlockBlockBounds();
 	}
 	
 	@Override
 	protected void iRenderBlockByRenderType(Object renderer, Block block, int x, int y, int z) {
-		RenderBlocks renderblocks = (RenderBlocks) renderer;
+		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		renderblocks.renderBlockByRenderType(block, x, y, z);
 	}
+
 	
 	@Override
 	protected void iglColor4f(float r, float g, float b, float a) {
