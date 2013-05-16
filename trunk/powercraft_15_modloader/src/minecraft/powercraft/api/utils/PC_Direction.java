@@ -2,7 +2,6 @@ package powercraft.api.utils;
 
 import java.io.Serializable;
 
-import net.minecraft.src.Facing;
 import net.minecraft.src.NBTTagCompound;
 import powercraft.api.interfaces.PC_INBT;
 
@@ -22,6 +21,7 @@ public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 	public static final int[] lrot = {2, 0, 3, 1, 4, 5};
 	public static final int[] frot = {3, 2, 1, 0, 4, 5};
 	public static final int[] mirror = {3, 2, 1, 0, 5, 4};
+	public static final int[] playerDir2Side = {3, 1, 0, 2};
 	public static final PC_Direction[] side2PCDir = {BACK, RIGHT, LEFT, FRONT, BOTTOM, TOP};
 	public static final String[] names = {"BACK", "RIGHT", "LEFT", "FRONT", "BOTTOM", "TOP"};
 	
@@ -86,6 +86,10 @@ public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 	
 	public static PC_Direction getFormMCDir(int dir) {
 		return getFormMCSide(dir2Side[dir]);
+	}
+	
+	public static PC_Direction getFormPlayerDir(int dir) {
+		return getFormMCSide(playerDir2Side[dir]);
 	}
 	
 	@Override

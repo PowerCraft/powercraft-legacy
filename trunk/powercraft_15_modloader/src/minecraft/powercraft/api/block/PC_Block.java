@@ -224,21 +224,21 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	}
 	
 	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, PC_Direction dir) {
-		return getBlockTextureFromSideAndMetadata(dir, PC_Utils.getMD(world, x, y, z));
+		return getIcon(dir, PC_Utils.getMD(world, x, y, z));
 	}
 	
 	@Override
 	public final Icon getIcon(int dir, int metadata) {
 		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
 		pcDir = pcDir.rotate(getRotation(metadata));
-		return getBlockTextureFromSideAndMetadata(pcDir, metadata);
+		return getIcon(pcDir, metadata);
 	}
 	
-	public Icon getBlockTextureFromSideAndMetadata(PC_Direction dir, int metadata) {
+	public Icon getIcon(PC_Direction dir, int metadata) {
 		if (sideIcons != null) {
 			int index = dir.getMCDir();
-			if (index > sideIcons.length)
-				index = sideIcons.length;
+			if (index >= sideIcons.length)
+				index = sideIcons.length-1;
 			return sideIcons[index];
 		}
 		return null;
@@ -424,6 +424,10 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 		return BeamHitResult.FALLBACK;
 	}
 	
+	public boolean canTubeConnectTo(IBlockAccess world, int x, int y, int z, ItemStack tube, PC_Direction dir){
+		return false;
+	}
+	
 	private class InitConfigFieldAnnotationIterator implements PC_IFieldAnnotationIterator<PC_Config> {
 		
 		private PC_Property config;
@@ -460,6 +464,15 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 			return false;
 		}
 		
+	}
+	
+    @Override
+	public void onBlockHarvested(World world, int x, int y, int z, int side, EntityPlayer player) {
+    	removeBlockByPlayer(world, player, x, y, z);
+	}
+
+	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z){
+		return true;
 	}
 	
 	private static class BlockInfo {
