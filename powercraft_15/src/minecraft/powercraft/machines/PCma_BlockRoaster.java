@@ -193,10 +193,5 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
-
-	@Override
-	public boolean canTubeConnectTo(IBlockAccess world, int x, int y, int z, ItemStack tube, PC_Direction dir) {
-		return ((PC_ItemTube)tube.getItem()).getTubeType()==PC_TubeType.ENERGY && dir!=PC_Direction.TOP;
-	}
     
 }

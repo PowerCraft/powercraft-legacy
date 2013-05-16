@@ -83,7 +83,7 @@ public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {
 
             if (te == null)
             {
-               PC_Utils.setTE(world, x, y, z, te = block.createTileEntity(world, metadata));
+               PC_Utils.setTE(world, x, y, z, te = PC_Utils.createTileEntity(block, world, metadata));
             }
             
             if(te instanceof PC_TileEntity){

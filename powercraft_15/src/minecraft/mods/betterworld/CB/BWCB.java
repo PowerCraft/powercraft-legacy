@@ -96,7 +96,7 @@ public class BWCB {
 	@Instance("BWCB")
 	public static BWCB instance;
 
-	@SidedProxy(clientSide = "mods.betterworld.CB.client.BWCB_ClientProxy", serverSide = "mods.betterworld.CB.core.BWCB_CommonProxy")
+	@SidedProxy(clientSide = "mods.betterworld.CB.client.BWCB_ClientProxy", serverSide = "mods.betterworld.CB.core.BWCB_Proxy")
 	public static BWCB_Proxy proxy;
 
 

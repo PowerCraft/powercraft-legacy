@@ -47,7 +47,7 @@ public class PCpj_EntityRenderer extends EntityRenderer {
 		if(PC_LauncherUtils.getModLoader() == PC_ModLoader.RISUGAMIS_MODLOADER){
 			
 			try {
-				Class<?> c = Class.forName("ModLoader");
+				Class<?> c = Class.forName("net.minecraft.src.ModLoader");
 				onTick = c.getMethod("onTick", float.class, Minecraft.class);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();

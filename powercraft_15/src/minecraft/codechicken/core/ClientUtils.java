@@ -1,22 +1,20 @@
 package codechicken.core;
 
 import java.net.Socket;
-import codechicken.core.internal.ClientTickHandler;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.MemoryConnection;
+import net.minecraft.network.TcpConnection;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
+import codechicken.core.internal.ClientTickHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.MemoryConnection;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.network.TcpConnection;
-import net.minecraft.world.World;
-import net.minecraft.client.multiplayer.WorldClient;
 
 public class ClientUtils extends CommonUtils
 {    
@@ -37,7 +35,7 @@ public class ClientUtils extends CommonUtils
 
     public static boolean isClient(World world)
     {
-        return world instanceof WorldClient;
+        return world.isRemote;
     }
     
     public static boolean inWorld()
