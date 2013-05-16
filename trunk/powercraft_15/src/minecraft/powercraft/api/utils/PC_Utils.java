@@ -718,4 +718,8 @@ public class PC_Utils {
 		return stack;
 	}
 	
+	public static TileEntity createTileEntity(Block block, World world, int metadata){
+		return block.createTileEntity(world, metadata);
+	}
+	
 }

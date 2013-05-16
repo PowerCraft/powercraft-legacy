@@ -11,10 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.renderer.EntityRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -24,10 +21,8 @@ import net.minecraft.client.renderer.culling.Frustrum;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBFragmentShader;
@@ -43,7 +38,6 @@ import org.lwjgl.util.glu.GLU;
 import powercraft.api.reflect.PC_ReflectHelper;
 import powercraft.api.utils.PC_ClientUtils;
 import powercraft.api.utils.PC_Struct2;
-import powercraft.api.utils.PC_Struct3;
 import powercraft.api.utils.PC_Utils;
 
 public class PCpj_ProjectorRenderer {

@@ -36,6 +36,7 @@ import powercraft.api.utils.PC_VecI;
 import powercraft.launcher.PC_Logger;
 import powercraft.launcher.PC_Property;
 import powercraft.launcher.loader.PC_ModuleObject;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 
 public class PC_RegistryClient extends PC_RegistryServer {
@@ -185,7 +186,7 @@ public class PC_RegistryClient extends PC_RegistryServer {
 	
 	@Override
 	protected void tileEntitySpecialRenderer(Class<? extends TileEntity> tileEntityClass) {
-		ModLoader.registerTileEntity(tileEntityClass, tileEntityClass.getName(), PC_TileEntitySpecialRenderer.getInstance());
+		ClientRegistry.registerTileEntity(tileEntityClass, tileEntityClass.getName(), PC_TileEntitySpecialRenderer.getInstance());
 	}
 	
 	@Override

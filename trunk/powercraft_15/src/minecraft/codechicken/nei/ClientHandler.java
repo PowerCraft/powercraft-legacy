@@ -5,26 +5,23 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.world.World;
+
 import org.lwjgl.input.Keyboard;
 
 import codechicken.core.ClientUtils;
-import codechicken.core.NetworkClosedException;
 import codechicken.core.packet.PacketCustom;
-
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.world.World;
-import net.minecraft.client.multiplayer.WorldClient;
 
 public class ClientHandler implements ITickHandler
 {    
@@ -36,8 +33,7 @@ public class ClientHandler implements ITickHandler
     
     public void addSMPMagneticItem(int i, World world)
     {
-        WorldClient cworld = (WorldClient)world;
-        Entity e = cworld.getEntityByID(i);
+        Entity e = world.getEntityByID(i);
         if(e == null || !(e instanceof EntityItem))
         {
             return;

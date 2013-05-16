@@ -77,7 +77,7 @@ public class PCTest {
 		
 		
 
-		ClientRegistry.bindTileEntitySpecialRenderer(PCTileEntityBlockWire.class, new PCRenderBlockWire());
+		//ClientRegistry.bindTileEntitySpecialRenderer(PCTileEntityBlockWire.class, new PCRenderBlockWire());
 		PCTest.renderWireID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new PCRenderBlockWire());
 

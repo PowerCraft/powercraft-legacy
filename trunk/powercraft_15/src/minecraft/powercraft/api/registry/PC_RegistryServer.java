@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
@@ -50,6 +52,7 @@ public class PC_RegistryServer implements PC_IPacketHandler {
 	}
 	
 	protected void tileEntitySpecialRenderer(Class<? extends TileEntity> tileEntityClass) {
+		GameRegistry.registerTileEntity(tileEntityClass, tileEntityClass.getName());
 	}
 	
 	protected void openGres(String name, EntityPlayer player, PC_TileEntity te, Object[] o) {
