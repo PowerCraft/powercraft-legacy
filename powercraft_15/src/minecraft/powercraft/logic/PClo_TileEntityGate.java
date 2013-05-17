@@ -43,4 +43,9 @@ public class PClo_TileEntityGate extends PC_TileEntity
         PC_Utils.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
     }
 
+    @Override
+	public int getPickMetadata() {
+		return type;
+	}
+    
 }

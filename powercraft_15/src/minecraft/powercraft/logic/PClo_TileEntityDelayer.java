@@ -79,10 +79,10 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
             worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord), PClo_App.delayer.tickRate(worldObj));
         }
     }
-
+    
     @Override
-    public boolean canUpdate()
-    {
-        return true;
-    }
+	public int getPickMetadata() {
+		return type;
+	}
+    
 }

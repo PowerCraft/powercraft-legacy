@@ -36,4 +36,9 @@ public class PClo_TileEntityFlipFlop extends PC_TileEntity
     	}
     }
 
+    @Override
+	public int getPickMetadata() {
+		return type;
+	}
+    
 }

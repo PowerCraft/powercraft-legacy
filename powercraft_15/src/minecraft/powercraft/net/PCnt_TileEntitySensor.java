@@ -157,6 +157,11 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 	}
 	
 	@Override
+	public int getPickMetadata() {
+		return type;
+	}
+	
+	@Override
 	public void renderTileEntityAt(double x, double y, double z, float rot) {
 
 		PC_Renderer.glPushMatrix();
