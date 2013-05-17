@@ -291,7 +291,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 		return 0;
 	}
 	
-	public int getRedstonePowereValueFromInput(World world, int x, int y, int z, PC_Direction dir) {
+	public int getRedstonePowerValueFromInput(World world, int x, int y, int z, PC_Direction dir) {
 		dir = dir.rotateRev(getRotation(PC_Utils.getMD(world, x, y, z)));
 		PC_VecI offset = dir.getOffset();
 		int value = world.getIndirectPowerLevelTo(x + offset.x, y + offset.y, z + offset.z, dir.getMCDir());
@@ -305,7 +305,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 		return world.getStrongestIndirectPower(x, y, z);
 	}
 	
-	public int getRedstonePowereValueFromInputEx(World world, int x, int y, int z, PC_Direction dir) {
+	public int getRedstonePowerValueFromInputEx(World world, int x, int y, int z, PC_Direction dir) {
 		dir = dir.rotateRev(getRotation(PC_Utils.getMD(world, x, y, z)));
 		PC_VecI offset = dir.getOffset();
 		int powerLevel = world.getIndirectPowerLevelTo(x + offset.x, y + offset.y, z + offset.z, dir.getMCDir());
@@ -318,7 +318,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	public int getRedstonePowereValueEx(World world, int x, int y, int z) {
 		int max = 0;
 		for(int i=0; i<6; i++){
-			int value = getRedstonePowereValueFromInputEx(world, x, y, z, PC_Direction.getFormMCDir(i));
+			int value = getRedstonePowerValueFromInputEx(world, x, y, z, PC_Direction.getFormMCDir(i));
 			if(value>max){
 				max = value;
 			}
