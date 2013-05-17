@@ -23,6 +23,8 @@ import powercraft.launcher.update.PC_UpdateManager.ModuleUpdateInfo;
 
 public class PC_GuiUpdate extends GuiScreen {
 	
+	private static String launcherDownload = "http://www.powercrafting.net/wiki/?Welcome___Common_Information___Downloads";
+	
 	private static Minecraft smc = PC_LauncherClientUtils.mc();
 	private static boolean stop;
 	private static PC_GuiUpdate gui;
@@ -194,7 +196,7 @@ public class PC_GuiUpdate extends GuiScreen {
 	protected void mouseClicked(int par1, int par2, int par3) {
 		if (isMouseOverInfo(par1, par2)) {
 			if (PC_UpdateManager.newLauncher) {
-				PC_UpdateManager.openURL("http://www.powercrafting.net/forum/viewtopic.php?f=29&t=100");
+				PC_UpdateManager.openURL(launcherDownload);
 			}
 		}
 		scroll.mouseClicked(par1, par2, par3);
