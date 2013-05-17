@@ -1,5 +1,6 @@
 package powercraft.api.block;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Random;
 
@@ -22,6 +23,7 @@ import powercraft.api.PC_BeamTracer.BeamSettings;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.annotation.PC_Config;
 import powercraft.api.annotation.PC_OreInfo;
+import powercraft.api.annotation.PC_Shining;
 import powercraft.api.interfaces.PC_IIDChangeAble;
 import powercraft.api.interfaces.PC_IWorldGenerator;
 import powercraft.api.reflect.PC_FieldWithAnnotation;
@@ -473,6 +475,29 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 
 	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z){
 		return true;
+	}
+	
+	@Override
+	public int getDamageValue(World world, int x, int y, int z) {
+		TileEntity te = PC_Utils.getTE(world, x, y, z);
+		if (te instanceof PC_TileEntity) {
+			return ((PC_TileEntity) te).getPickMetadata();
+		}
+		return super.getDamageValue(world, x, y, z);
+	}
+	
+	@Override
+	public int idPicked(World world, int x, int y, int z) {
+		List<Field> l = PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), PC_Shining.ON.class);
+		if(l==null || l.size()==0){
+			return super.idPicked(world, x, y, z);
+		}
+		try {
+			return ((Block)l.get(0).get(null)).blockID;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return super.idPicked(world, x, y, z);
 	}
 	
 	private static class BlockInfo {

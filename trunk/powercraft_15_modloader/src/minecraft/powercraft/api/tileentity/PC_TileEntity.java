@@ -270,4 +270,8 @@ public class PC_TileEntity extends TileEntity {
 		return true;
 	}
 	
+	public int getPickMetadata(){
+		return 0;
+	}
+	
 }
