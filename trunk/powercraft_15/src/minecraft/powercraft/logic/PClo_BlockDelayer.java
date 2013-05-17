@@ -63,12 +63,12 @@ public class PClo_BlockDelayer extends PC_Block
     public void updateTick(World world, int x, int y, int z, Random random)
     {
         PClo_TileEntityDelayer te = getTE(world, x, y, z);
-        boolean data = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
+        boolean data = getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
         
         switch(te.getType()){
         case PClo_DelayerType.FIFO:
-        	boolean stop = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.RIGHT)>0;
-        	boolean reset = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.LEFT)>0;
+        	boolean stop = getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.RIGHT)>0;
+        	boolean reset = getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.LEFT)>0;
        		boolean[] stateBuffer = te.getStateBuffer();
 
 	        if (!stop && !reset)
