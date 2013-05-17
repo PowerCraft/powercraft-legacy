@@ -43,7 +43,7 @@ public class PCmltm_BlockTestRotate extends PC_Block {
 	public void onNeighborBlockChange(World world, int x, int y, int z, int id) {
 		System.out.println(getRotation(PC_Utils.getMD(world, x, y, z)));
 		for (int i = 0; i < 6; i++) {
-			System.out.println(PC_Direction.getFormMCSide(i) + ":" + getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.getFormMCSide(i)));
+			System.out.println(PC_Direction.getFromMCSide(i) + ":" + getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.getFromMCSide(i)));
 		}
 		boolean newOn = getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.FRONT)>0;
 		if(newOn!=on){

@@ -218,7 +218,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	
 	@Override
 	public final Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int dir) {
-		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
+		PC_Direction pcDir = PC_Direction.getFromMCDir(dir);
 		pcDir = pcDir.rotate(getRotation(PC_Utils.getMD(world, x, y, z)));
 		return getBlockTexture(world, x, y, z, pcDir);
 	}
@@ -229,7 +229,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	
 	@Override
 	public final Icon getIcon(int dir, int metadata) {
-		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
+		PC_Direction pcDir = PC_Direction.getFromMCDir(dir);
 		pcDir = pcDir.rotate(getRotation(metadata));
 		return getIcon(pcDir, metadata);
 	}
@@ -263,7 +263,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	
 	@Override
 	public final int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int dir) {
-		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
+		PC_Direction pcDir = PC_Direction.getFromMCDir(dir);
 		pcDir = pcDir.rotate(getRotation(PC_Utils.getMD(world, x, y, z))).mirror();
 		return getProvidingWeakRedstonePowerValue(world, x, y, z, pcDir);
 	}
@@ -278,7 +278,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	
 	@Override
 	public final int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int dir) {
-		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
+		PC_Direction pcDir = PC_Direction.getFromMCDir(dir);
 		pcDir = pcDir.rotate(getRotation(PC_Utils.getMD(world, x, y, z))).mirror();
 		return getProvidingStrongRedstonePowerValue(world, x, y, z, pcDir);
 	}
@@ -318,7 +318,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	public int getRedstonePowereValueEx(World world, int x, int y, int z) {
 		int max = 0;
 		for(int i=0; i<6; i++){
-			int value = getRedstonePowerValueFromInputEx(world, x, y, z, PC_Direction.getFormMCDir(i));
+			int value = getRedstonePowerValueFromInputEx(world, x, y, z, PC_Direction.getFromMCDir(i));
 			if(value>max){
 				max = value;
 			}
