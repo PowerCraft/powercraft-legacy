@@ -63,7 +63,7 @@ public class PC_ItemBlock extends ItemBlock implements PC_IItemInfo {
 		int metadata = PC_Utils.getMD(world, x, y, z);
 		Block block = Block.blocksList[blockID];
 		
-		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
+		PC_Direction pcDir = PC_Direction.getFromMCDir(dir);
 		
 		if (blockID == Block.snow.blockID && (metadata & 7) < 1) {
 			dir = 1;
@@ -165,7 +165,7 @@ public class PC_ItemBlock extends ItemBlock implements PC_IItemInfo {
 		int metadata = PC_Utils.getMD(world, x, y, z);
 		Block block = Block.blocksList[blockID];
 		
-		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
+		PC_Direction pcDir = PC_Direction.getFromMCDir(dir);
 		
 		if (blockID == Block.snow.blockID && (metadata & 7) < 1) {
 			dir = 1;

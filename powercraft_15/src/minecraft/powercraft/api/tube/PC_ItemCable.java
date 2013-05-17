@@ -36,11 +36,11 @@ public final class PC_ItemCable extends PC_Item {
 		if(world.isRemote)
 			return true;
 		Block block = PC_Utils.getBlock(world, x, y, z);
-		PC_Direction dir = PC_Direction.getFormMCDir(side);
+		PC_Direction dir = PC_Direction.getFromMCDir(side);
 		if(!(block instanceof PC_BlockTube)){
 			if (block == Block.snow && (PC_Utils.getMD(world, x, y, z) & 7) < 1) {
 				side = 1;
-				dir = PC_Direction.getFormMCDir(side);
+				dir = PC_Direction.getFromMCDir(side);
 			} else {
 				if(!PC_Utils.isBlockReplaceable(world, x, y, z)){
 					PC_VecI offset = dir.getOffset();

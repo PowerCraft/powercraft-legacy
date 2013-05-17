@@ -45,7 +45,7 @@ public abstract class PC_ItemTube extends PC_Item {
 			}
 		}
 		if(move){
-			PC_VecI offset = PC_Direction.getFormMCDir(side).getOffset();
+			PC_VecI offset = PC_Direction.getFromMCDir(side).getOffset();
 			x += offset.x;
 			y += offset.y;
 			z += offset.z;

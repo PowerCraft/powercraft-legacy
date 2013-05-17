@@ -78,7 +78,7 @@ public class PC_TileEntityTube extends PC_TileEntity {
 	
 	private int getNigbourNetwork(PC_Direction dir, int cableID){
 		for(int i=0; i<6; i++){
-			PC_Direction dir2 = PC_Direction.getFormMCDir(i);
+			PC_Direction dir2 = PC_Direction.getFromMCDir(i);
 			if(dir==dir2||dir==dir2.mirror())
 				continue;
 			int nw = getNetwork(dir2, cableID);
@@ -124,7 +124,7 @@ public class PC_TileEntityTube extends PC_TileEntity {
 
 	private void setNigboutNetwork(PC_Direction dir, int cableID, int nw, boolean change){
 		for(int i=0; i<6; i++){
-			PC_Direction dir2 = PC_Direction.getFormMCDir(i);
+			PC_Direction dir2 = PC_Direction.getFromMCDir(i);
 			if(dir==dir2||dir==dir2.mirror())
 				continue;
 			if(getNetwork(dir2, cableID)!=0){
@@ -207,7 +207,7 @@ public class PC_TileEntityTube extends PC_TileEntity {
 			return false;
 		}
 		for(int i=0; i<6; i++){
-			PC_Direction dir2 = PC_Direction.getFormMCDir(i);
+			PC_Direction dir2 = PC_Direction.getFromMCDir(i);
 			PC_VecI offset = dir2.getOffset();
 			offset.add(getCoord());
 			if(offset.y==yCoord && PC_Utils.getBlock(worldObj, offset)!=getBlockType() && BlockRedstoneWire.isPowerProviderOrWire(worldObj, offset.x, offset.y, offset.z, dir2.getMCDir())){

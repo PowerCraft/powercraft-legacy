@@ -181,7 +181,7 @@ public class PCde_BlockPlatform extends PC_Block {
 		Item item = itemStack.getItem();
 		if(item instanceof ItemBlock){
 			Block block = Block.blocksList[((ItemBlock) item).getBlockID()];
-			PC_Direction pRot = PC_Direction.getFormPlayerDir(MathHelper.floor_double(((entityPlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3);
+			PC_Direction pRot = PC_Direction.getFromPlayerDir(MathHelper.floor_double(((entityPlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3);
 			PC_VecI offset = pRot.getOffset();
 			if(block==PCde_App.stairs && PC_KeyRegistry.isPlacingReversed(entityPlayer)){
 				offset.y--;
