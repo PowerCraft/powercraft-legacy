@@ -222,7 +222,7 @@ public class PCde_BlockStairs extends PC_Block {
 		if(item instanceof ItemBlock){
 			Block block = Block.blocksList[((ItemBlock) item).getBlockID()];
 			PC_Direction rot = getRotation(PC_Utils.getMD(world, x, y, z));
-			PC_Direction pRot = PC_Direction.getFormPlayerDir(MathHelper.floor_double(((entityPlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3);
+			PC_Direction pRot = PC_Direction.getFromPlayerDir(MathHelper.floor_double(((entityPlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3);
 			PC_VecI offset = pRot.getOffset();
 			if(rot==pRot){
 				if(block==PCde_App.stairs || block==PCde_App.platform){

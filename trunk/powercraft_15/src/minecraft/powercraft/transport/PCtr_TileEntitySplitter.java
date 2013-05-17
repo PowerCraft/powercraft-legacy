@@ -14,7 +14,7 @@ public class PCtr_TileEntitySplitter extends PCtr_TileEntitySeparationBeltBase {
 	}
 	
 	private PC_Direction getDir(int dir){
-		return PC_Direction.getFormMCDir(dir);
+		return PC_Direction.getFromMCDir(dir);
 	}
 	
 	@Override

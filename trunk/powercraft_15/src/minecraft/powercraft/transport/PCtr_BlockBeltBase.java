@@ -88,7 +88,7 @@ public abstract class PCtr_BlockBeltBase extends PC_Block
 	public PC_VecI moveBlockTryToPlaceAt(World world, int x, int y, int z,
 			PC_Direction dir, float xHit, float yHit, float zHit,
 			ItemStack itemStack, EntityPlayer entityPlayer) {
-		PC_Direction pDir = PC_Direction.getFormPlayerDir(PC_MathHelper.floor_double(((entityPlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3);
+		PC_Direction pDir = PC_Direction.getFromPlayerDir(PC_MathHelper.floor_double(((entityPlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3);
 		return pDir.getOffset();
 	}
     

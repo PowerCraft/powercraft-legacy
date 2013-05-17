@@ -81,13 +81,13 @@ public class PC_BlockTube extends PC_Block {
 			boolean anyTrue = false;
 			boolean allTrue = true;
 			for(int i=0; i<6; i++){
-				anyTrue |= canConnectTo[i] = canThisTubeConnectTo(world, x, y, z, PC_Direction.getFormMCDir(i));
+				anyTrue |= canConnectTo[i] = canThisTubeConnectTo(world, x, y, z, PC_Direction.getFromMCDir(i));
 				allTrue &= canConnectTo[i];
 			}
 			if(!allTrue){
 				for(int i=0; i<6; i++){
 					if(!canConnectTo[i]){
-						icons[i] = ((PC_ItemTube)tube.getItem()).getIconFromSide(tube, PC_Direction.getFormMCDir(i));
+						icons[i] = ((PC_ItemTube)tube.getItem()).getIconFromSide(tube, PC_Direction.getFromMCDir(i));
 					}
 				}
 				setBlockBounds(p*4, p*4, p*4, p*12, p*12, p*12);
@@ -96,7 +96,7 @@ public class PC_BlockTube extends PC_Block {
 			if(anyTrue){
 				for(int i=0; i<6; i++){
 					if(canConnectTo[i]){
-						PC_VecI offset = PC_Direction.getFormMCDir(i).getOffset();
+						PC_VecI offset = PC_Direction.getFromMCDir(i).getOffset();
 						if(offset.x==0){
 							icons[PC_Direction.RIGHT.getMCDir()] = ((PC_ItemTube)tube.getItem()).getIconFromSide(tube, PC_Direction.RIGHT);
 							icons[PC_Direction.LEFT.getMCDir()] = ((PC_ItemTube)tube.getItem()).getIconFromSide(tube, PC_Direction.LEFT);
@@ -126,7 +126,7 @@ public class PC_BlockTube extends PC_Block {
 			}
 		}
 		for(int i=0; i<6; i++){
-			PC_Direction dir = PC_Direction.getFormMCDir(i);
+			PC_Direction dir = PC_Direction.getFromMCDir(i);
 			int cable=tileEntityTube.getCable(dir);
 			if(cable>0){
 				PC_VecI offset = dir.getOffset();
@@ -148,7 +148,7 @@ public class PC_BlockTube extends PC_Block {
 					setBlockBounds(clamp(p*7+offset.x*6*p, p, p*15), clamp(p*7+offset.y*6*p, p, p*15), clamp(p*7+offset.z*6*p, p, p*15), clamp(p*9+offset.x*6*p, p, p*15), clamp(p*9+offset.y*6*p, p, p*15), clamp(p*9+offset.z*6*p, p, p*15));
 					PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
 					for(int j=0; j<6; j++){
-						PC_Direction dir2 = PC_Direction.getFormMCDir(j);
+						PC_Direction dir2 = PC_Direction.getFromMCDir(j);
 						int[] cables = cableConnectTo(world, x, y, z, dir, dir2, true);
 						if(cables!=null&&((cables[0]|cables[1]|cables[2]|cables[3]|cables[4])&cable)!=0){
 							PC_VecI offset2 = dir2.getOffset();
@@ -191,7 +191,7 @@ public class PC_BlockTube extends PC_Block {
 					}
 					
 					for(int j=0; j<6; j++){
-						PC_Direction dir2 = PC_Direction.getFormMCDir(j);
+						PC_Direction dir2 = PC_Direction.getFromMCDir(j);
 						int[] cables = cableConnectTo(world, x, y, z, dir, dir2, false);
 						if(cables!=null){
 							int cableToDir = (cables[0]|cables[1]|cables[2]|cables[3]|cables[4])&cable;
@@ -393,7 +393,7 @@ public class PC_BlockTube extends PC_Block {
 		if(tileEntityTube.getTube()==null){
 			boolean anyCables = false;
 			for(int i=0; i<6; i++){
-				PC_Direction dir = PC_Direction.getFormMCDir(i);
+				PC_Direction dir = PC_Direction.getFromMCDir(i);
 				PC_VecI offset = dir.getOffset();
 				Block block = PC_Utils.getBlock(world, x+offset.x, y+offset.y, z+offset.z);
 				int cable = tileEntityTube.getCable(dir);
@@ -517,7 +517,7 @@ public class PC_BlockTube extends PC_Block {
 		if(entityPlayer.getCurrentEquippedItem()!=null && entityPlayer.getCurrentEquippedItem().getItem()==PC_ItemCable.cable)
 			return false;
 		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
-		PC_Direction pcDir = PC_Direction.getFormMCDir(dir);
+		PC_Direction pcDir = PC_Direction.getFromMCDir(dir);
 		int cable = tileEntityTube.getCable(pcDir);
 		if(cable!=0){
 			for(int j=0; j<16; j++){
@@ -544,7 +544,7 @@ public class PC_BlockTube extends PC_Block {
 			tileEntityTube.setTube(null);
 		}
 		for(int i=0; i<6; i++){
-			PC_Direction dir = PC_Direction.getFormMCDir(i);
+			PC_Direction dir = PC_Direction.getFromMCDir(i);
 			int cable = tileEntityTube.getCable(dir);
 			if(cable!=0){
 				for(int j=0; j<16; j++){

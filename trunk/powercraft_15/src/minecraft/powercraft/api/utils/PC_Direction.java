@@ -80,21 +80,21 @@ public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 		return useTable(mirror);
 	}
 	
-	public static PC_Direction getFormMCSide(int side) {
+	public static PC_Direction getFromMCSide(int side) {
 		return side2PCDir[side];
 	}
 	
-	public static PC_Direction getFormMCDir(int dir) {
-		return getFormMCSide(dir2Side[dir]);
+	public static PC_Direction getFromMCDir(int dir) {
+		return getFromMCSide(dir2Side[dir]);
 	}
 	
-	public static PC_Direction getFormPlayerDir(int dir) {
-		return getFormMCSide(playerDir2Side[dir]);
+	public static PC_Direction getFromPlayerDir(int dir) {
+		return getFromMCSide(playerDir2Side[dir]);
 	}
 	
 	@Override
 	public PC_Direction readFromNBT(NBTTagCompound nbttag) {
-		return PC_Direction.getFormMCSide(nbttag.getInteger("dir"));
+		return PC_Direction.getFromMCSide(nbttag.getInteger("dir"));
 	}
 	
 	@Override
@@ -113,7 +113,7 @@ public class PC_Direction implements Serializable, PC_INBT<PC_Direction> {
 	}
 	
 	public PC_Direction useTable(int[] table){
-		return getFormMCSide(table[mcSide]);
+		return getFromMCSide(table[mcSide]);
 	}
 	
 	public PC_Direction rotate(PC_Direction rotation) {
