@@ -60,4 +60,10 @@ public class PClo_TileEntityRepeater extends PC_TileEntity
         PC_Utils.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
         PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
     }
+	
+	@Override
+	public int getPickMetadata() {
+		return type;
+	}
+	
 }

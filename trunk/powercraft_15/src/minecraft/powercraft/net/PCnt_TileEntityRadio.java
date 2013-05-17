@@ -185,6 +185,11 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 	}
 
 	@Override
+	public int getPickMetadata() {
+		return type;
+	}
+	
+	@Override
 	public void renderTileEntityAt(double x, double y, double z, float rot) {
 
 		PC_Renderer.glPushMatrix();

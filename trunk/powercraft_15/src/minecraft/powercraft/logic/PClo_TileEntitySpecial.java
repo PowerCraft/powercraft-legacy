@@ -124,4 +124,9 @@ public class PClo_TileEntitySpecial extends PC_TileEntityWithInventory
         return 1;
     }
     
+    @Override
+	public int getPickMetadata() {
+		return type;
+	}
+    
 }

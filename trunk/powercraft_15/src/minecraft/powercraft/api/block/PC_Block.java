@@ -1,5 +1,6 @@
 package powercraft.api.block;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -24,6 +25,7 @@ import powercraft.api.PC_BeamTracer.BeamSettings;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.annotation.PC_Config;
 import powercraft.api.annotation.PC_OreInfo;
+import powercraft.api.annotation.PC_Shining;
 import powercraft.api.interfaces.PC_IIDChangeAble;
 import powercraft.api.interfaces.PC_IWorldGenerator;
 import powercraft.api.item.PC_ItemInfo;
@@ -44,6 +46,8 @@ import powercraft.launcher.PC_Property;
 import powercraft.launcher.loader.PC_ModuleObject;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAble, PC_IWorldGenerator {
 	
@@ -446,6 +450,29 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 		return false;
 	}
 	
+	@Override
+	public int getDamageValue(World world, int x, int y, int z) {
+		TileEntity te = PC_Utils.getTE(world, x, y, z);
+		if (te instanceof PC_TileEntity) {
+			return ((PC_TileEntity) te).getPickMetadata();
+		}
+		return super.getDamageValue(world, x, y, z);
+	}
+	
+	@Override
+	public int idPicked(World world, int x, int y, int z) {
+		List<Field> l = PC_ReflectHelper.getAllFieldsWithAnnotation(getClass(), PC_Shining.ON.class);
+		if(l==null || l.size()==0){
+			return super.idPicked(world, x, y, z);
+		}
+		try {
+			return ((Block)l.get(0).get(null)).blockID;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return super.idPicked(world, x, y, z);
+	}
+
 	private class InitConfigFieldAnnotationIterator implements PC_IFieldAnnotationIterator<PC_Config> {
 		
 		private PC_Property config;

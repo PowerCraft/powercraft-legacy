@@ -299,6 +299,9 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		return false;
 	}
 	
-	
+	@Override
+	public int getPickMetadata() {
+		return pluginID;
+	}
 	
 }

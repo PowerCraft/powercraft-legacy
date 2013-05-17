@@ -267,4 +267,8 @@ public class PC_TileEntity extends TileEntity {
 		return getProvidingStrongRedstonePowerValue(dir);
 	}
 	
+	public int getPickMetadata(){
+		return 0;
+	}
+	
 }
