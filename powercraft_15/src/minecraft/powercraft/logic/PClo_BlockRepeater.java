@@ -72,10 +72,10 @@ public class PClo_BlockRepeater extends PC_Block
 
         if (te.getType() == PClo_RepeaterType.CROSSING)
         {
-            int[] inp = {getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.LEFT)>0 ? 1 : 0, 
-            			getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0 ? 1 : 0,
-            			getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.RIGHT)>0 ? 1 : 0, 
-            			getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.FRONT)>0 ? 1 : 0};
+            int[] inp = {getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.LEFT)>0 ? 1 : 0, 
+            			getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.BACK)>0 ? 1 : 0,
+            			getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.RIGHT)>0 ? 1 : 0, 
+            			getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.FRONT)>0 ? 1 : 0};
             int variant = te.getInp();
             int shouldState = 0;
 
@@ -108,7 +108,7 @@ public class PClo_BlockRepeater extends PC_Block
         }
         else
         {
-            boolean shouldState = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
+            boolean shouldState = getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
 
             if (isActive(world, x, y, z) != shouldState)
             {
@@ -132,7 +132,7 @@ public class PClo_BlockRepeater extends PC_Block
         {
             updateTick(world, x, y, z, new Random());
         }else{
-        	boolean shouldState = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
+        	boolean shouldState = getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
         	if (isActive(world, x, y, z) != shouldState || te.getType() == PClo_RepeaterType.CROSSING){
         		world.scheduleBlockUpdate(x, y, z, blockID, tickRate(world));
         	}

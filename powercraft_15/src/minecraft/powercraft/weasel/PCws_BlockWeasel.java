@@ -278,12 +278,12 @@ public class PCws_BlockWeasel extends PC_Block {
 			return null;
 		
 		return new int[]{
-				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.BACK),
-				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.LEFT),
-				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.RIGHT),
-				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.FRONT),
-				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.TOP),
-				getRedstonePowereValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.BOTTOM)
+				getRedstonePowerValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.BACK),
+				getRedstonePowerValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.LEFT),
+				getRedstonePowerValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.RIGHT),
+				getRedstonePowerValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.FRONT),
+				getRedstonePowerValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.TOP),
+				getRedstonePowerValueFromInput(world, pos.x, pos.y, pos.z, PC_Direction.BOTTOM)
 			};
 		
 	}

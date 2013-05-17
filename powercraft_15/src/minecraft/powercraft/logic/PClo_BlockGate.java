@@ -99,9 +99,9 @@ public class PClo_BlockGate extends PC_Block
         int rot = getRotation_static(PC_Utils.getMD(world, x, y, z));
         return PClo_GateType.getGateOutput(getType(world, x, y, z), 
         		getInp(world, x, y, z), 
-        		getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.LEFT)>0,
-        		getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0,
-        		getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.RIGHT)>0);
+        		getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.LEFT)>0,
+        		getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.BACK)>0,
+        		getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.RIGHT)>0);
     }
     
     @Override

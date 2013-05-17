@@ -103,7 +103,7 @@ public class PClo_BlockSpecial extends PC_Block
             	break;
 
             }case PClo_SpecialType.SPECIAL:
-                shouldState = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
+                shouldState = getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
                 TileEntity tes = PC_Utils.getTE(world, x - xAdd, y, z - zAdd);
 
                 if (tes instanceof PClo_TileEntityPulsar)

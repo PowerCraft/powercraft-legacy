@@ -67,9 +67,9 @@ public class PClo_BlockFlipFlop extends PC_Block
     {
         PClo_TileEntityFlipFlop te = getTE(world, x, y, z);
         boolean state = isActive(world, x, y, z);
-        boolean i1 = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.RIGHT)>0;
-        boolean i2 = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
-        boolean i3 = getRedstonePowereValueFromInput(world, x, y, z, PC_Direction.LEFT)>0;
+        boolean i1 = getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.RIGHT)>0;
+        boolean i2 = getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.BACK)>0;
+        boolean i3 = getRedstonePowerValueFromInput(world, x, y, z, PC_Direction.LEFT)>0;
         boolean shouldState = state;
 
         switch (te.getType())

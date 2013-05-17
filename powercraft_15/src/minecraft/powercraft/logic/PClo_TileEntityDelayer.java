@@ -70,8 +70,8 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
         
         if (getType() == PClo_DelayerType.FIFO)
         {
-            stop = b.getRedstonePowereValueFromInput(worldObj, xCoord, yCoord, zCoord, PC_Direction.RIGHT)>0;
-            reset = b.getRedstonePowereValueFromInput(worldObj, xCoord, yCoord, zCoord, PC_Direction.LEFT)>0;
+            stop = b.getRedstonePowerValueFromInput(worldObj, xCoord, yCoord, zCoord, PC_Direction.RIGHT)>0;
+            reset = b.getRedstonePowerValueFromInput(worldObj, xCoord, yCoord, zCoord, PC_Direction.LEFT)>0;
         }
         
         if (!stop || reset)
