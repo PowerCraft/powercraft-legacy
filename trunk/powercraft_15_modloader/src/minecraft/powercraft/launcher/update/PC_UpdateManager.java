@@ -33,6 +33,11 @@ public class PC_UpdateManager {
 	public static File downloadTarget;
 	public static boolean newLauncher;
 	
+	public static void lookForUpdates() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public static void startUpdateInfoDownload() {
 		updateChecker = new PC_ThreadCheckUpdates();
 	}
@@ -101,7 +106,7 @@ public class PC_UpdateManager {
 			}
 			PC_Launcher.saveConfig();
 			watchDirectory(downloadTarget);
-			PC_GuiUpdate.show(requestDownloadTarget);
+			PC_LauncherUtils.openUpdateGui(requestDownloadTarget);
 			stopWatchDirectory();
 		}
 	}

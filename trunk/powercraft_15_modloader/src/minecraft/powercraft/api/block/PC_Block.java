@@ -56,7 +56,6 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 		super(id, material);
 		thisBlock = new BlockInfo(id);
 		blockInfo = getClass().getAnnotation(PC_BlockInfo.class);
-		disableStats();
 	}
 	
 	public PC_Block(int id, Material material, String texture) {
@@ -168,7 +167,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int metadata) {
-		if (PC_GlobalVariables.tileEntity == null || world.isRemote) {
+		if (PC_GlobalVariables.tileEntity.size()==0 || world.isRemote) {
 			super.breakBlock(world, x, y, z, id, metadata);
 		}
 	}

@@ -3,6 +3,7 @@ package powercraft.launcher;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
+import powercraft.launcher.update.PC_UpdateManager;
 import powercraft.launcher.updategui.PC_GuiUpdate;
 
 public class PC_LauncherClientUtils extends PC_LauncherUtils {
@@ -12,7 +13,12 @@ public class PC_LauncherClientUtils extends PC_LauncherUtils {
 	}
 	
 	@Override
-	public void openUpdateGui(boolean requestDownloadTarget) {
+	public void pLookForUpdates(){
+		PC_UpdateManager.lookForUpdates();
+	}
+	
+	@Override
+	public void pOpenUpdateGui(boolean requestDownloadTarget){
 		PC_GuiUpdate.show(requestDownloadTarget);
 	}
 	
