@@ -43,7 +43,6 @@ public class PCpj_EntityRenderer extends EntityRenderer {
 	public PCpj_EntityRenderer(Minecraft par1Minecraft) {
 		super(par1Minecraft);
 		mc = par1Minecraft;
-		PCpj_ProjectorRenderer.init();
 		if(PC_LauncherUtils.getModLoader() == PC_ModLoader.RISUGAMIS_MODLOADER){
 			
 			try {
@@ -67,7 +66,7 @@ public class PCpj_EntityRenderer extends EntityRenderer {
 	public void renderWorld(float par1, long par2) {
 		if(!dorendering){
 			dorendering=true;
-			PCpj_ProjectorRenderer.preRendering(par1);
+			PCpj_ProjectorRenderer.preRendering(par1, mc.thePlayer);
 			dorendering=false;
 		}
 		super.renderWorld(par1, par2);
