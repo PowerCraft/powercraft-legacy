@@ -57,30 +57,8 @@ public class PC_Launcher {
 		}
 	}
 	
-	private static PC_ModuleDiscovery searchModules(boolean addAny) {
-		File modules = PC_LauncherUtils.getPowerCraftModuleFile();
-		File mods = new File(PC_LauncherUtils.getMCDirectory(), "mods");
-		File res = null;
-		try {
-			URL url = mod_PowerCraft.class.getResource("../../../");
-			if (url != null) {
-				res = new File(url.toURI());
-			}
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		
-		PC_ModuleDiscovery moduleDiscovery = new PC_ModuleDiscovery();
-		if (res == null) {
-			moduleDiscovery.search(modules, addAny, mods, false);
-		} else {
-			moduleDiscovery.search(modules, addAny, mods, false, res, false);
-		}
-		return moduleDiscovery;
-	}
-	
 	private static void loadModules() {
-		(modules = searchModules(true)).loadModules();
+		(modules = PC_LauncherUtils.searchModules(true)).loadModules();
 	}
 	
 	public static void preInit() {
@@ -91,10 +69,7 @@ public class PC_Launcher {
 			loadConfig();
 			
 			if (autoUpdate) {
-				PC_UpdateManager.startUpdateInfoDownload();
-				File moduleFiles = PC_LauncherUtils.getPowerCraftModuleFile();
-				HashMap<String, PC_ModuleObject> modules = searchModules(false).getModules();
-				PC_UpdateManager.moduleInfos(modules);
+				PC_LauncherUtils.lookForUpdates();
 			}
 			
 			loadModules();

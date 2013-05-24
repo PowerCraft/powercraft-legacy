@@ -9,6 +9,8 @@ import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.RenderPlayer;
+import net.minecraft.src.StatBase;
+import net.minecraft.src.StatList;
 import net.minecraft.src.World;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_ItemArmor;
@@ -20,6 +22,7 @@ public class PC_Hooks {
 	public static void registerHooks() {
 		registerFireHook();
 		fixEnderman();
+		fixStatList();
 	}
 	
 	private static void registerFireHook() {
@@ -36,6 +39,15 @@ public class PC_Hooks {
 			newCarriableBlocks[i] = carriableBlocks[i];
 		}
 		PC_ReflectHelper.setValue(EntityEnderman.class, EntityEnderman.class, 0, newCarriableBlocks, boolean[].class);
+	}
+	
+	private static void fixStatList(){
+		StatBase[] mineBlockStatArray = StatList.mineBlockStatArray;
+		StatBase[] newMineBlockStatArray = new StatBase[Block.blocksList.length];
+		for(int i=0; i<mineBlockStatArray.length; i++){
+			newMineBlockStatArray[i] = mineBlockStatArray[i];
+		}
+		StatList.mineBlockStatArray = newMineBlockStatArray;
 	}
 	
 	public static String getArmorTexture(ItemArmor itemArmor, ItemStack stack, Entity entity, int slot, int layer, String _default){
