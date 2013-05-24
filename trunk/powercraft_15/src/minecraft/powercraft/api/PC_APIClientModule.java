@@ -99,7 +99,7 @@ public class PC_APIClientModule extends PC_APIModule {
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserFX.class);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityFanFX.class);
 		PC_ClientUtils.registerEnitiyFX("EntitySmokeFX", EntitySmokeFX.class);
-		NetworkRegistry.instance().registerConnectionHandler(new PC_ConnectionHandler());
+		//NetworkRegistry.instance().registerConnectionHandler(new PC_ConnectionHandler());
 
 		PC_Logger.enterSection("Register EntityRender");
 		for (PC_ModuleObject module : modules) {

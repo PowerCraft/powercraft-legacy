@@ -1,10 +1,13 @@
 package powercraft.launcher;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import net.minecraft.crash.CallableMinecraftVersion;
 import net.minecraft.server.MinecraftServer;
 import powercraft.launcher.loader.PC_ModLoader;
+import powercraft.launcher.loader.PC_ModuleDiscovery;
 
 public class PC_LauncherUtils {
 
@@ -79,7 +82,35 @@ public class PC_LauncherUtils {
 		return PC_Launcher.isDeveloperVersion();
 	}
 	
-	public void openUpdateGui(boolean requestDownloadTarget){
+	public static void openUpdateGui(boolean requestDownloadTarget){
+		instance.pOpenUpdateGui(requestDownloadTarget);
+	}
+	
+	public static PC_ModuleDiscovery searchModules(boolean addAny){
+		File modules = PC_LauncherUtils.getPowerCraftModuleFile();
+		File res = null;
+		try {
+			URL url = mod_PowerCraft.class.getResource("../../");
+			if(url!=null){
+				res = new File(url.toURI());
+			}
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		PC_ModuleDiscovery moduleDiscovery = new PC_ModuleDiscovery();
+		moduleDiscovery.search(modules, addAny, res, false);
+		return moduleDiscovery;
+	}
+	
+	public static void lookForUpdates() {
+		instance.pLookForUpdates();
+	}
+	
+	public void pLookForUpdates(){
+		
+	}
+	
+	public void pOpenUpdateGui(boolean requestDownloadTarget){
 		
 	}
 	
