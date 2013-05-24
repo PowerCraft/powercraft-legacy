@@ -92,7 +92,7 @@ import powercraft.launcher.loader.PC_Module.PC_PostInit;
 import powercraft.launcher.loader.PC_Module.PC_PreInit;
 import powercraft.launcher.loader.PC_ModuleObject;
 
-@PC_Module(name = "Api", version = "3.5.2", modLoader = PC_ModLoader.RISUGAMIS_MODLOADER)
+@PC_Module(name = "Api", version = "3.5.3", modLoader = PC_ModLoader.RISUGAMIS_MODLOADER)
 public class PC_APIModule {
 	
 	private PC_FuelHandler fuelHandler;
