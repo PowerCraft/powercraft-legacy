@@ -21,7 +21,6 @@ import powercraft.launcher.update.PC_FileWatcher.WatchEvent;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLInfoTag;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLModuleTag;
 import powercraft.launcher.update.PC_UpdateXMLFile.XMLVersionTag;
-import powercraft.launcher.updategui.PC_GuiUpdate;
 
 public class PC_UpdateManager {
 
@@ -32,6 +31,13 @@ public class PC_UpdateManager {
 	public static XMLInfoTag updateInfo;
 	public static File downloadTarget;
 	public static boolean newLauncher;
+	
+	public static void lookForUpdates(){
+		PC_UpdateManager.startUpdateInfoDownload();
+		File moduleFiles = PC_LauncherUtils.getPowerCraftModuleFile();
+		HashMap<String, PC_ModuleObject> modules = PC_LauncherUtils.searchModules(false).getModules();
+		PC_UpdateManager.moduleInfos(modules);
+	}
 	
 	public static void startUpdateInfoDownload(){
 		updateChecker = new PC_ThreadCheckUpdates();
@@ -101,7 +107,7 @@ public class PC_UpdateManager {
 			}
 			PC_Launcher.saveConfig();
 			watchDirectory(downloadTarget);
-			PC_GuiUpdate.show(requestDownloadTarget);
+			PC_LauncherUtils.openUpdateGui(requestDownloadTarget);
 			stopWatchDirectory();
 		}
 	}

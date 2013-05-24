@@ -63,7 +63,6 @@ public class PC_PacketHandler extends powercraft.launcher.PC_PacketHandler {
 	}
 	
 	private void handleIncomingIDRequestPacket(ObjectInputStream input, EntityPlayer player) {
-		System.out.println("connectionReceived");
 		ByteArrayOutputStream data = new ByteArrayOutputStream();
 		ObjectOutputStream sendData;
 		
