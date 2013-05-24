@@ -96,15 +96,22 @@ public class PCpj_ProjectorRenderer {
 			"	if(nPos.z>depth+0.001 || depht3>10.0){\n"+
 			"		discard;\n"+
 			"	}\n"+
+			"	float depht4 = depht3/10.0;\n"+
+			"	depht4 *= depht4;\n"+
+			"	depht4 *= depht4;\n"+
+			"	depht4 *= depht4;\n"+
 			"	vec4 color = texture2D(texture2, vec2(nPos.x, 1.0-nPos.y));\n"+
-			"	color *= texture2D(texture3, nPos.xy);\n"+
+			"	if(nPos.z>=depth-0.01){\n"+
+			"		color *= texture2D(texture3, nPos.xy);\n"+
+			"	}\n"+
+			"	color *= 1.0-depht4;\n"+
 			"	gl_FragColor = color;\n"+
 			"}\n";
 	
 	private static int projectorPreShader;
 	private static int projectorPostShader;
 	
-	private static PC_Struct2<int[], PCpj_TileEntityProjector>[] framebuffer = new PC_Struct2[1];
+	private static PC_Struct2<int[], PCpj_TileEntityProjector>[] framebuffer = new PC_Struct2[0];
 	
 	public static List<PCpj_TileEntityProjector> toRender = new ArrayList<PCpj_TileEntityProjector>();
 	
@@ -113,7 +120,37 @@ public class PCpj_ProjectorRenderer {
 	private static int fboDephtTextureSize = 512;
 	private static int dephtTextureSize = 512;
 	
-	public static void preRendering(float par1){
+	private static PCpj_TileEntityProjector[] getNearestTo(double x, double y, double z, List<PCpj_TileEntityProjector> list, int num){
+		PCpj_TileEntityProjector[] neares = new PCpj_TileEntityProjector[num];
+		double[] dists = new double[num];
+		double maxDist = -1;
+		int index=0;
+		for(int i=0; i<num; i++){
+			dists[i] = -1;
+		}
+		for(PCpj_TileEntityProjector projector:list){
+			double dist = projector.getCoord().distanceTo(x, y, z);
+			if(dist<maxDist || maxDist==-1){
+				neares[index] = projector;
+				dists[index] = dist;
+				maxDist = 0;
+				for(int i=0; i<num; i++){
+					if(dists[i]==-1){
+						maxDist = -1;
+						index = i;
+						break;
+					}
+					if(dists[i]>maxDist){
+						maxDist = dists[i];
+						index = i;
+					}
+				}
+			}
+		}
+		return neares;
+	}
+	
+	public static void preRendering(float par1, Entity entity){
 		ARBShaderObjects.glUseProgramObjectARB(projectorPreShader);
 		for(int i=0; i<framebuffer.length; i++){
 			framebuffer[i].b = null;
@@ -121,11 +158,14 @@ public class PCpj_ProjectorRenderer {
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glPushMatrix();
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		for(int i=0; i<framebuffer.length && i<toRender.size(); i++){
-			GL11.glPushMatrix();
-			framebuffer[i].b = toRender.get(i);
-			doPreRendering(par1, framebuffer[i].b, framebuffer[i].a);
-			GL11.glPopMatrix();
+		PCpj_TileEntityProjector[] neares = getNearestTo(entity.posX, entity.posY, entity.posZ, toRender, framebuffer.length);
+		for(int i=0; i<framebuffer.length; i++){
+			if(neares[i]!=null){
+				GL11.glPushMatrix();
+				framebuffer[i].b = neares[i];
+				doPreRendering(par1, framebuffer[i].b, framebuffer[i].a);
+				GL11.glPopMatrix();
+			}
 		}
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glPopMatrix();
@@ -258,13 +298,14 @@ public class PCpj_ProjectorRenderer {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 	
-	public static void init(){
+	public static void init(int maxRenderers){
 		if(projectorPreShader==0){
 			projectorPreShader = loadShader("ProjectorPre", projectorPreShaderDefaultVert, projectorPreShaderDefaultFrag);
 		}
 		if(projectorPostShader==0){
 			projectorPostShader = loadShader("ProjectorPost", projectorPostShaderDefaultVert, projectorPostShaderDefaultFrag);
 		}
+		framebuffer = new PC_Struct2[maxRenderers];
 		initFBO();
 		
 		dephtTextureID =  makeDepthTexture(dephtTextureSize);
