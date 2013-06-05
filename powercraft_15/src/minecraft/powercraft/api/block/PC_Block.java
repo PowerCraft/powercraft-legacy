@@ -446,7 +446,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 		return BeamHitResult.FALLBACK;
 	}
 	
-	public boolean canTubeConnectTo(IBlockAccess world, int x, int y, int z, ItemStack tube, PC_Direction dir){
+	public boolean canStructureConnectTo(IBlockAccess world, int x, int y, int z, ItemStack tube, PC_Direction dir){
 		return false;
 	}
 	

@@ -189,7 +189,7 @@ public class PCpj_ProjectorRenderer {
 	
 	public static void postRendering(float par1){
 		Minecraft mc = PC_ClientUtils.mc();
-		EntityLiving entityliving = mc.renderViewEntity;
+		EntityLiving entityliving = mc.thePlayer;
 		double d0 = entityliving.lastTickPosX + (entityliving.posX - entityliving.lastTickPosX) * (double)par1;
 	    double d1 = entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par1;
 	    double d2 = entityliving.lastTickPosZ + (entityliving.posZ - entityliving.lastTickPosZ) * (double)par1;

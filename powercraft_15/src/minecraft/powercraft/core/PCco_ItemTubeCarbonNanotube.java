@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
-
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
-import powercraft.api.tube.PC_ItemTube;
-import powercraft.api.tube.PC_TubeType;
+import powercraft.api.structure.PC_ItemStructure;
+import powercraft.api.structure.PC_StructureType;
 
-public class PCco_ItemTubeCarbonNanotube extends PC_ItemTube {
+public class PCco_ItemTubeCarbonNanotube extends PC_ItemStructure {
 
 	public PCco_ItemTubeCarbonNanotube(int id) {
 		super(id, "CarbonNanotube", "CarbonNanotube");
@@ -23,8 +22,8 @@ public class PCco_ItemTubeCarbonNanotube extends PC_ItemTube {
 	}
 
 	@Override
-	public PC_TubeType getTubeType() {
-		return PC_TubeType.ENERGY;
+	public PC_StructureType getStructureType() {
+		return PC_StructureType.ENERGY;
 	}
 
 }

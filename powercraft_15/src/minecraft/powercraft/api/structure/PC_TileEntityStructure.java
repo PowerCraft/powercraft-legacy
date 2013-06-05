@@ -1,4 +1,4 @@
-package powercraft.api.tube;
+package powercraft.api.structure;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +13,15 @@ import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
 
-public class PC_TileEntityTube extends PC_TileEntity {
+public class PC_TileEntityStructure extends PC_TileEntity {
 
 	@PC_ClientServerSync
-	private PC_ItemStack tube;
+	private PC_ItemStack structure;
 	@PC_ClientServerSync
 	private int cable[][] = new int[6][16];
 	
-	public ItemStack getTube(){
-		return tube==null?null:tube.toItemStack();
+	public ItemStack getStructure(){
+		return structure==null?null:structure.toItemStack();
 	}
 	
 	public int getCable(PC_Direction side){
@@ -35,10 +35,10 @@ public class PC_TileEntityTube extends PC_TileEntity {
 		return cable;
 	}
 
-	public void setTube(ItemStack tube) {
-		this.tube = null;
+	public void setStructure(ItemStack tube) {
+		this.structure = null;
 		if(tube!=null){
-			this.tube = new PC_ItemStack(tube);
+			this.structure = new PC_ItemStack(tube);
 		}
 		if(!worldObj.isRemote)
 			notifyChanges("tube");
@@ -60,7 +60,7 @@ public class PC_TileEntityTube extends PC_TileEntity {
 			setNigboutNetwork(dir, cableID, nw, false);
 			if(isCableIO(dir, cableID)){
 				PC_CableNetworks.getNetwork(nw).addIO(getCoord());
-				PC_CableNetworks.getNetwork(nw).setPowerValue(PC_BlockTube.tube.getRedstonePowereValueEx(worldObj, xCoord, yCoord, zCoord));
+				PC_CableNetworks.getNetwork(nw).setPowerValue(PC_BlockStructure.structure.getRedstonePowereValueEx(worldObj, xCoord, yCoord, zCoord));
 			}
 		}else{
 			int nw;
@@ -87,7 +87,7 @@ public class PC_TileEntityTube extends PC_TileEntity {
 			PC_VecI offset = dir2.getOffset();
 			int x = xCoord, y=yCoord, z=zCoord;
 			int x1=xCoord+offset.x, y1=yCoord+offset.y, z1=zCoord+offset.z;
-			PC_TileEntityTube tileEntityTubeOther;
+			PC_TileEntityStructure tileEntityTubeOther;
 			if(PC_Utils.getBlock(worldObj, x1, y1, z1)==getBlockType()){
 				tileEntityTubeOther = PC_Utils.getTE(worldObj, x1, y1, z1);
 				nw = tileEntityTubeOther.getNetwork(dir2.mirror(), cableID);
@@ -136,7 +136,7 @@ public class PC_TileEntityTube extends PC_TileEntity {
 			PC_VecI offset = dir2.getOffset();
 			int x = xCoord, y=yCoord, z=zCoord;
 			int x1=xCoord+offset.x, y1=yCoord+offset.y, z1=zCoord+offset.z;
-			PC_TileEntityTube tileEntityTubeOther;
+			PC_TileEntityStructure tileEntityTubeOther;
 			if(PC_Utils.getBlock(worldObj, x1, y1, z1)==getBlockType()){
 				tileEntityTubeOther = PC_Utils.getTE(worldObj, x1, y1, z1);
 				if(tileEntityTubeOther.getNetwork(dir2.mirror(), cableID)!=0){
@@ -184,6 +184,7 @@ public class PC_TileEntityTube extends PC_TileEntity {
 	
 	private void setNetwork(PC_Direction dir, int cableID, int nw) {
 		int oldNw = cable[dir.getMCDir()][cableID];
+		System.out.println("setNetwork:"+oldNw+":"+nw);
 		if(oldNw != nw && oldNw!=0){
 			if(nw==-1){
 				nw = PC_CableNetworks.getNetworkID(new PC_CableNetwork(worldObj, cableID));
@@ -235,7 +236,7 @@ public class PC_TileEntityTube extends PC_TileEntity {
 			int nw = cable[PC_Direction.BOTTOM.getMCDir()][index];
 			PC_CableNetwork cnw = PC_CableNetworks.getNetwork(nw);
 			cnw.addIO(getCoord());
-			cnw.setPowerValue(PC_BlockTube.tube.getRedstonePowereValueEx(worldObj, xCoord, yCoord, zCoord));
+			cnw.setPowerValue(PC_BlockStructure.structure.getRedstonePowereValueEx(worldObj, xCoord, yCoord, zCoord));
 		}
 	}
 
@@ -258,6 +259,8 @@ public class PC_TileEntityTube extends PC_TileEntity {
 			return 0;
 		}
 		PC_CableNetwork cnw = PC_CableNetworks.getNetwork(this.cable[PC_Direction.BOTTOM.getMCDir()][cableOne]);
+		if(cnw==null)
+			return 0;
 		return cnw.getPowerValue();
 	}
 	

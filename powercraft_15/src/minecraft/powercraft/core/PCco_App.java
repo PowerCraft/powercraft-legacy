@@ -14,9 +14,9 @@ import powercraft.api.network.PC_IPacketHandler;
 import powercraft.api.recipes.PC_IRecipe;
 import powercraft.api.recipes.PC_ShapedRecipes;
 import powercraft.api.recipes.PC_ShapelessRecipes;
-import powercraft.api.tube.PC_BlockTube;
-import powercraft.api.tube.PC_CableNetworks;
-import powercraft.api.tube.PC_ItemCable;
+import powercraft.api.structure.PC_BlockStructure;
+import powercraft.api.structure.PC_CableNetworks;
+import powercraft.api.structure.PC_ItemCable;
 import powercraft.api.utils.PC_GlobalVariables;
 import powercraft.api.utils.PC_Struct2;
 import powercraft.launcher.PC_Property;
@@ -44,17 +44,20 @@ public class PCco_App {
 	@PC_FieldObject(clazz=PCco_MobSpawnerSetter.class)
 	public static PCco_MobSpawnerSetter spawnerSetter;
 	
-	/*@PC_FieldObject(clazz=PC_BlockTube.class)
-	public static PC_BlockTube tube;
+	@PC_FieldObject(clazz=PC_BlockStructure.class)
+	public static PC_BlockStructure tube;
 	
 	@PC_FieldObject(clazz=PCco_ItemTubeCarbonNanotube.class)
 	public static PCco_ItemTubeCarbonNanotube carbonNanotube;
+	
+	@PC_FieldObject(clazz=PCco_ItemTubeFramework.class)
+	public static PCco_ItemTubeFramework framework;
 	
 	@PC_FieldObject(clazz=PC_ItemCable.class)
 	public static PC_ItemCable itemCable;
 	
 	@PC_FieldObject(clazz=PC_CableNetworks.class)
-	public static PC_CableNetworks cableNetworks;*/
+	public static PC_CableNetworks cableNetworks;
 	
 	@PC_InitProperties
 	public void initProperties(PC_Property config) {
