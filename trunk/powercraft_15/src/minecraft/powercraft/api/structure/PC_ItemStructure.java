@@ -1,4 +1,4 @@
-package powercraft.api.tube;
+package powercraft.api.structure;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,12 +13,12 @@ import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
 
-public abstract class PC_ItemTube extends PC_Item {
-	
+public abstract class PC_ItemStructure extends PC_Item {
+
 	private String[] tubeIconNames;
 	private Icon[] tubeIcons;	
 	
-	protected PC_ItemTube(int id, String textureName, String... textureNames) {
+	protected PC_ItemStructure(int id, String textureName, String... textureNames) {
 		super(id, textureName);
 		tubeIconNames = textureNames;
 	}
@@ -31,8 +31,8 @@ public abstract class PC_ItemTube extends PC_Item {
 		ItemStack copy = itemStack.copy();
 		copy.stackSize = 1;
 		boolean move = true;
-		if(block instanceof PC_BlockTube){
-			if(((PC_BlockTube)block).setTube(world, x, y, z, copy)){
+		if(block instanceof PC_BlockStructure){
+			if(((PC_BlockStructure)block).setStructure(world, x, y, z, copy)){
 				itemStack.stackSize--;
 				return true;
 			}
@@ -51,23 +51,23 @@ public abstract class PC_ItemTube extends PC_Item {
 			z += offset.z;
 		}
 		
-		PC_BlockTube.tube.setBlockBloundsForTube(world, x, y, z);
+		PC_BlockStructure.structure.setBlockBloundsForStructure(world, x, y, z);
 		
 		if (!player.canPlayerEdit(x, y, z, side, itemStack)) {
 			return false;
 		} else if (y == 255 && block.blockMaterial.isSolid()) {
 			return false;
-		} else if (world.canPlaceEntityOnSide(PC_BlockTube.tube.blockID, x, y, z, false, side, null, itemStack)) {
+		} else if (world.canPlaceEntityOnSide(PC_BlockStructure.structure.blockID, x, y, z, false, side, null, itemStack)) {
 			
-			if (PC_Utils.setBlock(world, x, y, z, PC_BlockTube.tube)) {
+			if (PC_Utils.setBlock(world, x, y, z, PC_BlockStructure.structure)) {
 				world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), block.stepSound.getPlaceSound(),
 						(block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 			}
 			
 		} 
 		block = PC_Utils.getBlock(world, x, y, z);
-		if(block instanceof PC_BlockTube){
-			if(((PC_BlockTube)block).setTube(world, x, y, z, copy)){
+		if(block instanceof PC_BlockStructure){
+			if(((PC_BlockStructure)block).setStructure(world, x, y, z, copy)){
 				itemStack.stackSize--;
 				return true;
 			}
@@ -75,14 +75,14 @@ public abstract class PC_ItemTube extends PC_Item {
 		return false;
 	}
 
-	protected boolean isCompatibleTo(ItemStack thisTube, ItemStack otherTube) {
-		return ((PC_ItemTube)otherTube.getItem()).getTubeType()==getTubeType();
+	public boolean isCompatibleTo(ItemStack thisStructure, ItemStack otherStructure) {
+		return ((PC_ItemStructure)otherStructure.getItem()).getStructureType()==getStructureType();
 	}
 
-	public static boolean areTubesCompatible(ItemStack tube1, ItemStack tube2){
-		if(tube1==null||tube2==null)
+	public static boolean areStructuresCompatible(ItemStack structure1, ItemStack structure2){
+		if(structure1==null||structure2==null)
 			return false;
-		return ((PC_ItemTube)tube1.getItem()).isCompatibleTo(tube1, tube2)||((PC_ItemTube)tube2.getItem()).isCompatibleTo(tube2, tube1);
+		return ((PC_ItemStructure)structure1.getItem()).isCompatibleTo(structure1, structure2)||((PC_ItemStructure)structure2.getItem()).isCompatibleTo(structure2, structure1);
 	}
 
 	public Icon getIconFromSide(ItemStack tube, PC_Direction formMCDir) {
@@ -99,17 +99,17 @@ public abstract class PC_ItemTube extends PC_Item {
 			tubeIcons[i] = PC_TextureRegistry.registerIcon(getModule(), tubeIconNames[i]);
 		}
 	}
-	
-	public abstract PC_TubeType getTubeType();
 
-	public boolean canTubeConnectTo(IBlockAccess world, int x, int y, int z, ItemStack tube, PC_Direction dir) {
+	public abstract PC_StructureType getStructureType();
+	
+	public boolean canStructureConnectTo(IBlockAccess world, int x, int y, int z, ItemStack tube, PC_Direction dir) {
 		PC_VecI offset = dir.getOffset();
 		x += offset.x;
 		y += offset.y;
 		z += offset.z;
 		Block block = PC_Utils.getBlock(world, x, y, z);
 		if(block instanceof PC_Block){
-			return ((PC_Block)block).canTubeConnectTo(world, x, y, z, tube, dir.mirror());
+			return ((PC_Block)block).canStructureConnectTo(world, x, y, z, tube, dir.mirror());
 		}
 		return false;
 	}

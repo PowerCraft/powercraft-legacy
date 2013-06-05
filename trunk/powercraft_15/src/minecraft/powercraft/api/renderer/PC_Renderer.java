@@ -2,6 +2,7 @@ package powercraft.api.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import powercraft.api.utils.PC_VecF;
@@ -92,6 +93,12 @@ public class PC_Renderer
         renderer2d.iRenderStandardBlock(renderer, block, x, y, z);
     }
 
+	protected void iRenderBlockAllFaces(Object renderer, Block block, int x, int y, int z){}
+    
+	public static void renderBlockAllFaces(Object renderer, Block block, int x, int y, int z){
+	    renderer2d.iRenderBlockAllFaces(renderer, block, x, y, z);
+	}
+	
     protected void iRenderInvBox(Object renderer, Block block, int metadata) {}
 
     public static void renderInvBox(Object renderer, Block block, int metadata)

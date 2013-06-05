@@ -1,4 +1,4 @@
-package powercraft.api.tube;
+package powercraft.api.structure;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public final class PC_ItemCable extends PC_Item {
 			return true;
 		Block block = PC_Utils.getBlock(world, x, y, z);
 		PC_Direction dir = PC_Direction.getFromMCDir(side);
-		if(!(block instanceof PC_BlockTube)){
+		if(!(block instanceof PC_BlockStructure)){
 			if (block == Block.snow && (PC_Utils.getMD(world, x, y, z) & 7) < 1) {
 				side = 1;
 				dir = PC_Direction.getFromMCDir(side);
@@ -53,16 +53,16 @@ public final class PC_ItemCable extends PC_Item {
 			
 			Block block2 = PC_Utils.getBlock(world, x, y, z);
 			
-			if(!(block2 instanceof PC_BlockTube)){
-				PC_BlockTube.tube.setBlockBloundsForCable(world, x, y, z);
+			if(!(block2 instanceof PC_BlockStructure)){
+				PC_BlockStructure.structure.setBlockBloundsForCable(world, x, y, z);
 				
 				if (!player.canPlayerEdit(x, y, z, side, itemStack)) {
 					return false;
 				} else if (y == 255 && block.blockMaterial.isSolid()) {
 					return false;
-				} else if (world.canPlaceEntityOnSide(PC_BlockTube.tube.blockID, x, y, z, false, side, null, itemStack)) {
+				} else if (world.canPlaceEntityOnSide(PC_BlockStructure.structure.blockID, x, y, z, false, side, null, itemStack)) {
 					
-					if (PC_Utils.setBlock(world, x, y, z, PC_BlockTube.tube, 0, PC_Utils.BLOCK_UPDATE)) {
+					if (PC_Utils.setBlock(world, x, y, z, PC_BlockStructure.structure, 0, PC_Utils.BLOCK_UPDATE)) {
 						world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), block.stepSound.getPlaceSound(),
 								(block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 					}
@@ -71,15 +71,15 @@ public final class PC_ItemCable extends PC_Item {
 			}
 			
 		}else{
-			PC_TileEntityTube teTube = PC_Utils.getTE(world, x, y, z);
-			if(teTube.getTube()==null){
+			PC_TileEntityStructure teTube = PC_Utils.getTE(world, x, y, z);
+			if(teTube.getStructure()==null){
 				dir = dir.mirror();
 			}
 		}
 			
 		block = PC_Utils.getBlock(world, x, y, z);
-		if(block instanceof PC_BlockTube){
-			if(((PC_BlockTube)block).setCable(world, x, y, z, dir, itemStack.getItemDamage())){
+		if(block instanceof PC_BlockStructure){
+			if(((PC_BlockStructure)block).setCable(world, x, y, z, dir, itemStack.getItemDamage())){
 				itemStack.stackSize--;
 				return true;
 			}

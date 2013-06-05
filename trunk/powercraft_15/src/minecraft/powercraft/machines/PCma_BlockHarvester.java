@@ -27,6 +27,7 @@ import net.minecraft.util.Facing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_BeamTracer;
+import powercraft.api.annotation.PC_BlockFlag;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.building.PC_BuildingManager;
@@ -42,6 +43,7 @@ import powercraft.api.utils.PC_Struct2;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
 
+@PC_BlockFlag(flags={PC_MSGRegistry.HARVEST_STOP, PC_MSGRegistry.NO_HARVEST})
 @PC_BlockInfo(name="Harvester", canPlacedRotated=true)
 public class PCma_BlockHarvester extends PC_Block implements PC_IBeamHandler, PC_IItemInfo, PC_IPacketHandler {
 

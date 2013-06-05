@@ -1,4 +1,4 @@
-package powercraft.api.tube;
+package powercraft.api.structure;
 
 import java.util.Map.Entry;
 import java.util.Set;

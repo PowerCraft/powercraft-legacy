@@ -1,4 +1,4 @@
-package powercraft.api.tube;
+package powercraft.api.structure;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +87,7 @@ public class PC_CableNetwork implements PC_INBT<PC_CableNetwork> {
 		powerValue = 0;
 		World world = getWorld();
 		for(PC_VecI pos:io){
-			int pv = PC_BlockTube.tube.getRedstonePowereValueEx(world, pos.x, pos.y, pos.z);
+			int pv = powercraft.api.structure.PC_BlockStructure.structure.getRedstonePowereValueEx(world, pos.x, pos.y, pos.z);
 			if(pv>powerValue)
 				powerValue = pv;
 		}

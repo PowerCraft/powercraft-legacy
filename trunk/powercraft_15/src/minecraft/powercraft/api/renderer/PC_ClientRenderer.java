@@ -112,6 +112,15 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
 		((RenderBlocks)renderer).unlockBlockBounds();
 	}
+	
+	@Override
+	protected void iRenderBlockAllFaces(Object renderer, Block block, int x, int y, int z){
+		((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
+		((RenderBlocks)renderer).renderAllFaces = true;
+		((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
+		((RenderBlocks)renderer).renderAllFaces = false;
+		((RenderBlocks)renderer).unlockBlockBounds();
+	}
 
 	@Override
 	protected void iRenderInvBox(Object renderer, Block block, int metadata){

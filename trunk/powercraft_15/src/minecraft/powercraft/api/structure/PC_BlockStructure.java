@@ -1,15 +1,11 @@
-package powercraft.api.tube;
+package powercraft.api.structure;
 
-import java.util.List;
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,6 +14,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import org.lwjgl.opengl.GL11;
+
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.renderer.PC_Renderer;
@@ -25,17 +24,17 @@ import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
 
-@PC_BlockInfo(name="Tube", tileEntity=PC_TileEntityTube.class)
-public class PC_BlockTube extends PC_Block {
+@PC_BlockInfo(name="Structure", tileEntity=PC_TileEntityStructure.class)
+public class PC_BlockStructure extends PC_Block {
 	
-	public static PC_BlockTube tube;
+	public static PC_BlockStructure structure;
 	
 	private Icon[] icons;
 	private int colorMultiply=-1;
 	
-	public PC_BlockTube(int id) {
+	public PC_BlockStructure(int id) {
 		super(id, Material.rock, makeList());
-		tube = this;
+		structure = this;
 		setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
@@ -72,62 +71,68 @@ public class PC_BlockTube extends PC_Block {
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Object renderer) {
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
-		ItemStack tube = tileEntityTube.getTube();
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
+		ItemStack structure = tileEntitystructure.getStructure();
 		float p=1.0f/16.0f;
 		icons = new Icon[6];
-		if(tube!=null){
+		if(structure!=null){
 			boolean[] canConnectTo = new boolean[6];
 			boolean anyTrue = false;
 			boolean allTrue = true;
 			for(int i=0; i<6; i++){
-				anyTrue |= canConnectTo[i] = canThisTubeConnectTo(world, x, y, z, PC_Direction.getFromMCDir(i));
+				anyTrue |= canConnectTo[i] = canThisstructureConnectTo(world, x, y, z, PC_Direction.getFromMCDir(i));
 				allTrue &= canConnectTo[i];
 			}
+			Tessellator.instance.draw();
+			GL11.glDisable(GL11.GL_CULL_FACE);
+			Tessellator.instance.startDrawingQuads();
 			if(!allTrue){
 				for(int i=0; i<6; i++){
 					if(!canConnectTo[i]){
-						icons[i] = ((PC_ItemTube)tube.getItem()).getIconFromSide(tube, PC_Direction.getFromMCDir(i));
+						icons[i] = ((PC_ItemStructure)structure.getItem()).getIconFromSide(structure, PC_Direction.getFromMCDir(i));
 					}
 				}
 				setBlockBounds(p*4, p*4, p*4, p*12, p*12, p*12);
-				PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
+				PC_Renderer.renderBlockAllFaces(renderer, this, x, y, z);
 			}
 			if(anyTrue){
 				for(int i=0; i<6; i++){
 					if(canConnectTo[i]){
 						PC_VecI offset = PC_Direction.getFromMCDir(i).getOffset();
 						if(offset.x==0){
-							icons[PC_Direction.RIGHT.getMCDir()] = ((PC_ItemTube)tube.getItem()).getIconFromSide(tube, PC_Direction.RIGHT);
-							icons[PC_Direction.LEFT.getMCDir()] = ((PC_ItemTube)tube.getItem()).getIconFromSide(tube, PC_Direction.LEFT);
+							icons[PC_Direction.RIGHT.getMCDir()] = ((PC_ItemStructure)structure.getItem()).getIconFromSide(structure, PC_Direction.RIGHT);
+							icons[PC_Direction.LEFT.getMCDir()] = ((PC_ItemStructure)structure.getItem()).getIconFromSide(structure, PC_Direction.LEFT);
 						}else{
 							icons[PC_Direction.RIGHT.getMCDir()] = null;
 							icons[PC_Direction.LEFT.getMCDir()] = null;
 						}
 						if(offset.y==0){
-							icons[PC_Direction.TOP.getMCDir()] = ((PC_ItemTube)tube.getItem()).getIconFromSide(tube, PC_Direction.TOP);
-							icons[PC_Direction.BOTTOM.getMCDir()] = ((PC_ItemTube)tube.getItem()).getIconFromSide(tube, PC_Direction.BOTTOM);
+							icons[PC_Direction.TOP.getMCDir()] = ((PC_ItemStructure)structure.getItem()).getIconFromSide(structure, PC_Direction.TOP);
+							icons[PC_Direction.BOTTOM.getMCDir()] = ((PC_ItemStructure)structure.getItem()).getIconFromSide(structure, PC_Direction.BOTTOM);
 						}else{
 							icons[PC_Direction.TOP.getMCDir()] = null;
 							icons[PC_Direction.BOTTOM.getMCDir()] = null;
 						}
 						if(offset.z==0){
-							icons[PC_Direction.FRONT.getMCDir()] = ((PC_ItemTube)tube.getItem()).getIconFromSide(tube, PC_Direction.FRONT);
-							icons[PC_Direction.BACK.getMCDir()] = ((PC_ItemTube)tube.getItem()).getIconFromSide(tube, PC_Direction.BACK);
+							icons[PC_Direction.FRONT.getMCDir()] = ((PC_ItemStructure)structure.getItem()).getIconFromSide(structure, PC_Direction.FRONT);
+							icons[PC_Direction.BACK.getMCDir()] = ((PC_ItemStructure)structure.getItem()).getIconFromSide(structure, PC_Direction.BACK);
 						}else{
 							icons[PC_Direction.FRONT.getMCDir()] = null;
 							icons[PC_Direction.BACK.getMCDir()] = null;
 						}
 						setBlockBounds(clamp0To1(p*4+offset.x*8*p), clamp0To1(p*4+offset.y*8*p), clamp0To1(p*4+offset.z*8*p), 
 								clamp0To1(p*12+offset.x*8*p), clamp0To1(p*12+offset.y*8*p), clamp0To1(p*12+offset.z*8*p));
-						PC_Renderer.renderStandardBlock(renderer, this, x, y, z);
+						PC_Renderer.renderBlockAllFaces(renderer, this, x, y, z);
 					}
 				}
 			}
+			Tessellator.instance.draw();
+			GL11.glEnable(GL11.GL_CULL_FACE);
+			Tessellator.instance.startDrawingQuads();
 		}
 		for(int i=0; i<6; i++){
 			PC_Direction dir = PC_Direction.getFromMCDir(i);
-			int cable=tileEntityTube.getCable(dir);
+			int cable=tileEntitystructure.getCable(dir);
 			if(cable>0){
 				PC_VecI offset = dir.getOffset();
 				int on = -1;
@@ -269,12 +274,12 @@ public class PC_BlockTube extends PC_Block {
 		return true;
 	}
 	
-	public static boolean isTube(IBlockAccess world, int x, int y, int z){
-		if(PC_Utils.getBlock(world, x, y, z)!=tube)
+	public static boolean isStructure(IBlockAccess world, int x, int y, int z){
+		if(PC_Utils.getBlock(world, x, y, z)!=structure)
 			return false;
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
-		ItemStack tube = tileEntityTube.getTube();
-		return tube!=null;
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
+		ItemStack structure = tileEntitystructure.getStructure();
+		return structure!=null;
 	}
 	
 	private float clamp0To1(float f){
@@ -282,18 +287,18 @@ public class PC_BlockTube extends PC_Block {
 	}
 	
 	public int[] cableConnectTo(IBlockAccess world, int x, int y, int z, PC_Direction dir, PC_Direction dir2, boolean redstone){
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
 		if(dir==dir2||dir==dir2.mirror())
 			return null;
 		int[] cables = new int[5];
-		cables[0] = tileEntityTube.getCable(dir2);
+		cables[0] = tileEntitystructure.getCable(dir2);
 		PC_VecI offset = dir2.getOffset();
 		int x1=x+offset.x, y1=y+offset.y, z1=z+offset.z;
-		PC_TileEntityTube tileEntityTubeOther;
+		PC_TileEntityStructure tileEntitystructureOther;
 		if(PC_Utils.getBlock(world, x1, y1, z1)==this){
-			tileEntityTubeOther = PC_Utils.getTE(world, x1, y1, z1);
-			cables[1] = tileEntityTubeOther.getCable(dir2.mirror());
-			cables[2] = tileEntityTubeOther.getCable(dir);
+			tileEntitystructureOther = PC_Utils.getTE(world, x1, y1, z1);
+			cables[1] = tileEntitystructureOther.getCable(dir2.mirror());
+			cables[2] = tileEntitystructureOther.getCable(dir);
 		}else if(redstone){
 			if(dir2.mirror()==PC_Direction.BOTTOM){
 				cables[1] = BlockRedstoneWire.isPowerProviderOrWire(world, x1, y1, z1, dir.getMCDir())?-1:0;
@@ -310,13 +315,13 @@ public class PC_BlockTube extends PC_Block {
 			y1 += offset.y;
 			z1 += offset.z;
 			if(PC_Utils.getBlock(world, x1, y1, z1)==this){
-				tileEntityTubeOther = PC_Utils.getTE(world, x1, y1, z1);
-				cables[3] = tileEntityTubeOther.getCable(dir2.mirror());
+				tileEntitystructureOther = PC_Utils.getTE(world, x1, y1, z1);
+				cables[3] = tileEntitystructureOther.getCable(dir2.mirror());
 			}
 		}
 		if(PC_Utils.getBlock(world, x, y, z)==this){
-			tileEntityTubeOther = PC_Utils.getTE(world, x, y, z);
-			cables[4] = tileEntityTubeOther.getCable(dir2);
+			tileEntitystructureOther = PC_Utils.getTE(world, x, y, z);
+			cables[4] = tileEntitystructureOther.getCable(dir2);
 		}
 		return cables;
 	}
@@ -334,39 +339,39 @@ public class PC_BlockTube extends PC_Block {
 		return f;
 	}
 	
-	public boolean canThisTubeConnectTo(IBlockAccess world, int x, int y, int z, PC_Direction dir){
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
-		ItemStack tube = tileEntityTube.getTube();
-		if(tube==null)
+	public boolean canThisstructureConnectTo(IBlockAccess world, int x, int y, int z, PC_Direction dir){
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
+		ItemStack structure = tileEntitystructure.getStructure();
+		if(structure==null)
 			return false;
-		if(tileEntityTube.getCable(dir)>0)
+		if(tileEntitystructure.getCable(dir)>0)
 			return false;
-		return ((PC_ItemTube)tube.getItem()).canTubeConnectTo(world, x, y, z, tube, dir);
+		return ((PC_ItemStructure)structure.getItem()).canStructureConnectTo(world, x, y, z, structure, dir);
 	}
 	
 	@Override
-	public boolean canTubeConnectTo(IBlockAccess world, int x, int y, int z, ItemStack tube, PC_Direction dir){
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
-		if(tileEntityTube.getCable(dir)>0)
+	public boolean canStructureConnectTo(IBlockAccess world, int x, int y, int z, ItemStack structure, PC_Direction dir){
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
+		if(tileEntitystructure.getCable(dir)>0)
 			return false;
-		ItemStack thisTube = tileEntityTube.getTube();
-		return PC_ItemTube.areTubesCompatible(tube, thisTube);
+		ItemStack thisstructure = tileEntitystructure.getStructure();
+		return PC_ItemStructure.areStructuresCompatible(structure, thisstructure);
 	}
 
-	public boolean setTube(World world, int x, int y, int z, ItemStack tube) {
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
-		if(tileEntityTube.getTube()==null){
-			tileEntityTube.setTube(tube);
+	public boolean setStructure(World world, int x, int y, int z, ItemStack structure) {
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
+		if(tileEntitystructure.getStructure()==null){
+			tileEntitystructure.setStructure(structure);
 			return true;
 		}
 		return false;
 	}
 	
 	public boolean setCable(World world, int x, int y, int z, PC_Direction dir, int cableID) {
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
-		int cables = tileEntityTube.getCable(dir);
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
+		int cables = tileEntitystructure.getCable(dir);
 		if((cables&1<<cableID)==0){
-			if(tileEntityTube.getTube()==null){
+			if(tileEntitystructure.getStructure()==null){
 				//dir = dir.mirror();
 				PC_VecI offset = dir.getOffset();
 				Block block = PC_Utils.getBlock(world, x+offset.x, y+offset.y, z+offset.z);
@@ -375,7 +380,7 @@ public class PC_BlockTube extends PC_Block {
 					return false;
 				}
 			}
-			tileEntityTube.setCable(dir, cableID, true);
+			tileEntitystructure.setCable(dir, cableID, true);
 			return true;
 		}
 		update(world, x, y, z);
@@ -389,19 +394,19 @@ public class PC_BlockTube extends PC_Block {
 	}
 	
 	public void update(World world, int x, int y, int z){
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
-		if(tileEntityTube.getTube()==null){
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
+		if(tileEntitystructure.getStructure()==null){
 			boolean anyCables = false;
 			for(int i=0; i<6; i++){
 				PC_Direction dir = PC_Direction.getFromMCDir(i);
 				PC_VecI offset = dir.getOffset();
 				Block block = PC_Utils.getBlock(world, x+offset.x, y+offset.y, z+offset.z);
-				int cable = tileEntityTube.getCable(dir);
+				int cable = tileEntitystructure.getCable(dir);
 				if(block==null || !block.isOpaqueCube()){
 					for(int j=0; j<16; j++){
 						if((cable&1<<j)!=0){
 							PC_Utils.dropItemStack(world, x, y, z, new ItemStack(PC_ItemCable.cable, 1, j));
-							tileEntityTube.setCable(dir, j, false);
+							tileEntitystructure.setCable(dir, j, false);
 						}
 					}
 					cable = 0;
@@ -428,8 +433,8 @@ public class PC_BlockTube extends PC_Block {
 	public void onIconLoading() {
 		for(int i=0; i<Item.itemsList.length; i++){
 			Item item = Item.itemsList[i];
-			if(item instanceof PC_ItemTube){
-				((PC_ItemTube)item).onIconLoading();
+			if(item instanceof PC_ItemStructure){
+				((PC_ItemStructure)item).onIconLoading();
 			}
 		}
 	}
@@ -444,14 +449,14 @@ public class PC_BlockTube extends PC_Block {
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		TileEntity te = PC_Utils.getTE(world, x, y, z);
 		float f=1.0f/16.0f;
-		if(te instanceof PC_TileEntityTube){
-			if(((PC_TileEntityTube) te).getTube()!=null){
-				float minX = canThisTubeConnectTo(world, x, y, z, PC_Direction.RIGHT) ? 0 : f*4;
-				float minY = canThisTubeConnectTo(world, x, y, z, PC_Direction.BOTTOM) ? 0 : f*4;
-				float minZ = canThisTubeConnectTo(world, x, y, z, PC_Direction.BACK) ? 0 : f*4;
-				float maxX = canThisTubeConnectTo(world, x, y, z, PC_Direction.LEFT) ? 1 : f*12;
-				float maxY = canThisTubeConnectTo(world, x, y, z, PC_Direction.TOP) ? 1 : f*12;
-				float maxZ = canThisTubeConnectTo(world, x, y, z, PC_Direction.FRONT) ? 1 : f*12;
+		if(te instanceof PC_TileEntityStructure){
+			if(((PC_TileEntityStructure) te).getStructure()!=null){
+				float minX = canThisstructureConnectTo(world, x, y, z, PC_Direction.RIGHT) ? 0 : f*4;
+				float minY = canThisstructureConnectTo(world, x, y, z, PC_Direction.BOTTOM) ? 0 : f*4;
+				float minZ = canThisstructureConnectTo(world, x, y, z, PC_Direction.BACK) ? 0 : f*4;
+				float maxX = canThisstructureConnectTo(world, x, y, z, PC_Direction.LEFT) ? 1 : f*12;
+				float maxY = canThisstructureConnectTo(world, x, y, z, PC_Direction.TOP) ? 1 : f*12;
+				float maxZ = canThisstructureConnectTo(world, x, y, z, PC_Direction.FRONT) ? 1 : f*12;
 				return AxisAlignedBB.getAABBPool().getAABB(x+minX, y+minY, z+minZ, x+maxX, y+maxY, z+maxZ);
 			}
 			return null;
@@ -462,25 +467,25 @@ public class PC_BlockTube extends PC_Block {
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		TileEntity te = PC_Utils.getTE(world, x, y, z);
-		if(te instanceof PC_TileEntityTube){
-			PC_TileEntityTube tube = (PC_TileEntityTube)te;
+		if(te instanceof PC_TileEntityStructure){
+			PC_TileEntityStructure structure = (PC_TileEntityStructure)te;
 			float f=1.0f/16.0f;
-			if(tube.getTube()==null){
+			if(structure.getStructure()==null){
 				PC_Direction dir[] = {PC_Direction.BOTTOM, PC_Direction.TOP, PC_Direction.FRONT, PC_Direction.BACK, PC_Direction.RIGHT, PC_Direction.LEFT};
 				for(int i=0; i<6; i++){
-					if(tube.getCable(dir[i])!=0){
+					if(structure.getCable(dir[i])!=0){
 						PC_VecI offset = dir[i].getOffset();
 						setBlockBounds(clamp0To1(offset.x*f*12), clamp0To1(offset.y*f*12), clamp0To1(offset.z*f*12), clamp0To1(offset.x*f*12+1), clamp0To1(offset.y*f*12+1), clamp0To1(offset.z*f*12+1));
 						break;
 					}
 				}
 			}else{
-				float minX = canThisTubeConnectTo(world, x, y, z, PC_Direction.RIGHT) ? 0 : f*4;
-				float minY = canThisTubeConnectTo(world, x, y, z, PC_Direction.BOTTOM) ? 0 : f*4;
-				float minZ = canThisTubeConnectTo(world, x, y, z, PC_Direction.BACK) ? 0 : f*4;
-				float maxX = canThisTubeConnectTo(world, x, y, z, PC_Direction.LEFT) ? 1 : f*12;
-				float maxY = canThisTubeConnectTo(world, x, y, z, PC_Direction.TOP) ? 1 : f*12;
-				float maxZ = canThisTubeConnectTo(world, x, y, z, PC_Direction.FRONT) ? 1 : f*12;
+				float minX = canThisstructureConnectTo(world, x, y, z, PC_Direction.RIGHT) ? 0 : f*4;
+				float minY = canThisstructureConnectTo(world, x, y, z, PC_Direction.BOTTOM) ? 0 : f*4;
+				float minZ = canThisstructureConnectTo(world, x, y, z, PC_Direction.BACK) ? 0 : f*4;
+				float maxX = canThisstructureConnectTo(world, x, y, z, PC_Direction.LEFT) ? 1 : f*12;
+				float maxY = canThisstructureConnectTo(world, x, y, z, PC_Direction.TOP) ? 1 : f*12;
+				float maxZ = canThisstructureConnectTo(world, x, y, z, PC_Direction.FRONT) ? 1 : f*12;
 				setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 			}
 		}else{
@@ -492,8 +497,8 @@ public class PC_BlockTube extends PC_Block {
 	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side){
 		if(side==-1)
 			return false;
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
-		int cable = tileEntityTube.getCable(PC_Direction.BOTTOM);
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
+		int cable = tileEntitystructure.getCable(PC_Direction.BOTTOM);
 		int onCount=0;
 		for(int j=0; j<16; j++){
 			if((cable & 1<<j)!=0){
@@ -503,7 +508,7 @@ public class PC_BlockTube extends PC_Block {
 		return onCount==1;
 	}
 
-	public void setBlockBloundsForTube(IBlockAccess world, int x, int y, int z) {
+	public void setBlockBloundsForStructure(IBlockAccess world, int x, int y, int z) {
 		float f=1.0f/16.0f;
 		setBlockBounds(f*4, f*4, f*4, f*12, f*12, f*12);
 	}
@@ -516,16 +521,16 @@ public class PC_BlockTube extends PC_Block {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int dir, float xHit, float yHit, float zHit) {
 		if(entityPlayer.getCurrentEquippedItem()!=null && entityPlayer.getCurrentEquippedItem().getItem()==PC_ItemCable.cable)
 			return false;
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
 		PC_Direction pcDir = PC_Direction.getFromMCDir(dir);
-		int cable = tileEntityTube.getCable(pcDir);
+		int cable = tileEntitystructure.getCable(pcDir);
 		if(cable!=0){
 			for(int j=0; j<16; j++){
 				if((cable&1<<j)!=0){
 					if(!PC_Utils.isCreative(entityPlayer)){
 						PC_Utils.dropItemStack(world, x, y, z, new ItemStack(PC_ItemCable.cable, 1, j));
 					}
-					tileEntityTube.setCable(pcDir, j, false);
+					tileEntitystructure.setCable(pcDir, j, false);
 				}
 			}
 			return true;
@@ -535,22 +540,23 @@ public class PC_BlockTube extends PC_Block {
 
 	@Override
 	public void onBlockHarvested(World world, int x, int y, int z, int side, EntityPlayer entityPlayer) {
-		if(PC_Utils.isCreative(entityPlayer)){
-			return;
-		}
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
-		if(tileEntityTube.getTube()!=null){
-			PC_Utils.dropItemStack(world, x, y, z, tileEntityTube.getTube());
-			tileEntityTube.setTube(null);
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
+		if(tileEntitystructure.getStructure()!=null){
+			if(!PC_Utils.isCreative(entityPlayer)){
+				PC_Utils.dropItemStack(world, x, y, z, tileEntitystructure.getStructure());
+			}
+			tileEntitystructure.setStructure(null);
 		}
 		for(int i=0; i<6; i++){
 			PC_Direction dir = PC_Direction.getFromMCDir(i);
-			int cable = tileEntityTube.getCable(dir);
+			int cable = tileEntitystructure.getCable(dir);
 			if(cable!=0){
 				for(int j=0; j<16; j++){
 					if((cable&1<<j)!=0){
-						PC_Utils.dropItemStack(world, x, y, z, new ItemStack(PC_ItemCable.cable, 1, j));
-						tileEntityTube.setCable(dir, j, false);
+						if(!PC_Utils.isCreative(entityPlayer)){
+							PC_Utils.dropItemStack(world, x, y, z, new ItemStack(PC_ItemCable.cable, 1, j));
+						}
+						tileEntitystructure.setCable(dir, j, false);
 					}
 				}
 			}
@@ -564,18 +570,18 @@ public class PC_BlockTube extends PC_Block {
 	
 	@Override
 	public int idPicked(World world, int x, int y, int z){
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
-		if(tileEntityTube.getTube()!=null){
-			return tileEntityTube.getTube().itemID;
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
+		if(tileEntitystructure.getStructure()!=null){
+			return tileEntitystructure.getStructure().itemID;
 		}
 		return 0;
 	}
 	
 	@Override
 	public int getDamageValue(World world, int x, int y, int z){
-		PC_TileEntityTube tileEntityTube = PC_Utils.getTE(world, x, y, z);
-		if(tileEntityTube.getTube()!=null){
-			return tileEntityTube.getTube().getItemDamage();
+		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
+		if(tileEntitystructure.getStructure()!=null){
+			return tileEntitystructure.getStructure().getItemDamage();
 		}
 		return 0;
 	}
