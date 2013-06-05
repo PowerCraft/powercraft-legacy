@@ -53,18 +53,18 @@ public class PC_TileEntityStructure extends PC_TileEntity {
 		if(there){
 			int nw = getNigbourNetwork(dir, cableID);
 			if(nw==0){
-				nw = PC_CableNetworks.getNetworkID(new PC_CableNetwork(worldObj, cableID));
+				nw = PC_CableNetworkManager.getNetworkID(new PC_CableNetworkChunk(worldObj, cableID));
 			}
-			PC_CableNetworks.addRef(nw);
+			PC_CableNetworkManager.addRef(nw, getCoord());
 			cable[dir.getMCDir()][cableID] = nw;
 			setNigboutNetwork(dir, cableID, nw, false);
 			if(isCableIO(dir, cableID)){
-				PC_CableNetworks.getNetwork(nw).addIO(getCoord());
-				PC_CableNetworks.getNetwork(nw).setPowerValue(PC_BlockStructure.structure.getRedstonePowereValueEx(worldObj, xCoord, yCoord, zCoord));
+				PC_CableNetworkManager.getNetwork(nw).addIO(getCoord());
+				PC_CableNetworkManager.getNetwork(nw).setPowerValue(PC_BlockStructure.structure.getRedstonePowereValueEx(worldObj, xCoord, yCoord, zCoord));
 			}
 		}else{
 			int nw;
-			PC_CableNetworks.release(nw = cable[dir.getMCDir()][cableID], getCoord());
+			PC_CableNetworkManager.release(nw = cable[dir.getMCDir()][cableID], getCoord());
 			cable[dir.getMCDir()][cableID] = 0;
 			setNigboutNetwork(dir, cableID, nw, true);
 		}
@@ -187,12 +187,12 @@ public class PC_TileEntityStructure extends PC_TileEntity {
 		System.out.println("setNetwork:"+oldNw+":"+nw);
 		if(oldNw != nw && oldNw!=0){
 			if(nw==-1){
-				nw = PC_CableNetworks.getNetworkID(new PC_CableNetwork(worldObj, cableID));
+				nw = PC_CableNetworkManager.getNetworkID(new PC_CableNetworkChunk(worldObj, cableID));
 			}
-			PC_CableNetworks.release(oldNw, getCoord());
-			PC_CableNetworks.addRef(nw);
+			PC_CableNetworkManager.release(oldNw, getCoord());
+			PC_CableNetworkManager.addRef(nw, getCoord());
 			if(isCableIO(dir, cableID)){
-				PC_CableNetworks.getNetwork(nw).addIO(getCoord());
+				PC_CableNetworkManager.getNetwork(nw).addIO(getCoord());
 			}
 			cable[dir.getMCDir()][cableID] = nw;
 			setNigboutNetwork(dir, cableID, nw, false);
@@ -234,7 +234,7 @@ public class PC_TileEntityStructure extends PC_TileEntity {
 		}
 		if(count==1 && isCableIO(PC_Direction.BOTTOM, index)){
 			int nw = cable[PC_Direction.BOTTOM.getMCDir()][index];
-			PC_CableNetwork cnw = PC_CableNetworks.getNetwork(nw);
+			PC_CableNetworkChunk cnw = PC_CableNetworkManager.getNetwork(nw);
 			cnw.addIO(getCoord());
 			cnw.setPowerValue(PC_BlockStructure.structure.getRedstonePowereValueEx(worldObj, xCoord, yCoord, zCoord));
 		}
@@ -258,7 +258,7 @@ public class PC_TileEntityStructure extends PC_TileEntity {
 		if(cableCount!=1){
 			return 0;
 		}
-		PC_CableNetwork cnw = PC_CableNetworks.getNetwork(this.cable[PC_Direction.BOTTOM.getMCDir()][cableOne]);
+		PC_CableNetworkChunk cnw = PC_CableNetworkManager.getNetwork(this.cable[PC_Direction.BOTTOM.getMCDir()][cableOne]);
 		if(cnw==null)
 			return 0;
 		return cnw.getPowerValue();
