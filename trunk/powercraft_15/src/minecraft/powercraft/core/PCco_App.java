@@ -7,7 +7,6 @@ import net.minecraft.item.Item;
 import powercraft.api.annotation.PC_FieldObject;
 import powercraft.api.block.PC_Block;
 import powercraft.api.gres.PC_GresBaseWithInventory;
-import powercraft.api.interfaces.PC_IDataHandler;
 import powercraft.api.item.PC_Item;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.network.PC_IPacketHandler;
@@ -15,7 +14,7 @@ import powercraft.api.recipes.PC_IRecipe;
 import powercraft.api.recipes.PC_ShapedRecipes;
 import powercraft.api.recipes.PC_ShapelessRecipes;
 import powercraft.api.structure.PC_BlockStructure;
-import powercraft.api.structure.PC_CableNetworks;
+import powercraft.api.structure.PC_CableNetworkManager;
 import powercraft.api.structure.PC_ItemCable;
 import powercraft.api.utils.PC_GlobalVariables;
 import powercraft.api.utils.PC_Struct2;
@@ -56,8 +55,8 @@ public class PCco_App {
 	@PC_FieldObject(clazz=PC_ItemCable.class)
 	public static PC_ItemCable itemCable;
 	
-	@PC_FieldObject(clazz=PC_CableNetworks.class)
-	public static PC_CableNetworks cableNetworks;
+	@PC_FieldObject(clazz=PC_CableNetworkManager.class)
+	public static PC_CableNetworkManager cableNetworks;
 	
 	@PC_InitProperties
 	public void initProperties(PC_Property config) {

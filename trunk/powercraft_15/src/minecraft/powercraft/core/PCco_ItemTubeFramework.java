@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
+import powercraft.api.block.PC_Block;
 import powercraft.api.registry.PC_LangRegistry.LangEntry;
 import powercraft.api.structure.PC_ItemStructure;
 import powercraft.api.structure.PC_StructureType;
@@ -39,8 +40,11 @@ public class PCco_ItemTubeFramework extends PC_ItemStructure {
 		y += offset.y;
 		z += offset.z;
 		Block block = PC_Utils.getBlock(world, x, y, z);
-		if(block!=null)
-			return block.isOpaqueCube() || block == PCco_App.tube ;
+		if(block!=null &&  block.isOpaqueCube())
+			return true;
+		if(block instanceof PC_Block){
+			return ((PC_Block)block).canStructureConnectTo(world, x, y, z, tube, dir.mirror());
+		}
 		return false;
 	}
 

@@ -276,17 +276,18 @@ public class PC_RecipeRegistry {
 		FurnaceRecipes smlt = FurnaceRecipes.smelting();
 		for(PC_SmeltRecipe smelting:smeltings){
 			ItemStack is = smelting.getInput().toItemStack();
-			smlt.getSmeltingList().remove(Integer.valueOf(is.itemID));
-			
-			Map map = PC_ReflectHelper.getValue(FurnaceRecipes.class, smlt, 3, HashMap.class);
-			map.remove(Arrays.asList(Integer.valueOf(is.itemID), Integer.valueOf(is.getItemDamage())));
-			
-			map = PC_ReflectHelper.getValue(FurnaceRecipes.class, smlt, 2, Map.class);
-			map.remove(Integer.valueOf(is.itemID));
-			
-			map = PC_ReflectHelper.getValue(FurnaceRecipes.class, smlt, 4, HashMap.class);
-			map.remove(Arrays.asList(Integer.valueOf(is.itemID), Integer.valueOf(is.getItemDamage())));
-
+			if(is!=null){
+				smlt.getSmeltingList().remove(Integer.valueOf(is.itemID));
+				
+				Map map = PC_ReflectHelper.getValue(FurnaceRecipes.class, smlt, 3, HashMap.class);
+				map.remove(Arrays.asList(Integer.valueOf(is.itemID), Integer.valueOf(is.getItemDamage())));
+				
+				map = PC_ReflectHelper.getValue(FurnaceRecipes.class, smlt, 2, Map.class);
+				map.remove(Integer.valueOf(is.itemID));
+				
+				map = PC_ReflectHelper.getValue(FurnaceRecipes.class, smlt, 4, HashMap.class);
+				map.remove(Arrays.asList(Integer.valueOf(is.itemID), Integer.valueOf(is.getItemDamage())));
+			}
 		}
 	}
 	
