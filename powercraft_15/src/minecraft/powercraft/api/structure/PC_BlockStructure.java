@@ -80,7 +80,7 @@ public class PC_BlockStructure extends PC_Block {
 			boolean anyTrue = false;
 			boolean allTrue = true;
 			for(int i=0; i<6; i++){
-				anyTrue |= canConnectTo[i] = canThisstructureConnectTo(world, x, y, z, PC_Direction.getFromMCDir(i));
+				anyTrue |= canConnectTo[i] = canThisStructureConnectTo(world, x, y, z, PC_Direction.getFromMCDir(i));
 				allTrue &= canConnectTo[i];
 			}
 			Tessellator.instance.draw();
@@ -339,7 +339,7 @@ public class PC_BlockStructure extends PC_Block {
 		return f;
 	}
 	
-	public boolean canThisstructureConnectTo(IBlockAccess world, int x, int y, int z, PC_Direction dir){
+	public boolean canThisStructureConnectTo(IBlockAccess world, int x, int y, int z, PC_Direction dir){
 		PC_TileEntityStructure tileEntitystructure = PC_Utils.getTE(world, x, y, z);
 		ItemStack structure = tileEntitystructure.getStructure();
 		if(structure==null)
@@ -451,12 +451,12 @@ public class PC_BlockStructure extends PC_Block {
 		float f=1.0f/16.0f;
 		if(te instanceof PC_TileEntityStructure){
 			if(((PC_TileEntityStructure) te).getStructure()!=null){
-				float minX = canThisstructureConnectTo(world, x, y, z, PC_Direction.RIGHT) ? 0 : f*4;
-				float minY = canThisstructureConnectTo(world, x, y, z, PC_Direction.BOTTOM) ? 0 : f*4;
-				float minZ = canThisstructureConnectTo(world, x, y, z, PC_Direction.BACK) ? 0 : f*4;
-				float maxX = canThisstructureConnectTo(world, x, y, z, PC_Direction.LEFT) ? 1 : f*12;
-				float maxY = canThisstructureConnectTo(world, x, y, z, PC_Direction.TOP) ? 1 : f*12;
-				float maxZ = canThisstructureConnectTo(world, x, y, z, PC_Direction.FRONT) ? 1 : f*12;
+				float minX = canThisStructureConnectTo(world, x, y, z, PC_Direction.RIGHT) ? 0 : f*4;
+				float minY = canThisStructureConnectTo(world, x, y, z, PC_Direction.BOTTOM) ? 0 : f*4;
+				float minZ = canThisStructureConnectTo(world, x, y, z, PC_Direction.BACK) ? 0 : f*4;
+				float maxX = canThisStructureConnectTo(world, x, y, z, PC_Direction.LEFT) ? 1 : f*12;
+				float maxY = canThisStructureConnectTo(world, x, y, z, PC_Direction.TOP) ? 1 : f*12;
+				float maxZ = canThisStructureConnectTo(world, x, y, z, PC_Direction.FRONT) ? 1 : f*12;
 				return AxisAlignedBB.getAABBPool().getAABB(x+minX, y+minY, z+minZ, x+maxX, y+maxY, z+maxZ);
 			}
 			return null;
@@ -480,12 +480,12 @@ public class PC_BlockStructure extends PC_Block {
 					}
 				}
 			}else{
-				float minX = canThisstructureConnectTo(world, x, y, z, PC_Direction.RIGHT) ? 0 : f*4;
-				float minY = canThisstructureConnectTo(world, x, y, z, PC_Direction.BOTTOM) ? 0 : f*4;
-				float minZ = canThisstructureConnectTo(world, x, y, z, PC_Direction.BACK) ? 0 : f*4;
-				float maxX = canThisstructureConnectTo(world, x, y, z, PC_Direction.LEFT) ? 1 : f*12;
-				float maxY = canThisstructureConnectTo(world, x, y, z, PC_Direction.TOP) ? 1 : f*12;
-				float maxZ = canThisstructureConnectTo(world, x, y, z, PC_Direction.FRONT) ? 1 : f*12;
+				float minX = canThisStructureConnectTo(world, x, y, z, PC_Direction.RIGHT) ? 0 : f*4;
+				float minY = canThisStructureConnectTo(world, x, y, z, PC_Direction.BOTTOM) ? 0 : f*4;
+				float minZ = canThisStructureConnectTo(world, x, y, z, PC_Direction.BACK) ? 0 : f*4;
+				float maxX = canThisStructureConnectTo(world, x, y, z, PC_Direction.LEFT) ? 1 : f*12;
+				float maxY = canThisStructureConnectTo(world, x, y, z, PC_Direction.TOP) ? 1 : f*12;
+				float maxZ = canThisStructureConnectTo(world, x, y, z, PC_Direction.FRONT) ? 1 : f*12;
 				setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 			}
 		}else{
