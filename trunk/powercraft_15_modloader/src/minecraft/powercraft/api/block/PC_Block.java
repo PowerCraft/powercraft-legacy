@@ -26,6 +26,7 @@ import powercraft.api.annotation.PC_OreInfo;
 import powercraft.api.annotation.PC_Shining;
 import powercraft.api.interfaces.PC_IIDChangeAble;
 import powercraft.api.interfaces.PC_IWorldGenerator;
+import powercraft.api.network.PC_PacketHandler;
 import powercraft.api.reflect.PC_FieldWithAnnotation;
 import powercraft.api.reflect.PC_IFieldAnnotationIterator;
 import powercraft.api.reflect.PC_ReflectHelper;
@@ -51,6 +52,9 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	private String[] sideTextures;
 	protected Icon[] sideIcons;
 	private int[] oreGens;
+	private static TileEntity saveTileEntity;
+	private static int saveMetadata;
+	private static int saveBlockID;
 	
 	public PC_Block(int id, Material material) {
 		super(id, material);
@@ -162,7 +166,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	
 	@Override
 	public int getRenderType() {
-		return PC_Renderer.getRendererID(true);
+		return PC_Renderer.getRendererID();
 	}
 	
 	@Override
@@ -469,11 +473,28 @@ public abstract class PC_Block extends BlockContainer implements PC_IIDChangeAbl
 	
     @Override
 	public void onBlockHarvested(World world, int x, int y, int z, int side, EntityPlayer player) {
-    	removeBlockByPlayer(world, player, x, y, z);
+    	if(!removeBlockByPlayer(world, player, x, y, z) && !world.isRemote){
+    		saveTileEntity = PC_Utils.getTE(world, x, y, z);
+    		saveMetadata = PC_Utils.getMD(world, x, y, z);
+    		saveBlockID = PC_Utils.getBID(world, x, y, z);
+    	}
 	}
 
 	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z){
 		return true;
+	}
+	
+	@Override
+	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int id) {
+		if(blockID==saveBlockID && !world.isRemote){
+			PC_GlobalVariables.tileEntity.add(0, saveTileEntity);
+			PC_Utils.setBID(world, x, y, z, saveBlockID, saveMetadata);
+			PC_GlobalVariables.tileEntity.remove(0);
+			PC_PacketHandler.sendToAllInDimension(world.getWorldInfo().getDimension(), 	saveTileEntity.getDescriptionPacket());
+			saveTileEntity = null;
+    		saveMetadata = 0;
+    		saveBlockID = 0;
+		}
 	}
 	
 	@Override

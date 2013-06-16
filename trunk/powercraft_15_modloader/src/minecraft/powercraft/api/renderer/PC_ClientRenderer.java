@@ -24,12 +24,8 @@ import powercraft.api.utils.PC_VecF;
 
 public class PC_ClientRenderer extends PC_Renderer {
 	
-	public PC_ClientRenderer(boolean render3d) {
-		super(render3d);
-		if (render3d)
-			render3dId = ModLoader.getUniqueBlockModelID(mod_PowerCraft.getInstance(), true);
-		else
-			render2dId = ModLoader.getUniqueBlockModelID(mod_PowerCraft.getInstance(), false);
+	public PC_ClientRenderer() {
+		renderId = ModLoader.getUniqueBlockModelID(mod_PowerCraft.getInstance(), true);
 	}
 	
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
@@ -53,13 +49,11 @@ public class PC_ClientRenderer extends PC_Renderer {
 	}
 	
 	public boolean shouldRender3DInInventory() {
-		return render3d;
+		return true;
 	}
 	
 	public int getRenderId() {
-		if (render3d)
-			return render3dId;
-		return render2dId;
+		return renderId;
 	}
 	
 	@Override

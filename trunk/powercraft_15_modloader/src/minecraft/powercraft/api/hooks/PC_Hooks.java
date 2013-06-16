@@ -93,5 +93,9 @@ public class PC_Hooks {
 		}
 		return newChance>chance?newChance:chance;
 	}
+
+	public static boolean isPowerProviderOrWire(IBlockAccess world, int x, int y, int z, int dir) {
+		return false;
+	}
 	
 }

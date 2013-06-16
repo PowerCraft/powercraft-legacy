@@ -329,4 +329,9 @@ public class PC_VecI implements PC_Vec<Integer, PC_VecI> {
 		return "Vec[" + x + ", " + y + ", " + z + "]";
 	}
 	
+	@Override
+	public int hashCode() {
+		return x+y*1000+z*1000000;
+	}
+	
 }
