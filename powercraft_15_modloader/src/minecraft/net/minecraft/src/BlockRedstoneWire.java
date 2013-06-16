@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import powercraft.api.hooks.PC_Hooks;
+
 public class BlockRedstoneWire extends Block
 {
     /**

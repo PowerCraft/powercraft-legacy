@@ -27,7 +27,7 @@ import powercraft.launcher.loader.PC_ModuleObject;
 @PC_ClientModule
 public class PC_APIClientModule extends PC_APIModule {
 	
-	private PC_ClientRenderer cr1, cr2;
+	private PC_ClientRenderer cr1;
 	
 	@Override
 	protected void initVars() {
@@ -71,8 +71,7 @@ public class PC_APIClientModule extends PC_APIModule {
 	
 	@Override
 	protected void clientInit(List<PC_ModuleObject> modules) {
-		cr1 = new PC_ClientRenderer(true);
-		cr2 = new PC_ClientRenderer(false);
+		cr1 = new PC_ClientRenderer();
 		PC_Logger.enterSection("Module Gui Init");
 		for (PC_ModuleObject module : modules) {
 			List<PC_Struct2<String, Class<PC_IGresClient>>> l = module.registerGuis(new ArrayList<PC_Struct2<String, Class<PC_IGresClient>>>());
@@ -152,21 +151,17 @@ public class PC_APIClientModule extends PC_APIModule {
 	
 	@Override
 	public boolean renderWorldBlock(RenderBlocks renderer, IBlockAccess blockAccess, int x, int y, int z, Block block, int modelId) {
-		if (modelId == PC_ClientRenderer.getRendererID(true)) {
+		if (modelId == PC_ClientRenderer.getRendererID()) {
 			return cr1.renderWorldBlock(blockAccess, x, y, z, block, modelId, renderer);
-		} else if (modelId == PC_ClientRenderer.getRendererID(false)) {
-			return cr2.renderWorldBlock(blockAccess, x, y, z, block, modelId, renderer);
 		}
 		return false;
 	}
 	
 	@Override
 	public void renderInvBlock(RenderBlocks renderer, Block block, int metadata, int modelId) {
-		if (modelId == PC_ClientRenderer.getRendererID(true)) {
+		if (modelId == PC_ClientRenderer.getRendererID()) {
 			cr1.renderInventoryBlock(block, metadata, modelId, renderer);
-		} else if (modelId == PC_ClientRenderer.getRendererID(false)) {
-			cr2.renderInventoryBlock(block, metadata, modelId, renderer);
-		}
+		} 
 	}
 	
 	private static class ClientModuleFieldInit extends ModuleFieldInit {

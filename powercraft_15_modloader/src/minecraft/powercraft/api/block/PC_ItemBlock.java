@@ -67,6 +67,7 @@ public class PC_ItemBlock extends ItemBlock implements PC_IItemInfo {
 		
 		if (blockID == Block.snow.blockID && (metadata & 7) < 1) {
 			dir = 1;
+			pcDir = PC_Direction.TOP;
 		} else if (!PC_Utils.isBlockReplaceable(world, x, y, z)) {
 			
 			PC_VecI offset=null;

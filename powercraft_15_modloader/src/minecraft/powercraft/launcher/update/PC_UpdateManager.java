@@ -34,7 +34,6 @@ public class PC_UpdateManager {
 	public static boolean newLauncher;
 	
 	public static void lookForUpdates() {
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -79,7 +78,7 @@ public class PC_UpdateManager {
 				mui.oldVersion = mui.module.getStandartVersion().getVersion();
 				if (mui.newVersion.getVersion().compareTo(mui.oldVersion) > 0) {
 					String ignoreVersion = PC_Launcher.getConfig().getString("updater.ignore." + mui.xmlModule.getName());
-					if (ignoreVersion.equals("")) {
+					if (ignoreVersion==null||ignoreVersion.equals("")) {
 						showUpdate |= true;
 					} else {
 						if (new PC_Version(ignoreVersion).compareTo(mui.newVersion.getVersion()) > 0) {
