@@ -21,6 +21,7 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 	private int maxBurnTime = 1;
 	private float energy=0;
 	private int heat=0;
+	private boolean isActive;
 	
 	public PC_TileEntityGenerator() {
 		super(1);
@@ -85,7 +86,18 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 			sendProgressBarUpdate(1, heat);
 			energy = heat/10;
 		}
+		if(!isClient()){
+			boolean oldIsActive = isActive;
+			isActive = heat>0;
+			if(oldIsActive!=isActive){
+				sendToClient();
+			}
+		}
 		super.updateEntity();
+	}
+	
+	public boolean isActive() {
+		return isActive;
 	}
 	
 	@Override
@@ -99,6 +111,7 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 		burnTime = nbtTagCompound.getInteger("burnTime");
 		maxBurnTime = nbtTagCompound.getInteger("maxBurnTime");
 		heat = nbtTagCompound.getInteger("heat");
+		isActive = nbtTagCompound.getBoolean("isActive");
 	}
 
 	@Override
@@ -106,6 +119,7 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 		nbtTagCompound.setInteger("burnTime", burnTime);
 		nbtTagCompound.setInteger("maxBurnTime", maxBurnTime);
 		nbtTagCompound.setInteger("heat", heat);
+		nbtTagCompound.setBoolean("isActive", isActive);
 	}
 	
 }
