@@ -72,5 +72,17 @@ public class PC_Utils {
 	protected File iGetPowerCraftFile(){
 		return mcs().getFile("PowerCraft");
 	}
+
+	public static int getMD(IBlockAccess world, int x, int y, int z) {
+		return world.getBlockMetadata(x, y, z);
+	}
+
+	public static void setMD(World world, int x, int y, int z, int md) {
+		world.setBlockMetadataWithNotify(x, y, z, md, 3);
+	}
+
+	public static int getRotation(IBlockAccess world, int x, int y, int z) {
+		return (getMD(world, x, y, z) & 3)+2;
+	}
 	
 }

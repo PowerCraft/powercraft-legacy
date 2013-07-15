@@ -92,5 +92,15 @@ public class PC_TileEntityPuffer extends PC_TileEntity implements PC_IGresGuiOpe
 	public void saveToNBT(NBTTagCompound nbtTagCompound) {
 		nbtTagCompound.setFloat("energy", energy);
 	}
+
+	@Override
+	public boolean canConsumerTubeConnectTo(int side) {
+		return true;
+	}
+
+	@Override
+	public boolean canProviderTubeConnectTo(int side) {
+		return true;
+	}
 	
 }

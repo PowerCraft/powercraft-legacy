@@ -223,6 +223,11 @@ public abstract class PC_TileEntity extends TileEntity {
 			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 
+	public void lightUpdate(){
+		if(worldObj!=null)
+			worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+	}
+	
 	public void openContainer(PC_GresBaseWithInventory container) {
 		if(!containers.contains(container)){
 			containers.add(container);
