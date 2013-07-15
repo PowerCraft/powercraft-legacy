@@ -34,14 +34,14 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		}
 		connections = 0;
 		for(PC_Direction dir:PC_Direction.VALID_DIRECTIONS){
-			connections |= canConnectTo(dir)<<(dir.ordinal()*2);
+			connections |= canConnectTo(dir)<<(dir.ordinal()*5);
 		}
 		multiblock.sendToClient();
 		multiblock.renderUpdate();
 	}
 
-	public boolean canConnectToBlock(World world, int x, int y, int z, int side, Block block){
-		return false;
+	public int canConnectToBlock(World world, int x, int y, int z, int side, Block block){
+		return 0;
 	}
 	
 	public int canConnectTo(PC_Direction dir){
@@ -58,8 +58,9 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 				return 1;
 			}
 		}
-		if(canConnectToBlock(multiblock.worldObj, x, y, z, dir.getOpposite().ordinal(), block)){
-			return 2;
+		int i = canConnectToBlock(multiblock.worldObj, x, y, z, dir.getOpposite().ordinal(), block);
+		if(i>0){
+			return (i&15)<<1;
 		}
 		return 0;
 	}
@@ -89,7 +90,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		PC_Direction first = null;
 		PC_Direction secound = null;
 		for(PC_Direction dir:PC_Direction.VALID_DIRECTIONS){
-			if(((connections>>(dir.ordinal()*2)) & 0x3) == 1){
+			if(pipeOnSide(dir)){
 				if(first==null && secound==null){
 					first = dir;
 				}else if(secound==null){
@@ -97,7 +98,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 				}else{
 					first = null;
 				}
-			}else if(((connections>>(dir.ordinal()*2)) & 0x3) == 2){
+			}else if(pipeInfoAtSide(dir)!=0){
 				first = null;
 				secound = dir;
 			}
@@ -127,7 +128,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		}else{
 			Icon icons[] = new Icon[6];
 			for(PC_Direction dir:PC_Direction.VALID_DIRECTIONS){
-				if(((connections>>(dir.ordinal()*2)) & 0x3) == 0){
+				if(notingOnSide(dir)){
 					icons[dir.ordinal()] = icon;
 				}else{
 					icons[dir.ordinal()] = null;
@@ -140,7 +141,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 				icons[dir.ordinal()] = icon;
 			}
 			for(PC_Direction dir:PC_Direction.VALID_DIRECTIONS){
-				if(((connections>>(dir.ordinal()*2)) & 0x3) != 0){
+				if(!notingOnSide(dir)){
 					renderer.uvRotateBottom = 0;
 					renderer.uvRotateTop = 0;
 					renderer.uvRotateEast = 0;
@@ -159,7 +160,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 					icons[dir.ordinal()] = null;
 					icons[dir.getOpposite().ordinal()] = null;
 					PC_BlockMultiblock.setIcons(icons);
-					float length = ((connections>>(dir.ordinal()*2)) & 0x3)==2?connectionLength/16.0f:0;
+					float length = pipeInfoAtSide(dir)!=0?connectionLength/16.0f:0;
 					renderer.setRenderBounds(offsetN(s, s, dir.offsetX, length), offsetN(s, s, dir.offsetY, length), offsetN(s, s, dir.offsetZ, length),
 							offsetP(s, s, dir.offsetX, length), offsetP(s, s, dir.offsetY, length), offsetP(s, s, dir.offsetZ, length));
 					renderer.renderStandardBlock(PC_BlockMultiblock.block, multiblock.xCoord, multiblock.yCoord, multiblock.zCoord);
@@ -194,6 +195,18 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		Tessellator.instance.draw();
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		Tessellator.instance.startDrawingQuads();
+	}
+	
+	protected boolean notingOnSide(PC_Direction dir){
+		return ((connections>>(dir.ordinal()*5)) & 31) == 0;
+	}
+	
+	protected boolean pipeOnSide(PC_Direction dir){
+		return ((connections>>(dir.ordinal()*5)) & 1) == 1;
+	}
+	
+	protected int pipeInfoAtSide(PC_Direction dir){
+		return ((connections>>(dir.ordinal()*5)) & 31)>>1;
 	}
 	
 	private float offsetN(float f, float f1, int off, float length){

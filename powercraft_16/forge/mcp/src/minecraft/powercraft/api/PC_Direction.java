@@ -32,6 +32,7 @@ public enum PC_Direction {
     public final int flag;
     public static final PC_Direction[] VALID_DIRECTIONS = {DOWN, UP, NORTH, SOUTH, WEST, EAST};
     public static final int[] OPPOSITES = {1, 0, 3, 2, 5, 4, 6};
+    public static final int[] PLAYER2MD = {0, 3, 1, 2};
     // Left hand rule rotation matrix for all possible axes of rotation
     public static final int[][] ROTATION_MATRIX = {
         {0, 1, 4, 5, 3, 2, 6},

@@ -149,5 +149,10 @@ public class PC_TileEntityRoaster extends PC_TileEntity implements PC_IEnergyCon
 	public void saveToNBT(NBTTagCompound nbtTagCompound) {
 		nbtTagCompound.setBoolean("isActive", isActive);
 	}
+
+	@Override
+	public boolean canConsumerTubeConnectTo(int side) {
+		return side!=1;
+	}
 	
 }

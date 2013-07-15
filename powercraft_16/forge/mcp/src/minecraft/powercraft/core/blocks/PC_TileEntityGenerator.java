@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_FuelHandler;
+import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.blocks.PC_TileEntityWithInventory;
 import powercraft.api.energy.PC_IEnergyProvider;
@@ -16,12 +17,12 @@ import powercraft.api.gres.PC_IGresGuiOpenHandler;
 
 public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implements PC_IGresGuiOpenHandler, PC_IEnergyProvider {
 
-	private static final int maxHeat=1000;
+	public static final int maxHeat=1000;
 	private int burnTime = 0;
 	private int maxBurnTime = 1;
 	private float energy=0;
 	private int heat=0;
-	private boolean isActive;
+	private int oldHeat10=0;
 	
 	public PC_TileEntityGenerator() {
 		super(1);
@@ -87,17 +88,16 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 			energy = heat/10;
 		}
 		if(!isClient()){
-			boolean oldIsActive = isActive;
-			isActive = heat>0;
-			if(oldIsActive!=isActive){
+			if(oldHeat10!=(heat+9)/10){
+				oldHeat10 = (heat+9)/10;
 				sendToClient();
 			}
 		}
 		super.updateEntity();
 	}
 	
-	public boolean isActive() {
-		return isActive;
+	public int getHeat() {
+		return heat;
 	}
 	
 	@Override
@@ -111,7 +111,8 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 		burnTime = nbtTagCompound.getInteger("burnTime");
 		maxBurnTime = nbtTagCompound.getInteger("maxBurnTime");
 		heat = nbtTagCompound.getInteger("heat");
-		isActive = nbtTagCompound.getBoolean("isActive");
+		renderUpdate();
+		lightUpdate();
 	}
 
 	@Override
@@ -119,7 +120,18 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 		nbtTagCompound.setInteger("burnTime", burnTime);
 		nbtTagCompound.setInteger("maxBurnTime", maxBurnTime);
 		nbtTagCompound.setInteger("heat", heat);
-		nbtTagCompound.setBoolean("isActive", isActive);
+	}
+
+	@Override
+	public int getLightValue() {
+		if(heat==0)
+			return 0;
+		return (int)(heat/(float)maxHeat*7)+6;
+	}
+
+	@Override
+	public boolean canProviderTubeConnectTo(int side) {
+		return side!=PC_Utils.getRotation(worldObj, xCoord, yCoord, zCoord);
 	}
 	
 }

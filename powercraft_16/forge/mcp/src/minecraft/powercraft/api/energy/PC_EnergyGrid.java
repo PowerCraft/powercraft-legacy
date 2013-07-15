@@ -55,7 +55,20 @@ public class PC_EnergyGrid extends PC_Grid<PC_EnergyGrid, PC_ConduitEnergyTileEn
 		calc(consumers, providers, puffers);
 	}
 	
+	private static <T> List<T> removeDoubels(List<T> list, List<?> anyOther){
+		List<T> newList = new ArrayList<T>();
+		for(T t:list){
+			if(!newList.contains(t) && (anyOther == null || !anyOther.contains(t))){
+				newList.add(t);
+			}
+		}
+		return newList;
+	}
+	
 	public static void calc(List<PC_IEnergyConsumer> consumers, List<PC_IEnergyProvider> providers, List<PC_IEnergyPuffer> puffers){
+		consumers = removeDoubels(consumers, puffers);
+		providers = removeDoubels(providers, puffers);
+		puffers = removeDoubels(puffers, null);
 		PC_PufferData pufferDatas[] = new PC_PufferData[puffers.size()];
 		float maxProviderPower = 0;
 		float maxPufferPower = 0;

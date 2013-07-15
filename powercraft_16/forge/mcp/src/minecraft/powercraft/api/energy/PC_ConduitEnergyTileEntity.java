@@ -34,9 +34,20 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 	}
 	
 	@Override
-	public boolean canConnectToBlock(World world, int x, int y, int z, int side, Block block) {
+	public int canConnectToBlock(World world, int x, int y, int z, int side, Block block) {
 		TileEntity te = PC_Utils.getTE(world, x, y, z);
-		return te instanceof PC_IEnergyConsumer || te instanceof PC_IEnergyProvider;
+		int ret=0;
+		if(te instanceof PC_IEnergyConsumer){
+			if(((PC_IEnergyConsumer) te).canConsumerTubeConnectTo(side)){
+				ret |= 1;
+			}
+		}
+		if(te instanceof PC_IEnergyProvider){
+			if(((PC_IEnergyProvider) te).canProviderTubeConnectTo(side)){
+				ret |= 2;
+			}
+		}
+		return ret;
 	}
 	
 	@Override
@@ -51,15 +62,15 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 				boolean isIO=false;
 				boolean wasIO=false;
 				for(PC_Direction dir:PC_Direction.VALID_DIRECTIONS){
-					if(((connections>>(dir.ordinal()*2)) & 0x3) != 0){
+					if(!notingOnSide(dir)){
 						num++;
-						if(((connections>>(dir.ordinal()*2)) & 0x3)==2){
+						if(pipeInfoAtSide(dir)!=0){
 							isIO = true;
 						}
 					}
-					if(((oldConnections>>(dir.ordinal()*2)) & 0x3) != 0){
+					if(((oldConnections>>(dir.ordinal()*5)) & 31) != 0){
 						oldNum++;
-						if(((connections>>(dir.ordinal()*2)) & 0x3)==2){
+						if(pipeInfoAtSide(dir)!=0){
 							wasIO = true;
 						}
 					}
@@ -170,9 +181,9 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 			int num = 0;
 			boolean isIO=false;
 			for(PC_Direction dir:PC_Direction.VALID_DIRECTIONS){
-				if(((connections>>(dir.ordinal()*2)) & 0x3) != 0){
+				if(!notingOnSide(dir)){
 					num++;
-					if(((connections>>(dir.ordinal()*2)) & 0x3)==2){
+					if(pipeInfoAtSide(dir)!=0){
 						isIO = true;
 					}
 				}
@@ -238,13 +249,14 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 
 	public void addEnergyInterfaces(List<PC_IEnergyConsumer> consumers, List<PC_IEnergyProvider> providers, List<PC_IEnergyPuffer> puffers) {
 		for(PC_Direction dir:PC_Direction.VALID_DIRECTIONS){
-			if(((connections>>(dir.ordinal()*2)) & 0x3)==2){
+			int pipeInfo = pipeInfoAtSide(dir);
+			if(pipeInfo!=0){
 				TileEntity te = PC_Utils.getTE(multiblock.worldObj, multiblock.xCoord + dir.offsetX, multiblock.yCoord + dir.offsetY, multiblock.zCoord + dir.offsetZ);
-				if(te instanceof PC_IEnergyPuffer){
+				if(te instanceof PC_IEnergyPuffer && pipeInfo==3){
 					puffers.add((PC_IEnergyPuffer) te);
-				}else if(te instanceof PC_IEnergyConsumer){
+				}else if(te instanceof PC_IEnergyConsumer && pipeInfo==1){
 					consumers.add((PC_IEnergyConsumer) te);
-				}else if(te instanceof PC_IEnergyProvider){
+				}else if(te instanceof PC_IEnergyProvider && pipeInfo==2){
 					providers.add((PC_IEnergyProvider) te);
 				}
 			}
