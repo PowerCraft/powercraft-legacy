@@ -61,7 +61,6 @@ public class PC_TileEntityRoaster extends PC_TileEntity implements PC_IEnergyCon
 			if(entities!=null){
 				for(EntityLivingBase entity:entities){
 					if(energy>0.5){
-						System.out.println(entity);
 						if (!entity.isImmuneToFire()){
 							entity.attackEntityFrom(DamageSource.inFire, 3);
 			            }
