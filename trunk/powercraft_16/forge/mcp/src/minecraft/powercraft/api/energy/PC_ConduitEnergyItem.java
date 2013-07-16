@@ -68,7 +68,7 @@ public class PC_ConduitEnergyItem extends PC_ConduitItem {
 		public final String iconName;
 		public Icon iconCorner;
 		public Icon iconNormal;
-		public Icon iconConnection;
+		public Icon iconConnection[] = new Icon[4];
 		public Icon iconItem;
 		
 		public Data(String iconName){
@@ -85,7 +85,10 @@ public class PC_ConduitEnergyItem extends PC_ConduitItem {
 			if(d!=null){
 				d.iconCorner = PC_ClientRegistry.registerIcon(d.iconName+"_Corner", itemInfo.itemid());
 				d.iconNormal = PC_ClientRegistry.registerIcon(d.iconName+"_Normal", itemInfo.itemid());
-				d.iconConnection = PC_ClientRegistry.registerIcon(d.iconName+"_Connection", itemInfo.itemid());
+				d.iconConnection[0] = PC_ClientRegistry.registerIcon(d.iconName+"_Connection_None", itemInfo.itemid());
+				d.iconConnection[1] = PC_ClientRegistry.registerIcon(d.iconName+"_Connection_Input", itemInfo.itemid());
+				d.iconConnection[2] = PC_ClientRegistry.registerIcon(d.iconName+"_Connection_Output", itemInfo.itemid());
+				d.iconConnection[3] = PC_ClientRegistry.registerIcon(d.iconName+"_Connection", itemInfo.itemid());
 			}
 		}
 	}

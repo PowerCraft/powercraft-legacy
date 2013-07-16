@@ -171,8 +171,8 @@ public class PC_EnergyGrid extends PC_Grid<PC_EnergyGrid, PC_ConduitEnergyTileEn
 			for(PC_IEnergyPuffer puffer : puffers){
 				puffer.getEnergy(puffer.getEnergyForUsage());
 			}
-			if(maxProviderPower+maxPufferPower>0){
-				float proz = requestedPower/(maxProviderPower+maxPufferPower);
+			if(requestedPower>0){
+				float proz = (maxProviderPower+maxPufferPower)/requestedPower;
 				for(PC_IEnergyConsumer consumer : consumers){
 					consumer.consumeEnergy(consumer.getEnergyRequest()*proz);
 				}

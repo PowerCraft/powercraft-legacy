@@ -70,6 +70,7 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 					decrStackSize(0, 1);
 				}
 			}
+			sendToClient();
 		}
 		if(burnTime>0){
 			burnTime--;

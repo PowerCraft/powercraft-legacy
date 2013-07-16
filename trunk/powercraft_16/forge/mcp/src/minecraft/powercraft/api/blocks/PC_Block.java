@@ -178,7 +178,21 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
-		return tileEntity.getBlockDropped(fortune);
+		if(tileEntity!=null){
+			return tileEntity.getBlockDropped(fortune);
+		}
+		return new ArrayList<ItemStack>();
+	}
+	
+	@Override
+	public void onBlockHarvested(World world, int x, int y, int z, int metadata, EntityPlayer entityPlayer) {
+		if(!PC_Utils.isCreativ(entityPlayer))
+			super.harvestBlock(world, entityPlayer, x, y, z, metadata);
+	}
+
+	@Override
+	public void harvestBlock(World world, EntityPlayer entityPlayer, int x, int y, int z, int metadata) {
+		
 	}
 
 	@Override
