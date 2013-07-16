@@ -7,11 +7,14 @@ import cpw.mods.fml.relauncher.Side;
 
 import powercraft.api.blocks.PC_TileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.EnumGameType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -68,10 +71,6 @@ public class PC_Utils {
 	public static int getRedstoneValue(World world, int x, int y, int z) {
 		return world.getStrongestIndirectPower(x, y, z);
 	}
-	
-	protected File iGetPowerCraftFile(){
-		return mcs().getFile("PowerCraft");
-	}
 
 	public static int getMD(IBlockAccess world, int x, int y, int z) {
 		return world.getBlockMetadata(x, y, z);
@@ -83,6 +82,22 @@ public class PC_Utils {
 
 	public static int getRotation(IBlockAccess world, int x, int y, int z) {
 		return (getMD(world, x, y, z) & 3)+2;
+	}
+
+	public static EnumGameType getGameTypeFor(EntityPlayer player) {
+		return instance.iGetGameTypeFor(player);
+	}
+
+	public static boolean isCreativ(EntityPlayer entityPlayer) {
+		return getGameTypeFor(entityPlayer).isCreative();
+	}
+	
+	protected File iGetPowerCraftFile(){
+		return mcs().getFile("PowerCraft");
+	}
+
+	protected EnumGameType iGetGameTypeFor(EntityPlayer player) {
+		return ((EntityPlayerMP) player).theItemInWorldManager.getGameType();
 	}
 	
 }

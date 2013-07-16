@@ -32,19 +32,20 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		if(isClient()){
 			return;
 		}
+		int oldConnections = connections;
 		connections = 0;
 		for(PC_Direction dir:PC_Direction.VALID_DIRECTIONS){
-			connections |= canConnectTo(dir)<<(dir.ordinal()*5);
+			connections |= canConnectTo(dir, (oldConnections>>dir.ordinal()*5)&31)<<(dir.ordinal()*5);
 		}
 		multiblock.sendToClient();
 		multiblock.renderUpdate();
 	}
 
-	public int canConnectToBlock(World world, int x, int y, int z, int side, Block block){
+	public int canConnectToBlock(World world, int x, int y, int z, int side, Block block, int oldConnectionInfo){
 		return 0;
 	}
 	
-	public int canConnectTo(PC_Direction dir){
+	public int canConnectTo(PC_Direction dir, int oldConnection){
 		int x = multiblock.xCoord + dir.offsetX;
 		int y = multiblock.yCoord + dir.offsetY;
 		int z = multiblock.zCoord + dir.offsetZ;
@@ -58,7 +59,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 				return 1;
 			}
 		}
-		int i = canConnectToBlock(multiblock.worldObj, x, y, z, dir.getOpposite().ordinal(), block);
+		int i = canConnectToBlock(multiblock.worldObj, x, y, z, dir.getOpposite().ordinal(), block, oldConnection>>1);
 		if(i>0){
 			return (i&15)<<1;
 		}
@@ -77,7 +78,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 
 	public abstract Icon getNormalConduitIcon();
 	public abstract Icon getCornerConduitIcon();
-	public abstract Icon getConnectionConduitIcon();
+	public abstract Icon getConnectionConduitIcon(int connectionInfo);
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -168,7 +169,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 					icons[dir.getOpposite().ordinal()] = icon;
 					if(length>0){
 						Icon icons2[] = new Icon[6];
-						Icon icon2 = getConnectionConduitIcon();
+						Icon icon2 = getConnectionConduitIcon(pipeInfoAtSide(dir));
 						for(PC_Direction dir2:PC_Direction.VALID_DIRECTIONS){
 							if(dir2!=dir){
 								icons2[dir2.ordinal()] = icon2;
@@ -176,6 +177,12 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 								icons2[dir2.ordinal()] = null;
 							}
 						}
+						renderer.uvRotateBottom = 0;
+						renderer.uvRotateTop = 0;
+						renderer.uvRotateEast = dir==PC_Direction.UP || dir==PC_Direction.DOWN?0:1;
+						renderer.uvRotateNorth = 0;
+						renderer.uvRotateSouth = dir==PC_Direction.UP || dir==PC_Direction.DOWN?0:1;
+						renderer.uvRotateWest = 0;
 						PC_BlockMultiblock.setIcons(icons2);
 						float ns = connectionSize/32.0f;
 						float l = 0.5f-length;
@@ -196,7 +203,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		Tessellator.instance.startDrawingQuads();
 	}
-	
+
 	protected boolean notingOnSide(PC_Direction dir){
 		return ((connections>>(dir.ordinal()*5)) & 31) == 0;
 	}

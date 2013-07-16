@@ -1,6 +1,10 @@
 package powercraft.core.blocks;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,7 +18,7 @@ public class PC_TileEntityPuffer extends PC_TileEntity implements PC_IGresGuiOpe
 
 	private static final int maxEnergyInput = 100;
 	private static final int maxEnergyOutput = 100;
-	private static final int maxEnergy = 10000;
+	public static final int maxEnergy = 10000;
 	
 	private float energy=0;
 	private float request=0;
@@ -86,6 +90,7 @@ public class PC_TileEntityPuffer extends PC_TileEntity implements PC_IGresGuiOpe
 	@Override
 	public void loadFromNBT(NBTTagCompound nbtTagCompound) {
 		energy = nbtTagCompound.getFloat("energy");
+		renderUpdate();
 	}
 
 	@Override
@@ -101,6 +106,22 @@ public class PC_TileEntityPuffer extends PC_TileEntity implements PC_IGresGuiOpe
 	@Override
 	public boolean canProviderTubeConnectTo(int side) {
 		return true;
+	}
+
+	public void setEnergy(int energy) {
+		this.energy = energy;
+		sendToClient();
+	}
+
+	@Override
+	public ArrayList<ItemStack> getBlockDropped(int fortune) {
+		Block block = getBlockType();
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+        int id = block.idDropped(blockMetadata, worldObj.rand, fortune);
+        if (id > 0){
+            ret.add(new ItemStack(id, 1, (int)energy));
+        }
+        return ret;
 	}
 	
 }

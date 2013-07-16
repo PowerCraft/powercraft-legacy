@@ -34,7 +34,7 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 	}
 	
 	@Override
-	public int canConnectToBlock(World world, int x, int y, int z, int side, Block block) {
+	public int canConnectToBlock(World world, int x, int y, int z, int side, Block block, int oldConnectionInfo) {
 		TileEntity te = PC_Utils.getTE(world, x, y, z);
 		int ret=0;
 		if(te instanceof PC_IEnergyConsumer){
@@ -47,7 +47,9 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 				ret |= 2;
 			}
 		}
-		return ret;
+		if(ret==(oldConnectionInfo&3))
+			return oldConnectionInfo;
+		return ret | ret<<2;
 	}
 	
 	@Override
@@ -105,7 +107,6 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 
 	@Override
 	public void onChunkUnload() {
-		System.out.println("onChunkUnload");
 		super.onChunkUnload();
 		removeFormGrid();
 	}
@@ -243,17 +244,24 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 	}
 
 	@Override
-	public Icon getConnectionConduitIcon() {
-		return PC_ConduitEnergyItem.getData(type).iconConnection;
+	public Icon getConnectionConduitIcon(int connectionInfo) {
+		return PC_ConduitEnergyItem.getData(type).iconConnection[(connectionInfo>>2)&3];
 	}
 
 	public void addEnergyInterfaces(List<PC_IEnergyConsumer> consumers, List<PC_IEnergyProvider> providers, List<PC_IEnergyPuffer> puffers) {
 		for(PC_Direction dir:PC_Direction.VALID_DIRECTIONS){
-			int pipeInfo = pipeInfoAtSide(dir);
-			if(pipeInfo!=0){
+			int pipeInfo = pipeInfoAtSide(dir) & 3;
+			int pipeInfo2 = pipeInfoAtSide(dir)>>2 & 3;
+			if(pipeInfo!=0 && pipeInfo2!=0){
 				TileEntity te = PC_Utils.getTE(multiblock.worldObj, multiblock.xCoord + dir.offsetX, multiblock.yCoord + dir.offsetY, multiblock.zCoord + dir.offsetZ);
 				if(te instanceof PC_IEnergyPuffer && pipeInfo==3){
-					puffers.add((PC_IEnergyPuffer) te);
+					if(pipeInfo2==1){
+						consumers.add((PC_IEnergyConsumer) te);
+					}else if(pipeInfo2==2){
+						providers.add((PC_IEnergyProvider) te);
+					}else{
+						puffers.add((PC_IEnergyPuffer) te);
+					}
 				}else if(te instanceof PC_IEnergyConsumer && pipeInfo==1){
 					consumers.add((PC_IEnergyConsumer) te);
 				}else if(te instanceof PC_IEnergyProvider && pipeInfo==2){
