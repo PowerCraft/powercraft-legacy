@@ -43,6 +43,8 @@ public abstract class PC_TileEntity extends TileEntity {
 	protected final List<PC_GresBaseWithInventory> containers = new ArrayList<PC_GresBaseWithInventory>();
 	
 	public boolean isClient(){
+		if(worldObj==null)
+			return true;
 		return worldObj.isRemote;
 	}
 	
@@ -180,7 +182,7 @@ public abstract class PC_TileEntity extends TileEntity {
 	}
 	
 	public void notifyNeighbors(){
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 	}
 	
 	public void sendToClient(){

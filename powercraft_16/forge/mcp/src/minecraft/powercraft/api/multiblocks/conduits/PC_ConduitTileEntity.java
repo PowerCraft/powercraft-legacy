@@ -3,6 +3,8 @@ package powercraft.api.multiblocks.conduits;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -12,21 +14,26 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils;
 import powercraft.api.multiblocks.PC_BlockMultiblock;
+import powercraft.api.multiblocks.PC_MultiblockIndex;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.PC_TileEntityMultiblock;
 
 public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 
-	protected int size=6;
 	protected int connectionSize=8;
 	protected int connectionLength=3;
 	protected int connections;
+	
+	protected PC_ConduitTileEntity(){
+		super(6);
+	}
 	
 	public void checkConnections(){
 		if(isClient()){
@@ -38,7 +45,6 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 			connections |= canConnectTo(dir, (oldConnections>>dir.ordinal()*5)&31)<<(dir.ordinal()*5);
 		}
 		multiblock.sendToClient();
-		multiblock.renderUpdate();
 	}
 
 	public int canConnectToBlock(World world, int x, int y, int z, int side, Block block, int oldConnectionInfo){
@@ -54,7 +60,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 			return 0;
 		if(block instanceof PC_BlockMultiblock){
 			PC_TileEntityMultiblock tileEntity = PC_Utils.getTE(multiblock.worldObj, x, y, z);
-			PC_MultiblockTileEntity multiblockTileEntity = tileEntity.getCenter();
+			PC_MultiblockTileEntity multiblockTileEntity = tileEntity.getMultiblockTileEntity(PC_MultiblockIndex.CENTER);
 			if(multiblockTileEntity!=null && multiblockTileEntity.getClass() == getClass()){
 				return 1;
 			}
@@ -67,8 +73,9 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 	}
 
 	@Override
-	public void onAdded() {
+	public boolean onAdded() {
 		checkConnections();
+		return true;
 	}
 
 	@Override
@@ -86,7 +93,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		Tessellator.instance.draw();
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		Tessellator.instance.startDrawingQuads();
-		float s = size/32.0f;
+		float s = thickness/32.0f;
 		renderer.setRenderBounds(0.5f-s, 0.5f-s, 0.5f-s, 0.5f+s, 0.5f+s, 0.5f+s);
 		PC_Direction first = null;
 		PC_Direction secound = null;
@@ -241,6 +248,46 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 	@Override
 	public void saveToNBT(NBTTagCompound nbtCompoundTag) {
 		nbtCompoundTag.setInteger("connections", connections);
+	}
+
+	@Override
+	public List<AxisAlignedBB> getCollisionBoxes() {
+		float s = thickness/32.0f;
+		List<AxisAlignedBB> list = new ArrayList<AxisAlignedBB>();
+		list.add(AxisAlignedBB.getBoundingBox(0.5-s, 0.5-s, 0.5-s, 0.5+s, 0.5+s, 0.5+s));
+		for(PC_Direction dir:PC_Direction.VALID_DIRECTIONS){
+			if(!notingOnSide(dir)){
+				float length = pipeInfoAtSide(dir)!=0?connectionLength/16.0f:0;
+				list.add(AxisAlignedBB.getBoundingBox(offsetN(s, s, dir.offsetX, length), offsetN(s, s, dir.offsetY, length), offsetN(s, s, dir.offsetZ, length),
+						offsetP(s, s, dir.offsetX, length), offsetP(s, s, dir.offsetY, length), offsetP(s, s, dir.offsetZ, length)));
+				if(length>0){
+					float ns = connectionSize/32.0f;
+					float l = 0.5f-length;
+					list.add(AxisAlignedBB.getBoundingBox(offsetN(ns, l, dir.offsetX, 0), offsetN(ns, l, dir.offsetY, 0), offsetN(ns, l, dir.offsetZ, 0),
+							offsetP(ns, l, dir.offsetX, 0), offsetP(ns, l, dir.offsetY, 0), offsetP(ns, l, dir.offsetZ, 0)));
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public AxisAlignedBB getSelectionBox() {
+		double s = thickness/32.0;
+		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0.5-s, 0.5-s, 0.5-s, 0.5+s, 0.5+s, 0.5+s);
+		if(!notingOnSide(PC_Direction.WEST))
+			aabb.minX = 0;
+		if(!notingOnSide(PC_Direction.EAST))
+			aabb.maxX = 1;
+		if(!notingOnSide(PC_Direction.DOWN))
+			aabb.minY = 0;
+		if(!notingOnSide(PC_Direction.UP))
+			aabb.maxY = 1;
+		if(!notingOnSide(PC_Direction.NORTH))
+			aabb.minZ = 0;
+		if(!notingOnSide(PC_Direction.SOUTH))
+			aabb.maxZ = 1;
+		return aabb;
 	}
 	
 }
