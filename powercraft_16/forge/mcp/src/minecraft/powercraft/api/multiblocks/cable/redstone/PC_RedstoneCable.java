@@ -1,4 +1,4 @@
-package powercraft.api.multiblocks.redstone;
+package powercraft.api.multiblocks.cable.redstone;
 
 public class PC_RedstoneCable implements PC_IRedstoneCable {
 
