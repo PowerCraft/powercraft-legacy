@@ -20,6 +20,8 @@ import net.minecraft.world.World;
 
 public class PC_Utils {
 
+	public static final int BLOCK_NOTIFY = 1, BLOCK_UPDATE = 2, BLOCK_ONLY_SERVERSIDE = 4;
+	
 	protected static PC_Utils instance;
 	
 	public PC_Utils(){
@@ -40,12 +42,112 @@ public class PC_Utils {
 		return null;
 	}
 
-	public static <T extends TileEntity> T getTE(IBlockAccess world, int x, int y, int z) {
-		return (T)world.getBlockTileEntity(x, y, z);
+	public static int getBID(IBlockAccess blockAccess, int x, int y, int z) {
+		return blockAccess.getBlockId(x, y, z);
 	}
-
-	public static <T extends Block> T getBlock(IBlockAccess world, int x, int y, int z) {
-		return (T)Block.blocksList[world.getBlockId(x, y, z)];
+	
+	public static int getBID(IBlockAccess blockAccess, PC_Vec3I pos) {
+		return getBID(blockAccess, pos.x, pos.y, pos.z);
+	}
+	
+	public static boolean setBID(World world, int x, int y, int z, int blockID, int meta, int flag) {
+		return world.setBlock(x, y, z, blockID, meta, flag);
+	}
+	
+	public static boolean setBID(World world, PC_Vec3I pos, int blockID, int meta, int flag) {
+		return setBID(world, pos.x, pos.y, pos.z, blockID, meta, flag);
+	}
+	
+	public static boolean setBID(World world, int x, int y, int z, int blockID, int meta) {
+		return setBID(world, x, y, z, blockID, meta, BLOCK_NOTIFY | BLOCK_UPDATE);
+	}
+	
+	public static boolean setBID(World world, PC_Vec3I pos, int blockID, int meta) {
+		return setBID(world, pos.x, pos.y, pos.z, blockID, meta);
+	}
+	
+	public static boolean setBID(World world, int x, int y, int z, int blockID) {
+		return setBID(world, x, y, z, blockID, 0);
+	}
+	
+	public static boolean setBID(World world, PC_Vec3I pos, int blockID) {
+		return setBID(world, pos.x, pos.y, pos.z, blockID);
+	}
+	
+	public static int getMD(IBlockAccess blockAccess, int x, int y, int z) {
+		return blockAccess.getBlockMetadata(x, y, z);
+	}
+	
+	public static int getMD(IBlockAccess blockAccess, PC_Vec3I pos) {
+		return getMD(blockAccess, pos.x, pos.y, pos.z);
+	}
+	
+	public static boolean setMD(World world, int x, int y, int z, int meta, int flag) {
+		return world.setBlockMetadataWithNotify(x, y, z, meta, flag);
+	}
+	
+	public static boolean setMD(World world, PC_Vec3I pos, int meta, int flag) {
+		return setMD(world, pos.x, pos.y, pos.z, meta, flag);
+	}
+	
+	public static boolean setMD(World world, int x, int y, int z, int meta) {
+		return world.setBlockMetadataWithNotify(x, y, z, meta, BLOCK_NOTIFY | BLOCK_UPDATE);
+	}
+	
+	public static boolean setMD(World world, PC_Vec3I pos, int meta) {
+		return setMD(world, pos.x, pos.y, pos.z, meta);
+	}
+	
+	public static <T extends TileEntity> T getTE(IBlockAccess blockAccess, int x, int y, int z) {
+		return (T) blockAccess.getBlockTileEntity(x, y, z);
+	}
+	
+	public static <T extends TileEntity> T getTE(IBlockAccess blockAccess, PC_Vec3I pos) {
+		return getTE(blockAccess, pos.x, pos.y, pos.z);
+	}
+	
+	public static void setTE(World world, int x, int y, int z, TileEntity te) {
+		world.setBlockTileEntity(x, y, z, te);
+	}
+	
+	public static void setTE(World world, PC_Vec3I pos, TileEntity te) {
+		setTE(world, pos.x, pos.y, pos.z, te);
+	}
+	
+	public static <T extends Block> T getBlock(IBlockAccess blockAccess, int x, int y, int z) {
+		return (T) Block.blocksList[getBID(blockAccess, x, y, z)];
+	}
+	
+	public static <T extends Block> T getBlock(IBlockAccess blockAccess, PC_Vec3I pos) {
+		return getBlock(blockAccess, pos.x, pos.y, pos.z);
+	}
+	
+	public static boolean setBlock(World world, int x, int y, int z, Block block, int meta, int flag) {
+		int id = 0;
+		if (block != null) {
+			id = block.blockID;
+		}
+		return setBID(world, x, y, z, id, meta, flag);
+	}
+	
+	public static boolean setBlock(World world, PC_Vec3I pos, Block block, int meta, int flag) {
+		return setBlock(world, pos.x, pos.y, pos.z, block, meta, flag);
+	}
+	
+	public static boolean setBlock(World world, int x, int y, int z, Block block, int meta) {
+		return setBlock(world, x, y, z, block, meta, BLOCK_NOTIFY | BLOCK_UPDATE);
+	}
+	
+	public static boolean setBlock(World world, PC_Vec3I pos, Block block, int meta) {
+		return setBlock(world, pos.x, pos.y, pos.z, block, meta);
+	}
+	
+	public static boolean setBlock(World world, int x, int y, int z, Block block) {
+		return setBlock(world, x, y, z, block, 0);
+	}
+	
+	public static boolean setBlock(World world, PC_Vec3I pos, Block block) {
+		return setBlock(world, pos.x, pos.y, pos.z, block);
 	}
 
 	public static File getPowerCraftFile(String directory, String f) {
@@ -72,14 +174,6 @@ public class PC_Utils {
 		return world.getStrongestIndirectPower(x, y, z);
 	}
 
-	public static int getMD(IBlockAccess world, int x, int y, int z) {
-		return world.getBlockMetadata(x, y, z);
-	}
-
-	public static void setMD(World world, int x, int y, int z, int md) {
-		world.setBlockMetadataWithNotify(x, y, z, md, 3);
-	}
-
 	public static int getRotation(IBlockAccess world, int x, int y, int z) {
 		return (getMD(world, x, y, z) & 3)+2;
 	}
@@ -90,6 +184,49 @@ public class PC_Utils {
 
 	public static boolean isCreativ(EntityPlayer entityPlayer) {
 		return getGameTypeFor(entityPlayer).isCreative();
+	}
+	
+	public static void notifyBlockOfNeighborChange(World world, int x, int y, int z, int blockID) {
+		Block block = getBlock(world, x, y, z);
+		if (block != null) {
+			block.onNeighborBlockChange(world, x, y, z, blockID);
+		}
+	}
+	
+	public static void hugeUpdate(World world, int x, int y, int z) {
+		int blockID = getBID(world, x, y, z);
+		notifyBlockOfNeighborChange(world, x - 2, y, z, blockID);
+		notifyBlockOfNeighborChange(world, x - 1, y, z, blockID);
+		notifyBlockOfNeighborChange(world, x + 1, y, z, blockID);
+		notifyBlockOfNeighborChange(world, x + 2, y, z, blockID);
+		notifyBlockOfNeighborChange(world, x, y - 2, z, blockID);
+		notifyBlockOfNeighborChange(world, x, y - 1, z, blockID);
+		notifyBlockOfNeighborChange(world, x, y + 1, z, blockID);
+		notifyBlockOfNeighborChange(world, x, y + 2, z, blockID);
+		notifyBlockOfNeighborChange(world, x, y, z - 2, blockID);
+		notifyBlockOfNeighborChange(world, x, y, z - 1, blockID);
+		notifyBlockOfNeighborChange(world, x, y, z + 1, blockID);
+		notifyBlockOfNeighborChange(world, x, y, z + 2, blockID);
+		notifyBlockOfNeighborChange(world, x - 1, y + 1, z - 1, blockID);
+		notifyBlockOfNeighborChange(world, x + 1, y + 1, z - 1, blockID);
+		notifyBlockOfNeighborChange(world, x + 1, y + 1, z + 1, blockID);
+		notifyBlockOfNeighborChange(world, x - 1, y + 1, z + 1, blockID);
+		notifyBlockOfNeighborChange(world, x + 1, y + 1, z, blockID);
+		notifyBlockOfNeighborChange(world, x - 1, y + 1, z, blockID);
+		notifyBlockOfNeighborChange(world, x, y + 1, z + 1, blockID);
+		notifyBlockOfNeighborChange(world, x, y + 1, z - 1, blockID);
+		notifyBlockOfNeighborChange(world, x - 1, y, z - 1, blockID);
+		notifyBlockOfNeighborChange(world, x + 1, y, z - 1, blockID);
+		notifyBlockOfNeighborChange(world, x + 1, y, z + 1, blockID);
+		notifyBlockOfNeighborChange(world, x - 1, y, z + 1, blockID);
+		notifyBlockOfNeighborChange(world, x - 1, y - 1, z - 1, blockID);
+		notifyBlockOfNeighborChange(world, x + 1, y - 1, z - 1, blockID);
+		notifyBlockOfNeighborChange(world, x + 1, y - 1, z + 1, blockID);
+		notifyBlockOfNeighborChange(world, x - 1, y - 1, z + 1, blockID);
+		notifyBlockOfNeighborChange(world, x + 1, y - 1, z, blockID);
+		notifyBlockOfNeighborChange(world, x - 1, y - 1, z, blockID);
+		notifyBlockOfNeighborChange(world, x, y - 1, z + 1, blockID);
+		notifyBlockOfNeighborChange(world, x, y - 1, z - 1, blockID);
 	}
 	
 	protected File iGetPowerCraftFile(){

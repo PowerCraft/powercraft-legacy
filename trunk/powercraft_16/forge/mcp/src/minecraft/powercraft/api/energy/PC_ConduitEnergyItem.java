@@ -3,6 +3,7 @@ package powercraft.api.energy;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -19,12 +20,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class PC_ConduitEnergyItem extends PC_ConduitItem {
 	
 	private static Data[] data = new Data[16];
+	public static PC_ConduitEnergyItem item;
 	
 	public PC_ConduitEnergyItem(int id) {
 		super(id);
 		setHasSubtypes(true);
 		setCreativeTab(CreativeTabs.tabCombat);
 		data[0] = new Data("Nanotube");
+		item = this;
 	}
 	
 	@Override

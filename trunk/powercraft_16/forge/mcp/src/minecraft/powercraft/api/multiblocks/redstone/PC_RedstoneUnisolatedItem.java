@@ -1,11 +1,22 @@
 package powercraft.api.multiblocks.redstone;
 
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.util.Icon;
+import powercraft.api.PC_ClientRegistry;
+import powercraft.api.items.PC_ItemInfo;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 
+@PC_ItemInfo(name="Unisolated Redstone", itemid="unisolatedRedstone", defaultid=17001)
 public class PC_RedstoneUnisolatedItem extends PC_RedstoneItem {
 
+	private static Icon cableIcon;
+	public static PC_RedstoneUnisolatedItem item;
+	
 	public PC_RedstoneUnisolatedItem(int id) {
 		super(id);
+		setCreativeTab(CreativeTabs.tabRedstone);
+		item = this;
 	}
 
 	@Override
@@ -15,7 +26,7 @@ public class PC_RedstoneUnisolatedItem extends PC_RedstoneItem {
 
 	@Override
 	public void loadMultiblockItem() {
-		
+		cableIcon = PC_ClientRegistry.registerIcon("redstone", itemInfo.itemid());
 	}
 
 	@Override
@@ -25,7 +36,11 @@ public class PC_RedstoneUnisolatedItem extends PC_RedstoneItem {
 
 	@Override
 	public void loadIcons() {
-		
+		itemIcon = PC_ClientRegistry.registerIcon("redstone");
 	}
 
+	public static Icon getCableIcon(){
+		return cableIcon;
+	}
+	
 }

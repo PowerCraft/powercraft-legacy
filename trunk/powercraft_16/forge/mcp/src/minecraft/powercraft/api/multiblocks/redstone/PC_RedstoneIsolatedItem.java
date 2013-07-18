@@ -7,8 +7,11 @@ import powercraft.api.multiblocks.PC_MultiblockType;
 
 public class PC_RedstoneIsolatedItem extends PC_RedstoneItem {
 
+	public static PC_RedstoneIsolatedItem item;
+	
 	public PC_RedstoneIsolatedItem(int id) {
 		super(id);
+		item = this;
 	}
 
 	@Override

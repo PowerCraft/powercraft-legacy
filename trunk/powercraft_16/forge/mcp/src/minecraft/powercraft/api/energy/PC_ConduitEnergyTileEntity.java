@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
@@ -16,6 +17,7 @@ import powercraft.api.PC_Utils;
 import powercraft.api.PC_Vec3I;
 import powercraft.api.grids.PC_IGridProvider;
 import powercraft.api.multiblocks.PC_BlockMultiblock;
+import powercraft.api.multiblocks.PC_MultiblockIndex;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.PC_TileEntityMultiblock;
 import powercraft.api.multiblocks.conduits.PC_ConduitTileEntity;
@@ -94,9 +96,10 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 	}
 
 	@Override
-	public void onAdded() {
+	public boolean onAdded() {
 		super.onAdded();
 		getGridIfNull();
+		return true;
 	}
 
 	@Override
@@ -157,7 +160,7 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 		while(!toLookAt.isEmpty()){
 			PC_Vec3I pos = toLookAt.remove(0);
 			PC_TileEntityMultiblock tileEntity = PC_Utils.getTE(world, pos.x, pos.y, pos.z);
-			PC_MultiblockTileEntity multiblockTileEntity = tileEntity.getCenter();
+			PC_MultiblockTileEntity multiblockTileEntity = tileEntity.getMultiblockTileEntity(PC_MultiblockIndex.CENTER);
 			if(multiblockTileEntity instanceof PC_ConduitEnergyTileEntity){
 				PC_EnergyGrid og = ((PC_ConduitEnergyTileEntity)multiblockTileEntity).getGrid();
 				og.remove((PC_ConduitEnergyTileEntity)multiblockTileEntity);
@@ -203,7 +206,7 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 		TileEntity te = PC_Utils.getTE(world, x, y, z);
 		if(te instanceof PC_TileEntityMultiblock){
 			PC_TileEntityMultiblock tileEntity = (PC_TileEntityMultiblock)te;
-			PC_MultiblockTileEntity multiblockTileEntity = tileEntity.getCenter();
+			PC_MultiblockTileEntity multiblockTileEntity = tileEntity.getMultiblockTileEntity(PC_MultiblockIndex.CENTER);
 			if(multiblockTileEntity instanceof PC_ConduitEnergyTileEntity){
 				return ((PC_ConduitEnergyTileEntity)multiblockTileEntity).getGrid();
 			}
@@ -282,6 +285,13 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 			getGridIfNull();
 			grid.onUpdateTick(this);
 		}
+	}
+
+	@Override
+	public List<ItemStack> getDrop() {
+		List<ItemStack> drops = new ArrayList<ItemStack>();
+		drops.add(new ItemStack(PC_ConduitEnergyItem.item, 1, type));
+		return drops;
 	}
 	
 }

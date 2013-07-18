@@ -3,12 +3,17 @@ package powercraft.api.multiblocks;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -115,12 +120,6 @@ public class PC_TileEntityMultiblock extends PC_TileEntity {
 	}
 
 	@Override
-	public boolean removeBlockByPlayer(EntityPlayer player) {
-		// TODO Auto-generated method stub
-		return super.removeBlockByPlayer(player);
-	}
-
-	@Override
 	public boolean canConnectRedstone(int side) {
 		boolean canConnectRedstone = false;
 		for(int i=0; i<tileEntities.length; i++){
@@ -153,24 +152,22 @@ public class PC_TileEntityMultiblock extends PC_TileEntity {
 			}
 		}
 	}
-
-	public boolean setCenter(PC_MultiblockTileEntity tileEntity) {
-		return setMultiblockTileEntity(0, tileEntity);
-	}
-
-	public PC_MultiblockTileEntity getCenter() {
-		return tileEntities[0];
+	
+	public boolean setMultiblockTileEntity(PC_MultiblockIndex index, PC_MultiblockTileEntity tileEntity){
+		return setMultiblockTileEntity(index.ordinal(), tileEntity);
 	}
 	
 	public boolean setMultiblockTileEntity(int index, PC_MultiblockTileEntity tileEntity){
 		if(tileEntities[index] == null){
 			tileEntities[index] = tileEntity;
-			tileEntity.setIndexAndMultiblock(index, this);
-			tileEntity.onAdded();
+			tileEntity.setIndexAndMultiblock(PC_MultiblockIndex.values()[index], this);
+			if(!tileEntity.onAdded()){
+				return false;
+			}
 		}else{
 			if(tileEntities[index].canMixWith(tileEntity)){
 				tileEntities[index] = tileEntities[index].mixWith(tileEntity);
-				tileEntities[index].setIndexAndMultiblock(index, this);
+				tileEntities[index].setIndexAndMultiblock(PC_MultiblockIndex.values()[index], this);
 			}else{
 				return false;
 			}
@@ -178,6 +175,35 @@ public class PC_TileEntityMultiblock extends PC_TileEntity {
 		notifyNeighbors();
 		sendToClient();
 		return true;
+	}
+	
+	public List<ItemStack> removeMultiblockTileEntity(PC_MultiblockIndex index){
+		return removeMultiblockTileEntity(index.ordinal());
+	}
+	
+	public List<ItemStack> removeMultiblockTileEntity(int index){
+		if(tileEntities[index]==null){
+			return null;
+		}
+		List<ItemStack> drop = tileEntities[index].getDrop();
+		tileEntities[index] = null;
+		notifyNeighbors();
+		sendToClient();
+		return drop;
+	}
+	
+	@Override
+	public void notifyNeighbors() {
+		onNeighborBlockChange(getBlockType().blockID);
+		super.notifyNeighbors();
+	}
+
+	public PC_MultiblockTileEntity getMultiblockTileEntity(PC_MultiblockIndex index) {
+		return getMultiblockTileEntity(index.ordinal());
+	}
+	
+	public PC_MultiblockTileEntity getMultiblockTileEntity(int index) {
+		return tileEntities[index];
 	}
 	
 	@Override
@@ -197,7 +223,7 @@ public class PC_TileEntityMultiblock extends PC_TileEntity {
 				String multiblockTileEntityName = nbtTagCompound.getString("multiblockTileEntityName["+i+"]");
 				if(!PC_MultiblockRegistry.isMultiblockTileEntity(tileEntities[i], multiblockTileEntityName)){
 					tileEntities[i] = PC_MultiblockRegistry.createMultiblockTileEntityFromName(multiblockTileEntityName);
-					tileEntities[i].setIndexAndMultiblock(i, this);
+					tileEntities[i].setIndexAndMultiblock(PC_MultiblockIndex.values()[i], this);
 				}
 				tileEntities[i].loadFromNBT(nbtTagCompound.getCompoundTag("data["+i+"]"));
 			}else{
@@ -214,6 +240,64 @@ public class PC_TileEntityMultiblock extends PC_TileEntity {
 				tileEntities[i].saveToNBT(compound);
 				nbtTagCompound.setCompoundTag("data["+i+"]", compound);
 			}
+		}
+	}
+
+	public List<AxisAlignedBB> getCollisionBoxes(PC_MultiblockIndex index) {
+		PC_MultiblockTileEntity multiblock = tileEntities[index.ordinal()];
+		if(multiblock!=null){
+			return multiblock.getCollisionBoxes();
+		}
+		return null;
+	}
+
+	public AxisAlignedBB getSelectionBox(PC_MultiblockIndex index) {
+		PC_MultiblockTileEntity multiblock = tileEntities[index.ordinal()];
+		if(multiblock!=null){
+			AxisAlignedBB aabb = multiblock.getSelectionBox();
+			if(aabb!=null){
+				return aabb.offset(xCoord, yCoord, zCoord);
+			}
+		}
+		return null;
+	}
+
+	public void addCollisionBoxesToList(AxisAlignedBB aabb, List list, Entity entity) {
+		for(int i=0; i<tileEntities.length; i++){
+			if(tileEntities[i]!=null){
+				List<AxisAlignedBB> l = tileEntities[i].getCollisionBoxes();
+				if(l!=null){
+					for(AxisAlignedBB e:l){
+						e.offset(xCoord, yCoord, zCoord);
+						if(aabb==null||aabb.intersectsWith(e)){
+							list.add(e);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public boolean noBlocks() {
+		for(int i=0; i<tileEntities.length; i++){
+			if(tileEntities[i]!=null){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void drop(List<ItemStack> drops) {
+		if (!worldObj.isRemote && worldObj.getGameRules().getGameRuleBooleanValue("doTileDrops")){
+			for(ItemStack itemStack:drops){
+	            float f = 0.7F;
+	            double d0 = (double)(worldObj.rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
+	            double d1 = (double)(worldObj.rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
+	            double d2 = (double)(worldObj.rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
+	            EntityItem entityitem = new EntityItem(worldObj, (double)xCoord + d0, (double)yCoord + d1, (double)zCoord + d2, itemStack);
+	            entityitem.delayBeforeCanPickup = 10;
+	            worldObj.spawnEntityInWorld(entityitem);
+	        }
 		}
 	}	
 	

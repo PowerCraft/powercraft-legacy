@@ -4,6 +4,7 @@ public class PC_RedstoneCable implements PC_IRedstoneCable {
 
 	private int cableType;
 	private PC_RedstoneGrid grid;
+	private PC_RedstoneIsolatedTileEntity tileEntity;
 	
 	public PC_RedstoneCable(int cableType) {
 		this.cableType = cableType;
@@ -19,4 +20,12 @@ public class PC_RedstoneCable implements PC_IRedstoneCable {
 		this.grid = grid;
 	}
 
+	public PC_RedstoneIsolatedTileEntity getTileEntity() {
+		return tileEntity;
+	}
+
+	public void setTileEntity(PC_RedstoneIsolatedTileEntity tileEntity) {
+		this.tileEntity = tileEntity;
+	}
+	
 }
