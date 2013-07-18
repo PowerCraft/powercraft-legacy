@@ -1,11 +1,10 @@
-package powercraft.api.multiblocks.redstone;
+package powercraft.api.multiblocks.cable.redstone;
 
 import net.minecraft.item.ItemStack;
-import powercraft.api.multiblocks.PC_MultiblockItem;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
-import powercraft.api.multiblocks.PC_MultiblockType;
+import powercraft.api.multiblocks.cable.PC_CableItem;
 
-public class PC_RedstoneIsolatedItem extends PC_RedstoneItem {
+public class PC_RedstoneIsolatedItem extends PC_CableItem {
 
 	public static PC_RedstoneIsolatedItem item;
 	

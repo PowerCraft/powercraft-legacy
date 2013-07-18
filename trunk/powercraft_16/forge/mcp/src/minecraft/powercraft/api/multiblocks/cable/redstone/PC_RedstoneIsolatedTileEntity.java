@@ -1,4 +1,4 @@
-package powercraft.api.multiblocks.redstone;
+package powercraft.api.multiblocks.cable.redstone;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,9 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
+import powercraft.api.multiblocks.cable.PC_CableTileEntity;
 
-public class PC_RedstoneIsolatedTileEntity extends PC_RedstoneTileEntity {
+public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 
 	private PC_RedstoneCable cable[] = new PC_RedstoneCable[16];
 	

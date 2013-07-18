@@ -1,6 +1,5 @@
-package powercraft.api.multiblocks.redstone;
+package powercraft.api.multiblocks.cable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -11,25 +10,23 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils;
-import powercraft.api.PC_Vec3I;
-import powercraft.api.energy.PC_ConduitEnergyTileEntity;
-import powercraft.api.energy.PC_EnergyGrid;
 import powercraft.api.multiblocks.PC_BlockMultiblock;
 import powercraft.api.multiblocks.PC_MultiblockIndex;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.PC_TileEntityMultiblock;
+import powercraft.api.multiblocks.cable.redstone.PC_IRedstoneCable;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class PC_RedstoneTileEntity extends PC_MultiblockTileEntity {
+public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	
 	protected int width;
 	private int centerThickness;
 	private int connections[][] = new int[4][];
 	
-	public PC_RedstoneTileEntity(int thickness, int width) {
+	public PC_CableTileEntity(int thickness, int width) {
 		super(thickness);
 		this.width = width;
 	}
@@ -162,8 +159,8 @@ public abstract class PC_RedstoneTileEntity extends PC_MultiblockTileEntity {
 			return 0;
 		int connection = 0xFFFF;
 		int length = 16;
-		if(((PC_RedstoneTileEntity)multiblock).centerThickness>0)
-			length = ((PC_RedstoneTileEntity)multiblock).centerThickness+2+((PC_RedstoneTileEntity)multiblock).getThickness()*2;
+		if(((PC_CableTileEntity)multiblock).centerThickness>0)
+			length = ((PC_CableTileEntity)multiblock).centerThickness+2+((PC_CableTileEntity)multiblock).getThickness()*2;
 		return connection | (length<<16);
 	}
 	

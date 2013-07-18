@@ -1,14 +1,14 @@
-package powercraft.api.multiblocks.redstone;
+package powercraft.api.multiblocks.cable.redstone;
 
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.Icon;
 import powercraft.api.PC_ClientRegistry;
 import powercraft.api.items.PC_ItemInfo;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
+import powercraft.api.multiblocks.cable.PC_CableItem;
 
 @PC_ItemInfo(name="Unisolated Redstone", itemid="unisolatedRedstone", defaultid=17001)
-public class PC_RedstoneUnisolatedItem extends PC_RedstoneItem {
+public class PC_RedstoneUnisolatedItem extends PC_CableItem {
 
 	private static Icon cableIcon;
 	public static PC_RedstoneUnisolatedItem item;

@@ -1,4 +1,4 @@
-package powercraft.api.multiblocks.redstone;
+package powercraft.api.multiblocks.cable.redstone;
 
 import powercraft.api.PC_Direction;
 

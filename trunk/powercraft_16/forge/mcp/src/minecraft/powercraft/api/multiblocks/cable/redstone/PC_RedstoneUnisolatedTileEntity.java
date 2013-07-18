@@ -1,15 +1,13 @@
-package powercraft.api.multiblocks.redstone;
+package powercraft.api.multiblocks.cable.redstone;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import powercraft.api.PC_Utils;
-import powercraft.api.energy.PC_ConduitEnergyItem;
-import powercraft.api.multiblocks.PC_MultiblockTileEntity;
+import powercraft.api.multiblocks.cable.PC_CableTileEntity;
 
-public class PC_RedstoneUnisolatedTileEntity extends PC_RedstoneTileEntity implements PC_IRedstoneCable {
+public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implements PC_IRedstoneCable {
 
 	public PC_RedstoneUnisolatedTileEntity() {
 		super(1, 2);
