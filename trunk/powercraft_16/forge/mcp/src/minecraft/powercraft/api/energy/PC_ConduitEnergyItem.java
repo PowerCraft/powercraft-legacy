@@ -25,7 +25,7 @@ public class PC_ConduitEnergyItem extends PC_ConduitItem {
 	public PC_ConduitEnergyItem(int id) {
 		super(id);
 		setHasSubtypes(true);
-		setCreativeTab(CreativeTabs.tabCombat);
+		setCreativeTab(CreativeTabs.tabDecorations);
 		data[0] = new Data("Nanotube");
 		item = this;
 	}

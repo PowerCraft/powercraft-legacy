@@ -37,6 +37,8 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	
 	protected abstract Icon getCableLineIcon(int index);
 	
+	protected  abstract int getMask();
+	
 	private float min(float w, int offset, float l){
 		if(offset<0){
 			return 0.5f-l;
@@ -120,76 +122,67 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			boolean hd = false;
 			if(connection!=null){
 				int c1 = connection[0];
+				double c1e = (c1>>16)/32.0;
+				c1 &= 0xFFFF;
 				int c2 = connection.length>1?connection[1]:0;
+				double c2e = (c2>>16)/32.0;
+				c2 &= 0xFFFF;
 				int c3 = connection.length>2?connection[2]:0;
+				double c3e = (c3>>16)/32.0;
+				c3 &= 0xFFFF;
 				int c4 = connection.length>3?connection[3]:0;
+				double c4e = (c4>>16)/32.0;
+				c4 &= 0xFFFF;
 				int c5 = connection.length>4?connection[4]:0;
-				float c1e = ((c1>>16)-(overlappingFix(Renderer.dir, dir2)?2:0))/32.0f;
-				float c2e = ((c2>>16))/32.0f;
-				if(c1e<c2e)
-					c1e = c2e;
-				if(c1==0){
-					if(c3==0){
-						if(c4==0){
-							if(c5==0){
-								c1e = (c2>>16)/32.0f;
-							}else{
-								if(c5>>16>0){
-									minYE = -0.5f+((c5>>16)-2)/32.0f;
-									maxYE = 1.5f-((c5>>16)-2)/32.0f;
-									hd=true;
-								}
-								if(c2==0){
-									c1e = 0.5f;
-								}else{
-									c1e = (c2>>16)/32.0f;
-								}
-							}
-						}else{
-							c1e = 1-((c4>>16)-(overlappingFix(Renderer.dir, dir2)?0:2))/32.0f;
-						}
+				double c5e = (c5>>16)/32.0;
+				c5 &= 0xFFFF;
+				int mask = getMask() | c1 | c2 | c3 | c4 | c5;
+				int p1 = 0;
+				double p1e = 0;
+				int p2 = 0;
+				double p2e = 0;
+				int pe = 0;
+				if(c1!=0&&c2!=0){
+					if(c1e>c2e){
+						p1e = c2e;
+						p2e = c1e;
+						p1 = mask&c2;
+						p2 = mask&c1;
+					}else if(c1e<c2e){
+						p1e = c1e;
+						p2e = c2e;
+						p1 = mask&c1;
+						p2 = mask&c2;
 					}else{
-						c1e = 0.5f;
-						float t = (c3>>16)/32.0f;
-						minYE = 0.5f-t;
-						maxYE = 0.5f+t;
-						if((Renderer.max1<maxYE) || (Renderer.min2>minYE)){
-							hd = true;
-							if(c2!=0){
-								c1e = (c2>>16)/32.0f;
-							}
-						}
+						p1e = c1e;
+						p1 = mask&(c1|c2);
 					}
-				}else{
-					if(c4!=0){
-						c1e = 1-((c4>>16)-(overlappingFix(Renderer.dir, dir2)?0:2))/32.0f;
-					}
+				}else if(c1!=0){
+					p1e = c1e;
+					p1 = mask&c1;
+				}else if(c2!=0){
+					p1e = c2e;
+					p1 = mask&c2;
 				}
-				Renderer.renderCable(w, c1e);
-				if(centerThickness>0 && c2!=0){
-					//c2e = (c2>>16)/32.0f;
-					Renderer.renderCableToOutside(w, c2e-s, c2e, 0, 1);
-				}else if(hd){
-					Renderer.renderCableToOutside(w, c1e-s, c1e, minYE, maxYE);
-				}
-				if(hd){
-					float c1eo = c1e;
-					if(c3==0){
-						if(c4==0){
-							c1e = (c2>>16)/32.0f;
-						}else{
-							c1e = 1-((c4>>16)-2)/32.0f;
-						}
-					}else{
-						c1e = 0.5f;
+				pe = mask&(c3|c4|c5);
+				double pemin=Renderer.min2;
+				double pemax=Renderer.max1;
+				if(p1!=0){
+					Renderer.renderCable2(w, w, p1e, Renderer.min2, Renderer.max1, s);
+					if(p2!=0){
+						Renderer.renderCable2(w, p1e, p2e, Renderer.min2, Renderer.max1, s);
+						if(pe!=0)
+							Renderer.renderCable2(w, p2e, 0.5, Renderer.min2, Renderer.max1, s);
+					}else if(pe!=0){
+						Renderer.renderCable2(w, p1e, 0.5, Renderer.min2, Renderer.max1, s);
 					}
-					if(c1e>c1eo)
-						Renderer.renderCable2(w, c1eo, c1e, minYE, maxYE, s);
+				}else if(pe!=0){
+					Renderer.renderCable2(w, w, 0.5, Renderer.min2, Renderer.max1, s);
 				}
 			}
 		}
 	}
-	
+
 	protected int canConnectToMultiblock(PC_MultiblockTileEntity multiblock){
 		if(multiblock.getClass()!=getClass())
 			return 0;
@@ -235,14 +228,19 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		if(block==null){
 			c4 = canConnectToBlock(world, x+dir2.offsetX+dir.offsetX, y+dir2.offsetY+dir.offsetY, z+dir2.offsetZ+dir.offsetZ, dir2.getOpposite(), dir.getOpposite());
 		}
-		block = PC_Utils.getBlock(world, x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
-		if(block==null){
-			c5 = canConnectToBlock(world, x+dir2.offsetX+dir.offsetX, y+dir2.offsetY+dir.offsetY, z+dir2.offsetZ+dir.offsetZ, dir.getOpposite(), dir2.getOpposite());
+		Block block2 = PC_Utils.getBlock(world, x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
+		
+		if(block2==null){
+			if(block==null){
+				c5 = canConnectToBlock(world, x+dir2.offsetX+dir.offsetX, y+dir2.offsetY+dir.offsetY, z+dir2.offsetZ+dir.offsetZ, dir.getOpposite(), dir2.getOpposite());
+				if(dir.offsetX<0 || dir.offsetY<0 || dir.offsetZ<0)
+					c5 = c5&0xFFFF;
+			}else{
+				c5 = canConnectToBlock(world, x+dir2.offsetX+dir.offsetX, y+dir2.offsetY+dir.offsetY, z+dir2.offsetZ+dir.offsetZ, dir.getOpposite(), dir2.getOpposite());
+			}
 		}else{
-			block = PC_Utils.getBlock(world, x+dir2.offsetX, y+dir2.offsetY, z+dir2.offsetZ);
 			if(block==null){
 				c5 = canConnectToBlock(world, x+dir2.offsetX+dir.offsetX, y+dir2.offsetY+dir.offsetY, z+dir2.offsetZ+dir.offsetZ, dir.getOpposite(), dir2.getOpposite()) & 0xFFFF;
-				
 			}
 		}
 		if(c5!=0){
@@ -268,15 +266,13 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		PC_Direction dir = PC_MultiblockIndex.getFaceDir(index);
 		centerThickness = 0;
 		Block block = PC_Utils.getBlock(multiblock.worldObj, multiblock.xCoord+dir.offsetX, multiblock.yCoord+dir.offsetY, multiblock.zCoord+dir.offsetZ);
-		//if(block==null || !block.isBlockSolidOnSide(multiblock.worldObj, multiblock.xCoord+dir.offsetX, multiblock.yCoord+dir.offsetY, multiblock.zCoord+dir.offsetZ, ForgeDirection.values()[dir.getOpposite().ordinal()])){
+		if(block==null || !block.isBlockSolidOnSide(multiblock.worldObj, multiblock.xCoord+dir.offsetX, multiblock.yCoord+dir.offsetY, multiblock.zCoord+dir.offsetZ, ForgeDirection.values()[dir.getOpposite().ordinal()])){
 			if(multiblock.getMultiblockTileEntity(PC_MultiblockIndex.CENTER)!=null)
 				centerThickness = multiblock.getMultiblockTileEntity(PC_MultiblockIndex.CENTER).getThickness();
 			else{
-				if(block==null || !block.isBlockSolidOnSide(multiblock.worldObj, multiblock.xCoord+dir.offsetX, multiblock.yCoord+dir.offsetY, multiblock.zCoord+dir.offsetZ, ForgeDirection.values()[dir.getOpposite().ordinal()])){
-					return multiblock.removeMultiblockTileEntity(index);
-				}
+				return multiblock.removeMultiblockTileEntity(index);
 			}
-		//}
+		}
 		
 		if(isClient()){
 			return null;
@@ -389,6 +385,10 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			return AxisAlignedBB.getBoundingBox(minX, 0, 0, maxX, 1, 1);
 		}
 		return null;
+	}
+	
+	public int getCenterThickness(){
+		return centerThickness;
 	}
 	
 	private static class Renderer{
