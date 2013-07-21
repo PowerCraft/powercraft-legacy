@@ -53,6 +53,7 @@ public abstract class PC_MultiblockItem extends PC_Item {
         	case 4:x--;break;
         	case 5:x++;break;
         	}
+        }else{
         	replaceAble = true;
         }
 		switch(side){

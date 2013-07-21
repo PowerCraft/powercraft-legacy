@@ -4,6 +4,7 @@ import powercraft.api.PC_FiledGenerator;
 import powercraft.api.PC_Module;
 import powercraft.api.energy.PC_ConduitEnergyItem;
 import powercraft.api.multiblocks.PC_BlockMultiblock;
+import powercraft.api.multiblocks.cable.redstone.PC_RedstoneIsolatedItem;
 import powercraft.api.multiblocks.cable.redstone.PC_RedstoneUnisolatedItem;
 import powercraft.core.blocks.PC_BlockGenerator;
 import powercraft.core.blocks.PC_BlockPuffer;
@@ -38,6 +39,9 @@ public class PC_Core extends PC_Module {
 	
 	@PC_FiledGenerator
 	public PC_RedstoneUnisolatedItem unisolatedRedstone;
+	
+	@PC_FiledGenerator
+	public PC_RedstoneIsolatedItem isolatedRedstone;
 	
 	@Override
 	@EventHandler
