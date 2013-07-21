@@ -32,6 +32,8 @@ public class PC_BlockMultiblock extends PC_Block {
 	public static PC_BlockMultiblock block;
 	@SideOnly(Side.CLIENT)
 	private static Icon[] icons;
+	@SideOnly(Side.CLIENT)
+	public static int colorMultiplier = 0xFFFFFFFF;
 	
 	public PC_BlockMultiblock(int id) {
 		super(id, Material.ground);
@@ -163,6 +165,11 @@ public class PC_BlockMultiblock extends PC_Block {
 	@Override
 	public int idDropped(int metadata, Random rand, int fortune) {
 		return 0;
+	}
+
+	@Override
+	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
+		return colorMultiplier;
 	}
 	
 }

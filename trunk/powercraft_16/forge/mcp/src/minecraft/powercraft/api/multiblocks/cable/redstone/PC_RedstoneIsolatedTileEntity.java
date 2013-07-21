@@ -5,11 +5,13 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import powercraft.api.PC_Direction;
+import powercraft.api.PC_Utils;
 import powercraft.api.multiblocks.PC_MultiblockIndex;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.cable.PC_CableTileEntity;
@@ -35,6 +37,10 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 		return cable[cableID];
 	}
 
+	public boolean isIO(){
+		return isIO;
+	}
+	
 	@Override
 	public boolean canMixWith(PC_MultiblockTileEntity tileEntity) {
 		if(tileEntity instanceof PC_RedstoneIsolatedTileEntity){
@@ -154,7 +160,7 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 	@Override
 	protected int canConnectToBlock(World world, int x, int y, int z, Block block) {
 		if(getCableCount()==1)
-			return block instanceof BlockRedstoneWire || block.canProvidePower()?0xFFFF:0;
+			return block instanceof BlockRedstoneWire || (block!=null && block.canProvidePower())?getMask()|(16<<16):0;
 		return 0;
 	}
 
@@ -231,6 +237,31 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 				cable[i].removeFormGrid();
 			}
 		}
+	}
+
+	public boolean isIO(int xOffset, int yOffset, int zOffset, PC_Direction dir) {
+		Block block = PC_Utils.getBlock(multiblock.worldObj, multiblock.xCoord+xOffset, multiblock.yCoord+yOffset, multiblock.zCoord+zOffset);
+		return canConnectToBlock(multiblock.worldObj, multiblock.xCoord+xOffset, multiblock.yCoord+yOffset, multiblock.zCoord+zOffset, block)!=0;
+	}
+	
+	@Override
+	public int getRedstonePowerValue(int side) {
+		if(!isClient()){
+			PC_RedstoneGrid grid = getGrid();
+			if(grid!=null){
+				PC_Direction dir = PC_Direction.getOrientation(side).getOpposite();
+				Block block = PC_Utils.getBlock(multiblock.worldObj, multiblock.xCoord+dir.offsetX, multiblock.yCoord+dir.offsetY, multiblock.zCoord+dir.offsetZ);
+				if(PC_MultiblockIndex.getFaceDir(index) == dir || ((block instanceof BlockRedstoneWire) && PC_MultiblockIndex.getFaceDir(index)==PC_Direction.DOWN)){
+					return grid.getRedstonePowerValue();
+				}
+			}
+		}
+		return 0;
+	}
+
+	@Override
+	protected int getColorForCable(int cableID) {
+		return ItemDye.dyeColors[cableID];
 	}
 	
 }
