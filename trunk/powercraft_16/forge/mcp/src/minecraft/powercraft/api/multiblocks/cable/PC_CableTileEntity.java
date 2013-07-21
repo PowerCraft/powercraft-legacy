@@ -448,29 +448,6 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			}
 			renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
 		}
-
-		public static void renderCable(double w, double l){
-			double minX = min(w, dir2.offsetX, l);
-			double minY = min(w, dir2.offsetY, l);
-			double minZ = min(w, dir2.offsetZ, l);
-			double maxX = max(w, dir2.offsetX, l);
-			double maxY = max(w, dir2.offsetY, l);
-			double maxZ = max(w, dir2.offsetZ, l);
-			if(dir.offsetX>0){
-				renderer.setRenderBounds(min1, minY, minZ, max1, maxY, maxZ);
-			}else if(dir.offsetX<0){
-				renderer.setRenderBounds(min2, minY, minZ, max2, maxY, maxZ);
-			}else if(dir.offsetY>0){
-				renderer.setRenderBounds(minX, min1, minZ, maxX, max1, maxZ);
-			}else if(dir.offsetY<0){
-				renderer.setRenderBounds(minX, min2, minZ, maxX, max2, maxZ);
-			}else if(dir.offsetZ>0){
-				renderer.setRenderBounds(minX, minY, min1, maxX, maxY, max1);
-			}else if(dir.offsetZ<0){
-				renderer.setRenderBounds(minX, minY, min2, maxX, maxY, max2);
-			}
-			renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
-		}
 		
 		private static double min(double w, int offset, double l){
 			if(offset<0){
