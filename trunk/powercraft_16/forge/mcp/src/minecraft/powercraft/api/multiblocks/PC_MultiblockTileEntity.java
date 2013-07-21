@@ -1,8 +1,5 @@
 package powercraft.api.multiblocks;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,7 +8,6 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -108,10 +104,6 @@ public abstract class PC_MultiblockTileEntity {
 		
 	}
 
-	public void onLoaded() {
-		
-	}
-
 	public void update() {
 		
 	}
@@ -190,5 +182,9 @@ public abstract class PC_MultiblockTileEntity {
 	}
 
 	public abstract List<ItemStack> getDrop();
+
+	public PC_MultiblockIndex getIndex(){
+		return index;
+	}
 	
 }

@@ -3,14 +3,21 @@ package powercraft.api.multiblocks.cable.redstone;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
+import net.minecraft.world.World;
+import powercraft.api.PC_Direction;
+import powercraft.api.multiblocks.PC_MultiblockIndex;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.cable.PC_CableTileEntity;
 
 public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 
+	private boolean firstTick=true;
+	private boolean noUpdate;
 	private PC_RedstoneCable cable[] = new PC_RedstoneCable[16];
 	
 	public PC_RedstoneIsolatedTileEntity() {
@@ -20,10 +27,11 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 	public PC_RedstoneIsolatedTileEntity(int cableType) {
 		super(2, 4);
 		cable[cableType] = new PC_RedstoneCable(1<<cableType);
+		cable[cableType].setTileEntity(this);
 	}
 
 	@Override
-	protected PC_IRedstoneCable getCableType(int cableID){
+	protected PC_RedstoneCable getCableType(int cableID){
 		return cable[cableID];
 	}
 
@@ -47,6 +55,9 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 			if(cable[i]==null && redstoneIsolated.cable[i]!=null){
 				cable[i] = redstoneIsolated.cable[i];
 				cable[i].setTileEntity(this);
+				noUpdate = true;
+				checkConnections();
+				noUpdate = false;
 			}
 		}
 		calculateThickness();
@@ -78,6 +89,7 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 				cable[i] = null;
 			}else{
 				cable[i] = new PC_RedstoneCable(1<<i);
+				cable[i].setTileEntity(this);
 			}
 		}
 		calculateThickness();
@@ -139,4 +151,87 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 		return 0;
 	}
 	
+	@Override
+	protected int canConnectToBlock(World world, int x, int y, int z, Block block) {
+		if(getCableCount()==1)
+			return block instanceof BlockRedstoneWire || block.canProvidePower()?0xFFFF:0;
+		return 0;
+	}
+
+	@Override
+	public boolean canConnectRedstone(int side) {
+		return getCableCount()==1 && PC_MultiblockIndex.getFaceDir(index) == PC_Direction.DOWN;
+	}
+
+	@Override
+	protected void updateGrid(boolean updateIO) {
+		for(int i=0; i<cable.length; i++){
+			if(cable[i]!=null){
+				if(cable[i].getGrid()==null){
+					cable[i].getGridIfNull();
+				}else if(updateIO){
+					cable[i].getGrid().remove(cable[i]);
+					cable[i].addToGrid();
+				}
+				if(!noUpdate)
+					cable[i].getGrid().onUpdateTick(cable[i]);
+			}
+		}
+	}
+
+	public PC_RedstoneGrid getGrid() {
+		PC_RedstoneGrid grid=null;
+		for(int i=0; i<cable.length; i++){
+			if(cable[i]!=null){
+				if(grid!=null)
+					return null;
+				grid = cable[i].getGrid();
+			}
+		}
+		return grid;
+	}
+
+	public World getWorld() {
+		return multiblock.worldObj;
+	}
+	
+	@Override
+	public void update() {
+		if(!isClient() && firstTick){
+			firstTick = false;
+			noUpdate=true;
+			checkConnections();
+			noUpdate=false;
+		}
+	}
+
+	protected PC_RedstoneGrid getGrid(int xOffset, int yOffset, int zOffset, PC_Direction dir, int cableID) {
+		return PC_RedstoneUnisolatedTileEntity.getGridS(multiblock.worldObj, multiblock.xCoord+xOffset, multiblock.yCoord+yOffset, multiblock.zCoord+zOffset, dir, PC_RedstoneUnisolatedTileEntity.getCable(cableID));
+	}
+	
+	protected void setBlockAndNeighborGrid(int xOffset, int yOffset, int zOffset, PC_Direction dir, int cableID, PC_RedstoneGrid grid) {
+		PC_RedstoneUnisolatedTileEntity.setBlockAndNeighborGridS(multiblock.worldObj, multiblock.xCoord+xOffset, multiblock.yCoord+yOffset, multiblock.zCoord+zOffset, dir, PC_RedstoneUnisolatedTileEntity.getCable(cableID), grid);
+	}
+	
+	@Override
+	public void onBreak() {
+		super.onBreak();
+		for(int i=0; i<cable.length; i++){
+			if(cable[i]!=null){
+				cable[i].removeFormGrid();
+			}
+		}
+	}
+
+	@Override
+	public void onChunkUnload() {
+		super.onChunkUnload();
+		for(int i=0; i<cable.length; i++){
+			if(cable[i]!=null){
+				cable[i].removeFormGrid();
+			}
+		}
+	}
+	
 }
+	

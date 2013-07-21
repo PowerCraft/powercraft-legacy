@@ -17,6 +17,8 @@ import powercraft.api.multiblocks.PC_MultiblockIndex;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.PC_TileEntityMultiblock;
 import powercraft.api.multiblocks.cable.redstone.PC_IRedstoneCable;
+import powercraft.api.multiblocks.cable.redstone.PC_RedstoneIsolatedTileEntity;
+import powercraft.api.multiblocks.cable.redstone.PC_RedstoneUnisolatedTileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -25,6 +27,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	protected int width;
 	private int centerThickness;
 	private int connections[][] = new int[4][];
+	protected boolean isIO;
 	
 	public PC_CableTileEntity(int thickness, int width) {
 		super(thickness);
@@ -37,42 +40,12 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	
 	protected abstract Icon getCableLineIcon(int index);
 	
-	protected  abstract int getMask();
+	protected abstract int getMask();
 	
-	private float min(float w, int offset, float l){
-		if(offset<0){
-			return 0.5f-l;
-		}else if(offset>0){
-			return 0.5f+w;
-		}
-		return 0.5f-w;
-	}
+	protected abstract void updateGrid(boolean updateIO);
 	
-	private float max(float w, int offset, float l){
-		if(offset<0){
-			return 0.5f-w;
-		}else if(offset>0){
-			return 0.5f+l;
-		}
-		return 0.5f+w;
-	}
-	
-	private float min(float w, float wl, int offset, float l){
-		if(offset<0){
-			return 0.5f-l;
-		}else if(offset>0){
-			return 0.5f+wl;
-		}
-		return 0.5f-w;
-	}
-	
-	private float max(float w, float wl, int offset, float l){
-		if(offset<0){
-			return 0.5f-wl;
-		}else if(offset>0){
-			return 0.5f+l;
-		}
-		return 0.5f+w;
+	public int[] getConnections(int n){
+		return connections[n];
 	}
 	
 	private static boolean[][] fix={
@@ -139,6 +112,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 				int mask = getMask() | c1 | c2 | c3 | c4 | c5;
 				int p1 = 0;
 				double p1e = 0;
+				boolean f = overlappingFix(Renderer.dir, dir2);
 				int p2 = 0;
 				double p2e = 0;
 				int pe = 0;
@@ -165,19 +139,51 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 					p1 = mask&c2;
 				}
 				pe = mask&(c3|c4|c5);
-				double pemin=Renderer.min2;
-				double pemax=Renderer.max1;
+				if(c1!=0)
+					pe=0;
+				double pemin=0.5-c3e;
+				double pemax=0.5+c3e;
+				boolean hc = c3!=0 && (pemin<Renderer.min2 || pemax>Renderer.max1);
 				if(p1!=0){
-					Renderer.renderCable2(w, w, p1e, Renderer.min2, Renderer.max1, s);
+					Renderer.renderCable2(w, w, p1e-s, Renderer.min2, Renderer.max1, s);
+					if(f){
+						Renderer.renderCable2(w, p1e-s, p1e, Renderer.min2, Renderer.max1, s);
+					}
 					if(p2!=0){
-						Renderer.renderCable2(w, p1e, p2e, Renderer.min2, Renderer.max1, s);
-						if(pe!=0)
+						Renderer.renderCable2(w, p1e, p2e-s, Renderer.min2, Renderer.max1, s);
+						if(f){
+							Renderer.renderCable2(w, p2e-s, p2e, Renderer.min2, Renderer.max1, s);
+						}
+						if(pe!=0){
 							Renderer.renderCable2(w, p2e, 0.5, Renderer.min2, Renderer.max1, s);
+						}
 					}else if(pe!=0){
-						Renderer.renderCable2(w, p1e, 0.5, Renderer.min2, Renderer.max1, s);
+						if(c1==0 && hc){
+							Renderer.renderCableToOutside(w, p1e-s, p1e, pemin, pemax);
+							Renderer.renderCable2(w, p1e, 0.5, pemin, pemax, s);
+						}else
+							Renderer.renderCable2(w, p1e, 0.5, Renderer.min2, Renderer.max1, s);
 					}
 				}else if(pe!=0){
 					Renderer.renderCable2(w, w, 0.5, Renderer.min2, Renderer.max1, s);
+					if(c1==0 && hc){
+						Renderer.renderCableToOutside(w, 0.5-s, 0.5, pemin, pemax);
+					}
+				}
+				if(c2!=0){
+					Renderer.renderCableToOutside(w, c2e-s, c2e, 0, 1);
+				}
+				if(c3==0&&c4!=0){
+					Renderer.xCoord += dir2.offsetX;
+					Renderer.yCoord += dir2.offsetY;
+					Renderer.zCoord += dir2.offsetZ;
+					Renderer.renderCable2(w, -0.5, -c4e, Renderer.min2, Renderer.max1, s);
+					if(f){
+						Renderer.renderCable2(w, -c4e, -c4e+s, Renderer.min2, Renderer.max1, s);
+					}
+					Renderer.xCoord -= dir2.offsetX;
+					Renderer.yCoord -= dir2.offsetY;
+					Renderer.zCoord -= dir2.offsetZ;
 				}
 			}
 		}
@@ -206,7 +212,10 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 				return canConnectToMultiblock(mbte);
 		}
 		if(block!=null){
-			return canConnectToBlock(world, x, y, z, block);
+			int i= canConnectToBlock(world, x, y, z, block);
+			if(i!=0)
+				isIO = true;
+			return i;
 		}
 		return 0;
 	}
@@ -265,6 +274,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		int i=0;
 		PC_Direction dir = PC_MultiblockIndex.getFaceDir(index);
 		centerThickness = 0;
+		
 		Block block = PC_Utils.getBlock(multiblock.worldObj, multiblock.xCoord+dir.offsetX, multiblock.yCoord+dir.offsetY, multiblock.zCoord+dir.offsetZ);
 		if(block==null || !block.isBlockSolidOnSide(multiblock.worldObj, multiblock.xCoord+dir.offsetX, multiblock.yCoord+dir.offsetY, multiblock.zCoord+dir.offsetZ, ForgeDirection.values()[dir.getOpposite().ordinal()])){
 			if(multiblock.getMultiblockTileEntity(PC_MultiblockIndex.CENTER)!=null)
@@ -278,12 +288,15 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			return null;
 		}
 		
+		boolean oldIO = isIO;
+		isIO = false;
 		for(PC_Direction dir2:PC_Direction.VALID_DIRECTIONS){
 			if(dir2==dir||dir2.getOpposite()==dir)
 				continue;
 			connections[i] = canConnectTo(dir, dir2, connections[i]);
 			i++;
 		}
+		updateGrid(oldIO!=isIO);
 		multiblock.sendToClient();
 		return null;
 	}
@@ -295,37 +308,12 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			multiblock.drop(drops);
 	}
 	
-	private void getGridIfNull(){
-		if(!isClient()){
-			
-		}
-	}
-	
-	private void removeFormGrid(){
-		if(!isClient()){
-			
-		}
-	}
-	
 	@Override
 	public boolean onAdded() {
 		if(checkConnections()!=null){
 			return false;
 		}
-		getGridIfNull();
 		return true;
-	}
-
-	@Override
-	public void onBreak() {
-		super.onBreak();
-		removeFormGrid();
-	}
-
-	@Override
-	public void onChunkUnload() {
-		super.onChunkUnload();
-		removeFormGrid();
 	}
 	
 	@Override
@@ -346,11 +334,6 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			if(connections[i]!=null)
 				nbtCompoundTag.setIntArray("connections"+i, connections[i]);
 		nbtCompoundTag.setInteger("centerThickness", centerThickness);
-	}
-	
-	@Override
-	public void onLoaded() {
-		getGridIfNull();
 	}
 	
 	@Override

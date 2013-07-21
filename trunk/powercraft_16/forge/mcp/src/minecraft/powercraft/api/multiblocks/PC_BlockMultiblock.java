@@ -27,6 +27,7 @@ public class PC_BlockMultiblock extends PC_Block {
 
 	private static PC_MultiblockIndex selectionIndex;
 	private static boolean rayTrace;
+	public static PC_MultiblockTileEntity renderTileEntity;
 	
 	public static PC_BlockMultiblock block;
 	@SideOnly(Side.CLIENT)
