@@ -583,5 +583,10 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 			noUpdate=false;
 		}
 	}
+
+	@Override
+	protected int getColorForCable(int cableID) {
+		return 0xFFFFFFFF;
+	}
 	
 }

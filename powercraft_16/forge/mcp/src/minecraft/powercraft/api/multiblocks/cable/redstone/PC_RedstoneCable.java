@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.world.World;
 import powercraft.api.PC_Direction;
+import powercraft.api.PC_Utils;
 import powercraft.api.PC_Vec3IWithRotation;
 import powercraft.api.multiblocks.PC_MultiblockIndex;
 
@@ -41,7 +42,36 @@ public class PC_RedstoneCable implements PC_IRedstoneCable {
 	}
 	
 	@Override
-	public void addPoweringBlocks(List<PC_Vec3IWithRotation> poweringBlocks) {}
+	public void addPoweringBlocks(List<PC_Vec3IWithRotation> poweringBlocks) {
+		if(tileEntity.getCableCount()==1){
+			PC_Direction dir = PC_MultiblockIndex.getFaceDir(tileEntity.getIndex());
+			int i=0;
+			for(PC_Direction dir2:PC_Direction.VALID_DIRECTIONS){
+				if(dir2==dir || dir2==dir.getOpposite()){
+					continue;
+				}
+				int connection[] = tileEntity.getConnections(i);
+				if(connection!=null){
+					if(connection.length>1 && (connection[1]&0xFFFF)!=0){
+						if(tileEntity.isIO(dir.offsetX, dir.offsetY, dir.offsetZ, dir2)){
+							poweringBlocks.add(new PC_Vec3IWithRotation(tileEntity.getTileEntity().xCoord + dir.offsetX, tileEntity.getTileEntity().yCoord + dir.offsetY, tileEntity.getTileEntity().zCoord + dir.offsetZ, dir2));
+						}
+					}
+					if(connection.length>2 && (connection[2]&0xFFFF)!=0){
+						if(tileEntity.isIO(dir2.offsetX, dir2.offsetY, dir2.offsetZ, dir)){
+							poweringBlocks.add(new PC_Vec3IWithRotation(tileEntity.getTileEntity().xCoord + dir2.offsetX, tileEntity.getTileEntity().yCoord + dir2.offsetY, tileEntity.getTileEntity().zCoord + dir2.offsetZ, dir));
+						}
+					}
+					if(connection.length>3 && (connection[3]&0xFFFF)!=0){
+						if(tileEntity.isIO(dir.offsetX+dir2.offsetX, dir.offsetY+dir2.offsetY, dir.offsetZ+dir2.offsetZ, dir2.getOpposite())){
+							poweringBlocks.add(new PC_Vec3IWithRotation(tileEntity.getTileEntity().xCoord + dir.offsetX+dir2.offsetX, tileEntity.getTileEntity().yCoord + dir.offsetY+dir2.offsetY, tileEntity.getTileEntity().zCoord + dir.offsetZ+dir2.offsetZ, dir2.getOpposite()));
+						}
+					}
+				}
+				i++;
+			}
+		}
+	}
 
 	@Override
 	public World getWorld() {
@@ -49,11 +79,19 @@ public class PC_RedstoneCable implements PC_IRedstoneCable {
 	}
 
 	@Override
-	public void onRedstonePowerChange() {}
+	public void onRedstonePowerChange() {
+		if(tileEntity.isIO()){
+			PC_Utils.hugeUpdate(tileEntity.getWorld(), tileEntity.getTileEntity().xCoord, tileEntity.getTileEntity().yCoord, tileEntity.getTileEntity().zCoord);
+		}
+	}
 
 	public void addToGrid() {
 		getGridIfNull();
-		grid.add(this);
+		if(tileEntity.isIO()){
+			grid.addIO(this);
+		}else{
+			grid.add(this);
+		}
 	}
 
 	public void getGridIfNull() {

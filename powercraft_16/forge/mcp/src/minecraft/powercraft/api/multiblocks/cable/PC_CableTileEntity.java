@@ -24,6 +24,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	
+	public static int xCoord;
+	public static int yCoord;
+	public static int zCoord;
+	public static RenderBlocks renderer;
+	public static PC_Direction dir;
+	public static PC_Direction dir2;
+	public static double min1;
+	public static double max1;
+	public static double min2;
+	public static double max2;
+	
 	protected int width;
 	private int centerThickness;
 	private int connections[][] = new int[4][];
@@ -39,6 +50,8 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	protected abstract Icon getCableIcon();
 	
 	protected abstract Icon getCableLineIcon(int index);
+	
+	protected abstract int getColorForCable(int cableID);
 	
 	protected abstract int getMask();
 	
@@ -64,30 +77,30 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderWorldBlock(RenderBlocks renderer) {
-		Renderer.renderer = renderer;
-		Renderer.xCoord = multiblock.xCoord;
-		Renderer.yCoord = multiblock.yCoord;
-		Renderer.zCoord = multiblock.zCoord;
-		Renderer.dir = PC_MultiblockIndex.getFaceDir(index);
+		PC_CableTileEntity.renderer = renderer;
+		xCoord = multiblock.xCoord;
+		yCoord = multiblock.yCoord;
+		zCoord = multiblock.zCoord;
+		dir = PC_MultiblockIndex.getFaceDir(index);
 		float s = thickness/16.0f;
 		float w = width/32.0f;
 		PC_BlockMultiblock.setIcons(getCableIcon());
-		Renderer.min1 = 1-s;
-		Renderer.min2 = 0;
-		Renderer.max1 = 1;
-		Renderer.max2 = s;
+		min1 = 1-s;
+		min2 = 0;
+		max1 = 1;
+		max2 = s;
 		if(centerThickness>0){
 			float t = (centerThickness+2)/32.0f;
-			Renderer.min1 = 0.5f+t;
-			Renderer.min2 = 0.5f-t-s;
-			Renderer.max1 = 0.5f+t+s;
-			Renderer.max2 = 0.5f-t;
+			min1 = 0.5f+t;
+			min2 = 0.5f-t-s;
+			max1 = 0.5f+t+s;
+			max2 = 0.5f-t;
 		}
-		Renderer.renderCable(0.5-w, 0.5-w, 0.5-w,  0.5+w,  0.5+w,  0.5+w);
+		renderCable(0.5-w, 0.5-w, 0.5-w,  0.5+w,  0.5+w,  0.5+w);
 		int i=0;
 		for(PC_Direction dir2:PC_Direction.VALID_DIRECTIONS){
-			Renderer.dir2 = dir2;
-			if(dir2==Renderer.dir||dir2.getOpposite()==Renderer.dir)
+			PC_CableTileEntity.dir2 = dir2;
+			if(dir2==dir||dir2.getOpposite()==dir)
 				continue;
 			int connection[] = connections[i++];
 			float minYE = 0;
@@ -112,7 +125,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 				int mask = getMask() | c1 | c2 | c3 | c4 | c5;
 				int p1 = 0;
 				double p1e = 0;
-				boolean f = overlappingFix(Renderer.dir, dir2);
+				boolean f = overlappingFix(dir, dir2);
 				int p2 = 0;
 				double p2e = 0;
 				int pe = 0;
@@ -143,47 +156,47 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 					pe=0;
 				double pemin=0.5-c3e;
 				double pemax=0.5+c3e;
-				boolean hc = c3!=0 && (pemin<Renderer.min2 || pemax>Renderer.max1);
+				boolean hc = c3!=0 && (pemin<min2 || pemax>max1);
 				if(p1!=0){
-					Renderer.renderCable2(w, w, p1e-s, Renderer.min2, Renderer.max1, s);
+					renderCable2(w, w, p1e-s, min2, max1, s, getMask()&p1);
 					if(f){
-						Renderer.renderCable2(w, p1e-s, p1e, Renderer.min2, Renderer.max1, s);
+						renderCable2(w, p1e-s, p1e, min2, max1, s, 0);
 					}
 					if(p2!=0){
-						Renderer.renderCable2(w, p1e, p2e-s, Renderer.min2, Renderer.max1, s);
+						renderCable2(w, p1e, p2e-s, min2, max1, s, p1&p2);
 						if(f){
-							Renderer.renderCable2(w, p2e-s, p2e, Renderer.min2, Renderer.max1, s);
+							renderCable2(w, p2e-s, p2e, min2, max1, s, 0);
 						}
 						if(pe!=0){
-							Renderer.renderCable2(w, p2e, 0.5, Renderer.min2, Renderer.max1, s);
+							renderCable2(w, p2e, 0.5, min2, max1, s, p2&pe);
 						}
 					}else if(pe!=0){
 						if(c1==0 && hc){
-							Renderer.renderCableToOutside(w, p1e-s, p1e, pemin, pemax);
-							Renderer.renderCable2(w, p1e, 0.5, pemin, pemax, s);
+							renderCableToOutside(w, p1e-s, p1e, pemin, pemax);
+							renderCable2(w, p1e, 0.5, pemin, pemax, s, p1&(c3|c4|c5));
 						}else
-							Renderer.renderCable2(w, p1e, 0.5, Renderer.min2, Renderer.max1, s);
+							renderCable2(w, p1e, 0.5, min2, max1, s, p1&pe);
 					}
 				}else if(pe!=0){
-					Renderer.renderCable2(w, w, 0.5, Renderer.min2, Renderer.max1, s);
+					renderCable2(w, w, 0.5, min2, max1, s, getMask()&pe);
 					if(c1==0 && hc){
-						Renderer.renderCableToOutside(w, 0.5-s, 0.5, pemin, pemax);
+						renderCableToOutside(w, 0.5-s, 0.5, pemin, pemax);
 					}
 				}
 				if(c2!=0){
-					Renderer.renderCableToOutside(w, c2e-s, c2e, 0, 1);
+					renderCableToOutside(w, c2e-s, c2e, 0, 1);
 				}
 				if(c3==0&&c4!=0){
-					Renderer.xCoord += dir2.offsetX;
-					Renderer.yCoord += dir2.offsetY;
-					Renderer.zCoord += dir2.offsetZ;
-					Renderer.renderCable2(w, -0.5, -c4e, Renderer.min2, Renderer.max1, s);
+					xCoord += dir2.offsetX;
+					yCoord += dir2.offsetY;
+					zCoord += dir2.offsetZ;
+					renderCable2(w, -0.5, -c4e, min2, max1, s, pe&(c3|c4|c5));
 					if(f){
-						Renderer.renderCable2(w, -c4e, -c4e+s, Renderer.min2, Renderer.max1, s);
+						renderCable2(w, -c4e, -c4e+s, min2, max1, s, pe&(c3|c4|c5));
 					}
-					Renderer.xCoord -= dir2.offsetX;
-					Renderer.yCoord -= dir2.offsetY;
-					Renderer.zCoord -= dir2.offsetZ;
+					xCoord -= dir2.offsetX;
+					yCoord -= dir2.offsetY;
+					zCoord -= dir2.offsetZ;
 				}
 			}
 		}
@@ -373,118 +386,117 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	public int getCenterThickness(){
 		return centerThickness;
 	}
+		
+	public void renderCable(double minX, double minY, double minZ, double maxX, double maxY, double maxZ){
+		if(dir.offsetX>0){
+			renderer.setRenderBounds(min1, minY, minZ, max1, maxY, maxZ);
+		}else if(dir.offsetX<0){
+			renderer.setRenderBounds(min2, minY, minZ, max2, maxY, maxZ);
+		}else if(dir.offsetY>0){
+			renderer.setRenderBounds(minX, min1, minZ, maxX, max1, maxZ);
+		}else if(dir.offsetY<0){
+			renderer.setRenderBounds(minX, min2, minZ, maxX, max2, maxZ);
+		}else if(dir.offsetZ>0){
+			renderer.setRenderBounds(minX, minY, min1, maxX, maxY, max1);
+		}else if(dir.offsetZ<0){
+			renderer.setRenderBounds(minX, minY, min2, maxX, maxY, max2);
+		}
+		renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
+	}
 	
-	private static class Renderer{
-		public static int xCoord;
-		public static int yCoord;
-		public static int zCoord;
-		public static RenderBlocks renderer;
-		public static PC_Direction dir;
-		public static PC_Direction dir2;
-		public static double min1;
-		public static double max1;
-		public static double min2;
-		public static double max2;
-		
-		public static void renderCable(double minX, double minY, double minZ, double maxX, double maxY, double maxZ){
-			if(dir.offsetX>0){
-				renderer.setRenderBounds(min1, minY, minZ, max1, maxY, maxZ);
-			}else if(dir.offsetX<0){
-				renderer.setRenderBounds(min2, minY, minZ, max2, maxY, maxZ);
-			}else if(dir.offsetY>0){
-				renderer.setRenderBounds(minX, min1, minZ, maxX, max1, maxZ);
-			}else if(dir.offsetY<0){
-				renderer.setRenderBounds(minX, min2, minZ, maxX, max2, maxZ);
-			}else if(dir.offsetZ>0){
-				renderer.setRenderBounds(minX, minY, min1, maxX, maxY, max1);
-			}else if(dir.offsetZ<0){
-				renderer.setRenderBounds(minX, minY, min2, maxX, maxY, max2);
-			}
-			renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
+	public void renderCable2(double w, double wl, double l, double min, double max, float s, int mask) {
+		double minX = min(w, wl, dir2.offsetX, l);
+		double minY = min(w, wl, dir2.offsetY, l);
+		double minZ = min(w, wl, dir2.offsetZ, l);
+		double maxX = max(w, wl, dir2.offsetX, l);
+		double maxY = max(w, wl, dir2.offsetY, l);
+		double maxZ = max(w, wl, dir2.offsetZ, l);
+		if(dir.offsetX>0){
+			renderer.setRenderBounds(max-s, minY, minZ, max, maxY, maxZ);
+		}else if(dir.offsetX<0){
+			renderer.setRenderBounds(min, minY, minZ, min+s, maxY, maxZ);
+		}else if(dir.offsetY>0){
+			renderer.setRenderBounds(minX, max-s, minZ, maxX, max, maxZ);
+		}else if(dir.offsetY<0){
+			renderer.setRenderBounds(minX, min, minZ, maxX, min+s, maxZ);
+		}else if(dir.offsetZ>0){
+			renderer.setRenderBounds(minX, minY, max-s, maxX, maxY, max);
+		}else if(dir.offsetZ<0){
+			renderer.setRenderBounds(minX, minY, min, maxX, maxY, min+s);
 		}
-		
-		public static void renderCable2(double w, double wl, double l, double min, double max, float s) {
-			double minX = min(w, wl, dir2.offsetX, l);
-			double minY = min(w, wl, dir2.offsetY, l);
-			double minZ = min(w, wl, dir2.offsetZ, l);
-			double maxX = max(w, wl, dir2.offsetX, l);
-			double maxY = max(w, wl, dir2.offsetY, l);
-			double maxZ = max(w, wl, dir2.offsetZ, l);
-			if(dir.offsetX>0){
-				renderer.setRenderBounds(max-s, minY, minZ, max, maxY, maxZ);
-			}else if(dir.offsetX<0){
-				renderer.setRenderBounds(min, minY, minZ, min+s, maxY, maxZ);
-			}else if(dir.offsetY>0){
-				renderer.setRenderBounds(minX, max-s, minZ, maxX, max, maxZ);
-			}else if(dir.offsetY<0){
-				renderer.setRenderBounds(minX, min, minZ, maxX, min+s, maxZ);
-			}else if(dir.offsetZ>0){
-				renderer.setRenderBounds(minX, minY, max-s, maxX, maxY, max);
-			}else if(dir.offsetZ<0){
-				renderer.setRenderBounds(minX, minY, min, maxX, maxY, min+s);
+		renderer.renderStandardBlock(PC_BlockMultiblock.block, multiblock.xCoord, multiblock.yCoord, multiblock.zCoord);
+		int j=0;
+		for(int i=0; i<16; i++){
+			if((mask&i<<16)!=0){
+				Icon icon = getCableLineIcon(j);
+				if(icon!=null){
+					PC_BlockMultiblock.setIcons(getCableLineIcon(j));
+					PC_BlockMultiblock.colorMultiplier = getColorForCable(i);
+					renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
+				}
+				j++;
 			}
-			renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
 		}
+		PC_BlockMultiblock.colorMultiplier = 0xFFFFFFFF;
+	}
 
-		public static void renderCableToOutside(double w, double wl, double l, double min, double max) {
-			double minX = min(w, wl, dir2.offsetX, l);
-			double minY = min(w, wl, dir2.offsetY, l);
-			double minZ = min(w, wl, dir2.offsetZ, l);
-			double maxX = max(w, wl, dir2.offsetX, l);
-			double maxY = max(w, wl, dir2.offsetY, l);
-			double maxZ = max(w, wl, dir2.offsetZ, l);
-			if(dir.offsetX>0){
-				renderer.setRenderBounds(max1, minY, minZ, max, maxY, maxZ);
-			}else if(dir.offsetX<0){
-				renderer.setRenderBounds(min, minY, minZ, min2, maxY, maxZ);
-			}else if(dir.offsetY>0){
-				renderer.setRenderBounds(minX, max1, minZ, maxX, max, maxZ);
-			}else if(dir.offsetY<0){
-				renderer.setRenderBounds(minX, min, minZ, maxX, min2, maxZ);
-			}else if(dir.offsetZ>0){
-				renderer.setRenderBounds(minX, minY, max1, maxX, maxY, max);
-			}else if(dir.offsetZ<0){
-				renderer.setRenderBounds(minX, minY, min, maxX, maxY, min2);
-			}
-			renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
+	public void renderCableToOutside(double w, double wl, double l, double min, double max) {
+		double minX = min(w, wl, dir2.offsetX, l);
+		double minY = min(w, wl, dir2.offsetY, l);
+		double minZ = min(w, wl, dir2.offsetZ, l);
+		double maxX = max(w, wl, dir2.offsetX, l);
+		double maxY = max(w, wl, dir2.offsetY, l);
+		double maxZ = max(w, wl, dir2.offsetZ, l);
+		if(dir.offsetX>0){
+			renderer.setRenderBounds(max1, minY, minZ, max, maxY, maxZ);
+		}else if(dir.offsetX<0){
+			renderer.setRenderBounds(min, minY, minZ, min2, maxY, maxZ);
+		}else if(dir.offsetY>0){
+			renderer.setRenderBounds(minX, max1, minZ, maxX, max, maxZ);
+		}else if(dir.offsetY<0){
+			renderer.setRenderBounds(minX, min, minZ, maxX, min2, maxZ);
+		}else if(dir.offsetZ>0){
+			renderer.setRenderBounds(minX, minY, max1, maxX, maxY, max);
+		}else if(dir.offsetZ<0){
+			renderer.setRenderBounds(minX, minY, min, maxX, maxY, min2);
 		}
-		
-		private static double min(double w, int offset, double l){
-			if(offset<0){
-				return 0.5-l;
-			}else if(offset>0){
-				return 0.5+w;
-			}
-			return 0.5-w;
-		}
-		
-		private static double max(double w, int offset, double l){
-			if(offset<0){
-				return 0.5-w;
-			}else if(offset>0){
-				return 0.5+l;
-			}
+		renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
+	}
+	
+	private static double min(double w, int offset, double l){
+		if(offset<0){
+			return 0.5-l;
+		}else if(offset>0){
 			return 0.5+w;
 		}
-		
-		private static double min(double w, double wl, int offset, double l){
-			if(offset<0){
-				return 0.5-l;
-			}else if(offset>0){
-				return 0.5+wl;
-			}
+		return 0.5-w;
+	}
+	
+	private static double max(double w, int offset, double l){
+		if(offset<0){
 			return 0.5-w;
+		}else if(offset>0){
+			return 0.5+l;
 		}
-		
-		private static double max(double w, double wl, int offset, double l){
-			if(offset<0){
-				return 0.5-wl;
-			}else if(offset>0){
-				return 0.5+l;
-			}
-			return 0.5+w;
+		return 0.5+w;
+	}
+	
+	private static double min(double w, double wl, int offset, double l){
+		if(offset<0){
+			return 0.5-l;
+		}else if(offset>0){
+			return 0.5+wl;
 		}
-		
+		return 0.5-w;
+	}
+	
+	private static double max(double w, double wl, int offset, double l){
+		if(offset<0){
+			return 0.5-wl;
+		}else if(offset>0){
+			return 0.5+l;
+		}
+		return 0.5+w;
 	}
 	
 }
