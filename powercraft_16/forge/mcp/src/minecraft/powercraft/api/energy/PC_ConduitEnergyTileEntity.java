@@ -275,11 +275,6 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 	}
 	
 	@Override
-	public void onLoaded() {
-		getGridIfNull();
-	}
-	
-	@Override
 	public void update() {
 		if(!isClient()){
 			getGridIfNull();

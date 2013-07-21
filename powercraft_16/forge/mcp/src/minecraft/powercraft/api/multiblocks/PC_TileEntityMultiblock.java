@@ -25,11 +25,6 @@ public class PC_TileEntityMultiblock extends PC_TileEntity {
 	
 	@Override
 	public boolean canUpdate() {
-		for(int i=0; i<tileEntities.length; i++){
-			if(tileEntities[i]!=null){
-				tileEntities[i].onLoaded();
-			}
-		}
 		return true;
 	}
 
@@ -127,7 +122,7 @@ public class PC_TileEntityMultiblock extends PC_TileEntity {
 				canConnectRedstone |= tileEntities[i].canConnectRedstone(side);
 			}
 		}
-		return false;
+		return canConnectRedstone;
 	}
 
 	@Override
@@ -186,6 +181,7 @@ public class PC_TileEntityMultiblock extends PC_TileEntity {
 			return null;
 		}
 		List<ItemStack> drop = tileEntities[index].getDrop();
+		tileEntities[index].onBreak();
 		tileEntities[index] = null;
 		notifyNeighbors();
 		sendToClient();

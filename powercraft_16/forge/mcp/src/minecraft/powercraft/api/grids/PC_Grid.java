@@ -1,10 +1,10 @@
 package powercraft.api.grids;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import cpw.mods.fml.common.TickType;
-
 import powercraft.api.PC_ITickHandler;
 import powercraft.api.PC_TickHandler;
 
@@ -39,6 +39,8 @@ public abstract class PC_Grid<G extends PC_Grid<G, T>, T extends PC_IGridProvide
 	}
 	
 	public void mixGrids(G otherGrid){
+		if(this == otherGrid)
+			return;
 		for(T ioNode:otherGrid.ioNodes){
 			ioNodes.add(ioNode);
 			ioNode.setGrid((G) this);
