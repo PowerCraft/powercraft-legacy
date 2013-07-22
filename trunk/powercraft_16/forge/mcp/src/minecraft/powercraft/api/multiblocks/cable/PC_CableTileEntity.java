@@ -427,16 +427,17 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		renderer.renderStandardBlock(PC_BlockMultiblock.block, multiblock.xCoord, multiblock.yCoord, multiblock.zCoord);
 		int j=0;
 		for(int i=0; i<16; i++){
-			if((mask&i<<16)!=0){
+			if((mask&1<<i)!=0){
 				Icon icon = getCableLineIcon(j);
 				if(icon!=null){
-					PC_BlockMultiblock.setIcons(getCableLineIcon(j));
+					PC_BlockMultiblock.setIcons(icon);
 					PC_BlockMultiblock.colorMultiplier = getColorForCable(i);
 					renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
 				}
 				j++;
 			}
 		}
+		PC_BlockMultiblock.setIcons(getCableIcon());
 		PC_BlockMultiblock.colorMultiplier = 0xFFFFFFFF;
 	}
 

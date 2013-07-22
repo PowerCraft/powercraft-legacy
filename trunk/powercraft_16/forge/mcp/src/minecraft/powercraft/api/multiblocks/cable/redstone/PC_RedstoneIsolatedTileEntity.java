@@ -77,7 +77,7 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 
 	@Override
 	protected Icon getCableLineIcon(int index) {
-		return null;
+		return PC_RedstoneIsolatedItem.getCableLineIcon(index);
 	}
 	
 	@Override
