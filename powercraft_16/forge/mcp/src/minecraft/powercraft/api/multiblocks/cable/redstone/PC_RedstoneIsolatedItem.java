@@ -18,6 +18,7 @@ public class PC_RedstoneIsolatedItem extends PC_CableItem {
 
 	private static Icon redstoneIcon;
 	private static Icon isolationIcon;
+	private static Icon cable[] = new Icon[16];
 	public static PC_RedstoneIsolatedItem item;
 	
 	public PC_RedstoneIsolatedItem(int id) {
@@ -40,6 +41,9 @@ public class PC_RedstoneIsolatedItem extends PC_CableItem {
 	@Override
 	public void loadMultiblockItem() {
 		isolationIcon = PC_ClientRegistry.registerIcon("isolation", itemInfo.itemid());
+		for(int i=0; i<cable.length; i++){
+			cable[i] = PC_ClientRegistry.registerIcon("Cable"+i, itemInfo.itemid());
+		}
 	}
 
 	@Override
@@ -87,6 +91,10 @@ public class PC_RedstoneIsolatedItem extends PC_CableItem {
 
 	public static Icon getCableIcon() {
 		return isolationIcon;
+	}
+
+	public static Icon getCableLineIcon(int index) {
+		return cable[index];
 	}
 	
 }
