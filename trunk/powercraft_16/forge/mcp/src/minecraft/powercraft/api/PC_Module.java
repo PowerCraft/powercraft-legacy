@@ -11,6 +11,7 @@ import net.minecraftforge.common.Configuration;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_IBlock;
 import powercraft.api.items.PC_Item;
+import powercraft.api.items.PC_ItemInfo;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
@@ -96,14 +97,14 @@ public abstract class PC_Module {
 
 	private Object createClass(Class<?> clazz) throws InstantiationException, IllegalAccessException {
 
-		if (clazz.isAnnotationPresent(PC_BlockInfo.class)) {
-			Block block = PC_Registry.registerBlock(this, clazz);
+		if (Block.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(PC_BlockInfo.class)) {
+			Block block = PC_Registry.registerBlock(this, (Class<? extends Block>) clazz);
 			if (block instanceof PC_IBlock) {
 				blocks.add((PC_IBlock) block);
 			}
 			return block;
-		} else if (PC_Item.class.isAssignableFrom(clazz)) {
-			Item item = PC_Registry.registerItem(this, clazz);
+		} else if (Item.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(PC_ItemInfo.class)) {
+			Item item = PC_Registry.registerItem(this, (Class<? extends Item>) clazz);
 			if (item instanceof PC_Item) {
 				items.add((PC_Item) item);
 			}
