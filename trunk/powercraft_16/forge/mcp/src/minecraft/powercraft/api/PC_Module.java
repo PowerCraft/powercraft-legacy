@@ -60,14 +60,14 @@ public abstract class PC_Module {
 	private void generateFields(){
 		Field[] fields = getClass().getDeclaredFields();
 		for(int i=0; i<fields.length; i++){
-			if(fields[i].isAnnotationPresent(PC_FiledGenerator.class)){
+			if(fields[i].isAnnotationPresent(PC_FieldGenerator.class)){
 				generateField(fields[i]);
 			}
 		}
 	}
 	
 	private void generateField(Field field){
-		PC_FiledGenerator generator = field.getAnnotation(PC_FiledGenerator.class);
+		PC_FieldGenerator generator = field.getAnnotation(PC_FieldGenerator.class);
 		Class<?> clazz = generator.value();
 		if(clazz==void.class){
 			clazz = field.getType();

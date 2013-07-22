@@ -1,14 +1,7 @@
 package powercraft.tutorial;
 
-import powercraft.api.PC_FiledGenerator;
+import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
-import powercraft.api.energy.PC_ConduitEnergyItem;
-import powercraft.api.multiblocks.PC_BlockMultiblock;
-import powercraft.api.multiblocks.cable.redstone.PC_RedstoneIsolatedItem;
-import powercraft.api.multiblocks.cable.redstone.PC_RedstoneUnisolatedItem;
-import powercraft.core.blocks.PC_BlockGenerator;
-import powercraft.core.blocks.PC_BlockPuffer;
-import powercraft.core.blocks.PC_BlockRoaster;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -22,7 +15,7 @@ public class PC_Tutorial extends PC_Module {
 	@Instance("PowerCraft-Tutorial")
 	public static PC_Tutorial instance;
 
-	@PC_FiledGenerator
+	@PC_FieldGenerator
 	public static PC_BlockTutorial tutorial;
 	
 	@Override
