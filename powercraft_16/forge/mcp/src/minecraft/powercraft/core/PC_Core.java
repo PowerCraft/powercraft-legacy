@@ -1,6 +1,6 @@
 package powercraft.core;
 
-import powercraft.api.PC_FiledGenerator;
+import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
 import powercraft.api.energy.PC_ConduitEnergyItem;
 import powercraft.api.multiblocks.PC_BlockMultiblock;
@@ -22,25 +22,25 @@ public class PC_Core extends PC_Module {
 	@Instance("PowerCraft-Core")
 	public static PC_Core instance;
 
-	@PC_FiledGenerator
+	@PC_FieldGenerator
 	public PC_BlockMultiblock multiblock;
 	
-	@PC_FiledGenerator
+	@PC_FieldGenerator
 	public PC_ConduitEnergyItem energyConduit;
 	
-	@PC_FiledGenerator
+	@PC_FieldGenerator
 	public PC_BlockGenerator generator;
 	
-	@PC_FiledGenerator
+	@PC_FieldGenerator
 	public PC_BlockPuffer puffer;
 	
-	@PC_FiledGenerator
+	@PC_FieldGenerator
 	public PC_BlockRoaster roaster;
 	
-	@PC_FiledGenerator
+	@PC_FieldGenerator
 	public PC_RedstoneUnisolatedItem unisolatedRedstone;
 	
-	@PC_FiledGenerator
+	@PC_FieldGenerator
 	public PC_RedstoneIsolatedItem isolatedRedstone;
 	
 	@Override

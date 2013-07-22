@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface PC_FiledGenerator {
+public @interface PC_FieldGenerator {
 
 	public Class<?> value() default void.class;
 	
