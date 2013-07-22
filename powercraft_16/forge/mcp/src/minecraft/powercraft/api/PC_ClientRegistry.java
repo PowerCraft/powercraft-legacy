@@ -1,5 +1,6 @@
 package powercraft.api;
 
+
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import powercraft.api.blocks.PC_IBlock;
@@ -8,14 +9,17 @@ import powercraft.core.PC_Core;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+
 @SideOnly(Side.CLIENT)
 public class PC_ClientRegistry {
 
 	private static IconRegister iconRegistry;
 	private static String moduleName;
 	private static String objectName;
-	
-	public static void registerIcons(PC_IBlock block, IconRegister iconRegistry){
+
+
+	public static void registerIcons(PC_IBlock block, IconRegister iconRegistry) {
+
 		PC_ClientRegistry.iconRegistry = iconRegistry;
 		PC_Module module = block.getModule();
 		moduleName = module.getMetadata().modId;
@@ -25,8 +29,10 @@ public class PC_ClientRegistry {
 		moduleName = null;
 		objectName = null;
 	}
-	
-	public static void registerIcons(PC_Item item, IconRegister iconRegistry){
+
+
+	public static void registerIcons(PC_Item item, IconRegister iconRegistry) {
+
 		PC_ClientRegistry.iconRegistry = iconRegistry;
 		PC_Module module = item.getModule();
 		moduleName = module.getMetadata().modId;
@@ -36,17 +42,20 @@ public class PC_ClientRegistry {
 		moduleName = null;
 		objectName = null;
 	}
-	
-	
-	public static Icon registerIcon(String icon){
+
+
+	public static Icon registerIcon(String icon) {
+
 		return registerIcon(icon, objectName);
 	}
-	
-	public static Icon registerIcon(String icon, String objectName){
-		if(icon.equals("DefaultMaschineTexture")){
+
+
+	public static Icon registerIcon(String icon, String objectName) {
+
+		if (icon.equals("DefaultMaschineTexture")) {
 			return iconRegistry.registerIcon(PC_Core.instance.getMetadata().modId + ":maschineDefault/DefaultMaschineTexture");
 		}
 		return iconRegistry.registerIcon(moduleName + ":" + objectName + "/" + icon);
 	}
-	
+
 }
