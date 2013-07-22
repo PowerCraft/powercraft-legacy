@@ -22,7 +22,7 @@ public class PC_Registry {
 	private static PC_Module activeModule;
 
 
-	public static Block registerBlock(PC_Module module, Class<?> clazz) {
+	public static Block registerBlock(PC_Module module, Class<? extends Block> clazz) {
 
 		activeModule = module;
 		Configuration config = module.getConfig();
@@ -33,7 +33,7 @@ public class PC_Registry {
 			return null;
 		}
 		try {
-			Block block = (Block) clazz.getConstructor(int.class).newInstance(blockID);
+			Block block = clazz.getConstructor(int.class).newInstance(blockID);
 			GameRegistry.registerBlock(block, blockInfo.itemBlock(), blockInfo.blockid());
 			Class<? extends PC_TileEntity> tileEntity = blockInfo.tileEntity();
 			if (tileEntity != PC_TileEntity.class) {
@@ -50,7 +50,7 @@ public class PC_Registry {
 	}
 
 
-	public static Item registerItem(PC_Module module, Class<?> clazz) {
+	public static Item registerItem(PC_Module module, Class<? extends Item> clazz) {
 
 		activeModule = module;
 		Configuration config = module.getConfig();
@@ -61,7 +61,7 @@ public class PC_Registry {
 			return null;
 		}
 		try {
-			Item item = (Item) clazz.getConstructor(int.class).newInstance(itemID);
+			Item item = clazz.getConstructor(int.class).newInstance(itemID);
 			GameRegistry.registerItem(item, itemInfo.itemid());
 			activeModule = null;
 			return item;
