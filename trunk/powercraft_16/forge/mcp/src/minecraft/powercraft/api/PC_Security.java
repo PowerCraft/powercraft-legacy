@@ -13,4 +13,14 @@ public class PC_Security {
 		return false;
 	}
 	
+	public static boolean allowedCallerNoException(Class<?>... allowedCallers){
+		Class<?> caller = PC_Reflection.getCallerClass(2);
+		for(int i=0; i<allowedCallers.length; i++){
+			if(allowedCallers[i]==caller){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
