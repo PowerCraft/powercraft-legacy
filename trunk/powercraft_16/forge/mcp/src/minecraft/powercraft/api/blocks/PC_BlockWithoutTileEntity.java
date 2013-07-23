@@ -9,10 +9,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_ClientRegistry;
 import powercraft.api.PC_Module;
-import powercraft.api.PC_Registry;
 import powercraft.api.PC_Renderer;
+import powercraft.api.registries.PC_ModuleRegistry;
+import powercraft.api.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -28,7 +28,7 @@ public abstract class PC_BlockWithoutTileEntity extends Block implements PC_IBlo
 
 		super(id, material);
 		blockInfo = getClass().getAnnotation(PC_BlockInfo.class);
-		module = PC_Registry.getActiveModule();
+		module = PC_ModuleRegistry.getActiveModule();
 	}
 
 
@@ -68,7 +68,7 @@ public abstract class PC_BlockWithoutTileEntity extends Block implements PC_IBlo
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegistry) {
 
-		PC_ClientRegistry.registerIcons(this, iconRegistry);
+		PC_TextureRegistry.registerIcons(this, iconRegistry);
 	}
 
 

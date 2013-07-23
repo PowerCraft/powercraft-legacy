@@ -23,14 +23,13 @@ public class PC_Utils {
 	public static final int BLOCK_NOTIFY = 1, BLOCK_UPDATE = 2, BLOCK_ONLY_SERVERSIDE = 4;
 
 	protected static PC_Utils instance;
-	protected static PC_Registry registry;
 
 	public PC_Utils() {
 
 		instance = this;
 		TickRegistry.registerTickHandler(new PC_TickHandler(), Side.SERVER);
 		if(getClass()==PC_Utils.class)
-			registry = new PC_Registry();
+			powercraft.api.registries.PC_Registry.createServerRegistry();
 	}
 
 

@@ -7,10 +7,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import powercraft.api.PC_ClientRegistry;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
+import powercraft.api.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -35,9 +35,9 @@ public class PC_BlockRoaster extends PC_Block {
 	@SideOnly(Side.CLIENT)
 	public void loadIcons() {
 
-		blockIcon = PC_ClientRegistry.registerIcon("Side");
-		topIcon = PC_ClientRegistry.registerIcon("Top");
-		bottomIcon = PC_ClientRegistry.registerIcon("Bottom");
+		blockIcon = PC_TextureRegistry.registerIcon("Side");
+		topIcon = PC_TextureRegistry.registerIcon("Top");
+		bottomIcon = PC_TextureRegistry.registerIcon("Bottom");
 	}
 
 

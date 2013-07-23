@@ -6,10 +6,10 @@ import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import powercraft.api.PC_ClientRegistry;
 import powercraft.api.items.PC_ItemInfo;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.conduits.PC_ConduitItem;
+import powercraft.api.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -57,7 +57,7 @@ public class PC_ConduitEnergyItem extends PC_ConduitItem {
 		for (int i = 0; i < data.length; i++) {
 			Data d = data[i];
 			if (d != null) {
-				d.iconItem = PC_ClientRegistry.registerIcon(d.iconName + "_Normal");
+				d.iconItem = PC_TextureRegistry.registerIcon(d.iconName + "_Normal");
 			}
 		}
 	}
@@ -102,12 +102,12 @@ public class PC_ConduitEnergyItem extends PC_ConduitItem {
 		for (int i = 0; i < data.length; i++) {
 			Data d = data[i];
 			if (d != null) {
-				d.iconCorner = PC_ClientRegistry.registerIcon(d.iconName + "_Corner", itemInfo.itemid());
-				d.iconNormal = PC_ClientRegistry.registerIcon(d.iconName + "_Normal", itemInfo.itemid());
-				d.iconConnection[0] = PC_ClientRegistry.registerIcon(d.iconName + "_Connection_None", itemInfo.itemid());
-				d.iconConnection[1] = PC_ClientRegistry.registerIcon(d.iconName + "_Connection_Input", itemInfo.itemid());
-				d.iconConnection[2] = PC_ClientRegistry.registerIcon(d.iconName + "_Connection_Output", itemInfo.itemid());
-				d.iconConnection[3] = PC_ClientRegistry.registerIcon(d.iconName + "_Connection", itemInfo.itemid());
+				d.iconCorner = PC_TextureRegistry.registerIcon(d.iconName + "_Corner", itemInfo.itemid());
+				d.iconNormal = PC_TextureRegistry.registerIcon(d.iconName + "_Normal", itemInfo.itemid());
+				d.iconConnection[0] = PC_TextureRegistry.registerIcon(d.iconName + "_Connection_None", itemInfo.itemid());
+				d.iconConnection[1] = PC_TextureRegistry.registerIcon(d.iconName + "_Connection_Input", itemInfo.itemid());
+				d.iconConnection[2] = PC_TextureRegistry.registerIcon(d.iconName + "_Connection_Output", itemInfo.itemid());
+				d.iconConnection[3] = PC_TextureRegistry.registerIcon(d.iconName + "_Connection", itemInfo.itemid());
 			}
 		}
 	}

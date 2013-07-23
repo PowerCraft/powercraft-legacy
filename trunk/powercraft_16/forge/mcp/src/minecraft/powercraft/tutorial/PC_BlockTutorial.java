@@ -2,9 +2,9 @@ package powercraft.tutorial;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import powercraft.api.PC_ClientRegistry;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
+import powercraft.api.registries.PC_TextureRegistry;
 
 @PC_BlockInfo(name="Tutorial", blockid="tutorial", defaultid=2000, tileEntity=PC_TileEntityTutorial.class)
 public class PC_BlockTutorial extends PC_Block {
@@ -16,7 +16,7 @@ public class PC_BlockTutorial extends PC_Block {
 
 	@Override
 	public void loadIcons() {
-		blockIcon = PC_ClientRegistry.registerIcon("Icon");
+		blockIcon = PC_TextureRegistry.registerIcon("Icon");
 	}
 
 	@Override

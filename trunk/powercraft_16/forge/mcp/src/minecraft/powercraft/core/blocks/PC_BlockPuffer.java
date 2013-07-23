@@ -8,10 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_ClientRegistry;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
+import powercraft.api.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -33,11 +33,11 @@ public class PC_BlockPuffer extends PC_Block {
 	@SideOnly(Side.CLIENT)
 	public void loadIcons() {
 
-		blockIcon = PC_ClientRegistry.registerIcon("DefaultMaschineTexture");
-		sideLevel[0] = PC_ClientRegistry.registerIcon("Side_Lvl0");
-		sideLevel[1] = PC_ClientRegistry.registerIcon("Side_Lvl1");
-		sideLevel[2] = PC_ClientRegistry.registerIcon("Side_Lvl2");
-		sideLevel[3] = PC_ClientRegistry.registerIcon("Side_Lvl3");
+		blockIcon = PC_TextureRegistry.registerIcon("DefaultMaschineTexture");
+		sideLevel[0] = PC_TextureRegistry.registerIcon("Side_Lvl0");
+		sideLevel[1] = PC_TextureRegistry.registerIcon("Side_Lvl1");
+		sideLevel[2] = PC_TextureRegistry.registerIcon("Side_Lvl2");
+		sideLevel[3] = PC_TextureRegistry.registerIcon("Side_Lvl3");
 	}
 
 
