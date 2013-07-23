@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils;
@@ -18,13 +19,18 @@ import powercraft.api.multiblocks.PC_MultiblockIndex;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.PC_TileEntityMultiblock;
 import powercraft.api.multiblocks.conduits.PC_ConduitTileEntity;
+import powercraft.api.registries.PC_ModuleRegistry;
+import powercraft.api.registries.PC_TextureRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 
 public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements PC_IGridProvider<PC_EnergyGrid, PC_ConduitEnergyTileEntity> {
 
+	private static PC_ModelEnergyBeam modelEnergyBeam = new PC_ModelEnergyBeam();
+	private static ResourceLocation energyBeam = PC_Utils.getResourceLocation(PC_ModuleRegistry.getModule("Core"), "textures/blocks/energyconduit/Energy.png");
 	private int type;
 	private PC_EnergyGrid grid;
-
 
 	public PC_ConduitEnergyTileEntity() {
 
@@ -332,4 +338,17 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 		return drops;
 	}
 
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void renderTileEntityAt(float timeStamp) {
+		if(System.currentTimeMillis() % 1000 < 500){
+			PC_TextureRegistry.bindTexture(energyBeam);
+			for(PC_Direction dir:PC_Direction.VALID_DIRECTIONS){
+				modelEnergyBeam.setEnabled(dir.ordinal(), !notingOnSide(dir));
+			}
+			modelEnergyBeam.renderAll();
+		}
+	}
+	
 }

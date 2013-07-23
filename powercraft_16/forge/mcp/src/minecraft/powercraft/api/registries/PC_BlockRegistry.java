@@ -1,8 +1,11 @@
 package powercraft.api.registries;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Configuration;
 import powercraft.api.PC_Logger;
 import powercraft.api.PC_Module;
@@ -17,22 +20,29 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class PC_BlockRegistry {
 
 	@SideOnly(Side.CLIENT)
-	private static class PC_TileEntitySpecialRenderer extends TileEntitySpecialRenderer{
+	protected static class PC_TileEntitySpecialRenderer extends TileEntitySpecialRenderer{
 
 		@Override
 		public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float timeStamp) {
 			if(tileEntity instanceof PC_ITileEntitySpecialRenderer){
-				((PC_ITileEntitySpecialRenderer)tileEntity).renderTileEntityAt(x, y, z, timeStamp);
+				GL11.glPushMatrix();
+				GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
+				((PC_ITileEntitySpecialRenderer)tileEntity).renderTileEntityAt(timeStamp);
+				GL11.glPopMatrix();
 			}
+		}
+		
+		public void bindTexture(ResourceLocation texture){
+			func_110628_a(texture);
 		}
 		
 	}
 	
 	@SideOnly(Side.CLIENT)
-	private static TileEntitySpecialRenderer specialRenderer;
+	private static PC_TileEntitySpecialRenderer specialRenderer;
 	
 	@SideOnly(Side.CLIENT)
-	protected static TileEntitySpecialRenderer getSpecialRenderer(){
+	protected static PC_TileEntitySpecialRenderer getSpecialRenderer(){
 		if(specialRenderer==null)
 			specialRenderer = new PC_TileEntitySpecialRenderer();
 		return specialRenderer;

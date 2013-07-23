@@ -164,7 +164,7 @@ public class PC_Gres {
 		final String states[] = { "loc_active", "loc_mouseDown", "loc_mouseOver", "loc_disabled" };
 		ResourceManager resourceManager = PC_ClientUtils.mc().func_110442_L();
 		try {
-			Resource resource = resourceManager.func_110536_a(PC_ClientUtils.getResourceLocation(PC_Api.instance, "textures/gui/GuiDesk.xml"));
+			Resource resource = resourceManager.func_110536_a(PC_Utils.getResourceLocation(PC_Api.instance, "textures/gui/GuiDesk.xml"));
 			InputStream inputStream = resource.func_110527_b();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 			String page = "";
@@ -183,7 +183,7 @@ public class PC_Gres {
 				if (texureNode.getNodeName().equals("Texture")) {
 					Element texureElement = (Element) texureNode;
 					String textureName = texureElement.getAttribute("textureName");
-					ResourceLocation resourceLocation = PC_ClientUtils.getResourceLocation(PC_Api.instance, "textures/gui/" + textureName);
+					ResourceLocation resourceLocation = PC_Utils.getResourceLocation(PC_Api.instance, "textures/gui/" + textureName);
 					NodeList subTextureNodes = texureNode.getChildNodes();
 					for (int j = 0; j < subTextureNodes.getLength(); j++) {
 						Node subTextureNode = subTextureNodes.item(j);
