@@ -3,10 +3,10 @@ package powercraft.api.multiblocks.cable.redstone;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.Icon;
-import powercraft.api.PC_ClientRegistry;
 import powercraft.api.items.PC_ItemInfo;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.cable.PC_CableItem;
+import powercraft.api.registries.PC_TextureRegistry;
 
 
 @PC_ItemInfo(name = "Unisolated Redstone", itemid = "unisolatedRedstone", defaultid = 17001)
@@ -34,7 +34,7 @@ public class PC_RedstoneUnisolatedItem extends PC_CableItem {
 	@Override
 	public void loadMultiblockItem() {
 
-		cableIcon = PC_ClientRegistry.registerIcon("redstone", itemInfo.itemid());
+		cableIcon = PC_TextureRegistry.registerIcon("redstone", itemInfo.itemid());
 	}
 
 
@@ -47,7 +47,7 @@ public class PC_RedstoneUnisolatedItem extends PC_CableItem {
 	@Override
 	public void loadIcons() {
 
-		itemIcon = PC_ClientRegistry.registerIcon("redstone");
+		itemIcon = PC_TextureRegistry.registerIcon("redstone");
 	}
 
 

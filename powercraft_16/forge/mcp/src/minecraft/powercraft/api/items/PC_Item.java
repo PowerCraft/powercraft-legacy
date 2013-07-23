@@ -4,9 +4,9 @@ package powercraft.api.items;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import powercraft.api.PC_ClientRegistry;
 import powercraft.api.PC_Module;
-import powercraft.api.PC_Registry;
+import powercraft.api.registries.PC_ModuleRegistry;
+import powercraft.api.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -22,7 +22,7 @@ public abstract class PC_Item extends Item {
 
 		super(id);
 		itemInfo = getClass().getAnnotation(PC_ItemInfo.class);
-		module = PC_Registry.getActiveModule();
+		module = PC_ModuleRegistry.getActiveModule();
 	}
 
 
@@ -48,7 +48,7 @@ public abstract class PC_Item extends Item {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegistry) {
 
-		PC_ClientRegistry.registerIcons(this, iconRegistry);
+		PC_TextureRegistry.registerIcons(this, iconRegistry);
 	}
 
 

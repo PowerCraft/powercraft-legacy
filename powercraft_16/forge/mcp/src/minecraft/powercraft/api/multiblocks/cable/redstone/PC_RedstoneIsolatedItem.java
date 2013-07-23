@@ -7,10 +7,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import powercraft.api.PC_ClientRegistry;
 import powercraft.api.items.PC_ItemInfo;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.cable.PC_CableItem;
+import powercraft.api.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -50,9 +50,9 @@ public class PC_RedstoneIsolatedItem extends PC_CableItem {
 	@Override
 	public void loadMultiblockItem() {
 
-		isolationIcon = PC_ClientRegistry.registerIcon("isolation", itemInfo.itemid());
+		isolationIcon = PC_TextureRegistry.registerIcon("isolation", itemInfo.itemid());
 		for (int i = 0; i < cable.length; i++) {
-			cable[i] = PC_ClientRegistry.registerIcon("Cable" + i, itemInfo.itemid());
+			cable[i] = PC_TextureRegistry.registerIcon("Cable" + i, itemInfo.itemid());
 		}
 	}
 
@@ -66,8 +66,8 @@ public class PC_RedstoneIsolatedItem extends PC_CableItem {
 	@Override
 	public void loadIcons() {
 
-		itemIcon = PC_ClientRegistry.registerIcon("isolation");
-		redstoneIcon = PC_ClientRegistry.registerIcon("redstone");
+		itemIcon = PC_TextureRegistry.registerIcon("isolation");
+		redstoneIcon = PC_TextureRegistry.registerIcon("redstone");
 	}
 
 
