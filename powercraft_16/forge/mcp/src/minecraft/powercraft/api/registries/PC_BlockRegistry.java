@@ -13,7 +13,9 @@ public class PC_BlockRegistry {
 
 	public static Block registerBlock(PC_Module module, Class<? extends Block> clazz) {
 
-		PC_Security.allowedCaller(PC_Module.class);
+		if(!PC_Security.allowedCallerNoException(PC_Module.class)){
+			PC_Logger.warning("PC_BlockRegistry.registerBlock shouln't be called. Use instead @PC_FieldGenerator");
+		}
 		PC_ModuleRegistry.setActiveModule(module);
 		Configuration config = module.getConfig();
 		PC_BlockInfo blockInfo = clazz.getAnnotation(PC_BlockInfo.class);

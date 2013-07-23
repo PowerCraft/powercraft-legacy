@@ -12,7 +12,9 @@ public class PC_ItemRegistry {
 
 	public static Item registerItem(PC_Module module, Class<? extends Item> clazz) {
 
-		PC_Security.allowedCaller(PC_Module.class);
+		if(!PC_Security.allowedCallerNoException(PC_Module.class)){
+			PC_Logger.warning("PC_ItemRegistry.registerItem shouln't be called. Use instead @PC_FieldGenerator");
+		}
 		PC_ModuleRegistry.setActiveModule(module);
 		Configuration config = module.getConfig();
 		PC_ItemInfo itemInfo = clazz.getAnnotation(PC_ItemInfo.class);
