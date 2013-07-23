@@ -305,7 +305,8 @@ public class PC_TileEntityMultiblock extends PC_TileEntity {
 	}
 
 
-	public void addCollisionBoxesToList(AxisAlignedBB aabb, List list, Entity entity) {
+	@SuppressWarnings("unused")
+	public void addCollisionBoxesToList(AxisAlignedBB aabb, List<AxisAlignedBB> list, Entity entity) {
 
 		for (int i = 0; i < tileEntities.length; i++) {
 			if (tileEntities[i] != null) {

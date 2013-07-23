@@ -594,9 +594,8 @@ public abstract class PC_GresComponent {
 
 		if (parent == null) {
 			return rect.getLocation();
-		} else {
-			return rect.getLocation().add(parent.getRealLocation()).add(parent.getFrame().getLocation());
-		}
+		} 
+		return rect.getLocation().add(parent.getRealLocation()).add(parent.getFrame().getLocation());
 	}
 
 
@@ -658,9 +657,8 @@ public abstract class PC_GresComponent {
 		PC_GresTexture texture = PC_Gres.getGresTexture(textureName);
 		if (texture == null) {
 			return new PC_Vec2I(0, 0);
-		} else {
-			return texture.getMinSize();
-		}
+		} 
+		return texture.getMinSize();
 	}
 
 
@@ -669,9 +667,8 @@ public abstract class PC_GresComponent {
 		PC_GresTexture texture = PC_Gres.getGresTexture(textureName);
 		if (texture == null) {
 			return new PC_Vec2I(0, 0);
-		} else {
-			return texture.getDefaultSize();
-		}
+		} 
+		return texture.getDefaultSize();
 	}
 
 

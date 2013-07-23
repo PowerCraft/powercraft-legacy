@@ -146,6 +146,7 @@ public class PC_GresInventory extends PC_GresComponent {
 			//itemstack = ((PC_Slot) slot).getBackgroundStack();
 
 			if (itemstack != null) {
+				@SuppressWarnings("unchecked")
 				List<String> l = itemstack.getTooltip(PC_ClientUtils.mc().thePlayer, PC_ClientUtils.mc().gameSettings.advancedItemTooltips);
 				l.set(0,
 						(new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().rarityColor)).append(l.get(0))

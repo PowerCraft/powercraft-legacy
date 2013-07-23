@@ -12,7 +12,7 @@ import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
+@SuppressWarnings("unused")
 public abstract class PC_MultiblockTileEntity {
 
 	protected PC_MultiblockIndex index;

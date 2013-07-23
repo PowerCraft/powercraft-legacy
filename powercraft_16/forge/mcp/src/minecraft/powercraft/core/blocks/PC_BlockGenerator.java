@@ -65,12 +65,10 @@ public class PC_BlockGenerator extends PC_Block {
 			PC_TileEntityGenerator generator = PC_Utils.getTE(world, x, y, z);
 			if (generator != null && generator.getHeat() > 0) {
 				return frontLevel[(generator.getHeat() - 1) * 3 / PC_TileEntityGenerator.maxHeat + 1];
-			} else {
-				return frontLevel[0];
-			}
-		} else {
-			return blockIcon;
-		}
+			} 
+			return frontLevel[0];
+		} 
+		return blockIcon;
 	}
 
 

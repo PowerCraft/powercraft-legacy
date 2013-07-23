@@ -36,24 +36,22 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
 
-		if (this.inventoryContents[i] != null) {
+		if (inventoryContents[i] != null) {
 			ItemStack itemstack;
-			if (this.inventoryContents[i].stackSize <= j) {
+			if (inventoryContents[i].stackSize <= j) {
 				itemstack = this.inventoryContents[i];
 				inventoryContents[i] = null;
 				onInventoryChanged();
 				return itemstack;
-			} else {
-				itemstack = this.inventoryContents[i].splitStack(j);
-				if (this.inventoryContents[i].stackSize == 0) {
-					this.inventoryContents[i] = null;
-				}
-				onInventoryChanged();
-				return itemstack;
+			} 
+			itemstack = this.inventoryContents[i].splitStack(j);
+			if (this.inventoryContents[i].stackSize == 0) {
+				this.inventoryContents[i] = null;
 			}
-		} else {
-			return null;
+			onInventoryChanged();
+			return itemstack;
 		}
+		return null;
 	}
 
 
@@ -64,9 +62,8 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 			ItemStack itemstack = this.inventoryContents[i];
 			this.inventoryContents[i] = null;
 			return itemstack;
-		} else {
-			return null;
-		}
+		} 
+		return null;
 	}
 
 

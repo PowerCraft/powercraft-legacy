@@ -26,6 +26,8 @@ public abstract class PC_MultiblockItem extends PC_Item {
 	public abstract PC_MultiblockType getMultiblockType();
 
 
+	
+	@SuppressWarnings("unused")
 	public PC_MultiblockTileEntity getTileEntity(ItemStack itemStack) {
 
 		try {
@@ -74,6 +76,8 @@ public abstract class PC_MultiblockItem extends PC_Item {
 				case 5:
 					x++;
 					break;
+				default:
+					break;
 			}
 		} else {
 			replaceAble = true;
@@ -97,6 +101,8 @@ public abstract class PC_MultiblockItem extends PC_Item {
 			case 5:
 				xHit = 0;
 				break;
+			default:
+				break;
 		}
 		block = PC_Utils.getBlock(world, x, y, z);
 		if (block == null || replaceAble) {
@@ -113,6 +119,7 @@ public abstract class PC_MultiblockItem extends PC_Item {
 	}
 
 
+	@SuppressWarnings("unused")
 	private int handleMultiblockClick(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float xHit,
 			float yHit, float zHit) {
 
@@ -143,7 +150,7 @@ public abstract class PC_MultiblockItem extends PC_Item {
 						minDist = dist;
 					}
 				}
-				if (tileEntityMultiblock.setMultiblockTileEntity(PC_MultiblockIndex.FACEINDEXFORDIR[bestSide.ordinal()], getTileEntity(itemStack))) {
+				if (bestSide!=null && tileEntityMultiblock.setMultiblockTileEntity(PC_MultiblockIndex.FACEINDEXFORDIR[bestSide.ordinal()], getTileEntity(itemStack))) {
 					itemStack.stackSize--;
 					return 1;
 				}

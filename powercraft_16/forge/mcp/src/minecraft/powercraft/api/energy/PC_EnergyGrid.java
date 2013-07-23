@@ -89,7 +89,6 @@ public class PC_EnergyGrid extends PC_Grid<PC_EnergyGrid, PC_ConduitEnergyTileEn
 		float maxProviderPower = 0;
 		float maxPufferPower = 0;
 		float requestedPower = 0;
-		float pufferRequestedPower = 0;
 		float pufferLevel = 0;
 		for (PC_IEnergyProvider provider : providers) {
 			maxProviderPower += provider.getEnergyForUsage();
@@ -99,7 +98,6 @@ public class PC_EnergyGrid extends PC_Grid<PC_EnergyGrid, PC_ConduitEnergyTileEn
 			pufferDatas[i++] = new PC_PufferData(puffer);
 			maxPufferPower += puffer.getEnergyForUsage();
 			pufferLevel += puffer.getEnergyLevel();
-			pufferRequestedPower += puffer.getEnergyRequest();
 		}
 		Arrays.sort(pufferDatas);
 		if (!puffers.isEmpty()) pufferLevel /= puffers.size();

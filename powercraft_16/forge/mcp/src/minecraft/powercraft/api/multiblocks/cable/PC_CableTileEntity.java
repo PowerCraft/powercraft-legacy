@@ -21,7 +21,7 @@ import powercraft.api.multiblocks.cable.redstone.PC_IRedstoneCable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
+@SuppressWarnings("unused")
 public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 
 	public static int xCoord;
@@ -76,8 +76,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			{ true, true, false, false, false, false } };
 
 
-	private boolean overlappingFix(PC_Direction dir, PC_Direction dir2) {
-
+	private static boolean overlappingFix(PC_Direction dir, PC_Direction dir2) {
 		return fix[dir.ordinal()][dir2.ordinal()];
 	}
 
@@ -219,7 +218,6 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			length = ((PC_CableTileEntity) multiblock).centerThickness + 2 + ((PC_CableTileEntity) multiblock).getThickness() * 2;
 		return connection | (length << 16);
 	}
-
 
 	protected int canConnectToBlock(World world, int x, int y, int z, Block block) {
 

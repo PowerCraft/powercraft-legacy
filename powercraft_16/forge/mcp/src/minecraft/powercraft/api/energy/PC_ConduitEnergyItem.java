@@ -63,6 +63,7 @@ public class PC_ConduitEnergyItem extends PC_ConduitItem {
 	}
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int itemID, CreativeTabs creativeTabs, List list) {

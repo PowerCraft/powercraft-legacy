@@ -65,14 +65,12 @@ public class PC_BlockPuffer extends PC_Block {
 
 		if (side < 2) {
 			return blockIcon;
-		} else {
-			PC_TileEntityPuffer puffer = PC_Utils.getTE(world, x, y, z);
-			if (puffer != null && ((int) puffer.getEnergyLevel()) > 0) {
-				return sideLevel[((int) puffer.getEnergyLevel() - 1) * 3 / PC_TileEntityPuffer.maxEnergy + 1];
-			} else {
-				return sideLevel[0];
-			}
-		}
+		} 
+		PC_TileEntityPuffer puffer = PC_Utils.getTE(world, x, y, z);
+		if (puffer != null && ((int) puffer.getEnergyLevel()) > 0) {
+			return sideLevel[((int) puffer.getEnergyLevel() - 1) * 3 / PC_TileEntityPuffer.maxEnergy + 1];
+		} 
+		return sideLevel[0];
 	}
 
 

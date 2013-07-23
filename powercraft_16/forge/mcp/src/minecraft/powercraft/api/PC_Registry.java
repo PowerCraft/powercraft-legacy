@@ -96,7 +96,7 @@ public class PC_Registry {
 	}
 
 
-	public void addRecipe(PC_RecipeTypes recipeType, Object... obj) {
+	public static void addRecipe(PC_RecipeTypes recipeType, Object... obj) {
 
 		switch (recipeType) {
 			case RECIPE3D:
@@ -117,21 +117,21 @@ public class PC_Registry {
 	}
 
 
-	private void addShapedRecipe(Object... obj) {
+	private static void addShapedRecipe(Object... obj) {
 
 		ItemStack output = PC_Utils.getItemStack(obj);
 		CraftingManager.getInstance().addRecipe(output, Arrays.copyOfRange(obj, 1, obj.length));
 	}
 
 
-	private void addShapelessRecipe(Object... obj) {
+	private static void addShapelessRecipe(Object... obj) {
 
 		ItemStack output = PC_Utils.getItemStack(obj);
 		CraftingManager.getInstance().addShapelessRecipe(output, Arrays.copyOfRange(obj, 1, obj.length));
 	}
 
 
-	private void addSmelting(Object... obj) {
+	private static void addSmelting(Object... obj) {
 
 		ItemStack output = PC_Utils.getItemStack(obj);
 		int i = 1;
