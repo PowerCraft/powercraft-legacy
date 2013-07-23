@@ -19,9 +19,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class PC_Registry {
 
+	protected static PC_Registry instance;
 	private static PC_Module activeModule;
 
-
+	protected PC_Registry(){
+		instance = this;
+	}
+	
 	public static Block registerBlock(PC_Module module, Class<? extends Block> clazz) {
 
 		activeModule = module;
@@ -34,6 +38,8 @@ public class PC_Registry {
 		}
 		try {
 			Block block = clazz.getConstructor(int.class).newInstance(blockID);
+			block.setUnlocalizedName(clazz.getSimpleName());
+			registerLanguage(block.getUnlocalizedName()+".name", blockInfo.name());
 			GameRegistry.registerBlock(block, blockInfo.itemBlock(), blockInfo.blockid());
 			Class<? extends PC_TileEntity> tileEntity = blockInfo.tileEntity();
 			if (tileEntity != PC_TileEntity.class) {
@@ -62,6 +68,8 @@ public class PC_Registry {
 		}
 		try {
 			Item item = clazz.getConstructor(int.class).newInstance(itemID);
+			item.setUnlocalizedName(clazz.getSimpleName());
+			registerLanguage(item.getUnlocalizedName()+".name", itemInfo.name());
 			GameRegistry.registerItem(item, itemInfo.itemid());
 			activeModule = null;
 			return item;
@@ -146,5 +154,14 @@ public class PC_Registry {
 			FurnaceRecipes.smelting().addSmelting(input.itemID, input.getItemDamage(), output, experience);
 		}
 	}
+	
+	public static void registerLanguage(String key, String value){
+		instance.iRegisterLanguage(key, value);
+	}
 
+	@SuppressWarnings("unused")
+	protected void iRegisterLanguage(String key, String value){
+		
+	}
+	
 }
