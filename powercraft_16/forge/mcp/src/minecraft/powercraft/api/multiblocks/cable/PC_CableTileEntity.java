@@ -132,72 +132,88 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 				int c5 = connection.length > 4 ? connection[4] : 0;
 				double c5e = (c5 >> 16) / 32.0;
 				c5 &= 0xFFFF;
-				int mask = getMask() | c1 | c2 | c3 | c4 | c5;
-				c[i-1] = getMask() == (c1 | c2 | c3 | c4 | c5)?1:2;
 				int p1 = 0;
 				double p1e = 0;
 				boolean f = overlappingFix(dir, dir2);
 				int p2 = 0;
 				double p2e = 0;
 				int pe = 0;
-				if (c1 != 0 && c2 != 0) {
+				int c2ex = c2;
+				if((c1 & (getMask() | c2 | c3 | c4 | c5))!=0 && (c2 & (getMask() | c1 | c3 | c4 | c5))!=0){
 					if (c1e > c2e) {
 						p1e = c2e;
 						p2e = c1e;
-						p1 = mask & c2;
-						p2 = mask & c1;
+						c2ex = p1 = (getMask() & c2) | (getMask() & (c1 | c3 | c4 | c5)) | (c2 & (c1 | c3 | c4 | c5));
+						p2 = ((getMask() | c2) & c1) | ((getMask() | c2) & (c3 | c4 | c5)) | (c1 & (c3 | c4 | c5));
 					} else if (c1e < c2e) {
 						p1e = c1e;
 						p2e = c2e;
-						p1 = mask & c1;
-						p2 = mask & c2;
+						p1 = (getMask() & c1) | (getMask() & (c2 | c3 | c4 | c5)) | (c1 & (c2 | c3 | c4 | c5));
+						c2ex = p2 = ((getMask() | c1) & c2) | ((getMask() | c1) & (c3 | c4 | c5)) | (c2 & (c3 | c4 | c5));
 					} else {
 						p1e = c1e;
-						p1 = mask & (c1 | c2);
+						c2ex = p1 = (c1 & c2) |(getMask() & (c1 | c2)) | (getMask() & (c3 | c4 | c5)) | ((c1 | c2) & (c3 | c4 | c5));
 					}
-				} else if (c1 != 0) {
+					if(p1==0 && p2!=0){
+						p1 = p2;
+						p1e = p2e;
+						p2 = 0;
+						p2e = 0;
+					}
+				}else if((c1 & (getMask() | c2 | c3 | c4 | c5))!=0){
 					p1e = c1e;
-					p1 = mask & c1;
-				} else if (c2 != 0) {
+					p1 = (getMask() & c1) | (getMask() & (c3 | c4 | c5)) | (c1 & (c3 | c4 | c5));
+				}else if((c2 & (getMask() | c1 | c3 | c4 | c5))!=0){
 					p1e = c2e;
-					p1 = mask & c2;
+					c2ex = p1 = (getMask() & c2) | (getMask() & (c3 | c4 | c5)) | (c2 & (c3 | c4 | c5));
 				}
+				int mask = (getMask() & (p1 | p2 | c3 | c4 | c5)) | (p1 & (p2 | c3 | c4 | c5)) | (p2 & (c3 | c4 | c5));
+				c[i-1] = (getMask() & (c1 | c2 | c3 | c4 | c5))==getMask()?1:2;
 				pe = mask & (c3 | c4 | c5);
-				if (c1 != 0) pe = 0;
+				if ((c1 & mask)!=0) pe = 0;
+				if ((c2ex)!=0) pe = 0;
 				double pemin = 0.5 - c3e;
 				double pemax = 0.5 + c3e;
-				boolean ml = c3 == 0 && c4 != 0;
-				boolean hc = c3 != 0 && (pemin < min2 || pemax > max1);
+				boolean ml = (c3&mask) == 0 && (c4&mask) != 0;
+				boolean hc = (c3&mask) != 0 && (pemin < min2 || pemax > max1);
 				if (p1 != 0) {
-					renderCable2(w, w, p1e - s, min2, max1, s, getMask() & p1, false);
+					renderCable2(w, w, p1e - s, min2, max1, s, p1 & getMask(), p2==0 && (hc || !ml) && f);
 					if (f) {
-						renderCable2(w, p1e - s, p1e, min2, max1, s, 0, false);
+						renderCable2(w, p1e - s, p1e, min2, max1, s, p1 & getMask(), p2==0 && (hc || !ml));
 					}
 					if (p2 != 0) {
-						renderCable2(w, p1e, p2e - s, min2, max1, s, p1 & p2, false);
+						renderCable2(w, p1e, p2e - s, min2, max1, s, p2 & p1, pe==0 && (hc || !ml) && f);
 						if (f) {
-							renderCable2(w, p2e - s, p2e, min2, max1, s, 0, false);
+							renderCable2(w, p2e - s, p2e, min2, max1, s, p2 & p1, pe==0 && (hc || !ml));
 						}
 						if (pe != 0) {
-							renderCable2(w, p2e, 0.5, min2, max1, s, p2 & pe, !ml);
+							renderCable2(w, p2e, 0.5, min2, max1, s, p2 & pe, !ml || hc);
 						}
 					} else if (pe != 0) {
-						if (c1 == 0 && hc) {
-							renderCableToOutside(w, p1e - s, p1e, pemin, pemax, p1 & (c3 | c4 | c5));
-							renderCable2(w, p1e, 0.5, pemin, pemax, s, p1 & (c3 | c4 | c5), !ml);
-						} else
+						if (hc) {
+							renderCableToOutside(w, p1e - s, p1e, pemin, pemax, p1 & pe);
+							renderCable2(w, p1e, 0.5, pemin, pemax, s, p1 & pe, true);
+						} else 
 							renderCable2(w, p1e, 0.5, min2, max1, s, p1 & pe, !ml);
 					}
 				} else if (pe != 0) {
-					renderCable2(w, w, 0.5, min2, max1, s, getMask() & pe, !ml);
+					renderCable2(w, w, 0.5, min2, max1, s, getMask() & pe, !ml || hc);
 					if (c1 == 0 && hc) {
 						renderCableToOutside(w, 0.5 - s, 0.5, pemin, pemax, getMask() & pe);
 					}
 				}
-				if (c2 != 0) {
-					renderCableToOutside(w, c2e - s, c2e, 0, 1, getMask());
+				if (c2ex != 0) {
+					if((c1 & mask)==0){
+						min2 += s;
+						max1 -= s;
+					}
+					renderCableToOutside(w, c2e - s, c2e, 0, 1, mask & c2ex);
+					if((c1 & mask)==0){
+						min2 -= s;
+						max1 += s;
+					}
 				}
-				if (c3 == 0 && c4 != 0) {
+				if (ml) {
 					xCoord += dir2.offsetX;
 					yCoord += dir2.offsetY;
 					zCoord += dir2.offsetZ;
@@ -259,11 +275,13 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		int c3 = canConnectToBlock(world, x + dir2.offsetX, y + dir2.offsetY, z + dir2.offsetZ, dir, dir2.getOpposite());
 		if (c3 == 0) {
 			c3 = canConnectToBlock(world, x + dir2.offsetX, y + dir2.offsetY, z + dir2.offsetZ, dir2.getOpposite(), dir);
+		}else{
+			c3 |= canConnectToBlock(world, x + dir2.offsetX, y + dir2.offsetY, z + dir2.offsetZ, dir2.getOpposite(), dir) & 0xFFFF;
 		}
 		int c4 = 0;
 		int c5 = 0;
 		Block block = PC_Utils.getBlock(world, x + dir2.offsetX, y + dir2.offsetY, z + dir2.offsetZ);
-		if (block == null) {
+		if (block == null || block instanceof PC_BlockMultiblock) {
 			c4 = canConnectToBlock(world, x + dir2.offsetX + dir.offsetX, y + dir2.offsetY + dir.offsetY, z + dir2.offsetZ + dir.offsetZ,
 					dir2.getOpposite(), dir.getOpposite());
 		}
@@ -303,7 +321,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	}
 
 
-	public List<ItemStack> checkConnections() {
+	public List<ItemStack> checkConnections(boolean b) {
 
 		int i = 0;
 		PC_Direction dir = PC_MultiblockIndex.getFaceDir(index);
@@ -335,9 +353,10 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			connections[i] = canConnectTo(dir, dir2, oldConnection);
 			i++;
 		}
-		updateGrid(oldIO != isIO);
-		if(notify)
+		if(notify || oldIO != isIO)
 			multiblock.notifyNeighbors();
+		if(!b)
+			updateGrid(oldIO != isIO);
 		multiblock.sendToClient();
 		return null;
 	}
@@ -346,7 +365,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	@Override
 	public void onNeighborBlockChange(int neighborID) {
 
-		List<ItemStack> drops = checkConnections();
+		List<ItemStack> drops = checkConnections(neighborID==PC_BlockMultiblock.block.blockID);
 		if (drops != null) multiblock.drop(drops);
 	}
 
@@ -354,7 +373,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	@Override
 	public boolean onAdded() {
 
-		if (checkConnections() != null) {
+		if (checkConnections(false) != null) {
 			return false;
 		}
 		return true;

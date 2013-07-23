@@ -661,7 +661,7 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 
 		if (!isClient() && grid == null) {
 			noUpdate = true;
-			checkConnections();
+			checkConnections(false);
 			noUpdate = false;
 		}
 	}

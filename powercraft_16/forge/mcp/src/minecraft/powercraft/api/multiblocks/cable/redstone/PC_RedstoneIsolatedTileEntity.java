@@ -75,7 +75,7 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 				cable[i] = redstoneIsolated.cable[i];
 				cable[i].setTileEntity(this);
 				noUpdate = true;
-				checkConnections();
+				checkConnections(false);
 				noUpdate = false;
 			}
 		}
@@ -169,7 +169,7 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 
 		if (multiblock instanceof PC_RedstoneIsolatedTileEntity) {
 			PC_RedstoneIsolatedTileEntity isolated = (PC_RedstoneIsolatedTileEntity) multiblock;
-			int connection = getMask() & isolated.getMask();
+			int connection = isolated.getMask();
 			if (connection != 0) {
 				int length = 16;
 				if (isolated.getCenterThickness() > 0) length = isolated.getCenterThickness() + 2 + isolated.getThickness() * 2;
@@ -246,7 +246,7 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 		if (!isClient() && firstTick) {
 			firstTick = false;
 			noUpdate = true;
-			checkConnections();
+			checkConnections(false);
 			noUpdate = false;
 		}
 	}
