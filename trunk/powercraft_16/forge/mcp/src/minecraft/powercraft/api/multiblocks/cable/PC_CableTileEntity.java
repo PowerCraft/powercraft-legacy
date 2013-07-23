@@ -307,6 +307,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 
 		int i = 0;
 		PC_Direction dir = PC_MultiblockIndex.getFaceDir(index);
+		int oldCenterThickness = centerThickness;
 		centerThickness = 0;
 
 		Block block = PC_Utils.getBlock(multiblock.worldObj, multiblock.xCoord + dir.offsetX, multiblock.yCoord + dir.offsetY, multiblock.zCoord
@@ -326,13 +327,17 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		}
 
 		boolean oldIO = isIO;
+		boolean notify=oldCenterThickness!=centerThickness;
 		isIO = false;
 		for (PC_Direction dir2 : PC_Direction.VALID_DIRECTIONS) {
 			if (dir2 == dir || dir2.getOpposite() == dir) continue;
-			connections[i] = canConnectTo(dir, dir2, connections[i]);
+			int oldConnection[] = connections[i];
+			connections[i] = canConnectTo(dir, dir2, oldConnection);
 			i++;
 		}
 		updateGrid(oldIO != isIO);
+		if(notify)
+			multiblock.notifyNeighbors();
 		multiblock.sendToClient();
 		return null;
 	}
