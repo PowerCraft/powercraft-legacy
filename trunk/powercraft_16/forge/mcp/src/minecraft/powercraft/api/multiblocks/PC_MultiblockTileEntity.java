@@ -44,20 +44,20 @@ public abstract class PC_MultiblockTileEntity {
 	}
 
 
-	public void setIndexAndMultiblock(PC_MultiblockIndex index, PC_TileEntityMultiblock multiblock) {
+	protected void setIndexAndMultiblock(PC_MultiblockIndex index, PC_TileEntityMultiblock multiblock) {
 
 		this.index = index;
 		this.multiblock = multiblock;
 	}
 
 
-	public boolean onAdded() {
+	protected boolean onAdded() {
 
 		return true;
 	}
 
 
-	public void onBreak() {
+	protected void onBreak() {
 
 	}
 
@@ -97,7 +97,7 @@ public abstract class PC_MultiblockTileEntity {
 	}
 
 
-	public void onChunkUnload() {
+	protected void onChunkUnload() {
 
 	}
 
@@ -228,6 +228,11 @@ public abstract class PC_MultiblockTileEntity {
 	public PC_MultiblockIndex getIndex() {
 
 		return index;
+	}
+
+
+	public void renderTileEntityAt(double x, double y, double z, float timeStamp) {
+		
 	}
 
 }
