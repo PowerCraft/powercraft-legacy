@@ -18,6 +18,7 @@ import powercraft.api.PC_ClientUtils;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
+import powercraft.api.registries.PC_MultiblockRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

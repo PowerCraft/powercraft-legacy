@@ -10,12 +10,14 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import powercraft.api.blocks.PC_ITileEntitySpecialRenderer;
 import powercraft.api.blocks.PC_TileEntity;
+import powercraft.api.registries.PC_MultiblockRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 
-public class PC_TileEntityMultiblock extends PC_TileEntity {
+public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEntitySpecialRenderer {
 
 	private PC_MultiblockTileEntity[] tileEntities = new PC_MultiblockTileEntity[27];
 
@@ -346,6 +348,16 @@ public class PC_TileEntityMultiblock extends PC_TileEntity {
 				EntityItem entityitem = new EntityItem(worldObj, xCoord + d0, yCoord + d1, zCoord + d2, itemStack);
 				entityitem.delayBeforeCanPickup = 10;
 				worldObj.spawnEntityInWorld(entityitem);
+			}
+		}
+	}
+
+
+	@Override
+	public void renderTileEntityAt(double x, double y, double z, float timeStamp) {
+		for (int i = 0; i < tileEntities.length; i++) {
+			if (tileEntities[i] != null) {
+				tileEntities[i].renderTileEntityAt(x, y, z, timeStamp);
 			}
 		}
 	}

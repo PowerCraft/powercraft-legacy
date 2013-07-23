@@ -1,4 +1,4 @@
-package powercraft.api.multiblocks;
+package powercraft.api.registries;
 
 
 import java.util.ArrayList;
@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import powercraft.api.PC_Logger;
+import powercraft.api.multiblocks.PC_MultiblockItem;
+import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

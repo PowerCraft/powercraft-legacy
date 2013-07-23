@@ -9,6 +9,7 @@ import powercraft.api.PC_Direction;
 import powercraft.api.PC_Logger;
 import powercraft.api.PC_Utils;
 import powercraft.api.items.PC_Item;
+import powercraft.api.registries.PC_MultiblockRegistry;
 
 
 public abstract class PC_MultiblockItem extends PC_Item {
