@@ -21,7 +21,7 @@ import powercraft.api.multiblocks.cable.PC_CableTileEntity;
 public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 
 	private boolean firstTick = true;
-	private boolean noUpdate;
+	private boolean secoundTick = true;
 	private PC_RedstoneCable cable[] = new PC_RedstoneCable[16];
 
 
@@ -74,9 +74,7 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 			if (cable[i] == null && redstoneIsolated.cable[i] != null) {
 				cable[i] = redstoneIsolated.cable[i];
 				cable[i].setTileEntity(this);
-				noUpdate = true;
 				checkConnections(false);
-				noUpdate = false;
 			}
 		}
 		calculateThickness();
@@ -215,7 +213,7 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 					cable[i].getGrid().remove(cable[i]);
 					cable[i].addToGrid();
 				}
-				if (!noUpdate) cable[i].getGrid().onUpdateTick(cable[i]);
+				cable[i].getGrid().onUpdateTick(cable[i]);
 			}
 		}
 	}
@@ -245,9 +243,17 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 
 		if (!isClient() && firstTick) {
 			firstTick = false;
-			noUpdate = true;
-			checkConnections(false);
-			noUpdate = false;
+			updateGrid(false);
+		}else if(!isClient() && secoundTick){
+			secoundTick = false;
+			for (int i = 0; i < cable.length; i++) {
+				if (cable[i] != null) {
+					if (cable[i].getGrid() != null && cable[i].getGrid().firstTick) {
+						cable[i].getGrid().firstTick = false;
+						cable[i].getGrid().onUpdateTick(cable[i]);
+					} 
+				}
+			}
 		}
 	}
 

@@ -21,8 +21,6 @@ import powercraft.api.multiblocks.cable.PC_CableTileEntity;
 
 public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implements PC_IRedstoneCable {
 
-	private boolean noUpdate;
-
 
 	public PC_RedstoneUnisolatedTileEntity() {
 
@@ -129,7 +127,7 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 				grid.remove(this);
 				addToGrid();
 			}
-			if (!noUpdate) grid.onUpdateTick(this);
+			grid.onUpdateTick(this);
 		}
 	}
 
@@ -232,6 +230,7 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 	private void removeFormGrid() {
 
 		if (!isClient() && grid != null) {
+			PC_RedstoneGrid oldGrid = grid;
 			grid.remove(this);
 			grid = null;
 			boolean isFirst = true;
@@ -321,6 +320,7 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 				}
 				i++;
 			}
+			oldGrid.onUpdateTick(this);
 		}
 	}
 
@@ -399,6 +399,7 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 		}
 		List<PRC> toLookAt = new ArrayList<PRC>();
 		toLookAt.add(new PRC(x, y, z, dir, cable));
+		PC_IRedstoneCable first=null;
 		while (!toLookAt.isEmpty()) {
 			PRC posAndRot = toLookAt.remove(0);
 			PC_TileEntityMultiblock tileEntity = PC_Utils.getTE(world, posAndRot.x, posAndRot.y, posAndRot.z);
@@ -408,6 +409,8 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 				if (multiblockTileEntity instanceof PC_RedstoneUnisolatedTileEntity) {
 					PC_RedstoneUnisolatedTileEntity unisolated = (PC_RedstoneUnisolatedTileEntity) multiblockTileEntity;
 					PC_RedstoneGrid og = unisolated.getGrid();
+					if(first==null)
+						first = unisolated;
 					og.remove(unisolated);
 					unisolated.setGrid(grid);
 					unisolated.addToGrid();
@@ -491,6 +494,8 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 						posAndRot.cable = getCable(isolated.getMask());
 					}
 					PC_RedstoneCable rCable = isolated.getCableType(posAndRot.cable);
+					if(first==null)
+						first = rCable;
 					PC_RedstoneGrid og = rCable.getGrid();
 					if (og != null) og.remove(rCable);
 					rCable.setGrid(grid);
@@ -571,6 +576,8 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 				}
 			}
 		}
+		if(first!=null)
+			grid.onUpdateTick(first);
 	}
 
 
@@ -659,10 +666,13 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 	@Override
 	public void update() {
 
-		if (!isClient() && grid == null) {
-			noUpdate = true;
-			checkConnections(false);
-			noUpdate = false;
+		if (!isClient()){
+			if(grid == null) {
+				updateGrid(false);
+			}else if(grid.firstTick){
+				grid.firstTick = false;
+				grid.onUpdateTick(this);
+			}
 		}
 	}
 

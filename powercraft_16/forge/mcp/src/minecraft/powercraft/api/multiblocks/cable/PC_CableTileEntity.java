@@ -390,6 +390,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 				connections[i] = null;
 		}
 		centerThickness = nbtCompoundTag.getInteger("centerThickness");
+		isIO = nbtCompoundTag.getBoolean("isIO");
 		multiblock.renderUpdate();
 	}
 
@@ -400,6 +401,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		for (int i = 0; i < connections.length; i++)
 			if (connections[i] != null) nbtCompoundTag.setIntArray("connections" + i, connections[i]);
 		nbtCompoundTag.setInteger("centerThickness", centerThickness);
+		nbtCompoundTag.setBoolean("isIO", isIO);
 	}
 
 
