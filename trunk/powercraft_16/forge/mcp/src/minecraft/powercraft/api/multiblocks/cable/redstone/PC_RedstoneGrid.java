@@ -14,12 +14,15 @@ import powercraft.api.grids.PC_Grid;
 
 public class PC_RedstoneGrid extends PC_Grid<PC_RedstoneGrid, PC_IRedstoneCable> {
 
-	private int power = 0;
-
-
+	protected boolean firstTick = true;
+	
+	private int power = -1;
+	
 	@Override
 	public void onUpdateTick(PC_IRedstoneCable node) {
 
+		if(firstTick)
+			return;
 		int newPower = 0;
 		List<PC_Vec3IWithRotation> poweringBlocks = new ArrayList<PC_Vec3IWithRotation>();
 		for (PC_IRedstoneCable ioNode : ioNodes) {
@@ -51,6 +54,11 @@ public class PC_RedstoneGrid extends PC_Grid<PC_RedstoneGrid, PC_IRedstoneCable>
 		}
 	}
 
+	@Override
+	public void mixGrids(PC_RedstoneGrid otherGrid) {
+		power = -1;
+		super.mixGrids(otherGrid);
+	}
 
 	public int getRedstonePowerValue() {
 

@@ -47,22 +47,29 @@ public abstract class PC_Grid<G extends PC_Grid<G, T>, T extends PC_IGridProvide
 
 		removeInternal(edge);
 	}
-
-
+	
 	@SuppressWarnings("unchecked")
 	public void mixGrids(G otherGrid) {
 
 		if (this == otherGrid) return;
+		T first = null;
 		for (T ioNode : otherGrid.ioNodes) {
+			if(first==null)
+				first = ioNode;
 			ioNodes.add(ioNode);
 			ioNode.setGrid((G) this);
 		}
 		for (T edge : otherGrid.edges) {
+			if(first==null)
+				first = edge;
 			edges.add(edge);
 			edge.setGrid((G) this);
 		}
 		otherGrid.ioNodes.clear();
 		otherGrid.edges.clear();
+		if(first!=null){
+			onUpdateTick(first);
+		}
 	}
 
 

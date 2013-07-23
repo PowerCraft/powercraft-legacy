@@ -177,6 +177,7 @@ public class PC_RedstoneCable implements PC_IRedstoneCable {
 	public void removeFormGrid() {
 
 		if (!tileEntity.isClient() && grid != null) {
+			PC_RedstoneGrid oldGrid = grid;
 			grid.remove(this);
 			grid = null;
 			boolean isFirst = true;
@@ -266,6 +267,7 @@ public class PC_RedstoneCable implements PC_IRedstoneCable {
 				}
 				i++;
 			}
+			oldGrid.onUpdateTick(this);
 		}
 	}
 
