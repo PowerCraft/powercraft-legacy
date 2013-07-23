@@ -6,17 +6,17 @@ import net.minecraft.util.Icon;
 import powercraft.api.blocks.PC_IBlock;
 import powercraft.api.items.PC_Item;
 import powercraft.core.PC_Core;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 
 @SideOnly(Side.CLIENT)
-public class PC_ClientRegistry {
+public class PC_ClientRegistry extends PC_Registry {
 
 	private static IconRegister iconRegistry;
 	private static String moduleName;
 	private static String objectName;
-
 
 	public static void registerIcons(PC_IBlock block, IconRegister iconRegistry) {
 
@@ -58,4 +58,9 @@ public class PC_ClientRegistry {
 		return iconRegistry.registerIcon(moduleName + ":" + objectName + "/" + icon);
 	}
 
+	@Override
+	protected void iRegisterLanguage(String key, String value){
+		LanguageRegistry.instance().addStringLocalization(key, value);
+	}
+	
 }

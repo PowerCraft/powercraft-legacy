@@ -18,9 +18,9 @@ public class PC_ClientUtils extends PC_Utils {
 
 	public PC_ClientUtils() {
 
-		instance = this;
 		PC_Renderer.create();
 		TickRegistry.registerTickHandler(new PC_TickHandler(), Side.CLIENT);
+		registry = new PC_ClientRegistry();
 	}
 
 
