@@ -673,4 +673,10 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 		return 0xFFFFFFFF;
 	}
 
+
+	@Override
+	protected boolean useOverlay() {
+		return false;
+	}
+
 }

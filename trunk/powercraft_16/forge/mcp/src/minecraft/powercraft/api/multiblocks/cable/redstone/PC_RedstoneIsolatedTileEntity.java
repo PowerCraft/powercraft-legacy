@@ -303,7 +303,7 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 
 		if (!isClient()) {
 			PC_RedstoneGrid grid = getGrid();
-			if (grid != null) {
+			if (grid != null && isIO) {
 				PC_Direction dir = PC_Direction.getOrientation(side).getOpposite();
 				Block block = PC_Utils.getBlock(multiblock.worldObj, multiblock.xCoord + dir.offsetX, multiblock.yCoord + dir.offsetY,
 						multiblock.zCoord + dir.offsetZ);
@@ -321,6 +321,12 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 	protected int getColorForCable(int cableID) {
 
 		return ItemDye.dyeColors[cableID];
+	}
+
+
+	@Override
+	protected boolean useOverlay() {
+		return true;
 	}
 
 }
