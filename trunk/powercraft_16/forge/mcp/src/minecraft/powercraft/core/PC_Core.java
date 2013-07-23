@@ -1,5 +1,7 @@
 package powercraft.core;
 
+import javax.annotation.PostConstruct;
+
 import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
 import powercraft.api.energy.PC_ConduitEnergyItem;
