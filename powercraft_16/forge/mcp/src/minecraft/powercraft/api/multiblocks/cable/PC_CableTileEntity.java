@@ -57,6 +57,9 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	protected abstract Icon getCableLineIcon(int index);
 
 
+	protected abstract boolean useOverlay();
+
+	
 	protected abstract int getColorForCable(int cableID);
 
 
@@ -442,6 +445,21 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		double maxX = max(w, wl, dir2.offsetX, l);
 		double maxY = max(w, wl, dir2.offsetY, l);
 		double maxZ = max(w, wl, dir2.offsetZ, l);
+		renderer.uvRotateBottom = dir2.offsetX==0?0:2;
+		renderer.uvRotateTop = dir2.offsetX==0?0:1;
+		renderer.uvRotateEast = dir2.offsetY==0?1:3;
+		renderer.uvRotateNorth = dir2.offsetY==0?2:0;
+		renderer.uvRotateSouth = dir2.offsetY==0?1:3;
+		renderer.uvRotateWest = dir2.offsetY==0?2:0;
+		Icon cableIcon = getCableIcon();
+		Icon iconArray[] = new Icon[6];
+		iconArray[0] = dir2.offsetY==0?cableIcon:null;
+		iconArray[1] = dir2.offsetY==0?cableIcon:null;
+		iconArray[2] = dir2.offsetZ==0?cableIcon:null;
+		iconArray[3] = dir2.offsetZ==0?cableIcon:null;
+		iconArray[4] = dir2.offsetX==0?cableIcon:null;
+		iconArray[5] = dir2.offsetX==0?cableIcon:null;
+		PC_BlockMultiblock.setIcons(iconArray);
 		if (dir.offsetX > 0) {
 			renderer.setRenderBounds(max - s, minY, minZ, max, maxY, maxZ);
 		} else if (dir.offsetX < 0) {
@@ -455,21 +473,35 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		} else if (dir.offsetZ < 0) {
 			renderer.setRenderBounds(minX, minY, min, maxX, maxY, min + s);
 		}
-		renderer.renderStandardBlock(PC_BlockMultiblock.block, multiblock.xCoord, multiblock.yCoord, multiblock.zCoord);
-		int j = 0;
-		for (int i = 0; i < 16; i++) {
-			if ((mask & 1 << i) != 0) {
-				Icon icon = getCableLineIcon(j);
-				if (icon != null) {
-					PC_BlockMultiblock.setIcons(icon);
-					PC_BlockMultiblock.colorMultiplier = getColorForCable(i);
-					renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
+		renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
+		if(useOverlay()){
+			int j = 0;
+			for (int i = 0; i < 16; i++) {
+				if ((mask & 1 << i) != 0) {
+					Icon icon = getCableLineIcon(j);
+					if (icon != null) {
+						iconArray[0] = dir.offsetY==0?null:icon;
+						iconArray[1] = dir.offsetY==0?null:icon;
+						iconArray[2] = dir.offsetZ==0?null:icon;
+						iconArray[3] = dir.offsetZ==0?null:icon;
+						iconArray[4] = dir.offsetX==0?null:icon;
+						iconArray[5] = dir.offsetX==0?null:icon;
+						PC_BlockMultiblock.setIcons(iconArray);
+						PC_BlockMultiblock.colorMultiplier = getColorForCable(i);
+						renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
+					}
+					j++;
 				}
-				j++;
 			}
+			PC_BlockMultiblock.colorMultiplier = 0xFFFFFFFF;
 		}
-		PC_BlockMultiblock.setIcons(getCableIcon());
-		PC_BlockMultiblock.colorMultiplier = 0xFFFFFFFF;
+		PC_BlockMultiblock.setIcons(cableIcon);
+		renderer.uvRotateBottom = 0;
+		renderer.uvRotateTop = 0;
+		renderer.uvRotateEast = 0;
+		renderer.uvRotateNorth = 0;
+		renderer.uvRotateSouth = 0;
+		renderer.uvRotateWest = 0;
 	}
 
 
