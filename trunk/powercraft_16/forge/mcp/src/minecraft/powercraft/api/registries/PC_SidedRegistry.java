@@ -1,11 +1,12 @@
 package powercraft.api.registries;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import powercraft.api.blocks.PC_IBlock;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.items.PC_Item;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @SuppressWarnings("unused")
 class PC_SidedRegistry {
@@ -25,5 +26,7 @@ class PC_SidedRegistry {
 	protected void registerTileEntity(Class<? extends PC_TileEntity> tileEntity) {
 		GameRegistry.registerTileEntity(tileEntity, tileEntity.getName());
 	}
+
+	protected void bindTexture(ResourceLocation texture) {}
 	
 }

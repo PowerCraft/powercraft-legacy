@@ -1,5 +1,9 @@
 package powercraft.api.registries;
 
+import java.util.List;
+
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import powercraft.api.PC_Module;
 
 public class PC_ModuleRegistry {
@@ -16,6 +20,23 @@ public class PC_ModuleRegistry {
 	
 	public static PC_Module getActiveModule(){
 		return activeModule;
+	}
+
+	public static ModContainer getMod(String mod) {
+		List<ModContainer> activeMods = Loader.instance().getActiveModList();
+		for(ModContainer activeMod:activeMods){
+			if(activeMod.getModId().equals(mod)){
+				return activeMod;
+			}
+		}
+		return null;
+	}
+	
+	public static PC_Module getModule(String module) {
+		ModContainer mod = getMod("PowerCraft-"+module);
+		if(mod==null)
+			return null;
+		return (PC_Module) mod.getMod();
 	}
 	
 }

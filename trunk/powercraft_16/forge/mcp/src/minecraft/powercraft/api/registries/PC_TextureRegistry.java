@@ -2,6 +2,7 @@ package powercraft.api.registries;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import powercraft.api.PC_Security;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockWithoutTileEntity;
@@ -54,6 +55,10 @@ public class PC_TextureRegistry {
 	public static Icon registerIcon(String icon, String objectName) {
 
 		return PC_Registry.sidedRegistry.registerIcon(icon, objectName);
+	}
+
+	public static void bindTexture(ResourceLocation texture) {
+		PC_Registry.sidedRegistry.bindTexture(texture);
 	}
 	
 }

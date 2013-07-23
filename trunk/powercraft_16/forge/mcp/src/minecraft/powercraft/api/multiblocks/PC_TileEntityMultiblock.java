@@ -354,10 +354,11 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 
 
 	@Override
-	public void renderTileEntityAt(double x, double y, double z, float timeStamp) {
+	@SideOnly(Side.CLIENT)
+	public void renderTileEntityAt(float timeStamp) {
 		for (int i = 0; i < tileEntities.length; i++) {
 			if (tileEntities[i] != null) {
-				tileEntities[i].renderTileEntityAt(x, y, z, timeStamp);
+				tileEntities[i].renderTileEntityAt(timeStamp);
 			}
 		}
 	}

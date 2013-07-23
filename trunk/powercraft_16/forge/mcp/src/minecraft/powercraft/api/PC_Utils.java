@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.EnumGameType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -316,4 +317,9 @@ public class PC_Utils {
 		return ((EntityPlayerMP) player).theItemInWorldManager.getGameType();
 	}
 
+	public static ResourceLocation getResourceLocation(PC_Module module, String file) {
+
+		return new ResourceLocation(module.getMetadata().modId.toLowerCase(), file);
+	}
+	
 }

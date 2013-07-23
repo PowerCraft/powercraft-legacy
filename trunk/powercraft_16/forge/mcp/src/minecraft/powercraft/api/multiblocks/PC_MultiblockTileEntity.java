@@ -230,8 +230,8 @@ public abstract class PC_MultiblockTileEntity {
 		return index;
 	}
 
-
-	public void renderTileEntityAt(double x, double y, double z, float timeStamp) {
+	@SideOnly(Side.CLIENT)
+	public void renderTileEntityAt(float timeStamp) {
 		
 	}
 

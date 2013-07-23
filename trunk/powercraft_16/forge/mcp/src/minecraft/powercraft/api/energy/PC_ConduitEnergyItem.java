@@ -77,7 +77,7 @@ public class PC_ConduitEnergyItem extends PC_ConduitItem {
 
 		return data[metadata].iconItem;
 	}
-
+	
 	public static class Data {
 
 		public final String iconName;

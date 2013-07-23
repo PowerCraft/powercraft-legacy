@@ -1,6 +1,7 @@
 package powercraft.api.registries;
 
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import powercraft.api.blocks.PC_ITileEntitySpecialRenderer;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.core.PC_Core;
@@ -36,6 +37,11 @@ class PC_SidedRegistryClient extends PC_SidedRegistry {
 		}else{
 			GameRegistry.registerTileEntity(tileEntity, tileEntity.getName());
 		}
+	}
+	
+	@Override
+	protected void bindTexture(ResourceLocation texture) {
+		PC_BlockRegistry.getSpecialRenderer().bindTexture(texture);
 	}
 	
 }
