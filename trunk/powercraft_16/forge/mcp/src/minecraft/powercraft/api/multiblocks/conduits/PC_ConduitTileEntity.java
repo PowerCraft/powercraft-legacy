@@ -1,15 +1,8 @@
 package powercraft.api.multiblocks.conduits;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -17,13 +10,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils;
 import powercraft.api.multiblocks.PC_BlockMultiblock;
 import powercraft.api.multiblocks.PC_MultiblockIndex;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.PC_TileEntityMultiblock;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 
@@ -47,6 +44,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		multiblock.sendToClient();
 	}
 
+	@SuppressWarnings("unused")
 	public int canConnectToBlock(World world, int x, int y, int z, int side, Block block, int oldConnectionInfo){
 		return 0;
 	}
@@ -223,7 +221,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		return ((connections>>(dir.ordinal()*5)) & 31)>>1;
 	}
 	
-	private float offsetN(float f, float f1, int off, float length){
+	private static float offsetN(float f, float f1, int off, float length){
 		if(off<0)
 			return 0+length;
 		if(off>0)
@@ -231,7 +229,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		return 0.5f-f;
 	}
 
-	private float offsetP(float f, float f1, int off, float length){
+	private static float offsetP(float f, float f1, int off, float length){
 		if(off>0)
 			return 1-length;
 		if(off<0)

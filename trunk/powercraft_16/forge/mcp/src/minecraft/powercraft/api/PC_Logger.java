@@ -109,7 +109,6 @@ public class PC_Logger {
 
 		private static final String nl = System.getProperty("line.separator");
 
-
 		@Override
 		public String format(LogRecord record) {
 

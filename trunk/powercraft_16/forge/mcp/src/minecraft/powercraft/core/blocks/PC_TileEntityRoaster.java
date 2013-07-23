@@ -42,12 +42,11 @@ public class PC_TileEntityRoaster extends PC_TileEntity implements PC_IEnergyCon
 			request -= energy;
 			this.energy += energy;
 			return 0;
-		} else {
-			energy -= request;
-			this.energy += request;
-			request = 0;
-			return energy;
-		}
+		} 
+		energy -= request;
+		this.energy += request;
+		request = 0;
+		return energy;
 	}
 
 
@@ -118,6 +117,7 @@ public class PC_TileEntityRoaster extends PC_TileEntity implements PC_IEnergyCon
 	}
 
 
+	@SuppressWarnings("unchecked")
 	private List<EntityLivingBase> getEntities() {
 
 		List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
@@ -133,6 +133,7 @@ public class PC_TileEntityRoaster extends PC_TileEntity implements PC_IEnergyCon
 	}
 
 
+	@SuppressWarnings("unchecked")
 	private List<EntityItem> getItems() {
 
 		List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class,

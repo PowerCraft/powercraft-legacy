@@ -67,6 +67,7 @@ public class PC_Reflection {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public static <T> T getValue(Class<?> clazz, Object object, int index, Class<?> type) {
 
 		Field field = findNearesBestField(clazz, index, type);

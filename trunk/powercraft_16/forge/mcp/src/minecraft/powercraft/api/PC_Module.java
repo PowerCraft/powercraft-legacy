@@ -95,6 +95,7 @@ public abstract class PC_Module {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	private Object createClass(Class<?> clazz) throws InstantiationException, IllegalAccessException {
 
 		if (Block.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(PC_BlockInfo.class)) {

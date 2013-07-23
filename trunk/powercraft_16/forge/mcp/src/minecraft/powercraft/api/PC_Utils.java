@@ -131,6 +131,7 @@ public class PC_Utils {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public static <T extends TileEntity> T getTE(IBlockAccess blockAccess, int x, int y, int z) {
 
 		return (T) blockAccess.getBlockTileEntity(x, y, z);

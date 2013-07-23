@@ -16,7 +16,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_ClientUtils;
 import powercraft.api.PC_Utils;
-import powercraft.api.PC_Vec3I;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
 import cpw.mods.fml.relauncher.Side;
@@ -125,7 +124,6 @@ public class PC_BlockMultiblock extends PC_Block {
 			}
 		}
 		if (bestMovingObjectPosition != null && world.isRemote) {
-			PC_Vec3I blockPos = new PC_Vec3I(x, y, z);
 			if (selectionIndex != bestIndex) {
 				PC_ClientUtils.mc().playerController.resetBlockRemoving();
 				selectionIndex = bestIndex;
@@ -156,6 +154,7 @@ public class PC_BlockMultiblock extends PC_Block {
 	}
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aabb, List list, Entity entity) {
 

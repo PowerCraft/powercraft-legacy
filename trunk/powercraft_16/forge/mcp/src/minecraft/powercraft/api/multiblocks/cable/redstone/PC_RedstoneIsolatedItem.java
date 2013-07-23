@@ -101,6 +101,7 @@ public class PC_RedstoneIsolatedItem extends PC_CableItem {
 	}
 
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int itemID, CreativeTabs creativeTabs, List list) {
