@@ -13,7 +13,7 @@ public class PC_ItemRegistry {
 	public static Item registerItem(PC_Module module, Class<? extends Item> clazz) {
 
 		if(!PC_Security.allowedCallerNoException(PC_Module.class)){
-			PC_Logger.warning("PC_ItemRegistry.registerItem shouln't be called. Use instead @PC_FieldGenerator");
+			PC_Logger.warning("PC_ItemRegistry.registerItem shouldn't be called. Use instead @PC_FieldGenerator");
 		}
 		PC_ModuleRegistry.setActiveModule(module);
 		Configuration config = module.getConfig();

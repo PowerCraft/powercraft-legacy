@@ -2,8 +2,10 @@ package powercraft.api.items;
 
 
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import powercraft.api.PC_CreativeTab;
 import powercraft.api.PC_Module;
 import powercraft.api.registries.PC_ModuleRegistry;
 import powercraft.api.registries.PC_TextureRegistry;
@@ -57,4 +59,11 @@ public abstract class PC_Item extends Item {
 		return 0;
 	}
 
+	@Override
+	public CreativeTabs[] getCreativeTabs() {
+		if(getCreativeTab()==null)
+			return new CreativeTabs[]{};
+		return new CreativeTabs[]{ getCreativeTab(), PC_CreativeTab.getCrativeTab()};
+	}
+	
 }
