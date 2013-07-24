@@ -12,13 +12,13 @@ public class PC_Registry {
 	
 	@SideOnly(Side.CLIENT)
 	public static void createClientRegistry() {
-		if(PC_Security.allowedCaller(PC_ClientUtils.class) && sidedRegistry==null){
+		if(PC_Security.allowedCaller("PC_Registry.createClientRegistry()", PC_ClientUtils.class) && sidedRegistry==null){
 			sidedRegistry = new PC_SidedRegistryClient();
 		}
 	}
 	
 	public static void createServerRegistry() {
-		if(PC_Security.allowedCaller(PC_Utils.class) && sidedRegistry==null){
+		if(PC_Security.allowedCaller("PC_Registry.createServerRegistry()", PC_Utils.class) && sidedRegistry==null){
 			sidedRegistry = new PC_SidedRegistry();
 		}
 	}
