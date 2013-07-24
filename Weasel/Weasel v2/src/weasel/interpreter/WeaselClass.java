@@ -185,5 +185,9 @@ public class WeaselClass implements WeaselModifier, WeaselNameable, WeaselSaveab
 		return null;
 		
 	}
+
+	public String getFileName() {
+		return null;
+	}
 	
 }

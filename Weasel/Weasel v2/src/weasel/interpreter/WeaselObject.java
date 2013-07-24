@@ -11,6 +11,7 @@ public class WeaselObject implements WeaselSaveable {
 	private final int parent;
 	private final int[] dataBuffer;
 	private boolean visible;
+	private Object userData;
 	
 	public WeaselObject(WeaselInterpreter interpreter, int parent, WeaselClass weaselClass) {
 		this.interpreter = interpreter;
@@ -27,6 +28,9 @@ public class WeaselObject implements WeaselSaveable {
 		dataBuffer = new int[dataInputStream.readInt()];
 		for(int i=0; i<dataBuffer.length; i++){
 			dataBuffer[i] = dataInputStream.readInt();
+		}
+		if(dataInputStream.readBoolean()){
+			userData = WeaselUserDataSaver.loadUserDataFromDataStream(interpreter, dataInputStream);
 		}
 	}
 	
@@ -61,6 +65,18 @@ public class WeaselObject implements WeaselSaveable {
 		for(int i=0; i<dataBuffer.length; i++){
 			dataOutputStream.writeInt(dataBuffer[i]);
 		}
+		dataOutputStream.writeBoolean(userData!=null);
+		if(userData!=null){
+			WeaselUserDataSaver.saveUserDataToDataStream(interpreter, dataOutputStream, userData);
+		}
+	}
+	
+	public Object getUserData(){
+		return userData;
+	}
+	
+	public void setUserData(Object userData){
+		this.userData = userData;
 	}
 	
 }

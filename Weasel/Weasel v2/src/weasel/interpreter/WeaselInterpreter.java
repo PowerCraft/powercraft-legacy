@@ -98,6 +98,7 @@ public class WeaselInterpreter implements WeaselSaveable {
 
 	private WeaselThread getNextThread(){
 		WeaselThread thread = threads.get(activeThreadID);
+		thread.sleepUpdate();
 		if(thread.getThreadState()!=State.RUNNING){
 			int startThread = activeThreadID;
 			do{
@@ -108,6 +109,7 @@ public class WeaselInterpreter implements WeaselSaveable {
 				if(activeThreadID==startThread)
 					return null;
 				thread = threads.get(activeThreadID);
+				thread.sleepUpdate();
 			}while(thread.getThreadState()==State.RUNNING);
 		}
 		return thread;
@@ -135,6 +137,10 @@ public class WeaselInterpreter implements WeaselSaveable {
 		WeaselClass wClass = getClassByName(className);
 		WeaselMethod method = wClass.getMethod(name, desk);
 		return method;
+	}
+
+	public WeaselObject getObject(int pointer) {
+		return memory.getObject(pointer);
 	}
 	
 }

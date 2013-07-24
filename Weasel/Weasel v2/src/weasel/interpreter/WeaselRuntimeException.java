@@ -7,5 +7,13 @@ public class WeaselRuntimeException extends RuntimeException {
 	public WeaselRuntimeException(String message) {
 		super(message);
 	}
+
+	public WeaselRuntimeException(Throwable e) {
+		super(e);
+	}
+	
+	public void setWeaselThread(WeaselThread weaselThread){
+		setStackTrace(weaselThread.getStackTrace());
+	}
 	
 }
