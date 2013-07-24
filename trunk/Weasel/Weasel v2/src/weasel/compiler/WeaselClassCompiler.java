@@ -34,8 +34,8 @@ public class WeaselClassCompiler extends WeaselClass {
 			}else if(token.param==WeaselKeyWord.INTERFACE){
 				
 			}
-			String scriptClassName = (String) expectToken(WeaselTokenType.IDENT).param;
-			
+			expectToken(WeaselTokenType.IDENT, className);
+			expectToken(WeaselTokenType.OPENBLOCK);
 		}catch(WeaselSyntaxError e){
 			error.add(e);
 			e.printStackTrace();
