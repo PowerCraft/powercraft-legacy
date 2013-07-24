@@ -6,26 +6,26 @@ import java.io.IOException;
 
 public class WeaselClass implements WeaselModifier, WeaselNameable, WeaselSaveable {
 
-	private WeaselInterpreter interpreter;
-	private WeaselClass parentClass;
-	private int modifier;
-	private String className;
-	private WeaselClass superClass;
-	private WeaselClass interfaces[];
-	private WeaselMethod methods[];
-	private WeaselClass childClasses[];
-	private int staticDataBuffer[];
-	private WeaselMethod staticMethods[];
-	private WeaselClass staticChildClasses[];
-	private int dataBufferSize;
-	private int initialized;
+	protected WeaselClassBuffer interpreter;
+	protected WeaselClass parentClass;
+	protected int modifier;
+	protected String className;
+	protected WeaselClass superClass;
+	protected WeaselClass interfaces[];
+	protected WeaselMethod methods[];
+	protected WeaselClass childClasses[];
+	protected int staticDataBuffer[];
+	protected WeaselMethod staticMethods[];
+	protected WeaselClass staticChildClasses[];
+	protected int dataBufferSize;
+	protected int initialized;
 	
-	public WeaselClass(WeaselInterpreter interpreter, WeaselClass parentClass){
+	public WeaselClass(WeaselClassBuffer interpreter, WeaselClass parentClass){
 		this.interpreter = interpreter;
 		this.parentClass = parentClass;
 	}
 	
-	public WeaselClass(WeaselInterpreter interpreter, WeaselClass parentClass, String className)  {
+	public WeaselClass(WeaselClassBuffer interpreter, WeaselClass parentClass, String className)  {
 		this.interpreter = interpreter;
 		this.parentClass = parentClass;
 		this.className = className;
