@@ -65,5 +65,9 @@ public class WeaselMemory implements WeaselSaveable {
 			}
 		}
 	}
+
+	public WeaselObject getObject(int pointer) {
+		return objects[pointer];
+	}
 	
 }

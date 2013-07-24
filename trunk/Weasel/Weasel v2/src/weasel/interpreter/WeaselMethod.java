@@ -77,5 +77,9 @@ public class WeaselMethod implements WeaselModifier, WeaselNameable {
 	public WeaselInstruction getInstruction(int i) {
 		return null;
 	}
+
+	public WeaselClass getParentClass() {
+		return parentClass;
+	}
 	
 }
