@@ -10,7 +10,7 @@ import java.util.TreeMap;
 
 import weasel.interpreter.WeaselThread.State;
 
-public class WeaselInterpreter implements WeaselSaveable {
+public class WeaselInterpreter implements WeaselSaveable, WeaselClassBuffer {
 
 	private WeaselMemory memory;
 	private TreeMap<String, WeaselNativeMethod> nativeMethods = new TreeMap<String, WeaselNativeMethod>();

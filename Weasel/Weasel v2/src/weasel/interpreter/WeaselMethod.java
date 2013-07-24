@@ -7,7 +7,7 @@ import weasel.interpreter.bytecode.WeaselInstruction;
 
 public class WeaselMethod implements WeaselModifier, WeaselNameable {
 
-	private WeaselInterpreter interpreter;
+	private WeaselClassBuffer interpreter;
 	private WeaselClass parentClass;
 	private int modifier;
 	private String methodName;
@@ -15,12 +15,12 @@ public class WeaselMethod implements WeaselModifier, WeaselNameable {
 	private WeaselClass[] paramWeaselClasses;
 	private WeaselNativeMethod nativeMethod;
 	
-	public WeaselMethod(WeaselInterpreter interpreter, WeaselClass parentClass){
+	public WeaselMethod(WeaselClassBuffer interpreter, WeaselClass parentClass){
 		this.interpreter = interpreter;
 		this.parentClass = parentClass;
 	}
 	
-	public WeaselMethod(WeaselInterpreter interpreter, WeaselClass parentClass, DataInputStream dataInputStream) throws IOException {
+	public WeaselMethod(WeaselClassBuffer interpreter, WeaselClass parentClass, DataInputStream dataInputStream) throws IOException {
 		this.interpreter = interpreter;
 		this.parentClass = parentClass;
 		modifier = dataInputStream.readInt();
