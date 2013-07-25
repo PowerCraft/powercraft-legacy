@@ -64,7 +64,7 @@ public class WeaselCompiler implements WeaselClassBuffer {
 	}
 	
 	@Override
-	public WeaselNativeMethod getNativeMethod(String nameAndDesk) {
+	public WeaselNativeMethod getNativeMethod(String nameAndDesc) {
 		return null;
 	}
 	
