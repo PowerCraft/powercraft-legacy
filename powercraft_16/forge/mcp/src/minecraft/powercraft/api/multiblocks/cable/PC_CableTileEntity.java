@@ -458,7 +458,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		}else if(!(c[0]==1 || c[1]==1) && (c[2]==1 || c[3]==1)){
 			cDir=1;
 		}else if(c[0]==1 || c[1]==1 || c[2]==1 || c[3]==1){
-			cDir=-2;
+			cDir=-1;
 		}
 		if(dir.offsetX!=0){
 			renderer.uvRotateBottom = 2;
@@ -512,7 +512,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			renderer.setRenderBounds(0.5-w, 0.5-w, min2, 0.5+w, 0.5+w, max2);
 		}
 		renderer.renderStandardBlock(PC_BlockMultiblock.block, xCoord, yCoord, zCoord);
-		if(useOverlay() && cDir!=-2){
+		if(useOverlay() && cDir!=-1){
 			int j = 0;
 			for (int k = 0; k < 16; k++) {
 				if ((getMask() & 1 << k) != 0) {
