@@ -28,7 +28,7 @@ public class PC_Reflection {
 	}
 
 
-	public static Field findNearesBestField(Class<?> clazz, int index, Class<?> type) {
+	public static Field findNearestBestField(Class<?> clazz, int index, Class<?> type) {
 
 		Field fields[] = clazz.getDeclaredFields();
 		Field f;
@@ -70,7 +70,7 @@ public class PC_Reflection {
 	@SuppressWarnings("unchecked")
 	public static <T> T getValue(Class<?> clazz, Object object, int index, Class<?> type) {
 
-		Field field = findNearesBestField(clazz, index, type);
+		Field field = findNearestBestField(clazz, index, type);
 		field.setAccessible(true);
 		try {
 			return (T) field.get(object);
@@ -84,7 +84,7 @@ public class PC_Reflection {
 	public static void setValue(Class<?> clazz, Object object, int index, Class<?> type, Object value) {
 
 		try {
-			Field field = findNearesBestField(clazz, index, type);
+			Field field = findNearestBestField(clazz, index, type);
 			field.setAccessible(true);
 			Field field_modifiers = Field.class.getDeclaredField("modifiers");
 			field_modifiers.setAccessible(true);
