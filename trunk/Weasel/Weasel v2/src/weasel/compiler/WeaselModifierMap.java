@@ -21,7 +21,10 @@ public class WeaselModifierMap {
 		if((modifier & WeaselModifier.STATIC)!=0){
 			output.add("static");
 		}
-		if((modifier & WeaselModifier.FIANL)!=0){
+		if((modifier & WeaselModifier.ABSTRACT)!=0){
+			output.add("abstract");
+		}
+		if((modifier & WeaselModifier.FINAL)!=0){
 			output.add("final");
 		}
 		if((modifier & WeaselModifier.NATIVE)!=0){
@@ -48,11 +51,13 @@ public class WeaselModifierMap {
 		}else if(modifier.equals("protected")){
 			return WeaselModifier.PROTECTED;
 		}else if(modifier.equals("final")){
-			return WeaselModifier.FIANL;
+			return WeaselModifier.FINAL;
 		}else if(modifier.equals("native")){
 			return WeaselModifier.NATIVE;
 		}else if(modifier.equals("static")){
 			return WeaselModifier.STATIC;
+		}else if(modifier.equals("abstract")){
+			return WeaselModifier.ABSTRACT;
 		}
 		return 0;
 	}

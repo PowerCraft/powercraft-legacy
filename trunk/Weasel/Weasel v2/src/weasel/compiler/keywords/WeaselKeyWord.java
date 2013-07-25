@@ -14,7 +14,6 @@ public enum WeaselKeyWord {
 	THIS("this", null), 
 	GLOBAL("global", null), 
 	CLASS("class", null), 
-	ENUM("enum", null), 
 	INTERFACE("interface", null), 
 	NEW("new", null),
 	TRY("try", null),
