@@ -132,7 +132,7 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 
 	private void calculateThickness() {
 
-		thickness = 2 + getCableCount() / 8;
+		thickness = 2 + getCableCount() / 6;
 		width = thickness * 2;
 	}
 
