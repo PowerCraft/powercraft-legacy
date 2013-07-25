@@ -53,6 +53,8 @@ public class WeaselCompiler implements WeaselClassBuffer {
 				loadedClasses.put(className, wClassCompiler);
 				classesToPreCompile.add(wClassCompiler);
 				wClass = wClassCompiler;
+			}else{
+				throw new RuntimeException("Class not found "+className);
 			}
 		}
 		if(classes.length==1){
