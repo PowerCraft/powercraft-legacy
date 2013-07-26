@@ -13,12 +13,12 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_Utils;
-import powercraft.api.multiblocks.PC_BlockMultiblock;
-import powercraft.api.multiblocks.PC_MultiblockIndex;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
-import powercraft.api.multiblocks.PC_TileEntityMultiblock;
+import powercraft.apiOld.PC_Direction;
+import powercraft.apiOld.PC_Utils;
+import powercraft.apiOld.multiblocks.PC_BlockMultiblock;
+import powercraft.apiOld.multiblocks.PC_MultiblockIndex;
+import powercraft.apiOld.multiblocks.PC_TileEntityMultiblock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

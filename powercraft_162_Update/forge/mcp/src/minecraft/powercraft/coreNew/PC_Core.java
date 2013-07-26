@@ -1,11 +1,11 @@
 package powercraft.core;
 
-import powercraft.api.PC_FieldGenerator;
-import powercraft.api.PC_Module;
-import powercraft.api.energy.PC_ConduitEnergyItem;
-import powercraft.api.multiblocks.PC_BlockMultiblock;
-import powercraft.api.multiblocks.cable.redstone.PC_RedstoneIsolatedItem;
-import powercraft.api.multiblocks.cable.redstone.PC_RedstoneUnisolatedItem;
+import powercraft.apiOld.PC_FieldGenerator;
+import powercraft.apiOld.PC_Module;
+import powercraft.apiOld.energy.PC_ConduitEnergyItem;
+import powercraft.apiOld.multiblocks.PC_BlockMultiblock;
+import powercraft.apiOld.multiblocks.cable.redstone.PC_RedstoneIsolatedItem;
+import powercraft.apiOld.multiblocks.cable.redstone.PC_RedstoneUnisolatedItem;
 import powercraft.core.blocks.PC_BlockGenerator;
 import powercraft.core.blocks.PC_BlockPuffer;
 import powercraft.core.blocks.PC_BlockRoaster;

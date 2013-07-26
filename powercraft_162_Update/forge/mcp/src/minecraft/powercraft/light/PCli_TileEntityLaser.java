@@ -2,7 +2,6 @@ package powercraft.light;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import powercraft.api.PC_BeamTracer;
 import powercraft.api.annotation.PC_ClientServerSync;
 import powercraft.api.block.PC_Block;
 import powercraft.api.interfaces.PC_IBeamHandler;
@@ -17,6 +16,7 @@ import powercraft.api.utils.PC_Color;
 import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
+import powercraft.apiOld.PC_BeamTracer;
 
 public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandler, PC_ITileEntityRenderer{
 	

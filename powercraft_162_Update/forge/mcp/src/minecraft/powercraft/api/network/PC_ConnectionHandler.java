@@ -12,8 +12,8 @@ import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.MinecraftServer;
-import powercraft.api.PC_IDResolver;
 import powercraft.api.utils.PC_GlobalVariables;
+import powercraft.apiOld.PC_IDResolver;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.Player;
 

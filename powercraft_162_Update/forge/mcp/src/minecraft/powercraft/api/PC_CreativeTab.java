@@ -1,24 +1,25 @@
 package powercraft.api;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import powercraft.api.registry.PC_ItemRegistry;
+import net.minecraft.item.Item;
 
 public class PC_CreativeTab extends CreativeTabs {
 
-	public PC_CreativeTab() {
-		super("Power Craft");
+	private static PC_CreativeTab creativeTab;
+	
+	public static PC_CreativeTab getCrativeTab(){
+		if(creativeTab==null)
+			creativeTab = new PC_CreativeTab();
+		return creativeTab;
+	}
+	
+	private PC_CreativeTab() {
+		super("PowerCraft");
 	}
 
 	@Override
-	public String getTranslatedTabLabel() {
-		return "Power Craft";
+	public Item getTabIconItem() {
+		return super.getTabIconItem();
 	}
-
-	@Override
-	public ItemStack getIconItemStack() {
-		return new ItemStack(
-				PC_ItemRegistry.getPCItemByName("PCco_ItemActivator"));
-	}
-
+	
 }

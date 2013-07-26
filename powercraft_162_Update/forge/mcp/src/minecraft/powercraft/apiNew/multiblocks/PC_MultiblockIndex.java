@@ -1,7 +1,7 @@
 package powercraft.api.multiblocks;
 
 
-import powercraft.api.PC_Direction;
+import powercraft.apiOld.PC_Direction;
 
 
 public enum PC_MultiblockIndex {

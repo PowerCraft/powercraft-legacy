@@ -5,10 +5,10 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import powercraft.api.PC_CreativeTab;
-import powercraft.api.PC_Module;
-import powercraft.api.registries.PC_ModuleRegistry;
-import powercraft.api.registries.PC_TextureRegistry;
+import powercraft.apiOld.PC_CreativeTab;
+import powercraft.apiOld.PC_Module;
+import powercraft.apiOld.registries.PC_ModuleRegistry;
+import powercraft.apiOld.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

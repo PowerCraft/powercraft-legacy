@@ -1,7 +1,7 @@
 package powercraft.api.gres;
 
 
-import powercraft.api.PC_Vec2I;
+import powercraft.apiOld.PC_Vec2I;
 
 
 public interface PC_IGresLayout {

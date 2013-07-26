@@ -6,10 +6,10 @@ import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
-import powercraft.api.PC_IDResolver;
 import powercraft.api.registry.PC_GresRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.utils.PC_GlobalVariables;
+import powercraft.apiOld.PC_IDResolver;
 
 public class PC_ClientPacketHandler extends PC_PacketHandler {
 	

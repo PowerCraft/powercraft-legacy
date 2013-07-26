@@ -11,9 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import powercraft.api.PC_Utils;
-import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.energy.PC_IEnergyConsumer;
+import powercraft.apiOld.PC_Utils;
+import powercraft.apiOld.blocks.PC_TileEntity;
 
 
 public class PC_TileEntityRoaster extends PC_TileEntity implements PC_IEnergyConsumer {

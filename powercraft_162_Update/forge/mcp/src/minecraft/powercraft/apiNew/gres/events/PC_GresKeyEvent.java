@@ -1,6 +1,6 @@
 package powercraft.api.gres.events;
 
-import powercraft.api.gres.PC_GresComponent;
+import powercraft.apiOld.gres.PC_GresComponent;
 
 public class PC_GresKeyEvent extends PC_GresConsumeableEvent {
 

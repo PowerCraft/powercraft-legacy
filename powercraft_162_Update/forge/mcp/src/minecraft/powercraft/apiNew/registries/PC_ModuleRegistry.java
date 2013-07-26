@@ -4,7 +4,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
-import powercraft.api.PC_Module;
+import powercraft.apiOld.PC_Module;
 
 public class PC_ModuleRegistry {
 

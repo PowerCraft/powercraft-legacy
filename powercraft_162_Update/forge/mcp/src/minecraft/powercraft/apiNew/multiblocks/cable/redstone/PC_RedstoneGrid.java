@@ -7,9 +7,9 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.world.World;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Vec3IWithRotation;
-import powercraft.api.grids.PC_Grid;
+import powercraft.apiOld.PC_Utils;
+import powercraft.apiOld.PC_Vec3IWithRotation;
+import powercraft.apiOld.grids.PC_Grid;
 
 
 public class PC_RedstoneGrid extends PC_Grid<PC_RedstoneGrid, PC_IRedstoneCable> {

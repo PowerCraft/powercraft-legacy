@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.TreeMap;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.src.ModLoader;
 import net.minecraft.world.IBlockAccess;
-import powercraft.api.PC_OreDictionary;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.annotation.PC_OreInfo;
 import powercraft.api.annotation.PC_Shining;
@@ -25,6 +23,7 @@ import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.utils.PC_GlobalVariables;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
+import powercraft.apiOld.PC_OreDictionary;
 import powercraft.launcher.PC_Property;
 import powercraft.launcher.loader.PC_ModuleObject;
 

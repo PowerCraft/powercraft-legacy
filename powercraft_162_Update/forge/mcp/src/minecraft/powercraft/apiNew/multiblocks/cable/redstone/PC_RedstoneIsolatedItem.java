@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import powercraft.api.items.PC_ItemInfo;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
-import powercraft.api.multiblocks.cable.PC_CableItem;
-import powercraft.api.registries.PC_TextureRegistry;
+import powercraft.apiOld.multiblocks.cable.PC_CableItem;
+import powercraft.apiOld.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

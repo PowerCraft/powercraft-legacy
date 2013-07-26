@@ -6,10 +6,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Keyboard;
 
 import powercraft.api.gres.*;
-import powercraft.api.gres.events.PC_GresEvent;
-import powercraft.api.gres.events.PC_GresKeyEvent;
-import powercraft.api.gres.events.PC_GresTickEvent;
-import powercraft.api.gres.events.PC_IGresEventListener;
+import powercraft.apiOld.gres.events.PC_GresEvent;
+import powercraft.apiOld.gres.events.PC_GresKeyEvent;
+import powercraft.apiOld.gres.events.PC_GresTickEvent;
+import powercraft.apiOld.gres.events.PC_IGresEventListener;
 
 
 public class PC_GuiPuffer implements PC_IGresClient, PC_IGresEventListener {

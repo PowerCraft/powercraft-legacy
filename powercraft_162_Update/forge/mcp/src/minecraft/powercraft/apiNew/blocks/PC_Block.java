@@ -18,12 +18,12 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import powercraft.api.PC_Logger;
-import powercraft.api.PC_Module;
-import powercraft.api.PC_Renderer;
-import powercraft.api.PC_Utils;
-import powercraft.api.registries.PC_ModuleRegistry;
-import powercraft.api.registries.PC_TextureRegistry;
+import powercraft.apiOld.PC_Logger;
+import powercraft.apiOld.PC_Module;
+import powercraft.apiOld.PC_Renderer;
+import powercraft.apiOld.PC_Utils;
+import powercraft.apiOld.registries.PC_ModuleRegistry;
+import powercraft.apiOld.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

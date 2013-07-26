@@ -12,9 +12,9 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import powercraft.api.PC_ClientUtils;
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_Vec2I;
+import powercraft.apiOld.PC_ClientUtils;
+import powercraft.apiOld.PC_RectI;
+import powercraft.apiOld.PC_Vec2I;
 
 
 public class PC_GresInventory extends PC_GresComponent {

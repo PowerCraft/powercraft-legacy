@@ -5,8 +5,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.Icon;
 import powercraft.api.items.PC_ItemInfo;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
-import powercraft.api.multiblocks.cable.PC_CableItem;
-import powercraft.api.registries.PC_TextureRegistry;
+import powercraft.apiOld.multiblocks.cable.PC_CableItem;
+import powercraft.apiOld.registries.PC_TextureRegistry;
 
 
 @PC_ItemInfo(name = "Unisolated Redstone", itemid = "unisolatedRedstone", defaultid = 17001)

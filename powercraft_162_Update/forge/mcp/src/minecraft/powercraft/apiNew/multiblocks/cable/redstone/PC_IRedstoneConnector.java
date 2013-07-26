@@ -1,7 +1,7 @@
 package powercraft.api.multiblocks.cable.redstone;
 
 
-import powercraft.api.PC_Direction;
+import powercraft.apiOld.PC_Direction;
 
 
 public interface PC_IRedstoneConnector {

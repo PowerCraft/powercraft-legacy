@@ -11,8 +11,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_BeamTracer.BeamSettings;
-import powercraft.api.PC_BeamTracer.BeamHitResult;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_IItemInfo;
@@ -21,6 +19,8 @@ import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.utils.PC_Direction;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
+import powercraft.apiOld.PC_BeamTracer.BeamHitResult;
+import powercraft.apiOld.PC_BeamTracer.BeamSettings;
 
 @PC_BlockInfo(name="Laser Sensor", tileEntity=PCli_TileEntityLaserSensor.class)
 public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {

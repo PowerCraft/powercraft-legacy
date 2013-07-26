@@ -4,8 +4,8 @@ package powercraft.api.blocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_IInvectory;
-import powercraft.api.PC_InventoryUtils;
+import powercraft.apiOld.PC_IInvectory;
+import powercraft.apiOld.PC_InventoryUtils;
 
 
 public abstract class PC_TileEntityWithInventory extends PC_TileEntity implements PC_IInvectory {

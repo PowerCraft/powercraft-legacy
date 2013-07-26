@@ -2,8 +2,8 @@ package powercraft.api.interfaces;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import powercraft.api.PC_BeamTracer;
 import powercraft.api.utils.PC_VecI;
+import powercraft.apiOld.PC_BeamTracer;
 
 public interface PC_IBeamHandler {
 	

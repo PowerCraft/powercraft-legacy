@@ -5,11 +5,11 @@ import java.util.Arrays;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import powercraft.api.PC_Logger;
-import powercraft.api.PC_Module;
-import powercraft.api.PC_Utils;
-import powercraft.api.blocks.PC_IBlock;
-import powercraft.api.items.PC_Item;
+import powercraft.apiOld.PC_Logger;
+import powercraft.apiOld.PC_Module;
+import powercraft.apiOld.PC_Utils;
+import powercraft.apiOld.blocks.PC_IBlock;
+import powercraft.apiOld.items.PC_Item;
 
 public class PC_RecipeRegistry {
 

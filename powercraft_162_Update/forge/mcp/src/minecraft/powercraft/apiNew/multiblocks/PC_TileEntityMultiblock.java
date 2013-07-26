@@ -10,9 +10,9 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import powercraft.api.blocks.PC_ITileEntitySpecialRenderer;
-import powercraft.api.blocks.PC_TileEntity;
-import powercraft.api.registries.PC_MultiblockRegistry;
+import powercraft.apiOld.blocks.PC_ITileEntitySpecialRenderer;
+import powercraft.apiOld.blocks.PC_TileEntity;
+import powercraft.apiOld.registries.PC_MultiblockRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

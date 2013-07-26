@@ -7,6 +7,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveFormat;
@@ -54,7 +55,7 @@ public class PC_ClientHooks implements ITickHandler {
 	private static void startupHook(Minecraft mc){
 		String useUserName = PC_GlobalVariables.useUserName;
 		if(!useUserName.equals("")){
-			PC_ClientUtils.mc().session.username = useUserName;
+			PC_ReflectHelper.setValue(EntityPlayer.class, PC_ClientUtils.mc().thePlayer, 10, useUserName);
 		}
 		mc.ingameGUI = new PC_OverlayRenderer(mc);
 	}

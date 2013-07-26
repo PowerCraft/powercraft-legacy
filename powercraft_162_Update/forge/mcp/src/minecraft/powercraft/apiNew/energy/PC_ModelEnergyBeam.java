@@ -1,7 +1,7 @@
 package powercraft.api.energy;
 
 import net.minecraft.client.model.ModelRenderer;
-import powercraft.api.PC_Model;
+import powercraft.apiOld.PC_Model;
 
 class PC_ModelEnergyBeam extends PC_Model{
 
