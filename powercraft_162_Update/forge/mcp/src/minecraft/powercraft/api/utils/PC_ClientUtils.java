@@ -56,7 +56,7 @@ public class PC_ClientUtils extends PC_Utils {
 	
 	@Override
 	protected File iGetMCDirectory() {
-		return Minecraft.getMinecraftDir();
+		return mc().mcDataDir;
 	}
 	
 	@Override
