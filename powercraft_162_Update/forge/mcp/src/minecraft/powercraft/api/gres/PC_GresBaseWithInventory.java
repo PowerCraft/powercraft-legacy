@@ -1,277 +1,108 @@
 package powercraft.api.gres;
 
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import powercraft.api.inventory.PC_IInventorySpecialSlots;
-import powercraft.api.inventory.PC_IInventoryWrapper;
-import powercraft.api.inventory.PC_Slot;
-import powercraft.api.tileentity.PC_TileEntity;
+import net.minecraft.tileentity.TileEntity;
+import powercraft.api.blocks.PC_TileEntity;
 
-public abstract class PC_GresBaseWithInventory<t extends PC_TileEntity> extends Container
-{
-    public EntityPlayer thePlayer;
 
-    private static final int playerSlots = 9 * 4;
+public abstract class PC_GresBaseWithInventory extends Container {
 
-    public PC_Slot[][] inventoryPlayerUpper = new PC_Slot[9][3];
+	protected final EntityPlayer player;
 
-    public PC_Slot[][] inventoryPlayerLower = new PC_Slot[9][1];
+//	private static final int playerSlots = 9 * 4;
 
-    protected t tileEntity;
-    
-    protected PC_Slot[] invSlots;
-    
-    public PC_GresBaseWithInventory(EntityPlayer player, t te, Object[] o)
-    {
-        thePlayer = player;
-        
-        tileEntity = te;
-        
-        if (thePlayer != null)
-        {
-            for (int i = 0; i < 9; i++)
-            {
-                inventoryPlayerLower[i][0] = new PC_Slot(player.inventory, i);
-                addSlotToContainer(inventoryPlayerLower[i][0]);
-            }
+	protected final Slot[][] inventoryPlayerUpper = new Slot[9][3];
 
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    inventoryPlayerUpper[i][j] = new PC_Slot(player.inventory, i + j * 9 + 9);
-                    addSlotToContainer(inventoryPlayerUpper[i][j]);
-                }
-            }
-        }
+	protected final Slot[] inventoryPlayerLower = new Slot[9];
 
-        init(o);
-        PC_Slot[] sl = getAllSlots();
+	protected final IInventory inventory;
 
-        if (sl != null)
-            for (PC_Slot s: sl)
-            {
-                addSlotToContainer(s);
-            }
-    }
+	protected Slot[] invSlots;
 
-    protected void init(Object[] o){}
-    
-    protected PC_Slot[] getAllSlots(){
-    	IInventory inv = null;
-    	if(tileEntity instanceof IInventory){
-    		inv = (IInventory)tileEntity;
-    	}else if(tileEntity instanceof PC_IInventoryWrapper){
-    		inv = ((PC_IInventoryWrapper) tileEntity).getInventory();
-    	}else{
-    		return null;
-    	}
-    	invSlots = new PC_Slot[inv.getSizeInventory()];
-    	for(int i=0; i<invSlots.length; i++){
-    		if(inv instanceof PC_IInventorySpecialSlots){
-    			invSlots[i] = ((PC_IInventorySpecialSlots) inv).getSlot(i);
-    		}else{
-    			invSlots[i] = new PC_Slot(inv, i);
-    		}
-    	}
-    	return invSlots;
-    }
 
-    @Override
-    public boolean canInteractWith(EntityPlayer entityplayer)
-    {
-        return true;
-    }
+	public PC_GresBaseWithInventory(EntityPlayer player, IInventory inventory) {
 
-    protected boolean canShiftTransfer()
-    {
-        return false;
-    }
+		this.player = player;
 
-    @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex)
-    {
-        if (slotIndex < playerSlots && !canShiftTransfer())
-        {
-            return null;
-        }
+		this.inventory = inventory;
 
-        ItemStack itemstack = null;
-        Slot slot = (Slot) inventorySlots.get(slotIndex);
+		if (inventory instanceof PC_TileEntity) {
+			((PC_TileEntity) inventory).openContainer(this);
+		}
 
-        if (slot != null && slot.getHasStack())
-        {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
+		if (player != null) {
+			for (int i = 0; i < 9; i++) {
+				inventoryPlayerLower[i] = new PC_Slot(player.inventory, i);
+				addSlotToContainer(inventoryPlayerLower[i]);
+			}
 
-            if (slotIndex < playerSlots)
-            {
-                if (!mergeItemStack(itemstack1, playerSlots, inventorySlots.size(), false))
-                {
-                    return null;
-                }
-                else
-                {
-                    slot.onPickupFromSlot(player, itemstack);
-                }
-            }
-            else if (!mergeItemStack(itemstack1, 0, playerSlots, false))
-            {
-                return null;
-            }
-            else
-            {
-                slot.onPickupFromSlot(player, itemstack);
-            }
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 3; j++) {
+					inventoryPlayerUpper[i][j] = new PC_Slot(player.inventory, i + j * 9 + 9);
+					addSlotToContainer(inventoryPlayerUpper[i][j]);
+				}
+			}
+		}
 
-            if (itemstack1.stackSize == 0)
-            {
-                slot.putStack(null);
-                slot.onSlotChanged();
-            }
-            else
-            {
-                slot.onSlotChanged();
-            }
-        }
+		Slot[] sl = getAllSlots();
+		if (sl != null) {
+			for (Slot s : sl) {
+				addSlotToContainer(s);
+			}
+		}
 
-        return itemstack;
-    }
+	}
 
-    private int getLimit(Slot slot, int a, boolean flag)
-    {
-        if (flag)
-        {
-            return a;
-        }
 
-        return Math.min(a, slot.getSlotStackLimit());
-    }
+	protected Slot[] getAllSlots() {
 
-    @Override
-    protected boolean mergeItemStack(ItemStack itemstack, int i, int j, boolean flag)
-    {
-        boolean flag1 = false;
-        int k = i;
+		invSlots = new Slot[inventory.getSizeInventory()];
+		for (int i = 0; i < invSlots.length; i++) {
+			invSlots[i] = new PC_Slot(inventory, i);
+		}
+		return invSlots;
+	}
 
-        if (flag)
-        {
-            k = j - 1;
-        }
 
-        if (itemstack.isStackable())
-        {
-            while (itemstack.stackSize > 0 && (!flag && k < j || flag && k >= i))
-            {
-                Slot slot = (Slot) inventorySlots.get(k);
-                ItemStack itemstack1 = slot.getStack();
+	@Override
+	public boolean canInteractWith(EntityPlayer entityplayer) {
 
-                if (itemstack1 != null && slot.isItemValid(itemstack) && (flag || itemstack1.stackSize < slot.getSlotStackLimit())
-                        && itemstack1.itemID == itemstack.itemID
-                        && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage()))
-                {
-                    int i1 = itemstack1.stackSize + itemstack.stackSize;
+		return inventory instanceof TileEntity ? ((TileEntity) inventory).getDistanceFrom(entityplayer.posX, entityplayer.posY, entityplayer.posZ) < 64
+				: true;
+	}
 
-                    if (i1 <= getLimit(slot, itemstack.getMaxStackSize(), flag))
-                    {
-                        itemstack.stackSize = 0;
-                        itemstack1.stackSize = i1;
-                        slot.onSlotChanged();
-                        flag1 = true;
-                    }
-                    else if (itemstack1.stackSize < getLimit(slot, itemstack.getMaxStackSize(), flag))
-                    {
-                        itemstack.stackSize -= getLimit(slot, itemstack.getMaxStackSize(), flag) - itemstack1.stackSize;
-                        itemstack1.stackSize = getLimit(slot, itemstack.getMaxStackSize(), flag);
-                        slot.onSlotChanged();
-                        flag1 = true;
-                    }
-                }
 
-                if (flag)
-                {
-                    k--;
-                }
-                else
-                {
-                    k++;
-                }
-            }
-        }
+	public void sendProgressBarUpdate(int key, int value) {
 
-        if (itemstack.stackSize > 0)
-        {
-            int l;
+		if (player instanceof EntityPlayerMP) {
+			((EntityPlayerMP) player).sendProgressBarUpdate(this, key, value);
+		}
+	}
 
-            if (flag)
-            {
-                l = j - 1;
-            }
-            else
-            {
-                l = i;
-            }
 
-            do
-            {
-                if ((flag || l >= j) && (!flag || l < i))
-                {
-                    break;
-                }
+	@Override
+	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
 
-                Slot slot = (Slot) inventorySlots.get(l);
-                ItemStack itemstack2 = slot.getStack();
+		super.onContainerClosed(par1EntityPlayer);
+		if (inventory instanceof PC_TileEntity) {
+			((PC_TileEntity) inventory).closeContainer(this);
+		}
+	}
 
-                if (itemstack2 == null && slot.isItemValid(itemstack))
-                {
-                    ItemStack toStore = itemstack.copy();
-                    toStore.stackSize = getLimit(slot, toStore.stackSize, flag);
-                    if(toStore.stackSize>toStore.getMaxStackSize())
-                    	toStore.stackSize=toStore.getMaxStackSize();
-                    itemstack.stackSize -= toStore.stackSize;
-                    slot.putStack(toStore);
-                    slot.onSlotChanged();
 
-                    if (itemstack.stackSize <= 0)
-                    {
-                        flag1 = true;
-                        itemstack.stackSize = 0;
-                        break;
-                    }
-                }
+	@Override
+	public void addCraftingToCrafters(ICrafting crafting) {
 
-                if (flag)
-                {
-                    l--;
-                }
-                else
-                {
-                    l++;
-                }
-            }
-            while (true);
-        }
+		super.addCraftingToCrafters(crafting);
+		if (inventory instanceof PC_TileEntity) {
+			((PC_TileEntity) inventory).sendProgressBarUpdates();
+		}
+	}
 
-        return flag1;
-    }
-    
-    @Override
-    public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer){
-    	if ((par3 == 0 || par3 == 1) && (par2 == 0 || par2 == 1)){
-    		if (par1 >= 0 && par3 != 1){
-    			Slot slot = (Slot)this.inventorySlots.get(par1);
-
-                if(slot instanceof PC_Slot){
-                	if(((PC_Slot) slot).isHandlingSlotClick()){
-                		return ((PC_Slot) slot).slotClick(par2, par3, par4EntityPlayer);
-                	}
-                }
-    		}
-        }
-    	return super.slotClick(par1, par2, par3, par4EntityPlayer);
-    }
-    
 }

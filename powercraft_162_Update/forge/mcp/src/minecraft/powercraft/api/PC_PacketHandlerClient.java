@@ -8,9 +8,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
-import powercraft.apiOld.blocks.PC_IBlock;
-import powercraft.apiOld.blocks.PC_TileEntity;
-import powercraft.apiOld.gres.PC_Gres;
+import powercraft.api.blocks.PC_IBlock;
+import powercraft.api.blocks.PC_TileEntity;
+import powercraft.api.gres.PC_Gres;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

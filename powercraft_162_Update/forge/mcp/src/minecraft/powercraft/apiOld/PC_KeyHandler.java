@@ -1,4 +1,4 @@
-package powercraft.apiOld;
+package powercraft.api;
 
 import java.util.EnumSet;
 

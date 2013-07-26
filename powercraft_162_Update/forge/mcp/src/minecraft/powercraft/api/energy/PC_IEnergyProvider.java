@@ -1,9 +1,14 @@
 package powercraft.api.energy;
 
+
 public interface PC_IEnergyProvider {
 
-	public int getEnergy(int energy);
-	
-	public int getMaxEnergyOutput();
-	
+	public boolean canProviderTubeConnectTo(int side);
+
+
+	public float getEnergyForUsage();
+
+
+	public float getEnergy(float energy);
+
 }

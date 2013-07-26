@@ -1,4 +1,4 @@
-package powercraft.apiOld;
+package powercraft.api;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
