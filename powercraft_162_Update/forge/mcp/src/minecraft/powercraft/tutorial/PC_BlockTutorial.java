@@ -9,7 +9,6 @@ import powercraft.api.registries.PC_TextureRegistry;
 @PC_BlockInfo(name="Tutorial", blockid="tutorial", defaultid=2000, tileEntity=PC_TileEntityTutorial.class)
 public class PC_BlockTutorial extends PC_Block {
 
-	
 	public PC_BlockTutorial(int id) {
 		super(id, Material.ground);
 		setCreativeTab(CreativeTabs.tabBlock);
