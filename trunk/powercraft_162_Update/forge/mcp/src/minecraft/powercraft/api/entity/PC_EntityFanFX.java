@@ -2,6 +2,7 @@ package powercraft.api.entity;
 
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
@@ -71,7 +72,9 @@ public class PC_EntityFanFX extends EntityFX {
         GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
         GL11.glDepthMask(false);
         int tex = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_ClientUtils.mc().renderEngine.getTexture(PC_TextureRegistry.getPowerCraftImageDir() + "PowerCraft-Api-fan.png"));
+        //Old
+        //GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_ClientUtils.mc().renderEngine.getTexture(PC_TextureRegistry.getPowerCraftImageDir() + "PowerCraft-Api-fan.png"));
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_ClientUtils.mc().renderEngine.func_110581_b(ResourceLocation("powercraft-api:PowerCraft-Api-fan.png")).func_110552_b());
         tessellator.startDrawingQuads();
         tessellator.setBrightness(128);
         tessellator.setColorRGBA_F(particleRed*alpha, particleGreen*alpha, particleBlue*alpha, 1.0F);
@@ -90,6 +93,11 @@ public class PC_EntityFanFX extends EntityFX {
         tessellator.startDrawingQuads();
 	}
 	
+	private ResourceLocation ResourceLocation(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
 	public void onUpdate(){
 		double length = end.length();
