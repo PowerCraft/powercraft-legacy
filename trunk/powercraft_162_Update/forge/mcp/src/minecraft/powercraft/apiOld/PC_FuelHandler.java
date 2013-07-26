@@ -1,4 +1,4 @@
-package powercraft.apiOld;
+package powercraft.api;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
