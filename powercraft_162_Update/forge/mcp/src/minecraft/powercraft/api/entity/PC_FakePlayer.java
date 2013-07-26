@@ -48,6 +48,7 @@ public class PC_FakePlayer extends EntityPlayer
         yOffset = 1.62F;
         field_70741_aB = 180.0F;
         fireResistance = 20;
+        texture = "";
         capabilities.disableDamage=true;
     }
 
