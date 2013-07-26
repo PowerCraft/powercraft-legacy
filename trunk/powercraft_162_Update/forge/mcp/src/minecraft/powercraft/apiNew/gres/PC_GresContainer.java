@@ -8,8 +8,8 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_Vec2I;
+import powercraft.apiOld.PC_RectI;
+import powercraft.apiOld.PC_Vec2I;
 
 
 @SuppressWarnings("unused")

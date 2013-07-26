@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import powercraft.api.PC_IInvectory;
+import powercraft.apiOld.PC_IInvectory;
 
 
 public class PC_Slot extends Slot {

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import powercraft.api.grids.PC_Grid;
+import powercraft.apiOld.grids.PC_Grid;
 
 
 public class PC_EnergyGrid extends PC_Grid<PC_EnergyGrid, PC_ConduitEnergyTileEntity> {

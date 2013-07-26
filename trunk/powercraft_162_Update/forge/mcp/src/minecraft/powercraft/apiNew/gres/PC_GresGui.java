@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 
 import org.lwjgl.input.Mouse;
 
-import powercraft.api.PC_Vec2I;
+import powercraft.apiOld.PC_Vec2I;
 
 
 public class PC_GresGui extends GuiScreen implements PC_IGresGui {

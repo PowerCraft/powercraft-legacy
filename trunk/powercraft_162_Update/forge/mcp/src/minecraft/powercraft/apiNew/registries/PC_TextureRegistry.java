@@ -3,11 +3,11 @@ package powercraft.api.registries;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
-import powercraft.api.PC_Security;
-import powercraft.api.blocks.PC_Block;
-import powercraft.api.blocks.PC_BlockWithoutTileEntity;
-import powercraft.api.blocks.PC_IBlock;
-import powercraft.api.items.PC_Item;
+import powercraft.apiOld.PC_Security;
+import powercraft.apiOld.blocks.PC_Block;
+import powercraft.apiOld.blocks.PC_BlockWithoutTileEntity;
+import powercraft.apiOld.blocks.PC_IBlock;
+import powercraft.apiOld.items.PC_Item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

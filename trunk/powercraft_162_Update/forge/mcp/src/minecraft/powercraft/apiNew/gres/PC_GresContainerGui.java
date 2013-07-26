@@ -7,7 +7,7 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.input.Mouse;
 
-import powercraft.api.PC_Vec2I;
+import powercraft.apiOld.PC_Vec2I;
 
 
 public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {

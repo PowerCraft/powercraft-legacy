@@ -1,8 +1,8 @@
 package powercraft.api.registries;
 
-import powercraft.api.PC_ClientUtils;
-import powercraft.api.PC_Security;
-import powercraft.api.PC_Utils;
+import powercraft.apiOld.PC_ClientUtils;
+import powercraft.apiOld.PC_Security;
+import powercraft.apiOld.PC_Utils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

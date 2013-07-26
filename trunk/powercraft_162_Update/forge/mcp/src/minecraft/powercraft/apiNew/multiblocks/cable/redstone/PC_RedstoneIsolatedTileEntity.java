@@ -11,11 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_Utils;
-import powercraft.api.multiblocks.PC_MultiblockIndex;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
-import powercraft.api.multiblocks.cable.PC_CableTileEntity;
+import powercraft.apiOld.PC_Direction;
+import powercraft.apiOld.PC_Utils;
+import powercraft.apiOld.multiblocks.PC_MultiblockIndex;
+import powercraft.apiOld.multiblocks.cable.PC_CableTileEntity;
 
 
 public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {

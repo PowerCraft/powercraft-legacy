@@ -2,7 +2,7 @@ package powercraft.core.blocks;
 
 
 import net.minecraft.item.ItemStack;
-import powercraft.api.blocks.PC_ItemBlock;
+import powercraft.apiOld.blocks.PC_ItemBlock;
 
 
 public class PC_ItemBlockPuffer extends PC_ItemBlock {

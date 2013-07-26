@@ -15,7 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import powercraft.api.PC_BeamTracer;
 import powercraft.api.item.PC_Item;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.reflect.PC_ReflectHelper;
@@ -27,6 +26,7 @@ import powercraft.api.utils.PC_Color;
 import powercraft.api.utils.PC_GlobalVariables;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
+import powercraft.apiOld.PC_BeamTracer;
 
 public class PCli_ItemLaserComposition extends PC_Item
 {

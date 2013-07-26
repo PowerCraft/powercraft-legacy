@@ -14,11 +14,11 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import powercraft.api.PC_IDResolver;
 import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.utils.PC_GlobalVariables;
 import powercraft.api.utils.PC_Struct2;
 import powercraft.api.utils.PC_Utils;
+import powercraft.apiOld.PC_IDResolver;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 

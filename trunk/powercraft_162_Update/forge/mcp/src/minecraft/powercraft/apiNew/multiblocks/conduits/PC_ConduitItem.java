@@ -1,7 +1,7 @@
 package powercraft.api.multiblocks.conduits;
 
-import powercraft.api.multiblocks.PC_MultiblockItem;
 import powercraft.api.multiblocks.PC_MultiblockType;
+import powercraft.apiOld.multiblocks.PC_MultiblockItem;
 
 public abstract class PC_ConduitItem extends PC_MultiblockItem {
 

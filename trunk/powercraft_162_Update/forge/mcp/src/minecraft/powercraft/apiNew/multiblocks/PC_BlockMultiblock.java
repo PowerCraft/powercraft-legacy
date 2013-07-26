@@ -14,11 +14,11 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_ClientUtils;
-import powercraft.api.PC_Utils;
-import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
-import powercraft.api.registries.PC_MultiblockRegistry;
+import powercraft.apiOld.PC_ClientUtils;
+import powercraft.apiOld.PC_Utils;
+import powercraft.apiOld.blocks.PC_Block;
+import powercraft.apiOld.registries.PC_MultiblockRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

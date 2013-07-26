@@ -12,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_BeamTracer.BeamHitResult;
-import powercraft.api.PC_BeamTracer.BeamSettings;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.item.PC_IItemInfo;
@@ -22,6 +20,8 @@ import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.utils.PC_Color;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
+import powercraft.apiOld.PC_BeamTracer.BeamHitResult;
+import powercraft.apiOld.PC_BeamTracer.BeamSettings;
 
 @PC_BlockInfo(name="Mirror", tileEntity=PCli_TileEntityMirror.class)
 public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {

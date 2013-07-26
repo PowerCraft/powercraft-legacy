@@ -8,8 +8,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_BeamTracer.BeamHitResult;
-import powercraft.api.PC_BeamTracer.BeamSettings;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.annotation.PC_Config;
 import powercraft.api.annotation.PC_OreInfo;
@@ -19,6 +17,8 @@ import powercraft.api.renderer.PC_Renderer;
 import powercraft.api.utils.PC_Color;
 import powercraft.api.utils.PC_MathHelper;
 import powercraft.api.utils.PC_Utils;
+import powercraft.apiOld.PC_BeamTracer.BeamHitResult;
+import powercraft.apiOld.PC_BeamTracer.BeamSettings;
 import powercraft.launcher.PC_Property;
 
 @PC_BlockInfo(name="Power Crystal", itemBlock=PCco_ItemBlockPowerCrystal.class)

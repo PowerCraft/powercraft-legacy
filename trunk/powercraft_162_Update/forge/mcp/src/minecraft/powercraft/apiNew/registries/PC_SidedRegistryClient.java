@@ -2,8 +2,8 @@ package powercraft.api.registries;
 
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
-import powercraft.api.blocks.PC_ITileEntitySpecialRenderer;
-import powercraft.api.blocks.PC_TileEntity;
+import powercraft.apiOld.blocks.PC_ITileEntitySpecialRenderer;
+import powercraft.apiOld.blocks.PC_TileEntity;
 import powercraft.core.PC_Core;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;

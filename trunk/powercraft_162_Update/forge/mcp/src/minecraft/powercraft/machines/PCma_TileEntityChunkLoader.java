@@ -4,13 +4,13 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import powercraft.api.PC_BeamTracer;
 import powercraft.api.interfaces.PC_IBeamHandler;
 import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.utils.PC_Color;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecF;
 import powercraft.api.utils.PC_VecI;
+import powercraft.apiOld.PC_BeamTracer;
 
 public class PCma_TileEntityChunkLoader extends PC_TileEntity implements PC_IBeamHandler {
 

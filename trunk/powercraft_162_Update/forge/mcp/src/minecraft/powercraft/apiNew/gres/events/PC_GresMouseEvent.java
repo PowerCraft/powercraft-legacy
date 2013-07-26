@@ -1,7 +1,7 @@
 package powercraft.api.gres.events;
 
-import powercraft.api.PC_Vec2I;
-import powercraft.api.gres.PC_GresComponent;
+import powercraft.apiOld.PC_Vec2I;
+import powercraft.apiOld.gres.PC_GresComponent;
 
 public abstract class PC_GresMouseEvent extends PC_GresConsumeableEvent {
 

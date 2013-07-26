@@ -5,9 +5,9 @@ import java.io.File;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.chunk.storage.AnvilSaveHandler;
 import net.minecraft.world.storage.WorldInfo;
-import powercraft.api.PC_IDResolver;
 import powercraft.api.registry.PC_DataHandlerRegistry;
 import powercraft.api.utils.PC_GlobalVariables;
+import powercraft.apiOld.PC_IDResolver;
 
 public class PC_SaveHandlerHook extends AnvilSaveHandler {
 

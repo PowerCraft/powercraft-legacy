@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.world.World;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Vec3IWithRotation;
-import powercraft.api.multiblocks.PC_MultiblockIndex;
+import powercraft.apiOld.PC_Direction;
+import powercraft.apiOld.PC_Utils;
+import powercraft.apiOld.PC_Vec3IWithRotation;
+import powercraft.apiOld.multiblocks.PC_MultiblockIndex;
 
 
 public class PC_RedstoneCable implements PC_IRedstoneCable {

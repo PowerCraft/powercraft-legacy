@@ -32,7 +32,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumGameType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_APIModule;
 import powercraft.api.annotation.PC_Shining;
 import powercraft.api.block.PC_Block;
 import powercraft.api.interfaces.PC_INBT;
@@ -42,6 +41,7 @@ import powercraft.api.registry.PC_BlockRegistry;
 import powercraft.api.registry.PC_MSGRegistry;
 import powercraft.api.registry.PC_RegistryServer;
 import powercraft.api.tileentity.PC_TileEntity;
+import powercraft.apiOld.PC_APIModule;
 import powercraft.launcher.PC_LauncherUtils;
 import powercraft.launcher.loader.PC_ModLoader;
 

@@ -4,13 +4,13 @@ package powercraft.core.blocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.api.PC_FuelHandler;
-import powercraft.api.PC_Utils;
-import powercraft.api.blocks.PC_TileEntityWithInventory;
 import powercraft.api.energy.PC_IEnergyProvider;
 import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGuiOpenHandler;
+import powercraft.apiOld.PC_FuelHandler;
+import powercraft.apiOld.PC_Utils;
+import powercraft.apiOld.blocks.PC_TileEntityWithInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

@@ -5,11 +5,11 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import org.lwjgl.input.Keyboard;
 
-import powercraft.api.PC_RectI;
 import powercraft.api.gres.*;
-import powercraft.api.gres.events.PC_GresEvent;
-import powercraft.api.gres.events.PC_GresKeyEvent;
-import powercraft.api.gres.events.PC_IGresEventListener;
+import powercraft.apiOld.PC_RectI;
+import powercraft.apiOld.gres.events.PC_GresEvent;
+import powercraft.apiOld.gres.events.PC_GresKeyEvent;
+import powercraft.apiOld.gres.events.PC_IGresEventListener;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

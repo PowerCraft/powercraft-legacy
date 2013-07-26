@@ -1,7 +1,7 @@
 package powercraft.api.blocks;
 
 
-import powercraft.api.PC_CreativeTab;
+import powercraft.apiOld.PC_CreativeTab;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 

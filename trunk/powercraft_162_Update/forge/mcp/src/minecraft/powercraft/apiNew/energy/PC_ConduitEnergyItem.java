@@ -6,10 +6,10 @@ import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import powercraft.api.items.PC_ItemInfo;
-import powercraft.api.multiblocks.PC_MultiblockTileEntity;
-import powercraft.api.multiblocks.conduits.PC_ConduitItem;
-import powercraft.api.registries.PC_TextureRegistry;
+import powercraft.apiOld.items.PC_ItemInfo;
+import powercraft.apiOld.multiblocks.PC_MultiblockTileEntity;
+import powercraft.apiOld.multiblocks.conduits.PC_ConduitItem;
+import powercraft.apiOld.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

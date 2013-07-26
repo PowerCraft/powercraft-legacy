@@ -5,11 +5,11 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_Logger;
-import powercraft.api.PC_Utils;
-import powercraft.api.items.PC_Item;
-import powercraft.api.registries.PC_MultiblockRegistry;
+import powercraft.apiOld.PC_Direction;
+import powercraft.apiOld.PC_Logger;
+import powercraft.apiOld.PC_Utils;
+import powercraft.apiOld.items.PC_Item;
+import powercraft.apiOld.registries.PC_MultiblockRegistry;
 
 
 public abstract class PC_MultiblockItem extends PC_Item {

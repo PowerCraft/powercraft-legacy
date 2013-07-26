@@ -10,12 +10,12 @@ import net.minecraft.client.renderer.RenderHelper;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_Vec2I;
-import powercraft.api.gres.events.PC_GresKeyEvent;
-import powercraft.api.gres.events.PC_GresPaintEvent;
-import powercraft.api.gres.events.PC_GresPrePostEvent.EventType;
-import powercraft.api.gres.events.PC_GresTickEvent;
+import powercraft.apiOld.PC_RectI;
+import powercraft.apiOld.PC_Vec2I;
+import powercraft.apiOld.gres.events.PC_GresKeyEvent;
+import powercraft.apiOld.gres.events.PC_GresPaintEvent;
+import powercraft.apiOld.gres.events.PC_GresTickEvent;
+import powercraft.apiOld.gres.events.PC_GresPrePostEvent.EventType;
 
 
 public class PC_GresGuiHandler extends PC_GresContainer {

@@ -17,7 +17,6 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_BeamTracer;
 import powercraft.api.annotation.PC_BlockInfo;
 import powercraft.api.block.PC_Block;
 import powercraft.api.interfaces.PC_IBeamHandlerExt;
@@ -32,6 +31,7 @@ import powercraft.api.tileentity.PC_TileEntity;
 import powercraft.api.utils.PC_Color;
 import powercraft.api.utils.PC_Utils;
 import powercraft.api.utils.PC_VecI;
+import powercraft.apiOld.PC_BeamTracer;
 
 @PC_BlockInfo(name="Block Builder", tileEntity=PCma_TileEntityBlockBuilder.class, canPlacedRotated=true)
 public class PCma_BlockBlockBuilder extends PC_Block implements PC_IItemInfo, PC_IBeamHandlerExt, PC_IPacketHandler{

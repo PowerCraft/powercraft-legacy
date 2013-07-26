@@ -1,7 +1,7 @@
 package powercraft.tutorial;
 
-import powercraft.api.PC_FieldGenerator;
-import powercraft.api.PC_Module;
+import powercraft.apiOld.PC_FieldGenerator;
+import powercraft.apiOld.PC_Module;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;

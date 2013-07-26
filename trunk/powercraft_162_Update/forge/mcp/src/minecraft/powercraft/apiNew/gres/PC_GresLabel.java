@@ -1,8 +1,8 @@
 package powercraft.api.gres;
 
 
-import powercraft.api.PC_RectI;
-import powercraft.api.PC_Vec2I;
+import powercraft.apiOld.PC_RectI;
+import powercraft.apiOld.PC_Vec2I;
 
 
 public class PC_GresLabel extends PC_GresComponent {
