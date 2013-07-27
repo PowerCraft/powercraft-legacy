@@ -3,6 +3,7 @@ package powercraft.api;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -54,6 +55,46 @@ public class PC_InventoryUtils {
 			}
 		}
 		nbtTagCompound.setTag(key, list);
+	}
+	
+	public static int getInventoryFullSlots(IInventory inv){
+		return getInventoryFullSlots(inv, (int[])null);
+	}
+	
+	public static int getInventoryFullSlots(IInventory inv, PC_Direction side){
+		return getInventoryFullSlots(inv, getInvIndexesForSide(inv, side));
+	}
+	
+	public static int getInventoryFullSlots(IInventory inv, int[] indexes){
+		int fullSlots=0;
+		if(indexes==null){
+			int size = inv.getSizeInventory();
+			for (int i = 0; i < size; i++) {
+				ItemStack slot = inv.getStackInSlot(i);
+				if (slot != null) {
+					fullSlots++;
+				}
+			}
+		}else{
+			for (int j = 0; j < indexes.length; j++) {
+				int i=indexes[j];
+				ItemStack slot = inv.getStackInSlot(i);
+				if (slot != null) {
+					fullSlots++;
+				}
+			}
+		}
+		return fullSlots;
+	}
+	
+	public static int[] getInvIndexesForSide(IInventory inv, PC_Direction side){
+		if(side==null)
+			return null;
+		int sideID = side.getMCDir();
+		if(inv instanceof ISidedInventory && sideID>=0){
+			return ((ISidedInventory) inv).getAccessibleSlotsFromSide(sideID);
+		}
+		return null;
 	}
 
 }
