@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import powercraft.api.annotation.PC_FieldObject;
-import powercraft.api.block.PC_Block;
+import powercraft.api.blocks.PC_Block;
 import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.item.PC_ItemStack;
 import powercraft.api.recipes.PC_IRecipe;
