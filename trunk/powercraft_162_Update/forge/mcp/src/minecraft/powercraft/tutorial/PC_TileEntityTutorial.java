@@ -1,7 +1,7 @@
 package powercraft.tutorial;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.apiOld.blocks.PC_TileEntity;
+import powercraft.api.block.PC_TileEntity;
 
 public class PC_TileEntityTutorial extends PC_TileEntity {
 

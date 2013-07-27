@@ -27,7 +27,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import powercraft.api.*;
-import powercraft.api.blocks.PC_TileEntity;
+import powercraft.api.block.PC_TileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
