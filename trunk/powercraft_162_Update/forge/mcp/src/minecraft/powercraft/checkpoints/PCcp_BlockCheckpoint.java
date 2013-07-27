@@ -10,14 +10,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import powercraft.api.annotation.PC_BlockInfo;
-import powercraft.api.block.PC_Block;
-import powercraft.api.inventory.PC_InventoryUtils;
+import powercraft.api.blocks.PC_BlockInfo;
+import powercraft.api.blocks.PC_Block;
+import powercraft.api.PC_InventoryUtils;
 import powercraft.api.item.PC_IItemInfo;
 import powercraft.api.registry.PC_GresRegistry;
-import powercraft.api.registry.PC_LangRegistry;
-import powercraft.api.tileentity.PC_TileEntity;
-import powercraft.api.utils.PC_Utils;
+import powercraft.api.registries.PC_LanguageRegistry;
+import powercraft.api.blocks.PC_TileEntity;
+import powercraft.api.PC_Utils;
 import powercraft.api.utils.PC_VecI;
 
 @PC_BlockInfo(name = "Checkpoint", tileEntity=PCcp_TileEntityCheckpoint.class)
