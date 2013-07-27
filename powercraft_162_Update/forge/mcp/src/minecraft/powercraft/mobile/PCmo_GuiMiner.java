@@ -25,7 +25,7 @@ import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.registry.PC_LangRegistry;
 import powercraft.api.tileentity.PC_TileEntity;
-import powercraft.core.PCco_App;
+import powercraft.coreOld.PCco_App;
 
 public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient {
 

@@ -4,7 +4,7 @@ package powercraft.api;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
-import powercraft.api.items.PC_Item;
+import powercraft.api.item.PC_Item;
 import cpw.mods.fml.common.IFuelHandler;
 
 

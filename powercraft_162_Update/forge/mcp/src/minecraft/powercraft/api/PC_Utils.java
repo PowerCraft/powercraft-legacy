@@ -30,7 +30,7 @@ public class PC_Utils {
 		instance = this;
 		TickRegistry.registerTickHandler(new PC_TickHandler(), Side.SERVER);
 		if(getClass()==PC_Utils.class)
-			powercraft.api.registries.PC_Registry.createServerRegistry();
+			powercraft.api.registry.PC_Registry.createServerRegistry();
 	}
 
 

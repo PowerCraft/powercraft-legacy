@@ -8,7 +8,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
-import powercraft.api.blocks.PC_TileEntity;
+import powercraft.api.block.PC_TileEntity;
 
 
 public abstract class PC_GresBaseWithInventory extends Container {

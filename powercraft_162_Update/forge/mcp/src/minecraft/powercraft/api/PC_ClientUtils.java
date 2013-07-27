@@ -19,7 +19,7 @@ public class PC_ClientUtils extends PC_Utils {
 
 		PC_Renderer.create();
 		TickRegistry.registerTickHandler(new PC_TickHandler(), Side.CLIENT);
-		powercraft.api.registries.PC_Registry.createClientRegistry();
+		powercraft.api.registry.PC_Registry.createClientRegistry();
 	}
 
 
