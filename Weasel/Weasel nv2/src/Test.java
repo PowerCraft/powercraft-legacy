@@ -9,7 +9,6 @@ import weasel.compiler.WeaselCompilerException;
 public class Test {
 	
 	public static void main(String[] args) {
-		new Test();
 		WeaselCompiler compiler = new WeaselCompiler();
 		try{
 			compiler.compile(new WeaselClassFileProvider() {

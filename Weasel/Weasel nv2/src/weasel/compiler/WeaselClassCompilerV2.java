@@ -301,6 +301,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		}
 		WeaselClass returnType = interpreter.getWeaselClass(type);
 		List<WeaselClass> params = new ArrayList<WeaselClass>();
+		List<String> paramNames = new ArrayList<String>();
 		token = getNextToken();
 		if(token.tokenType!=WeaselTokenType.CLOSEBRACKET){
 			while(true){
@@ -308,9 +309,13 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 				params.add(interpreter.getWeaselClass(classParam));
 				token = getNextToken();
 				if(token.tokenType==WeaselTokenType.IDENT){
+					paramNames.add((String)token.param);
 					token = getNextToken();
 				}else if(!WeaselModifier.isAbstract(modifier)){
+					paramNames.add(null);
 					expect(token, WeaselTokenType.IDENT);
+				}else{
+					paramNames.add(null);
 				}
 				if(token.tokenType!=WeaselTokenType.COMMA)
 					break;
