@@ -135,10 +135,10 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		fields = new WeaselField[0];
 		
 		methods[0] = compiler.createMethod("<staticInit>", WeaselModifier.STATIC, this, interpreter.voidClass, new WeaselClass[0], ids.staticMethod-1);
-		staticMethodBodys[ids.staticMethod-1] = new WeaselMethodBodyCompiler(methods[0], this, classStaticInit);
+		staticMethodBodys[ids.staticMethod-1] = new WeaselMethodBodyCompiler(methods[0], this, classStaticInit, new ArrayList<String>());
 		if(!isInterface()){
 			methods[1] = compiler.createMethod("<preInit>", 0, this, interpreter.voidClass, new WeaselClass[0], 0);
-			methodBodys[0] = new WeaselMethodBodyCompiler(methods[1], this, classPreInit);
+			methodBodys[0] = new WeaselMethodBodyCompiler(methods[1], this, classPreInit, new ArrayList<String>());
 		}
 		
 		
@@ -375,7 +375,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 				}
 				token = getNextToken();
 			}
-			WeaselMethodBodyCompiler mb = new WeaselMethodBodyCompiler(method, this, methodTokens);
+			WeaselMethodBodyCompiler mb = new WeaselMethodBodyCompiler(method, this, methodTokens, paramNames);
 			if(WeaselModifier.isStatic(modifier)){
 				staticMethodBodys[id] = mb;
 			}else{
