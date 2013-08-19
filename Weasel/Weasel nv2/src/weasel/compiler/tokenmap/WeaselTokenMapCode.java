@@ -5,7 +5,6 @@ import java.util.List;
 
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
-import weasel.compiler.WeaselSyntaxError;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.interpreter.bytecode.WeaselInstruction;
@@ -28,7 +27,7 @@ public class WeaselTokenMapCode extends WeaselTokenMap {
 	@Override
 	protected void addLeftTokenMap(WeaselTokenMap tokenMap)
 			throws WeaselCompilerException {
-		throw new WeaselSyntaxError(token.line, "Can't add token %s to left of %s", tokenMap.token, token);
+		throw new WeaselCompilerException(token.line, "Can't add token %s to left of %s", tokenMap.token, token);
 	}
 
 	@Override
@@ -47,7 +46,7 @@ public class WeaselTokenMapCode extends WeaselTokenMap {
 			//instructions.add(new WeaselInstructionPop(token.line));
 		}
 		if(access==2){
-			throw new WeaselSyntaxError(token.line, "Can't write %s", token);
+			throw new WeaselCompilerException(token.line, "Can't write %s", token);
 		}
 		return instructions;
 	}

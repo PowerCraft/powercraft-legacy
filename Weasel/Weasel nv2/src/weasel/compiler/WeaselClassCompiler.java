@@ -2,6 +2,7 @@ package weasel.compiler;
 
 import java.util.Arrays;
 
+import weasel.compiler.WeaselCompilerMessage.MessageType;
 import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselField;
@@ -21,15 +22,15 @@ public abstract class WeaselClassCompiler extends WeaselClass {
 
 	public abstract void finishCompile();
 	
-	protected void onException(Throwable exception){
-		compiler.addWeaselCompilerException(new WeaselClassException(this, exception));
+	protected void onException(int line, String message, Object...obj){
+		compiler.addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, line, getFileName(), String.format(message, obj)));
 	}
 	
 	protected WeaselToken getNextToken(){
 		try {
 			return tokenParser.getNextToken();
-		} catch (WeaselSyntaxError e) {
-			onException(e);
+		} catch (WeaselCompilerException e) {
+			onException(tokenParser.getLine(), e.getMessage());
 		}
 		return new WeaselToken(WeaselTokenType.NONE, tokenParser.getLine());
 	}
@@ -40,7 +41,7 @@ public abstract class WeaselClassCompiler extends WeaselClass {
 				return;
 			}
 		}
-		onException(new WeaselSyntaxError(token.line, "Unexpected token %s expected %s", token, Arrays.toString(tokenTypes)));
+		onException(token.line, "Unexpected token %s expected %s", token, Arrays.toString(tokenTypes));
 	}
 	
 	protected void expectKeyWord(WeaselToken token, WeaselKeyWord...keyWords){
@@ -50,7 +51,7 @@ public abstract class WeaselClassCompiler extends WeaselClass {
 				return;
 			}
 		}
-		onException(new WeaselSyntaxError(token.line, "Unexpected keyword %s expected %s", token, Arrays.toString(keyWords)));
+		onException(token.line, "Unexpected keyword %s expected %s", token, Arrays.toString(keyWords));
 	}
 	
 	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselClass[] params, int id){
