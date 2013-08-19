@@ -133,4 +133,8 @@ public class WeaselMethodExecutor implements WeaselSaveable {
 		thread.setStackPointer(tryStackPointer.remove(0));
 	}
 
+	public void jumpTo(int pointer){
+		programPointer = pointer;
+	}
+	
 }
