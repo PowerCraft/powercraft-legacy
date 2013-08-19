@@ -128,6 +128,10 @@ public final class WeaselThread implements WeaselSaveable {
 		sleepTime = toSleep;
 	}
 	
+	public void call(WeaselMethodBody methodBody){
+		methodExecutor = new WeaselMethodExecutor(this, methodBody, methodExecutor);
+	}
+	
 	public StackTraceElement[] getStackTrace(){
 		return methodExecutor.getStackTrace().toArray(new StackTraceElement[0]);
 	}
@@ -202,7 +206,7 @@ public final class WeaselThread implements WeaselSaveable {
 		SLEEPING
 	}
 	
-	private static class StackElement implements WeaselSaveable{
+	public static class StackElement implements WeaselSaveable{
 		public Object value;
 		public int object;
 		

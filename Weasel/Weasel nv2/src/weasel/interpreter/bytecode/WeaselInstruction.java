@@ -14,14 +14,20 @@ public abstract class WeaselInstruction {
 	@SuppressWarnings("unchecked")
 	private static final Class<? extends WeaselInstruction>[] instructions = new Class[]{
 		WeaselInstructionCatch.class,
+		WeaselInstructionInvoke.class,
+		WeaselInstructionInvokeStatic.class,
 		WeaselInstructionJump.class,
 		WeaselInstructionLine.class,
+		WeaselInstructionReadField.class,
+		WeaselInstructionReadStaticField.class,
 		WeaselInstructionSync.class,
 		WeaselInstructionSyncBreak.class,
 		WeaselInstructionSyncEnd.class,
 		WeaselInstructionTry.class,
 		WeaselInstructionTryBreak.class,
-		WeaselInstructionTryEnd.class
+		WeaselInstructionTryEnd.class,
+		WeaselInstructionWriteField.class,
+		WeaselInstructionWriteStaticField.class
 	};
 	
 	public abstract void run(WeaselInterpreter interpreter, WeaselThread thread, WeaselMethodExecutor method);
