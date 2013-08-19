@@ -31,7 +31,9 @@ public class Test {
 		
 		public static void registerNewClass(Class<?> c){
 			WeaselClass wc = (WeaselClass) c.getAnnotation(WeaselClass.class);
-			classes.put(wc.weaselName(), wc.getClass());
+			if(wc!=null){
+				classes.put(wc.weaselName(), wc.getClass());
+			}
 		}
 		
 		public static <T> Object callFunc(String obj, String func, Object... params){
