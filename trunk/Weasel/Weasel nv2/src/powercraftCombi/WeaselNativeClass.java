@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class WeaselNativeClass {
 	
 	String name;
-	ArrayList<Method> methods = new ArrayList();
+	ArrayList<Method> methods = new ArrayList<Method>();
 	
 	public WeaselNativeClass(String name){
 		this.name = name;
