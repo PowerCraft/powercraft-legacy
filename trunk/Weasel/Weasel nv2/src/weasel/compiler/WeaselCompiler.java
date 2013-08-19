@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import weasel.compiler.v2.WeaselClassCompilerV2;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselField;
 import weasel.interpreter.WeaselInterpreter;
@@ -93,7 +94,7 @@ public class WeaselCompiler extends WeaselInterpreter {
 		classNameMap.put("void", "V");
 	}
 	
-	protected static String mapClassNames(String name){
+	public static String mapClassNames(String name){
 		String mapedName = classNameMap.get(name);
 		if(mapedName!=null)
 			return mapedName;

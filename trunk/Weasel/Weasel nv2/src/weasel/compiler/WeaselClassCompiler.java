@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.interpreter.WeaselClass;
+import weasel.interpreter.WeaselField;
+import weasel.interpreter.WeaselMethod;
 
 public abstract class WeaselClassCompiler extends WeaselClass {
 
@@ -49,6 +51,14 @@ public abstract class WeaselClassCompiler extends WeaselClass {
 			}
 		}
 		onException(new WeaselSyntaxError(token.line, "Unexpected keyword %s expected %s", token, Arrays.toString(keyWords)));
+	}
+	
+	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselClass[] params, int id){
+		return compiler.createMethod(name, modifier, parentClass, returnParam, params, id);
+	}
+
+	protected WeaselField createField(String name, int modifier, WeaselClass weaselClass, WeaselClass type, int id) {
+		return compiler.createField(name, modifier, weaselClass, type, id);
 	}
 	
 }
