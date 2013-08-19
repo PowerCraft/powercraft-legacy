@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import weasel.compiler.WeaselCompilerMessage.MessageType;
 import weasel.compiler.v2.WeaselClassCompilerV2;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselField;
@@ -24,7 +25,7 @@ public class WeaselCompiler extends WeaselInterpreter {
 	protected List<String> classesToCompile = new ArrayList<String>();
 	protected List<WeaselClassCompiler> classesToCompileFinish = new ArrayList<WeaselClassCompiler>();
 	protected WeaselClassFileProvider classFileProvider;
-	protected List<WeaselCompilerException> exceptions = new ArrayList<WeaselCompilerException>();
+	protected List<WeaselCompilerMessage> compilerMessages = new ArrayList<WeaselCompilerMessage>();
 	
 	public WeaselCompiler(){
 		super(0);
@@ -36,14 +37,24 @@ public class WeaselCompiler extends WeaselInterpreter {
 		while(!classesToCompile.isEmpty()){
 			getWeaselClass("O"+classesToCompile.get(0)+";");
 			while(!classesToCompileFinish.isEmpty()){
-				classesToCompileFinish.remove(0).finishCompile();
+				WeaselClassCompiler c = classesToCompileFinish.remove(0);
+				try{
+					c.finishCompile();
+				}catch(Throwable e){
+					if(e instanceof WeaselCompilerException){
+						addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, ((WeaselCompilerException) e).getLine(), c.getFileName(), e.getMessage()));
+					}else{
+						e.printStackTrace();
+						addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, 0, c.getFileName(), "Native Exception: "+e));
+					}
+				}
 			}
 		}
-		return exceptions.isEmpty();
+		return compilerMessages.isEmpty();
 	}
 	
-	public List<WeaselCompilerException> getExceptions(){
-		return exceptions;
+	public List<WeaselCompilerMessage> getExceptions(){
+		return compilerMessages;
 	}
 	
 	@Override
@@ -53,8 +64,18 @@ public class WeaselCompiler extends WeaselInterpreter {
 			classesCompiled.add(name);
 			WeaselClassCompiler weaselClass = makeClassCompilerFor(classFileProvider.getClassSourceVersionFor(name), name, name);
 			loadedClasses.put(name, weaselClass);
-			weaselClass.compileEasy(classFileProvider.getClassSourceFor(name));
-			classesToCompileFinish.add(weaselClass);
+			try{
+				weaselClass.compileEasy(classFileProvider.getClassSourceFor(name));
+				classesToCompileFinish.add(weaselClass);
+			}catch(Throwable e){
+				weaselClass.tokenParser = null;
+				if(e instanceof WeaselCompilerException){
+					addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, ((WeaselCompilerException) e).getLine(), weaselClass.getFileName(), e.getMessage()));
+				}else{
+					e.printStackTrace();
+					addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, 0, weaselClass.getFileName(), "Native Exception: "+e));
+				}
+			}
 			return weaselClass;
 		}else{
 			return super.loadClass(name);
@@ -72,8 +93,8 @@ public class WeaselCompiler extends WeaselInterpreter {
 		}
 	}
 	
-	public void addWeaselCompilerException(WeaselCompilerException exception){
-		exceptions.add(exception);
+	public void addWeaselCompilerMessage(WeaselCompilerMessage message){
+		compilerMessages.add(message);
 	}
 	
 	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselClass[] params, int id){

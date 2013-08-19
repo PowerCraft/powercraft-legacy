@@ -3,7 +3,7 @@ import java.util.List;
 
 import weasel.compiler.WeaselClassFileProvider;
 import weasel.compiler.WeaselCompiler;
-import weasel.compiler.WeaselCompilerException;
+import weasel.compiler.WeaselCompilerMessage;
 
 
 public class Test {
@@ -16,7 +16,7 @@ public class Test {
 				@Override
 				public String getClassSourceFor(String file) {
 					if(file.equals("Test")){
-						return "public class Test implements B {public static int i[]={0};}";
+						return "public class Test implements B {public int[] a(){a = 0;}}";
 					}else if(file.equals("Enum")){
 						return "public class Enum{public Enum(){}}";
 					}else if(file.equals("Object")){
@@ -42,16 +42,8 @@ public class Test {
 		}catch(Throwable e){
 			e.printStackTrace();
 		}
-		for(WeaselCompilerException e:compiler.getExceptions()){
-			printExc(e);
-		}
-	}
-
-	private static void printExc(Throwable e){
-		System.err.println(e);
-		if(e.getCause()!=null){
-			System.err.print("Caused by: ");
-			printExc(e.getCause());
+		for(WeaselCompilerMessage e:compiler.getExceptions()){
+			System.err.println(e);
 		}
 	}
 	

@@ -5,7 +5,6 @@ import java.util.List;
 
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
-import weasel.compiler.WeaselSyntaxError;
 import weasel.compiler.WeaselToken;
 import weasel.interpreter.bytecode.WeaselInstruction;
 
@@ -23,7 +22,7 @@ public class WeaselTokenMapValue extends WeaselTokenMap {
 
 	@Override
 	protected void addLeftTokenMap(WeaselTokenMap tokenMap) throws WeaselCompilerException {
-		throw new WeaselSyntaxError(token.line, "Can't add token %s to left of %s", tokenMap.token, token);
+		throw new WeaselCompilerException(token.line, "Can't add token %s to left of %s", tokenMap.token, token);
 	}
 
 	@Override
@@ -58,7 +57,7 @@ public class WeaselTokenMapValue extends WeaselTokenMap {
 				//instructions.add(new WeaselInstructionPushN(token.line));
 				break;
 			default:
-				throw new WeaselSyntaxError(token.line, "Unextpect token %s as read value detected", token);
+				throw new WeaselCompilerException(token.line, "Unextpect token %s as read value detected", token);
 			}
 		}else if(access==2){
 			switch(token.tokenType){
@@ -67,7 +66,7 @@ public class WeaselTokenMapValue extends WeaselTokenMap {
 				//instructions.add(new WeaselInstructionSaveV(token.line, (String)token.param));
 				break;
 			default:
-				throw new WeaselSyntaxError(token.line, "Unextpect token %s as write value detected", token);
+				throw new WeaselCompilerException(token.line, "Unextpect token %s as write value detected", token);
 			}
 		}
 		return instructions;

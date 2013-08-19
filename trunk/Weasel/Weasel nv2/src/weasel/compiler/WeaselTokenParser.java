@@ -25,7 +25,7 @@ public class WeaselTokenParser {
 		firstTokens.add(0, token);
 	}
 	
-	public WeaselToken getNextToken() throws WeaselSyntaxError{
+	public WeaselToken getNextToken() throws WeaselCompilerException{
 		if(!firstTokens.isEmpty())
 			return firstTokens.remove(0);
 		isEOFOk=true;
@@ -65,7 +65,7 @@ public class WeaselTokenParser {
 					if(c=='x'){
 						c = readNextChar();
 						if(!(isDigit(c) || (c>='a' && c<='f') || (c>='A' && c<='F')))
-							throw new WeaselSyntaxError(line, "Expect hex but got "+c);
+							throw new WeaselCompilerException(line, "Expect hex but got "+c);
 						while(true) {
 							if(isDigit(c)){
 								num<<=4;
@@ -77,7 +77,7 @@ public class WeaselTokenParser {
 								num<<=4;
 								num+=c-'A'+10;
 							}else if(isAlphabetical(c)){
-								throw new WeaselSyntaxError(line, "Expect hex but got "+c);
+								throw new WeaselCompilerException(line, "Expect hex but got "+c);
 							}else{
 								break;
 							}
@@ -88,14 +88,14 @@ public class WeaselTokenParser {
 					}else if(c=='b'){
 						c = readNextChar();
 						if(!(c=='0' || c=='1'))
-							throw new WeaselSyntaxError(line, "Expect bit but got "+c);
+							throw new WeaselCompilerException(line, "Expect bit but got "+c);
 						while(true) {
 							if(c=='0' || c=='1'){
 								num<<=1;
 								if(c=='1')
 									num++;
 							}else if(isDigit(c)||isAlphabetical(c)){
-								throw new WeaselSyntaxError(line, "Expect bit but got "+c);
+								throw new WeaselCompilerException(line, "Expect bit but got "+c);
 							}else{
 								break;
 							}
@@ -125,7 +125,7 @@ public class WeaselTokenParser {
 					}
 					c = readPrevChar();
 				}else if(isAlphabetical(c)){
-					throw new WeaselSyntaxError(line, "Expect number but got "+c);
+					throw new WeaselCompilerException(line, "Expect number but got "+c);
 				}else{
 					readPrevChar();
 					return new WeaselToken(WeaselTokenType.INTEGER, line, num);
@@ -150,7 +150,7 @@ public class WeaselTokenParser {
 							s+='\\';
 							break;
 						default:
-							throw new WeaselSyntaxError(line, "Expect \n, \t or \\");
+							throw new WeaselCompilerException(line, "Expect \n, \t or \\");
 						}
 					}else{
 						s += c;
@@ -194,12 +194,12 @@ public class WeaselTokenParser {
 			if(wtt!=null){
 				return new WeaselToken(wtt, line);
 			}
-			throw new WeaselSyntaxError(line, "Unexpected char "+c);
+			throw new WeaselCompilerException(line, "Unexpected char "+c);
 		}catch(EOFException e){
 			if(isEOFOk){
 				return new WeaselToken(WeaselTokenType.NONE, line);
 			}
-			throw new WeaselSyntaxError(line, "Unexpect end of file");
+			throw new WeaselCompilerException(line, "Unexpect end of file");
 		}
 	}
 	

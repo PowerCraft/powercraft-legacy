@@ -4,7 +4,6 @@ import java.util.List;
 
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
-import weasel.compiler.WeaselSyntaxError;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 import weasel.interpreter.bytecode.WeaselInstruction;
@@ -16,14 +15,14 @@ public abstract class WeaselKeyWordCompiler {
 	protected WeaselToken expect(WeaselKeyWordCompilerHelper compiler, WeaselTokenType tt) throws WeaselCompilerException{
 		WeaselToken token = compiler.getNextToken();
 		if(token.tokenType!=tt){
-			throw new WeaselSyntaxError(token.line, "Expect %s but got %s", tt, token);
+			throw new WeaselCompilerException(token.line, "Expect %s but got %s", tt, token);
 		}
 		return token;
 	}
 	
 	protected void expectFirst(WeaselToken token, boolean isFirst) throws WeaselCompilerException{
 		if(!isFirst){
-			throw new WeaselSyntaxError(token.line, "Token %s has to be first", token);
+			throw new WeaselCompilerException(token.line, "Token %s has to be first", token);
 		}
 	}
 	
