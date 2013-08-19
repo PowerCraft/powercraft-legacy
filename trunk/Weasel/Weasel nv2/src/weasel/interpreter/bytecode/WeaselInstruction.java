@@ -14,7 +14,11 @@ public abstract class WeaselInstruction {
 	@SuppressWarnings("unchecked")
 	private static final Class<? extends WeaselInstruction>[] instructions = new Class[]{
 		WeaselInstructionCatch.class,
+		WeaselInstructionJump.class,
 		WeaselInstructionLine.class,
+		WeaselInstructionSync.class,
+		WeaselInstructionSyncBreak.class,
+		WeaselInstructionSyncEnd.class,
 		WeaselInstructionTry.class,
 		WeaselInstructionTryBreak.class,
 		WeaselInstructionTryEnd.class

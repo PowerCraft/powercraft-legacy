@@ -153,20 +153,20 @@ public final class WeaselThread implements WeaselSaveable {
 		return se;
 	}
 	
-	public int popValue(){
+	public Object popValue(){
 		return pop().value;
 	}
 	
 	public int popObject(){
-		return pop().value;
+		return pop().object;
 	}
 	
-	public void pushValue(int value){
-		push(new StackElement(value, false));
+	public void pushValue(Object value){
+		push(new StackElement(value));
 	}
 	
 	public void pushObject(int value){
-		push(new StackElement(value, true));
+		push(new StackElement(value));
 	}
 	
 	public void push(StackElement value){
@@ -186,8 +186,8 @@ public final class WeaselThread implements WeaselSaveable {
 	
 	public void markKnownObjects() {
 		for(int i=0; i<stackPointer; i++){
-			if(stack[i].isObject){
-				interpreter.getObject(stack[i].value).markVisible();
+			if(stack[i].value==null){
+				interpreter.getObject(stack[i].object).markVisible();
 			}
 		}
 		if(exception!=0){
@@ -203,24 +203,86 @@ public final class WeaselThread implements WeaselSaveable {
 	}
 	
 	private static class StackElement implements WeaselSaveable{
-		public int value;
-		public boolean isObject;
+		public Object value;
+		public int object;
 		
-		public StackElement(int value, boolean isObject) {
+		public StackElement(Object value) {
 			this.value = value;
-			this.isObject = isObject;
+		}
+		
+		public StackElement(int object) {
+			this.object = object;
 		}
 
 		public StackElement(DataInputStream dataInputStream) throws IOException {
-			value = dataInputStream.readInt();
-			isObject = dataInputStream.readBoolean();
+			int t = dataInputStream.readInt();
+			switch(t){
+			case 1:
+				object = dataInputStream.readInt();
+				break;
+			case 2:
+				value = dataInputStream.readBoolean();
+				break;
+			case 3:
+				value = dataInputStream.readChar();
+				break;
+			case 4:
+				value = dataInputStream.readByte();
+				break;
+			case 5:
+				value = dataInputStream.readShort();
+				break;
+			case 6:
+				value = dataInputStream.readInt();
+				break;
+			case 7:
+				value = dataInputStream.readLong();
+				break;
+			case 8:
+				value = dataInputStream.readFloat();
+				break;
+			case 9:
+				value = dataInputStream.readDouble();
+				break;
+			}
 		}
 		
 		@Override
 		public void saveToDataStream(DataOutputStream dataOutputStream) throws IOException {
-			dataOutputStream.writeInt(value);
-			dataOutputStream.writeBoolean(isObject);
+			if(value==null){
+				dataOutputStream.writeInt(1);
+				dataOutputStream.writeInt(object);
+			}else{
+				Class<?> c = value.getClass();
+				if(c==Boolean.class){
+					dataOutputStream.writeInt(2);
+					dataOutputStream.writeBoolean((Boolean)value);
+				}else if(c==Character.class){
+					dataOutputStream.writeInt(3);
+					dataOutputStream.writeChar((Character)value);
+				}else if(c==Byte.class){
+					dataOutputStream.writeInt(4);
+					dataOutputStream.writeByte((Byte)value);
+				}else if(c==Short.class){
+					dataOutputStream.writeInt(5);
+					dataOutputStream.writeShort((Short)value);
+				}else if(c==Integer.class){
+					dataOutputStream.writeInt(6);
+					dataOutputStream.writeInt((Integer)value);
+				}else if(c==Long.class){
+					dataOutputStream.writeInt(7);
+					dataOutputStream.writeLong((Long)value);
+				}else if(c==Float.class){
+					dataOutputStream.writeInt(8);
+					dataOutputStream.writeFloat((Float)value);
+				}else if(c==Double.class){
+					dataOutputStream.writeInt(9);
+					dataOutputStream.writeDouble((Double)value);
+				}
+			}
 		}
 	}
+	
+	
 	
 }
