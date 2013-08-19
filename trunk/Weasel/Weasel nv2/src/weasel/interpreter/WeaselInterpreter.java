@@ -526,7 +526,7 @@ public class WeaselInterpreter implements WeaselSaveable {
 		return new WeaselField(name, modifier, weaselClass, type, id);
 	}
 	
-	protected WeaselNativeMethod getNativeMethod(String name){
+	public WeaselNativeMethod getNativeMethod(String name){
 		return nativeMethods.get(name);
 	}
 	
