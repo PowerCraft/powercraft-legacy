@@ -27,6 +27,7 @@ public class WeaselInterpreter implements WeaselSaveable {
 	private List<WeaselThread> threads = new ArrayList<WeaselThread>();
 	private int activeThreadID;
 	private HashMap<String, Synchronized> synchronizeds;
+	private HashMap<String, WeaselNativeMethod> nativeMethods = new HashMap<String, WeaselNativeMethod>();
 	
 	public WeaselInterpreter(int memorySize){
 		objectPointer = new WeaselObject[memorySize];
@@ -523,6 +524,14 @@ public class WeaselInterpreter implements WeaselSaveable {
 	
 	protected WeaselField compilerCreateField(String name, int modifier, WeaselClass weaselClass, WeaselClass type, int id) {
 		return new WeaselField(name, modifier, weaselClass, type, id);
+	}
+	
+	protected WeaselNativeMethod getNativeMethod(String name){
+		return nativeMethods.get(name);
+	}
+	
+	public void registerNativeMethod(String name, WeaselNativeMethod nativeMethod){
+		nativeMethods.put(name, nativeMethod);
 	}
 	
 	private class Synchronized implements WeaselSaveable{
