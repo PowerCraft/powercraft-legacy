@@ -7,7 +7,7 @@ import java.util.Vector;
 
 public class Test {
 
-	public void test(){
+	/*public void test(){
 		
 		WeaselClass.WeaselClassMarker wcm;																
 		for(ModContainer mc:Loader.instance().getModList()){
@@ -18,7 +18,7 @@ public class Test {
 				}
 			}
 		}
-	}
+	}*/
 	
 	public void loaderV2() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
 		ClassLoader cl = Test.class.getClassLoader();
@@ -57,7 +57,7 @@ public class Test {
 			try{
 				T o;
 				if((o=(T) objects.get(obj))!=null){
-					Class types[] = new Class[params.length];
+					Class<?> types[] = new Class[params.length];
 					for(int i=0; i<params.length; i++){
 						types[i] = params[i].getClass();
 					}

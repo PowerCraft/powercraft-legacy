@@ -13,3 +13,10 @@ equalment:
 a = equalment
 new String[]{}
 
+
+keywords:
+
+abstract asm break catch class continue do else 
+enum extends false final for if implements interface 
+native new null private protected public return 
+static super synchronized this throw true try while
