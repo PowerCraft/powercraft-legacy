@@ -105,5 +105,15 @@ public final class WeaselPrimitive extends WeaselClass {
 		}
 		return 0;
 	}
+
+	public static boolean getBoolean(WeaselObject weaselObject) {
+		if(weaselObject.getWeaselClass().getRealName() == "Boolean"){
+			WeaselPrimitive primitive = (WeaselPrimitive)weaselObject.getWeaselClass();
+			if(primitive.primitiveID==BOOLEAN){
+				
+			}
+		}
+		return false;
+	}
 	
 }
