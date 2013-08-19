@@ -1,7 +1,9 @@
 package powercraftCombi;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Vector;
 
 public class Test {
 
@@ -17,6 +19,21 @@ public class Test {
 			}
 		}
 	}
+	
+	public void loaderV2() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+		ClassLoader cl = Test.class.getClassLoader();
+		Field f = ClassLoader.class.getDeclaredField("classes");
+		f.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		Vector<Class<?>> classes = (Vector<Class<?>>)f.get(cl);
+		for(Class<?> c:classes){
+			WeaselClass wc = c.getAnnotation(WeaselClass.class);
+			if(wc!=null){
+				WeaselNativeSourceManager.registerNewClass(c);
+			}
+		}
+	}
+	
 	public static class WeaselNativeSourceManager{
 		public static HashMap<String, Class<?>> classes = new HashMap<String, Class<?>>();
 		public static HashMap<String, Object> objects = new HashMap<String, Object>();
