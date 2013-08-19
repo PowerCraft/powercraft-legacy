@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface WeaselClass {
-	String weaselName();
+	public String weaselName() default "";
 	
 	@Target({ElementType.METHOD, ElementType.FIELD})
 	public @interface Invisible{
@@ -18,6 +18,6 @@ public @interface WeaselClass {
 	
 	@Target(ElementType.TYPE)
 	public static @interface WeaselClassMarker{
-		Class[] classes();
+		public Class<?>[] classes();
 	}
 }
