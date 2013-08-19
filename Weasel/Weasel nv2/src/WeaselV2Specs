@@ -1,0 +1,15 @@
+modifier class name {
+
+	modifier type name;
+	modifier type name = equalment;
+
+	modifier abstract type funcname(modifier paramType [paramName]);
+	modifier type funcname(modifier paramType paramName){}
+
+}
+
+equalment:
+0
+a = equalment
+new String[]{}
+
