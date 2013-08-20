@@ -10,12 +10,12 @@ import weasel.interpreter.WeaselNativeMethod;
 import weasel.interpreter.WeaselObject;
 import weasel.interpreter.WeaselThread;
 
-public class WeaselNativeMethodInvoker implements WeaselNativeMethod {
+public class WeaselNativeMethodAccessor implements WeaselNativeMethod {
 
 	private final Method method;
 	private final String name;
 	
-	public WeaselNativeMethodInvoker(Method method){
+	public WeaselNativeMethodAccessor(Method method){
 		this.method = method;
 		Class<?>[] paramTypes = method.getParameterTypes();
 		String nameBuilder = method.getDeclaringClass().getName();
