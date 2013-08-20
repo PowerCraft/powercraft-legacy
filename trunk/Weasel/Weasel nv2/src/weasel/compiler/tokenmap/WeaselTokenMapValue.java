@@ -11,6 +11,7 @@ import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselVariableInfo;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselField;
+import weasel.interpreter.WeaselModifier;
 import weasel.interpreter.bytecode.WeaselInstruction;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstBoolean;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstDouble;
@@ -18,6 +19,7 @@ import weasel.interpreter.bytecode.WeaselInstructionLoadConstInteger;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstString;
 import weasel.interpreter.bytecode.WeaselInstructionLoadNull;
 import weasel.interpreter.bytecode.WeaselInstructionReadField;
+import weasel.interpreter.bytecode.WeaselInstructionReadStaticField;
 
 public class WeaselTokenMapValue extends WeaselTokenMap {
 
@@ -83,15 +85,24 @@ public class WeaselTokenMapValue extends WeaselTokenMap {
 			WeaselVariableInfo variable = compilerHelpher.getVariable(varName);
 			WeaselField field = null;
 			if(variable==null){
-				variable = compilerHelpher.getVariable("this");
-				field = variable.type.getField(varName);
+				field = compilerHelpher.getCompiledClass().getField(varName);
 				if(field==null){
 					throw new WeaselCompilerException(token.line, "Can't find variable %s", varName);
+				}
+				if(WeaselModifier.isStatic(field.getModifier())){
+					instructions.add(new WeaselInstructionReadStaticField(field.getParentClass().getRealName()+"."+varName+":"+field.getType().getByteName()));
+					return new WeaselCompilerReturn(token, instructions, field.getType());
+				}else{
+					variable = compilerHelpher.getVariable("this");
+					if(variable==null){
+						throw new WeaselCompilerException(token.line, "Can't access non static field %s form not static method %s", field, compilerHelpher.getCompiledMethod());
+					}
 				}
 				inStack = field.getType();
 			}else{
 				inStack = variable.type;
 			}
+			
 			if(field!=null){
 				instructions.add(new WeaselInstructionReadField(field.getParentClass().getRealName()+"."+varName+":"+field.getType().getByteName()));
 			}

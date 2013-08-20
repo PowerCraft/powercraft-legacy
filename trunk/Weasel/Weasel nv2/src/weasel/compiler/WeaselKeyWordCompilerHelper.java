@@ -2,6 +2,9 @@ package weasel.compiler;
 
 import java.util.List;
 
+import weasel.interpreter.WeaselClass;
+import weasel.interpreter.WeaselMethod;
+
 
 public interface WeaselKeyWordCompilerHelper {
 
@@ -14,5 +17,9 @@ public interface WeaselKeyWordCompilerHelper {
 	public WeaselCompilerReturn compileStatement(WeaselToken token, WeaselTokenType statementEnd, WeaselTokenType...otherEnds);
 	
 	public WeaselVariableInfo getVariable(String name);
+	
+	public WeaselClass getCompiledClass();
+	
+	public WeaselMethod getCompiledMethod();
 	
 }
