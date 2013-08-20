@@ -18,8 +18,12 @@ import weasel.interpreter.bytecode.WeaselInstructionLoadConstDouble;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstInteger;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstString;
 import weasel.interpreter.bytecode.WeaselInstructionLoadNull;
-import weasel.interpreter.bytecode.WeaselInstructionReadField;
+import weasel.interpreter.bytecode.WeaselInstructionLoadVariable;
+import weasel.interpreter.bytecode.WeaselInstructionReadFieldOf;
 import weasel.interpreter.bytecode.WeaselInstructionReadStaticField;
+import weasel.interpreter.bytecode.WeaselInstructionSaveVariable;
+import weasel.interpreter.bytecode.WeaselInstructionWriteFieldOf;
+import weasel.interpreter.bytecode.WeaselInstructionWriteStaticField;
 
 public class WeaselTokenMapValue extends WeaselTokenMap {
 
@@ -77,34 +81,59 @@ public class WeaselTokenMapValue extends WeaselTokenMap {
 			inStack = compiler.baseTypes.getStringClass();
 			break;
 		case NULL:
+			if(write!=compiler.baseTypes.voidClass){
+				throw new WeaselCompilerException(token.line, "Can't write %s to null value", write);
+			}
 			instructions.add(new WeaselInstructionLoadNull());
 			inStack = null;
 			break;
 		case IDENT:
-			String varName = (String)token.param;
-			WeaselVariableInfo variable = compilerHelpher.getVariable(varName);
-			WeaselField field = null;
-			if(variable==null){
-				field = compilerHelpher.getCompiledClass().getField(varName);
-				if(field==null){
-					throw new WeaselCompilerException(token.line, "Can't find variable %s", varName);
-				}
-				if(WeaselModifier.isStatic(field.getModifier())){
-					instructions.add(new WeaselInstructionReadStaticField(field.getParentClass().getRealName()+"."+varName+":"+field.getType().getByteName()));
-					return new WeaselCompilerReturn(token, instructions, field.getType());
-				}else{
-					variable = compilerHelpher.getVariable("this");
-					if(variable==null){
-						throw new WeaselCompilerException(token.line, "Can't access non static field %s form not static method %s", field, compilerHelpher.getCompiledMethod());
+			if(write==compiler.baseTypes.voidClass){
+				String varName = (String)token.param;
+				WeaselVariableInfo variable = compilerHelpher.getVariable(varName);
+				WeaselField field = null;
+				if(variable==null){
+					field = compilerHelpher.getCompiledClass().getField(varName);
+					if(field==null){
+						throw new WeaselCompilerException(token.line, "Can't find variable %s", varName);
 					}
+					if(WeaselModifier.isStatic(field.getModifier())){
+						instructions.add(new WeaselInstructionReadStaticField(field.getParentClass().getRealName()+"."+varName+":"+field.getType().getByteName()));
+					}else{
+						variable = compilerHelpher.getVariable("this");
+						if(variable==null){
+							throw new WeaselCompilerException(token.line, "Can't access non static field %s form not static method %s", field, compilerHelpher.getCompiledMethod());
+						}
+						instructions.add(new WeaselInstructionReadFieldOf(variable.pos, field.getParentClass().getRealName()+"."+varName+":"+field.getType().getByteName()));
+					}
+					inStack = field.getType();
+				}else{
+					inStack = variable.type;
+					instructions.add(new WeaselInstructionLoadVariable(variable.pos));
 				}
-				inStack = field.getType();
 			}else{
-				inStack = variable.type;
-			}
-			
-			if(field!=null){
-				instructions.add(new WeaselInstructionReadField(field.getParentClass().getRealName()+"."+varName+":"+field.getType().getByteName()));
+				String varName = (String)token.param;
+				WeaselVariableInfo variable = compilerHelpher.getVariable(varName);
+				WeaselField field = null;
+				if(variable==null){
+					field = compilerHelpher.getCompiledClass().getField(varName);
+					if(field==null){
+						throw new WeaselCompilerException(token.line, "Can't find variable %s", varName);
+					}
+					if(WeaselModifier.isStatic(field.getModifier())){
+						instructions.add(new WeaselInstructionWriteStaticField(field.getParentClass().getRealName()+"."+varName+":"+field.getType().getByteName()));
+					}else{
+						variable = compilerHelpher.getVariable("this");
+						if(variable==null){
+							throw new WeaselCompilerException(token.line, "Can't access non static field %s form not static method %s", field, compilerHelpher.getCompiledMethod());
+						}
+						instructions.add(new WeaselInstructionWriteFieldOf(variable.pos, field.getParentClass().getRealName()+"."+varName+":"+field.getType().getByteName()));
+					}
+					inStack = field.getType();
+				}else{
+					inStack = variable.type;
+					instructions.add(new WeaselInstructionSaveVariable(variable.pos));
+				}
 			}
 			break;
 		default:

@@ -22,11 +22,13 @@ public class WeaselMethodExecutor implements WeaselSaveable {
 	private int programPointer;
 	private int line;
 	private List<Integer> tryStackPointer = new ArrayList<Integer>();
+	private final int stackBottom;
 	
 	public WeaselMethodExecutor(WeaselThread thread, WeaselMethodBody method, WeaselMethodExecutor caller){
 		this.thread = thread;
 		this.caller = caller;
 		this.method = method;
+		stackBottom = thread.getStackPointer()-1;
 	}
 	
 	public WeaselMethodExecutor(WeaselThread thread, DataInputStream dataInputStream) throws IOException {
@@ -43,6 +45,7 @@ public class WeaselMethodExecutor implements WeaselSaveable {
 			tryStackPointer.add(dataInputStream.readInt());
 		}
 		line = dataInputStream.readInt();
+		stackBottom = dataInputStream.readInt();
 	}
 
 	@Override
@@ -58,6 +61,7 @@ public class WeaselMethodExecutor implements WeaselSaveable {
 			dataOutputStream.writeInt(i);
 		}
 		dataOutputStream.writeInt(line);
+		dataOutputStream.writeInt(stackBottom);
 	}
 
 	public WeaselInstruction getNextInstruction() {
@@ -135,6 +139,10 @@ public class WeaselMethodExecutor implements WeaselSaveable {
 
 	public void jumpTo(int pointer){
 		programPointer = pointer;
+	}
+
+	public int getStackBottom() {
+		return stackBottom;
 	}
 	
 }

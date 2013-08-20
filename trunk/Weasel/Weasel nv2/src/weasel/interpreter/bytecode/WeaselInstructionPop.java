@@ -9,7 +9,7 @@ import weasel.interpreter.WeaselMethodExecutor;
 import weasel.interpreter.WeaselThread;
 
 public class WeaselInstructionPop extends WeaselInstruction {
-
+	
 	public WeaselInstructionPop(){}
 	
 	public WeaselInstructionPop(DataInputStream dataInputStream){}
