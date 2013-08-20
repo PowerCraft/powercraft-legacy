@@ -95,7 +95,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 				if(name.equals("Object")){
 					ids.method = 1;
 				}else{
-					superClass = getWeaselClass(token.line, "OObject;");
+					superClass = interpreter.baseTypes.getObjectClass();
 					ids.method = superClass.getIDS().method;
 					ids.easyType = superClass.getIDS().easyType;
 					ids.objectRef = superClass.getIDS().objectRef;
@@ -143,7 +143,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 			}
 		}
 		if(isEnum){
-			superClass = getWeaselClass(token.line, "OEnum;");
+			superClass = interpreter.baseTypes.getEnumClass();
 			ids.method = superClass.getIDS().method;
 			ids.easyType = superClass.getIDS().easyType;
 			ids.objectRef = superClass.getIDS().objectRef;
@@ -161,10 +161,10 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 			methodBodys = new WeaselMethodBody[ids.method];
 		fields = new WeaselField[0];
 		
-		methods[0] = createMethod("<staticInit>", WeaselModifier.STATIC, this, interpreter.voidClass, new WeaselClass[0], ids.staticMethod-1);
+		methods[0] = createMethod("<staticInit>", WeaselModifier.STATIC, this, interpreter.baseTypes.voidClass, new WeaselClass[0], ids.staticMethod-1);
 		staticMethodBodys[ids.staticMethod-1] = new WeaselMethodBodyCompilerV2(methods[0], this, classStaticInit, new ArrayList<String>(), new ArrayList<Integer>(), compiler);
 		if(!isInterface()){
-			methods[1] = createMethod("<preInit>", 0, this, interpreter.voidClass, new WeaselClass[0], 0);
+			methods[1] = createMethod("<preInit>", 0, this, interpreter.baseTypes.voidClass, new WeaselClass[0], 0);
 			methodBodys[0] = new WeaselMethodBodyCompilerV2(methods[1], this, classPreInit, new ArrayList<String>(), new ArrayList<Integer>(), compiler);
 		}
 		
@@ -213,6 +213,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 				token = getNextToken();
 			}catch(WeaselCompilerException e){
 				onException(e.getLine(), e.getMessage());
+				token = getNextToken();
 			}
 		}
 		

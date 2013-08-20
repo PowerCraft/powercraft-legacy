@@ -21,6 +21,10 @@ public class Test {
 						return "public class Enum{public Enum(){}}";
 					}else if(file.equals("Object")){
 						return "public class Object {}";
+					}else if(file.equals("Class")){
+						return "public class Class {private final String className;}";
+					}else if(file.equals("String")){
+						return "public class String {private final char[] value;}";
 					}else{
 						return "public interface B {\n"
 								+ "public int f(int d);\n"
@@ -35,7 +39,7 @@ public class Test {
 				
 				@Override
 				public List<String> allKnowClasses() {
-					return Arrays.asList(new String[]{"Test", "B", "Enum", "Object"});
+					return Arrays.asList(new String[]{"Test", "B", "Enum", "Object", "Class", "String"});
 				}
 	
 			});

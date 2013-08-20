@@ -137,4 +137,11 @@ public class WeaselChecks {
 		}
 	}
 	
+	public static void checkArray3(WeaselObject array) {
+		WeaselClass arrayClass = array.getWeaselClass();
+		if(!arrayClass.isArray()){
+			throw new WeaselNativeException("%s is not an array", array.getWeaselClass());
+		}
+	}
+	
 }

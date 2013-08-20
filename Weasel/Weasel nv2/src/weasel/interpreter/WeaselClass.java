@@ -192,7 +192,7 @@ public class WeaselClass implements WeaselSaveable {
 	}
 	
 	public boolean isEnum(){
-		return superClass==interpreter.getWeaselClass("OEnum;");
+		return superClass==interpreter.baseTypes.getEnumClass();
 	}
 	
 	public boolean canCastTo(WeaselClass weaselClass){
@@ -388,6 +388,10 @@ public class WeaselClass implements WeaselSaveable {
 
 	public WeaselID getIDS() {
 		return ids;
+	}
+	
+	public void setClassObject(int createClassObject) {
+		
 	}
 	
 	private static class WeaselInterfaceMaps{
