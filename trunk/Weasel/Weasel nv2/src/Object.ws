@@ -6,4 +6,10 @@ public class Object{
 		return this==o;
 	}
 
+	public String toString(){
+		return "";
+	}
+
+	public native int hashCode();
+
 }

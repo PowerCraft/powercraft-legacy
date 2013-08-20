@@ -4,4 +4,12 @@ public class Enum{
 		return this==o;
 	}
 
+	public final String toString(){
+		return super.toString();
+	}
+
+	public final int hashCode(){
+		return super.hashCode();
+	}
+
 }
