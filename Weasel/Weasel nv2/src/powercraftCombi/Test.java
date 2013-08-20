@@ -56,7 +56,7 @@ public class Test {
 		}
 		
 		public static void registerNewClass(String name, Class<?> c){
-			classes.put(name, c);
+			//classes.put(name, c);
 		}
 		
 		public static void registerNewNamespace(String name){

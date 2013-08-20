@@ -82,7 +82,7 @@ public class WeaselTokenMapOperator extends WeaselTokenMap {
 
 	@Override
 	public String toString() {
-		return "["+left+"]"+token+"["+right+"]";
+		return (left==null?"":"["+left+"]")+((WeaselOperator)token.param).name+(right==null?"":"["+right+"]");
 	}
 
 	@Override

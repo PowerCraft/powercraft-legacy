@@ -128,6 +128,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 		List<WeaselTokenType> end = new ArrayList<WeaselTokenType>();
 		end.add(statementEnd);
 		end.addAll(Arrays.asList(otherEnds));
+		BlockMap bm;
 		while(!end.contains(token.tokenType)){
 			addMap = null;
 			switch(token.tokenType){
@@ -147,11 +148,16 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 				addMap = new WeaselTokenMapCode(token, compiler.compile(token, this.compiler, this, statementEnd));
 				break;
 			}
+			case OPENBRACKET:
+				bm = makeBlockMap(getNextToken(), WeaselTokenType.CLOSEBRACKET);
+				addMap = new WeaselTokenMapOperatorBlock(new WeaselToken(WeaselTokenType.OPERATOR, token.line, WeaselOperator.BREAKETS), bm.tokenMap);
+				token = bm.token;
+				break;
 			case OPERATOR:
 				addMap = new WeaselTokenMapOperator(token);
 				break;
 			case QUESTIONMARK:
-				BlockMap bm = makeBlockMap(getNextToken(), WeaselTokenType.COLON);
+				bm = makeBlockMap(getNextToken(), WeaselTokenType.COLON);
 				addMap = new WeaselTokenMapOperatorBlock(new WeaselToken(WeaselTokenType.OPERATOR, token.line, WeaselOperator.IF), bm.tokenMap);
 				token = bm.token;
 				break;
@@ -165,6 +171,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 			}
 			token = getNextToken();
 		}
+		System.out.println(map);
 		return new BlockMap(map, token);
 	}
 	
