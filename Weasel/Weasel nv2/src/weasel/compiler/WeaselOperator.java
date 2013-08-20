@@ -51,29 +51,6 @@ public enum WeaselOperator {
 	public final boolean suffix;
 	public final boolean l2r;
 	
-	public String getName(Access access, ParamType paramType){
-		String s="operator";
-		switch(access){
-		case WRITE:
-			s += "{WRITE}";
-			break;
-		default:
-			break;
-		}
-		switch(paramType){
-		case PREFIX:
-			s += name + "_";
-			break;
-		case SUFFIX:
-			s += "_" + name;
-			break;
-		default:
-			s += name;
-			break;
-		}
-		return s;
-	}
-	
 	WeaselOperator(String name, boolean prefix, int precedence, boolean suffix){
 		this.name = name;
 		this.prefix = prefix;
@@ -99,10 +76,6 @@ public enum WeaselOperator {
 			this.param = param;
 		}
 		
-	}
-	
-	public static enum Access{
-		READ, WRITE
 	}
 	
 }
