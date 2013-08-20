@@ -37,22 +37,26 @@ public class Test {
 	}
 	
 	public static class WeaselNativeSourceManager{
-		public static HashMap<String, Class<?>> classes = new HashMap<String, Class<?>>();
+		public static HashMap<String, WeaselNamespace> classes = new HashMap<String, WeaselNamespace>();
 		public static HashMap<String, Object> objects = new HashMap<String, Object>();
 		
 		public static void init(){
-			classes.put("byte", byte.class);
-			classes.put("int", int.class);
-			classes.put("float", float.class);
-			classes.put("double", double.class);
-			classes.put("String", String.class);
+			registerNewClass("byte", byte.class);
+			registerNewClass("int", int.class);
+			registerNewClass("float", float.class);
+			registerNewClass("double", double.class);
+			registerNewClass("String", String.class);
 		}
 		
 		public static void registerNewClass(Class<?> c){
 			WeaselClassMarker wc = (WeaselClassMarker) c.getAnnotation(WeaselClassMarker.class);
 			if(wc!=null){
-				classes.put(wc.weaselName(), wc.getClass());
+				registerNewClass(wc.weaselName(), wc.getClass());
 			}
+		}
+		
+		public static void registerNewClass(String name, Class<?> c){
+			classes.put(name, c);
 		}
 		
 		public static void registerNewNamespace(String name){
