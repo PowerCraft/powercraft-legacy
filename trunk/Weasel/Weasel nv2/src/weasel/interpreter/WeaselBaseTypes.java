@@ -14,6 +14,8 @@ public class WeaselBaseTypes {
 	public final static String weaselFloatClassName = "OFloat;";
 	public final static String weaselDoubleClassName = "ODouble;";
 	public final static String weaselStringClassName = "OString;";
+	public final static String weaselCompareableClassName = "OCompareable;";
+	public final static String weaselCloneableClassName = "OCloneable;";
 	
 	private final WeaselInterpreter interpreter;
 	public final WeaselPrimitive booleanClass;

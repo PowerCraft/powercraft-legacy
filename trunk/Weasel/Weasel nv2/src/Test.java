@@ -20,7 +20,7 @@ public class Test {
 					}else if(file.equals("Enum")){
 						return "public class Enum{public Enum(){}}";
 					}else if(file.equals("Object")){
-						return "public class Object {}";
+						return "public class Object {public boolean equals(Object o){return o==this;}}";
 					}else if(file.equals("Class")){
 						return "public class Class {private final String className;}";
 					}else if(file.equals("String")){
