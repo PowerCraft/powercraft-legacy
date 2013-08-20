@@ -27,7 +27,7 @@ public class WeaselTokenMapOperator extends WeaselTokenMap {
 			if(tokenMap instanceof WeaselTokenMapOperator){
 				WeaselTokenMapOperator tokenMapOperator = (WeaselTokenMapOperator)tokenMap;
 				if(right==null){
-					if(tokenMapOperator.getOperator().suffix && (tokenMapOperator.getOperator().precedence==-1||tokenMapOperator.getOperator().precedence>=getOperator().precedence)){
+					if(tokenMapOperator.getOperator().suffix && (tokenMapOperator.getOperator().priority==-1||tokenMapOperator.getOperator().priority>=getOperator().priority)){
 						right = tokenMap;
 					}else{
 						tokenMap.addLeftTokenMap(this);
@@ -48,11 +48,11 @@ public class WeaselTokenMapOperator extends WeaselTokenMap {
 		}else{
 			if(tokenMap instanceof WeaselTokenMapOperator){
 				WeaselTokenMapOperator tokenMapOperator = (WeaselTokenMapOperator)tokenMap;
-				boolean addToRight = tokenMapOperator.getOperator().precedence>getOperator().precedence || tokenMapOperator.getOperator().precedence==-1;
-				addToRight |= !getOperator().l2r && tokenMapOperator.getOperator().precedence==getOperator().precedence;
+				boolean addToRight = tokenMapOperator.getOperator().priority>getOperator().priority || tokenMapOperator.getOperator().priority==-1;
+				addToRight |= !getOperator().l2r && tokenMapOperator.getOperator().priority==getOperator().priority;
 				addToRight |= !getOperator().suffix && right == null;
 				addToRight &= right != null || tokenMapOperator.getOperator().prefix;
-				addToRight &= !(left!=null && getOperator().precedence==-1);
+				addToRight &= !(left!=null && getOperator().priority==-1);
 				if(addToRight){
 					if(right==null){
 						right = tokenMap;
