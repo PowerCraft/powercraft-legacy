@@ -2,6 +2,28 @@ package weasel.interpreter;
 
 public final class WeaselPrimitive extends WeaselClass {
 	
+	public enum WeaselPrimitives{
+		BOOLEAN(1),
+		CHAR(2),
+		BYTE(3),
+		SHORT(4),
+		INT(5),
+		LONG(6),
+		FLOAT(7),
+		DOUBLE(8),
+		VOID(9);
+		
+		public final int id;
+		public final String name;
+		public final char abbreviation;
+		
+		WeaselPrimitives(int id){
+			this.id = id;
+			this.name = primitiveNames[id];
+			this.abbreviation = primitiveEasyNames[id];
+		}
+	}
+	
 	public static final int BOOLEAN = 1;
 	public static final int CHAR = 2;
 	public static final int BYTE = 3;
