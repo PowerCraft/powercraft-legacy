@@ -25,6 +25,7 @@ import weasel.compiler.tokenmap.WeaselTokenMapValue;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
+import weasel.interpreter.WeaselModifier;
 import weasel.interpreter.bytecode.WeaselInstruction;
 import weasel.interpreter.bytecode.WeaselInstructionPop;
 
@@ -43,6 +44,9 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 		methodTokens.add(new WeaselToken(WeaselTokenType.NONE, 0));
 		for(int i=0; i<paramNames.size(); i++){
 			variables.put(paramNames.get(i), new WeaselVariableInfo(paramModifier.get(i), paramNames.get(i), method.getParamClasses()[i]));
+		}
+		if(!WeaselModifier.isStatic(method.getModifier())){
+			variables.put("this", new WeaselVariableInfo(0, "this", parentClass));
 		}
 	}
 
@@ -166,6 +170,21 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 	
 	protected void onException(int line, String message, Object...obj){
 		compiler.addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, line, parentClass.getFileName(), String.format(message, obj)));
+	}
+
+	@Override
+	public WeaselVariableInfo getVariable(String name) {
+		return variables.get(name);
+	}
+
+	@Override
+	public WeaselClass getCompiledClass() {
+		return parentClass;
+	}
+
+	@Override
+	public WeaselMethod getCompiledMethod() {
+		return method;
 	}
 	
 }
