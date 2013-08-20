@@ -16,7 +16,7 @@ public class Test {
 				@Override
 				public String getClassSourceFor(String file) {
 					if(file.equals("Test")){
-						return "public class Test implements B {public int[] a(){a = 0;}}";
+						return "public class Test implements B {public int[] a(){b = 4-5*-4;}}";
 					}else if(file.equals("Enum")){
 						return "public class Enum{public Enum(){}}";
 					}else if(file.equals("Object")){

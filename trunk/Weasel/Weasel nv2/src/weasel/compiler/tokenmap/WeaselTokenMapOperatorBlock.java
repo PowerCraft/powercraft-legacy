@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselToken;
 
 public class WeaselTokenMapOperatorBlock extends WeaselTokenMapOperator {
@@ -21,7 +22,7 @@ public class WeaselTokenMapOperatorBlock extends WeaselTokenMapOperator {
 	
 	@Override
 	public String toString() {
-		return "["+left+"]"+token+childs+"["+right+"]";
+		return (left==null?"":"["+left+"]")+((WeaselOperator)token.param).name+childs+(right==null?"":"["+right+"]");
 	}
 	
 }

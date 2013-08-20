@@ -3,8 +3,8 @@ package weasel.compiler;
 
 public enum WeaselOperator {
 
-	LET("=", false, 0, false), 
-	CALL("()", true, 13, true), 
+	LET("=", false, 0, false, false), 
+	BREAKETS("()", false, 14, false), 
 	FIELD(".", false, 13, false), 
 	ADD("+", true, 10, false),
 	LET_ADD("+=", false, 0, false),
@@ -36,13 +36,14 @@ public enum WeaselOperator {
 	LESS("<", false, 8, false),
 	GREATER_EQUAL(">=", false, 8, false),
 	LESS_EQUAL("<=", false, 8, false),
-	CLONE("<-", true, 0, false),
-	NEW_POINTER("@", true, -1, false), 
 	INDEX("[]", true, -1, true),
 	INC("++", true, -1, true),
 	DEC("--", true, -1, true), 
 	COMMA(",", false, -1, false), 
-	IF("?:", false, 1, false);
+	IF("?:", false, 1, false),
+	CLONE("<-", false, 0, false, false),
+	EQUALS("===", false, 7, false),
+	COMPARE("<=>", false, 7, false);
 	
 	public final String name;
 	public final boolean prefix;
