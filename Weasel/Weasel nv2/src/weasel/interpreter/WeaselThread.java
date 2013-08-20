@@ -165,6 +165,13 @@ public final class WeaselThread implements WeaselSaveable {
 		return pop().object;
 	}
 	
+	public void push(StackElement value){
+		if(stackPointer==stack.length){
+			throw new WeaselNativeException("Stack overflow");
+		}
+		stack[stackPointer++] = value;
+	}
+	
 	public void pushValue(Object value){
 		push(new StackElement(value));
 	}
@@ -173,11 +180,33 @@ public final class WeaselThread implements WeaselSaveable {
 		push(new StackElement(value));
 	}
 	
-	public void push(StackElement value){
-		if(stackPointer==stack.length){
-			throw new WeaselNativeException("Stack overflow");
-		}
-		stack[stackPointer++] = value;
+	public StackElement get(int pos){
+		if(pos<0||pos>=stackPointer)
+			throw new WeaselNativeException("Stack out of bounds %s %s", pos, stackPointer);
+		StackElement se = stack[pos];
+		return se;
+	}
+	
+	public Object getValue(int pos){
+		return get(pos).value;
+	}
+	
+	public int getObject(int pos){
+		return get(pos).object;
+	}
+	
+	public void set(int pos, StackElement se){
+		if(pos<0||pos>=stackPointer)
+			throw new WeaselNativeException("Stack out of bounds %s %s", pos, stackPointer);
+		stack[pos] = se;
+	}
+	
+	public void setValue(int pos, Object value){
+		get(pos).value = value;
+	}
+	
+	public void setObject(int pos, int value){
+		get(pos).object = value;
 	}
 	
 	public int getStackPointer(){

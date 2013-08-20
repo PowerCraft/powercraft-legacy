@@ -15,7 +15,7 @@ public class WeaselMethodBody {
 		this.parentClass = parentClass;
 	}
 	
-	public WeaselMethodBody(WeaselMethod method, WeaselClass parentClass, DataInputStream dataInputStream) {
+	protected WeaselMethodBody(WeaselMethod method, WeaselClass parentClass, DataInputStream dataInputStream) {
 		this.method = method;
 		this.parentClass = parentClass;
 	}

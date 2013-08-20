@@ -43,10 +43,10 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 		this.methodTokens = methodTokens;
 		methodTokens.add(new WeaselToken(WeaselTokenType.NONE, 0));
 		for(int i=0; i<paramNames.size(); i++){
-			variables.put(paramNames.get(i), new WeaselVariableInfo(paramModifier.get(i), paramNames.get(i), method.getParamClasses()[i]));
+			variables.put(paramNames.get(i), new WeaselVariableInfo(paramModifier.get(i), paramNames.get(i), method.getParamClasses()[i], -i));
 		}
 		if(!WeaselModifier.isStatic(method.getModifier())){
-			variables.put("this", new WeaselVariableInfo(0, "this", parentClass));
+			variables.put("this", new WeaselVariableInfo(0, "this", parentClass, -paramNames.size()));
 		}
 	}
 

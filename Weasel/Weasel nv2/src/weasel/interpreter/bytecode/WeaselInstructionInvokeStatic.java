@@ -90,6 +90,9 @@ public class WeaselInstructionInvokeStatic extends WeaselInstruction {
 			}
 		}else{
 			thread.call(methodBody);
+			for(int i=0; i<this.method.getParamClasses().length; i++){
+				thread.pop();
+			}
 		}
 	}
 	
