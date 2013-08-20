@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Vector;
 
+import powercraftCombi.WeaselClassMarker.WeaselClassList;
+
 public class Test {
 
 	/*public void test(){
@@ -27,7 +29,7 @@ public class Test {
 		@SuppressWarnings("unchecked")
 		Vector<Class<?>> classes = (Vector<Class<?>>)f.get(cl);
 		for(Class<?> c:classes){
-			WeaselClassMarker wc = c.getAnnotation(WeaselClassMarker.class);
+			WeaselClassList wc = c.getAnnotation(WeaselClassList.class);
 			if(wc!=null){
 				WeaselNativeSourceManager.registerNewClass(c);
 			}
