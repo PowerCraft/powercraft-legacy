@@ -1,18 +1,18 @@
 package powercraftCombi;
 
-@WeaselClass(weaselName="TestKlasse")
+@WeaselClassMarker(weaselName="TestKlasse")
 public class WeaselKlasse {
 
 	public void a(){
 		
 	}
 	
-	@WeaselClass.Invisible
+	@WeaselClassMarker.Invisible
 	public void b(){
 		
 	}
 	
-	@ExternalWeaselFunction(weaselNames="doIt", namespaces="World")
+	@Named(weaselNames="doIt", namespaces="World")
 	public void c(){
 		
 	}

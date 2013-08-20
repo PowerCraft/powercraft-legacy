@@ -27,7 +27,7 @@ public class Test {
 		@SuppressWarnings("unchecked")
 		Vector<Class<?>> classes = (Vector<Class<?>>)f.get(cl);
 		for(Class<?> c:classes){
-			WeaselClass wc = c.getAnnotation(WeaselClass.class);
+			WeaselClassMarker wc = c.getAnnotation(WeaselClassMarker.class);
 			if(wc!=null){
 				WeaselNativeSourceManager.registerNewClass(c);
 			}
@@ -47,10 +47,14 @@ public class Test {
 		}
 		
 		public static void registerNewClass(Class<?> c){
-			WeaselClass wc = (WeaselClass) c.getAnnotation(WeaselClass.class);
+			WeaselClassMarker wc = (WeaselClassMarker) c.getAnnotation(WeaselClassMarker.class);
 			if(wc!=null){
 				classes.put(wc.weaselName(), wc.getClass());
 			}
+		}
+		
+		public static void registerNewNamespace(String name){
+			
 		}
 		
 		public static <T> Object callFunc(String obj, String func, Object... params){
@@ -62,7 +66,7 @@ public class Test {
 						types[i] = params[i].getClass();
 					}
 					Method m = o.getClass().getDeclaredMethod(func, types);
-					if(m!=null && !m.isAnnotationPresent(WeaselClass.Invisible.class)){
+					if(m!=null && !m.isAnnotationPresent(WeaselClassMarker.Invisible.class)){
 						return m.invoke(o, params);
 					}
 				}
