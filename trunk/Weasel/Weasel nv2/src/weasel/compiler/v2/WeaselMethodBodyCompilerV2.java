@@ -5,12 +5,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import weasel.compiler.WeaselBlockCompilerInfo;
-import weasel.compiler.WeaselBlockTokenMap;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerMessage;
 import weasel.compiler.WeaselCompilerMessage.MessageType;
+import weasel.compiler.WeaselCompilerReturn;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselToken;
@@ -27,6 +26,7 @@ import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
 import weasel.interpreter.bytecode.WeaselInstruction;
+import weasel.interpreter.bytecode.WeaselInstructionPop;
 
 public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements WeaselKeyWordCompilerHelper {
 
@@ -56,7 +56,19 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 		if(isNative()){
 			return;
 		}
-		compileBlock(Arrays.asList(new WeaselTokenType[]{WeaselTokenType.NONE}), WeaselTokenType.SEMICOLON, 0);
+		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
+		WeaselToken token = getNextToken();
+		while(token.tokenType!=WeaselTokenType.NONE){
+			WeaselCompilerReturn compilerReturn = compileStatement(token, WeaselTokenType.SEMICOLON);
+			if(compilerReturn.instructions!=null){
+				instructions.addAll(compilerReturn.instructions);
+			}
+			if(compilerReturn.inStack!=compiler.baseTypes.voidClass){
+				instructions.add(new WeaselInstructionPop());
+			}
+			token = getNextToken();
+		}
+		this.instructions = instructions.toArray(this.instructions);
 	}
 
 	@Override
@@ -68,51 +80,77 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 	public void setNextToken(WeaselToken token) {
 		methodTokens.add(0, token);
 	}
+
+	@Override
+	public List<WeaselCompilerReturn> compileParameterList(WeaselToken token, WeaselTokenType statementEnd, WeaselTokenType seperator) {
+		List<WeaselCompilerReturn> parameterList = new ArrayList<WeaselCompilerReturn>();
+		WeaselCompilerReturn compilerReturn;
+		do{
+			compilerReturn = compileStatement(getNextToken(), statementEnd, seperator);
+			parameterList.add(compilerReturn);
+		}while(compilerReturn.token.tokenType==seperator);
+		return parameterList;
+	}
+
+	@Override
+	public WeaselCompilerReturn compileStatement(WeaselToken token, WeaselTokenType statementEnd, WeaselTokenType...otherEnds) {
+		try {
+			BlockMap blockMap = makeBlockMap(token, statementEnd, otherEnds);
+			return blockMap.tokenMap.compileTokenMap(compiler, this, 0, false);
+		} catch (WeaselCompilerException e) {
+			onException(e.getLine(), e.getMessage());
+			token = getNextToken();
+			List<WeaselTokenType> end = new ArrayList<WeaselTokenType>();
+			end.add(statementEnd);
+			end.addAll(Arrays.asList(otherEnds));
+			while(!end.contains(token.tokenType));
+			return new WeaselCompilerReturn(token, null, null);
+		}
+	}
 	
-	public WeaselBlockTokenMap makeBlockMap(List<WeaselTokenType> end, WeaselTokenType seperator, boolean canBeFirst) throws WeaselCompilerException {
-		WeaselToken token;
+	public static class BlockMap{
+		public WeaselTokenMap tokenMap;
+		public WeaselToken token;
+		
+		public BlockMap(WeaselTokenMap tokenMap, WeaselToken token) {
+			this.tokenMap = tokenMap;
+			this.token = token;
+		}
+	}
+	
+	public BlockMap makeBlockMap(WeaselToken token, WeaselTokenType statementEnd, WeaselTokenType...otherEnds) throws WeaselCompilerException {
 		WeaselTokenMap map=null;
 		WeaselTokenMap addMap;
-		List<WeaselTokenMap> list = new ArrayList<WeaselTokenMap>();
-		while(!end.contains((token=getNextToken()).tokenType)){
-			System.out.println(token);
+		List<WeaselTokenType> end = new ArrayList<WeaselTokenType>();
+		end.add(statementEnd);
+		end.addAll(Arrays.asList(otherEnds));
+		while(!end.contains(token.tokenType)){
 			addMap = null;
-			if(seperator==token.tokenType){
-				list.add(map);
-				map = null;
-				continue;
-			}
 			switch(token.tokenType){
 			case BOOL:
 			case DOUBLE:
-			case IDENT:
 			case INTEGER:
 			case STRING:
 			case NULL:
 				addMap = new WeaselTokenMapValue(token);
+				break;
+			case IDENT:
 				break;
 			case KEYWORD:{
 				WeaselKeyWordCompiler compiler = ((WeaselKeyWord)token.param).compiler;
 				if(compiler==null){
 					throw new WeaselCompilerException(token.line, "Unexpect keyword %s", token.param);
 				}
-				addMap = new WeaselTokenMapCode(token, compiler.compile(token, this, map==null && canBeFirst));
+				addMap = new WeaselTokenMapCode(token, compiler.compile(token, this.compiler, this, statementEnd));
 				break;
-			}case OPENBRACKET:
-				addMap = new WeaselTokenMapOperatorBlock(new WeaselToken(WeaselTokenType.OPERATOR, token.line, WeaselOperator.CALL), makeBlockMap(Arrays.asList(WeaselTokenType.CLOSEBRACKET), WeaselTokenType.COMMA, false).tokenMap);
-				break;
-			case OPENINDEX:
-				addMap = new WeaselTokenMapOperatorBlock(new WeaselToken(WeaselTokenType.OPERATOR, token.line, WeaselOperator.INDEX), makeBlockMap(Arrays.asList(WeaselTokenType.CLOSEINDEX), WeaselTokenType.COMMA, false).tokenMap);
-				break;
+			}
 			case OPERATOR:
 				addMap = new WeaselTokenMapOperator(token);
 				break;
-			case COMMA:
-				list.add(map);
-				map = null;
-				continue;
 			case QUESTIONMARK:
-				addMap = new WeaselTokenMapOperatorBlock(new WeaselToken(WeaselTokenType.OPERATOR, token.line, WeaselOperator.IF), makeBlockMap(Arrays.asList(WeaselTokenType.COLON), null, false).tokenMap);
+				BlockMap bm = makeBlockMap(getNextToken(), WeaselTokenType.COLON);
+				addMap = new WeaselTokenMapOperatorBlock(new WeaselToken(WeaselTokenType.OPERATOR, token.line, WeaselOperator.IF), bm.tokenMap);
+				token = bm.token;
 				break;
 			default:
 				throw new WeaselCompilerException(token.line, "Unexpect token %s", token);
@@ -122,51 +160,11 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 			}else{
 				map = map.addTokenMap(addMap);
 			}
+			token = getNextToken();
 		}
-		list.add(map);
-		return new WeaselBlockTokenMap(list, token.tokenType);
+		return new BlockMap(map, token);
 	}
 	
-	@Override
-	public WeaselBlockCompilerInfo compileBlock(List<WeaselTokenType> end, WeaselTokenType seperator, int access) {
-		return compileBlock(end, seperator, access, access==0);
-	}
-	
-	public WeaselBlockCompilerInfo compileBlock(List<WeaselTokenType> end, WeaselTokenType seperator, int access, boolean canBeFirst) {
-		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
-		WeaselBlockTokenMap block;
-		List<WeaselTokenType> newEnd = new ArrayList<WeaselTokenType>(end);
-		newEnd.add(seperator);
-		do{
-			try {
-				block=makeBlockMap(newEnd, null, canBeFirst);
-				if(block.tokenMap.get(0)!=null){
-					if(block.endingToken!=seperator && seperator!=null){
-						throw new WeaselCompilerException(methodTokens.get(0).line, "Expect %s bevore %s", seperator, end);
-					}
-					if(block.tokenMap.size()==1){
-						//instructions.addAll(block.tokenMap.get(0).compileTokenMap(this, access, false));
-					}else{
-						instructions.addAll(block.tokenMap.get(0).compileTokenMap(this, 1, false));
-						for(int i=1; i<block.tokenMap.size(); i++){
-							instructions.addAll(block.tokenMap.get(i).compileTokenMap(this, 1, false));
-							//instructions.add(new WeaselInstructionOperator(block.tokenMap.get(i).token.line, WeaselOperator.COMMA, ParamType.NORMAL));
-						}
-						if(access==0){
-							//instructions.add(new WeaselInstructionPop(block.tokenMap.get(block.tokenMap.size()-1).token.line));
-						}
-					}
-				}
-			} catch (WeaselCompilerException e) {
-				onException(e.getLine(), e.getMessage());
-				WeaselToken token = getNextToken();
-				while(!end.contains((token=getNextToken()).tokenType));
-				block = new WeaselBlockTokenMap(null, token.tokenType);
-			}
-		}while(block.endingToken==seperator);
-		return new WeaselBlockCompilerInfo(instructions, block.endingToken);
-	}
-
 	protected void onException(int line, String message, Object...obj){
 		compiler.addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, line, parentClass.getFileName(), String.format(message, obj)));
 	}

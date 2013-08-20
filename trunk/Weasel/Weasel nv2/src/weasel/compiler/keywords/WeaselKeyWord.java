@@ -14,7 +14,7 @@ public enum WeaselKeyWord {
 	SUPER("super", null), 
 	CLASS("class", null), 
 	INTERFACE("interface", null), 
-	NEW("new", null),
+	NEW("new", new WeaselKeyWordCompilerNew()),
 	TRY("try", null),
 	CATCH("catch", null),
 	THROW("throw", null),

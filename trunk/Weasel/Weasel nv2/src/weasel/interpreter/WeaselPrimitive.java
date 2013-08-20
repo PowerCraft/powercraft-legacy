@@ -52,21 +52,21 @@ public final class WeaselPrimitive extends WeaselClass {
 			WeaselPrimitive primitive = (WeaselPrimitive)type;
 			switch(primitive.primitiveID){
 			case BOOLEAN:
-				return interpreter.createBooleanObject(weaselField.getBoolean(object));
+				return interpreter.baseTypes.createBooleanObject(weaselField.getBoolean(object));
 			case CHAR:
-				return interpreter.createCharObject(weaselField.getChar(object));
+				return interpreter.baseTypes.createCharObject(weaselField.getChar(object));
 			case BYTE:
-				return interpreter.createByteObject(weaselField.getByte(object));
+				return interpreter.baseTypes.createByteObject(weaselField.getByte(object));
 			case SHORT:
-				return interpreter.createShortObject(weaselField.getShort(object));
+				return interpreter.baseTypes.createShortObject(weaselField.getShort(object));
 			case INT:
-				return interpreter.createIntObject(weaselField.getInt(object));
+				return interpreter.baseTypes.createIntObject(weaselField.getInt(object));
 			case LONG:
-				return interpreter.createLongObject(weaselField.getLong(object));
+				return interpreter.baseTypes.createLongObject(weaselField.getLong(object));
 			case DOUBLE:
-				return interpreter.createDoubleObject(weaselField.getDouble(object));
+				return interpreter.baseTypes.createDoubleObject(weaselField.getDouble(object));
 			case FLOAT:
-				return interpreter.createFloatObject(weaselField.getFloat(object));
+				return interpreter.baseTypes.createFloatObject(weaselField.getFloat(object));
 			}
 		}
 		throw new WeaselNativeException("Can't make Weapper for %s", type);
@@ -106,14 +106,4 @@ public final class WeaselPrimitive extends WeaselClass {
 		return 0;
 	}
 
-	public static boolean getBoolean(WeaselObject weaselObject) {
-		if(weaselObject.getWeaselClass().getRealName() == "Boolean"){
-			WeaselPrimitive primitive = (WeaselPrimitive)weaselObject.getWeaselClass();
-			if(primitive.primitiveID==BOOLEAN){
-				
-			}
-		}
-		return false;
-	}
-	
 }

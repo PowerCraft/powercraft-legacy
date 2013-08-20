@@ -2,7 +2,9 @@ package weasel.compiler.tokenmap;
 
 import java.util.List;
 
+import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
+import weasel.compiler.WeaselCompilerReturn;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselToken;
@@ -86,7 +88,7 @@ public class WeaselTokenMapOperator extends WeaselTokenMap {
 	}
 
 	@Override
-	public List<WeaselInstruction> compileTokenMap(WeaselKeyWordCompilerHelper weaselCompiler, int access, boolean pushThis) throws WeaselCompilerException {
+	public WeaselCompilerReturn compileTokenMap(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher, int access, boolean pushThis) throws WeaselCompilerException {
 		return null;//getOperator().compileOperator(weaselCompiler, access, pushThis, this);
 	}
 

@@ -3,7 +3,9 @@ package weasel.compiler.tokenmap;
 import java.util.ArrayList;
 import java.util.List;
 
+import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
+import weasel.compiler.WeaselCompilerReturn;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.interpreter.bytecode.WeaselInstruction;
@@ -31,7 +33,7 @@ public class WeaselTokenMapValue extends WeaselTokenMap {
 	}
 
 	@Override
-	public List<WeaselInstruction> compileTokenMap(WeaselKeyWordCompilerHelper weaselCompiler, int access, boolean pushThis) throws WeaselCompilerException {
+	public WeaselCompilerReturn compileTokenMap(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher, int access, boolean pushThis) throws WeaselCompilerException {
 		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
 		if(pushThis){
 			//instructions.add(new WeaselInstructionPushN(token.line));
@@ -69,7 +71,7 @@ public class WeaselTokenMapValue extends WeaselTokenMap {
 				throw new WeaselCompilerException(token.line, "Unextpect token %s as write value detected", token);
 			}
 		}
-		return instructions;
+		return null;
 	}
 
 }

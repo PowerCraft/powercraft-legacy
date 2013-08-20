@@ -12,15 +12,7 @@ import weasel.interpreter.WeaselThread.State;
 
 public class WeaselInterpreter implements WeaselSaveable {
 
-	public final WeaselPrimitive booleanClass;
-	public final WeaselPrimitive charClass;
-	public final WeaselPrimitive byteClass;
-	public final WeaselPrimitive shortClass;
-	public final WeaselPrimitive intClass;
-	public final WeaselPrimitive longClass;
-	public final WeaselPrimitive floatClass;
-	public final WeaselPrimitive doubleClass;
-	public final WeaselPrimitive voidClass;
+	public final WeaselBaseTypes baseTypes;
 	
 	protected final WeaselObject[] objectPointer;
 	protected final HashMap<String, WeaselClass> loadedClasses;
@@ -33,15 +25,7 @@ public class WeaselInterpreter implements WeaselSaveable {
 		objectPointer = new WeaselObject[memorySize];
 		loadedClasses = new HashMap<String, WeaselClass>();
 		synchronizeds = new HashMap<String, Synchronized>();
-		booleanClass = new WeaselPrimitive(this, WeaselPrimitive.BOOLEAN);
-		charClass = new WeaselPrimitive(this, WeaselPrimitive.CHAR);
-		byteClass = new WeaselPrimitive(this, WeaselPrimitive.BYTE);
-		shortClass = new WeaselPrimitive(this, WeaselPrimitive.SHORT);
-		intClass = new WeaselPrimitive(this, WeaselPrimitive.INT);
-		longClass = new WeaselPrimitive(this, WeaselPrimitive.LONG);
-		floatClass = new WeaselPrimitive(this, WeaselPrimitive.FLOAT);
-		doubleClass = new WeaselPrimitive(this, WeaselPrimitive.DOUBLE);
-		voidClass = new WeaselPrimitive(this, WeaselPrimitive.VOID);
+		baseTypes = new WeaselBaseTypes(this);
 	}
 	
 	public WeaselInterpreter(DataInputStream dataInputStream) throws IOException{
@@ -49,15 +33,7 @@ public class WeaselInterpreter implements WeaselSaveable {
 		objectPointer = new WeaselObject[memorySize];
 		loadedClasses = new HashMap<String, WeaselClass>();
 		synchronizeds = new HashMap<String, Synchronized>();
-		booleanClass = new WeaselPrimitive(this, WeaselPrimitive.BOOLEAN);
-		charClass = new WeaselPrimitive(this, WeaselPrimitive.CHAR);
-		byteClass = new WeaselPrimitive(this, WeaselPrimitive.BYTE);
-		shortClass = new WeaselPrimitive(this, WeaselPrimitive.SHORT);
-		intClass = new WeaselPrimitive(this, WeaselPrimitive.INT);
-		longClass = new WeaselPrimitive(this, WeaselPrimitive.LONG);
-		floatClass = new WeaselPrimitive(this, WeaselPrimitive.FLOAT);
-		doubleClass = new WeaselPrimitive(this, WeaselPrimitive.DOUBLE);
-		voidClass = new WeaselPrimitive(this, WeaselPrimitive.VOID);
+		baseTypes = new WeaselBaseTypes(this);
 		int count = dataInputStream.readInt();
 		for(int i=0; i<count; i++){
 			String className = dataInputStream.readUTF();
@@ -129,7 +105,7 @@ public class WeaselInterpreter implements WeaselSaveable {
 		}
 	}
 	
-	public WeaselClass getWeaselClass(String name){
+	public final WeaselClass getWeaselClass(String name){
 		char firstChar = name.charAt(0);
 		WeaselClass weaselClass;
 		switch(firstChar){
@@ -141,28 +117,31 @@ public class WeaselInterpreter implements WeaselSaveable {
 			if(weaselClass==null){
 				weaselClass = loadClass(names[0]);
 				loadedClasses.put(names[0], weaselClass);
+				if(objectPointer.length>0){
+					weaselClass.setClassObject(baseTypes.createClassObject(weaselClass));
+				}
 			}
 			if(names.length==1)
 				return weaselClass;
 			return weaselClass.getChildClass(names[1]);
 		case 'N':
-			return booleanClass;
+			return baseTypes.booleanClass;
 		case 'C':
-			return charClass;
+			return baseTypes.charClass;
 		case 'B':
-			return byteClass;
+			return baseTypes.byteClass;
 		case 'S':
-			return shortClass;
+			return baseTypes.shortClass;
 		case 'I':
-			return intClass;
+			return baseTypes.intClass;
 		case 'L':
-			return longClass;
+			return baseTypes.longClass;
 		case 'F':
-			return floatClass;
+			return baseTypes.floatClass;
 		case 'D':
-			return doubleClass;
+			return baseTypes.doubleClass;
 		case 'V':
-			return voidClass;
+			return baseTypes.voidClass;
 		case '[':
 			String className = "[";
 			int i=1;
@@ -228,232 +207,6 @@ public class WeaselInterpreter implements WeaselSaveable {
 			}
 		}
 		throw new WeaselNativeException("Out of Memory");
-	}
-	
-	public int createBooleanObject(boolean value) {
-		WeaselClass weaselClass = getWeaselClass("OBoolean;");
-		int obj = createObject(weaselClass, 0);
-		WeaselField field = weaselClass.getField("value");
-		field.setBoolean(getObject(obj), value);
-		return obj;
-	}
-
-	public int createCharObject(char value) {
-		WeaselClass weaselClass = getWeaselClass("OChar;");
-		int obj = createObject(weaselClass, 0);
-		WeaselField field = weaselClass.getField("value");
-		field.setChar(getObject(obj), value);
-		return obj;
-	}
-
-	public int createByteObject(byte value) {
-		WeaselClass weaselClass = getWeaselClass("OByte;");
-		int obj = createObject(weaselClass, 0);
-		WeaselField field = weaselClass.getField("value");
-		field.setByte(getObject(obj), value);
-		return obj;
-	}
-
-	public int createShortObject(short value) {
-		WeaselClass weaselClass = getWeaselClass("OShort;");
-		int obj = createObject(weaselClass, 0);
-		WeaselField field = weaselClass.getField("value");
-		field.setShort(getObject(obj), value);
-		return obj;
-	}
-
-	public int createIntObject(int value) {
-		WeaselClass weaselClass = getWeaselClass("OInteger;");
-		int obj = createObject(weaselClass, 0);
-		WeaselField field = weaselClass.getField("value");
-		field.setInt(getObject(obj), value);
-		return obj;
-	}
-
-	public int createLongObject(long value) {
-		WeaselClass weaselClass = getWeaselClass("OLong;");
-		int obj = createObject(weaselClass, 0);
-		WeaselField field = weaselClass.getField("value");
-		field.setLong(getObject(obj), value);
-		return obj;
-	}
-
-	public int createDoubleObject(double value) {
-		WeaselClass weaselClass = getWeaselClass("ODouble;");
-		int obj = createObject(weaselClass, 0);
-		WeaselField field = weaselClass.getField("value");
-		field.setDouble(getObject(obj), value);
-		return obj;
-	}
-
-	public int createFloatObject(float value) {
-		WeaselClass weaselClass = getWeaselClass("OFloat;");
-		int obj = createObject(weaselClass, 0);
-		WeaselField field = weaselClass.getField("value");
-		field.setFloat(getObject(obj), value);
-		return obj;
-	}
-
-	public int createStringObject(String value) {
-		WeaselClass weaselClass = getWeaselClass("OString;");
-		int obj = createObject(weaselClass, 0);
-		WeaselField field = weaselClass.getField("value");
-		int size = value.length();
-		int array = createArrayObject(size, "C");
-		WeaselObject arrayObject = getObject(array);
-		for(int i=0; i<size; i++){
-			setArrayIndexChar(arrayObject, i, value.charAt(i));
-		}
-		field.setObject(getObject(obj), array);
-		return obj;
-	}
-	
-	public int createArrayObject(int length, String className) {
-		WeaselClass weaselClass = getWeaselClass("["+className);
-		return createObject(weaselClass, length);
-	}
-	
-	public int createRuntimeException(WeaselRuntimeException wre) {
-		WeaselClass weaselClass = getWeaselClass("OException;");
-		int obj = createObject(weaselClass, 0);
-		WeaselField field = weaselClass.getField("message");
-		field.setObject(getObject(obj), createStringObject(wre.getMessage()));
-		return obj;
-	}
-	
-	public void setArrayIndexObject(WeaselObject array, int index, int obj) {
-		WeaselObject object = getObject(obj);
-		if(!array.getWeaselClass().getArrayClass().isPrimitive()){
-			WeaselChecks.checkArray(array, index, object==null?array.getWeaselClass().getArrayClass():object.getWeaselClass());
-			array.objectRefs[index] = obj;
-		}else{
-			WeaselField field = object.getWeaselClass().getField("value");
-			switch(WeaselPrimitive.getPrimitiveID(array.getWeaselClass().getArrayClass())){
-			case WeaselPrimitive.BOOLEAN:
-				setArrayIndexBoolean(array, index, field.getBoolean(object));
-			case WeaselPrimitive.CHAR:
-				setArrayIndexChar(array, index, field.getChar(object));
-			case WeaselPrimitive.BYTE:
-				setArrayIndexByte(array, index, field.getByte(object));
-			case WeaselPrimitive.SHORT:
-				setArrayIndexShort(array, index, field.getShort(object));
-			case WeaselPrimitive.INT:
-				setArrayIndexInt(array, index, field.getInt(object));
-			case WeaselPrimitive.LONG:
-				setArrayIndexLong(array, index, field.getLong(object));
-			case WeaselPrimitive.FLOAT:
-				setArrayIndexFloat(array, index, field.getFloat(object));
-			case WeaselPrimitive.DOUBLE:
-				setArrayIndexDouble(array, index, field.getDouble(object));
-			}
-		}
-	}
-	
-	public void setArrayIndexBoolean(WeaselObject array, int index, boolean value) {
-		WeaselChecks.checkArray(array, index, booleanClass);
-		array.easyTypes[index+1] = value?-1:0;
-	}
-	
-	public void setArrayIndexChar(WeaselObject array, int index, char value) {
-		WeaselChecks.checkArray(array, index, charClass);
-		array.easyTypes[index+1] = value;
-	}
-	
-	public void setArrayIndexByte(WeaselObject array, int index, byte value) {
-		WeaselChecks.checkArray(array, index, byteClass);
-		array.easyTypes[index+1] = value;
-	}
-	
-	public void setArrayIndexShort(WeaselObject array, int index, short value) {
-		WeaselChecks.checkArray(array, index, shortClass);
-		array.easyTypes[index+1] = value;
-	}
-	
-	public void setArrayIndexInt(WeaselObject array, int index, int value) {
-		WeaselChecks.checkArray(array, index, intClass);
-		array.easyTypes[index+1] = value;
-	}
-	
-	public void setArrayIndexLong(WeaselObject array, int index, long value) {
-		WeaselChecks.checkArray(array, index, longClass);
-		array.easyTypes[index*2+1] = (int)(value>>32);
-		array.easyTypes[index*2+2] = (int)(value);
-	}
-	
-	public void setArrayIndexFloat(WeaselObject array, int index, float value) {
-		WeaselChecks.checkArray(array, index, floatClass);
-		array.easyTypes[index+1] = Float.floatToRawIntBits(value);
-	}
-	
-	public void setArrayIndexDouble(WeaselObject array, int index, double value) {
-		WeaselChecks.checkArray(array, index, doubleClass);
-		long l = Double.doubleToRawLongBits(value);
-		array.easyTypes[index*2+1] = (int)(l>>32);
-		array.easyTypes[index*2+2] = (int)(l);
-	}
-	
-	public int getArrayIndexObject(WeaselObject array, int index) {
-		switch(WeaselPrimitive.getPrimitiveID(array.getWeaselClass().getArrayClass())){
-		case WeaselPrimitive.BOOLEAN:
-			return createBooleanObject(getArrayIndexBoolean(array, index));
-		case WeaselPrimitive.CHAR:
-			return createCharObject(getArrayIndexChar(array, index));
-		case WeaselPrimitive.BYTE:
-			return createByteObject(getArrayIndexByte(array, index));
-		case WeaselPrimitive.SHORT:
-			return createShortObject(getArrayIndexShort(array, index));
-		case WeaselPrimitive.INT:
-			return createIntObject(getArrayIndexInt(array, index));
-		case WeaselPrimitive.LONG:
-			return createLongObject(getArrayIndexLong(array, index));
-		case WeaselPrimitive.FLOAT:
-			return createFloatObject(getArrayIndexFloat(array, index));
-		case WeaselPrimitive.DOUBLE:
-			return createDoubleObject(getArrayIndexDouble(array, index));
-		default:
-			WeaselChecks.checkArray2(array, index, getWeaselClass("OObject;"));
-			return array.objectRefs[index];
-		}
-	}
-	
-	public boolean getArrayIndexBoolean(WeaselObject array, int index) {
-		WeaselChecks.checkArray2(array, index, booleanClass);
-		return array.easyTypes[index+1]!=0;
-	}
-	
-	public char getArrayIndexChar(WeaselObject array, int index) {
-		WeaselChecks.checkArray2(array, index, charClass);
-		return (char)array.easyTypes[index+1];
-	}
-	
-	public byte getArrayIndexByte(WeaselObject array, int index) {
-		WeaselChecks.checkArray2(array, index, byteClass);
-		return (byte)array.easyTypes[index+1];
-	}
-	
-	public short getArrayIndexShort(WeaselObject array, int index) {
-		WeaselChecks.checkArray2(array, index, shortClass);
-		return (short)array.easyTypes[index+1];
-	}
-	
-	public int getArrayIndexInt(WeaselObject array, int index) {
-		WeaselChecks.checkArray2(array, index, intClass);
-		return array.easyTypes[index+1];
-	}
-	
-	public long getArrayIndexLong(WeaselObject array, int index) {
-		WeaselChecks.checkArray2(array, index, longClass);
-		return (long)array.easyTypes[index*2+1]<<32 | (long)array.easyTypes[index*2+2];
-	}
-	
-	public float getArrayIndexFloat(WeaselObject array, int index) {
-		WeaselChecks.checkArray2(array, index, floatClass);
-		return Float.intBitsToFloat(array.easyTypes[index+1]);
-	}
-	
-	public double getArrayIndexDouble(WeaselObject array, int index) {
-		WeaselChecks.checkArray2(array, index, doubleClass);
-		return Double.longBitsToDouble((long)array.easyTypes[index*2+1]<<32 | (long)array.easyTypes[index*2+2]);
 	}
 	
 	public WeaselMethodBody getMethodByDesk(String methodDesk) {

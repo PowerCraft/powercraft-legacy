@@ -9,6 +9,8 @@ public interface WeaselKeyWordCompilerHelper {
 	
 	public void setNextToken(WeaselToken token);
 	
-	public WeaselBlockCompilerInfo compileBlock(List<WeaselTokenType> end, WeaselTokenType seperator, int access);
+	public List<WeaselCompilerReturn> compileParameterList(WeaselToken token, WeaselTokenType statementEnd, WeaselTokenType seperator);
+	
+	public WeaselCompilerReturn compileStatement(WeaselToken token, WeaselTokenType statementEnd, WeaselTokenType...otherEnds);
 	
 }

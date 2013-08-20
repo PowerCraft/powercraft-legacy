@@ -1,23 +1,25 @@
 package weasel.compiler.keywords;
 
-import java.util.List;
+import java.util.Arrays;
 
+import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
+import weasel.compiler.WeaselCompilerReturn;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
-import weasel.interpreter.bytecode.WeaselInstruction;
 
 public abstract class WeaselKeyWordCompiler {
 	
-	public abstract List<WeaselInstruction> compile(WeaselToken token, WeaselKeyWordCompilerHelper compiler, boolean isFirst) throws WeaselCompilerException;
+	public abstract WeaselCompilerReturn compile(WeaselToken token, WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher,  WeaselTokenType statementEnd) throws WeaselCompilerException;
 
-	protected WeaselToken expect(WeaselKeyWordCompilerHelper compiler, WeaselTokenType tt) throws WeaselCompilerException{
-		WeaselToken token = compiler.getNextToken();
-		if(token.tokenType!=tt){
-			throw new WeaselCompilerException(token.line, "Expect %s but got %s", tt, token);
+	protected void expect(WeaselToken token, WeaselTokenType...tokenTypes) throws WeaselCompilerException{
+		for(int i=0; i<tokenTypes.length; i++){
+			if(token.tokenType == tokenTypes[i]){
+				return;
+			}
 		}
-		return token;
+		throw new WeaselCompilerException(token.line, "Unexpected token %s expected %s", token, Arrays.toString(tokenTypes));
 	}
 	
 	protected void expectFirst(WeaselToken token, boolean isFirst) throws WeaselCompilerException{
@@ -25,7 +27,5 @@ public abstract class WeaselKeyWordCompiler {
 			throw new WeaselCompilerException(token.line, "Token %s has to be first", token);
 		}
 	}
-	
-	public abstract boolean letAnythingInStack();
 	
 }
