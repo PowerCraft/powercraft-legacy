@@ -38,6 +38,8 @@ public class WeaselClass implements WeaselSaveable {
 	
 	protected boolean isInterface;
 	
+	protected int classObject;
+	
 	protected WeaselClass(WeaselInterpreter interpreter, Object parent, String name, int modifier, String fileName){
 		WeaselChecks.checkName(name);
 		if(parent!=null && !(parent instanceof WeaselClass) && !(parent instanceof WeaselMethodBody)){
@@ -391,7 +393,11 @@ public class WeaselClass implements WeaselSaveable {
 	}
 	
 	public void setClassObject(int createClassObject) {
-		
+		classObject = createClassObject;
+	}
+	
+	public int getClassObject() {
+		return classObject;
 	}
 	
 	private static class WeaselInterfaceMaps{
