@@ -5,6 +5,7 @@ import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerReturn;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
+import weasel.interpreter.WeaselClass;
 
 public abstract class WeaselTokenMap {
 
@@ -21,6 +22,6 @@ public abstract class WeaselTokenMap {
 	@Override
 	public abstract String toString();
 
-	public abstract WeaselCompilerReturn compileTokenMap(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher, int access, boolean pushThis) throws WeaselCompilerException;
+	public abstract WeaselCompilerReturn compileTokenMap(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher, WeaselClass write) throws WeaselCompilerException;
 	
 }

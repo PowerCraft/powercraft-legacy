@@ -5,6 +5,7 @@ import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerReturn;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
+import weasel.interpreter.WeaselClass;
 
 public class WeaselTokenMapCode extends WeaselTokenMap {
 
@@ -33,7 +34,7 @@ public class WeaselTokenMapCode extends WeaselTokenMap {
 	}
 
 	@Override
-	public WeaselCompilerReturn compileTokenMap(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher, int access, boolean pushThis) throws WeaselCompilerException {
+	public WeaselCompilerReturn compileTokenMap(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher, WeaselClass write) throws WeaselCompilerException {
 		return compilerReturn;
 	}
 

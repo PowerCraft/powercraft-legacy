@@ -96,7 +96,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 	public WeaselCompilerReturn compileStatement(WeaselToken token, WeaselTokenType statementEnd, WeaselTokenType...otherEnds) {
 		try {
 			BlockMap blockMap = makeBlockMap(token, statementEnd, otherEnds);
-			return blockMap.tokenMap.compileTokenMap(compiler, this, 0, false);
+			return blockMap.tokenMap.compileTokenMap(compiler, this, compiler.baseTypes.voidClass);
 		} catch (WeaselCompilerException e) {
 			onException(e.getLine(), e.getMessage());
 			token = getNextToken();
@@ -131,10 +131,9 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 			case DOUBLE:
 			case INTEGER:
 			case STRING:
+			case IDENT:
 			case NULL:
 				addMap = new WeaselTokenMapValue(token);
-				break;
-			case IDENT:
 				break;
 			case KEYWORD:{
 				WeaselKeyWordCompiler compiler = ((WeaselKeyWord)token.param).compiler;

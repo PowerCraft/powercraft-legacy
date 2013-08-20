@@ -84,6 +84,10 @@ public final class WeaselField {
 		return object.easyTypes;
 	}
 	
+	public WeaselClass getParentClass(){
+		return parentClass;
+	}
+	
 	private void checkObject(WeaselObject object){
 		if(!WeaselModifier.isStatic(modifier)){
 			WeaselClass weaselClass = object.getWeaselClass();

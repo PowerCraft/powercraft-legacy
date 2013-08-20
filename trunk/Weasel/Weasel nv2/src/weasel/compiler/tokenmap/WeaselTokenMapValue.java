@@ -8,7 +8,16 @@ import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerReturn;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
+import weasel.compiler.WeaselVariableInfo;
+import weasel.interpreter.WeaselClass;
+import weasel.interpreter.WeaselField;
 import weasel.interpreter.bytecode.WeaselInstruction;
+import weasel.interpreter.bytecode.WeaselInstructionLoadConstBoolean;
+import weasel.interpreter.bytecode.WeaselInstructionLoadConstDouble;
+import weasel.interpreter.bytecode.WeaselInstructionLoadConstInteger;
+import weasel.interpreter.bytecode.WeaselInstructionLoadConstString;
+import weasel.interpreter.bytecode.WeaselInstructionLoadNull;
+import weasel.interpreter.bytecode.WeaselInstructionReadField;
 
 public class WeaselTokenMapValue extends WeaselTokenMap {
 
@@ -33,45 +42,65 @@ public class WeaselTokenMapValue extends WeaselTokenMap {
 	}
 
 	@Override
-	public WeaselCompilerReturn compileTokenMap(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher, int access, boolean pushThis) throws WeaselCompilerException {
+	public WeaselCompilerReturn compileTokenMap(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher, WeaselClass write) throws WeaselCompilerException {
 		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
-		if(pushThis){
-			//instructions.add(new WeaselInstructionPushN(token.line));
-		}
-		if(access==1){
-			switch(token.tokenType){
-			case BOOL:
-				//instructions.add(new WeaselInstructionPushB(token.line, (Boolean)token.param));
-				break;
-			case DOUBLE:
-				//instructions.add(new WeaselInstructionPushD(token.line, (Double)token.param));
-				break;
-			case IDENT:
-				//instructions.add(new WeaselInstructionLoadV(token.line, (String)token.param));
-				break;
-			case INTEGER:
-				//instructions.add(new WeaselInstructionPushI(token.line, (Integer)token.param));
-				break;
-			case STRING:
-				//instructions.add(new WeaselInstructionPushS(token.line, (String)token.param));
-				break;
-			case NULL:
-				//instructions.add(new WeaselInstructionPushN(token.line));
-				break;
-			default:
-				throw new WeaselCompilerException(token.line, "Unextpect token %s as read value detected", token);
+		WeaselClass inStack;
+		switch(token.tokenType){
+		case BOOL:
+			if(write!=compiler.baseTypes.voidClass){
+				throw new WeaselCompilerException(token.line, "Can't write %s to Boolean value", write);
 			}
-		}else if(access==2){
-			switch(token.tokenType){
-			case IDENT:
-				//instructions.add(new WeaselInstructionOperator(token.line, WeaselOperator.NEW_POINTER, ParamType.PREFIX));
-				//instructions.add(new WeaselInstructionSaveV(token.line, (String)token.param));
-				break;
-			default:
-				throw new WeaselCompilerException(token.line, "Unextpect token %s as write value detected", token);
+			instructions.add(new WeaselInstructionLoadConstBoolean((Boolean)token.param));
+			inStack = compiler.baseTypes.booleanClass;
+			break;
+		case DOUBLE:
+			if(write!=compiler.baseTypes.voidClass){
+				throw new WeaselCompilerException(token.line, "Can't write %s to Double value", write);
 			}
+			instructions.add(new WeaselInstructionLoadConstDouble((Double)token.param));
+			inStack = compiler.baseTypes.doubleClass;
+			break;
+		case INTEGER:
+			if(write!=compiler.baseTypes.voidClass){
+				throw new WeaselCompilerException(token.line, "Can't write %s to Integer value", write);
+			}
+			instructions.add(new WeaselInstructionLoadConstInteger((Integer)token.param));
+			inStack = compiler.baseTypes.intClass;
+			break;
+		case STRING:
+			if(write!=compiler.baseTypes.voidClass){
+				throw new WeaselCompilerException(token.line, "Can't write %s to String value", write);
+			}
+			instructions.add(new WeaselInstructionLoadConstString((String)token.param));
+			inStack = compiler.baseTypes.getStringClass();
+			break;
+		case NULL:
+			instructions.add(new WeaselInstructionLoadNull());
+			inStack = null;
+			break;
+		case IDENT:
+			String varName = (String)token.param;
+			WeaselVariableInfo variable = compilerHelpher.getVariable(varName);
+			WeaselField field = null;
+			if(variable==null){
+				variable = compilerHelpher.getVariable("this");
+				field = variable.type.getField(varName);
+				if(field==null){
+					throw new WeaselCompilerException(token.line, "Can't find variable %s", varName);
+				}
+				inStack = field.getType();
+			}else{
+				inStack = variable.type;
+			}
+			if(field!=null){
+				instructions.add(new WeaselInstructionReadField(field.getParentClass().getRealName()+"."+varName+":"+field.getType().getByteName()));
+			}
+			break;
+		default:
+			throw new WeaselCompilerException(token.line, "Unextpect token %s as value detected", token);
 		}
-		return null;
+
+		return new WeaselCompilerReturn(token, instructions, inStack);
 	}
 
 }

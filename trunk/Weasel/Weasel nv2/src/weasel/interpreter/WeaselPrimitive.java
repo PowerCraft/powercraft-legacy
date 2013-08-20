@@ -26,7 +26,7 @@ public final class WeaselPrimitive extends WeaselClass {
 		{false, false, false, false, false, false,  true,  true,  true, false},
 		{false, false, false, false, false, false, false,  true, false, false},
 		{false, false, false, false, false, false, false,  true,  true, false},
-		{false, false, false, false, false, false, false, false, false, false},
+		{false, false, false, false, false, false, false, false, false, false}
 		};
 	
 	private final int primitiveID;
