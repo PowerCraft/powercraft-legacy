@@ -35,12 +35,18 @@ public final class WeaselField {
 		if(WeaselModifier.isStatic(modifier)){
 			if(type.isPrimitive()){
 				id = wid.staticEasyType++;
+				if(WeaselPrimitive.getPrimitiveID(type)==WeaselPrimitive.LONG||WeaselPrimitive.getPrimitiveID(type)==WeaselPrimitive.DOUBLE){
+					wid.staticEasyType++;
+				}
 			}else{
 				id = wid.staticObjectRef++;
 			}
 		}else{
 			if(type.isPrimitive()){
 				id = wid.easyType++;
+				if(WeaselPrimitive.getPrimitiveID(type)==WeaselPrimitive.LONG||WeaselPrimitive.getPrimitiveID(type)==WeaselPrimitive.DOUBLE){
+					wid.staticEasyType++;
+				}
 			}else{
 				id = wid.objectRef++;
 			}
