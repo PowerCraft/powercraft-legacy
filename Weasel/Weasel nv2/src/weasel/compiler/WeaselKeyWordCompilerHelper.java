@@ -13,4 +13,6 @@ public interface WeaselKeyWordCompilerHelper {
 	
 	public WeaselCompilerReturn compileStatement(WeaselToken token, WeaselTokenType statementEnd, WeaselTokenType...otherEnds);
 	
+	public WeaselVariableInfo getVariable(String name);
+	
 }
