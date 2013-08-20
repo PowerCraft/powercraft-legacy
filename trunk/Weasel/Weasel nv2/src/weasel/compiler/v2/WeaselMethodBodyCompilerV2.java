@@ -150,7 +150,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 			}
 			case OPENBRACKET:
 				bm = makeBlockMap(getNextToken(), WeaselTokenType.CLOSEBRACKET);
-				addMap = new WeaselTokenMapOperatorBlock(new WeaselToken(WeaselTokenType.OPERATOR, token.line, WeaselOperator.BREAKETS), bm.tokenMap);
+				addMap = new WeaselTokenMapOperatorBlock(new WeaselToken(WeaselTokenType.OPERATOR, token.line, WeaselOperator.BRACKETS), bm.tokenMap);
 				token = bm.token;
 				break;
 			case OPERATOR:

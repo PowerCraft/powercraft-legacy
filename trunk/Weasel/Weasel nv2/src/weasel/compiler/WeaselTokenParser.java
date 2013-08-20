@@ -9,7 +9,7 @@ import weasel.interpreter.WeaselModifier;
 
 public class WeaselTokenParser {
 
-	private String source;
+	private final String source;
 	private int pos;
 	private int line;
 	private boolean isEOFOk=true;

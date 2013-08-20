@@ -4,7 +4,7 @@ package weasel.compiler;
 public enum WeaselOperator {
 
 	LET("=", false, 0, false, false), 
-	BREAKETS("()", false, 14, false), 
+	BRACKETS("()", false, 14, false), 
 	FIELD(".", false, 13, false), 
 	ADD("+", true, 10, false),
 	LET_ADD("+=", false, 0, false),
@@ -47,14 +47,14 @@ public enum WeaselOperator {
 	
 	public final String name;
 	public final boolean prefix;
-	public final int precedence;
+	public final int priority;
 	public final boolean suffix;
 	public final boolean l2r;
 	
 	WeaselOperator(String name, boolean prefix, int precedence, boolean suffix){
 		this.name = name;
 		this.prefix = prefix;
-		this.precedence = precedence;
+		this.priority = precedence;
 		this.suffix = suffix;
 		l2r = true;
 	}
@@ -62,7 +62,7 @@ public enum WeaselOperator {
 	WeaselOperator(String name, boolean prefix, int precedence, boolean suffix, boolean l2r){
 		this.name = name;
 		this.prefix = prefix;
-		this.precedence = precedence;
+		this.priority = precedence;
 		this.suffix = suffix;
 		this.l2r = l2r;
 	}
