@@ -11,9 +11,7 @@ public class WeaselGeneric<T> {
 		this.generics = generics;
 	}
 	
-	protected WeaselClass[] getGenericClassesFor(WeaselGenericClassInfo gci){
-		if(gci==null)
-			return new WeaselClass[0];
+	protected WeaselGenericClass getGenericClassesFor(WeaselGenericClassInfo gci){
 		WeaselClass[] classes = new WeaselClass[gci.generics.length];
 		for(int i=0; i<classes.length; i++){
 			if(gci.generics[i] instanceof WeaselClass){
@@ -22,7 +20,7 @@ public class WeaselGeneric<T> {
 				classes[i] = generics[(Integer)gci.generics[i]];
 			}
 		}
-		return classes;
+		return new WeaselGenericClass(gci.genericClass, classes);
 	}
 	
 }

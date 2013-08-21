@@ -98,8 +98,8 @@ public class WeaselCompiler extends WeaselInterpreter {
 		compilerMessages.add(message);
 	}
 	
-	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselGenericClassInfo genericReturn, WeaselClass[] params, WeaselGenericClassInfo[] genericParams, int id){
-		return compilerCreateMethod(name, modifier, parentClass, returnParam, genericReturn, params, genericParams, id);
+	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselGenericClassInfo genericReturn, WeaselGenericClassInfo[] genericParams, int id){
+		return compilerCreateMethod(name, modifier, parentClass, genericReturn, genericParams, id);
 	}
 	
 	private static final HashMap<String, String> classNameMap = new HashMap<String, String>();
@@ -123,8 +123,8 @@ public class WeaselCompiler extends WeaselInterpreter {
 		return "O"+name+";";
 	}
 
-	protected WeaselField createField(String name, int modifier, WeaselClass weaselClass, WeaselClass type, WeaselGenericClassInfo typeInfo, int id) {
-		return compilerCreateField(name, modifier, weaselClass, type, typeInfo, id);
+	protected WeaselField createField(String name, int modifier, WeaselClass weaselClass, WeaselGenericClassInfo typeInfo, int id) {
+		return compilerCreateField(name, modifier, weaselClass, typeInfo, id);
 	}
 	
 }

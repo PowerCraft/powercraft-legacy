@@ -4,20 +4,27 @@ public class WeaselGenericInformation {
 
 	public String genericName;
 	
-	public WeaselClass baseClass;
 	public WeaselGenericClassInfo genericInfo;
 	
-	public WeaselGenericInformation(String genericName, WeaselClass baseClass){
+	public WeaselGenericInformation(String genericName, WeaselClass baseClass, int genericID){
 		this.genericName = genericName;
-		this.baseClass = baseClass;
-		genericInfo = new WeaselGenericClassInfo(new Object[0]);
+		genericInfo = new WeaselGenericClassInfo(baseClass, genericID, new Object[0]);
 	}
 
 	@Override
 	public String toString() {
 		return "WeaselGenericInformation [genericName=" + genericName
-				+ ", baseClass=" + baseClass + ", genericInfo=" + genericInfo
+				+ ", genericInfo=" + genericInfo
 				+ "]";
+	}
+	
+	public String getName(WeaselClass weaselClass){
+		String ret = genericName;
+		if(genericInfo.genericClass!=weaselClass.interpreter.baseTypes.getObjectClass()){
+			ret += " extends ";
+			ret += genericInfo.getName(weaselClass);
+		}
+		return ret;
 	}
 	
 }

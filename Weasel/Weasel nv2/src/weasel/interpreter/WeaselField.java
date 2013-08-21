@@ -12,17 +12,15 @@ public final class WeaselField {
 	protected final int modifier;
 	protected final String name;
 	protected final WeaselClass parentClass;
-	protected final WeaselClass type;
 	protected final WeaselGenericClassInfo genericType;
 	protected final int id;
 	
-	protected WeaselField(String name, int modifier, WeaselClass parentClass, WeaselClass type, WeaselGenericClassInfo typeInfo, int id){
+	protected WeaselField(String name, int modifier, WeaselClass parentClass, WeaselGenericClassInfo typeInfo, int id){
 		WeaselChecks.checkName(name);
 		WeaselChecks.checkModifier(modifier, normalModifier);
 		this.name = name;
 		this.modifier = modifier;
 		this.parentClass = parentClass;
-		this.type = type;
 		this.genericType = typeInfo;
 		this.id = id;
 	}
@@ -33,21 +31,20 @@ public final class WeaselField {
 		WeaselChecks.checkName(name);
 		modifier = dataInputStream.readInt();
 		WeaselChecks.checkModifier(modifier, normalModifier);
-		type = parentClass.interpreter.getWeaselClass(dataInputStream.readUTF());
 		genericType = new WeaselGenericClassInfo(parentClass.interpreter, dataInputStream);
 		if(WeaselModifier.isStatic(modifier)){
-			if(type.isPrimitive()){
+			if(genericType.genericClass.isPrimitive()){
 				id = wid.staticEasyType++;
-				if(WeaselPrimitive.getPrimitiveID(type)==WeaselPrimitive.LONG||WeaselPrimitive.getPrimitiveID(type)==WeaselPrimitive.DOUBLE){
+				if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)==WeaselPrimitive.LONG||WeaselPrimitive.getPrimitiveID(genericType.genericClass)==WeaselPrimitive.DOUBLE){
 					wid.staticEasyType++;
 				}
 			}else{
 				id = wid.staticObjectRef++;
 			}
 		}else{
-			if(type.isPrimitive()){
+			if(genericType.genericClass.isPrimitive()){
 				id = wid.easyType++;
-				if(WeaselPrimitive.getPrimitiveID(type)==WeaselPrimitive.LONG||WeaselPrimitive.getPrimitiveID(type)==WeaselPrimitive.DOUBLE){
+				if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)==WeaselPrimitive.LONG||WeaselPrimitive.getPrimitiveID(genericType.genericClass)==WeaselPrimitive.DOUBLE){
 					wid.staticEasyType++;
 				}
 			}else{
@@ -65,12 +62,12 @@ public final class WeaselField {
 	}
 	
 	public WeaselClass getType() {
-		return type;
+		return genericType.genericClass;
 	}
 	
 	private int getID(WeaselObject weaselObject){
 		if(parentClass.isInterface() && !WeaselModifier.isStatic(modifier)){
-			if(type.isPrimitive()){
+			if(genericType.genericClass.isPrimitive()){
 				return weaselObject.getWeaselClass().getInterfaceEasyTypeMap(parentClass)[id];
 			}else{
 				return weaselObject.getWeaselClass().getInterfaceObjectRefMap(parentClass)[id];
@@ -108,8 +105,8 @@ public final class WeaselField {
 	
 	public int getObject(WeaselObject object){
 		checkObject(object);
-		if(type.isPrimitive()){
-			return WeaselPrimitive.makeWrapper(object, type, this);
+		if(genericType.genericClass.isPrimitive()){
+			return WeaselPrimitive.makeWrapper(object, genericType.genericClass, this);
 		}else{
 			return getRefMap(object)[getID(object)];
 		}
@@ -117,48 +114,48 @@ public final class WeaselField {
 
 	public boolean getBoolean(WeaselObject object) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.BOOLEAN){
-			throw new WeaselNativeException("Field isn't a Boolean Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.BOOLEAN){
+			throw new WeaselNativeException("Field isn't a Boolean Field it is a %s", genericType.genericClass);
 		}
 		return getPrimitiveMap(object)[getID(object)]!=0;
 	}
 	
 	public byte getByte(WeaselObject object) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.BYTE){
-			throw new WeaselNativeException("Field isn't a Byte Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.BYTE){
+			throw new WeaselNativeException("Field isn't a Byte Field it is a %s", genericType.genericClass);
 		}
 		return (byte) getPrimitiveMap(object)[getID(object)];
 	}
 	
 	public short getShort(WeaselObject object) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.SHORT){
-			throw new WeaselNativeException("Field isn't a Short Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.SHORT){
+			throw new WeaselNativeException("Field isn't a Short Field it is a %s", genericType.genericClass);
 		}
 		return (short) getPrimitiveMap(object)[getID(object)];
 	}
 	
 	public char getChar(WeaselObject object) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.CHAR){
-			throw new WeaselNativeException("Field isn't a Char Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.CHAR){
+			throw new WeaselNativeException("Field isn't a Char Field it is a %s", genericType.genericClass);
 		}
 		return (char) getPrimitiveMap(object)[getID(object)];
 	}
 	
 	public int getInt(WeaselObject object) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.INT){
-			throw new WeaselNativeException("Field isn't a Int Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.INT){
+			throw new WeaselNativeException("Field isn't a Int Field it is a %s", genericType.genericClass);
 		}
 		return (int) getPrimitiveMap(object)[getID(object)];
 	}
 	
 	public long getLong(WeaselObject object) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.LONG){
-			throw new WeaselNativeException("Field isn't a Long Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.LONG){
+			throw new WeaselNativeException("Field isn't a Long Field it is a %s", genericType.genericClass);
 		}
 		int id = getID(object);
 		int[] map = getPrimitiveMap(object);
@@ -167,24 +164,24 @@ public final class WeaselField {
 	
 	public float getFloat(WeaselObject object) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.FLOAT){
-			throw new WeaselNativeException("Field isn't a Float Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.FLOAT){
+			throw new WeaselNativeException("Field isn't a Float Field it is a %s", genericType.genericClass);
 		}
 		return Float.intBitsToFloat(getInt(object));
 	}
 	
 	public double getDouble(WeaselObject object) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.DOUBLE){
-			throw new WeaselNativeException("Field isn't a Double Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.DOUBLE){
+			throw new WeaselNativeException("Field isn't a Double Field it is a %s", genericType.genericClass);
 		}
 		return Double.longBitsToDouble(getLong(object));
 	}
 
 	public void setObject(WeaselObject object, int pointer){
 		checkObject(object);
-		if(type.isPrimitive()){
-			WeaselPrimitive.unwrapp(object, type, pointer, this);
+		if(genericType.genericClass.isPrimitive()){
+			WeaselPrimitive.unwrapp(object, genericType.genericClass, pointer, this);
 		}else{
 			getRefMap(object)[getID(object)] = pointer;
 		}
@@ -192,48 +189,48 @@ public final class WeaselField {
 	
 	public void setBoolean(WeaselObject object, boolean value) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.BOOLEAN){
-			throw new WeaselNativeException("Field isn't a Boolean Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.BOOLEAN){
+			throw new WeaselNativeException("Field isn't a Boolean Field it is a %s", genericType.genericClass);
 		}
 		getPrimitiveMap(object)[getID(object)]=value?-1:0;
 	}
 
 	public void setByte(WeaselObject object, byte value) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.BYTE){
-			throw new WeaselNativeException("Field isn't a Byte Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.BYTE){
+			throw new WeaselNativeException("Field isn't a Byte Field it is a %s", genericType.genericClass);
 		}
 		getPrimitiveMap(object)[getID(object)]=value;
 	}
 	
 	public void setShort(WeaselObject object, short value) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.SHORT){
-			throw new WeaselNativeException("Field isn't a Short Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.SHORT){
+			throw new WeaselNativeException("Field isn't a Short Field it is a %s", genericType.genericClass);
 		}
 		getPrimitiveMap(object)[getID(object)]=value;
 	}
 
 	public void setChar(WeaselObject object, char value) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.CHAR){
-			throw new WeaselNativeException("Field isn't a Char Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.CHAR){
+			throw new WeaselNativeException("Field isn't a Char Field it is a %s", genericType.genericClass);
 		}
 		getPrimitiveMap(object)[getID(object)]=value;
 	}
 	
 	public void setInt(WeaselObject object, int value) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.INT){
-			throw new WeaselNativeException("Field isn't a Integer Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.INT){
+			throw new WeaselNativeException("Field isn't a Integer Field it is a %s", genericType.genericClass);
 		}
 		getPrimitiveMap(object)[getID(object)]=value;
 	}
 	
 	public void setLong(WeaselObject object, long value) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.LONG){
-			throw new WeaselNativeException("Field isn't a Long Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.LONG){
+			throw new WeaselNativeException("Field isn't a Long Field it is a %s", genericType.genericClass);
 		}
 		int id = getID(object);
 		int[] map = getPrimitiveMap(object);
@@ -243,18 +240,23 @@ public final class WeaselField {
 	
 	public void setFloat(WeaselObject object, float value) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.FLOAT){
-			throw new WeaselNativeException("Field isn't a Float Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.FLOAT){
+			throw new WeaselNativeException("Field isn't a Float Field it is a %s", genericType.genericClass);
 		}
 		setInt(object, Float.floatToRawIntBits(value));
 	}
 	
 	public void setDouble(WeaselObject object, double value) {
 		checkObject(object);
-		if(WeaselPrimitive.getPrimitiveID(type)!=WeaselPrimitive.DOUBLE){
-			throw new WeaselNativeException("Field isn't a Double Field it is a %s", type);
+		if(WeaselPrimitive.getPrimitiveID(genericType.genericClass)!=WeaselPrimitive.DOUBLE){
+			throw new WeaselNativeException("Field isn't a Double Field it is a %s", genericType.genericClass);
 		}
 		setLong(object, Double.doubleToRawLongBits(value));
+	}
+
+	@Override
+	public String toString() {
+		return WeaselModifier.toString2(modifier)+genericType.getName(parentClass)+" "+name;
 	}
 	
 }

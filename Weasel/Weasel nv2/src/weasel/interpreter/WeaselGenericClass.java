@@ -7,13 +7,13 @@ public class WeaselGenericClass extends WeaselGeneric<WeaselClass> {
 	}
 
 	public WeaselGenericClass getGenericSuperClass(){
-		return new WeaselGenericClass(t.superClass, getGenericClassesFor(t.superClassGeneric));
+		return getGenericClassesFor(t.genericSuperClass);
 	}
 	
 	public WeaselGenericClass[] getGenericInterfaces(){
-		WeaselGenericClass[] genericInterfaces = new WeaselGenericClass[t.interfaces.length];
+		WeaselGenericClass[] genericInterfaces = new WeaselGenericClass[t.genericInterfaces.length];
 		for(int i=0; i<genericInterfaces.length; i++){
-			genericInterfaces[i] = new WeaselGenericClass(t.interfaces[i], getGenericClassesFor(t.interfacesGeneric[i]));
+			genericInterfaces[i] = getGenericClassesFor(t.genericInterfaces[i]);
 		}
 		return genericInterfaces;
 	}
@@ -21,19 +21,19 @@ public class WeaselGenericClass extends WeaselGeneric<WeaselClass> {
 	public WeaselGenericClass[] getGenericBases(){
 		WeaselGenericClass[] genericBases = new WeaselGenericClass[t.genericInformation.length];
 		for(int i=0; i<genericBases.length; i++){
-			genericBases[i] = new WeaselGenericClass(t.genericInformation[i].baseClass, getGenericClassesFor(t.genericInformation[i].genericInfo));
+			genericBases[i] = getGenericClassesFor(t.genericInformation[i].genericInfo);
 		}
 		return genericBases;
 	}
 	
 	public WeaselGenericClass getGenericMethodReturn(WeaselGenericMethod method){
-		return new WeaselGenericClass(method.t.returnParam, getGenericClassesForMethod(method.t.genericReturn, method.generics));
+		return new WeaselGenericClass(method.t.genericReturn.genericClass, getGenericClassesForMethod(method.t.genericReturn, method.generics));
 	}
 	
 	public WeaselGenericClass[] getGenericMethodParam(WeaselGenericMethod method){
 		WeaselGenericClass[] genericParams = new WeaselGenericClass[method.t.genericParams.length];
 		for(int i=0; i<genericParams.length; i++){
-			genericParams[i] = new WeaselGenericClass(method.t.params[i], getGenericClassesForMethod(method.t.genericParams[i], method.generics));
+			genericParams[i] = new WeaselGenericClass(method.t.genericParams[i].genericClass, getGenericClassesForMethod(method.t.genericParams[i], method.generics));
 		}
 		return genericParams;
 	}
@@ -58,7 +58,7 @@ public class WeaselGenericClass extends WeaselGeneric<WeaselClass> {
 	}
 	
 	public WeaselGenericClass getGenericFieldType(WeaselField field){
-		return new WeaselGenericClass(field.type, getGenericClassesFor(field.genericType));
+		return getGenericClassesFor(field.genericType);
 	}
 	
 }

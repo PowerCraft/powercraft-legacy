@@ -16,12 +16,10 @@ public final class WeaselMethod {
 	protected final String name;
 	protected final WeaselClass parentClass;
 	protected final WeaselGenericClassInfo genericReturn;
-	protected final WeaselClass returnParam;
 	protected final WeaselGenericClassInfo[] genericParams;
-	protected final WeaselClass[] params;
 	protected final int id;
 	
-	protected WeaselMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselGenericClassInfo genericReturn, WeaselClass[] params, WeaselGenericClassInfo[] genericParams, int id){
+	protected WeaselMethod(String name, int modifier, WeaselClass parentClass, WeaselGenericClassInfo genericReturn, WeaselGenericClassInfo[] genericParams, int id){
 		boolean isConstructor = name.equals("<init>");
 		boolean isPreConstructor = name.equals("<preInit>");
 		boolean isStaticConstructor = name.equals("<staticInit>");
@@ -37,9 +35,7 @@ public final class WeaselMethod {
 		this.name = name;
 		this.modifier = modifier;
 		this.parentClass = parentClass;
-		this.returnParam = returnParam;
 		this.genericReturn = genericReturn;
-		this.params = params;
 		this.genericParams = genericParams;
 		this.id = id;
 	}
@@ -61,22 +57,19 @@ public final class WeaselMethod {
 		this.modifier = modifier;
 		WeaselChecks.checkModifier(modifier,  isStaticConstructor?WeaselModifier.STATIC:isPreConstructor?0:isConstructor?parentClass.isEnum()?0:
 			constructorModifier:WeaselModifier.isAbstract(parentClass.getModifier())?abstractModifier:normalModifier);
-		returnParam = parentClass.interpreter.getWeaselClass(dataInputStream.readUTF());
 		genericReturn = new WeaselGenericClassInfo(parentClass.interpreter, dataInputStream);
 		int paramCount = dataInputStream.readInt();
-		params = new WeaselClass[paramCount];
 		genericParams = new WeaselGenericClassInfo[paramCount];
 		for(int i=0; i<paramCount; i++){
-			params[i] = parentClass.interpreter.getWeaselClass(dataInputStream.readUTF());
 			genericParams[i] = new WeaselGenericClassInfo(parentClass.interpreter, dataInputStream);
 		}
 		if(WeaselModifier.isStatic(modifier)){
 			id = wid.staticMethod++;
 		}else{
-			if(parentClass.superClass==null){
+			if(parentClass.genericSuperClass==null){
 				id = wid.method++;
 			}else{
-				WeaselMethod superMethod = parentClass.superClass.getMethod(name, params);
+				WeaselMethod superMethod = parentClass.genericSuperClass.genericClass.getMethod(name, genericParams);
 				if(superMethod==null){
 					id = wid.method++;
 				}else{
@@ -95,11 +88,15 @@ public final class WeaselMethod {
 	}
 	
 	public WeaselClass[] getParamClasses() {
-		return params;
+		WeaselClass[] weaselClasses = new WeaselClass[genericParams.length];
+		for(int i=0; i<weaselClasses.length; i++){
+			weaselClasses[i] = genericParams[i].genericClass;
+		}
+		return weaselClasses;
 	}
 
 	public WeaselClass getReturnClasses() {
-		return returnParam;
+		return genericReturn.genericClass;
 	}
 	
 	private int getID(WeaselClass weaselClass){
@@ -125,11 +122,11 @@ public final class WeaselMethod {
 
 	public String getDesk(){
 		String desk="(";
-		for(int i=0; i<params.length; i++){
-			desk += params[i].getByteName();
+		for(int i=0; i<genericParams.length; i++){
+			desk += genericParams[i].genericClass.getByteName();
 		}
 		desk += ")";
-		desk += returnParam.getByteName();
+		desk += genericReturn.genericClass.getByteName();
 		return desk;
 	}
 	
@@ -143,10 +140,19 @@ public final class WeaselMethod {
 		}else{
 			int id = getID(weaselClass);
 			while(weaselClass.methodBodys[id]==null){
-				weaselClass = weaselClass.superClass;
+				weaselClass = weaselClass.genericSuperClass.genericClass;
 			}
 			return weaselClass.methodBodys[id];
 		}
+	}
+
+	@Override
+	public String toString() {
+		String params = "";
+		for(int i=0; i<genericParams.length; i++){
+			params += genericParams[i].getName(parentClass)+" ";
+		}
+		return WeaselModifier.toString2(modifier)+genericReturn.getName(parentClass)+" "+name+"("+params.trim()+")";
 	}
 	
 }
