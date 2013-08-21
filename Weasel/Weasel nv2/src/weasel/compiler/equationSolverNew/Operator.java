@@ -14,7 +14,7 @@ public class Operator extends WeaselToken{
 	}
 	
 	public String getId() {
-		return ((WeaselOperator)param).name;
+		return ((Properties)param).name;
 	}
 
 	// 12+5*3+5/3-2
