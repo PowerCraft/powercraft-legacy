@@ -8,7 +8,7 @@ public class WeaselGenericInformation {
 	
 	public WeaselGenericInformation(String genericName, WeaselClass baseClass, int genericID){
 		this.genericName = genericName;
-		genericInfo = new WeaselGenericClassInfo(baseClass, genericID, new Object[0]);
+		genericInfo = new WeaselGenericClassInfo(baseClass, genericID, new WeaselGenericClassInfo[0]);
 	}
 
 	@Override

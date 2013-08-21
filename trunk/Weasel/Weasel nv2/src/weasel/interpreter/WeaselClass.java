@@ -171,7 +171,7 @@ public class WeaselClass implements WeaselSaveable {
 		WeaselGenericClassInfo paramClasses[] = new WeaselGenericClassInfo[paramDesks.size()];
 		int i=0;
 		for(String param:paramDesks){
-			paramClasses[i++] = new WeaselGenericClassInfo(interpreter.getWeaselClass(param), -1, new Object[0]);
+			paramClasses[i++] = new WeaselGenericClassInfo(interpreter.getWeaselClass(param), -1, new WeaselGenericClassInfo[0]);
 		}
 		WeaselMethod method = getMethod(name, paramClasses);
 		
@@ -265,7 +265,7 @@ public class WeaselClass implements WeaselSaveable {
 	}
 
 	public String getByteName() {
-		return isArray()?"["+getArrayClass().getRealName():"O"+name+";";
+		return isArray()?"["+getArrayClass().getByteName():"O"+name+";";
 	}
 	
 	public String getRealName() {

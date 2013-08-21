@@ -1,9 +1,9 @@
 package weasel.interpreter;
 
 public class WeaselGenericClass extends WeaselGeneric<WeaselClass> {
-
-	public WeaselGenericClass(WeaselClass t, WeaselClass[] generics) {
-		super(t, generics);
+	
+	public WeaselGenericClass(WeaselInterpreter interpreter, WeaselClass t, WeaselClass[] generics) {
+		super(interpreter, t, generics);
 	}
 
 	public WeaselGenericClass getGenericSuperClass(){
@@ -27,13 +27,13 @@ public class WeaselGenericClass extends WeaselGeneric<WeaselClass> {
 	}
 	
 	public WeaselGenericClass getGenericMethodReturn(WeaselGenericMethod method){
-		return new WeaselGenericClass(method.t.genericReturn.genericClass, getGenericClassesForMethod(method.t.genericReturn, method.generics));
+		return new WeaselGenericClass(interpreter, method.t.genericReturn.genericClass, getGenericClassesForMethod(method.t.genericReturn, method.generics));
 	}
 	
 	public WeaselGenericClass[] getGenericMethodParam(WeaselGenericMethod method){
 		WeaselGenericClass[] genericParams = new WeaselGenericClass[method.t.genericParams.length];
 		for(int i=0; i<genericParams.length; i++){
-			genericParams[i] = new WeaselGenericClass(method.t.genericParams[i].genericClass, getGenericClassesForMethod(method.t.genericParams[i], method.generics));
+			genericParams[i] = new WeaselGenericClass(interpreter, method.t.genericParams[i].genericClass, getGenericClassesForMethod(method.t.genericParams[i], method.generics));
 		}
 		return genericParams;
 	}
@@ -43,16 +43,7 @@ public class WeaselGenericClass extends WeaselGeneric<WeaselClass> {
 			return new WeaselClass[0];
 		WeaselClass[] classes = new WeaselClass[gci.generics.length];
 		for(int i=0; i<classes.length; i++){
-			if(gci.generics[i] instanceof WeaselClass){
-				classes[i] = (WeaselClass)gci.generics[i];
-			}else{
-				int index = (Integer)gci.generics[i];
-				if(index>=generics.length){
-					classes[i] = generic[index-generics.length];
-				}else{
-					classes[i] = generics[index];
-				}
-			}
+			classes[i] = gci.generics[i].genericClass;
 		}
 		return classes;
 	}
