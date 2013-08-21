@@ -6,7 +6,7 @@ public final class Boolean{
 		this.value = value;
 	}
 
-	public boolean getValue(){
+	public boolean booleanValue(){
 		return value;
 	}
 

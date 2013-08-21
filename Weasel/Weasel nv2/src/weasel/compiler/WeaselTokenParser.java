@@ -4,6 +4,7 @@ import java.io.EOFException;
 import java.util.ArrayList;
 import java.util.List;
 
+import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.interpreter.WeaselModifier;
 
@@ -163,7 +164,7 @@ public class WeaselTokenParser {
 			if(wtt!=null){
 				return new WeaselToken(wtt, line);
 			}
-			WeaselOperator lastFullEqual = null;
+			Properties lastFullEqual = null;
 			boolean again = true;
 			String s="";
 			int back=0;
@@ -171,13 +172,10 @@ public class WeaselTokenParser {
 			while(again){
 				again = false;
 				s+=c;
-				for(WeaselOperator wo:WeaselOperator.values()){
-					if(wo.name.equals(s)){
-						lastFullEqual = wo;
-						back = 0;
-					}else if(wo.name.startsWith(s)){
-						again = true;
-					}
+				Properties p = WeaselOperator.operators.get(s);
+				if(p!=null){
+					lastFullEqual = p;
+					again=true;
 				}
 				back++;
 				c=readNextChar();

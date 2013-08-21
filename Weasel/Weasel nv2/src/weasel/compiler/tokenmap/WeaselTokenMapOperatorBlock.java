@@ -22,7 +22,7 @@ public class WeaselTokenMapOperatorBlock extends WeaselTokenMapOperator {
 	
 	@Override
 	public String toString() {
-		return (left==null?"":"["+left+"]")+((WeaselOperator)token.param).name+childs+(right==null?"":"["+right+"]");
+		return "";//(left==null?"":"["+left+"]")+((WeaselOperator)token.param).name+childs+(right==null?"":"["+right+"]");
 	}
 	
 }
