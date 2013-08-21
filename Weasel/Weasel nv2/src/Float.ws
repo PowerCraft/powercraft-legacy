@@ -24,7 +24,7 @@ public final class Float extends Number{
 
 	public boolean equals(Object o){
 		if(o instanceof Float){
-			return ((Float)o).value==value;
+			return ((Float)o).floatValue()==value;
 		}
 		return false;
 	}

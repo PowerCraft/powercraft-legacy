@@ -24,7 +24,7 @@ public final class Double extends Number{
 
 	public boolean equals(Object o){
 		if(o instanceof Double){
-			return ((Double)o).value==value;
+			return ((Double)o).doubleValue()==value;
 		}
 		return false;
 	}

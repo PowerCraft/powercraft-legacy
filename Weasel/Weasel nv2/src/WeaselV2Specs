@@ -1,13 +1,17 @@
-modifier class name {
+modifier class name<Generic> extends super<Generic> implements A<Generic>, B<Generic> {
 
-	modifier type name;
-	modifier type name = equalment;
+	modifier type<Generic> name;
+	modifier type<Generic> name = equalment;
 
-	modifier classname(modifier paramType paramName){}
+	modifier <Generic> classname(modifier paramType<Generic> paramName){}
 
-	modifier abstract type funcname(modifier paramType [paramName]);
-	modifier type funcname(modifier paramType paramName){}
+	modifier abstract <Generic> type<Generic> funcname(modifier paramType<Generic> [paramName]);
+	modifier <Generic> type<Generic> funcname(modifier paramType<Generic> paramName){}
 
+}
+
+synchronized("String"){
+	
 }
 
 equalment:
@@ -18,7 +22,7 @@ new String[]{}
 
 keywords:
 
-abstract asm break catch class continue do else 
-enum extends false final for if implements interface 
-native new null private protected public return 
-static super synchronized this throw true try while
+abstract asm break catch class continue do else enum extends 
+false final for if implements instanceof interface native 
+new null private protected public return static super 
+synchronized this throw true try while

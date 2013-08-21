@@ -32,7 +32,7 @@ public final class Short extends Number{
 	
 	public boolean equals(Object o){
 		if(o instanceof Short){
-			return ((Short)o).value==value;
+			return ((Short)o).shortValue()==value;
 		}
 		return false;
 	}

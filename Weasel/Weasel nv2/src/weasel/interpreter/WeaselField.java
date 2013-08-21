@@ -13,16 +13,17 @@ public final class WeaselField {
 	protected final String name;
 	protected final WeaselClass parentClass;
 	protected final WeaselClass type;
-	protected WeaselGenericInfo genericType;
+	protected final WeaselGenericInfo genericType;
 	protected final int id;
 	
-	protected WeaselField(String name, int modifier, WeaselClass parentClass, WeaselClass type, int id){
+	protected WeaselField(String name, int modifier, WeaselClass parentClass, WeaselClass type, WeaselGenericInfo typeInfo, int id){
 		WeaselChecks.checkName(name);
 		WeaselChecks.checkModifier(modifier, normalModifier);
 		this.name = name;
 		this.modifier = modifier;
 		this.parentClass = parentClass;
 		this.type = type;
+		this.genericType = typeInfo;
 		this.id = id;
 	}
 	
@@ -33,6 +34,7 @@ public final class WeaselField {
 		modifier = dataInputStream.readInt();
 		WeaselChecks.checkModifier(modifier, normalModifier);
 		type = parentClass.interpreter.getWeaselClass(dataInputStream.readUTF());
+		genericType = new WeaselGenericInfo(parentClass.interpreter, dataInputStream);
 		if(WeaselModifier.isStatic(modifier)){
 			if(type.isPrimitive()){
 				id = wid.staticEasyType++;

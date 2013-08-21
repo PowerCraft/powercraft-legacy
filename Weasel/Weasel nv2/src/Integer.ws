@@ -24,7 +24,7 @@ public final class Integer extends Number{
 
 	public boolean equals(Object o){
 		if(o instanceof Integer){
-			return ((Integer)o).value==value;
+			return ((Integer)o).intValue()==value;
 		}
 		return false;
 	}

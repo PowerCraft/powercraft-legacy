@@ -24,7 +24,7 @@ public final class Long extends Number{
 
 	public boolean equals(Object o){
 		if(o instanceof Long){
-			return ((Long)o).value==value;
+			return ((Long)o).longValue()==value;
 		}
 		return false;
 	}
