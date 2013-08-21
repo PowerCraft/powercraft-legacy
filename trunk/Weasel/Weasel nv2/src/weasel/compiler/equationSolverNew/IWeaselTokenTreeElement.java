@@ -1,12 +1,13 @@
 package weasel.compiler.equationSolverNew;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import weasel.compiler.WeaselToken;
 
 public interface IWeaselTokenTreeElement {
 	
-	final ArrayList<IWeaselTokenTreeElement> subs = new ArrayList<IWeaselTokenTreeElement>();
+	ArrayList<IWeaselTokenTreeElement> subs = new ArrayList<IWeaselTokenTreeElement>();
 	
 	public String getName();
 

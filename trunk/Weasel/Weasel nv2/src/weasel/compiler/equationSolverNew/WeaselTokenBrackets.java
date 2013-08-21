@@ -6,6 +6,14 @@ import weasel.compiler.WeaselToken;
 
 public class WeaselTokenBrackets implements IWeaselTokenTreeElement {
 
+	public final BracketType type;
+	public static enum BracketType{
+		ROUND, SQUARE, CURLY;
+	}
+	
+	public WeaselTokenBrackets(BracketType t){
+		type = t;
+	}
 	
 	@Override
 	public void addSub(IWeaselTokenTreeElement... te){
