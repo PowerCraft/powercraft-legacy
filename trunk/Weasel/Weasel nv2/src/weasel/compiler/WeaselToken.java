@@ -36,7 +36,7 @@ public class WeaselToken implements IWeaselTokenTreeElement{
 
 	@Override
 	public String toString() {
-		return ((Properties)param).operator;
+		return param.toString();
 	}
 	
 	public String toEncryptedString() {

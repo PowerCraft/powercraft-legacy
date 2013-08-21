@@ -107,9 +107,14 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 							genericListClass2.add(token);
 							token = getNextToken();
 						}while(token.tokenType == WeaselTokenType.COMMA);
-						if(!(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.GREATER)){
-							onException(token.line, "Expect > at end of generic");
+						if(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.SHIFT_RIGHT){
+							token = new WeaselToken(WeaselTokenType.OPERATOR, token.line, WeaselOperator.GREATER);
+							tokenParser.setNextToken(token);
 						}
+						if(!(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.GREATER)){
+							onException(token.line, "Expect > at end of generic but got %s", token);
+						}
+						token = getNextToken();
 						genericListClass.add(genericListClass2);
 					}else{
 						genericListClass.add(null);
@@ -121,11 +126,10 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 				genericList.add(new WeaselGenericInformation(generic, genericClass));
 			}while(token.tokenType == WeaselTokenType.COMMA);
 			if(!(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.GREATER)){
-				onException(token.line, "Expect > at end of generic");
+				onException(token.line, "Expect > at end of generic declaration but got %s", token);
 			}
 			token = getNextToken();
 		}
-		System.out.println(genericList);
 		genericInformation = genericList.toArray(new WeaselGenericInformation[0]);
 		for(int i=0; i<genericInformation.length; i++){
 			List<WeaselToken> genericListClass2 = genericListClass.get(i);
@@ -133,6 +137,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 				genericInformation[i].genericInfo = makeGenericInfo(genericListClass2.toArray(new WeaselToken[0]));
 			}
 		}
+		System.out.println(genericList);
 		if(isClass){
 			if(token.param==WeaselKeyWord.EXTENDS){
 				expect(token = getNextToken(), WeaselTokenType.IDENT);
