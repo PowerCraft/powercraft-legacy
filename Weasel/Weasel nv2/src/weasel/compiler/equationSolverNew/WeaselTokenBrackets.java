@@ -1,13 +1,15 @@
 package weasel.compiler.equationSolverNew;
 
+import java.util.Arrays;
+
 import weasel.compiler.WeaselToken;
 
 public class WeaselTokenBrackets implements IWeaselTokenTreeElement {
 
 	
 	@Override
-	public void addSub(IWeaselTokenTreeElement te){
-		subs.add(te);
+	public void addSub(IWeaselTokenTreeElement... te){
+		subs.addAll(Arrays.asList(te));
 	}
 	
 	@Override

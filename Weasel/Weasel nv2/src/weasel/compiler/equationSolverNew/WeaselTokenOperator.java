@@ -20,8 +20,8 @@ public class WeaselTokenOperator implements IWeaselTokenTreeElement{
 	}
 	
 	@Override
-	public void addSub(IWeaselTokenTreeElement te){
-		subs.add(te);
+	public void addSub(IWeaselTokenTreeElement... te){
+		subs.addAll(Arrays.asList(te));
 	}
 
 	@Override

@@ -10,7 +10,7 @@ public interface IWeaselTokenTreeElement {
 	
 	public String getName();
 
-	public void addSub(IWeaselTokenTreeElement te);
+	public void addSub(IWeaselTokenTreeElement... te);
 	
 	public String toString();
 	
