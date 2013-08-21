@@ -77,6 +77,7 @@ public class WeaselOperator {
 	public static final Properties CAST =				new Properties("()"		,"cast"			,	16	,	false	,	false	,	true	,	true	,	unknown	,	unknown	);
 	public static final Properties DECREASE =			new Properties("--"		,"decrease"		,	16	,	false	,	false	,	true	,	true	,	unknown	,	unknown	);
 	public static final Properties INCREASE =			new Properties("++"		,"increase"		,	16	,	false	,	false	,	true	,	true	,	unknown	,	unknown	);
+	public static final Properties BRACKETS =			new Properties("()"		,"brackets"		,	-1	,	false	,	false	,	false	,	true	,	unknown	,	unknown	);
 	
 	static {
 		operators.put(DIVIDE_ASSIGN.operator, DIVIDE_ASSIGN);
