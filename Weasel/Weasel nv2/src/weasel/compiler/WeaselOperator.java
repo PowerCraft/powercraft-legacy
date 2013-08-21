@@ -119,6 +119,7 @@ public class WeaselOperator {
 		operators.put(INCREASE_PREFIX.operator, INCREASE_PREFIX);
 		operators.put(ELEMENT.operator, ELEMENT);
 		//operators.put(ARRAY.operator, ARRAY);
+		//operators.put(CALL.operator, CALL);
 		//operators.put(CAST.operator, CAST);
 		operators.put(DECREASE.operator, DECREASE);
 		operators.put(INCREASE.operator, INCREASE);
