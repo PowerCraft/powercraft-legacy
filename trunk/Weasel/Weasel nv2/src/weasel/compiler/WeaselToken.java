@@ -1,5 +1,7 @@
 package weasel.compiler;
 
+import java.util.Arrays;
+
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.equationSolverNew.IWeaselTokenTreeElement;
 
@@ -22,8 +24,8 @@ public class WeaselToken implements IWeaselTokenTreeElement{
 	}
 	
 	@Override
-	public void addSub(IWeaselTokenTreeElement te){
-		subs.add(te);
+	public void addSub(IWeaselTokenTreeElement... te){
+		subs.addAll(Arrays.asList(te));
 	}
 	
 	@Override
