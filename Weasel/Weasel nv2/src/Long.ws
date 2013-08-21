@@ -1,4 +1,4 @@
-public final class Long{
+public final class Long extends Number{
 
 	private final long value;
 
@@ -6,8 +6,20 @@ public final class Long{
 		this.value = value;
 	}
 
-	public long getValue(){
+	public int intValue(){
+		return (int)value;
+	}
+
+	public long longValue(){
 		return value;
+	}
+	
+	public float floatValue(){
+		return (float)value;
+	}
+
+	public double doubleValue(){
+		return (double)value;
 	}
 
 	public boolean equals(Object o){

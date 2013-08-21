@@ -1,4 +1,4 @@
-public final class Short{
+public final class Short extends Number{
 
 	private final short value;
 
@@ -6,10 +6,30 @@ public final class Short{
 		this.value = value;
 	}
 
-	public short getValue(){
+	public byte byteValue(){
+		return (byte)value;
+	}
+
+	public short shortValue(){
+		return value;
+	}
+	
+	public int intValue(){
 		return value;
 	}
 
+	public long longValue(){
+		return value;
+	}
+	
+	public float floatValue(){
+		return value;
+	}
+
+	public double doubleValue(){
+		return value;
+	}
+	
 	public boolean equals(Object o){
 		if(o instanceof Short){
 			return ((Short)o).value==value;

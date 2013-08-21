@@ -6,7 +6,7 @@ public final class Character{
 		this.value = value;
 	}
 
-	public char getValue(){
+	public char charValue(){
 		return value;
 	}
 

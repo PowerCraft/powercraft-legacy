@@ -1,4 +1,4 @@
-public final class Float{
+public final class Float extends Number{
 
 	private final float value;
 
@@ -6,7 +6,19 @@ public final class Float{
 		this.value = value;
 	}
 
-	public float getValue(){
+	public int intValue(){
+		return (int)value;
+	}
+	
+	public long longValue(){
+		return (long)value;
+	}
+
+	public float floatValue(){
+		return value;
+	}
+	
+	public double doubleValue(){
 		return value;
 	}
 
