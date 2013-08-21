@@ -17,7 +17,7 @@ public class Test  {
 				@Override
 				public String getClassSourceFor(String file) {
 					if(file.equals("Test")){
-						return "public class Test<A extends Test<A> implements B<A> {\npublic int[] a(){\nb = 4-5*-4;\n}}";
+						return "public class Test<A extends Test<A>> implements B<A> {\npublic int[] a(){\nb = 4-5*-4;\n}}";
 					}else if(file.equals("Enum")){
 						return "public class Enum{public Enum(){}}";
 					}else if(file.equals("Object")){
@@ -28,7 +28,7 @@ public class Test  {
 						return "public class String {private final char[] value;}";
 					}else{
 						return "public interface B<C> {\n"
-								+ "public C f(C d);\n"
+								+ "public C[] f(C d);\n"
 								+ "}";
 					}
 				}
@@ -44,6 +44,8 @@ public class Test  {
 				}
 	
 			});
+			System.out.println(compiler.getWeaselClass("OTest;").toSource());
+			System.out.println(compiler.getWeaselClass("OB;").toSource());
 		}catch(Throwable e){
 			e.printStackTrace();
 		}

@@ -20,10 +20,8 @@ public class WeaselClass implements WeaselSaveable {
 	protected final String name;
 	protected final String fileName;
 	protected final Object parent;
-	protected WeaselClass superClass;
-	protected WeaselGenericClassInfo superClassGeneric;
-	protected WeaselClass[] interfaces;
-	protected WeaselGenericClassInfo[] interfacesGeneric;
+	protected WeaselGenericClassInfo genericSuperClass;
+	protected WeaselGenericClassInfo[] genericInterfaces;
 	protected HashMap<WeaselClass, WeaselInterfaceMaps> interfaceMaps;
 	protected WeaselField[] fields;
 	protected WeaselMethod[] methods;
@@ -59,9 +57,8 @@ public class WeaselClass implements WeaselSaveable {
 		this.arrayClass = null;
 	}
 	
-	protected WeaselClass(WeaselInterpreter interpreter, Object parent, String name, String fileName){
+	public WeaselClass(WeaselInterpreter interpreter, Object parent, String name, String fileName){
 		if(name.startsWith("[")){
-			WeaselChecks.checkName(name.substring(1));
 			this.arrayClass = (WeaselClass)parent;
 			parent = null;
 		}else{
@@ -98,11 +95,15 @@ public class WeaselClass implements WeaselSaveable {
 	}
 	
 	public WeaselClass getSuperClass() {
-		return superClass;
+		return genericSuperClass.genericClass;
 	}
 	
 	public WeaselClass[] getInterfaces() {
-		return interfaces;
+		WeaselClass[] weaselClasses = new WeaselClass[genericInterfaces.length];
+		for(int i=0; i<weaselClasses.length; i++){
+			weaselClasses[i] = genericInterfaces[i].genericClass;
+		}
+		return weaselClasses;
 	}
 	
 	public final boolean isPrimitive() {
@@ -123,19 +124,19 @@ public class WeaselClass implements WeaselSaveable {
 				return fields[i];
 			}
 		}
-		if(superClass==null)
+		if(genericSuperClass==null)
 			throw new WeaselNativeException("Can't find Field %s", name);
-		return superClass.getField(name);
+		return genericSuperClass.genericClass.getField(name);
 	}
 
-	public WeaselMethod getMethod(String name, WeaselClass[] paramClasses){
+	public WeaselMethod getMethod(String name, WeaselGenericClassInfo[] paramClasses){
 		for(int i=0; i<methods.length; i++){
 			if(methods[i].getName().equals(name)){
 				WeaselClass params[] = methods[i].getParamClasses();
 				if(params.length == paramClasses.length){
 					boolean eq=true;
 					for(int j=0; j<params.length; j++){
-						if(params[j] != paramClasses[j]){
+						if(params[j] != paramClasses[j].genericClass){
 							eq = false;
 							break;
 						}
@@ -145,9 +146,9 @@ public class WeaselClass implements WeaselSaveable {
 				}
 			}
 		}
-		if(superClass==null)
+		if(genericSuperClass==null)
 			throw new WeaselNativeException("Can't find Method %s", name);
-		return superClass.getMethod(name, paramClasses);
+		return genericSuperClass.genericClass.getMethod(name, paramClasses);
 	}
 	
 	public WeaselMethod getMethod(String name, String desk) {
@@ -167,10 +168,10 @@ public class WeaselClass implements WeaselSaveable {
 			}
 			paramDesks.add(className);
 		}
-		WeaselClass paramClasses[] = new WeaselClass[paramDesks.size()];
+		WeaselGenericClassInfo paramClasses[] = new WeaselGenericClassInfo[paramDesks.size()];
 		int i=0;
 		for(String param:paramDesks){
-			paramClasses[i++] = interpreter.getWeaselClass(param);
+			paramClasses[i++] = new WeaselGenericClassInfo(interpreter.getWeaselClass(param), -1, new Object[0]);
 		}
 		WeaselMethod method = getMethod(name, paramClasses);
 		
@@ -198,7 +199,7 @@ public class WeaselClass implements WeaselSaveable {
 	}
 	
 	public boolean isEnum(){
-		return superClass==interpreter.baseTypes.getEnumClass();
+		return genericSuperClass!=null && genericSuperClass.genericClass==interpreter.baseTypes.getEnumClass();
 	}
 	
 	public boolean canCastTo(WeaselClass weaselClass){
@@ -206,11 +207,11 @@ public class WeaselClass implements WeaselSaveable {
 			return true;
 		if(isInterface() && !weaselClass.isInterface())
 			return false;
-		if(superClass != null && superClass.canCastTo(weaselClass))
+		if(genericSuperClass != null && genericSuperClass.genericClass.canCastTo(weaselClass))
 			return true;
 		if(weaselClass.isInterface()){
-			for(int i=0; i<interfaces.length; i++){
-				if(interfaces[i].canCastTo(weaselClass))
+			for(int i=0; i<genericInterfaces.length; i++){
+				if(genericInterfaces[i].genericClass.canCastTo(weaselClass))
 					return true;
 			}
 		}
@@ -226,9 +227,9 @@ public class WeaselClass implements WeaselSaveable {
 		if(maps!=null){
 			return maps.easyTypeMapper;
 		}
-		if(superClass==null)
+		if(genericSuperClass==null)
 			throw new WeaselNativeException("Interface not implemented %s", weaselInterface);
-		return superClass.getInterfaceEasyTypeMap(weaselInterface);
+		return genericSuperClass.genericClass.getInterfaceEasyTypeMap(weaselInterface);
 	}
 	
 	public int[] getInterfaceObjectRefMap(WeaselClass weaselInterface) {
@@ -240,9 +241,9 @@ public class WeaselClass implements WeaselSaveable {
 		if(maps!=null){
 			return maps.objectRefMapper;
 		}
-		if(superClass==null)
+		if(genericSuperClass==null)
 			throw new WeaselNativeException("Interface not implemented %s", weaselInterface);
-		return superClass.getInterfaceObjectRefMap(weaselInterface);
+		return genericSuperClass.genericClass.getInterfaceObjectRefMap(weaselInterface);
 	}
 	
 	public int[] getInterfaceMethodMap(WeaselClass weaselInterface) {
@@ -254,9 +255,9 @@ public class WeaselClass implements WeaselSaveable {
 		if(maps!=null){
 			return maps.methodMapper;
 		}
-		if(superClass==null)
+		if(genericSuperClass==null)
 			throw new WeaselNativeException("Interface not implemented %s", weaselInterface);
-		return superClass.getInterfaceMethodMap(weaselInterface);
+		return genericSuperClass.genericClass.getInterfaceMethodMap(weaselInterface);
 	}
 	
 	public String getFileName() {
@@ -275,21 +276,21 @@ public class WeaselClass implements WeaselSaveable {
 		modifier = dataInputStream.readInt();
 		WeaselChecks.checkModifier(parent instanceof WeaselClass?modifier&~WeaselModifier.STATIC:modifier, 
 				parent instanceof WeaselClass?childModifier:parent==null?normalModifier:lokalModifier);
-		superClass = interpreter.getWeaselClass(dataInputStream.readUTF());
-		WeaselChecks.checkSuperClass(superClass);
-		if(superClass!=null){
+		genericSuperClass = new WeaselGenericClassInfo(interpreter, dataInputStream);
+		WeaselChecks.checkSuperClass(genericSuperClass.genericClass);
+		if(genericSuperClass!=null){
 			if(isInterface()){
 				throw new WeaselNativeException("Interfaces can't have a superClass");
 			}
-			ids.method = superClass.ids.method;
-			ids.easyType = superClass.ids.easyType;
-			ids.objectRef = superClass.ids.objectRef;
+			ids.method = genericSuperClass.genericClass.ids.method;
+			ids.easyType = genericSuperClass.genericClass.ids.easyType;
+			ids.objectRef = genericSuperClass.genericClass.ids.objectRef;
 		}
 		int interfaceCount = dataInputStream.readInt();
-		interfaces = new WeaselClass[interfaceCount];
+		genericInterfaces = new WeaselGenericClassInfo[interfaceCount];
 		for(int i=0; i<interfaceCount; i++){
-			interfaces[i] = interpreter.getWeaselClass(dataInputStream.readUTF());
-			WeaselChecks.checkInterface(interfaces[i]);
+			genericInterfaces[i] = new WeaselGenericClassInfo(interpreter, dataInputStream);
+			WeaselChecks.checkInterface(genericInterfaces[i].genericClass);
 		}
 		int fieldCount = dataInputStream.readInt();
 		fields = new WeaselField[fieldCount];
@@ -322,7 +323,7 @@ public class WeaselClass implements WeaselSaveable {
 		if(!isInterface()){
 			interfaceMaps = new HashMap<WeaselClass, WeaselInterfaceMaps>();
 			for(int i=0; i<interfaceCount; i++){
-				interfaces[i].makeInterfaceMaps(this, interfaceMaps);
+				genericInterfaces[i].genericClass.makeInterfaceMaps(this, interfaceMaps);
 			}
 		}
 	}
@@ -335,7 +336,7 @@ public class WeaselClass implements WeaselSaveable {
 			map.methodMapper = new int[ids.method];
 			for(int i=0; i<methods.length; i++){
 				if(!WeaselModifier.isStatic(methods[i].getModifier())){
-					map.methodMapper[methods[i].id] = weaselClass.getMethod(methods[i].getName(), methods[i].getParamClasses()).id;
+					map.methodMapper[methods[i].id] = weaselClass.getMethod(methods[i].getName(), methods[i].genericParams).id;
 				}
 			}
 			map.easyTypeMapper = new int[ids.easyType];
@@ -350,8 +351,8 @@ public class WeaselClass implements WeaselSaveable {
 				}
 			}
 			maps.put(this, map);
-			for(int i=0; i<interfaces.length; i++){
-				interfaces[i].makeInterfaceMaps(weaselClass, maps);
+			for(int i=0; i<genericInterfaces.length; i++){
+				genericInterfaces[i].genericClass.makeInterfaceMaps(weaselClass, maps);
 			}
 		}
 	}
@@ -403,6 +404,84 @@ public class WeaselClass implements WeaselSaveable {
 	public int getClassObject() {
 		return classObject;
 	}
+	
+	public String toSource(){
+		if(isArray()){
+			return "";
+		}
+		String source = WeaselModifier.toString2(modifier);
+		if(isEnum()){
+			source += "enum "+name;
+			if(genericInformation.length>0){
+				source += "<";
+				source += genericInformation[0].getName(this);
+				for(int i=1; i<genericInformation.length; i++){
+					source += ", "+genericInformation[i].getName(this);
+				}
+				source += ">";
+			}
+			source += " ";
+			if(genericInterfaces.length>0){
+				source += "implements ";
+				source += genericInterfaces[0].getName(this);
+				for(int i=1; i<genericInterfaces.length; i++){
+					source += ", "+genericInterfaces[0].getName(this);
+				}
+				source += " ";
+			}
+		}else if(isInterface()){
+			source += "interface "+name;
+			if(genericInformation.length>0){
+				source += "<";
+				source += genericInformation[0].getName(this);
+				for(int i=1; i<genericInformation.length; i++){
+					source += ", "+genericInformation[i].getName(this);
+				}
+				source += ">";
+			}
+			source += " ";
+			if(genericInterfaces.length>0){
+				source += "extends ";
+				source += genericInterfaces[0].getName(this);
+				for(int i=1; i<genericInterfaces.length; i++){
+					source += ", "+genericInterfaces[0].getName(this);
+				}
+				source += " ";
+			}
+		}else{
+			source += "class "+name;
+			if(genericInformation.length>0){
+				source += "<";
+				source += genericInformation[0].getName(this);
+				for(int i=1; i<genericInformation.length; i++){
+					source += ", "+genericInformation[i].getName(this);
+				}
+				source += ">";
+			}
+			source += " ";
+			if(!(genericSuperClass==null||genericSuperClass.genericClass==interpreter.baseTypes.getObjectClass())){
+				source += "extends "+genericSuperClass.getName(this)+" ";
+			}
+			if(genericInterfaces.length>0){
+				source += "implements ";
+				source += genericInterfaces[0].getName(this);
+				for(int i=1; i<genericInterfaces.length; i++){
+					source += ", "+genericInterfaces[0].getName(this);
+				}
+				source += " ";
+			}
+		}
+		source += "{\n";
+		for(int i=0; i<fields.length; i++){
+			source += "\t"+fields[i].toString()+";\n";
+		}
+		for(int i=0; i<methods.length; i++){
+			source += "\t"+methods[i].toString()+";\n";
+		}
+		source += "}";
+		return source;
+	}
+	
 	
 	private static class WeaselInterfaceMaps{
 		

@@ -91,6 +91,32 @@ public class WeaselModifier {
 		return sOutput;
 	}
 
+	public static String toString2(int modifier) {
+		String output = "";
+		if((modifier & WeaselModifier.PRIVATE)!=0){
+			output += "private ";
+		}
+		if((modifier & WeaselModifier.PUBLIC)!=0){
+			output += "public ";
+		}
+		if((modifier & WeaselModifier.PROTECTED)!=0){
+			output += "protected ";
+		}
+		if((modifier & WeaselModifier.STATIC)!=0){
+			output += "static ";
+		}
+		if((modifier & WeaselModifier.ABSTRACT)!=0){
+			output += "abstract ";
+		}
+		if((modifier & WeaselModifier.FINAL)!=0){
+			output += "final ";
+		}
+		if((modifier & WeaselModifier.NATIVE)!=0){
+			output += "native ";
+		}
+		return output;
+	}
+	
 	public static int count(int modifier) {
 		int count=0;
 		for(int i=0; i<32; i++){

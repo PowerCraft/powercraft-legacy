@@ -55,12 +55,12 @@ public abstract class WeaselClassCompiler extends WeaselClass {
 		onException(token.line, "Unexpected keyword %s expected %s", token, Arrays.toString(keyWords));
 	}
 	
-	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselGenericClassInfo genericReturn, WeaselClass[] params, WeaselGenericClassInfo[] genericParams, int id){
-		return compiler.createMethod(name, modifier, parentClass, returnParam, genericReturn, params, genericParams, id);
+	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselGenericClassInfo genericReturn, WeaselGenericClassInfo[] genericParams, int id){
+		return compiler.createMethod(name, modifier, parentClass, genericReturn, genericParams, id);
 	}
 
-	protected WeaselField createField(String name, int modifier, WeaselClass weaselClass, WeaselClass type, WeaselGenericClassInfo typeInfo, int id) {
-		return compiler.createField(name, modifier, weaselClass, type, typeInfo, id);
+	protected WeaselField createField(String name, int modifier, WeaselClass weaselClass, WeaselGenericClassInfo typeInfo, int id) {
+		return compiler.createField(name, modifier, weaselClass, typeInfo, id);
 	}
 	
 }
