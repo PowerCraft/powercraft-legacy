@@ -1,7 +1,6 @@
 package weasel.compiler.v2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import weasel.compiler.WeaselClassCompiler;
@@ -33,7 +32,6 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 	
 	public List<WeaselToken> classPreInit = new ArrayList<WeaselToken>();
 	public List<WeaselToken> classStaticInit = new ArrayList<WeaselToken>();
-	public HashMap<String, WeaselClass> generics = new HashMap<String, WeaselClass>();
 	
 	protected WeaselClassCompilerV2(WeaselCompiler compiler, Object parent, String name, String fileName) {
 		super(compiler, parent, name, fileName);
@@ -49,8 +47,11 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 	}
 	
 	public WeaselClass getWeaselClass2(int line, String className) throws WeaselCompilerException{
-		if(generics.containsKey(className))
-			return generics.get(className);
+		for(int i=0; i<genericInformation.length; i++){
+			if(className.equals("O"+genericInformation[i].genericName+";")){
+				return genericInformation[i].baseClass;
+			}
+		}
 		try{
 			return interpreter.getWeaselClass(className);
 		}catch(WeaselNativeException e){
@@ -124,6 +125,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 			}
 			token = getNextToken();
 		}
+		System.out.println(genericList);
 		genericInformation = genericList.toArray(new WeaselGenericInformation[0]);
 		for(int i=0; i<genericInformation.length; i++){
 			List<WeaselToken> genericListClass2 = genericListClass.get(i);

@@ -80,6 +80,7 @@ public class WeaselOperator {
 	public static final Properties BRACKETS =			new Properties("()"		,"brackets"		,	-1	,	false	,	false	,	false	,	true	,	unknown	,	unknown	);
 	
 	static {
+		operators.put(ASSIGN.operator, ASSIGN);
 		operators.put(DIVIDE_ASSIGN.operator, DIVIDE_ASSIGN);
 		operators.put(MOD_ASSIGN.operator, MOD_ASSIGN);
 		operators.put(AND_ASSIGN.operator, AND_ASSIGN);

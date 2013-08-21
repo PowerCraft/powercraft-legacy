@@ -3,6 +3,7 @@ package weasel.compiler;
 import java.io.EOFException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.keywords.WeaselKeyWord;
@@ -10,7 +11,7 @@ import weasel.interpreter.WeaselModifier;
 
 public class WeaselTokenParser {
 
-	private final String source;
+	private String source;
 	private int pos;
 	private int line;
 	private boolean isEOFOk=true;
@@ -172,10 +173,13 @@ public class WeaselTokenParser {
 			while(again){
 				again = false;
 				s+=c;
-				Properties p = WeaselOperator.operators.get(s);
-				if(p!=null){
-					lastFullEqual = p;
-					again=true;
+				for(Entry<String, Properties> wo:WeaselOperator.operators.entrySet()){
+					if(wo.getKey().equals(s)){
+						lastFullEqual = wo.getValue();
+						back = 0;
+					}else if(wo.getKey().startsWith(s)){
+						again = true;
+					}
 				}
 				back++;
 				c=readNextChar();
