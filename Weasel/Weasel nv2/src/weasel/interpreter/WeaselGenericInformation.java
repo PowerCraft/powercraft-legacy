@@ -12,5 +12,12 @@ public class WeaselGenericInformation {
 		this.baseClass = baseClass;
 		genericInfo = new WeaselGenericInfo(new Object[0]);
 	}
+
+	@Override
+	public String toString() {
+		return "WeaselGenericInformation [genericName=" + genericName
+				+ ", baseClass=" + baseClass + ", genericInfo=" + genericInfo
+				+ "]";
+	}
 	
 }

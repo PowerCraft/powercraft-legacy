@@ -18,7 +18,7 @@ public class Test  {
 				@Override
 				public String getClassSourceFor(String file) {
 					if(file.equals("Test")){
-						return "public class Test<C> implements B<C> {public int[] a(){b = 4-5*-4;}}";
+						return "public class Test<C> implements B<C> {\npublic int[] a(){\nb = 4-5*-4;\n}}";
 					}else if(file.equals("Enum")){
 						return "public class Enum{public Enum(){}}";
 					}else if(file.equals("Object")){
@@ -29,7 +29,7 @@ public class Test  {
 						return "public class String {private final char[] value;}";
 					}else{
 						return "public interface B<C> {\n"
-								+ "public Test f(Test d);\n"
+								+ "public C f(C d);\n"
 								+ "}";
 					}
 				}
