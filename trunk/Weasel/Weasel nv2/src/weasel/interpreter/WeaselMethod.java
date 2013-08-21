@@ -11,10 +11,13 @@ public final class WeaselMethod {
 	public static final int abstractModifier = WeaselModifier.PUBLIC|WeaselModifier.PRIVATE|WeaselModifier.PROTECTED|WeaselModifier.FINAL|WeaselModifier.STATIC|WeaselModifier.ABSTRACT|WeaselModifier.NATIVE;
 	public static final int constructorModifier = WeaselModifier.PUBLIC|WeaselModifier.PRIVATE|WeaselModifier.PROTECTED;
 	
+	public WeaselGenericInformation[] genericInfo;
 	protected final int modifier;
 	protected final String name;
 	protected final WeaselClass parentClass;
+	protected WeaselGenericInfo genericReturn;
 	protected final WeaselClass returnParam;
+	protected WeaselGenericInfo[] genericParams;
 	protected final WeaselClass[] params;
 	protected final int id;
 	

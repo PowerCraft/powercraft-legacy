@@ -1,5 +1,5 @@
-public interface Compareable{
+public interface Compareable<T>{
 	
-	public int compareTo(Object object);
+	public int compareTo(T object);
 	
 }

@@ -1,5 +1,5 @@
-public interface Cloneable{
+public interface Cloneable<T>{
 	
-	public Object clone();
+	public T clone();
 	
 }

@@ -4,11 +4,13 @@ import java.util.List;
 import weasel.compiler.WeaselClassFileProvider;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerMessage;
+import weasel.compiler.WeaselOperator;
 
 
-public class Test {
+public class Test  {
 	
 	public static void main(String[] args) {
+		
 		WeaselCompiler compiler = new WeaselCompiler();
 		try{
 			compiler.compile(new WeaselClassFileProvider() {
@@ -16,18 +18,18 @@ public class Test {
 				@Override
 				public String getClassSourceFor(String file) {
 					if(file.equals("Test")){
-						return "public class Test implements B {public int[] a(){b = 4-5*-4;}}";
+						return "public class Test<C> implements B<C> {public int[] a(){b = 4-5*-4;}}";
 					}else if(file.equals("Enum")){
 						return "public class Enum{public Enum(){}}";
 					}else if(file.equals("Object")){
-						return "public class Object {public boolean equals(Object o){return o==this;}}";
+						return "public class Object {public boolean equals(Object o){}}";
 					}else if(file.equals("Class")){
 						return "public class Class {private final String className;}";
 					}else if(file.equals("String")){
 						return "public class String {private final char[] value;}";
 					}else{
-						return "public interface B {\n"
-								+ "public int f(int d);\n"
+						return "public interface B<C> {\n"
+								+ "public Test f(Test d);\n"
 								+ "}";
 					}
 				}

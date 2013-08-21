@@ -21,7 +21,9 @@ public class WeaselClass implements WeaselSaveable {
 	protected final String fileName;
 	protected final Object parent;
 	protected WeaselClass superClass;
+	protected WeaselGenericInfo superClassGeneric;
 	protected WeaselClass[] interfaces;
+	protected WeaselGenericInfo[] interfacesGeneric;
 	protected HashMap<WeaselClass, WeaselInterfaceMaps> interfaceMaps;
 	protected WeaselField[] fields;
 	protected WeaselMethod[] methods;
@@ -39,6 +41,8 @@ public class WeaselClass implements WeaselSaveable {
 	protected boolean isInterface;
 	
 	protected int classObject;
+	
+	protected WeaselGenericInformation[] genericInformation;
 	
 	protected WeaselClass(WeaselInterpreter interpreter, Object parent, String name, int modifier, String fileName){
 		WeaselChecks.checkName(name);
