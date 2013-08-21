@@ -3,28 +3,37 @@ package weasel.compiler.equationSolverNew;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import weasel.compiler.WeaselOperator;
+import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.WeaselToken;
-import weasel.compiler.WeaselTokenType;
+import weasel.compiler.equationSolverNew.IWeaselTokenTreeElement;
 
-public class Operator extends WeaselToken{
+public class WeaselTokenOperator implements IWeaselTokenTreeElement{
 	
-	public Operator(WeaselToken token) {
-		super(WeaselTokenType.OPERATOR, token.line, token.param);
+	Properties operator;
+	
+	public WeaselTokenOperator(Properties op) {
+		operator = op;
 	}
 	
 	public String getId() {
-		return ((Properties)param).name;
+		return operator.operator;
+	}
+	
+	@Override
+	public void addSub(IWeaselTokenTreeElement te){
+		subs.add(te);
 	}
 
-	// 12+5*3+5/3-2
-	// -(+(12,*(5,3),/(5,3)),2)
+	@Override
+	public String getName() {
+		return operator.fullName;
+	}
 
 	@Override
 	public String toString() {
 		String ret = "";
 		boolean brackets = false;
-		for (int i = 0; i < subs.length; i++) {
+		for (int i = 0; i < subs.size(); i++) {
 			if (i != 0)
 				ret += getId();
 			
@@ -32,7 +41,7 @@ public class Operator extends WeaselToken{
 			
 			if (brackets) ret += "(";
 			
-			ret += subs[i].toString();
+			ret += subs.get(i).toString();
 			
 			if (brackets) ret += ")";
 		}
@@ -43,32 +52,37 @@ public class Operator extends WeaselToken{
 	public String toEncryptedString() {
 
 		String ret = getId() + "(";
-		for (int i = 0; i < subs.length; i++) {
+		for (int i = 0; i < subs.size(); i++) {
 			if (i != 0)
 				ret += ",";
-			ret += subs[i].toEncryptedString();
+			ret += subs.get(i).toEncryptedString();
+		}
+		ret += ")";
+		return ret;
+	}
+	
+	@Override
+	public String toClassView() {
+		String ret = getId() + "(";
+		for (int i = 0; i < subs.size(); i++) {
+			if (i != 0)
+				ret += ",";
+			ret += subs.get(i).toClassView();
 		}
 		ret += ")";
 		return ret;
 	}
 
 	@Override
-	public String toClassView() {
-		String ret = getId() + "(";
-		for (int i = 0; i < subs.length; i++) {
-			if (i != 0)
-				ret += ",";
-			ret += subs[i].toClassView();
-		}
-		ret += ")";
-		return ret;
+	public WeaselToken simplify() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	
-
 
 	private boolean needsBrackets(int subOp) {
-		boolean needs, tmpNeeds;
+		return true;
+	}
+/*		boolean needs, tmpNeeds;
 		if(!((subs[subOp] instanceof Operator))) return false;
 		Operator subOP = (Operator)subs[subOp];
 		needs = (operators.get(getId()).priority >
@@ -103,5 +117,5 @@ public class Operator extends WeaselToken{
 		}
 		subs = al.toArray(subs);
 		return this;
-	}
+	}*/
 }
