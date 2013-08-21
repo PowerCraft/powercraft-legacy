@@ -6,7 +6,7 @@ public final class Byte extends Number{
 		this.value = value;
 	}
 
-	public byte booleanValue(){
+	public byte byteValue(){
 		return value;
 	}
 
@@ -28,7 +28,7 @@ public final class Byte extends Number{
 
 	public boolean equals(Object o){
 		if(o instanceof Byte){
-			return ((Byte)o).value==value;
+			return ((Byte)o).byteValue()==value;
 		}
 		return false;
 	}

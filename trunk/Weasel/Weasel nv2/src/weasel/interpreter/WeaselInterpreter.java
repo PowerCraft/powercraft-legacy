@@ -271,12 +271,12 @@ public class WeaselInterpreter implements WeaselSaveable {
 		}
 	}
 	
-	protected WeaselMethod compilerCreateMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselClass[] params, int id){
-		return new WeaselMethod(name, modifier, parentClass, returnParam, params, id);
+	protected WeaselMethod compilerCreateMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselGenericInfo genericReturn, WeaselClass[] params, WeaselGenericInfo[] genericParams, int id){
+		return new WeaselMethod(name, modifier, parentClass, returnParam, genericReturn, params, genericParams, id);
 	}
 	
-	protected WeaselField compilerCreateField(String name, int modifier, WeaselClass weaselClass, WeaselClass type, int id) {
-		return new WeaselField(name, modifier, weaselClass, type, id);
+	protected WeaselField compilerCreateField(String name, int modifier, WeaselClass weaselClass, WeaselClass type, WeaselGenericInfo typeInfo, int id) {
+		return new WeaselField(name, modifier, weaselClass, type, typeInfo, id);
 	}
 	
 	public WeaselNativeMethod getNativeMethod(String name){
