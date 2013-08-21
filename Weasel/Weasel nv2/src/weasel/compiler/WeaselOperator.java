@@ -75,7 +75,8 @@ public class WeaselOperator {
 	public static final Properties INCREASE_PREFIX =	new Properties("++"		,"increase"		,	15	,	true	,	false	,	false	,	false	,	unknown	,	unknown	);
 	public static final Properties ELEMENT =			new Properties("."		,"element"		,	16	,	false	,	true	,	false	,	true	,	unknown	,	unknown	);
 	public static final Properties ARRAY =				new Properties("[]"		,"array"		,	16	,	true	,	false	,	true	,	true	,	unknown	,	unknown	);
-	public static final Properties CALL =				new Properties("()"		,"call"			,	16	,	false	,	false	,	true	,	true	,	unknown	,	unknown	);
+	public static final Properties CALL =				new Properties("%s"		,"call"			,	16	,	false	,	false	,	true	,	true	,	unknown	,	unknown	);
+	public static final Properties CAST =				new Properties("()"		,"cast"			,	16	,	false	,	false	,	true	,	true	,	unknown	,	unknown	);
 	public static final Properties DECREASE =			new Properties("--"		,"decrease"		,	16	,	false	,	false	,	true	,	true	,	unknown	,	unknown	);
 	public static final Properties INCREASE =			new Properties("++"		,"increase"		,	16	,	false	,	false	,	true	,	true	,	unknown	,	unknown	);
 	
@@ -88,7 +89,7 @@ public class WeaselOperator {
 		operators.put(LSHIFT_ASSIGN.operator, LSHIFT_ASSIGN);
 		operators.put(RSHIFT_ASSIGN.operator, RSHIFT_ASSIGN);
 		operators.put(COPY.operator, COPY);
-		operators.put(CONDITIONAL.operator, CONDITIONAL);
+		//operators.put(CONDITIONAL.operator, CONDITIONAL);
 		operators.put(LOGICAL_OR.operator, LOGICAL_OR);
 		operators.put(LOGICAL_AND.operator, LOGICAL_AND);
 		operators.put(BITWISE_OR.operator, BITWISE_OR);
@@ -117,8 +118,8 @@ public class WeaselOperator {
 		operators.put(DECREASE_PREFIX.operator, DECREASE_PREFIX);
 		operators.put(INCREASE_PREFIX.operator, INCREASE_PREFIX);
 		operators.put(ELEMENT.operator, ELEMENT);
-		operators.put(ARRAY.operator, ARRAY);
-		operators.put(CALL.operator, CALL);
+		//operators.put(ARRAY.operator, ARRAY);
+		//operators.put(CAST.operator, CAST);
 		operators.put(DECREASE.operator, DECREASE);
 		operators.put(INCREASE.operator, INCREASE);
 
