@@ -15,13 +15,13 @@ public final class WeaselMethod {
 	protected final int modifier;
 	protected final String name;
 	protected final WeaselClass parentClass;
-	protected final WeaselGenericInfo genericReturn;
+	protected final WeaselGenericClassInfo genericReturn;
 	protected final WeaselClass returnParam;
-	protected final WeaselGenericInfo[] genericParams;
+	protected final WeaselGenericClassInfo[] genericParams;
 	protected final WeaselClass[] params;
 	protected final int id;
 	
-	protected WeaselMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselGenericInfo genericReturn, WeaselClass[] params, WeaselGenericInfo[] genericParams, int id){
+	protected WeaselMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselGenericClassInfo genericReturn, WeaselClass[] params, WeaselGenericClassInfo[] genericParams, int id){
 		boolean isConstructor = name.equals("<init>");
 		boolean isPreConstructor = name.equals("<preInit>");
 		boolean isStaticConstructor = name.equals("<staticInit>");
@@ -62,13 +62,13 @@ public final class WeaselMethod {
 		WeaselChecks.checkModifier(modifier,  isStaticConstructor?WeaselModifier.STATIC:isPreConstructor?0:isConstructor?parentClass.isEnum()?0:
 			constructorModifier:WeaselModifier.isAbstract(parentClass.getModifier())?abstractModifier:normalModifier);
 		returnParam = parentClass.interpreter.getWeaselClass(dataInputStream.readUTF());
-		genericReturn = new WeaselGenericInfo(parentClass.interpreter, dataInputStream);
+		genericReturn = new WeaselGenericClassInfo(parentClass.interpreter, dataInputStream);
 		int paramCount = dataInputStream.readInt();
 		params = new WeaselClass[paramCount];
-		genericParams = new WeaselGenericInfo[paramCount];
+		genericParams = new WeaselGenericClassInfo[paramCount];
 		for(int i=0; i<paramCount; i++){
 			params[i] = parentClass.interpreter.getWeaselClass(dataInputStream.readUTF());
-			genericParams[i] = new WeaselGenericInfo(parentClass.interpreter, dataInputStream);
+			genericParams[i] = new WeaselGenericClassInfo(parentClass.interpreter, dataInputStream);
 		}
 		if(WeaselModifier.isStatic(modifier)){
 			id = wid.staticMethod++;

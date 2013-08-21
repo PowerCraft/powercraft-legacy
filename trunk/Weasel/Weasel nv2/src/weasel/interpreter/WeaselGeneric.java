@@ -11,7 +11,7 @@ public class WeaselGeneric<T> {
 		this.generics = generics;
 	}
 	
-	protected WeaselClass[] getGenericClassesFor(WeaselGenericInfo gci){
+	protected WeaselClass[] getGenericClassesFor(WeaselGenericClassInfo gci){
 		if(gci==null)
 			return new WeaselClass[0];
 		WeaselClass[] classes = new WeaselClass[gci.generics.length];
