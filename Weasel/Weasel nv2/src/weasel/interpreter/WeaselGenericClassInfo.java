@@ -9,9 +9,11 @@ public class WeaselGenericClassInfo implements WeaselSaveable {
 
 	public final WeaselClass genericClass;
 	public final int genericID;
-	public final Object[] generics;
+	public final WeaselGenericClassInfo[] generics;
 	
-	public WeaselGenericClassInfo(WeaselClass genericClass, int genericID, Object[] generics){
+	public WeaselGenericClassInfo(WeaselClass genericClass, int genericID, WeaselGenericClassInfo[] generics){
+		if(genericClass==null)
+			throw new NullPointerException();
 		this.genericClass = genericClass;
 		this.genericID = genericID;
 		this.generics = generics;
@@ -19,19 +21,15 @@ public class WeaselGenericClassInfo implements WeaselSaveable {
 	
 	@Override
 	public String toString() {
-		return "WeaselGenericInfo [generics=" + Arrays.toString(generics) + "]";
+		return "WeaselGenericInfo [genericClass="+genericClass+", generics=" + Arrays.toString(generics) + "]";
 	}
 
 	public WeaselGenericClassInfo(WeaselInterpreter interpreter, DataInputStream dataInputStream) throws IOException{
 		genericClass = interpreter.getWeaselClass(dataInputStream.readUTF());
 		genericID = dataInputStream.readInt();
-		generics = new Object[dataInputStream.readInt()];
+		generics = new WeaselGenericClassInfo[dataInputStream.readInt()];
 		for(int i=0; i<generics.length; i++){
-			if(dataInputStream.readBoolean()){
-				generics[i] = new WeaselGenericClassInfo(interpreter, dataInputStream);
-			}else{
-				generics[i] = dataInputStream.readInt();
-			}
+			generics[i] = new WeaselGenericClassInfo(interpreter, dataInputStream);
 		}
 	}
 	
@@ -65,22 +63,26 @@ public class WeaselGenericClassInfo implements WeaselSaveable {
 		}
 		if(generics.length>0){
 			name += "<";
-			if(generics[0] instanceof WeaselGenericClassInfo){
-				name += ((WeaselGenericClassInfo)generics[0]).getName(weaselClass);
-			}else{
-				name += weaselClass.genericInformation[(Integer)generics[0]].genericName;
-			}
+			name += generics[0].getName(weaselClass);
 			for(int i=1; i<generics.length; i++){
 				name += ", ";
-				if(generics[i] instanceof WeaselGenericClassInfo){
-					name += ((WeaselGenericClassInfo)generics[i]).getName(weaselClass);
-				}else{
-					name += weaselClass.genericInformation[(Integer)generics[i]].genericName;
-				}
+				name += generics[i].getName(weaselClass);
 			}
 			name += ">";
 		}
 		return name;
+	}
+
+	public WeaselClass getWeaselClass(WeaselInterpreter weaselInterpreter, WeaselClass[] weaselClass) {
+		if(genericID==-1)
+			return genericClass;
+		String cn = weaselClass[genericID].getByteName();
+		WeaselClass wc = genericClass;
+		while(wc.isArray()){
+			wc = wc.getArrayClass();
+			cn = "["+cn;
+		}
+		return weaselInterpreter.getWeaselClass(cn);
 	}
 	
 }
