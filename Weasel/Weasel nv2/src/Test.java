@@ -4,7 +4,6 @@ import java.util.List;
 import weasel.compiler.WeaselClassFileProvider;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerMessage;
-import weasel.compiler.WeaselOperator;
 
 
 public class Test  {
@@ -18,7 +17,7 @@ public class Test  {
 				@Override
 				public String getClassSourceFor(String file) {
 					if(file.equals("Test")){
-						return "public class Test<C> implements B<C> {\npublic int[] a(){\nb = 4-5*-4;\n}}";
+						return "public class Test<A extends Test<A> implements B<A> {\npublic int[] a(){\nb = 4-5*-4;\n}}";
 					}else if(file.equals("Enum")){
 						return "public class Enum{public Enum(){}}";
 					}else if(file.equals("Object")){

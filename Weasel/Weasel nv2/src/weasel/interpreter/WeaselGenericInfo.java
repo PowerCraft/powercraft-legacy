@@ -3,6 +3,7 @@ package weasel.interpreter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class WeaselGenericInfo implements WeaselSaveable {
 
@@ -10,6 +11,11 @@ public class WeaselGenericInfo implements WeaselSaveable {
 	
 	public WeaselGenericInfo(Object[] generics){
 		this.generics = generics;
+	}
+	
+	@Override
+	public String toString() {
+		return "WeaselGenericInfo [generics=" + Arrays.toString(generics) + "]";
 	}
 
 	public WeaselGenericInfo(WeaselInterpreter interpreter, DataInputStream dataInputStream) throws IOException{

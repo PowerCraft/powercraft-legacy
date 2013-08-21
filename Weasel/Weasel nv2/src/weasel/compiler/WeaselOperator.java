@@ -26,6 +26,13 @@ public class WeaselOperator {
 			this.isCommutative = isCommutative;
 			this.isSimplifyPossible = simplifyPossible;
 		}
+
+		@Override
+		public String toString() {
+			return operator;
+		}
+		
+		
 	}
 	public static final int prioRange;
 	
@@ -81,6 +88,9 @@ public class WeaselOperator {
 	
 	static {
 		operators.put(ASSIGN.operator, ASSIGN);
+		operators.put(PLUS_ASSIGN.operator, PLUS_ASSIGN);
+		operators.put(MINUS_ASSIGN.operator, MINUS_ASSIGN);
+		operators.put(TIMES_ASSIGN.operator, TIMES_ASSIGN);
 		operators.put(DIVIDE_ASSIGN.operator, DIVIDE_ASSIGN);
 		operators.put(MOD_ASSIGN.operator, MOD_ASSIGN);
 		operators.put(AND_ASSIGN.operator, AND_ASSIGN);
