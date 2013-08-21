@@ -2,8 +2,6 @@ package weasel.compiler;
 
 import java.util.HashMap;
 
-import weasel.compiler.equationSolverOld.Operator.Properties;
-
 
 public class WeaselOperator {
 

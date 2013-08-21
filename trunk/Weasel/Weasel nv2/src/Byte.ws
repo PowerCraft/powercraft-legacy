@@ -1,4 +1,4 @@
-public final class Byte{
+public final class Byte extends Number{
 
 	private final byte value;
 
@@ -6,7 +6,23 @@ public final class Byte{
 		this.value = value;
 	}
 
-	public byte getValue(){
+	public byte booleanValue(){
+		return value;
+	}
+
+	public short shortValue(){
+		return value;
+	}
+
+	public int intValue(){
+		return value;
+	}
+	
+	public float floatValue(){
+		return value;
+	}
+	
+	public double doubleValue(){
 		return value;
 	}
 
