@@ -1,6 +1,6 @@
 package weasel.compiler;
 
-import weasel.compiler.equationSolverOld.Operand;
+import weasel.compiler.WeaselOperator.Properties;
 
 public class WeaselToken {
 
@@ -24,7 +24,7 @@ public class WeaselToken {
 	protected WeaselToken subs[] = new WeaselToken[10];
 	
 	public String getName() {
-		return ((WeaselOperator)param).name;
+		return ((Properties)param).operator;
 	}
 
 	// 12+5*3+5/3-2
@@ -32,11 +32,11 @@ public class WeaselToken {
 
 	@Override
 	public String toString() {
-		return ((WeaselOperator)param).name;
+		return ((Properties)param).operator;
 	}
 	
 	public String toEncryptedString() {
-		return ((WeaselOperator)param).name;
+		return ((Properties)param).operator;
 	}
 
 	public String toClassView() {
@@ -46,6 +46,4 @@ public class WeaselToken {
 	public WeaselToken simplify() {
 		return this;	
 	}
-}
-	
 }

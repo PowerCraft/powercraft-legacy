@@ -401,7 +401,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 	
 	private WeaselToken compileField2(int modifier, String type, String name, WeaselToken token) throws WeaselCompilerException{
 		WeaselClass typeC = getWeaselClass2(token.line, type);
-		if(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.LET){
+		if(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.ASSIGN){
 			List<WeaselToken> init;
 			if(WeaselModifier.isStatic(modifier)){
 				init = classStaticInit;
