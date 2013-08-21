@@ -1,4 +1,4 @@
-public class Enum{
+public class Enum<T extends Enum<T>>{
 
 	public final boolean equals(Object o){
 		return this==o;

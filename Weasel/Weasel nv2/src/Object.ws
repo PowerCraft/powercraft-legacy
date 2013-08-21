@@ -7,7 +7,7 @@ public class Object{
 	}
 
 	public String toString(){
-		return "";
+		return getClass().getName()+"@"+Integer.toHexString(hashCode());
 	}
 
 	public native int hashCode();

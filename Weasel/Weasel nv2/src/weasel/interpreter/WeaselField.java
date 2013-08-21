@@ -13,6 +13,7 @@ public final class WeaselField {
 	protected final String name;
 	protected final WeaselClass parentClass;
 	protected final WeaselClass type;
+	protected WeaselGenericInfo genericType;
 	protected final int id;
 	
 	protected WeaselField(String name, int modifier, WeaselClass parentClass, WeaselClass type, int id){

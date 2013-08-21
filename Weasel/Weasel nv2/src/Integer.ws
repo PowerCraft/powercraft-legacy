@@ -17,4 +17,8 @@ public final class Integer{
 		return false;
 	}
 
+	public static String toHexString(int value){
+		return "";
+	}
+
 }
