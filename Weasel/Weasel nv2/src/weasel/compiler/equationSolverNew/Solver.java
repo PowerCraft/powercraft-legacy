@@ -6,72 +6,89 @@ import java.util.List;
 
 import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselOperator.Properties;
+import weasel.compiler.equationSolverNew.WeaselTokenBrackets.BracketType;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 
 public class Solver {
+	Properties ops[] = WeaselOperator.operators.values().toArray(new Properties[0]);
 	
-	public static WeaselToken order(WeaselToken[] source){
-		WeaselToken target = null;
-		ArrayList<Integer> openBrackets= new ArrayList<Integer>();
-		Properties ops[] = WeaselOperator.operators.values().toArray(new Properties[0]);
-		WeaselToken current;
+	public static WeaselTokenBrackets parse(WeaselToken[] source){
+		WeaselTokenBrackets target = generateBracketTree(source);
+		parseTree(target);
 		ArrayList<WeaselToken> subs = new ArrayList<WeaselToken>();
 		for(Properties operator:ops){
-			for(int i=0; i<source.length; i++){
-				current = source[i];
-				switch(current.tokenType){
-				case BOOL:
-					break;
-				case CLOSEBLOCK:
-					break;
-				case CLOSEBRACKET:
-					subs.add(new WeaselToken(
-							WeaselTokenType.OPERATOR,
-							Arrays.asList(source).subList(
-									openBrackets.get(openBrackets.size()-1), i
-									));
-					break;
-				case CLOSEINDEX:
-					break;
-				case COLON:
-					break;
-				case COMMA:
-					break;
-				case DOUBLE:
-					break;
+		}
+		return target;
+	}
+	
+	private static void parseTree(WeaselTokenBrackets wtb){
+		IWeaselTokenTreeElement te;
+		WeaselToken wt;
+		WeaselTokenBrackets tb;
+		WeaselTokenOperator to;
+		WeaselTokenFunction tf;
+		WeaselTokenVariable tv;
+		final int size=wtb.subs.size();
+		for(int i=0; i<size; i++){
+			te=wtb.subs.get(i);
+			if(te instanceof WeaselToken){
+				wt = (WeaselToken) te;
+				switch(wt.tokenType){
 				case IDENT:
-					break;
-				case INTEGER:
-					break;
-				case KEYWORD:
-					break;
-				case MODIFIER:
-					break;
-				case NONE:
-					break;
-				case NULL:
-					break;
-				case OPENBLOCK:
-					break;
-				case OPENBRACKET:
-					openBrackets.add(i+1);
-					break;
-				case OPENINDEX:
-					break;
-				case OPERATOR:
-					break;
-				case QUESTIONMARK:
-					break;
-				case SEMICOLON:
-					break;
-				case STRING:
-					break;
-				case UNKNOWN:
+ 
 					break;
 				default:
-					break;
 				}
+				
+			}else	if(te instanceof WeaselTokenBrackets){
+				tb = (WeaselTokenBrackets) te;
+				parseTree(tb);
+			}else	if(te instanceof WeaselTokenOperator){
+				to = (WeaselTokenOperator) te;
+				
+			}else	if(te instanceof WeaselTokenFunction){
+				tf = (WeaselTokenFunction) te;
+				
+			}else	if(te instanceof WeaselTokenVariable){
+				tv = (WeaselTokenVariable) te;
+				
+			}
+		}
+	}
+	
+	private static WeaselTokenBrackets generateBracketTree(WeaselToken[] input){
+		WeaselTokenBrackets target = null;
+		ArrayList<WeaselTokenBrackets> brackets = new ArrayList<WeaselTokenBrackets>();
+		brackets.add(target = new WeaselTokenBrackets(BracketType.ROUND));
+		WeaselToken current;
+		WeaselTokenBrackets inner = target;
+		WeaselTokenBrackets tmpTokenBracket;
+		for(int i=0; i<input.length; i++){
+			current = input[i];
+			tmpTokenBracket=null;
+			switch(current.tokenType){
+			case OPENBLOCK:
+				tmpTokenBracket = new WeaselTokenBrackets(BracketType.CURLY);
+			case OPENINDEX:
+				if(tmpTokenBracket==null)
+					tmpTokenBracket = new WeaselTokenBrackets(BracketType.SQUARE);
+			case OPENBRACKET:
+				if(tmpTokenBracket==null)
+					tmpTokenBracket = new WeaselTokenBrackets(BracketType.ROUND);
+				brackets.get(0).addSub(tmpTokenBracket);
+				brackets.add(0, tmpTokenBracket);
+				inner = tmpTokenBracket;
+				break;
+			case CLOSEBLOCK:
+			case CLOSEINDEX:
+			case CLOSEBRACKET:
+				brackets.remove(0);
+				inner = brackets.get(0);
+				break;
+			default:
+				inner.addSub(input[i]);
+				break;
 			}
 		}
 		return target;
