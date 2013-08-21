@@ -21,9 +21,9 @@ public class WeaselClass implements WeaselSaveable {
 	protected final String fileName;
 	protected final Object parent;
 	protected WeaselClass superClass;
-	protected WeaselGenericInfo superClassGeneric;
+	protected WeaselGenericClassInfo superClassGeneric;
 	protected WeaselClass[] interfaces;
-	protected WeaselGenericInfo[] interfacesGeneric;
+	protected WeaselGenericClassInfo[] interfacesGeneric;
 	protected HashMap<WeaselClass, WeaselInterfaceMaps> interfaceMaps;
 	protected WeaselField[] fields;
 	protected WeaselMethod[] methods;

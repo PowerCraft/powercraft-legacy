@@ -1,11 +1,9 @@
 package weasel.compiler.equationSolverNew;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.WeaselToken;
-import weasel.compiler.equationSolverNew.IWeaselTokenTreeElement;
 
 public class WeaselTokenOperator implements IWeaselTokenTreeElement{
 	

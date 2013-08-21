@@ -9,7 +9,7 @@ import weasel.compiler.WeaselCompilerMessage.MessageType;
 import weasel.compiler.v2.WeaselClassCompilerV2;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselField;
-import weasel.interpreter.WeaselGenericInfo;
+import weasel.interpreter.WeaselGenericClassInfo;
 import weasel.interpreter.WeaselInterpreter;
 import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselNativeException;
@@ -98,7 +98,7 @@ public class WeaselCompiler extends WeaselInterpreter {
 		compilerMessages.add(message);
 	}
 	
-	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselGenericInfo genericReturn, WeaselClass[] params, WeaselGenericInfo[] genericParams, int id){
+	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselGenericClassInfo genericReturn, WeaselClass[] params, WeaselGenericClassInfo[] genericParams, int id){
 		return compilerCreateMethod(name, modifier, parentClass, returnParam, genericReturn, params, genericParams, id);
 	}
 	
@@ -123,7 +123,7 @@ public class WeaselCompiler extends WeaselInterpreter {
 		return "O"+name+";";
 	}
 
-	protected WeaselField createField(String name, int modifier, WeaselClass weaselClass, WeaselClass type, WeaselGenericInfo typeInfo, int id) {
+	protected WeaselField createField(String name, int modifier, WeaselClass weaselClass, WeaselClass type, WeaselGenericClassInfo typeInfo, int id) {
 		return compilerCreateField(name, modifier, weaselClass, type, typeInfo, id);
 	}
 	

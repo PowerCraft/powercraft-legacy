@@ -38,7 +38,7 @@ public class WeaselGenericClass extends WeaselGeneric<WeaselClass> {
 		return genericParams;
 	}
 	
-	protected WeaselClass[] getGenericClassesForMethod(WeaselGenericInfo gci, WeaselClass[] generic){
+	protected WeaselClass[] getGenericClassesForMethod(WeaselGenericClassInfo gci, WeaselClass[] generic){
 		if(gci==null)
 			return new WeaselClass[0];
 		WeaselClass[] classes = new WeaselClass[gci.generics.length];

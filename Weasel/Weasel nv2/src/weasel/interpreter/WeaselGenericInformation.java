@@ -5,12 +5,12 @@ public class WeaselGenericInformation {
 	public String genericName;
 	
 	public WeaselClass baseClass;
-	public WeaselGenericInfo genericInfo;
+	public WeaselGenericClassInfo genericInfo;
 	
 	public WeaselGenericInformation(String genericName, WeaselClass baseClass){
 		this.genericName = genericName;
 		this.baseClass = baseClass;
-		genericInfo = new WeaselGenericInfo(new Object[0]);
+		genericInfo = new WeaselGenericClassInfo(new Object[0]);
 	}
 
 	@Override

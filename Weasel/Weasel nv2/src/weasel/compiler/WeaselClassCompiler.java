@@ -6,7 +6,7 @@ import weasel.compiler.WeaselCompilerMessage.MessageType;
 import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselField;
-import weasel.interpreter.WeaselGenericInfo;
+import weasel.interpreter.WeaselGenericClassInfo;
 import weasel.interpreter.WeaselMethod;
 
 public abstract class WeaselClassCompiler extends WeaselClass {
@@ -55,11 +55,11 @@ public abstract class WeaselClassCompiler extends WeaselClass {
 		onException(token.line, "Unexpected keyword %s expected %s", token, Arrays.toString(keyWords));
 	}
 	
-	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselGenericInfo genericReturn, WeaselClass[] params, WeaselGenericInfo[] genericParams, int id){
+	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselClass returnParam, WeaselGenericClassInfo genericReturn, WeaselClass[] params, WeaselGenericClassInfo[] genericParams, int id){
 		return compiler.createMethod(name, modifier, parentClass, returnParam, genericReturn, params, genericParams, id);
 	}
 
-	protected WeaselField createField(String name, int modifier, WeaselClass weaselClass, WeaselClass type, WeaselGenericInfo typeInfo, int id) {
+	protected WeaselField createField(String name, int modifier, WeaselClass weaselClass, WeaselClass type, WeaselGenericClassInfo typeInfo, int id) {
 		return compiler.createField(name, modifier, weaselClass, type, typeInfo, id);
 	}
 	

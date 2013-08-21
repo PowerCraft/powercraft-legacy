@@ -16,7 +16,7 @@ import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.interpreter.WeaselChecks;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselField;
-import weasel.interpreter.WeaselGenericInfo;
+import weasel.interpreter.WeaselGenericClassInfo;
 import weasel.interpreter.WeaselGenericInformation;
 import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
@@ -161,11 +161,11 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 					ids.easyType = superClass.getIDS().easyType;
 					ids.objectRef = superClass.getIDS().objectRef;
 				}
-				superClassGeneric = new WeaselGenericInfo(new Object[0]);
+				superClassGeneric = new WeaselGenericClassInfo(new Object[0]);
 			}
 			if(token.param==WeaselKeyWord.IMPLEMENTS){
 				List<WeaselClass> interfaceList = new ArrayList<WeaselClass>();
-				List<WeaselGenericInfo> interfaceGenericList = new ArrayList<WeaselGenericInfo>();
+				List<WeaselGenericClassInfo> interfaceGenericList = new ArrayList<WeaselGenericClassInfo>();
 				do{
 					expect(token = getNextToken(), WeaselTokenType.IDENT);
 					try{
@@ -183,13 +183,13 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 					token = getNextToken();
 				}while(token.tokenType==WeaselTokenType.COMMA);
 				interfaces = interfaceList.toArray(new WeaselClass[0]);
-				interfacesGeneric = interfaceGenericList.toArray(new WeaselGenericInfo[0]);
+				interfacesGeneric = interfaceGenericList.toArray(new WeaselGenericClassInfo[0]);
 			}
 		}
 		if(isInterface){
 			if(token.param==WeaselKeyWord.EXTENDS){
 				List<WeaselClass> interfaceList = new ArrayList<WeaselClass>();
-				List<WeaselGenericInfo> interfaceGenericList = new ArrayList<WeaselGenericInfo>();
+				List<WeaselGenericClassInfo> interfaceGenericList = new ArrayList<WeaselGenericClassInfo>();
 				do{
 					expect(token = getNextToken(), WeaselTokenType.IDENT);
 					try{
@@ -207,18 +207,18 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 					token = getNextToken();
 				}while(token.tokenType==WeaselTokenType.COMMA);
 				interfaces = interfaceList.toArray(new WeaselClass[0]);
-				interfacesGeneric = interfaceGenericList.toArray(new WeaselGenericInfo[0]);
+				interfacesGeneric = interfaceGenericList.toArray(new WeaselGenericClassInfo[0]);
 			}
 		}
 		if(isEnum){
 			superClass = interpreter.baseTypes.getEnumClass();
-			superClassGeneric = new WeaselGenericInfo(new Object[]{this});
+			superClassGeneric = new WeaselGenericClassInfo(new Object[]{this});
 			ids.method = superClass.getIDS().method;
 			ids.easyType = superClass.getIDS().easyType;
 			ids.objectRef = superClass.getIDS().objectRef;
 			if(token.param==WeaselKeyWord.IMPLEMENTS){
 				List<WeaselClass> interfaceList = new ArrayList<WeaselClass>();
-				List<WeaselGenericInfo> interfaceGenericList = new ArrayList<WeaselGenericInfo>();
+				List<WeaselGenericClassInfo> interfaceGenericList = new ArrayList<WeaselGenericClassInfo>();
 				do{
 					expect(token = getNextToken(), WeaselTokenType.IDENT);
 					try{
@@ -236,7 +236,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 					token = getNextToken();
 				}while(token.tokenType==WeaselTokenType.COMMA);
 				interfaces = interfaceList.toArray(new WeaselClass[0]);
-				interfacesGeneric = interfaceGenericList.toArray(new WeaselGenericInfo[0]);
+				interfacesGeneric = interfaceGenericList.toArray(new WeaselGenericClassInfo[0]);
 			}
 		}
 		
@@ -252,10 +252,10 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 			methodBodys = new WeaselMethodBody[ids.method];
 		fields = new WeaselField[0];
 		
-		methods[0] = createMethod("<staticInit>", WeaselModifier.STATIC, this, interpreter.baseTypes.voidClass, new WeaselGenericInfo(new Object[0]), new WeaselClass[0], new WeaselGenericInfo[0], ids.staticMethod-1);
+		methods[0] = createMethod("<staticInit>", WeaselModifier.STATIC, this, interpreter.baseTypes.voidClass, new WeaselGenericClassInfo(new Object[0]), new WeaselClass[0], new WeaselGenericClassInfo[0], ids.staticMethod-1);
 		staticMethodBodys[ids.staticMethod-1] = new WeaselMethodBodyCompilerV2(methods[0], this, classStaticInit, new ArrayList<String>(), new ArrayList<Integer>(), compiler);
 		if(!isInterface()){
-			methods[1] = createMethod("<preInit>", 0, this, interpreter.baseTypes.voidClass, new WeaselGenericInfo(new Object[0]), new WeaselClass[0], new WeaselGenericInfo[0], 0);
+			methods[1] = createMethod("<preInit>", 0, this, interpreter.baseTypes.voidClass, new WeaselGenericClassInfo(new Object[0]), new WeaselClass[0], new WeaselGenericClassInfo[0], 0);
 			methodBodys[0] = new WeaselMethodBodyCompilerV2(methods[1], this, classPreInit, new ArrayList<String>(), new ArrayList<Integer>(), compiler);
 		}
 		
@@ -271,11 +271,11 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 				String className;
 				String name;
 				boolean isConstructor=token.tokenType == WeaselTokenType.IDENT && token.param.equals(this.name);
-				WeaselGenericInfo typeInfo;
+				WeaselGenericClassInfo typeInfo;
 				if(isConstructor){
 					className = "O"+this.name+";";
 					name = "<init>";
-					typeInfo = new WeaselGenericInfo(new Object[0]);
+					typeInfo = new WeaselGenericClassInfo(new Object[0]);
 				}else{
 					className = readClass(token);
 					token = getNextToken();
@@ -319,7 +319,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		
 	}
 	
-	private WeaselGenericInfo makeGenericInfo(WeaselToken[]infos){
+	private WeaselGenericClassInfo makeGenericInfo(WeaselToken[]infos){
 		Object[] gi = new Object[infos.length];
 		for(int i=0; i<gi.length; i++){
 			int gii = getGenericInformationIndex((String)infos[i].param);
@@ -329,7 +329,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 				gi[i] = gii;
 			}
 		}
-		return new WeaselGenericInfo(gi);
+		return new WeaselGenericClassInfo(gi);
 	}
 	
 	private int getGenericInformationIndex(String generic){
@@ -356,7 +356,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		return className;
 	}
 	
-	private WeaselGenericInfo readGenericInfo(WeaselToken token){
+	private WeaselGenericClassInfo readGenericInfo(WeaselToken token){
 		if(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.LESS){
 			List<WeaselToken> genericListClass = new ArrayList<WeaselToken>();
 			do{
@@ -371,11 +371,11 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 			return makeGenericInfo(genericListClass.toArray(new WeaselToken[0]));
 		}else{
 			tokenParser.setNextToken(token);
-			return new WeaselGenericInfo(new Object[0]);
+			return new WeaselGenericClassInfo(new Object[0]);
 		}
 	}
 	
-	private void compileField(List<WeaselToken> modifiers, String type, WeaselGenericInfo typeInfo, String name, WeaselToken token) throws WeaselCompilerException{
+	private void compileField(List<WeaselToken> modifiers, String type, WeaselGenericClassInfo typeInfo, String name, WeaselToken token) throws WeaselCompilerException{
 		int modifier = getModifier(modifiers, WeaselField.normalModifier);
 		String stype = type;
 		while(token.tokenType==WeaselTokenType.OPENINDEX){
@@ -411,7 +411,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		}
 	}
 	
-	private WeaselToken compileField2(int modifier, String type, WeaselGenericInfo typeInfo, String name, WeaselToken token) throws WeaselCompilerException{
+	private WeaselToken compileField2(int modifier, String type, WeaselGenericClassInfo typeInfo, String name, WeaselToken token) throws WeaselCompilerException{
 		WeaselClass typeC = getWeaselClass2(token.line, type);
 		if(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.ASSIGN){
 			List<WeaselToken> init;
@@ -467,7 +467,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		return token;
 	}
 	
-	private void compileMethod(List<WeaselToken> modifiers, String type, WeaselGenericInfo typeInfo, String name, WeaselToken token) throws WeaselCompilerException{
+	private void compileMethod(List<WeaselToken> modifiers, String type, WeaselGenericClassInfo typeInfo, String name, WeaselToken token) throws WeaselCompilerException{
 		boolean isConstructor = name.equals("<init>");
 		boolean isPreConstructor = name.equals("<preInit>");
 		boolean isStaticConstructor = name.equals("<staticInit>");
@@ -481,7 +481,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		}
 		WeaselClass returnType = getWeaselClass2(token.line, type);
 		List<WeaselClass> params = new ArrayList<WeaselClass>();
-		List<WeaselGenericInfo> genericInfos = new ArrayList<WeaselGenericInfo>();
+		List<WeaselGenericClassInfo> genericInfos = new ArrayList<WeaselGenericClassInfo>();
 		List<String> paramNames = new ArrayList<String>();
 		List<Integer> paramModifier = new ArrayList<Integer>();
 		token = getNextToken();
@@ -514,7 +514,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		}
 		expect(token, WeaselTokenType.CLOSEBRACKET);
 		int id = WeaselModifier.isStatic(modifier)?ids.staticMethod++:ids.method++;
-		WeaselMethod method = createMethod(name, modifier, this, returnType, typeInfo, params.toArray(new WeaselClass[0]), genericInfos.toArray(new WeaselGenericInfo[0]), id);
+		WeaselMethod method = createMethod(name, modifier, this, returnType, typeInfo, params.toArray(new WeaselClass[0]), genericInfos.toArray(new WeaselGenericClassInfo[0]), id);
 		WeaselMethod[] newMethods = new WeaselMethod[methods.length+1];
 		for(int i=0; i<methods.length; i++){
 			newMethods[i] = methods[i];
