@@ -1,8 +1,9 @@
 package weasel.compiler;
 
 import weasel.compiler.WeaselOperator.Properties;
+import weasel.compiler.equationSolverNew.IWeaselTokenTreeElement;
 
-public class WeaselToken {
+public class WeaselToken implements IWeaselTokenTreeElement{
 
 	public final WeaselTokenType tokenType;
 	public final int line;
@@ -18,11 +19,14 @@ public class WeaselToken {
 		this.tokenType = tokenType;
 		this.line = line;
 		this.param = param;
-	}	
-
-
-	protected WeaselToken subs[] = new WeaselToken[10];
+	}
 	
+	@Override
+	public void addSub(IWeaselTokenTreeElement te){
+		subs.add(te);
+	}
+	
+	@Override
 	public String getName() {
 		return ((Properties)param).operator;
 	}

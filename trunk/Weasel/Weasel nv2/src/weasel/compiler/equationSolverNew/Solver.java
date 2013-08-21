@@ -7,6 +7,7 @@ import java.util.List;
 import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.WeaselToken;
+import weasel.compiler.WeaselTokenType;
 
 public class Solver {
 	
@@ -25,7 +26,11 @@ public class Solver {
 				case CLOSEBLOCK:
 					break;
 				case CLOSEBRACKET:
-					subs.add(Arrays.asList(source).subList(openBrackets.get(openBrackets.size()-1), i));
+					subs.add(new WeaselToken(
+							WeaselTokenType.OPERATOR,
+							Arrays.asList(source).subList(
+									openBrackets.get(openBrackets.size()-1), i
+									));
 					break;
 				case CLOSEINDEX:
 					break;
@@ -50,7 +55,7 @@ public class Solver {
 				case OPENBLOCK:
 					break;
 				case OPENBRACKET:
-					openBrackets=i;
+					openBrackets.add(i+1);
 					break;
 				case OPENINDEX:
 					break;
