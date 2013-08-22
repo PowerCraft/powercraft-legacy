@@ -376,15 +376,6 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		return new WeaselGenericClassInfo(weaselClass, -1, gi);
 	}
 	
-	private int getGenericInformationIndex(String generic){
-		for(int i=0; i<genericInformation.length; i++){
-			if(genericInformation[i].genericName.equals(generic)){
-				return i;
-			}
-		}
-		return -1;
-	}
-	
 	private void compileField(List<WeaselToken> modifiers, WeaselGenericClassInfo typeInfo, String name, WeaselToken token) throws WeaselCompilerException{
 		int modifier = getModifier(modifiers, WeaselField.normalModifier);
 		String stype = typeInfo.genericClass.getByteName();

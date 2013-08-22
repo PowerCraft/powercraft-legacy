@@ -51,15 +51,21 @@ public class WeaselGenericClassInfo implements WeaselSaveable {
 
 	public String getName(WeaselClass weaselClass) {
 		String name;
+		String array="";
 		if(genericID!=-1){
 			name = weaselClass.genericInformation[genericID].genericName;
 			WeaselClass wc = genericClass;
 			while(wc.isArray()){
 				wc = wc.getArrayClass();
-				name += "[]";
+				array += "[]";
 			}
 		}else{
 			name = genericClass.getRealName();
+			int p = name.indexOf('[');
+			if(p!=-1){
+				array = name.substring(p);
+				name = name.substring(0, p);
+			}
 		}
 		if(generics.length>0){
 			name += "<";
@@ -70,7 +76,7 @@ public class WeaselGenericClassInfo implements WeaselSaveable {
 			}
 			name += ">";
 		}
-		return name;
+		return name+array;
 	}
 
 	public WeaselClass getWeaselClass(WeaselInterpreter weaselInterpreter, WeaselClass[] weaselClass) {

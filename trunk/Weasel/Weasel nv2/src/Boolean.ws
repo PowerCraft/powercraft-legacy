@@ -1,4 +1,4 @@
-public final class Boolean{
+public final class Boolean implements Compareable<Boolean>{
 
 	private final boolean value;
 
@@ -8,6 +8,10 @@ public final class Boolean{
 
 	public boolean booleanValue(){
 		return value;
+	}
+
+	public int compareTo(Boolean object){
+		return value?object.booleanValue?0:-1:object.booleanValue?1:0;
 	}
 
 	public boolean equals(Object o){
