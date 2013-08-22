@@ -4,20 +4,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import weasel.compiler.WeaselToken;
+import weasel.compiler.equationSolverNew.Solver.String2D;
 
-public interface IWeaselTokenTreeElement {
+public abstract class IWeaselTokenTreeElement {
 	
-	ArrayList<IWeaselTokenTreeElement> subs = new ArrayList<IWeaselTokenTreeElement>();
+	public abstract String getName();
 	
-	public String getName();
+	public abstract String toReadableString();
+	
+	public abstract String toEncryptedString();
+	
+	public abstract void toAdvancedEncryptedString(String2D str);
 
-	public void addSub(IWeaselTokenTreeElement... te);
+	public abstract String toClassView();
 	
-	public String toString();
-	
-	public String toEncryptedString();
-
-	public String toClassView();
-	
-	public WeaselToken simplify();
+	public abstract WeaselToken simplify();
 }

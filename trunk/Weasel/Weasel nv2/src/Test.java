@@ -9,6 +9,7 @@ import weasel.compiler.WeaselCompilerMessage;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenParser;
 import weasel.compiler.WeaselTokenType;
+import weasel.compiler.equationSolverNew.Solver;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselGenericClass;
 
@@ -17,15 +18,15 @@ public class Test  {
 	
 	public static void main(String[] args) throws WeaselCompilerException {
 		
-		WeaselTokenParser tp = new WeaselTokenParser("x=(5+4)*3-3*(2+4))+5*Class.<Integer>rand()/new Integer(2) ");
+		WeaselTokenParser tp = new WeaselTokenParser("x=(5+4)*(3-3*(2+4))+5*Class.<Integer>rand()/new Integer(2) ");
 		List<WeaselToken> tokenList = new ArrayList<WeaselToken>();
 		WeaselToken token = tp.getNextToken();
 		while(token.tokenType!=WeaselTokenType.NONE){
 			tokenList.add(token);
 			token = tp.getNextToken();
 		}
-		System.out.println(tokenList);
-		System.exit(0);
+		Solver.parse(tokenList.toArray(new WeaselToken[0]));
+		//System.out.println(tokenList);
 		WeaselCompiler compiler = new WeaselCompiler();
 		try{
 			compiler.compile(new WeaselClassFileProvider() {

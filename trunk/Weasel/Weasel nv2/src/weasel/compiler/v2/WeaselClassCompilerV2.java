@@ -113,7 +113,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 							genericListClass2.add(token);
 							token = getNextToken();
 						}while(token.tokenType == WeaselTokenType.COMMA);
-						if(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.SHIFT_RIGHT){
+						if(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.RSHIFT){
 							token = new WeaselToken(WeaselTokenType.OPERATOR, token.line, WeaselOperator.GREATER);
 							tokenParser.setNextToken(token);
 						}
@@ -336,7 +336,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 				token = getNextToken();
 			}while(token.tokenType == WeaselTokenType.COMMA);
 			if(!(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.GREATER)){
-				if(!(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.SHIFT_RIGHT)){
+				if(!(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.RSHIFT)){
 					onException(token.line, "Expect > at end of generic");
 				}else{
 					token = new WeaselToken(WeaselTokenType.OPERATOR, token.line, WeaselOperator.GREATER);

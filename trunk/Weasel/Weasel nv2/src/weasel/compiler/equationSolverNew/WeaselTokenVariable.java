@@ -3,8 +3,9 @@ package weasel.compiler.equationSolverNew;
 import java.util.Arrays;
 
 import weasel.compiler.WeaselToken;
+import weasel.compiler.equationSolverNew.Solver.String2D;
 
-public class WeaselTokenVariable implements IWeaselTokenTreeElement {
+public class WeaselTokenVariable extends IWeaselTokenTreeElement {
 
 	private final String name;
 	
@@ -18,10 +19,15 @@ public class WeaselTokenVariable implements IWeaselTokenTreeElement {
 	}
 
 	@Override
-	public void addSub(IWeaselTokenTreeElement... te) {
-		subs.addAll(Arrays.asList(te));
+	public String toString(){
+		return toReadableString();
 	}
-
+	
+	@Override
+	public String toReadableString() {
+		return getName();
+	}
+	
 	@Override
 	public String toEncryptedString() {
 		// TODO Auto-generated method stub
@@ -38,6 +44,11 @@ public class WeaselTokenVariable implements IWeaselTokenTreeElement {
 	public WeaselToken simplify() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void toAdvancedEncryptedString(String2D str) {
+
 	}
 
 }

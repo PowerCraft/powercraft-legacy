@@ -1,25 +1,34 @@
 package weasel.compiler.equationSolverNew;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.WeaselToken;
+import weasel.compiler.equationSolverNew.Solver.String2D;
+import weasel.compiler.equationSolverNew.WeaselTokenBrackets.BracketType;
 
-public class WeaselTokenOperator implements IWeaselTokenTreeElement{
+public class WeaselTokenOperator extends IWeaselTokenTreeElement{
 	
 	Properties operator;
+	protected List<IWeaselTokenTreeElement> subs = new ArrayList<IWeaselTokenTreeElement>();
+
 	
 	public WeaselTokenOperator(Properties op) {
 		operator = op;
 	}
+
+	public void addSubs(IWeaselTokenTreeElement...elements){
+		subs.addAll(Arrays.asList(elements));
+	}
+	
+	public List<IWeaselTokenTreeElement> getSubs(){
+		return subs;
+	}
 	
 	public String getId() {
 		return operator.operator;
-	}
-	
-	@Override
-	public void addSub(IWeaselTokenTreeElement... te){
-		subs.addAll(Arrays.asList(te));
 	}
 
 	@Override
@@ -28,7 +37,12 @@ public class WeaselTokenOperator implements IWeaselTokenTreeElement{
 	}
 
 	@Override
-	public String toString() {
+	public String toString(){
+		return toReadableString();
+	}
+	
+	@Override
+	public String toReadableString() {
 		String ret = "";
 		boolean brackets = false;
 		for (int i = 0; i < subs.size(); i++) {
@@ -57,6 +71,11 @@ public class WeaselTokenOperator implements IWeaselTokenTreeElement{
 		}
 		ret += ")";
 		return ret;
+	}
+
+	@Override
+	public void toAdvancedEncryptedString(String2D str) {
+
 	}
 	
 	@Override
