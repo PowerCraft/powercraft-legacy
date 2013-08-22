@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -6,9 +5,6 @@ import weasel.compiler.WeaselClassFileProvider;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerMessage;
-import weasel.compiler.WeaselToken;
-import weasel.compiler.WeaselTokenParser;
-import weasel.compiler.WeaselTokenType;
 import weasel.compiler.equationSolverNew.Solver;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselGenericClass;

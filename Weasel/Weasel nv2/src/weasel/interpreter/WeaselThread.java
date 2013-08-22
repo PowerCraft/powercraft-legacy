@@ -9,7 +9,7 @@ import weasel.interpreter.bytecode.WeaselInstructionNoTime;
 
 
 public final class WeaselThread implements WeaselSaveable {
-
+	
 	protected final WeaselInterpreter interpreter;
 	protected final String name;
 	protected final StackElement stack[];
