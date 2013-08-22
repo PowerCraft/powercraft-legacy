@@ -64,8 +64,8 @@ public class WeaselOperator {
 	public static final Properties LESS =				new Properties("<"		,"less"			,	10	,	false	,	true	,	false	,	true	,	unknown	,	unknown	);
 	public static final Properties GREATER_EQUAL =		new Properties(">="		,"greater equal",	10	,	false	,	true	,	false	,	true	,	unknown	,	unknown	);
 	public static final Properties LESS_EQUAL =			new Properties("<="		,"less equal"	,	10	,	false	,	true	,	false	,	true	,	unknown	,	unknown	);
-	public static final Properties SHIFT_LEFT =			new Properties("<<"		,"shift left"	,	11	,	false	,	true	,	false	,	true	,	unknown	,	unknown	);
-	public static final Properties SHIFT_RIGHT =		new Properties(">>"		,"shift right"	,	11	,	false	,	true	,	false	,	true	,	unknown	,	unknown	);
+	public static final Properties LSHIFT =				new Properties("<<"		,"shift left"	,	11	,	false	,	true	,	false	,	true	,	unknown	,	unknown	);
+	public static final Properties RSHIFT =				new Properties(">>"		,"shift right"	,	11	,	false	,	true	,	false	,	true	,	unknown	,	unknown	);
 	public static final Properties PLUS =				new Properties("+"		,"plus"			,	12	,	false	,	true	,	false	,	true	,	unknown	,	unknown	);
 	public static final Properties MINUS =				new Properties("-"		,"minus"		,	12	,	false	,	true	,	false	,	true	,	unknown	,	unknown	);
 	public static final Properties TIMES =				new Properties("*"		,"times"		,	13	,	false	,	true	,	false	,	true	,	unknown	,	unknown	);
@@ -113,8 +113,8 @@ public class WeaselOperator {
 		operators.put(LESS.operator, LESS);
 		operators.put(GREATER_EQUAL.operator, GREATER_EQUAL);
 		operators.put(LESS_EQUAL.operator, LESS_EQUAL);
-		operators.put(SHIFT_LEFT.operator, SHIFT_LEFT);
-		operators.put(SHIFT_RIGHT.operator, SHIFT_RIGHT);
+		operators.put(LSHIFT.operator, LSHIFT);
+		operators.put(RSHIFT.operator, RSHIFT);
 		operators.put(PLUS_PREFIX.operator, PLUS_PREFIX);
 		operators.put(MINUS.operator, MINUS);
 		operators.put(TIMES.operator, TIMES);

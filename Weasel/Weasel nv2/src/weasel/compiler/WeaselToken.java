@@ -4,8 +4,10 @@ import java.util.Arrays;
 
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.equationSolverNew.IWeaselTokenTreeElement;
+import weasel.compiler.equationSolverNew.Solver;
+import weasel.compiler.equationSolverNew.Solver.String2D;
 
-public class WeaselToken implements IWeaselTokenTreeElement{
+public class WeaselToken extends IWeaselTokenTreeElement{
 
 	public final WeaselTokenType tokenType;
 	public final int line;
@@ -24,11 +26,6 @@ public class WeaselToken implements IWeaselTokenTreeElement{
 	}
 	
 	@Override
-	public void addSub(IWeaselTokenTreeElement... te){
-		subs.addAll(Arrays.asList(te));
-	}
-	
-	@Override
 	public String getName() {
 		return ((Properties)param).operator;
 	}
@@ -37,12 +34,22 @@ public class WeaselToken implements IWeaselTokenTreeElement{
 	// -(+(12,*(5,3),/(5,3)),2)
 
 	@Override
-	public String toString() {
+	public String toString(){
+		return toReadableString();
+	}
+	
+	@Override
+	public String toReadableString() {
 		return param.toString();
 	}
 	
 	public String toEncryptedString() {
 		return ((Properties)param).operator;
+	}
+
+	@Override
+	public void toAdvancedEncryptedString(String2D str) {
+		str.add(toString());
 	}
 
 	public String toClassView() {
