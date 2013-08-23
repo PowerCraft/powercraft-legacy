@@ -1,5 +1,6 @@
 package weasel.compiler.equationSolverNew;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -9,12 +10,14 @@ import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.equationSolverNew.WeaselTokenBrackets.BracketType;
+import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 
 public class Solver {
 	Properties ops[] = WeaselOperator.operators.values().toArray(new Properties[0]);
 	
+
 	public static WeaselTokenOperator parse(WeaselToken[] source) throws WeaselCompilerException{
 		WeaselTokenOperator target;
 		WeaselTokenBrackets tmp = generateBracketTree(source);
@@ -27,6 +30,52 @@ public class Solver {
 		//for(Properties operator:ops){
 		//}
 		return target;
+	}
+	
+	private static WeaselTokenBrackets preProcessTree(WeaselTokenBrackets brackets) throws WeaselCompilerException{
+		Iterator<IWeaselTokenTreeElement> iterator = brackets.getSubs().iterator();
+		ArrayList<IWeaselTokenTreeElement> newSub = new ArrayList<IWeaselTokenTreeElement>();
+		while(iterator.hasNext()){
+			IWeaselTokenTreeElement sub = iterator.next();
+			if(sub instanceof WeaselToken){
+				WeaselToken wt = (WeaselToken)sub;
+				if(wt.tokenType==WeaselTokenType.KEYWORD && wt.param == WeaselKeyWord.NEW){
+					WeaselTokenFunction wtf = processNew(iterator);
+					if(wtf==null) throw new WeaselCompilerException(wt.line, "wrong construct after \"new\"");
+					newSub.add(wtf);
+				}else{
+					newSub.add(wt);
+				}
+				
+			}
+		}
+		brackets.getSubs().clear();
+		brackets.getSubs().addAll(newSub);
+		return null;
+	}
+	
+	private static WeaselTokenFunction processNew(Iterator<IWeaselTokenTreeElement> iterator){
+		if(!iterator.hasNext()) return null;
+		IWeaselTokenTreeElement sub = iterator.next();
+		if(!(sub instanceof WeaselToken)) return null;
+		WeaselToken wt = (WeaselToken) sub;
+		if(!(wt.tokenType==WeaselTokenType.IDENT)) return null;
+		WeaselTokenFunction target = new WeaselTokenFunction(name, ft, gens)
+		while()
+		
+		
+	}
+	
+	private static WeaselTokenOperator parseTree2(WeaselTokenBrackets brackets){
+		
+		return null;
+	}
+	
+	private static WeaselTokenBrackets reorderOperators(WeaselTokenBrackets bracks){
+		for(IWeaselTokenTreeElement subs:bracks.getSubs()){
+			if()
+		}
+		return null;
 	}
 	
 	private static WeaselTokenOperator parseTree(Iterator<Properties> it, WeaselTokenBrackets wtb){
@@ -46,14 +95,13 @@ public class Solver {
 			|| op==WeaselOperator.LESS
 			|| op==WeaselOperator.RSHIFT)
 				continue;
-			currentTmp=new WeaselTokenBrackets(BracketType.ROUND);
+			currentTmp=new WeaselTokenBrackets(BracketType.HELP_SUBS);
 			for(int i=0; i<size; i++){
 				te=wtb.getSubs().get(i);
 				if(te instanceof WeaselToken){
 					wt = (WeaselToken) te;
 					switch(wt.tokenType){
 					case IDENT:
-	 
 					case OPERATOR:
 						if(((Properties)wt.param)!=op)
 							break;
@@ -61,7 +109,7 @@ public class Solver {
 							target = new WeaselTokenOperator(op, wt);
 						target.addOldOperatorToken(wt);
 						target.addSubs(currentTmp);
-						currentTmp = new WeaselTokenBrackets(BracketType.ROUND);
+						currentTmp = new WeaselTokenBrackets(BracketType.HELP_SUBS);
 						continue;
 					default:
 					}
