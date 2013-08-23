@@ -7,6 +7,8 @@ class WeaselBuildInNatives {
 		weaselInterpreter.registerNativeMethod("Object.hashCode()I", new NativeObject.NativeHashCode());
 		weaselInterpreter.registerNativeMethod("Thread.getDefaultName()OString;", new NativeThread.NativeGetDefaultName());
 		weaselInterpreter.registerNativeMethod("Thread.sleep(L)", new NativeThread.NativeSleep());
+		weaselInterpreter.registerNativeMethod("Arrays.newArray(OClass;I)[OObject;", new NativeArrays.NativeNewArray());
+		weaselInterpreter.registerNativeMethod("Class.getArrayClass()OClass;", new NativeClass.NativeGetArrayClass());
 	}
 	
 	public static class NativeObject{
@@ -48,6 +50,33 @@ class WeaselBuildInNatives {
 			public Object invoke(WeaselInterpreter interpreter, WeaselThread thread, WeaselMethodExecutor executor, String functionName, WeaselObject _this, Object[] param) {
 				thread.sleep((long)param[0]);
 				return null;
+			}
+			
+		}
+		
+	}
+	
+	public static class NativeArrays{
+		
+		public static class NativeNewArray implements WeaselNativeMethod{
+
+			@Override
+			public Object invoke(WeaselInterpreter interpreter, WeaselThread thread, WeaselMethodExecutor executor, String functionName, WeaselObject _this, Object[] param) {
+				WeaselClass weaselClass = interpreter.baseTypes.getClassClass((WeaselObject)param[0]);
+				return interpreter.baseTypes.createArrayObject((Integer)param[1], weaselClass);
+			}
+			
+		}
+		
+	}
+	
+	public static class NativeClass{
+		
+		public static class NativeGetArrayClass implements WeaselNativeMethod{
+
+			@Override
+			public Object invoke(WeaselInterpreter interpreter, WeaselThread thread, WeaselMethodExecutor executor, String functionName, WeaselObject _this, Object[] param) {
+				return _this.getWeaselClass().getArrayClass().getClassObject();
 			}
 			
 		}
