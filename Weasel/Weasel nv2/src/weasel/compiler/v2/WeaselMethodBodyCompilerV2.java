@@ -8,6 +8,7 @@ import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerMessage;
 import weasel.compiler.WeaselCompilerMessage.MessageType;
 import weasel.compiler.equationSolverNew.Solver;
+import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
@@ -57,8 +58,11 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 				tokenList.add(token);
 				token = getNextToken();
 			}
-			Solver.parse(tokenList.toArray(new WeaselToken[0]));
-			
+			try{
+				Solver.parse(tokenList.toArray(new WeaselToken[0]));
+			}catch(WeaselCompilerException e){
+				onException(e.getLine(), e.getMessage());
+			}
 			token = getNextToken();
 		}
 		this.instructions = instructions.toArray(this.instructions);
