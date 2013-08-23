@@ -15,11 +15,16 @@ import weasel.compiler.equationSolverNew.Solver.String2D;
 public class WeaselTokenFunction extends IWeaselTokenTreeElement {
 	
 	private final String name;
+	private final FunctionType type;
 	private WeaselToken generics[];
 	private WeaselToken params[];
+	private enum FunctionType{
+		CREATE, CALL
+	}
 	
-	public WeaselTokenFunction(String name, WeaselToken... gens){
+	public WeaselTokenFunction(String name, FunctionType ft, WeaselToken... gens){
 		this.name = name;
+		type = ft;
 		generics = gens;
 	}
 	

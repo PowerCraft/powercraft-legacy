@@ -15,7 +15,7 @@ public class WeaselTokenBrackets extends IWeaselTokenTreeElement {
 
 	public final BracketType type;
 	public static enum BracketType{
-		ROUND("(", ")"), SQUARE("[", "]"), CURLY("{", "}");
+		ROUND("(", ")"), SQUARE("[", "]"), CURLY("{", "}"), HELP_SUBS("", ""), HELP_OPERATOR("", "");
 		
 		private final String openChar;
 		private final String closeChar;
