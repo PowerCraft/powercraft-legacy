@@ -60,6 +60,14 @@ public final class String implements Compareable<String>, Cloneable<String>{
 		return false;
 	}
 
+	public boolean equalsIgnoreCase(String other){
+		
+	}
+
+	public String toLowerCase(){
+	
+	}
+
 	public String clone(){
 		return this;
 	}

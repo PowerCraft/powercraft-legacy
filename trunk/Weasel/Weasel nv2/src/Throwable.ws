@@ -2,7 +2,7 @@ public class Throwable{
 
 	private final String message;
 	private final Throwable cause;
-	private StackTrace[] stackTrace;
+	private StackTraceElement[] stackTrace;
 	
 	public Throwable(String message, Throwable cause){
 		this.message = message;
@@ -25,7 +25,7 @@ public class Throwable{
 		return cause;
 	}
 
-	public StackTrace[] getStackTrace(){
+	public StackTraceElement[] getStackTrace(){
 		return stackTrace;
 	}
 
