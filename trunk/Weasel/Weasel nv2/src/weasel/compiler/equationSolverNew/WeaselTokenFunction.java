@@ -14,17 +14,12 @@ import weasel.compiler.equationSolverNew.Solver.String2D;
 
 public class WeaselTokenFunction extends IWeaselTokenTreeElement {
 	
-	private final String name;
-	private final FunctionType type;
+	private final WeaselToken name;
 	private WeaselToken generics[];
 	private WeaselToken params[];
-	private enum FunctionType{
-		CREATE, CALL
-	}
 	
-	public WeaselTokenFunction(String name, FunctionType ft, WeaselToken... gens){
+	public WeaselTokenFunction(WeaselToken name, WeaselToken... gens){
 		this.name = name;
-		type = ft;
 		generics = gens;
 	}
 	
@@ -45,12 +40,12 @@ public class WeaselTokenFunction extends IWeaselTokenTreeElement {
 	
 	@Override
 	public String getName() {
-		return name;
+		return getDisplayName();
 	}
 	
-	private <T> List<T> instance(){
-		
-		return new ArrayList<T>();
+	@Override
+	public String getDisplayName(){
+		return name.getName();
 	}
 
 	@Override
