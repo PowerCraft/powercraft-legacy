@@ -1,10 +1,7 @@
 package weasel.compiler;
 
-import java.util.Arrays;
-
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.equationSolverNew.IWeaselTokenTreeElement;
-import weasel.compiler.equationSolverNew.Solver;
 import weasel.compiler.equationSolverNew.Solver.String2D;
 
 public class WeaselToken extends IWeaselTokenTreeElement{

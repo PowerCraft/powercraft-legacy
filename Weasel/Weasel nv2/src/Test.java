@@ -18,7 +18,7 @@ public class Test  {
 	
 	public static void main(String[] args) throws WeaselCompilerException {
 		
-		WeaselTokenParser tp = new WeaselTokenParser("x=(5+4)*(3-3*(2+4))+5*Class.<Integer>rand()/new Integer(2) ");
+		WeaselTokenParser tp = new WeaselTokenParser("x=(5+4)*(3-3*(2+4))+5*Class.<Integer>rand()/new Integer(2,4) ");
 		List<WeaselToken> tokenList = new ArrayList<WeaselToken>();
 		WeaselToken token = tp.getNextToken();
 		while(token.tokenType!=WeaselTokenType.NONE){
