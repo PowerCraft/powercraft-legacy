@@ -15,7 +15,7 @@ import weasel.compiler.WeaselTokenType;
 public class Solver {
 	Properties ops[] = WeaselOperator.operators.values().toArray(new Properties[0]);
 	
-	public static WeaselTokenOperator parse(WeaselToken[] source){
+	public static WeaselTokenOperator parse(WeaselToken[] source) throws WeaselCompilerException{
 		WeaselTokenOperator target;
 		WeaselTokenBrackets tmp = generateBracketTree(source);
 		String2D str = new String2D();
