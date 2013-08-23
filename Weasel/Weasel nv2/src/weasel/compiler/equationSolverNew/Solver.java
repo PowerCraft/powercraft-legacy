@@ -2,6 +2,7 @@ package weasel.compiler.equationSolverNew;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import weasel.compiler.WeaselCompilerException;
@@ -14,47 +15,54 @@ import weasel.compiler.WeaselTokenType;
 public class Solver {
 	Properties ops[] = WeaselOperator.operators.values().toArray(new Properties[0]);
 	
-	public static WeaselTokenBrackets parse(WeaselToken[] source){
-		WeaselTokenBrackets target = generateBracketTree(source);
+	public static WeaselTokenOperator parse(WeaselToken[] source){
+		WeaselTokenOperator target;
+		WeaselTokenBrackets tmp = generateBracketTree(source);
 		String2D str = new String2D();
-		target.toAdvancedEncryptedString(str);
+		tmp.toAdvancedEncryptedString(str);
 		str.print();
 		System.exit(0);
-		parseTree(target);
+		target = parseTree(WeaselOperator.operators.values().iterator(), tmp);
 		ArrayList<WeaselToken> subs = new ArrayList<WeaselToken>();
 		//for(Properties operator:ops){
 		//}
 		return target;
 	}
 	
-	private static void parseTree(WeaselTokenBrackets wtb){
+	private static WeaselTokenOperator parseTree(Iterator<Properties> it, WeaselTokenBrackets wtb){
+		WeaselTokenOperator target = null;
 		IWeaselTokenTreeElement te;
 		WeaselToken wt;
 		WeaselTokenBrackets tb;
 		WeaselTokenOperator to;
 		WeaselTokenFunction tf;
 		WeaselTokenVariable tv;
-		final int size=wtb.subs.size();
-		WeaselTokenOperator currentOperator;
-		for(Properties op:WeaselOperator.operators.values()){
+		final int size=wtb.getSubs().size();
+		WeaselTokenBrackets currentTmp;
+		Properties op;
+		while(target==null && it.hasNext()){
+			op = it.next();
 			if(op==WeaselOperator.GREATER
 			|| op==WeaselOperator.LESS
 			|| op==WeaselOperator.RSHIFT)
 				continue;
-			currentOperator=null;
+			currentTmp=new WeaselTokenBrackets(BracketType.ROUND);
 			for(int i=0; i<size; i++){
-				te=wtb.subs.get(i);
+				te=wtb.getSubs().get(i);
 				if(te instanceof WeaselToken){
 					wt = (WeaselToken) te;
 					switch(wt.tokenType){
 					case IDENT:
 	 
 					case OPERATOR:
-						if(currentOperator==null)
-							currentOperator = new WeaselTokenOperator(op);
 						if(((Properties)wt.param)!=op)
-							continue;
-						break;
+							break;
+						if(target==null)
+							target = new WeaselTokenOperator(op, wt);
+						target.addOldOperatorToken(wt);
+						target.addSubs(currentTmp);
+						currentTmp = new WeaselTokenBrackets(BracketType.ROUND);
+						continue;
 					default:
 					}
 					
@@ -71,8 +79,12 @@ public class Solver {
 					tv = (WeaselTokenVariable) te;
 					
 				}
+				currentTmp.addSubs(te);
 			}
+			if(target!=null)
+				target.addSubs(currentTmp);
 		}
+		return target;
 	}
 	
 	private static WeaselTokenBrackets generateBracketTree(WeaselToken[] input){

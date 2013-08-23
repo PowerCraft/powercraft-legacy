@@ -29,7 +29,7 @@ public class WeaselTokenBrackets extends IWeaselTokenTreeElement {
 		}
 	}
 	
-	protected List<IWeaselTokenTreeElement> subs = new ArrayList<IWeaselTokenTreeElement>();
+	private List<IWeaselTokenTreeElement> subs = new ArrayList<IWeaselTokenTreeElement>();
 	
 	public WeaselTokenBrackets(BracketType t){
 		type = t;

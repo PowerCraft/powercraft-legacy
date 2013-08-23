@@ -11,14 +11,20 @@ import weasel.compiler.equationSolverNew.WeaselTokenBrackets.BracketType;
 
 public class WeaselTokenOperator extends IWeaselTokenTreeElement{
 	
-	Properties operator;
-	protected List<IWeaselTokenTreeElement> subs = new ArrayList<IWeaselTokenTreeElement>();
+	private final Properties operator;
+	private final ArrayList<WeaselToken> oldToken = new ArrayList<WeaselToken>();
+	private List<IWeaselTokenTreeElement> subs = new ArrayList<IWeaselTokenTreeElement>();
 
 	
-	public WeaselTokenOperator(Properties op) {
+	public WeaselTokenOperator(Properties op, WeaselToken old) {
 		operator = op;
+		oldToken.add(old);
 	}
 
+	public void addOldOperatorToken(WeaselToken token){
+		oldToken.add(token);
+	}
+	
 	public void addSubs(IWeaselTokenTreeElement...elements){
 		subs.addAll(Arrays.asList(elements));
 	}
@@ -75,7 +81,11 @@ public class WeaselTokenOperator extends IWeaselTokenTreeElement{
 
 	@Override
 	public void toAdvancedEncryptedString(String2D str) {
-
+		str.add(operator.operator+"#");
+		for(int i=0; i<subs.size(); i++){
+			subs.get(i).toAdvancedEncryptedString(str);
+		}
+		str.add("#");
 	}
 	
 	@Override
