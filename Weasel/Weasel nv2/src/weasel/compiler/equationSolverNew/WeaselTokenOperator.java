@@ -41,6 +41,11 @@ public class WeaselTokenOperator extends IWeaselTokenTreeElement{
 
 	@Override
 	public String getName() {
+		return getDisplayName();
+	}
+	
+	@Override
+	public String getDisplayName(){
 		return operator.fullName;
 	}
 

@@ -10,6 +10,8 @@ public abstract class IWeaselTokenTreeElement {
 	
 	public abstract String getName();
 	
+	public abstract String getDisplayName();
+	
 	public abstract String toReadableString();
 	
 	public abstract String toEncryptedString();

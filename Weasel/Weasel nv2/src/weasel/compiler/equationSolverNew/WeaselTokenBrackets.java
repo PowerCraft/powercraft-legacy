@@ -56,6 +56,11 @@ public class WeaselTokenBrackets extends IWeaselTokenTreeElement {
 		target+="]";
 		return target;
 	}
+	
+	@Override
+	public String getDisplayName(){
+		return "";
+	}
 
 	@Override
 	public String toString(){

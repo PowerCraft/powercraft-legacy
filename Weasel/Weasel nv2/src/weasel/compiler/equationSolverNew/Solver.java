@@ -59,7 +59,7 @@ public class Solver {
 		IWeaselTokenTreeElement sub = iterator.next();
 		if(!(sub instanceof WeaselToken)) return null;
 		WeaselToken wt = (WeaselToken) sub;
-		if(!(wt.tokenType==WeaselTokenType.IDENT)) return null;
+		if(!(wt.tokenType==WeaselTokenType.IDENT)) throw new WeaselCompilerException(wt.line, "Expected Identifier but got %s", wt);
 		WeaselTokenFunction target = new WeaselTokenFunction(name, ft, gens)
 		while()
 		
