@@ -316,6 +316,4 @@ public final class WeaselThread implements WeaselSaveable {
 		}
 	}
 	
-	
-	
 }

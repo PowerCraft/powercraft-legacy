@@ -22,7 +22,7 @@ public class WeaselInstructionSaveVariable extends WeaselInstruction {
 	
 	@Override
 	public void run(WeaselInterpreter interpreter, WeaselThread thread, WeaselMethodExecutor method) {
-		thread.set(method.getStackBottom()-pos, thread.pop());
+		thread.set(method.getStackBottom()-pos, thread.get(thread.getStackPointer()-1));
 	}
 
 	@Override

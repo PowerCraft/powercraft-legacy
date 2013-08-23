@@ -87,5 +87,10 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 	protected void onException(int line, String message, Object...obj){
 		compiler.addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, line, parentClass.getFileName(), String.format(message, obj)));
 	}
+
+	@Override
+	public WeaselVariableInfo getVariable(String name) {
+		return variables.get(name);
+	}
 	
 }
