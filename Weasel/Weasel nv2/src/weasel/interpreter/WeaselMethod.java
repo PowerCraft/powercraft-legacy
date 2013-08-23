@@ -126,7 +126,9 @@ public final class WeaselMethod {
 			desk += genericParams[i].genericClass.getByteName();
 		}
 		desk += ")";
-		desk += genericReturn.genericClass.getByteName();
+		if(genericReturn.genericClass!=parentClass.interpreter.baseTypes.voidClass){
+			desk += genericReturn.genericClass.getByteName();
+		}
 		return desk;
 	}
 	
@@ -153,6 +155,10 @@ public final class WeaselMethod {
 			params += genericParams[i].getName(parentClass)+" ";
 		}
 		return WeaselModifier.toString2(modifier)+genericReturn.getName(parentClass)+" "+name+"("+params.trim()+")";
+	}
+
+	public WeaselClass getParentClass() {
+		return parentClass;
 	}
 	
 }

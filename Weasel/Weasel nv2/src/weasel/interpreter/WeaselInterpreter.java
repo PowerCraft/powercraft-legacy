@@ -17,6 +17,7 @@ public class WeaselInterpreter implements WeaselSaveable {
 	protected final WeaselObject[] objectPointer;
 	protected final HashMap<String, WeaselClass> loadedClasses;
 	private List<WeaselThread> threads = new ArrayList<WeaselThread>();
+	private int nextThreadID=1;
 	private int activeThreadID;
 	private HashMap<String, Synchronized> synchronizeds;
 	private HashMap<String, WeaselNativeMethod> nativeMethods = new HashMap<String, WeaselNativeMethod>();
@@ -56,6 +57,7 @@ public class WeaselInterpreter implements WeaselSaveable {
 			String token = dataInputStream.readUTF();
 			synchronizeds.put(token, new Synchronized(this, dataInputStream));
 		}
+		nextThreadID = dataInputStream.readInt();
 		WeaselBuildInNatives.register(this);
 	}
 	
@@ -83,6 +85,7 @@ public class WeaselInterpreter implements WeaselSaveable {
 			dataOutputStream.writeUTF(e.getKey());
 			e.getValue().saveToDataStream(dataOutputStream);
 		}
+		dataOutputStream.writeInt(nextThreadID);
 	}
 	
 	public WeaselObject getObject(int pointer){
@@ -252,6 +255,17 @@ public class WeaselInterpreter implements WeaselSaveable {
 			numInstructions--;
 		}
 		return 0;
+	}
+	
+	public void start(String name, int stackSize, WeaselMethodBody methodBody) {
+		WeaselThread thread = new WeaselThread(this, name, stackSize);
+		thread.call(methodBody);
+		threads.add(thread);
+		nextThreadID++;
+	}
+	
+	public String getDefaultThreadName() {
+		return "Thread-"+nextThreadID;
 	}
 	
 	public void sync(WeaselThread thread, String token){
