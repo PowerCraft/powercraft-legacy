@@ -1,9 +1,14 @@
 package weasel.compiler.equationSolverNew;
 
 import java.util.Arrays;
+import java.util.List;
 
+import weasel.compiler.WeaselCompiler;
+import weasel.compiler.WeaselCompilerException;
+import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.equationSolverNew.Solver.String2D;
+import weasel.interpreter.bytecode.WeaselInstruction;
 
 public class WeaselTokenVariable extends IWeaselTokenTreeElement {
 
@@ -49,6 +54,14 @@ public class WeaselTokenVariable extends IWeaselTokenTreeElement {
 	@Override
 	public void toAdvancedEncryptedString(String2D str) {
 
+	}
+
+	@Override
+	public WeaselCompileReturn compile(WeaselCompiler compiler,
+			WeaselKeyWordCompilerHelper compilerHelper)
+			throws WeaselCompilerException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

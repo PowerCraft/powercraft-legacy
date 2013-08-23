@@ -1,33 +1,22 @@
 package weasel.compiler.v2;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import weasel.compiler.WeaselCompiler;
-import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerMessage;
 import weasel.compiler.WeaselCompilerMessage.MessageType;
-import weasel.compiler.WeaselCompilerReturn;
+import weasel.compiler.equationSolverNew.Solver;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
-import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 import weasel.compiler.WeaselVariableInfo;
-import weasel.compiler.keywords.WeaselKeyWord;
-import weasel.compiler.keywords.WeaselKeyWordCompiler;
-import weasel.compiler.tokenmap.WeaselTokenMap;
-import weasel.compiler.tokenmap.WeaselTokenMapCode;
-import weasel.compiler.tokenmap.WeaselTokenMapOperator;
-import weasel.compiler.tokenmap.WeaselTokenMapOperatorBlock;
-import weasel.compiler.tokenmap.WeaselTokenMapValue;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
 import weasel.interpreter.WeaselModifier;
 import weasel.interpreter.bytecode.WeaselInstruction;
-import weasel.interpreter.bytecode.WeaselInstructionPop;
 
 public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements WeaselKeyWordCompilerHelper {
 
@@ -63,7 +52,14 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
 		WeaselToken token = getNextToken();
 		while(token.tokenType!=WeaselTokenType.NONE){
+			List<WeaselToken> tokenList = new ArrayList<WeaselToken>();
+			while(token.tokenType!=WeaselTokenType.SEMICOLON){
+				tokenList.add(token);
+				token = getNextToken();
+			}
+			Solver.parse(tokenList.toArray(new WeaselToken[0]));
 			
+			token = getNextToken();
 		}
 		this.instructions = instructions.toArray(this.instructions);
 	}

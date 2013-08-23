@@ -3,6 +3,7 @@ package weasel.compiler;
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.equationSolverNew.IWeaselTokenTreeElement;
 import weasel.compiler.equationSolverNew.Solver.String2D;
+import weasel.compiler.equationSolverNew.WeaselCompileReturn;
 
 public class WeaselToken extends IWeaselTokenTreeElement{
 
@@ -55,5 +56,13 @@ public class WeaselToken extends IWeaselTokenTreeElement{
 	
 	public WeaselToken simplify() {
 		return this;	
+	}
+
+	@Override
+	public WeaselCompileReturn compile(WeaselCompiler compiler,
+			WeaselKeyWordCompilerHelper compilerHelper)
+			throws WeaselCompilerException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

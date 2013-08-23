@@ -1,8 +1,8 @@
 package weasel.compiler.equationSolverNew;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import weasel.compiler.WeaselCompiler;
+import weasel.compiler.WeaselCompilerException;
+import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.equationSolverNew.Solver.String2D;
 
@@ -19,4 +19,7 @@ public abstract class IWeaselTokenTreeElement {
 	public abstract String toClassView();
 	
 	public abstract WeaselToken simplify();
+	
+	public abstract WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper) throws WeaselCompilerException;
+	
 }
