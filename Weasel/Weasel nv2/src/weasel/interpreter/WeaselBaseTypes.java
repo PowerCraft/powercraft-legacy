@@ -18,6 +18,7 @@ public class WeaselBaseTypes {
 	public final static String weaselCloneableClassName = "OCloneable;";
 	public final static String weaselRunnableClassName = "ORunnable;";
 	public final static String weaselThreadClassName = "OThread;";
+	public final static String weaselThrowableClassName = "OThrowable;";
 	
 	private final WeaselInterpreter interpreter;
 	public final WeaselPrimitive booleanClass;
@@ -55,6 +56,7 @@ public class WeaselBaseTypes {
 	
 	private WeaselClass weaselClassClass;
 	private WeaselField weaselClassClassNameField;
+	private WeaselField weaselClassClassByteNameField;
 	
 	public WeaselClass getClassClass(){
 		if(weaselClassClass==null){
@@ -71,10 +73,18 @@ public class WeaselBaseTypes {
 		return weaselClassClassNameField;
 	}
 	
+	public WeaselField getClassClassByteNameField(){
+		if(weaselClassClassByteNameField==null){
+			weaselClassClassByteNameField = getClassClass().getField("classByteName");
+		}
+		return weaselClassClassByteNameField;
+	}
+	
 	protected int createClassObject(WeaselClass wClass) {
 		WeaselClass weaselClass = getClassClass();
 		int obj = interpreter.createObject(weaselClass, 0);
 		getClassClassNameField().setObject(interpreter.getObject(obj), createStringObject(wClass.getRealName()));
+		getClassClassByteNameField().setObject(interpreter.getObject(obj), createStringObject(wClass.getByteName()));
 		return obj;
 	}
 	
@@ -83,8 +93,13 @@ public class WeaselBaseTypes {
 		return getString(interpreter.getObject(name));
 	}
 	
+	public String getClassByteName(WeaselObject object){
+		int name = getClassClassByteNameField().getObject(object);
+		return getString(interpreter.getObject(name));
+	}
+	
 	public WeaselClass getClassClass(WeaselObject object){
-		return interpreter.getWeaselClass(getClassName(object));
+		return interpreter.getWeaselClass(getClassByteName(object));
 	}
 	
 	
@@ -606,6 +621,48 @@ public class WeaselBaseTypes {
 
 	public int getThreadStackSize(WeaselObject object) {
 		return getThreadStackSizeField().getInt(object);
+	}
+	
+	
+	private WeaselClass weaselThrowableClass;
+	private WeaselField weaselThrowableMessageField;
+	private WeaselField weaselThrowableCauseField;
+	private WeaselField weaselThrowableStackTraceField;
+	
+	public WeaselClass getThrowableClass() {
+		if(weaselThrowableClass==null){
+			weaselThrowableClass = interpreter.getWeaselClass(weaselThrowableClassName);
+		}
+		return weaselThrowableClass;
+	}
+
+	public WeaselField getThrowableMessageField(){
+		if(weaselThrowableMessageField==null){
+			weaselThrowableMessageField = getThreadClass().getField("message");
+		}
+		return weaselThrowableMessageField;
+	}
+	
+	public WeaselField getThrowableCauseField(){
+		if(weaselThrowableCauseField==null){
+			weaselThrowableCauseField = getThreadClass().getField("cause");
+		}
+		return weaselThrowableCauseField;
+	}
+	
+	public WeaselField getThrowableStackTraceField(){
+		if(weaselThrowableStackTraceField==null){
+			weaselThrowableStackTraceField = getThreadClass().getField("stackTrace");
+		}
+		return weaselThrowableStackTraceField;
+	}
+	
+	public String getThrowableMessage(WeaselObject object) {
+		return getString(interpreter.getObject(getThrowableMessageField().getObject(object)));
+	}
+
+	public int getThrowableCause(WeaselObject object) {
+		return getThrowableCauseField().getObject(object);
 	}
 	
 	
