@@ -61,11 +61,37 @@ public final class String implements Compareable<String>, Cloneable<String>{
 	}
 
 	public boolean equalsIgnoreCase(String other){
-		
+		if(other==this)
+			return true;
+		if(value.lengh==other.length()){
+			for(int i=0; i<value.lengh; i++){
+				char c1, c2;
+				c1 = value[i];
+				c2 = other.charAt(i);
+				if(c1 != c2){
+					if(Character.toLowerCase(c1)!=Character.toLowerCase(c2)){
+						return false;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	public String toLowerCase(){
-	
+		char[] copy = new char[value.length];
+		for(int i=0; i<copy.length; i++){
+			copy[i] = Character.toLowerCase(value[i]);
+		}
+		return new String(copy);
+	}
+
+	public String toUpperCase(){
+		char[] copy = new char[value.length];
+		for(int i=0; i<copy.length; i++){
+			copy[i] = Character.toUpperCase(value[i]);
+		}
+		return new String(copy);
 	}
 
 	public String clone(){
