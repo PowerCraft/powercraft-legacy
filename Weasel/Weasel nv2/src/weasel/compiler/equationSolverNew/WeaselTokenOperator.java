@@ -10,8 +10,6 @@ import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.equationSolverNew.Solver.String2D;
-import weasel.compiler.equationSolverNew.WeaselTokenBrackets.BracketType;
-import weasel.interpreter.bytecode.WeaselInstruction;
 
 public class WeaselTokenOperator extends IWeaselTokenTreeElement{
 	
