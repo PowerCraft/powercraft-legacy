@@ -19,7 +19,6 @@ public class WeaselBaseTypes {
 	public final static String weaselRunnableClassName = "ORunnable;";
 	public final static String weaselThreadClassName = "OThread;";
 	public final static String weaselThrowableClassName = "OThrowable;";
-	public final static String weaselVMExceptionClassName = "OVMException;";
 	
 	private final WeaselInterpreter interpreter;
 	public final WeaselPrimitive booleanClass;
@@ -654,21 +653,13 @@ public class WeaselBaseTypes {
 		return getThrowableCauseField().getObject(object);
 	}
 	
-	
-	private WeaselClass weaselVMExceptionClass;
-	
-	public WeaselClass getVMExceptionClass(){
-		if(weaselVMExceptionClass==null){
-			weaselVMExceptionClass = interpreter.getWeaselClass(weaselVMExceptionClassName);
-		}
-		return weaselVMExceptionClass;
-	}
-	
-	public int createVMException(WeaselRuntimeException wre) {
-		WeaselClass weaselClass = getVMExceptionClass();
+	public int createException(String exceptionClass, String message, int cause){
+		WeaselClass weaselClass = interpreter.getWeaselClass(exceptionClass);
+		WeaselChecks.checkCast(weaselClass, getThrowableClass());
 		int obj = interpreter.createObject(weaselClass, 0);
-		WeaselObject vmException = interpreter.getObject(obj);
-		getThrowableMessageField().setObject(vmException, createStringObject(wre.getMessage()));
+		WeaselObject object = interpreter.getObject(obj);
+		getThrowableMessageField().setObject(object, createStringObject(message));
+		getThrowableCauseField().setObject(object, cause);
 		return obj;
 	}
 	
