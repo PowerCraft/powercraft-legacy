@@ -1,14 +1,19 @@
 package weasel.compiler.equationSolverNew;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
+import weasel.compiler.WeaselVariableInfo;
 import weasel.compiler.equationSolverNew.Solver.String2D;
+import weasel.interpreter.WeaselChecks;
+import weasel.interpreter.WeaselClass;
 import weasel.interpreter.bytecode.WeaselInstruction;
+import weasel.interpreter.bytecode.WeaselInstructionLoadVariable;
+import weasel.interpreter.bytecode.WeaselInstructionSaveVariable;
 
 public class WeaselTokenVariable extends IWeaselTokenTreeElement {
 
@@ -58,10 +63,20 @@ public class WeaselTokenVariable extends IWeaselTokenTreeElement {
 
 	@Override
 	public WeaselCompileReturn compile(WeaselCompiler compiler,
-			WeaselKeyWordCompilerHelper compilerHelper)
+			WeaselKeyWordCompilerHelper compilerHelper, WeaselClass write)
 			throws WeaselCompilerException {
-		// TODO Auto-generated method stub
-		return null;
+		WeaselVariableInfo wvi = compilerHelper.getVariable(name);
+		if(wvi==null){
+			throw new WeaselCompilerException(0, "Variable not declared %s", name);
+		}
+		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
+		if(write==null){
+			instructions.add(new WeaselInstructionLoadVariable(wvi.pos));
+		}else{
+			WeaselChecks.checkCast(write, wvi.type);
+			instructions.add(new WeaselInstructionSaveVariable(wvi.pos));
+		}
+		return new WeaselCompileReturn(instructions, wvi.type);
 	}
 
 }
