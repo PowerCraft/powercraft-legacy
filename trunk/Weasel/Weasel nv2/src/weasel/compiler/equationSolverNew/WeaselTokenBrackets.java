@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import weasel.compiler.WeaselCompiler;
+import weasel.compiler.WeaselCompilerException;
+import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.equationSolverNew.Solver.String2D;
+import weasel.interpreter.bytecode.WeaselInstruction;
 
 public class WeaselTokenBrackets extends IWeaselTokenTreeElement {
 
@@ -102,6 +106,11 @@ public class WeaselTokenBrackets extends IWeaselTokenTreeElement {
 			target+=sub.getName();
 		}
 		return null;
+	}
+
+	@Override
+	public WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper) throws WeaselCompilerException {
+		throw new WeaselCompilerException(0, "Token Bracket not exepted");
 	}
 
 }
