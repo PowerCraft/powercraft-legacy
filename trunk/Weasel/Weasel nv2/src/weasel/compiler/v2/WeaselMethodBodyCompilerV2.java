@@ -8,6 +8,7 @@ import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerMessage;
 import weasel.compiler.WeaselCompilerMessage.MessageType;
 import weasel.compiler.equationSolverNew.Solver;
+import weasel.compiler.equationSolverNew.WeaselCompileReturn;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
@@ -18,6 +19,7 @@ import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
 import weasel.interpreter.WeaselModifier;
 import weasel.interpreter.bytecode.WeaselInstruction;
+import weasel.interpreter.bytecode.WeaselInstructionPop;
 
 public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements WeaselKeyWordCompilerHelper {
 
@@ -59,7 +61,11 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 				token = getNextToken();
 			}
 			try{
-				Solver.parse(tokenList.toArray(new WeaselToken[0]));
+				WeaselCompileReturn wcr = Solver.parse(tokenList.toArray(new WeaselToken[0])).compile(compiler, this);
+				instructions.addAll(wcr.instructions);
+				if(wcr.returnType!=compiler.baseTypes.voidClass){
+					instructions.add(new WeaselInstructionPop());
+				}
 			}catch(WeaselCompilerException e){
 				onException(e.getLine(), e.getMessage());
 			}
