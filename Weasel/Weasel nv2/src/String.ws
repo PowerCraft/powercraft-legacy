@@ -18,4 +18,8 @@ public final class String{
 		return value[i];
 	}
 
+	public String toString(){
+		return this;
+	}
+
 }
