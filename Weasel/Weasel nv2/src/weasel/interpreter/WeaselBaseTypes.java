@@ -114,7 +114,8 @@ public class WeaselBaseTypes {
 	
 	
 	private WeaselClass weaselBooleanClass;
-	private WeaselField weaselBooleanValueField;
+	private WeaselField weaselBooleanTRUEField;
+	private WeaselField weaselBooleanFALSEField;
 	
 	public WeaselClass getBooleanClass(){
 		if(weaselBooleanClass==null){
@@ -123,26 +124,22 @@ public class WeaselBaseTypes {
 		return weaselBooleanClass;
 	}
 	
-	public WeaselField getBooleanValueField(){
-		if(weaselBooleanValueField==null){
-			weaselBooleanValueField = getBooleanClass().getField("value");
+	public WeaselField getBooleanTRUEField(){
+		if(weaselBooleanTRUEField==null){
+			weaselBooleanTRUEField = getBooleanClass().getField("TRUE");
 		}
-		return weaselBooleanValueField;
+		return weaselBooleanTRUEField;
+	}
+	
+	public WeaselField getBooleanFALSEField(){
+		if(weaselBooleanFALSEField==null){
+			weaselBooleanFALSEField = getBooleanClass().getField("FALSE");
+		}
+		return weaselBooleanFALSEField;
 	}
 	
 	public int createBooleanObject(boolean value) {
-		WeaselClass weaselClass = getBooleanClass();
-		int obj = interpreter.createObject(weaselClass, 0);
-		setBoolean(interpreter.getObject(obj), value);
-		return obj;
-	}
-	
-	public boolean getBoolean(WeaselObject object){
-		return getBooleanValueField().getBoolean(object);
-	}
-	
-	public void setBoolean(WeaselObject object, boolean value){
-		getBooleanValueField().setBoolean(object, value);
+		return (value?getBooleanTRUEField():getBooleanFALSEField()).getObject(null);
 	}
 	
 	

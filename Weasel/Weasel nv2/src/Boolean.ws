@@ -1,24 +1,17 @@
-public final class Boolean implements Compareable<Boolean>{
+public enum Boolean{
 
-	private final boolean value;
+	TRUE, FALSE;
 
-	public Boolean(boolean value){
-		this.value = value;
+	public String toString(){
+		return super.toString().toLowerCase();
 	}
 
-	public boolean booleanValue(){
-		return value;
+	public static Boolean valueOf(boolean b){
+		return b?TRUE:FALSE;
 	}
 
-	public int compareTo(Boolean object){
-		return value?object.booleanValue()?0:-1:object.booleanValue()?1:0;
-	}
-
-	public boolean equals(Object o){
-		if(o instanceof Boolean){
-			return ((Boolean)o).booleanValue()==value;
-		}
-		return false;
+	public static Boolean valueOf(String s){
+		return "true".equalsIgnoreCase(s)?TRUE:FALSE;
 	}
 
 }
