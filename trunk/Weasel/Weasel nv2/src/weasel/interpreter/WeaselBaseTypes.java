@@ -16,6 +16,8 @@ public class WeaselBaseTypes {
 	public final static String weaselStringClassName = "OString;";
 	public final static String weaselCompareableClassName = "OCompareable;";
 	public final static String weaselCloneableClassName = "OCloneable;";
+	public final static String weaselRunnableClassName = "ORunnable;";
+	public final static String weaselThreadClassName = "OThread;";
 	
 	private final WeaselInterpreter interpreter;
 	public final WeaselPrimitive booleanClass;
@@ -562,5 +564,50 @@ public class WeaselBaseTypes {
 		field.setObject(interpreter.getObject(obj), createStringObject(wre.getMessage()));
 		return obj;
 	}
+	
+	
+	private WeaselClass weaselRunnableClass;
+	
+	public WeaselClass getRunnableClass(){
+		if(weaselRunnableClass==null){
+			weaselRunnableClass = interpreter.getWeaselClass(weaselRunnableClassName);
+		}
+		return weaselRunnableClass;
+	}
+
+	private WeaselClass weaselThreadClass;
+	private WeaselField weaselThreadNameField;
+	private WeaselField weaselThreadStackSizeField;
+	
+	public WeaselClass getThreadClass() {
+		if(weaselThreadClass==null){
+			weaselThreadClass = interpreter.getWeaselClass(weaselThreadClassName);
+		}
+		return weaselThreadClass;
+	}
+
+	public WeaselField getThreadNameField(){
+		if(weaselThreadNameField==null){
+			weaselThreadNameField = getThreadClass().getField("name");
+		}
+		return weaselThreadNameField;
+	}
+	
+	public WeaselField getThreadStackSizeField(){
+		if(weaselThreadStackSizeField==null){
+			weaselThreadStackSizeField = getThreadClass().getField("stackSize");
+		}
+		return weaselThreadStackSizeField;
+	}
+	
+	public String getThreadName(WeaselObject object) {
+		return getString(interpreter.getObject(getThreadNameField().getObject(object)));
+	}
+
+	public int getThreadStackSize(WeaselObject object) {
+		return getThreadStackSizeField().getInt(object);
+	}
+	
+	
 	
 }

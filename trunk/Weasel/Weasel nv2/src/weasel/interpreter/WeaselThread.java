@@ -124,7 +124,7 @@ public final class WeaselThread implements WeaselSaveable {
 		return "Thread-"+name;
 	}
 
-	public void sleep(int toSleep) {
+	public void sleep(long toSleep) {
 		sleepTime = toSleep;
 	}
 	

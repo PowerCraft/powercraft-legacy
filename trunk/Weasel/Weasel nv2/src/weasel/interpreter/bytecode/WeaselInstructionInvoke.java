@@ -20,6 +20,7 @@ public class WeaselInstructionInvoke extends WeaselInstruction {
 
 	private final String methodDesk;
 	private WeaselMethod method;
+	private boolean isRunnable;
 	
 	public WeaselInstructionInvoke(String methodDesk){
 		this.methodDesk = methodDesk;
@@ -91,9 +92,17 @@ public class WeaselInstructionInvoke extends WeaselInstruction {
 				break;
 			}
 		}else{
-			thread.call(methodBody);
-			for(int i=0; i<this.method.getParamClasses().length; i++){
-				thread.pop();
+			if(isRunnable){
+				if(object.getWeaselClass().canCastTo(interpreter.baseTypes.getThreadClass())){
+					interpreter.start(interpreter.baseTypes.getThreadName(object), interpreter.baseTypes.getThreadStackSize(object), methodBody);
+				}else{
+					interpreter.start(interpreter.getDefaultThreadName(), 100, methodBody);
+				}
+			}else{
+				thread.call(methodBody);
+				for(int i=0; i<this.method.getParamClasses().length; i++){
+					thread.pop();
+				}
 			}
 		}
 	}
@@ -101,6 +110,7 @@ public class WeaselInstructionInvoke extends WeaselInstruction {
 	private void resolve(WeaselInterpreter interpreter){
 		if(method==null){
 			method = interpreter.getMethodByDesk(methodDesk).getMethod();
+			isRunnable = method.getNameAndDesk().equals("run()") && method.getParentClass().canCastTo(interpreter.baseTypes.getRunnableClass());
 		}
 	}
 	
