@@ -48,7 +48,7 @@ class WeaselBuildInNatives {
 
 			@Override
 			public Object invoke(WeaselInterpreter interpreter, WeaselThread thread, WeaselMethodExecutor executor, String functionName, WeaselObject _this, Object[] param) {
-				thread.sleep((long)param[0]);
+				thread.sleep((Long)param[0]);
 				return null;
 			}
 			

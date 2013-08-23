@@ -100,7 +100,7 @@ public final class WeaselThread implements WeaselSaveable {
 				}else{
 					wre = new WeaselRuntimeException(e, this);
 				}
-				setException(interpreter.baseTypes.createVMException(wre));
+				setException(interpreter.baseTypes.createException("OVMException;", wre.getMessage(), 0));
 			}
 			if(exception!=0){
 				while(true){

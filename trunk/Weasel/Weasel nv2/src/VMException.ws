@@ -1,4 +1,4 @@
-public final VMException extends Throwable{
+public final class VMException extends Throwable{
 	
 	private VMException(){}
 	
