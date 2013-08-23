@@ -2,8 +2,11 @@ public enum Boolean{
 
 	TRUE, FALSE;
 
+	private static final String TRUENAME="true";
+	private static final String FALSENAME="false";
+
 	public String toString(){
-		return super.toString().toLowerCase();
+		return this==TRUE?TRUENAME:FALSENAME;
 	}
 
 	public static Boolean valueOf(boolean b){
@@ -11,7 +14,7 @@ public enum Boolean{
 	}
 
 	public static Boolean valueOf(String s){
-		return "true".equalsIgnoreCase(s)?TRUE:FALSE;
+		return TRUENAME.equalsIgnoreCase(s)?TRUE:FALSE;
 	}
 
 }

@@ -1,4 +1,4 @@
-public abstract Number{
+public abstract Number implements Cloneable<Number>{
 
 	public abstract int intValue();
 	

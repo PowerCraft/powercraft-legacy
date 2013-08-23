@@ -39,13 +39,7 @@ public final class Integer extends Number{
 	}
 
 	public static String toHexString(int value){
-		String hex = "";
-		do{
-			int i = value % 16;
-			value /= 16;
-			hex += i;
-		}while(value!=0);
-		return hex;
+		return toUnsignedString(value, 4);
 	}
 
 	private static String toUnsignedString(int i, int shift) {
