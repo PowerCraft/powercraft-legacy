@@ -1,13 +1,17 @@
 public final class String{
 
-	private char[] value;
+	private final char[] value;
 	
 	public String(String value){
 		this.value = value.value;
 	}
 	
 	public String(char[] value){
-		this.value = value;
+		this.value = Arrays.arrayCopy(value);
+	}
+
+	public String(char[] value, int start, int end){
+		this.value = Arrays.arrayCopy(value, start, end);
 	}
 
 	public char charAt(int i){

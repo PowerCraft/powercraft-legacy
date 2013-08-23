@@ -14,7 +14,7 @@ import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselGenericClass;
 
 
-public class Test  {
+public class Test {
 	
 	public static void main(String[] args) throws WeaselCompilerException {
 		
