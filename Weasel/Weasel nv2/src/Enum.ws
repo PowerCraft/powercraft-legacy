@@ -20,7 +20,7 @@ public class Enum<E extends Enum<E>> implements Compareable<E>{
 		return this==o;
 	}
 
-	public final String toString(){
+	public String toString(){
 		return name;
 	}
 
