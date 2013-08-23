@@ -11,7 +11,7 @@ public final class Boolean implements Compareable<Boolean>{
 	}
 
 	public int compareTo(Boolean object){
-		return value?object.booleanValue?0:-1:object.booleanValue?1:0;
+		return value?object.booleanValue()?0:-1:object.booleanValue()?1:0;
 	}
 
 	public boolean equals(Object o){

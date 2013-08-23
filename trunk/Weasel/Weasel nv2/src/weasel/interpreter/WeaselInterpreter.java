@@ -26,6 +26,7 @@ public class WeaselInterpreter implements WeaselSaveable {
 		loadedClasses = new HashMap<String, WeaselClass>();
 		synchronizeds = new HashMap<String, Synchronized>();
 		baseTypes = new WeaselBaseTypes(this);
+		WeaselBuildInNatives.register(this);
 	}
 	
 	public WeaselInterpreter(DataInputStream dataInputStream) throws IOException{
@@ -55,6 +56,7 @@ public class WeaselInterpreter implements WeaselSaveable {
 			String token = dataInputStream.readUTF();
 			synchronizeds.put(token, new Synchronized(this, dataInputStream));
 		}
+		WeaselBuildInNatives.register(this);
 	}
 	
 	@Override
