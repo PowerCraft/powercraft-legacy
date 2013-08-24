@@ -21,7 +21,9 @@ public class Test {
 				@Override
 				public String getClassSourceFor(String file) {
 					if(file.equals("Test")){
-						return "public class Test<A> implements B<A> {\npublic int[] a(){\nb = (b?5:6).do();\n}}";
+						return "public class Test<A> implements B<A> {\npublic int[] a(){\n"
+								+ "a=new b()<a&&b<c&&a>b>>2;"
+										+ "\n}}";
 					}else if(file.equals("Enum")){
 						return "public class Enum{public Enum(){}}";
 					}else if(file.equals("Object")){
