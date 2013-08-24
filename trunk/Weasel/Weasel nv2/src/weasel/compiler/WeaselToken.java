@@ -21,6 +21,9 @@ public class WeaselToken{
 	
 	@Override
 	public String toString(){
+		if(tokenType == WeaselTokenType.STRING){
+			return "\""+param+"\"";
+		}
 		return param.toString();
 	}
 	

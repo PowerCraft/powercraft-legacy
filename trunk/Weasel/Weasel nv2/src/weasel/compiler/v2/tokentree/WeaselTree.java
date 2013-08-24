@@ -41,6 +41,8 @@ public abstract class WeaselTree {
 		WeaselTree bottom = null;
 		boolean start = true;
 		
+		WeaselTreeGeneric generic = null;
+		
 		while(iterator.hasNext()){
 			
 			WeaselToken token = iterator.next();
@@ -50,6 +52,9 @@ public abstract class WeaselTree {
 			}
 			
 			if(token.tokenType==WeaselTokenType.QUESTIONMARK){
+				
+				if(generic!=null)
+					throw new WeaselCompilerException(token.line, "Expect Ident but got ?:");
 				
 				while(!tokenCache.isEmpty() && ((Properties)tokenCache.get(0).param).suffix!=null){
 					tokenSuffix.add(tokenCache.remove(0));
@@ -76,9 +81,28 @@ public abstract class WeaselTree {
 				
 			}else if(token.tokenType == WeaselTokenType.OPERATOR){
 				
+				if(generic!=null)
+					throw new WeaselCompilerException(token.line, "Expect Ident but got %s", token);
+				
 				tokenCache.add(token);
+			
+				if(token.param == WeaselOperator.ELEMENT){
+					WeaselToken wtoken = iterator.next();
+					if(wtoken.tokenType == WeaselTokenType.OPERATOR && wtoken.param ==WeaselOperator.LESS) {
+						generic = new WeaselTreeGeneric(iterator);
+						token = iterator.previous();
+						if(generic.close){
+							throw new WeaselCompilerException(token.line, "Expect Ident but got >");
+						}
+					}else{
+						iterator.previous();
+					}
+				}
 				
 			}else if(token.tokenType == end){
+				
+				if(generic!=null)
+					throw new WeaselCompilerException(token.line, "Expect Ident but got %s", token);
 				
 				while(!tokenCache.isEmpty() && ((Properties)tokenCache.get(0).param).suffix!=null){
 					tokenSuffix.add(tokenCache.remove(0));
@@ -100,6 +124,9 @@ public abstract class WeaselTree {
 				break;
 				
 			}else if(start){
+				
+				if(generic!=null)
+					throw new WeaselCompilerException(token.line, "generic Error at %s", token);
 				
 				while(!tokenCache.isEmpty() && ((Properties)tokenCache.get(tokenCache.size()-1).param).prefix!=null){
 					tokenPrefix.add(tokenCache.remove(tokenCache.size()-1));
@@ -125,7 +152,7 @@ public abstract class WeaselTree {
 						bottom = wtar.newTree;
 					}
 				}else{
-					WeaselTree add = new WeaselTreeTop(token, iterator);
+					WeaselTree add = new WeaselTreeTop(token, null, iterator);
 					if(tokenPrefix.isEmpty()){
 						if(bottom==null){
 							bottom = add;
@@ -148,6 +175,9 @@ public abstract class WeaselTree {
 				start = false;
 				
 			}else{
+				
+				if(generic!=null && token.tokenType != WeaselTokenType.IDENT)
+					throw new WeaselCompilerException(token.line, "Expect ident after generic but got %s", token);
 				
 				if(tokenCache.size()==0){
 					throw new WeaselCompilerException(token.line, "Expect %s before %s", end==null?";":end, token);
@@ -190,7 +220,7 @@ public abstract class WeaselTree {
 				if(token.tokenType==WeaselTokenType.OPENBRACKET){
 					add = new WeaselTreeTop(parse(iterator, WeaselTokenType.CLOSEBRACKET), iterator);
 				}else{
-					add = new WeaselTreeTop(token, iterator);
+					add = new WeaselTreeTop(token, generic, iterator);
 				}
 				
 				WeaselTreeAddResult wtar = bottom.add(tokenSuffix, tokenCache.get(0), tokenPrefix, add, iterator);
