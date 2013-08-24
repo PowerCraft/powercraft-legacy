@@ -1,15 +1,11 @@
 package weasel.compiler;
 
-import weasel.compiler.WeaselOperator.Properties;
-import weasel.compiler.equationSolverNew.IWeaselTokenTreeElement;
-import weasel.compiler.equationSolverNew.Solver.String2D;
-import weasel.compiler.equationSolverNew.WeaselCompileReturn;
 
-public class WeaselToken extends IWeaselTokenTreeElement{
+public class WeaselToken{
 
 	public final WeaselTokenType tokenType;
 	public final int line;
-	public final Object param;
+	public Object param;
 	
 	public WeaselToken(WeaselTokenType tokenType, int line){
 		this.tokenType = tokenType;
@@ -24,6 +20,11 @@ public class WeaselToken extends IWeaselTokenTreeElement{
 	}
 	
 	@Override
+	public String toString(){
+		return param.toString();
+	}
+	
+	/*@Override
 	public String getName() {
 		return ((Properties)param).operator;
 	}
@@ -58,11 +59,5 @@ public class WeaselToken extends IWeaselTokenTreeElement{
 		return this;	
 	}
 
-	@Override
-	public WeaselCompileReturn compile(WeaselCompiler compiler,
-			WeaselKeyWordCompilerHelper compilerHelper)
-			throws WeaselCompilerException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	*/
 }

@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import weasel.compiler.WeaselCompiler;
+import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerMessage;
 import weasel.compiler.WeaselCompilerMessage.MessageType;
-import weasel.compiler.equationSolverNew.Solver;
-import weasel.compiler.equationSolverNew.WeaselCompileReturn;
-import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 import weasel.compiler.WeaselVariableInfo;
+import weasel.compiler.equationSolverNew.WeaselCompileReturn;
+import weasel.compiler.v2.tokentree.WeaselTree;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
@@ -55,19 +55,21 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
 		WeaselToken token = getNextToken();
 		while(token.tokenType!=WeaselTokenType.NONE){
-			List<WeaselToken> tokenList = new ArrayList<WeaselToken>();
-			while(token.tokenType!=WeaselTokenType.SEMICOLON){
-				tokenList.add(token);
-				token = getNextToken();
-			}
 			try{
-				WeaselCompileReturn wcr = Solver.parse(tokenList.toArray(new WeaselToken[0])).compile(compiler, this);
-				instructions.addAll(wcr.instructions);
-				if(wcr.returnType!=compiler.baseTypes.voidClass){
-					instructions.add(new WeaselInstructionPop());
+				List<WeaselToken> list = new ArrayList<WeaselToken>();
+				while(token.tokenType!=WeaselTokenType.SEMICOLON){
+					list.add(token);
+					token = getNextToken();
 				}
+				WeaselCompileReturn wcr = WeaselTree.parse(list).compile(compiler, this, null);
+				instructions.addAll(wcr.instructions);
+				if(wcr.returnType!=compiler.baseTypes.voidClass)
+					instructions.add(new WeaselInstructionPop());
 			}catch(WeaselCompilerException e){
 				onException(e.getLine(), e.getMessage());
+				while(token.tokenType!=WeaselTokenType.SEMICOLON){
+					token = getNextToken();
+				}
 			}
 			token = getNextToken();
 		}
