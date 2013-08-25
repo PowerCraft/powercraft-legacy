@@ -95,8 +95,10 @@ public class WeaselTreeLevel extends WeaselTree {
 	}
 
 	@Override
-	public WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect) throws WeaselCompilerException {
-		// TODO Auto-generated method stub
+	public WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect, WeaselGenericClass elementParent, boolean isVariable) throws WeaselCompilerException {
+		for(WeaselTree l:level){
+			l.compile(compiler, compilerHelper, write, expect, elementParent, isVariable);
+		}
 		return null;
 	}
 

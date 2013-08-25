@@ -140,7 +140,7 @@ public class WeaselOperator {
 		ARRAY.prefix = ARRAY;
 		ARRAY.suffix = ARRAY;
 		CALL.suffix = CALL;
-		CAST.suffix = CAST;
+		CAST.prefix = CAST;
 		DECREASE.suffix = DECREASE;
 		DECREASE.prefix = DECREASE_PREFIX;
 		INCREASE.suffix = INCREASE;

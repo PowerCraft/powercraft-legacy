@@ -19,7 +19,7 @@ public abstract class WeaselTree {
 
 	public abstract WeaselTreeAddResult add(List<WeaselToken> suffix, WeaselToken infix, List<WeaselToken> prefix, WeaselTree weaselTree, ListIterator<WeaselToken> iterator) throws WeaselCompilerException;
 
-	public abstract WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect) throws WeaselCompilerException;
+	public abstract WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect, WeaselGenericClass elementParent, boolean isVariable) throws WeaselCompilerException;
 
 	public abstract String toString();
 	
@@ -182,56 +182,98 @@ public abstract class WeaselTree {
 					if(generic!=null && token.tokenType != WeaselTokenType.IDENT)
 						throw new WeaselCompilerException(token.line, "Expect ident after generic but got %s", token);
 					
-					if(tokenCache.size()==0){
-						throw new WeaselCompilerException(token.line, "Expect %s before %s", Arrays.toString(end), token);
-					}
+					boolean isCast = false;
 					
-					while(!tokenCache.isEmpty() && ((Properties)tokenCache.get(0).param).suffix!=null){
-						tokenSuffix.add(tokenCache.remove(0));
-					}
-					
-					if(tokenCache.isEmpty()){
-						while(true){
-							tokenCache.add(0, tokenPrefix.remove(tokenPrefix.size()-1));
-							if(((Properties)tokenCache.get(0).param).infix!=null){
-								break;
+					if(token.tokenType==WeaselTokenType.OPENBRACKET){
+						WeaselToken token2 = iterator.next();
+						String className = "";
+						if(token2.tokenType==WeaselTokenType.IDENT){
+							isCast = true;
+							className = (String)token2.param;
+							token2 = iterator.next();
+							while(token2.tokenType==WeaselTokenType.OPERATOR && token2.param == WeaselOperator.ELEMENT){
+								token2 = iterator.next();
+								if(token2.tokenType!=WeaselTokenType.IDENT){
+									isCast = false;
+									break;
+								}
+								className += "."+(String)token2.param;
+								token2 = iterator.next();
+							}
+							if(token2.tokenType==WeaselTokenType.OPERATOR && token2.param == WeaselOperator.LESS){
+								try{
+									generic = new WeaselTreeGeneric(iterator);
+									token2 = iterator.next();
+								}catch(WeaselCompilerException e){
+									isCast = false;
+								}
+							}
+							if(isCast && token2.tokenType!=WeaselTokenType.CLOSEBRACKET){
+								isCast = false;
 							}
 						}
+						if(isCast){
+							tokenCache.add(new WeaselCastToken(token.line, className, generic));
+						}else{
+							while(iterator.previous() != token);
+						}
+						generic = null;
 					}
 					
-					while(tokenCache.size()>1 && ((Properties)tokenCache.get(tokenCache.size()-1).param).prefix!=null){
-						tokenPrefix.add(0, tokenCache.remove(tokenCache.size()-1));
+					if(!isCast){
+					
+						if(tokenCache.size()==0){
+							throw new WeaselCompilerException(token.line, "Expect %s before %s", Arrays.toString(end), token);
+						}
+						
+						while(!tokenCache.isEmpty() && ((Properties)tokenCache.get(0).param).suffix!=null){
+							tokenSuffix.add(tokenCache.remove(0));
+						}
+						
+						if(tokenCache.isEmpty()){
+							while(true){
+								tokenCache.add(0, tokenPrefix.remove(tokenPrefix.size()-1));
+								if(((Properties)tokenCache.get(0).param).infix!=null){
+									break;
+								}
+							}
+						}
+						
+						while(tokenCache.size()>1 && ((Properties)tokenCache.get(tokenCache.size()-1).param).prefix!=null){
+							tokenPrefix.add(0, tokenCache.remove(tokenCache.size()-1));
+						}
+						
+						if(tokenCache.size()>1){
+							throw new WeaselCompilerException(tokenCache.get(1).line, "Expect suffix or variable but got %s", tokenCache.get(1));
+						}
+						
+						for(WeaselToken token1:tokenSuffix){
+							token1.param = ((Properties)token1.param).suffix;
+						}
+						
+						for(WeaselToken token1:tokenCache){
+							token1.param = ((Properties)token1.param).infix;
+						}
+						
+						for(WeaselToken token1:tokenPrefix){
+							token1.param = ((Properties)token1.param).prefix;
+						}
+						
+						WeaselTree add;
+						if(token.tokenType==WeaselTokenType.OPENBRACKET){
+							add = new WeaselTreeTop(parse(iterator, WeaselTokenType.CLOSEBRACKET), iterator);
+						}else{
+							add = new WeaselTreeTop(token, generic, iterator);
+						}
+						
+						WeaselTreeAddResult wtar = bottom.add(tokenSuffix, tokenCache.get(0), tokenPrefix, add, iterator);
+						bottom = wtar.newTree;
+						
+						tokenPrefix.clear();
+						tokenSuffix.clear();
+						tokenCache.clear();
+					
 					}
-					
-					if(tokenCache.size()>1){
-						throw new WeaselCompilerException(tokenCache.get(1).line, "Expect suffix or variable but got %s", tokenCache.get(1));
-					}
-					
-					for(WeaselToken token1:tokenSuffix){
-						token1.param = ((Properties)token1.param).suffix;
-					}
-					
-					for(WeaselToken token1:tokenCache){
-						token1.param = ((Properties)token1.param).infix;
-					}
-					
-					for(WeaselToken token1:tokenPrefix){
-						token1.param = ((Properties)token1.param).prefix;
-					}
-					
-					WeaselTree add;
-					if(token.tokenType==WeaselTokenType.OPENBRACKET){
-						add = new WeaselTreeTop(parse(iterator, WeaselTokenType.CLOSEBRACKET), iterator);
-					}else{
-						add = new WeaselTreeTop(token, generic, iterator);
-					}
-					
-					WeaselTreeAddResult wtar = bottom.add(tokenSuffix, tokenCache.get(0), tokenPrefix, add, iterator);
-					bottom = wtar.newTree;
-					
-					tokenPrefix.clear();
-					tokenSuffix.clear();
-					tokenCache.clear();
 					
 				}
 			}

@@ -16,6 +16,8 @@ import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselGenericField;
+import weasel.interpreter.WeaselGenericMethod;
+import weasel.interpreter.WeaselGenericMethod2;
 import weasel.interpreter.bytecode.WeaselInstruction;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstBoolean;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstDouble;
@@ -155,7 +157,7 @@ public class WeaselTreeTop extends WeaselTree {
 	}
 
 	@Override
-	public WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect) throws WeaselCompilerException {
+	public WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect, WeaselGenericClass elementParent, boolean isVariable) throws WeaselCompilerException {
 		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
 		if(newClass!=null){
 			
@@ -165,11 +167,22 @@ public class WeaselTreeTop extends WeaselTree {
 			
 			return null;
 		}else if(isFunc){
+			List<WeaselGenericMethod2> methods;
+			if(elementParent==null){
+				methods = compilerHelper.getGenericMethods((String)token.param);
+			}else{
+				methods = elementParent.getGenericMethods((String)token.param, isVariable);
+			}
+			if(methods.isEmpty()){
+				throw new WeaselCompilerException(token.line, "Method not found %s", token);
+			}
+			System.out.println(methods);
 			return null;
 		}else if(isIndex){
+			
 			return null;
 		}else if(token==null){
-			return tree.compile(compiler, compilerHelper, write, expect);
+			return tree.compile(compiler, compilerHelper, write, expect, elementParent, isVariable);
 		}else{
 			switch(token.tokenType){
 			case BOOL:
