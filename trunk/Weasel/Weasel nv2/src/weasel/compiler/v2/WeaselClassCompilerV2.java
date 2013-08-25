@@ -417,6 +417,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 			token = getNextToken();
 			expect(token, WeaselTokenType.IDENT);
 			name = (String)token.param;
+			token = getNextToken();
 			while(token.tokenType==WeaselTokenType.OPENINDEX){
 				token = getNextToken();
 				expect(token, WeaselTokenType.CLOSEINDEX);
