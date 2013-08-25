@@ -5,7 +5,6 @@ import weasel.compiler.WeaselClassFileProvider;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerMessage;
-import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselGenericClass;
 
 
@@ -52,11 +51,12 @@ public class Test {
 			});
 			System.out.println(compiler.getWeaselClass("OTest;").toSource());
 			System.out.println(compiler.getWeaselClass("OB;").toSource());
-			WeaselClass b = compiler.getWeaselClass("OB;");
-			WeaselGenericClass gc = new WeaselGenericClass(compiler, compiler.getWeaselClass("OTest;"), new WeaselClass[]{compiler.getWeaselClass("OClass;")});
-			System.out.println(gc);
-			System.out.println(gc.getGenericInterfaces()[0]);
-			System.out.println(gc.getGenericInterfaces()[0].getGenericFieldType(b.getField("test")));
+			WeaselGenericClass wgc = new WeaselGenericClass(compiler.getWeaselClass("OTest;"), new WeaselGenericClass[]{new WeaselGenericClass(compiler.getWeaselClass("OString;"))});
+			System.out.println(wgc);
+			wgc = wgc.getGenericInterfaces()[0];
+			System.out.println(wgc);
+			System.out.println(wgc.getGenericField("test"));
+			System.out.println(wgc.getGenericMethod("f(OObject;)OTest;", new WeaselGenericClass[0]));
 		}catch(Throwable e){
 			e.printStackTrace();
 		}

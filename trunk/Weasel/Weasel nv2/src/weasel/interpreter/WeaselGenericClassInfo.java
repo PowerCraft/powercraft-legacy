@@ -78,17 +78,57 @@ public class WeaselGenericClassInfo implements WeaselSaveable {
 		}
 		return name+array;
 	}
-
-	public WeaselClass getWeaselClass(WeaselInterpreter weaselInterpreter, WeaselClass[] weaselClass) {
-		if(genericID==-1)
+	
+	public WeaselClass getWeaselClass(WeaselGenericClass parentClass) {
+		if(genericID==-1){
 			return genericClass;
-		String cn = weaselClass[genericID].getByteName();
+		}
+		String cn = parentClass.getGeneric(genericID).getBaseClass().getByteName();
 		WeaselClass wc = genericClass;
 		while(wc.isArray()){
 			wc = wc.getArrayClass();
 			cn = "["+cn;
 		}
-		return weaselInterpreter.getWeaselClass(cn);
+		return parentClass.getBaseClass().interpreter.getWeaselClass(cn);
+	}
+
+	public WeaselGenericClass getGenericClass(WeaselGenericClass parentClass) {
+		if(genericID==-1){
+			WeaselGenericClass[] gcs = new WeaselGenericClass[generics.length];
+			for(int i=0; i<generics.length; i++){
+				gcs[i] = generics[i].getGenericClass(parentClass);
+			}
+			return new WeaselGenericClass(genericClass, gcs);
+		}
+		String cn = parentClass.getGeneric(genericID).getBaseClass().getByteName();
+		WeaselClass wc = genericClass;
+		while(wc.isArray()){
+			wc = wc.getArrayClass();
+			cn = "["+cn;
+		}
+		return new WeaselGenericClass(parentClass.getBaseClass().interpreter.getWeaselClass(cn), new WeaselGenericClass[0]);
+	}
+
+	public WeaselGenericClass getGenericClass(WeaselGenericClass parentClass, WeaselGenericClass[] generics2) {
+		if(genericID==-1){
+			WeaselGenericClass[] gcs = new WeaselGenericClass[generics.length];
+			for(int i=0; i<generics.length; i++){
+				gcs[i] = generics[i].getGenericClass(parentClass, generics2);
+			}
+			return new WeaselGenericClass(genericClass, gcs);
+		}
+		String cn;
+		if(parentClass.getGenericSize()>genericID){
+			cn = parentClass.getGeneric(genericID).getBaseClass().getByteName();
+		}else{
+			cn = generics2[genericID-parentClass.getGenericSize()].getBaseClass().getByteName();
+		}
+		WeaselClass wc = genericClass;
+		while(wc.isArray()){
+			wc = wc.getArrayClass();
+			cn = "["+cn;
+		}
+		return new WeaselGenericClass(parentClass.getBaseClass().interpreter.getWeaselClass(cn), new WeaselGenericClass[0]);
 	}
 	
 }
