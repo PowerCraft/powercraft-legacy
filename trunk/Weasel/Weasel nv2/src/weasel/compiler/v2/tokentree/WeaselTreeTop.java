@@ -72,8 +72,8 @@ public class WeaselTreeTop extends WeaselTree {
 				token = iterator.next();
 			}while(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.ELEMENT);
 			if(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.LESS){
-				generic = new WeaselTreeGeneric(iterator);
-				if(generic.close){
+				this.generic = new WeaselTreeGeneric(iterator);
+				if(this.generic.close){
 					throw new WeaselCompilerException(token.line, "Expect Ident but got >");
 				}
 				token = iterator.next();
