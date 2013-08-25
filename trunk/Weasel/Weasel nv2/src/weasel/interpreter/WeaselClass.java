@@ -503,5 +503,15 @@ public class WeaselClass implements WeaselSaveable {
 		public int staticMethod;
 		
 	}
+
+	public static WeaselClass getSmallestSame(WeaselClass wc, WeaselClass wc2) {
+		if(wc==wc2){
+			return wc;
+		}
+		while(wc2.canCastTo(wc)){
+			wc = wc.getSuperClass();
+		}
+		return wc;
+	}
 	
 }
