@@ -20,9 +20,11 @@ public class Test {
 				@Override
 				public String getClassSourceFor(String file) {
 					if(file.equals("Test")){
-						return "public class Test<A> implements B<A> {\npublic int[] a(){\n"
-								+ "b = new int[][]{{3, 4}, {3, 4}};"
-										+ "\n}}";
+						return "public class Test<A> implements B<A> {\npublic String b;"
+								+ "public int[] a(){\n"
+								+ "b = f(\"Hallo\");"
+										+ "\n}"
+										+ "public Test<A[]> f(A d){}}";
 					}else if(file.equals("Enum")){
 						return "public class Enum{public Enum(){}}";
 					}else if(file.equals("Object")){

@@ -1,5 +1,8 @@
 package weasel.interpreter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class WeaselGenericClass {
 	
@@ -85,6 +88,10 @@ public class WeaselGenericClass {
 	
 	public WeaselGenericClass getGeneric(int index) {
 		return generics[index];
+	}
+	
+	public WeaselGenericClass[] getGenerics() {
+		return generics;
 	}
 	
 	public WeaselGenericClass getGenericSuperClass(){
@@ -202,6 +209,38 @@ public class WeaselGenericClass {
 			s += ">";
 		}
 		return s+a;
+	}
+
+	public WeaselGenericClass getGenericClass(String className) {
+		for(int i=0; i<baseClass.genericInformation.length; i++){
+			if(baseClass.genericInformation[i].genericName.equals(className)){
+				return generics[i];
+			}
+		}
+		return null;
+	}
+
+	public List<WeaselGenericMethod2> getGenericMethods(String name, boolean notOnlyStatic) {
+		List<WeaselGenericMethod2> list = new ArrayList<WeaselGenericMethod2>();
+		addGenericMethods(name, notOnlyStatic, list);
+		return list;
+	}
+	
+	private void addGenericMethods(String name, boolean notOnlyStatic, List<WeaselGenericMethod2> list) {
+		for(int i=0; i<genericMethods.length; i++){
+			if(genericMethods[i].getMethod().getName().equals(name)){
+				if(notOnlyStatic || WeaselModifier.isStatic(genericMethods[i].getMethod().getModifier())){
+					WeaselGenericClass[] generics = new WeaselGenericClass[genericMethods[i].getMethod().genericInfo.length];
+					for(int j=0; j<generics.length; j++){
+						generics[j] = new WeaselGenericClass(genericMethods[i].getMethod().genericInfo[j].genericInfo.genericClass);
+					}
+					list.add(genericMethods[i].getMethod(generics));
+				}
+			}
+		}
+		if(genericSuperClass!=null){
+			genericSuperClass.addGenericMethods(name, notOnlyStatic, list);
+		}
 	}
 	
 }

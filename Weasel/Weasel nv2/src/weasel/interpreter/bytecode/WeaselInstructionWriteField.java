@@ -29,7 +29,7 @@ public class WeaselInstructionWriteField extends WeaselInstruction {
 	@Override
 	public void run(WeaselInterpreter interpreter, WeaselThread thread, WeaselMethodExecutor method) {
 		resolve(interpreter);
-		WeaselObject object = interpreter.getObject(thread.popObject());
+		WeaselObject object = interpreter.getObject(thread.getObject(thread.getStackPointer()-2));
 		switch(WeaselPrimitive.getPrimitiveID(type)){
 		case WeaselPrimitive.BOOLEAN:
 			field.setBoolean(object, (Boolean)thread.popValue());

@@ -16,6 +16,7 @@ import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.interpreter.WeaselChecks;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselField;
+import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselGenericClassInfo;
 import weasel.interpreter.WeaselGenericInformation;
 import weasel.interpreter.WeaselMethod;
@@ -33,6 +34,8 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 	
 	public List<WeaselToken> classPreInit = new ArrayList<WeaselToken>();
 	public List<WeaselToken> classStaticInit = new ArrayList<WeaselToken>();
+	
+	public WeaselGenericClass genericClass;
 	
 	protected WeaselClassCompilerV2(WeaselCompiler compiler, Object parent, String name, String fileName) {
 		super(compiler, parent, name, fileName);
@@ -259,8 +262,19 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 					token = getNextToken();
 				}
 				
+				if(token.tokenType==WeaselTokenType.OPERATOR && token.param == WeaselOperator.LESS){
+					
+				}
+				
 				String name;
 				boolean isConstructor=token.tokenType == WeaselTokenType.IDENT && token.param.equals(this.name);
+				if(isConstructor){
+					WeaselToken token2 = getNextToken();
+					if(token2.tokenType!=WeaselTokenType.OPENBRACKET){
+						isConstructor = false;
+					}
+					tokenParser.setNextToken(token2);
+				}
 				WeaselGenericClassInfo typeInfo;
 				if(isConstructor){
 					typeInfo = new WeaselGenericClassInfo(interpreter.baseTypes.voidClass, -1, new WeaselGenericClassInfo[0]);
@@ -600,6 +614,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 	
 	@Override
 	public void finishCompile() {
+		genericClass = new WeaselGenericClass(this);
 		compiler.addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.INFO, 0, getFileName(), "Compiling Methods"));
 		for(int i=0; i<staticMethodBodys.length; i++){
 			((WeaselMethodBodyCompilerV2)staticMethodBodys[i]).compile();

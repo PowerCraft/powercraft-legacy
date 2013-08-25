@@ -42,22 +42,22 @@ public class WeaselTreeCondition extends WeaselTree {
 	}
 
 	@Override
-	public WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect) throws WeaselCompilerException {
+	public WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect, WeaselGenericClass elementParent, boolean isVariable) throws WeaselCompilerException {
 		if(write!=null){
 			throw new WeaselCompilerException(token.line, "Can't write any value to Condition");
 		}
 		List<WeaselInstruction> instructions;
-		WeaselCompileReturn wcr = condition.compile(compiler, compilerHelper, null, new WeaselGenericClass(compiler.baseTypes.booleanClass));
+		WeaselCompileReturn wcr = condition.compile(compiler, compilerHelper, null, new WeaselGenericClass(compiler.baseTypes.booleanClass), null, false);
 		if(wcr.returnType.getBaseClass()!=compiler.baseTypes.booleanClass)
 			throw new WeaselCompilerException(token.line, "Condition of Conditional have to be a boolean and no %s", wcr.returnType);
 		instructions = wcr.instructions;
 		WeaselInstructionJump j1;
 		WeaselInstructionJump j2;
 		instructions.add(j1 = new WeaselInstructionIf());
-		wcr = tree1.compile(compiler, compilerHelper, null, expect);
+		wcr = tree1.compile(compiler, compilerHelper, null, expect, elementParent, isVariable);
 		WeaselGenericClass wc = wcr.returnType;
 		instructions.addAll(wcr.instructions);
-		wcr = tree2.compile(compiler, compilerHelper, null, expect);
+		wcr = tree2.compile(compiler, compilerHelper, null, expect, elementParent, isVariable);
 		if(wc.getBaseClass()==compiler.baseTypes.voidClass || wcr.returnType.getBaseClass()==compiler.baseTypes.voidClass){
 			throw new WeaselCompilerException(token.line, "Can't return void");
 		}
