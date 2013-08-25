@@ -10,7 +10,7 @@ import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.equationSolverNew.WeaselCompileReturn;
-import weasel.interpreter.WeaselClass;
+import weasel.interpreter.WeaselGenericClass;
 
 public class WeaselTreeLevel extends WeaselTree {
 
@@ -95,9 +95,7 @@ public class WeaselTreeLevel extends WeaselTree {
 	}
 
 	@Override
-	public WeaselCompileReturn compile(WeaselCompiler compiler,
-			WeaselKeyWordCompilerHelper compilerHelper, WeaselClass write)
-			throws WeaselCompilerException {
+	public WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect) throws WeaselCompilerException {
 		// TODO Auto-generated method stub
 		return null;
 	}

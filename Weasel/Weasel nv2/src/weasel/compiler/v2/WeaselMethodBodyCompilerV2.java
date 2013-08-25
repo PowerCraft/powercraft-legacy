@@ -15,6 +15,7 @@ import weasel.compiler.WeaselVariableInfo;
 import weasel.compiler.equationSolverNew.WeaselCompileReturn;
 import weasel.compiler.v2.tokentree.WeaselTree;
 import weasel.interpreter.WeaselClass;
+import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
 import weasel.interpreter.WeaselModifier;
@@ -35,10 +36,10 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 		this.methodTokens = methodTokens;
 		methodTokens.add(new WeaselToken(WeaselTokenType.NONE, 0));
 		for(int i=0; i<paramNames.size(); i++){
-			variables.put(paramNames.get(i), new WeaselVariableInfo(paramModifier.get(i), paramNames.get(i), method.getParamClasses()[i], -i));
+			variables.put(paramNames.get(i), new WeaselVariableInfo(paramModifier.get(i), paramNames.get(i), new WeaselGenericClass(method.getParamClasses()[i]), -i));
 		}
 		if(!WeaselModifier.isStatic(method.getModifier())){
-			variables.put("this", new WeaselVariableInfo(0, "this", parentClass, -paramNames.size()));
+			variables.put("this", new WeaselVariableInfo(0, "this", new WeaselGenericClass(parentClass), -paramNames.size()));
 		}
 	}
 
@@ -61,9 +62,9 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 					list.add(token);
 					token = getNextToken();
 				}
-				WeaselCompileReturn wcr = WeaselTree.parse(list).compile(compiler, this, null);
+				WeaselCompileReturn wcr = WeaselTree.parse(list).compile(compiler, this, null, new WeaselGenericClass(compiler.baseTypes.voidClass));
 				instructions.addAll(wcr.instructions);
-				if(wcr.returnType!=compiler.baseTypes.voidClass)
+				if(wcr.returnType.getBaseClass()!=compiler.baseTypes.voidClass)
 					instructions.add(new WeaselInstructionPop());
 			}catch(WeaselCompilerException e){
 				onException(e.getLine(), e.getMessage());

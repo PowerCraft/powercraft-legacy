@@ -8,7 +8,7 @@ import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.equationSolverNew.WeaselCompileReturn;
-import weasel.interpreter.WeaselClass;
+import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselPrimitive;
 import weasel.interpreter.bytecode.WeaselInstruction;
 import weasel.interpreter.bytecode.WeaselInstructionCast;
@@ -42,35 +42,35 @@ public class WeaselTreeCondition extends WeaselTree {
 	}
 
 	@Override
-	public WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselClass write) throws WeaselCompilerException {
+	public WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect) throws WeaselCompilerException {
 		if(write!=null){
 			throw new WeaselCompilerException(token.line, "Can't write any value to Condition");
 		}
 		List<WeaselInstruction> instructions;
-		WeaselCompileReturn wcr = condition.compile(compiler, compilerHelper, null);
-		if(wcr.returnType!=compiler.baseTypes.booleanClass)
+		WeaselCompileReturn wcr = condition.compile(compiler, compilerHelper, null, new WeaselGenericClass(compiler.baseTypes.booleanClass));
+		if(wcr.returnType.getBaseClass()!=compiler.baseTypes.booleanClass)
 			throw new WeaselCompilerException(token.line, "Condition of Conditional have to be a boolean and no %s", wcr.returnType);
 		instructions = wcr.instructions;
 		WeaselInstructionJump j1;
 		WeaselInstructionJump j2;
 		instructions.add(j1 = new WeaselInstructionIf());
-		wcr = tree1.compile(compiler, compilerHelper, null);
-		WeaselClass wc = wcr.returnType;
+		wcr = tree1.compile(compiler, compilerHelper, null, expect);
+		WeaselGenericClass wc = wcr.returnType;
 		instructions.addAll(wcr.instructions);
-		wcr = tree2.compile(compiler, compilerHelper, null);
-		if(wc==compiler.baseTypes.voidClass || wcr.returnType==compiler.baseTypes.voidClass){
+		wcr = tree2.compile(compiler, compilerHelper, null, expect);
+		if(wc.getBaseClass()==compiler.baseTypes.voidClass || wcr.returnType.getBaseClass()==compiler.baseTypes.voidClass){
 			throw new WeaselCompilerException(token.line, "Can't return void");
 		}
-		WeaselClass wc2 = wcr.returnType;
+		WeaselGenericClass wc2 = wcr.returnType;
 		boolean canCast = true;
-		if(wc.isPrimitive() && !wc2.isPrimitive()){
-			wc = compiler.getWeaselClass(WeaselPrimitive.getWrapper(wc));
-			instructions.add(new WeaselInstructionCast(WeaselPrimitive.getWrapper(wc)));
-		}else if(wc.isPrimitive() && wc2.isPrimitive()){
+		if(wc.getBaseClass().isPrimitive() && !wc2.getBaseClass().isPrimitive()){
+			wc = new WeaselGenericClass(compiler.getWeaselClass(WeaselPrimitive.getWrapper(wc.getBaseClass())));
+			instructions.add(new WeaselInstructionCast(WeaselPrimitive.getWrapper(wc.getBaseClass())));
+		}else if(wc.getBaseClass().isPrimitive() && wc2.getBaseClass().isPrimitive()){
 			if(wc!=wc2){
-				canCast = WeaselPrimitive.canCastAutoTo(wc, wc2);
+				canCast = WeaselPrimitive.canCastAutoTo(wc.getBaseClass(), wc2.getBaseClass());
 				if(canCast){
-					instructions.add(new WeaselInstructionCastPrimitive(WeaselPrimitive.getPrimitiveID(wc2)));
+					instructions.add(new WeaselInstructionCastPrimitive(WeaselPrimitive.getPrimitiveID(wc2.getBaseClass())));
 					wc2 = wc;
 				}
 			}
@@ -78,14 +78,14 @@ public class WeaselTreeCondition extends WeaselTree {
 		instructions.add(j2 = new WeaselInstructionJump());
 		j1.setTarget(j2);
 		instructions.addAll(wcr.instructions);
-		if(!wc.isPrimitive() && wc2.isPrimitive()){
-			wc2 = compiler.getWeaselClass(WeaselPrimitive.getWrapper(wc2));
-			instructions.add(new WeaselInstructionCast(wc2.getByteName()));
-		}else if(wc.isPrimitive() && wc2.isPrimitive()){
+		if(!wc.getBaseClass().isPrimitive() && wc2.getBaseClass().isPrimitive()){
+			wc2 = new WeaselGenericClass(compiler.getWeaselClass(WeaselPrimitive.getWrapper(wc2.getBaseClass())));
+			instructions.add(new WeaselInstructionCast(wc2.getBaseClass().getByteName()));
+		}else if(wc.getBaseClass().isPrimitive() && wc2.getBaseClass().isPrimitive()){
 			if(wc!=wc2 && !canCast){
-				canCast = WeaselPrimitive.canCastAutoTo(wc2, wc);
+				canCast = WeaselPrimitive.canCastAutoTo(wc2.getBaseClass(), wc.getBaseClass());
 				if(canCast){
-					instructions.add(new WeaselInstructionCastPrimitive(WeaselPrimitive.getPrimitiveID(wc)));
+					instructions.add(new WeaselInstructionCastPrimitive(WeaselPrimitive.getPrimitiveID(wc.getBaseClass())));
 					wc = wc2;
 				}else{
 					throw new WeaselCompilerException(token.line, "Types %s and %s are not compatible", wc, wc2);
@@ -93,7 +93,7 @@ public class WeaselTreeCondition extends WeaselTree {
 			}
 		}
 		j2.setTarget(instructions.get(instructions.size()-1));
-		return new WeaselCompileReturn(instructions, WeaselClass.getSmallestSame(wc, wc2));
+		return new WeaselCompileReturn(instructions, WeaselGenericClass.getSmallestSame(wc, wc2));
 	}
 
 	@Override
