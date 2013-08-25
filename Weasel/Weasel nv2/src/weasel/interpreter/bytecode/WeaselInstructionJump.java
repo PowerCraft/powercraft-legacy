@@ -10,9 +10,25 @@ import weasel.interpreter.WeaselThread;
 
 public class WeaselInstructionJump extends WeaselInstruction {
 
-	private final int jumpTo;
+	private WeaselInstruction bevoreTarget;
+	private int jumpTo;
 	
-	public WeaselInstructionJump(int jumpTo){
+	public WeaselInstructionJump(){
+	}
+	
+	public WeaselInstructionJump(WeaselInstruction bevoreTarget){
+		this.bevoreTarget = bevoreTarget;
+	}
+	
+	public void setTarget(WeaselInstruction bevoreTarget){
+		this.bevoreTarget = bevoreTarget;
+	}
+	
+	public WeaselInstruction getTarget(){
+		return bevoreTarget;
+	}
+	
+	public void setTargetIndex(int jumpTo){
 		this.jumpTo = jumpTo;
 	}
 	

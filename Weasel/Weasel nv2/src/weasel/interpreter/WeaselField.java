@@ -258,5 +258,9 @@ public final class WeaselField {
 	public String toString() {
 		return WeaselModifier.toString2(modifier)+genericType.getName(parentClass)+" "+name;
 	}
+
+	public String getDesk() {
+		return parentClass.getRealName()+"."+name+":"+genericType.genericClass.getByteName();
+	}
 	
 }

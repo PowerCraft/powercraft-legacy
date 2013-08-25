@@ -1,6 +1,7 @@
 package weasel.compiler;
 
 import weasel.interpreter.WeaselClass;
+import weasel.interpreter.WeaselModifier;
 
 public class WeaselVariableInfo {
 
@@ -14,6 +15,11 @@ public class WeaselVariableInfo {
 		this.name = name;
 		this.type = type;
 		this.pos = pos;
+	}
+
+	@Override
+	public String toString() {
+		return WeaselModifier.toString2(modifier)+type.getRealName()+" "+name;
 	}
 	
 }

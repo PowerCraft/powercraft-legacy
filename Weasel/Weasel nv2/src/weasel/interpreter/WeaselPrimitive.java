@@ -36,6 +36,7 @@ public final class WeaselPrimitive extends WeaselClass {
 	
 	public static final String[] primitiveNames = {"NULL", "boolean", "char", "byte", "short", "int", "long", "float", "double", "void"};
 	public static final char[] primitiveEasyNames = {0, 'N', 'C', 'B', 'S', 'I', 'L', 'F', 'D', 'V'};
+	public static final String[] primitiveWrapperNames = {"NULL", "OBoolean;", "OCharacter;", "OByte;", "OShort;", "OInteger;", "OLong;", "OFloat;", "ODouble;", "OVoid;"};
 	
 	public static final boolean[][] castMap = 
 		{
@@ -48,6 +49,20 @@ public final class WeaselPrimitive extends WeaselClass {
 		{false, false, false, false, false, false,  true,  true,  true, false},
 		{false, false, false, false, false, false, false,  true, false, false},
 		{false, false, false, false, false, false, false,  true,  true, false},
+		{false, false, false, false, false, false, false, false, false, false}
+		};
+	
+	public static final boolean[][] castAutoMap = 
+		{
+		{false, false, false, false, false, false, false, false, false, false},
+		{false,  true, false, false, false, false, false, false, false, false},
+		{false, false,  true, false,  true,  true,  true,  true,  true, false},
+		{false, false, false,  true,  true,  true,  true,  true,  true, false},
+		{false, false, false, false,  true,  true,  true,  true,  true, false},
+		{false, false, false, false, false,  true,  true,  true,  true, false},
+		{false, false, false, false, false, false,  true,  true,  true, false},
+		{false, false, false, false, false, false, false,  true,  true, false},
+		{false, false, false, false, false, false, false, false,  true, false},
 		{false, false, false, false, false, false, false, false, false, false}
 		};
 	
@@ -128,4 +143,12 @@ public final class WeaselPrimitive extends WeaselClass {
 		return 0;
 	}
 
+	public static String getWrapper(WeaselClass wc) {
+		return primitiveWrapperNames[getPrimitiveID(wc)];
+	}
+
+	public static boolean canCastAutoTo(WeaselClass wc, WeaselClass wc2){
+		return castAutoMap[getPrimitiveID(wc)][getPrimitiveID(wc2)];
+	}
+	
 }

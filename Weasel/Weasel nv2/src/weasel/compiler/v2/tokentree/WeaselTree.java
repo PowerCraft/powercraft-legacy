@@ -71,7 +71,7 @@ public abstract class WeaselTree {
 				
 				WeaselTree tree = parse(iterator, WeaselTokenType.COLON);
 				
-				WeaselTreeCondition wtc = new WeaselTreeCondition(tree);
+				WeaselTreeCondition wtc = new WeaselTreeCondition(tree, token);
 				
 				WeaselTreeAddResult wtar = wtc.setLeft(bottom);
 				
