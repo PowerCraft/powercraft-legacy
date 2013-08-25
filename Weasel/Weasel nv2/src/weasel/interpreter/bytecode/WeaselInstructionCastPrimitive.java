@@ -222,4 +222,9 @@ public class WeaselInstructionCastPrimitive extends WeaselInstruction {
 		dataOutputStream.writeInt(primitiveID);
 	}
 
+	@Override
+	public String toString() {
+		return "cast "+WeaselPrimitive.primitiveNames[primitiveID];
+	}
+	
 }

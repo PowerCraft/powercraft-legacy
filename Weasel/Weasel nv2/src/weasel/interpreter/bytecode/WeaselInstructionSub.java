@@ -57,4 +57,9 @@ public class WeaselInstructionSub extends WeaselInstruction {
 		dataOutputStream.writeInt(primitiveID);
 	}
 
+	@Override
+	public String toString() {
+		return "sub "+WeaselPrimitive.primitiveNames[primitiveID];
+	}
+	
 }

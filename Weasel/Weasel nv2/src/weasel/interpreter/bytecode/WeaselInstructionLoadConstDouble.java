@@ -30,4 +30,9 @@ public class WeaselInstructionLoadConstDouble extends WeaselInstruction {
 		dataOutputStream.writeDouble(value);
 	}
 
+	@Override
+	public String toString() {
+		return ""+value;
+	}
+	
 }

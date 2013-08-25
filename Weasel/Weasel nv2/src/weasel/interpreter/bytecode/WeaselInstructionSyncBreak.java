@@ -30,4 +30,9 @@ public class WeaselInstructionSyncBreak extends WeaselInstruction {
 		dataOutputStream.writeUTF(token);
 	}
 
+	@Override
+	public String toString() {
+		return "sync break "+token;
+	}
+	
 }

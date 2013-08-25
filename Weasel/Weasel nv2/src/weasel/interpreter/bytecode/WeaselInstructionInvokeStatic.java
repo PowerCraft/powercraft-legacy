@@ -107,4 +107,9 @@ public class WeaselInstructionInvokeStatic extends WeaselInstruction {
 		dataOutputStream.writeUTF(methodDesk);
 	}
 
+	@Override
+	public String toString() {
+		return "invoke static "+methodDesk;
+	}
+	
 }

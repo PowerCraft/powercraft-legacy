@@ -39,4 +39,9 @@ public class WeaselInstructionCatch extends WeaselInstruction {
 		return weaselClass;
 	}
 
+	@Override
+	public String toString() {
+		return "catch "+aceptedExceptionClassName;
+	}
+	
 }

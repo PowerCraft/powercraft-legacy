@@ -57,4 +57,9 @@ public class WeaselInstructionMul extends WeaselInstruction {
 		dataOutputStream.writeInt(primitiveID);
 	}
 
+	@Override
+	public String toString() {
+		return "mul "+WeaselPrimitive.primitiveNames[primitiveID];
+	}
+	
 }

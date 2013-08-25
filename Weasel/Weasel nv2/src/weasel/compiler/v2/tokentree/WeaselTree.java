@@ -14,6 +14,10 @@ import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselGenericMethod2;
+import weasel.interpreter.WeaselPrimitive;
+import weasel.interpreter.bytecode.WeaselInstruction;
+import weasel.interpreter.bytecode.WeaselInstructionCast;
+import weasel.interpreter.bytecode.WeaselInstructionCastPrimitive;
 
 public abstract class WeaselTree {
 
@@ -284,6 +288,24 @@ public abstract class WeaselTree {
 		
 	}
 
+	public static WeaselGenericClass autoCast(WeaselCompiler compiler, WeaselGenericClass wc1, WeaselGenericClass wc2, int line, List<WeaselInstruction> instructions, boolean b) throws WeaselCompilerException{
+		if(!wc1.getBaseClass().isPrimitive() && wc2.getBaseClass().isPrimitive()){
+			wc2 = new WeaselGenericClass(compiler.getWeaselClass(WeaselPrimitive.getWrapper(wc2.getBaseClass())));
+			instructions.add(new WeaselInstructionCast(wc2.getBaseClass().getByteName()));
+		}else if(wc1.getBaseClass().isPrimitive() && wc2.getBaseClass().isPrimitive()){
+			if(wc1.getBaseClass()!=wc2.getBaseClass()){
+				boolean canCast = WeaselPrimitive.canCastAutoTo(wc1.getBaseClass(), wc2.getBaseClass());
+				if(canCast){
+					instructions.add(new WeaselInstructionCastPrimitive(WeaselPrimitive.getPrimitiveID(wc2.getBaseClass())));
+					return wc2;
+				}else if(b){
+					throw new WeaselCompilerException(line, "Types %s and %s are not compatible", wc1, wc2);
+				}
+			}
+		}
+		return wc1;
+	}
+	
 	public static WeaselParameterCompileReturn compileParamList(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselTree func, List<WeaselGenericMethod2> methods) {
 		// TODO Auto-generated method stub
 		return null;

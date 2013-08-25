@@ -11,6 +11,7 @@ import weasel.interpreter.WeaselMethodExecutor;
 import weasel.interpreter.WeaselObject;
 import weasel.interpreter.WeaselPrimitive;
 import weasel.interpreter.WeaselThread;
+import weasel.interpreter.WeaselThread.StackElement;
 
 public class WeaselInstructionWriteField extends WeaselInstruction {
 
@@ -29,34 +30,36 @@ public class WeaselInstructionWriteField extends WeaselInstruction {
 	@Override
 	public void run(WeaselInterpreter interpreter, WeaselThread thread, WeaselMethodExecutor method) {
 		resolve(interpreter);
+		StackElement se = thread.pop();
 		WeaselObject object = interpreter.getObject(thread.getObject(thread.popObject()));
+		thread.push(se);
 		switch(WeaselPrimitive.getPrimitiveID(type)){
 		case WeaselPrimitive.BOOLEAN:
-			field.setBoolean(object, (Boolean)thread.popValue());
+			field.setBoolean(object, (Boolean)se.value);
 			break;
 		case WeaselPrimitive.BYTE:
-			field.setByte(object, (Byte)thread.popValue());
+			field.setByte(object, (Byte)se.value);
 			break;
 		case WeaselPrimitive.CHAR:
-			field.setChar(object, (Character)thread.popValue());
+			field.setChar(object, (Character)se.value);
 			break;
 		case WeaselPrimitive.DOUBLE:
-			field.setDouble(object, (Double)thread.popValue());
+			field.setDouble(object, (Double)se.value);
 			break;
 		case WeaselPrimitive.FLOAT:
-			field.setFloat(object, (Float)thread.popValue());
+			field.setFloat(object, (Float)se.value);
 			break;
 		case WeaselPrimitive.INT:
-			field.setInt(object, (Integer)thread.popValue());
+			field.setInt(object, (Integer)se.value);
 			break;
 		case WeaselPrimitive.LONG:
-			field.setLong(object, (Long)thread.popValue());
+			field.setLong(object, (Long)se.value);
 			break;
 		case WeaselPrimitive.SHORT:
-			field.setShort(object, (Short)thread.popValue());
+			field.setShort(object, (Short)se.value);
 			break;
 		default:
-			field.setObject(object, thread.popObject());
+			field.setObject(object, se.object);
 			break;
 		}
 	}
@@ -76,4 +79,9 @@ public class WeaselInstructionWriteField extends WeaselInstruction {
 		dataOutputStream.writeUTF(fieldDesk);
 	}
 
+	@Override
+	public String toString() {
+		return "writeField "+fieldDesk;
+	}
+	
 }

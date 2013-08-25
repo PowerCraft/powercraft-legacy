@@ -30,4 +30,9 @@ public class WeaselInstructionLoadVariable extends WeaselInstruction {
 		dataOutputStream.writeInt(pos);
 	}
 
+	@Override
+	public String toString() {
+		return "loadVar "+pos;
+	}
+	
 }

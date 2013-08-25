@@ -30,4 +30,9 @@ public class WeaselInstructionSaveVariable extends WeaselInstruction {
 		dataOutputStream.writeInt(pos);
 	}
 
+	@Override
+	public String toString() {
+		return "saveVar "+pos;
+	}
+	
 }

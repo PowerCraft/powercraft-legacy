@@ -3,6 +3,7 @@ package weasel.interpreter.bytecode;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselInterpreter;
@@ -62,4 +63,9 @@ public class WeaselInstructionNewArray extends WeaselInstruction {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "new"+Arrays.toString(realSizes)+className;
+	}
+	
 }

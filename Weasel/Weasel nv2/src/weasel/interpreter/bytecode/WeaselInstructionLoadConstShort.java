@@ -30,4 +30,9 @@ public class WeaselInstructionLoadConstShort extends WeaselInstruction {
 		dataOutputStream.writeShort(value);
 	}
 
+	@Override
+	public String toString() {
+		return ""+value;
+	}
+	
 }

@@ -8,10 +8,7 @@ import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.interpreter.WeaselGenericClass;
-import weasel.interpreter.WeaselPrimitive;
 import weasel.interpreter.bytecode.WeaselInstruction;
-import weasel.interpreter.bytecode.WeaselInstructionCast;
-import weasel.interpreter.bytecode.WeaselInstructionCastPrimitive;
 import weasel.interpreter.bytecode.WeaselInstructionIf;
 import weasel.interpreter.bytecode.WeaselInstructionJump;
 
@@ -61,36 +58,11 @@ public class WeaselTreeCondition extends WeaselTree {
 			throw new WeaselCompilerException(token.line, "Can't return void");
 		}
 		WeaselGenericClass wc2 = wcr.returnType;
-		boolean canCast = true;
-		if(wc.getBaseClass().isPrimitive() && !wc2.getBaseClass().isPrimitive()){
-			wc = new WeaselGenericClass(compiler.getWeaselClass(WeaselPrimitive.getWrapper(wc.getBaseClass())));
-			instructions.add(new WeaselInstructionCast(WeaselPrimitive.getWrapper(wc.getBaseClass())));
-		}else if(wc.getBaseClass().isPrimitive() && wc2.getBaseClass().isPrimitive()){
-			if(wc!=wc2){
-				canCast = WeaselPrimitive.canCastAutoTo(wc.getBaseClass(), wc2.getBaseClass());
-				if(canCast){
-					instructions.add(new WeaselInstructionCastPrimitive(WeaselPrimitive.getPrimitiveID(wc2.getBaseClass())));
-					wc2 = wc;
-				}
-			}
-		}
+		wc = WeaselTree.autoCast(compiler, wc, wc2, token.line, instructions, false);
 		instructions.add(j2 = new WeaselInstructionJump());
 		j1.setTarget(j2);
 		instructions.addAll(wcr.instructions);
-		if(!wc.getBaseClass().isPrimitive() && wc2.getBaseClass().isPrimitive()){
-			wc2 = new WeaselGenericClass(compiler.getWeaselClass(WeaselPrimitive.getWrapper(wc2.getBaseClass())));
-			instructions.add(new WeaselInstructionCast(wc2.getBaseClass().getByteName()));
-		}else if(wc.getBaseClass().isPrimitive() && wc2.getBaseClass().isPrimitive()){
-			if(wc!=wc2 && !canCast){
-				canCast = WeaselPrimitive.canCastAutoTo(wc2.getBaseClass(), wc.getBaseClass());
-				if(canCast){
-					instructions.add(new WeaselInstructionCastPrimitive(WeaselPrimitive.getPrimitiveID(wc.getBaseClass())));
-					wc = wc2;
-				}else{
-					throw new WeaselCompilerException(token.line, "Types %s and %s are not compatible", wc, wc2);
-				}
-			}
-		}
+		wc2 = WeaselTree.autoCast(compiler, wc2, wc, token.line, instructions, true);
 		j2.setTarget(instructions.get(instructions.size()-1));
 		return new WeaselCompileReturn(instructions, WeaselGenericClass.getSmallestSame(wc, wc2));
 	}
