@@ -27,7 +27,7 @@ public abstract class WeaselTree {
 		
 		ListIterator<WeaselToken> iterator = tokenList.listIterator();
 		
-		WeaselTree tree =  parse(iterator);
+		WeaselTree tree =  parse(iterator, WeaselTokenType.SEMICOLON);
 		
 		System.out.println("tree:"+tree);
 		return tree;
@@ -183,7 +183,7 @@ public abstract class WeaselTree {
 						throw new WeaselCompilerException(token.line, "Expect ident after generic but got %s", token);
 					
 					if(tokenCache.size()==0){
-						throw new WeaselCompilerException(token.line, "Expect %s before %s", end==null?";":end, token);
+						throw new WeaselCompilerException(token.line, "Expect %s before %s", Arrays.toString(end), token);
 					}
 					
 					while(!tokenCache.isEmpty() && ((Properties)tokenCache.get(0).param).suffix!=null){
