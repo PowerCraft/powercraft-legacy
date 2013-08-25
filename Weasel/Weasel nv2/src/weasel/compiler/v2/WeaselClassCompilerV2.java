@@ -198,10 +198,10 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 			methodBodys = new WeaselMethodBody[ids.method];
 		fields = new WeaselField[0];
 		
-		methods[0] = createMethod("<staticInit>", WeaselModifier.STATIC, this, new WeaselGenericClassInfo(interpreter.baseTypes.voidClass, -1, new WeaselGenericClassInfo[0]), new WeaselGenericClassInfo[0], ids.staticMethod-1);
+		methods[0] = createMethod("<staticInit>", WeaselModifier.STATIC, this, new WeaselGenericClassInfo(interpreter.baseTypes.voidClass, -1, new WeaselGenericClassInfo[0]), new WeaselGenericClassInfo[0], new WeaselGenericInformation[0], ids.staticMethod-1);
 		staticMethodBodys[ids.staticMethod-1] = new WeaselMethodBodyCompilerV2(methods[0], this, classStaticInit, new ArrayList<String>(), new ArrayList<Integer>(), compiler);
 		if(!isInterface()){
-			methods[1] = createMethod("<preInit>", 0, this, new WeaselGenericClassInfo(interpreter.baseTypes.voidClass, -1, new WeaselGenericClassInfo[0]), new WeaselGenericClassInfo[0], 0);
+			methods[1] = createMethod("<preInit>", 0, this, new WeaselGenericClassInfo(interpreter.baseTypes.voidClass, -1, new WeaselGenericClassInfo[0]), new WeaselGenericClassInfo[0], new WeaselGenericInformation[0], 0);
 			methodBodys[0] = new WeaselMethodBodyCompilerV2(methods[1], this, classPreInit, new ArrayList<String>(), new ArrayList<Integer>(), compiler);
 		}
 		
@@ -540,7 +540,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		}
 		expect(token, WeaselTokenType.CLOSEBRACKET);
 		int id = WeaselModifier.isStatic(modifier)?ids.staticMethod++:ids.method++;
-		WeaselMethod method = createMethod(name, modifier, this, typeInfo, genericInfos.toArray(new WeaselGenericClassInfo[0]), id);
+		WeaselMethod method = createMethod(name, modifier, this, typeInfo, genericInfos.toArray(new WeaselGenericClassInfo[0]), genericInformations, id);
 		WeaselMethod[] newMethods = new WeaselMethod[methods.length+1];
 		for(int i=0; i<methods.length; i++){
 			newMethods[i] = methods[i];

@@ -12,7 +12,7 @@ import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 import weasel.compiler.WeaselVariableInfo;
-import weasel.compiler.equationSolverNew.WeaselCompileReturn;
+import weasel.compiler.v2.tokentree.WeaselCompileReturn;
 import weasel.compiler.v2.tokentree.WeaselTree;
 import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselGenericMethod2;

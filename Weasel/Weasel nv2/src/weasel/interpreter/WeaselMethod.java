@@ -19,7 +19,7 @@ public final class WeaselMethod {
 	protected final WeaselGenericClassInfo[] genericParams;
 	protected final int id;
 	
-	protected WeaselMethod(String name, int modifier, WeaselClass parentClass, WeaselGenericClassInfo genericReturn, WeaselGenericClassInfo[] genericParams, int id){
+	protected WeaselMethod(String name, int modifier, WeaselClass parentClass, WeaselGenericClassInfo genericReturn, WeaselGenericClassInfo[] genericParams, WeaselGenericInformation[] genericInfo, int id){
 		boolean isConstructor = name.equals("<init>");
 		boolean isPreConstructor = name.equals("<preInit>");
 		boolean isStaticConstructor = name.equals("<staticInit>");
@@ -37,6 +37,7 @@ public final class WeaselMethod {
 		this.parentClass = parentClass;
 		this.genericReturn = genericReturn;
 		this.genericParams = genericParams;
+		this.genericInfo = genericInfo;
 		this.id = id;
 	}
 	

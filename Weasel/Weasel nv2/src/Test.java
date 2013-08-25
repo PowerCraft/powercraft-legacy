@@ -20,11 +20,11 @@ public class Test {
 				@Override
 				public String getClassSourceFor(String file) {
 					if(file.equals("Test")){
-						return "public class Test<A> implements B<A> {\npublic String b;"
+						return "public class Test<A> implements B<A> {\n"
+								+ "public String b;\n"
 								+ "public int[] a(){\n"
-								+ "b = f(\"Hallo\");"
-										+ "\n}"
-										+ "public Test<A[]> f(A d){}}";
+								+ "   b = f(\"Hallo\")\n;"
+								+ "}\n";
 					}else if(file.equals("Enum")){
 						return "public class Enum{public Enum(){}}";
 					}else if(file.equals("Object")){
