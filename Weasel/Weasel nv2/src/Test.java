@@ -21,7 +21,7 @@ public class Test {
 				public String getClassSourceFor(String file) {
 					if(file.equals("Test")){
 						return "public class Test<A> implements B<A> {\npublic int[] a(){\n"
-								+ "a=new b()<a&&b<c&&a>b>>2;"
+								+ "b = new int[][]{{3, 4}, {3, 4}};"
 										+ "\n}}";
 					}else if(file.equals("Enum")){
 						return "public class Enum{public Enum(){}}";

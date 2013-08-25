@@ -62,6 +62,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 					list.add(token);
 					token = getNextToken();
 				}
+				list.add(token);
 				WeaselCompileReturn wcr = WeaselTree.parse(list).compile(compiler, this, null, new WeaselGenericClass(compiler.baseTypes.voidClass));
 				instructions.addAll(wcr.instructions);
 				if(wcr.returnType.getBaseClass()!=compiler.baseTypes.voidClass)

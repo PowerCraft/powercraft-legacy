@@ -111,7 +111,7 @@ public class WeaselTreeTop extends WeaselTree {
 				}
 				if(iterator.hasNext()){
 					token = iterator.next();
-					if(token.tokenType!=WeaselTokenType.OPENBLOCK){
+					if(token.tokenType==WeaselTokenType.OPENBLOCK){
 						if(anySizeDesk){
 							throw new WeaselCompilerException(token.line, "Can't make array initializer while array have static size");
 						}
@@ -159,7 +159,9 @@ public class WeaselTreeTop extends WeaselTree {
 		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
 		if(newClass!=null){
 			
-			WeaselClass weaselClass = compiler.getWeaselClass(className);
+			WeaselClass weaselClass = compiler.getWeaselClass(newClass);
+			
+			
 			
 			return null;
 		}else if(isFunc){
@@ -243,7 +245,14 @@ public class WeaselTreeTop extends WeaselTree {
 		if(newClass==null){
 			return (generic==null?"":generic.toString())+(token==null?"("+tree.toString()+")":token.toString())+(isFunc?func==null?"()":"("+func.toString()+")":"")+(isIndex?func==null?"[]":"["+func.toString()+"]":"");
 		}else{
-			return "new " + newClass + (generic==null?"":generic.toString()) + "("+(func==null?"":func.toString())+")";
+			String s = "new " + newClass + (generic==null?"":generic.toString());
+			if(arraySize==null){
+				return s + "("+(func==null?"":func.toString())+")";
+			}
+			for(Integer i:arraySize){
+				s += "["+(i==null?"":i)+"]";
+			}
+			return s + (arrayInit==null?"":arrayInit.toString());
 		}
 	}
 
