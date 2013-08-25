@@ -11,12 +11,10 @@ import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 import weasel.compiler.WeaselVariableInfo;
-import weasel.compiler.equationSolverNew.WeaselCompileReturn;
 import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselGenericField;
-import weasel.interpreter.WeaselGenericMethod;
 import weasel.interpreter.WeaselGenericMethod2;
 import weasel.interpreter.bytecode.WeaselInstruction;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstBoolean;
@@ -190,13 +188,13 @@ public class WeaselTreeTop extends WeaselTree {
 					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
 				}
 				instructions.add(new WeaselInstructionLoadConstBoolean((Boolean) token.param));
-				return new WeaselCompileReturn(instructions, compiler.baseTypes.booleanClass, compiler);
+				return new WeaselCompileReturn(instructions, compiler.baseTypes.booleanClass);
 			case DOUBLE:
 				if(write!=null){
 					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
 				}
 				instructions.add(new WeaselInstructionLoadConstDouble((Double) token.param));
-				return new WeaselCompileReturn(instructions, compiler.baseTypes.doubleClass, compiler);
+				return new WeaselCompileReturn(instructions, compiler.baseTypes.doubleClass);
 			case IDENT:
 				String variable = (String)token.param;
 				WeaselVariableInfo wvi = compilerHelper.getVariable(variable);
@@ -234,19 +232,19 @@ public class WeaselTreeTop extends WeaselTree {
 					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
 				}
 				instructions.add(new WeaselInstructionLoadConstInteger((Integer) token.param));
-				return new WeaselCompileReturn(instructions, compiler.baseTypes.intClass, compiler);
+				return new WeaselCompileReturn(instructions, compiler.baseTypes.intClass);
 			case NULL:
 				if(write!=null){
 					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
 				}
 				instructions.add(new WeaselInstructionLoadNull());
-				return new WeaselCompileReturn(instructions, null);
+				return new WeaselCompileReturn(instructions);
 			case STRING:
 				if(write!=null){
 					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
 				}
 				instructions.add(new WeaselInstructionLoadConstString((String) token.param));
-				return new WeaselCompileReturn(instructions, compiler.baseTypes.getStringClass(), compiler);
+				return new WeaselCompileReturn(instructions, compiler.baseTypes.getStringClass());
 			default:
 				throw new WeaselCompilerException(token.line, "Expect ident but got %s", token);
 			}

@@ -7,7 +7,6 @@ import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
-import weasel.compiler.equationSolverNew.WeaselCompileReturn;
 import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselPrimitive;
 import weasel.interpreter.bytecode.WeaselInstruction;

@@ -12,7 +12,6 @@ import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
-import weasel.compiler.equationSolverNew.WeaselCompileReturn;
 import weasel.interpreter.WeaselGenericClass;
 
 public abstract class WeaselTree {

@@ -10,6 +10,7 @@ import weasel.compiler.v2.WeaselClassCompilerV2;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselField;
 import weasel.interpreter.WeaselGenericClassInfo;
+import weasel.interpreter.WeaselGenericInformation;
 import weasel.interpreter.WeaselInterpreter;
 import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselNativeException;
@@ -98,8 +99,8 @@ public class WeaselCompiler extends WeaselInterpreter {
 		compilerMessages.add(message);
 	}
 	
-	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselGenericClassInfo genericReturn, WeaselGenericClassInfo[] genericParams, int id){
-		return compilerCreateMethod(name, modifier, parentClass, genericReturn, genericParams, id);
+	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselGenericClassInfo genericReturn, WeaselGenericClassInfo[] genericParams, WeaselGenericInformation[] genericInformations, int id){
+		return compilerCreateMethod(name, modifier, parentClass, genericReturn, genericParams, genericInformations, id);
 	}
 	
 	private static final HashMap<String, String> classNameMap = new HashMap<String, String>();
