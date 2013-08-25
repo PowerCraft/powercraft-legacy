@@ -3,6 +3,7 @@ package weasel.compiler.v2;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
@@ -36,7 +37,6 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 		this.classCompiler = classCompiler;
 		instructions = new WeaselInstruction[0];
 		this.methodTokens = methodTokens;
-		methodTokens.add(new WeaselToken(WeaselTokenType.NONE, 0));
 		for(int i=0; i<paramNames.size(); i++){
 			variables.put(paramNames.get(i), new WeaselVariableInfo(paramModifier.get(i), paramNames.get(i), new WeaselGenericClass(method.getParamClasses()[i]), -i));
 		}
@@ -57,38 +57,38 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 			return;
 		}
 		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
-		WeaselToken token = getNextToken();
-		while(token.tokenType!=WeaselTokenType.NONE){
+		ListIterator<WeaselToken> iterator = methodTokens.listIterator();
+		while(iterator.hasNext()){
 			try{
-				List<WeaselToken> list = new ArrayList<WeaselToken>();
+				/*List<WeaselToken> list = new ArrayList<WeaselToken>();
 				while(token.tokenType!=WeaselTokenType.SEMICOLON){
 					list.add(token);
 					token = getNextToken();
 				}
-				list.add(token);
-				WeaselCompileReturn wcr = WeaselTree.parse(list).compile(compiler, this, null, new WeaselGenericClass(compiler.baseTypes.voidClass), null, false);
-				instructions.addAll(wcr.instructions);
-				if(wcr.returnType.getBaseClass()!=compiler.baseTypes.voidClass)
-					instructions.add(new WeaselInstructionPop());
+				list.add(token);*/
+				WeaselTree tree = WeaselTree.parse(iterator, WeaselTokenType.SEMICOLON);
+				System.out.println("tree:"+tree);
+				if(tree!=null){
+					WeaselCompileReturn wcr = tree.compile(compiler, this, null, new WeaselGenericClass(compiler.baseTypes.voidClass), null, false);
+					instructions.addAll(wcr.instructions);
+					if(wcr.returnType.getBaseClass()!=compiler.baseTypes.voidClass)
+						instructions.add(new WeaselInstructionPop());
+				}
 			}catch(WeaselCompilerException e){
 				onException(e.getLine(), e.getMessage());
-				while(token.tokenType!=WeaselTokenType.SEMICOLON){
-					token = getNextToken();
+				iterator.previous();
+				WeaselToken token = iterator.next();
+				while(token.tokenType!=WeaselTokenType.SEMICOLON && iterator.hasNext()){
+					token = iterator.next();
 				}
 			}
-			token = getNextToken();
 		}
+		System.out.println("instructions:"+instructions);
 		this.instructions = instructions.toArray(this.instructions);
 	}
 
-	@Override
 	public WeaselToken getNextToken(){
 		return methodTokens.remove(0);
-	}
-	
-	@Override
-	public void setNextToken(WeaselToken token) {
-		methodTokens.add(0, token);
 	}
 	
 	protected void onException(int line, String message, Object...obj){

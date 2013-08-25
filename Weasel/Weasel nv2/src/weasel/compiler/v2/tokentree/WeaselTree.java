@@ -13,6 +13,7 @@ import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 import weasel.interpreter.WeaselGenericClass;
+import weasel.interpreter.WeaselGenericMethod2;
 
 public abstract class WeaselTree {
 
@@ -28,11 +29,10 @@ public abstract class WeaselTree {
 		
 		WeaselTree tree =  parse(iterator, WeaselTokenType.SEMICOLON);
 		
-		System.out.println("tree:"+tree);
 		return tree;
 	}
 
-	protected static WeaselTree parse(ListIterator<WeaselToken> iterator, WeaselTokenType...end) throws WeaselCompilerException {
+	public static WeaselTree parse(ListIterator<WeaselToken> iterator, WeaselTokenType...end) throws WeaselCompilerException {
 		
 		List<WeaselToken> tokenCache = new ArrayList<WeaselToken>();
 		List<WeaselToken> tokenPrefix = new ArrayList<WeaselToken>();
@@ -215,6 +215,7 @@ public abstract class WeaselTree {
 							tokenCache.add(new WeaselCastToken(token.line, className, generic));
 						}else{
 							while(iterator.previous() != token);
+							iterator.next();
 						}
 						generic = null;
 					}
@@ -260,7 +261,8 @@ public abstract class WeaselTree {
 						
 						WeaselTree add;
 						if(token.tokenType==WeaselTokenType.OPENBRACKET){
-							add = new WeaselTreeTop(parse(iterator, WeaselTokenType.CLOSEBRACKET), iterator);
+							add = parse(iterator, WeaselTokenType.CLOSEBRACKET);
+							add = new WeaselTreeTop(add, iterator);
 						}else{
 							add = new WeaselTreeTop(token, generic, iterator);
 						}
@@ -280,6 +282,11 @@ public abstract class WeaselTree {
 		
 		return bottom;
 		
+	}
+
+	public static WeaselParameterCompileReturn compileParamList(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselTree func, List<WeaselGenericMethod2> methods) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -16,16 +16,26 @@ import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselGenericField;
 import weasel.interpreter.WeaselGenericMethod2;
+import weasel.interpreter.WeaselModifier;
+import weasel.interpreter.WeaselPrimitive;
 import weasel.interpreter.bytecode.WeaselInstruction;
+import weasel.interpreter.bytecode.WeaselInstructionInvoke;
+import weasel.interpreter.bytecode.WeaselInstructionInvokeStatic;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstBoolean;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstDouble;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstInteger;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstString;
 import weasel.interpreter.bytecode.WeaselInstructionLoadNull;
 import weasel.interpreter.bytecode.WeaselInstructionLoadVariable;
+import weasel.interpreter.bytecode.WeaselInstructionNew;
+import weasel.interpreter.bytecode.WeaselInstructionNewArray;
+import weasel.interpreter.bytecode.WeaselInstructionPush;
+import weasel.interpreter.bytecode.WeaselInstructionReadField;
 import weasel.interpreter.bytecode.WeaselInstructionReadFieldOf;
+import weasel.interpreter.bytecode.WeaselInstructionReadIndex;
 import weasel.interpreter.bytecode.WeaselInstructionSaveVariable;
 import weasel.interpreter.bytecode.WeaselInstructionWriteFieldOf;
+import weasel.interpreter.bytecode.WeaselInstructionWriteIndex;
 
 public class WeaselTreeTop extends WeaselTree {
 
@@ -45,9 +55,11 @@ public class WeaselTreeTop extends WeaselTree {
 			WeaselToken token = iterator.next();
 			if(token.tokenType==WeaselTokenType.OPENBRACKET){
 				isFunc = true;
+				System.out.println("Func");
 				func = WeaselTree.parse(iterator, WeaselTokenType.CLOSEBRACKET);
 			}else if(token.tokenType==WeaselTokenType.OPENINDEX){
 				isIndex = true;
+				System.out.println("Index");
 				func = WeaselTree.parse(iterator, WeaselTokenType.CLOSEINDEX);
 			}else{
 				iterator.previous();
@@ -59,7 +71,6 @@ public class WeaselTreeTop extends WeaselTree {
 		this.token = token;
 		this.generic = generic;
 		if(token.tokenType==WeaselTokenType.KEYWORD && token.param == WeaselKeyWord.NEW){
-			
 			do{
 				token = iterator.next();
 				if(token.tokenType!=WeaselTokenType.IDENT)
@@ -160,10 +171,66 @@ public class WeaselTreeTop extends WeaselTree {
 		if(newClass!=null){
 			
 			WeaselClass weaselClass = compiler.getWeaselClass(newClass);
+			//TODO
+			WeaselGenericClass genericClass = new WeaselGenericClass(weaselClass);
 			
+			if(arraySize==null){
+				
+				instructions.add(new WeaselInstructionNew(weaselClass.getByteName()));
+				
+				instructions.add(new WeaselInstructionPush(1));
+				
+				instructions.add(new WeaselInstructionInvoke(weaselClass.getRealName()+".<preInit>()"));
+				
+				List<WeaselGenericMethod2> methods = genericClass.getGenericMethods("<init>", true);
+				
+				instructions.add(new WeaselInstructionPush(1));
+				
+				WeaselParameterCompileReturn wcr = WeaselTree.compileParamList(compiler, compilerHelper, func, methods);
+				
+				instructions.addAll(wcr.instructios);
+				
+				instructions.add(new WeaselInstructionInvoke(wcr.method.getMethod().getMethod().getNameAndDesk()));
+				
+			}else{
+				
+				String className = weaselClass.getByteName();
+				for(int i=0; i<arraySize.size(); i++){
+					className = "["+className;
+				}
+				
+				genericClass = new WeaselGenericClass(compiler.getWeaselClass(className), genericClass.getGenerics());
+				
+				if(arrayInit==null){
+					
+					instructions.addAll(arrayInit.compile(compiler, compilerHelper, genericClass));
+					
+				}else{
+					
+					List<Integer> realSize = new ArrayList<Integer>();
+					
+					className = weaselClass.getByteName();
+					
+					for(Integer i:arraySize){
+						if(i==null){
+							className = "["+className;
+						}else{
+							realSize.add(i);
+						}
+					}
+					
+					int[] rs = new int[realSize.size()];
+					for(int i=0; i<rs.length; i++){
+						rs[i] = realSize.get(i);
+					}
+					
+					instructions.add(new WeaselInstructionNewArray(className, rs));
+					
+				}
+				
+			}
 			
-			
-			return null;
+			return new WeaselCompileReturn(instructions, genericClass);
 		}else if(isFunc){
 			List<WeaselGenericMethod2> methods;
 			if(elementParent==null){
@@ -174,11 +241,69 @@ public class WeaselTreeTop extends WeaselTree {
 			if(methods.isEmpty()){
 				throw new WeaselCompilerException(token.line, "Method not found %s", token);
 			}
-			System.out.println(methods);
-			return null;
-		}else if(isIndex){
 			
-			return null;
+			WeaselParameterCompileReturn wcr = WeaselTree.compileParamList(compiler, compilerHelper, func, methods);
+			
+			if(elementParent==null){
+				if(!WeaselModifier.isStatic(wcr.method.getMethod().getMethod().getModifier())){
+					instructions.add(new WeaselInstructionLoadVariable(compilerHelper.getVariable("this").pos));
+				}
+			}
+			
+			instructions.addAll(wcr.instructios);
+			
+			if(elementParent==null){
+				if(WeaselModifier.isStatic(wcr.method.getMethod().getMethod().getModifier())){
+					instructions.add(new WeaselInstructionInvokeStatic(wcr.method.getMethod().getMethod().getNameAndDesk()));
+				}else{
+					instructions.add(new WeaselInstructionInvoke(wcr.method.getMethod().getMethod().getNameAndDesk()));
+				}
+			}else{
+				if(isVariable){
+					instructions.add(new WeaselInstructionInvoke(wcr.method.getMethod().getMethod().getNameAndDesk()));
+				}else{
+					instructions.add(new WeaselInstructionInvokeStatic(wcr.method.getMethod().getMethod().getNameAndDesk()));
+				}
+			}
+			
+			return new WeaselCompileReturn(instructions, wcr.method.getGenericReturn());
+		}else if(isIndex){
+			WeaselGenericClass arrayClass;
+			if(elementParent==null){
+				WeaselVariableInfo wvi = compilerHelper.getVariable((String)token.param);
+				if(wvi==null){
+					wvi = compilerHelper.getVariable("this");
+					if(wvi==null)
+						throw new WeaselCompilerException(token.line, "Variable %s not declared bevore", token);
+					WeaselGenericField field = wvi.type.getGenericField((String)token.param);
+					if(field==null)
+						throw new WeaselCompilerException(token.line, "Variable %s not declared bevore", token);
+					arrayClass = field.getGenericType();
+					instructions.add(new WeaselInstructionReadFieldOf(wvi.pos, field.getField().getDesk()));
+				}else{
+					arrayClass = wvi.type;
+					instructions.add(new WeaselInstructionLoadVariable(wvi.pos));
+				}
+			}else{
+				WeaselGenericField field = elementParent.getGenericField((String)token.param);
+				if(field==null)
+					throw new WeaselCompilerException(token.line, "Variable %s not declared in %s", token, elementParent);
+				arrayClass = field.getGenericType();
+				instructions.add(new WeaselInstructionReadField(field.getField().getDesk()));
+			}
+			if(!arrayClass.getBaseClass().isArray()){
+				throw new WeaselCompilerException(token.line, "%s is not an array", arrayClass);
+			}
+			WeaselCompileReturn wcr = func.compile(compiler, compilerHelper, null, new WeaselGenericClass(compiler.baseTypes.intClass), null, false);
+			if(wcr.returnType.getBaseClass()!=compiler.baseTypes.intClass)
+				throw new WeaselCompilerException(token.line, "Index have to be a int not a %s", wcr.returnType);
+			instructions.addAll(wcr.instructions);
+			if(write==null){
+				instructions.add(new WeaselInstructionReadIndex(WeaselPrimitive.getPrimitiveID(arrayClass.getBaseClass().getArrayClass())));
+			}else{
+				instructions.add(new WeaselInstructionWriteIndex(WeaselPrimitive.getPrimitiveID(arrayClass.getBaseClass().getArrayClass())));
+			}
+			return new WeaselCompileReturn(instructions, new WeaselGenericClass(arrayClass.getBaseClass().getArrayClass(), arrayClass.getGenerics()));
 		}else if(token==null){
 			return tree.compile(compiler, compilerHelper, write, expect, elementParent, isVariable);
 		}else{
