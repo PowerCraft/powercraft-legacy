@@ -22,4 +22,9 @@ public class WeaselInstructionTryBreak extends WeaselInstructionNoTime {
 	@Override
 	protected void saveToDataStream(DataOutputStream dataOutputStream) throws IOException {}
 
+	@Override
+	public String toString() {
+		return "try break";
+	}
+	
 }

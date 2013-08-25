@@ -30,4 +30,9 @@ public class WeaselInstructionLoadConstByte extends WeaselInstruction {
 		dataOutputStream.writeByte(value);
 	}
 
+	@Override
+	public String toString() {
+		return ""+value;
+	}
+	
 }

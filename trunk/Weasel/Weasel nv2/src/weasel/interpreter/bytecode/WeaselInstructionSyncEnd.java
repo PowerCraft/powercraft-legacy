@@ -30,4 +30,9 @@ public class WeaselInstructionSyncEnd extends WeaselInstruction {
 		dataOutputStream.writeUTF(token);
 	}
 
+	@Override
+	public String toString() {
+		return "sync end "+token;
+	}
+	
 }

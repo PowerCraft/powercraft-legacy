@@ -80,4 +80,9 @@ public class WeaselInstructionReadFieldOf extends WeaselInstruction {
 		dataOutputStream.writeUTF(fieldDesk);
 	}
 
+	@Override
+	public String toString() {
+		return "readField "+fieldDesk+" of "+pos;
+	}
+	
 }

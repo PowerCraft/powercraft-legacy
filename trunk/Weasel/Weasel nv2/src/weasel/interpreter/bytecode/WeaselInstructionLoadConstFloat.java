@@ -30,4 +30,9 @@ public class WeaselInstructionLoadConstFloat extends WeaselInstruction {
 		dataOutputStream.writeFloat(value);
 	}
 
+	@Override
+	public String toString() {
+		return ""+value;
+	}
+	
 }

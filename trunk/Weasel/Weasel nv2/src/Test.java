@@ -21,9 +21,9 @@ public class Test {
 				public String getClassSourceFor(String file) {
 					if(file.equals("Test")){
 						return "public class Test<A> implements B<A> {\n"
-								+ "public String b, r[];\n"
+								+ "public long b, r[];\n"
 								+ "public int[] a(){\n"
-								+ "   b = r[3];\n"
+								+ "   r[0] = 1&3;\n"
 								+ "}}\n";
 					}else if(file.equals("Enum")){
 						return "public class Enum{public Enum(){}}";

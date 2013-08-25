@@ -28,4 +28,9 @@ public class WeaselInstructionIf extends WeaselInstructionJump {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "if";
+	}
+	
 }

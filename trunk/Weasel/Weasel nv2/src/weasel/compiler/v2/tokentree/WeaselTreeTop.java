@@ -301,6 +301,8 @@ public class WeaselTreeTop extends WeaselTree {
 			if(write==null){
 				instructions.add(new WeaselInstructionReadIndex(WeaselPrimitive.getPrimitiveID(arrayClass.getBaseClass().getArrayClass())));
 			}else{
+				instructions.add(new WeaselInstructionPlaceHolder());
+				WeaselTree.autoCast(compiler, write, new WeaselGenericClass(arrayClass.getBaseClass().getArrayClass(), arrayClass.getGenerics()), token.line, instructions, true);
 				instructions.add(new WeaselInstructionWriteIndex(WeaselPrimitive.getPrimitiveID(arrayClass.getBaseClass().getArrayClass())));
 			}
 			return new WeaselCompileReturn(instructions, new WeaselGenericClass(arrayClass.getBaseClass().getArrayClass(), arrayClass.getGenerics()));
@@ -335,9 +337,8 @@ public class WeaselTreeTop extends WeaselTree {
 					if(write==null){
 						instructions.add(new WeaselInstructionReadFieldOf(wvi.pos, wf.getField().getDesk()));
 					}else{
-						if(!write.canCastTo(wf.getGenericType())){
-							throw new WeaselCompilerException(token.line, "Can't write %s to variable %s", write, wf);
-						}
+						instructions.add(new WeaselInstructionPlaceHolder());
+						WeaselTree.autoCast(compiler, write, wf.getGenericType(), token.line, instructions, true);
 						instructions.add(new WeaselInstructionWriteFieldOf(wvi.pos, wf.getField().getDesk()));
 					}
 					return new WeaselCompileReturn(instructions, wf.getGenericType());
@@ -345,9 +346,8 @@ public class WeaselTreeTop extends WeaselTree {
 					if(write==null){
 						instructions.add(new WeaselInstructionLoadVariable(wvi.pos));
 					}else{
-						if(!write.canCastTo(wvi.type)){
-							throw new WeaselCompilerException(token.line, "Can't write %s to variable %s", write, wvi);
-						}
+						instructions.add(new WeaselInstructionPlaceHolder());
+						WeaselTree.autoCast(compiler, write, wvi.type, token.line, instructions, true);
 						instructions.add(new WeaselInstructionSaveVariable(wvi.pos));
 					}
 					return new WeaselCompileReturn(instructions, wvi.type);

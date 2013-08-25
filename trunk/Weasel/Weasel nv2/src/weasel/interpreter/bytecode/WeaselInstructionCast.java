@@ -98,4 +98,9 @@ public class WeaselInstructionCast extends WeaselInstruction {
 		dataOutputStream.writeUTF(className);
 	}
 
+	@Override
+	public String toString() {
+		return "cast "+className;
+	}
+	
 }

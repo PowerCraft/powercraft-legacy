@@ -74,4 +74,9 @@ public class WeaselInstructionWriteStaticField extends WeaselInstruction {
 		dataOutputStream.writeUTF(fieldDesk);
 	}
 
+	@Override
+	public String toString() {
+		return "writeField static "+fieldDesk;
+	}
+	
 }

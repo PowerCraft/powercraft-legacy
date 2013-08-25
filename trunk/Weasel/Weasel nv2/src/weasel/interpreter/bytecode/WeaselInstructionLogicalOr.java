@@ -9,15 +9,15 @@ import weasel.interpreter.WeaselMethodExecutor;
 import weasel.interpreter.WeaselPrimitive;
 import weasel.interpreter.WeaselThread;
 
-public class WeaselInstructionDiv extends WeaselInstruction {
+public class WeaselInstructionLogicalOr extends WeaselInstruction {
 
 	private final int primitiveID;
 	
-	public WeaselInstructionDiv(int primitiveID){
+	public WeaselInstructionLogicalOr(int primitiveID){
 		this.primitiveID = primitiveID;
 	}
 	
-	public WeaselInstructionDiv(DataInputStream dataInputStream) throws IOException{
+	public WeaselInstructionLogicalOr(DataInputStream dataInputStream) throws IOException{
 		primitiveID = dataInputStream.readInt();
 	}
 	
@@ -27,27 +27,8 @@ public class WeaselInstructionDiv extends WeaselInstruction {
 		Object o2 = thread.popValue();
 		
 		switch(primitiveID){
-		case WeaselPrimitive.CHAR:
-			thread.pushValue((Character)o1/(Character)o2);
-			break;
-		case WeaselPrimitive.BYTE:
-			thread.pushValue((Byte)o1/(Byte)o2);
-			break;
-		case WeaselPrimitive.SHORT:
-			thread.pushValue((Short)o1/(Short)o2);
-			break;
-		case WeaselPrimitive.INT:
-			thread.pushValue((Integer)o1/(Integer)o2);
-			break;
-		case WeaselPrimitive.LONG:
-			thread.pushValue((Long)o1/(Long)o2);
-			break;
-		case WeaselPrimitive.DOUBLE:
-			thread.pushValue((Double)o1/(Double)o2);
-			break;
-		case WeaselPrimitive.FLOAT:
-			thread.pushValue((Float)o1/(Float)o2);
-			break;
+		case WeaselPrimitive.BOOLEAN:
+			thread.pushValue((Boolean)o1||(Boolean)o2);
 		}
 		
 	}
@@ -56,10 +37,10 @@ public class WeaselInstructionDiv extends WeaselInstruction {
 	protected void saveToDataStream(DataOutputStream dataOutputStream) throws IOException {
 		dataOutputStream.writeInt(primitiveID);
 	}
-
+	
 	@Override
 	public String toString() {
-		return "div "+WeaselPrimitive.primitiveNames[primitiveID];
+		return "logOr "+WeaselPrimitive.primitiveNames[primitiveID];
 	}
 	
 }

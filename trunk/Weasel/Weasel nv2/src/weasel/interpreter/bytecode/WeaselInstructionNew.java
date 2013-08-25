@@ -40,4 +40,9 @@ public class WeaselInstructionNew extends WeaselInstruction {
 		dataOutputStream.writeUTF(className);
 	}
 
+	@Override
+	public String toString() {
+		return "new "+className;
+	}
+	
 }

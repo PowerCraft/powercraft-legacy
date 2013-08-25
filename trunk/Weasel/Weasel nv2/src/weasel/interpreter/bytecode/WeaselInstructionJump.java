@@ -45,5 +45,10 @@ public class WeaselInstructionJump extends WeaselInstruction {
 	protected void saveToDataStream(DataOutputStream dataOutputStream) throws IOException {
 		dataOutputStream.writeInt(jumpTo);
 	}
+	
+	@Override
+	public String toString() {
+		return "jump";
+	}
 
 }

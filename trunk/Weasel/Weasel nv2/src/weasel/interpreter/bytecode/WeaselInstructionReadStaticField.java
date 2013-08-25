@@ -73,5 +73,10 @@ public class WeaselInstructionReadStaticField extends WeaselInstruction {
 	protected void saveToDataStream(DataOutputStream dataOutputStream) throws IOException {
 		dataOutputStream.writeUTF(fieldDesk);
 	}
+	
+	@Override
+	public String toString() {
+		return "readField static "+fieldDesk;
+	}
 
 }

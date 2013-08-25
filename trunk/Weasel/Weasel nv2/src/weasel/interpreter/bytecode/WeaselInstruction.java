@@ -34,6 +34,9 @@ public abstract class WeaselInstruction {
 
 	protected abstract void saveToDataStream(DataOutputStream dataOutputStream) throws IOException;
 	
+	@Override
+	public abstract String toString();
+
 	public static int getInstructionID(WeaselInstruction instruction){
 		return getInstructionID(instruction.getClass());
 	}

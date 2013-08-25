@@ -22,4 +22,9 @@ public class WeaselInstructionPop extends WeaselInstruction {
 	@Override
 	protected void saveToDataStream(DataOutputStream dataOutputStream) throws IOException {}
 
+	@Override
+	public String toString() {
+		return "pop";
+	}
+	
 }

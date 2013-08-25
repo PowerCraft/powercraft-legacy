@@ -38,5 +38,9 @@ public class WeaselInstructionLoadConstClass extends WeaselInstruction {
 		dataOutputStream.writeUTF(className);
 	}
 
+	@Override
+	public String toString() {
+		return className;
+	}
 
 }

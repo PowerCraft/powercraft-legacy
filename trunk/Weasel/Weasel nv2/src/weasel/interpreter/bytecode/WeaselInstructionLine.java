@@ -30,4 +30,9 @@ public class WeaselInstructionLine extends WeaselInstructionNoTime {
 		dataOutputStream.writeInt(line);
 	}
 
+	@Override
+	public String toString() {
+		return "line "+line;
+	}
+	
 }
