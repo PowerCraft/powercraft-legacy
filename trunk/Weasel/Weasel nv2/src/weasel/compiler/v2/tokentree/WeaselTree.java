@@ -7,36 +7,52 @@ import java.util.ListIterator;
 
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
+import weasel.compiler.WeaselCompilerReturn;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
+import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselGenericMethod2;
 import weasel.interpreter.WeaselPrimitive;
 import weasel.interpreter.bytecode.WeaselInstruction;
 import weasel.interpreter.bytecode.WeaselInstructionCast;
 import weasel.interpreter.bytecode.WeaselInstructionCastPrimitive;
+import weasel.interpreter.bytecode.WeaselInstructionPop;
 
 public abstract class WeaselTree {
 
 	public abstract WeaselTreeAddResult add(List<WeaselToken> suffix, WeaselToken infix, List<WeaselToken> prefix, WeaselTree weaselTree, ListIterator<WeaselToken> iterator) throws WeaselCompilerException;
 
-	public abstract WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect, WeaselGenericClass elementParent, boolean isVariable) throws WeaselCompilerException;
+	public abstract WeaselCompilerReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect, WeaselGenericClass elementParent, boolean isVariable) throws WeaselCompilerException;
 
 	public abstract String toString();
 	
-	public static WeaselTree parse(List<WeaselToken> tokenList) throws WeaselCompilerException {
+	public static List<WeaselInstruction> parseAndCompile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, ListIterator<WeaselToken> iterator) throws WeaselCompilerException {
 		
-		ListIterator<WeaselToken> iterator = tokenList.listIterator();
+		WeaselToken token = iterator.next();
+		if(token.tokenType==WeaselTokenType.KEYWORD && ((WeaselKeyWord)token.param).compiler!=null){
+			WeaselCompilerReturn wcr = ((WeaselKeyWord)token.param).compiler.compile(compiler, compilerHelper, iterator);
+			if(wcr.returnType.getBaseClass()!=compiler.baseTypes.voidClass)
+				wcr.instructions.add(new WeaselInstructionPop());
+			return wcr.instructions;
+		}else{
+			iterator.previous();
 		
-		WeaselTree tree =  parse(iterator, WeaselTokenType.SEMICOLON);
-		
-		return tree;
+			WeaselTree tree = parse(iterator, WeaselTokenType.SEMICOLON);
+			if(tree!=null){
+				WeaselCompilerReturn wcr = tree.compile(compiler, compilerHelper, null, new WeaselGenericClass(compiler.baseTypes.voidClass), null, false);
+				if(wcr.returnType.getBaseClass()!=compiler.baseTypes.voidClass)
+					wcr.instructions.add(new WeaselInstructionPop());
+				return wcr.instructions;
+			}
+			return null;
+		}
 	}
 
-	public static WeaselTree parse(ListIterator<WeaselToken> iterator, WeaselTokenType...end) throws WeaselCompilerException {
+	protected static WeaselTree parse(ListIterator<WeaselToken> iterator, WeaselTokenType...end) throws WeaselCompilerException {
 		
 		List<WeaselToken> tokenCache = new ArrayList<WeaselToken>();
 		List<WeaselToken> tokenPrefix = new ArrayList<WeaselToken>();

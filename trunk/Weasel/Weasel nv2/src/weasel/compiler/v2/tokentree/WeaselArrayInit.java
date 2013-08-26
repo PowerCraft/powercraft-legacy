@@ -6,6 +6,7 @@ import java.util.ListIterator;
 
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
+import weasel.compiler.WeaselCompilerReturn;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
@@ -73,7 +74,7 @@ public class WeaselArrayInit {
 			if(o instanceof WeaselArrayInit){
 				instructions.addAll(((WeaselArrayInit)o).compile(compiler, compilerHelper, arrayClass));
 			}else{
-				WeaselCompileReturn wcr = ((WeaselTree)o).compile(compiler, compilerHelper, null, arrayClass, null, false);
+				WeaselCompilerReturn wcr = ((WeaselTree)o).compile(compiler, compilerHelper, null, arrayClass, null, false);
 				if(!wcr.returnType.canCastTo(arrayClass))
 					throw new WeaselCompilerException(token.line, "Can't cast %s to %s", wcr.returnType, arrayClass);
 				instructions.addAll(wcr.instructions);

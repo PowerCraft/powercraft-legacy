@@ -1,6 +1,7 @@
 package weasel.compiler.keywords;
 
 import java.util.Arrays;
+import java.util.ListIterator;
 
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
@@ -11,7 +12,7 @@ import weasel.compiler.WeaselTokenType;
 
 public abstract class WeaselKeyWordCompiler {
 	
-	public abstract WeaselCompilerReturn compile(WeaselToken token, WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher,  WeaselTokenType statementEnd) throws WeaselCompilerException;
+	public abstract WeaselCompilerReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher,  ListIterator<WeaselToken> iterator) throws WeaselCompilerException;
 
 	protected void expect(WeaselToken token, WeaselTokenType...tokenTypes) throws WeaselCompilerException{
 		for(int i=0; i<tokenTypes.length; i++){

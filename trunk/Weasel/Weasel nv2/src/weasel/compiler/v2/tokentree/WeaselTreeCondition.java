@@ -5,6 +5,7 @@ import java.util.ListIterator;
 
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
+import weasel.compiler.WeaselCompilerReturn;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.interpreter.WeaselGenericClass;
@@ -38,12 +39,12 @@ public class WeaselTreeCondition extends WeaselTree {
 	}
 
 	@Override
-	public WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect, WeaselGenericClass elementParent, boolean isVariable) throws WeaselCompilerException {
+	public WeaselCompilerReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect, WeaselGenericClass elementParent, boolean isVariable) throws WeaselCompilerException {
 		if(write!=null){
 			throw new WeaselCompilerException(token.line, "Can't write any value to Condition");
 		}
 		List<WeaselInstruction> instructions;
-		WeaselCompileReturn wcr = condition.compile(compiler, compilerHelper, null, new WeaselGenericClass(compiler.baseTypes.booleanClass), null, false);
+		WeaselCompilerReturn wcr = condition.compile(compiler, compilerHelper, null, new WeaselGenericClass(compiler.baseTypes.booleanClass), null, false);
 		if(wcr.returnType.getBaseClass()!=compiler.baseTypes.booleanClass)
 			throw new WeaselCompilerException(token.line, "Condition of Conditional have to be a boolean and no %s", wcr.returnType);
 		instructions = wcr.instructions;
@@ -64,7 +65,7 @@ public class WeaselTreeCondition extends WeaselTree {
 		instructions.addAll(wcr.instructions);
 		wc2 = WeaselTree.autoCast(compiler, wc2, wc, token.line, instructions, true);
 		j2.setTarget(instructions.get(instructions.size()-1));
-		return new WeaselCompileReturn(instructions, WeaselGenericClass.getSmallestSame(wc, wc2));
+		return new WeaselCompilerReturn(instructions, WeaselGenericClass.getSmallestSame(wc, wc2));
 	}
 
 	@Override

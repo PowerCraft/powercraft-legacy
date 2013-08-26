@@ -2,19 +2,17 @@ package weasel.compiler;
 
 import java.util.List;
 
-import weasel.interpreter.WeaselClass;
+import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.bytecode.WeaselInstruction;
 
 public class WeaselCompilerReturn {
 
-	public List<WeaselInstruction> instructions;
-	public WeaselClass inStack;
-	public WeaselToken token;
+	public final List<WeaselInstruction> instructions;
+	public final WeaselGenericClass returnType;
 	
-	public WeaselCompilerReturn(WeaselToken token, List<WeaselInstruction> instructions, WeaselClass inStack) {
-		this.token = token;
+	public WeaselCompilerReturn(List<WeaselInstruction> instructions, WeaselGenericClass returnType) {
 		this.instructions = instructions;
-		this.inStack = inStack;
+		this.returnType = returnType;
 	}
 	
 }

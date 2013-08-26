@@ -6,6 +6,7 @@ import java.util.ListIterator;
 
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
+import weasel.compiler.WeaselCompilerReturn;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselOperator.Properties;
@@ -107,8 +108,8 @@ public class WeaselTreeLevel extends WeaselTree {
 	}
 
 	@Override
-	public WeaselCompileReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect, WeaselGenericClass elementParent, boolean isVariable) throws WeaselCompilerException {
-		WeaselCompileReturn wcr = null;
+	public WeaselCompilerReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect, WeaselGenericClass elementParent, boolean isVariable) throws WeaselCompilerException {
+		WeaselCompilerReturn wcr = null;
 		Properties operator = (Properties)operators.get(0).param;
 		if(operator.infix==operator){
 			if(operator.l2r){
@@ -134,7 +135,7 @@ public class WeaselTreeLevel extends WeaselTree {
 		return null;
 	}
 
-	private WeaselCompileReturn compileOperator(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect,
+	private WeaselCompilerReturn compileOperator(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect,
 			WeaselGenericClass elementParent, boolean isVariable, int i) throws WeaselCompilerException {
 		if(i==-1)
 			return level.get(0).compile(compiler, compilerHelper, write, expect, elementParent, isVariable);
@@ -143,7 +144,7 @@ public class WeaselTreeLevel extends WeaselTree {
 		WeaselToken operator = operators.get(i);
 		Properties oper = (Properties)operator.param;
 		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
-		WeaselCompileReturn wcr;
+		WeaselCompilerReturn wcr;
 		WeaselGenericClass ret;
 		WeaselGenericClass wgc;
 		if(oper==WeaselOperator.COMMA){
@@ -156,7 +157,7 @@ public class WeaselTreeLevel extends WeaselTree {
 				instructions.add(new WeaselInstructionPop());
 			}
 		}else if(oper==WeaselOperator.ASSIGN){
-			WeaselCompileReturn wcr2 = compileOperator(compiler, compilerHelper, null, expect, null, false, i+1);
+			WeaselCompilerReturn wcr2 = compileOperator(compiler, compilerHelper, null, expect, null, false, i+1);
 			wcr = level.get(i).compile(compiler, compilerHelper, wcr2.returnType, expect, null, false);
 			instructions.addAll(wcr.instructions);
 			List<WeaselInstruction> after = new ArrayList<WeaselInstruction>();
@@ -226,7 +227,7 @@ public class WeaselTreeLevel extends WeaselTree {
 		}else{
 			throw new WeaselCompilerException(operator.line, "Unknown operator %s", operator);
 		}
-		return new WeaselCompileReturn(instructions, ret);
+		return new WeaselCompilerReturn(instructions, ret);
 	}
 	
 	@Override
