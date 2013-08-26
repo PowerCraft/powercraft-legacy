@@ -9,6 +9,7 @@ import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerMessage;
 import weasel.compiler.WeaselCompilerMessage.MessageType;
 import weasel.compiler.WeaselOperator;
+import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenParser;
 import weasel.compiler.WeaselTokenType;
@@ -237,6 +238,10 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 					typeInfo = readGenericClass(token);
 					expect(token = getNextToken(), WeaselTokenType.IDENT);
 					name = (String)token.param;
+					if(name.equals("operator")){
+						expect(token = getNextToken(), WeaselTokenType.OPERATOR, WeaselTokenType.COMMA);
+						name += ((Properties)token.param).operator;
+					}
 				}
 				token = getNextToken();
 				if(isConstructor){

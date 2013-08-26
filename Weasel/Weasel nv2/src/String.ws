@@ -1,4 +1,4 @@
-public final class String implements Compareable<String>, Cloneable<String>{
+public final class String{
 
 	private final char[] value;
 	

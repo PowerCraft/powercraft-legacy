@@ -60,6 +60,7 @@ public class WeaselOperator {
 	public static final Properties VERY_SAME =			new Properties("=="		,"very same"	,	9	,	null	,	null	,	null	,	true	,	unknown	,	unknown	);
 	public static final Properties NOT_VERY_SAME =		new Properties("!="		,"not very same",	9	,	null	,	null	,	null	,	true	,	unknown	,	unknown	);
 	public static final Properties EQUAL =				new Properties("==="	,"equal"		,	9	,	null	,	null	,	null	,	true	,	unknown	,	unknown	);
+	public static final Properties NOT_EQUAL =			new Properties("!=="	,"not equal"	,	9	,	null	,	null	,	null	,	true	,	unknown	,	unknown	);
 	public static final Properties COMPARE =			new Properties("<=>"	,"compare"		,	9	,	null	,	null	,	null	,	true	,	unknown	,	unknown	);
 	public static final Properties GREATER =			new Properties(">"		,"greater"		,	10	,	null	,	null	,	null	,	true	,	unknown	,	unknown	);
 	public static final Properties LESS =				new Properties("<"		,"less"			,	10	,	null	,	null	,	null	,	true	,	unknown	,	unknown	);
@@ -111,6 +112,7 @@ public class WeaselOperator {
 		VERY_SAME.infix = VERY_SAME;
 		NOT_VERY_SAME.infix = NOT_VERY_SAME;
 		EQUAL.infix = EQUAL;
+		NOT_EQUAL.infix = NOT_EQUAL;
 		COMPARE.infix = COMPARE;
 		GREATER.infix = GREATER;
 		LESS.infix = LESS;
@@ -166,6 +168,7 @@ public class WeaselOperator {
 		operators.put(VERY_SAME.operator, VERY_SAME);
 		operators.put(NOT_VERY_SAME.operator, NOT_VERY_SAME);
 		operators.put(EQUAL.operator, EQUAL);
+		operators.put(NOT_EQUAL.operator, NOT_EQUAL);
 		operators.put(COMPARE.operator, COMPARE);
 		operators.put(GREATER.operator, GREATER);
 		operators.put(LESS.operator, LESS);

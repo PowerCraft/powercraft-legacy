@@ -36,7 +36,7 @@ public class WeaselInstructionInvoke extends WeaselInstruction {
 		WeaselObject object = interpreter.getObject(thread.getObject(thread.getStackPointer()-this.method.getParamClasses().length-1));
 		WeaselMethodBody methodBody = this.method.getMethodFromClass(object.getWeaselClass());
 		if(methodBody.isNative()){
-			WeaselNativeMethod nativeMethod = interpreter.getNativeMethod(methodDesk);
+			WeaselNativeMethod nativeMethod = interpreter.getNativeMethod(methodBody.getNameAndDesk());
 			Object[] params = new Object[this.method.getParamClasses().length];
 			for(int i=0; i<params.length; i++){
 				StackElement se = thread.pop();
@@ -47,7 +47,7 @@ public class WeaselInstructionInvoke extends WeaselInstruction {
 				}
 			}
 			thread.popObject();
-			Object ret = nativeMethod.invoke(interpreter, thread, method, methodDesk, object, params);
+			Object ret = nativeMethod.invoke(interpreter, thread, method, methodBody.getNameAndDesk(), object, params);
 			WeaselClass rc = this.method.getReturnClasses();
 			switch(WeaselPrimitive.getPrimitiveID(rc)){
 			case WeaselPrimitive.BOOLEAN:
@@ -100,9 +100,6 @@ public class WeaselInstructionInvoke extends WeaselInstruction {
 				}
 			}else{
 				thread.call(methodBody);
-				for(int i=0; i<this.method.getParamClasses().length; i++){
-					thread.pop();
-				}
 			}
 		}
 	}

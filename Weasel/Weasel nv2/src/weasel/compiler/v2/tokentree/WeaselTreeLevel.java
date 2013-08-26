@@ -16,9 +16,13 @@ import weasel.interpreter.bytecode.WeaselInstruction;
 import weasel.interpreter.bytecode.WeaselInstructionBitwiseAnd;
 import weasel.interpreter.bytecode.WeaselInstructionBitwiseOr;
 import weasel.interpreter.bytecode.WeaselInstructionBitwiseXor;
+import weasel.interpreter.bytecode.WeaselInstructionEqual;
 import weasel.interpreter.bytecode.WeaselInstructionLogicalAnd;
 import weasel.interpreter.bytecode.WeaselInstructionLogicalOr;
+import weasel.interpreter.bytecode.WeaselInstructionNotEqual;
+import weasel.interpreter.bytecode.WeaselInstructionNotVerySame;
 import weasel.interpreter.bytecode.WeaselInstructionPop;
+import weasel.interpreter.bytecode.WeaselInstructionVerySame;
 
 public class WeaselTreeLevel extends WeaselTree {
 
@@ -196,7 +200,29 @@ public class WeaselTreeLevel extends WeaselTree {
 			}else if(oper==WeaselOperator.BITWISE_XOR){
 				instructions.add(new WeaselInstructionBitwiseXor(primitiveID));
 			}
+		}else if(oper==WeaselOperator.VERY_SAME || oper==WeaselOperator.NOT_VERY_SAME
+					 || oper==WeaselOperator.EQUAL || oper==WeaselOperator.NOT_EQUAL){
+			wcr = compileOperator(compiler, compilerHelper, null, expect, null, false, i-1);
+			instructions.addAll(wcr.instructions);
+			wgc = wcr.returnType;
+			wcr = level.get(i+1).compile(compiler, compilerHelper, null, expect, null, false);
 			ret = wcr.returnType;
+			if(wgc.getBaseClass().isPrimitive()||ret.getBaseClass().isPrimitive())
+				wgc = WeaselTree.autoCast(compiler, wgc, ret, operator.line, instructions, false);
+			instructions.addAll(wcr.instructions);
+			if(wgc.getBaseClass().isPrimitive()||ret.getBaseClass().isPrimitive())
+				ret = WeaselTree.autoCast(compiler, ret, wgc, operator.line, instructions, true);
+			int primitiveID = WeaselPrimitive.getPrimitiveID(ret.getBaseClass());
+			if(oper==WeaselOperator.VERY_SAME){
+				instructions.add(new WeaselInstructionVerySame(primitiveID));
+			}else if(oper==WeaselOperator.NOT_VERY_SAME){
+				instructions.add(new WeaselInstructionNotVerySame(primitiveID));
+			}else if(oper==WeaselOperator.EQUAL){
+				instructions.add(new WeaselInstructionEqual(primitiveID));
+			}else if(oper==WeaselOperator.NOT_EQUAL){
+				instructions.add(new WeaselInstructionNotEqual(primitiveID));
+			}
+			ret = new WeaselGenericClass(compiler.baseTypes.booleanClass);
 		}else{
 			throw new WeaselCompilerException(operator.line, "Unknown operator %s", operator);
 		}

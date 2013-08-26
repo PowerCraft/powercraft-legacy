@@ -45,6 +45,7 @@ public class WeaselBaseTypes {
 	}
 	
 	private WeaselClass weaselObjectClass;
+	private WeaselMethod weaselObjectEqualMethod;
 	
 	public WeaselClass getObjectClass(){
 		if(weaselObjectClass==null){
@@ -53,6 +54,12 @@ public class WeaselBaseTypes {
 		return weaselObjectClass;
 	}
 	
+	public WeaselMethod getlObjectEqualMethod() {
+		if(weaselObjectEqualMethod==null){
+			weaselObjectEqualMethod = getObjectClass().getMethod("equals", "(OObject;)N");
+		}
+		return weaselObjectEqualMethod;
+	}
 	
 	private WeaselClass weaselClassClass;
 	private WeaselField weaselClassClassNameField;
