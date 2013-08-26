@@ -219,6 +219,10 @@ public class WeaselInterpreter implements WeaselSaveable {
 		int lastDot = methodDesk.lastIndexOf('.', openBreak);
 		String className = methodDesk.substring(0, lastDot);
 		String name = methodDesk.substring(lastDot+1, openBreak);
+		if(name.equals("operator")){
+			openBreak = methodDesk.indexOf('(', openBreak+1);
+			name = methodDesk.substring(lastDot+1, openBreak);
+		}
 		String desk = methodDesk.substring(openBreak);
 		WeaselClass weaselClass = getWeaselClass("O"+className+";");
 		WeaselMethod method = weaselClass.getMethod(name, desk);

@@ -1,4 +1,4 @@
-public class Enum<E extends Enum<E>> implements Compareable<E>, Cloneable<E>{
+public class Enum<E extends Enum<E>>{
 
 	private final String name;
 	private final int ordinal;
@@ -28,13 +28,13 @@ public class Enum<E extends Enum<E>> implements Compareable<E>, Cloneable<E>{
 		return super.hashCode();
 	}
 
-	public final int compareTo(E o) {
+	public final int operator<=>(E o) {
         if (getClass() != o.getClass())
             throw new ClassCastException();
         return self.ordinal - other.ordinal;
     }
 
-	public final E clone(){
+	public final E operator<:(){
 		return this;
 	}
 
