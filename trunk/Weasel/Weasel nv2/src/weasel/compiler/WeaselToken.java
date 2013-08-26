@@ -26,41 +26,5 @@ public class WeaselToken{
 		}
 		return param.toString();
 	}
-	
-	/*@Override
-	public String getName() {
-		return ((Properties)param).operator;
-	}
 
-	// 12+5*3+5/3-2
-	// -(+(12,*(5,3),/(5,3)),2)
-
-	@Override
-	public String toString(){
-		return toReadableString();
-	}
-	
-	@Override
-	public String toReadableString() {
-		return param.toString();
-	}
-	
-	public String toEncryptedString() {
-		return ((Properties)param).operator;
-	}
-
-	@Override
-	public void toAdvancedEncryptedString(String2D str) {
-		str.add(toString());
-	}
-
-	public String toClassView() {
-		return this.getClass().getName();
-	}
-	
-	public WeaselToken simplify() {
-		return this;	
-	}
-
-	*/
 }
