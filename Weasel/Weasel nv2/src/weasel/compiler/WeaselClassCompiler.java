@@ -37,6 +37,10 @@ public abstract class WeaselClassCompiler extends WeaselClass {
 		return new WeaselToken(WeaselTokenType.NONE, tokenParser.getLine());
 	}
 	
+	protected void setNextToken(WeaselToken token){
+		tokenParser.setNextToken(token);
+	}
+	
 	protected void expect(WeaselToken token, WeaselTokenType...tokenTypes){
 		for(int i=0; i<tokenTypes.length; i++){
 			if(token.tokenType == tokenTypes[i]){

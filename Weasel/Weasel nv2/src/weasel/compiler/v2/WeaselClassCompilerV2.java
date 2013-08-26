@@ -20,6 +20,7 @@ import weasel.interpreter.WeaselField;
 import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselGenericClassInfo;
 import weasel.interpreter.WeaselGenericInformation;
+import weasel.interpreter.WeaselGenericMethod2;
 import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
 import weasel.interpreter.WeaselModifier;
@@ -42,7 +43,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		super(compiler, parent, name, fileName);
 	}
 
-	public WeaselClass getWeaselClass(int line, String className){
+	private WeaselClass getWeaselClass(int line, String className){
 		for(int i=0; i<genericInformation.length; i++){
 			if(className.equals("O"+genericInformation[i].genericName+";")){
 				return genericInformation[i].genericInfo.genericClass;
@@ -56,7 +57,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		return null;
 	}
 	
-	public WeaselClass getWeaselClass2(int line, String className) throws WeaselCompilerException{
+	private WeaselClass getWeaselClass2(int line, String className) throws WeaselCompilerException{
 		for(int i=0; i<genericInformation.length; i++){
 			if(className.equals("O"+genericInformation[i].genericName+";")){
 				return genericInformation[i].genericInfo.genericClass;
@@ -69,22 +70,29 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		}
 	}
 	
-	@Override
-	public void compileEasy(String classSourceFor) {
-		compiler.addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.INFO, 0, getFileName(), "Compiling Class"));
-		tokenParser = new WeaselTokenParser(classSourceFor);
+	private List<WeaselToken> readModifier(){
 		List<WeaselToken> modifiers = new ArrayList<WeaselToken>();
 		WeaselToken token = getNextToken();
 		while(token.tokenType==WeaselTokenType.MODIFIER){
 			modifiers.add(token);
 			token = getNextToken();
 		}
+		setNextToken(token);
+		return modifiers;
+	}
+	
+	@Override
+	public void compileEasy(String classSourceFor) {
+		compiler.addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.INFO, 0, getFileName(), "Compiling Class"));
+		tokenParser = new WeaselTokenParser(classSourceFor);
+		List<WeaselToken> modifiers = readModifier();
+		WeaselToken token = getNextToken();
 		expectKeyWord(token, WeaselKeyWord.CLASS, WeaselKeyWord.INTERFACE, WeaselKeyWord.ENUM);
 		boolean isEnum = token.param == WeaselKeyWord.ENUM;
 		isInterface = token.param == WeaselKeyWord.INTERFACE;
 		boolean isClass = !(isEnum||isInterface);
 		modifier = getModifier(modifiers, isEnum?enumModifier:isInterface?interfaceModifier:classModifier);
-		modifiers.clear();
+		modifiers = null;
 		if(isInterface)
 			modifier |= WeaselModifier.ABSTRACT;
 		if(isEnum)
@@ -278,6 +286,17 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		expect(token, WeaselTokenType.CLOSEBLOCK);
 		expect(getNextToken(), WeaselTokenType.NONE);
 		tokenParser = null;
+		
+		genericClass = new WeaselGenericClass(this);
+		
+		checkOverrides();
+		
+	}
+	
+	private void checkOverrides(){
+		List<WeaselGenericMethod2> methodsToOverride = new ArrayList<WeaselGenericMethod2>();
+		
+		genericClass.addMethodsToOverride(methodsToOverride);
 		
 	}
 	
@@ -632,7 +651,6 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 	
 	@Override
 	public void finishCompile() {
-		genericClass = new WeaselGenericClass(this);
 		compiler.addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.INFO, 0, getFileName(), "Compiling Methods"));
 		for(int i=0; i<staticMethodBodys.length; i++){
 			((WeaselMethodBodyCompilerV2)staticMethodBodys[i]).compile();

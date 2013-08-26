@@ -1,6 +1,7 @@
 package weasel.interpreter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -153,19 +154,32 @@ public class WeaselGenericClass {
 	}
 	
 	@Override
-	public boolean equals(Object object){
-		if(object instanceof WeaselGenericClass){
-			WeaselGenericClass gc = (WeaselGenericClass)object;
-			if(baseClass!=gc.baseClass)
-				return false;
-			for(int i=0; i<generics.length; i++){
-				if(!generics[i].equals(gc.generics[i])){
-					return false;
-				}
-			}
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((baseClass == null) ? 0 : baseClass.hashCode());
+		result = prime * result + Arrays.hashCode(generics);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		}
-		return false;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		WeaselGenericClass other = (WeaselGenericClass) obj;
+		if (baseClass == null) {
+			if (other.baseClass != null)
+				return false;
+		} else if (!baseClass.equals(other.baseClass))
+			return false;
+		if (!Arrays.equals(generics, other.generics))
+			return false;
+		return true;
 	}
 
 	@Override
@@ -240,6 +254,26 @@ public class WeaselGenericClass {
 		}
 		if(genericSuperClass!=null){
 			genericSuperClass.addGenericMethods(name, notOnlyStatic, list);
+		}
+	}
+
+	public void addMethodsToOverride(List<WeaselGenericMethod2> methodsToOverride) {
+		for(int i=0; i<genericMethods.length; i++){
+			if(WeaselModifier.isAbstract(genericMethods[i].getMethod().getModifier())){
+				WeaselGenericClass[] generics = new WeaselGenericClass[genericMethods[i].getMethod().genericInfo.length];
+				for(int j=0; j<generics.length; j++){
+					generics[j] = new WeaselGenericClass(genericMethods[i].getMethod().genericInfo[j].genericInfo.genericClass);
+				}
+				methodsToOverride.add(genericMethods[i].getMethod(generics));
+			}
+		}
+		if(genericSuperClass!=null){
+			genericSuperClass.addMethodsToOverride(methodsToOverride);
+		}
+		if(genericInterfaces!=null){
+			for(int i=0; i<genericInterfaces.length; i++){
+				genericInterfaces[i].addMethodsToOverride(methodsToOverride);
+			}
 		}
 	}
 	
