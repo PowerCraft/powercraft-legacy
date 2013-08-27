@@ -1,6 +1,6 @@
 public class Thread implements Runnable{
 	
-	public final int DEFAULTSTACKSIZE = 100;
+	public static final int DEFAULTSTACKSIZE = 100;
 	
 	private final String name;
 	private final int stackSize;

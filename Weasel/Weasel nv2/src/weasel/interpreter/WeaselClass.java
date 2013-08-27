@@ -513,5 +513,18 @@ public class WeaselClass implements WeaselSaveable {
 		}
 		return wc;
 	}
+
+	public int getGenericID(String className) {
+		for(int i=0; i<genericInformation.length; i++){
+			if(genericInformation[i].genericName.equals(className)){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public WeaselGenericInformation getGenericInformation(int genericID) {
+		return genericInformation[genericID];
+	}
 	
 }
