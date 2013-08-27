@@ -3,6 +3,7 @@ package weasel.compiler;
 import java.io.EOFException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map.Entry;
 
 import weasel.compiler.WeaselOperator.Properties;
@@ -285,6 +286,69 @@ public class WeaselTokenParser {
 
 	public int getLine() {
 		return line;
+	}
+
+	public ListIterator<WeaselToken> listIterator() {
+		
+		return new ListIterator<WeaselToken>(){
+
+			private List<WeaselToken> readed = new ArrayList<WeaselToken>();
+			private int index=0;
+			
+			@Override
+			public void add(WeaselToken e) {
+				setNextToken(e);
+			}
+
+			@Override
+			public boolean hasNext() {
+				return true;
+			}
+
+			@Override
+			public boolean hasPrevious() {
+				return !readed.isEmpty();
+			}
+
+			@Override
+			public WeaselToken next() {
+				if(readed.size()>index){
+					return readed.get(index++);
+				}
+				WeaselToken wt = null;
+				try {
+					wt = getNextToken();
+				} catch (WeaselCompilerException e) {
+					e.printStackTrace();
+				}
+				readed.add(wt);
+				index++;
+				return wt;
+			}
+
+			@Override
+			public int nextIndex() {
+				return index;
+			}
+
+			@Override
+			public WeaselToken previous() {
+				if(index==0)
+					return null;
+				return readed.get(--index);
+			}
+
+			@Override
+			public int previousIndex() {
+				return index-1;
+			}
+
+			@Override
+			public void remove() {}
+
+			@Override
+			public void set(WeaselToken e) {}
+		};
 	}
 	
 }

@@ -4,18 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselGenericClass;
-import weasel.interpreter.WeaselNativeException;
+import weasel.interpreter.WeaselGenericClassInfo;
 
 public class WeaselTreeGeneric {
 
-	private List<TreeGenericElement> list = new ArrayList<TreeGenericElement>();
+	private List<WeaselTreeGenericElement> list = new ArrayList<WeaselTreeGenericElement>();
 	public boolean close;
 	
 	public WeaselTreeGeneric(ListIterator<WeaselToken> iterator) throws WeaselCompilerException {
@@ -23,7 +22,7 @@ public class WeaselTreeGeneric {
 		if(!(token.tokenType==WeaselTokenType.OPERATOR && (token.param==WeaselOperator.GREATER || token.param==WeaselOperator.RSHIFT))){
 			iterator.previous();
 			do{
-				TreeGenericElement tge = new TreeGenericElement(iterator);
+				WeaselTreeGenericElement tge = new WeaselTreeGenericElement(iterator);
 				list.add(tge);
 				if(tge.close)
 					return;
@@ -55,63 +54,13 @@ public class WeaselTreeGeneric {
 		}
 		return genericClasses;
 	}
-	
-	private static class TreeGenericElement{
 
-		private WeaselToken token;
-		private String realClassName;
-		private String className;
-		private String classByteName;
-		private WeaselTreeGeneric generic;
-		public boolean close;
-		
-		public TreeGenericElement(ListIterator<WeaselToken> iterator) throws WeaselCompilerException {
-			WeaselToken token = iterator.next();
-			if(token.tokenType!=WeaselTokenType.IDENT){
-				throw new WeaselCompilerException(token.line, "Expect Ident but got %s", token);
-			}
-			this.token = token;
-			realClassName = (String) token.param;
-			token = iterator.next();
-			while(token.tokenType==WeaselTokenType.OPERATOR && token.param==WeaselOperator.ELEMENT){
-				token = iterator.next();
-				if(token.tokenType!=WeaselTokenType.IDENT){
-					throw new WeaselCompilerException(token.line, "Expect Ident but got %s", token);
-				}
-				realClassName = "."+(String) token.param;
-				token = iterator.next();
-			}
-			className = realClassName;
-			classByteName = WeaselCompiler.mapClassNames(className);
-			if(token.tokenType==WeaselTokenType.OPERATOR && token.param==WeaselOperator.LESS){
-				generic = new WeaselTreeGeneric(iterator);
-				close = generic.close;
-			}else{
-				iterator.previous();
-			}
+	public WeaselGenericClassInfo[] getGenericClassInfo(WeaselClass parentClass) {
+		WeaselGenericClassInfo[] generics = new WeaselGenericClassInfo[list.size()];
+		for(int i=0; i<generics.length; i++){
+			generics[i] = list.get(i).getGenericClassInfo(parentClass);
 		}
-
-		public WeaselGenericClass getGenericClass(WeaselGenericClass parentClass) throws WeaselCompilerException {
-			try{
-				return new WeaselGenericClass(parentClass.getBaseClass().getInterpreter().getWeaselClass(classByteName), generic.getGenericClasses(parentClass));
-			}catch(WeaselNativeException e){}
-			WeaselGenericClass wgc = parentClass.getGenericClass(realClassName);
-			if(wgc==null){
-				throw new WeaselCompilerException(token.line, "Class %s not found", className);
-			}
-			WeaselClass wc = wgc.getBaseClass();
-			int i=0;
-			while(classByteName.charAt(i++)=='['){
-				wc = new WeaselClass(wc.getInterpreter(), wc, "["+wc.getByteName(), null);
-			}
-			return new WeaselGenericClass(wc, wgc.getGenerics());
-		}
-
-		@Override
-		public String toString() {
-			return className+(generic==null?"":generic.toString());
-		}
-		
+		return generics;
 	}
 	
 }

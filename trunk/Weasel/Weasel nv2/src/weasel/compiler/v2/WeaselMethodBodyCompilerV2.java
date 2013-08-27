@@ -14,6 +14,7 @@ import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 import weasel.compiler.WeaselVariableInfo;
 import weasel.compiler.v2.tokentree.WeaselTree;
+import weasel.interpreter.WeaselGenericField;
 import weasel.interpreter.WeaselGenericMethod2;
 import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
@@ -86,6 +87,11 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 	@Override
 	public List<WeaselGenericMethod2> getGenericMethods(String name) throws WeaselCompilerException {
 		return classCompiler.genericClass.getGenericMethods(name, !WeaselModifier.isStatic(method.getModifier()));
+	}
+
+	@Override
+	public WeaselGenericField getGenericField(String variable) {
+		return classCompiler.genericClass.getGenericField(variable);
 	}
 	
 }
