@@ -1,4 +1,4 @@
-public abstract class Number implements Cloneable<Number>{
+public abstract class Number{
 
 	public abstract int intValue();
 	
@@ -15,5 +15,7 @@ public abstract class Number implements Cloneable<Number>{
 	public short shortValue(){
 		return (short)intValue();
 	}
-
+	
+	public abstract Number operator<:();
+	
 }

@@ -18,6 +18,8 @@ public class WeaselChecks {
 	public static void checkName(String name){
 		if(name==null||name.equals(""))
 			throw new WeaselNativeException("Name can not be nothing");
+		if(name.startsWith("operator"))
+			return;
 		if(!isAlphabetical(name.charAt(0))){
 			throw new WeaselNativeException("Name have to start with an alphabetical");
 		}
