@@ -392,8 +392,10 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 					try {
 						ListIterator<WeaselToken> li;
 						genericListClass.add(lwtge = new WeaselTreeGenericElement(li = tokenParser.listIterator()));
-						if(lwtge.close)
+						if(lwtge.close){
+							genericList.add(new WeaselGenericInformation(generic, lwtge.getWeaselClass(interpreter), -1));
 							break;
+						}
 						token = li.next();
 					} catch (WeaselCompilerException e) {
 						onException(e.getLine(), e.getMessage());

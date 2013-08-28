@@ -19,6 +19,8 @@ public class WeaselGenericClass {
 	
 	private WeaselGenericMethod[] genericMethods;
 	
+	private boolean resolved;
+	
 	private WeaselGenericClass(int dummy, WeaselClass baseClass) {
 		this.baseClass = baseClass;
 		if(baseClass.genericInformation==null){
@@ -46,16 +48,19 @@ public class WeaselGenericClass {
 		for(int i=0; i<generics.length; i++){
 			generics[i].resolve();
 		}
-		resolve();
+		//resolve();
 	}
 	
 	public WeaselGenericClass(WeaselClass baseClass, WeaselGenericClass[] generics){
 		this.baseClass = baseClass;
 		this.generics = generics;
-		resolve();
+		//resolve();
 	}
 
 	public void resolve(){
+		if(resolved)
+			return;
+		resolved = true;
 		if(baseClass.genericSuperClass!=null){
 			genericSuperClass = baseClass.genericSuperClass.getGenericClass(this);
 		}
@@ -96,18 +101,22 @@ public class WeaselGenericClass {
 	}
 	
 	public WeaselGenericClass getGenericSuperClass(){
+		resolve();
 		return genericSuperClass;
 	}
 	
 	public WeaselGenericClass[] getGenericInterfaces(){
+		resolve();
 		return genericInterfaces;
 	}
 	
 	public WeaselGenericField[] getGenericFields(){
+		resolve();
 		return genericFields;
 	}
 	
 	public WeaselGenericField getGenericField(String name){
+		resolve();
 		for(int i=0; i<genericFields.length; i++){
 			if(genericFields[i].getField().getName().equals(name)){
 				return genericFields[i];
@@ -119,10 +128,12 @@ public class WeaselGenericClass {
 	}
 	
 	public WeaselGenericMethod[] getGenericMethod(){
+		resolve();
 		return genericMethods;
 	}
 
 	public WeaselGenericMethod2 getGenericMethod(String name, WeaselGenericClass[] genericClasses) {
+		resolve();
 		for(int i=0; i<genericMethods.length; i++){
 			if(genericMethods[i].getMethod().getNameAndDesk().equals(name)){
 				return genericMethods[i].getMethod(genericClasses);
@@ -155,6 +166,7 @@ public class WeaselGenericClass {
 	
 	@Override
 	public int hashCode() {
+		resolve();
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
@@ -165,6 +177,7 @@ public class WeaselGenericClass {
 
 	@Override
 	public boolean equals(Object obj) {
+		resolve();
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -188,6 +201,7 @@ public class WeaselGenericClass {
 	}
 	
 	public String getName() {
+		resolve();
 		String s = baseClass.getName();
 		int b = s.indexOf('[');
 		String a = "";
@@ -207,6 +221,7 @@ public class WeaselGenericClass {
 	}
 	
 	public String getRealName() {
+		resolve();
 		String s = baseClass.getRealName();
 		int b = s.indexOf('[');
 		String a = "";
@@ -226,6 +241,7 @@ public class WeaselGenericClass {
 	}
 
 	public WeaselGenericClass getGenericClass(String className) {
+		resolve();
 		for(int i=0; i<baseClass.genericInformation.length; i++){
 			if(baseClass.genericInformation[i].genericName.equals(className)){
 				return generics[i];
@@ -241,6 +257,7 @@ public class WeaselGenericClass {
 	}
 	
 	private void addGenericMethods(String name, boolean notOnlyStatic, List<WeaselGenericMethod2> list) {
+		resolve();
 		for(int i=0; i<genericMethods.length; i++){
 			if(genericMethods[i].getMethod().getName().equals(name)){
 				if(notOnlyStatic || WeaselModifier.isStatic(genericMethods[i].getMethod().getModifier())){
@@ -258,6 +275,7 @@ public class WeaselGenericClass {
 	}
 
 	public void addMethodsToOverride(List<WeaselGenericMethod2> methodsToOverride) {
+		resolve();
 		for(int i=0; i<genericMethods.length; i++){
 			if(WeaselModifier.isAbstract(genericMethods[i].getMethod().getModifier())){
 				WeaselGenericClass[] generics = new WeaselGenericClass[genericMethods[i].getMethod().genericInfo.length];
