@@ -48,7 +48,7 @@ public class WeaselInstructionJump extends WeaselInstruction {
 	
 	@Override
 	public String toString() {
-		return "jump";
+		return "jump "+jumpTo;
 	}
 
 }

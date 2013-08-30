@@ -7,6 +7,7 @@ import java.util.List;
 import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselNativeException;
 import weasel.interpreter.bytecode.WeaselInstruction;
+import weasel.interpreter.bytecode.WeaselInstructionJump;
 
 public class WeaselBlockInfo {
 
@@ -16,9 +17,9 @@ public class WeaselBlockInfo {
 	
 	public int varIndex;
 	
-	public final List<WeaselInstruction> breaks = new ArrayList<WeaselInstruction>();
+	public final List<WeaselInstructionJump> breaks = new ArrayList<WeaselInstructionJump>();
 	
-	public final List<WeaselInstruction> continues = new ArrayList<WeaselInstruction>();
+	public final List<WeaselInstructionJump> continues = new ArrayList<WeaselInstructionJump>();
 	
 	public final HashMap<String, WeaselVariableInfo> variables = new HashMap<String, WeaselVariableInfo>();
 	

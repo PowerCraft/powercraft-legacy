@@ -4,8 +4,8 @@ public enum WeaselKeyWord {
 
 	IF("if", new WeaselKeyWordCompilerIf()), 
 	ELSE("else", new WeaselKeyWordCompilerError()), 
-	WHILE("while", null), 
-	DO("do", null), 
+	WHILE("while", new WeaselKeyWordCompilerWhile()), 
+	DO("do", new WeaselKeyWordCompilerDo()), 
 	FOR("for", new WeaselKeyWordCompilerFor()), 
 	BREAK("break", null), 
 	CONTINUE("continue", null), 
