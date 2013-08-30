@@ -67,7 +67,8 @@ public class WeaselArrayInit {
 	public List<WeaselInstruction> compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass arrayClass) throws WeaselCompilerException {
 		arrayClass = new WeaselGenericClass(arrayClass.getBaseClass().getArrayClass(), arrayClass.getGenerics());
 		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
-		instructions.add(new WeaselInstructionNewArray(arrayClass.getBaseClass().getByteName(), new int[]{indexes.size()}));
+		instructions.add(new WeaselInstructionLoadConstInteger(indexes.size()));
+		instructions.add(new WeaselInstructionNewArray(arrayClass.getBaseClass().getByteName(), 1));
 		for(int i=0; i<indexes.size(); i++){
 			Object o = indexes.get(i);
 			if(o instanceof WeaselArrayInit){

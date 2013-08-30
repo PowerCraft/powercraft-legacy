@@ -95,7 +95,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 				WeaselGenericClassInfo interfa = readGenericClass(iterator.next(), iterator);
 				interfaceGenericList.add(interfa);
 				WeaselChecks.checkInterface(interfa.genericClass);
-				iterator.next();
+				token = iterator.next();
 			}while(token.tokenType==WeaselTokenType.COMMA);
 			genericInterfaces = interfaceGenericList.toArray(genericInterfaces);
 		}

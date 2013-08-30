@@ -129,6 +129,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 
 	@Override
 	public WeaselVariableInfo newVar(int modifier, String varName, WeaselGenericClass wgc) {
+		System.out.println("addVar>>>>>>>>>>>>>>>"+varName+":"+wgc);
 		return block.newVar(modifier, varName, wgc);
 	}
 
