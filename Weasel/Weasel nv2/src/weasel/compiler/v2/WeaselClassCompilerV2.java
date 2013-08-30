@@ -494,7 +494,10 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 			}
 			init.add(new WeaselToken(WeaselTokenType.SEMICOLON, token.line));
 		}
-		WeaselField field = getField(name);
+		WeaselField field = null;
+		try{
+			field = getField(name);
+		}catch(WeaselNativeException e){}
 		if(field!=null && field.getParentClass()==this)
 			throw new WeaselCompilerException(nameToken.line, "Duplicated declaration of filed %s", field);
 		int id;
@@ -576,7 +579,10 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		}
 		WeaselCompiler.expect(token, WeaselTokenType.CLOSEBRACKET);
 		WeaselGenericClassInfo[] wgci = genericInfos.toArray(new WeaselGenericClassInfo[0]);
-		WeaselMethod method = getMethod(name, wgci);
+		WeaselMethod method = null;
+		try{
+			method = getMethod(name, wgci);
+		}catch(WeaselNativeException e){}
 		if(method!=null && method.getParentClass()==this)
 			throw new WeaselCompilerException(tokenName.line, "Duplicated method %s", method);
 		int id = WeaselModifier.isStatic(modifier)?ids.staticMethod++:ids.method++;

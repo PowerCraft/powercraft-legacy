@@ -208,10 +208,6 @@ public class WeaselTreeTop extends WeaselTree {
 				
 				if(arrayInit==null){
 					
-					instructions.addAll(arrayInit.compile(compiler, compilerHelper, genericClass));
-					
-				}else{
-					
 					List<Integer> realSize = new ArrayList<Integer>();
 					
 					className = weaselClass.getByteName();
@@ -231,6 +227,8 @@ public class WeaselTreeTop extends WeaselTree {
 					
 					instructions.add(new WeaselInstructionNewArray(className, rs));
 					
+				}else{
+					instructions.addAll(arrayInit.compile(compiler, compilerHelper, genericClass));
 				}
 				
 			}
