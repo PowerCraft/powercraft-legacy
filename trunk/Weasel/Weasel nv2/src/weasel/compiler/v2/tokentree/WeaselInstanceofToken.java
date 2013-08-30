@@ -4,13 +4,13 @@ import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 
-public class WeaselImplementsToken extends WeaselToken {
+public class WeaselInstanceofToken extends WeaselToken {
 
 	public final String className;
 	public final WeaselTreeGeneric generic;
 	
-	public WeaselImplementsToken(int line, String className, WeaselTreeGeneric generic) {
-		super(WeaselTokenType.OPERATOR, line, WeaselOperator.IMPLEMENTS);
+	public WeaselInstanceofToken(int line, String className, WeaselTreeGeneric generic) {
+		super(WeaselTokenType.OPERATOR, line, WeaselOperator.INSTANCEOF);
 		this.className = className;
 		this.generic = generic;
 	}

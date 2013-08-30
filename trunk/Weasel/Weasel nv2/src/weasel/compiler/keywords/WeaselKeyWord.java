@@ -6,7 +6,7 @@ public enum WeaselKeyWord {
 	ELSE("else", new WeaselKeyWordCompilerError()), 
 	WHILE("while", null), 
 	DO("do", null), 
-	FOR("for", null), 
+	FOR("for", new WeaselKeyWordCompilerFor()), 
 	BREAK("break", null), 
 	CONTINUE("continue", null), 
 	RETURN("return", new WeaselKeyWordCompilerReturn()), 
@@ -22,7 +22,8 @@ public enum WeaselKeyWord {
 	SYNCHRONIZED("synchronized", null), 
 	ENUM("enum", null), 
 	EXTENDS("extends", null), 
-	IMPLEMENTS("implements", null);
+	IMPLEMENTS("implements", null),
+	INSTANCEOF("instanceof", null);
 	
 	public final String name;
 	public final WeaselKeyWordCompiler compiler;

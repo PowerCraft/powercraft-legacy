@@ -23,5 +23,11 @@ public interface WeaselKeyWordCompilerHelper {
 	public WeaselVariableInfo newVar(int modifier, String varName, WeaselGenericClass wgc);
 
 	public void writeVar(WeaselVariableInfo wvi);
+
+	public void openBlock(boolean b);
+
+	public WeaselBlockInfo closeBlock();
+
+	public int getVarCount();
 	
 }

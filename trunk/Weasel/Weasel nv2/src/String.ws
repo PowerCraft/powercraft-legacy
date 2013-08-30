@@ -45,11 +45,11 @@ public final class String{
 
 	public boolean equals(Object o){
 		if(o instanceof String){
-			String other = (String)o
+			String other = (String)o;
 			if(other==this)
 				return true;
-			if(value.lengh==other.length()){
-				for(int i=0; i<value.lengh; i++){
+			if(value.length==other.length()){
+				for(int i=0; i<value.length; i++){
 					if(value[i] != other.charAt(i)){
 						return false;
 					}
@@ -63,8 +63,8 @@ public final class String{
 	public boolean equalsIgnoreCase(String other){
 		if(other==this)
 			return true;
-		if(value.lengh==other.length()){
-			for(int i=0; i<value.lengh; i++){
+		if(value.length==other.length()){
+			for(int i=0; i<value.length; i++){
 				char c1, c2;
 				c1 = value[i];
 				c2 = other.charAt(i);
