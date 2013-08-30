@@ -56,6 +56,7 @@ public abstract class WeaselTree {
 			try{
 				wcc.readGenericClass(token, iterator);
 			}catch(WeaselCompilerException e){
+				e.printStackTrace();
 				while(iterator.previous()!=token);
 				iterator.next();
 				errored = true;
@@ -527,6 +528,7 @@ public abstract class WeaselTree {
 				}else{
 					throw new WeaselCompilerException(line, "Not supported now");
 				}
+				return new WeaselParameterCompileReturn(instructions, method);
 			}
 		}
 		if(func==null){

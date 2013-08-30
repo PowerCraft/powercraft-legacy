@@ -47,7 +47,7 @@ public class WeaselInstructionInstanceof extends WeaselInstruction {
 
 	@Override
 	public String toString() {
-		return "implements "+className;
+		return "instanceof "+className;
 	}
 
 }

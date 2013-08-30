@@ -21,7 +21,11 @@ import weasel.interpreter.bytecode.WeaselInstructionBitwiseXor;
 import weasel.interpreter.bytecode.WeaselInstructionCast;
 import weasel.interpreter.bytecode.WeaselInstructionCastPrimitive;
 import weasel.interpreter.bytecode.WeaselInstructionEqual;
+import weasel.interpreter.bytecode.WeaselInstructionGreater;
+import weasel.interpreter.bytecode.WeaselInstructionGreaterEqual;
 import weasel.interpreter.bytecode.WeaselInstructionInstanceof;
+import weasel.interpreter.bytecode.WeaselInstructionLess;
+import weasel.interpreter.bytecode.WeaselInstructionLessEqual;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstBoolean;
 import weasel.interpreter.bytecode.WeaselInstructionLogicalAnd;
 import weasel.interpreter.bytecode.WeaselInstructionLogicalOr;
@@ -207,7 +211,8 @@ public class WeaselTreeLevel extends WeaselTree {
 			instructions.addAll(after);
 			ret = wcr.returnType;
 		}else if(oper==WeaselOperator.LOGICAL_OR || oper==WeaselOperator.LOGICAL_AND || oper==WeaselOperator.BITWISE_OR || oper==WeaselOperator.BITWISE_AND
-				 || oper==WeaselOperator.BITWISE_XOR){
+				 || oper==WeaselOperator.BITWISE_XOR || oper==WeaselOperator.LESS || oper==WeaselOperator.GREATER
+				 || oper==WeaselOperator.LESS_EQUAL || oper==WeaselOperator.GREATER_EQUAL){
 			wcr = compileInfixOperator(compiler, compilerHelper, null, expect, null, false, i-1);
 			instructions.addAll(wcr.instructions);
 			wgc = wcr.returnType;
@@ -227,6 +232,14 @@ public class WeaselTreeLevel extends WeaselTree {
 						primitiveID!=WeaselPrimitive.SHORT && primitiveID!=WeaselPrimitive.INT && primitiveID!=WeaselPrimitive.LONG){
 					throw new WeaselCompilerException(operator.line, "Operator %s is only usable with boolean, char, byte, short, int, long, not with %s %s", oper, wgc, ret);
 				}
+			}else if(oper==WeaselOperator.LESS || oper==WeaselOperator.GREATER || oper==WeaselOperator.LESS_EQUAL
+					 || oper==WeaselOperator.GREATER_EQUAL){
+				if(primitiveID!=WeaselPrimitive.CHAR && primitiveID!=WeaselPrimitive.BYTE && primitiveID!=WeaselPrimitive.SHORT 
+						&& primitiveID!=WeaselPrimitive.INT && primitiveID!=WeaselPrimitive.LONG
+						 && primitiveID!=WeaselPrimitive.FLOAT && primitiveID!=WeaselPrimitive.DOUBLE){
+					throw new WeaselCompilerException(operator.line, "Operator %s is only usable with char, byte, short, int, long, float, double, not with %s %s", oper, wgc, ret);
+				}
+				ret = new WeaselGenericClass(compiler.baseTypes.booleanClass);
 			}
 			if(oper==WeaselOperator.LOGICAL_OR){
 				instructions.add(new WeaselInstructionLogicalOr(primitiveID));
@@ -238,6 +251,14 @@ public class WeaselTreeLevel extends WeaselTree {
 				instructions.add(new WeaselInstructionBitwiseAnd(primitiveID));
 			}else if(oper==WeaselOperator.BITWISE_XOR){
 				instructions.add(new WeaselInstructionBitwiseXor(primitiveID));
+			}else if(oper==WeaselOperator.LESS){
+				instructions.add(new WeaselInstructionLess(primitiveID));
+			}else if(oper==WeaselOperator.GREATER){
+				instructions.add(new WeaselInstructionGreater(primitiveID));
+			}else if(oper==WeaselOperator.LESS_EQUAL){
+				instructions.add(new WeaselInstructionLessEqual(primitiveID));
+			}else if(oper==WeaselOperator.GREATER_EQUAL){
+				instructions.add(new WeaselInstructionGreaterEqual(primitiveID));
 			}
 		}else if(oper==WeaselOperator.VERY_SAME || oper==WeaselOperator.NOT_VERY_SAME
 					 || oper==WeaselOperator.EQUAL || oper==WeaselOperator.NOT_EQUAL){
