@@ -224,6 +224,13 @@ public class WeaselTreeLevel extends WeaselTree {
 				instructions.add(new WeaselInstructionNotEqual(primitiveID));
 			}
 			ret = new WeaselGenericClass(compiler.baseTypes.booleanClass);
+		}else if(oper==WeaselOperator.ELEMENT){
+			wcr = compileOperator(compiler, compilerHelper, null, null, null, false, i-1);
+			instructions.addAll(wcr.instructions);
+			wgc = wcr.returnType;
+			wcr = level.get(i+1).compile(compiler, compilerHelper, write, expect, wgc, !wcr.isClassAccess);
+			ret = wcr.returnType;
+			instructions.addAll(wcr.instructions);
 		}else{
 			throw new WeaselCompilerException(operator.line, "Unknown operator %s", operator);
 		}

@@ -2,10 +2,12 @@ package weasel.compiler;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import weasel.compiler.WeaselCompilerMessage.MessageType;
+import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.compiler.v2.WeaselClassCompilerV2;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselField;
@@ -102,30 +104,28 @@ public class WeaselCompiler extends WeaselInterpreter {
 	protected WeaselMethod createMethod(String name, int modifier, WeaselClass parentClass, WeaselGenericClassInfo genericReturn, WeaselGenericClassInfo[] genericParams, WeaselGenericInformation[] genericInformations, int id){
 		return compilerCreateMethod(name, modifier, parentClass, genericReturn, genericParams, genericInformations, id);
 	}
-	
-	private static final HashMap<String, String> classNameMap = new HashMap<String, String>();
-	
-	static{
-		classNameMap.put("boolean", "N");
-		classNameMap.put("char", "C");
-		classNameMap.put("byte", "B");
-		classNameMap.put("short", "S");
-		classNameMap.put("int", "I");
-		classNameMap.put("long", "L");
-		classNameMap.put("float", "F");
-		classNameMap.put("double", "D");
-		classNameMap.put("void", "V");
-	}
-	
-	public static String mapClassNames(String name){
-		String mapedName = classNameMap.get(name);
-		if(mapedName!=null)
-			return mapedName;
-		return "O"+name+";";
-	}
 
 	protected WeaselField createField(String name, int modifier, WeaselClass weaselClass, WeaselGenericClassInfo typeInfo, int id) {
 		return compilerCreateField(name, modifier, weaselClass, typeInfo, id);
+	}
+	
+	public static void expect(WeaselToken token, WeaselTokenType...tokenTypes) throws WeaselCompilerException{
+		for(int i=0; i<tokenTypes.length; i++){
+			if(token.tokenType == tokenTypes[i]){
+				return;
+			}
+		}
+		throw new WeaselCompilerException(token.line, "Unexpected token %s expected %s", token, Arrays.toString(tokenTypes));
+	}
+	
+	public static void expectKeyWord(WeaselToken token, WeaselKeyWord...keyWords) throws WeaselCompilerException{
+		expect(token, WeaselTokenType.KEYWORD);
+		for(int i=0; i<keyWords.length; i++){
+			if(token.param == keyWords[i]){
+				return;
+			}
+		}
+		throw new WeaselCompilerException(token.line, "Unexpected keyword %s expected %s", token, Arrays.toString(keyWords));
 	}
 	
 }

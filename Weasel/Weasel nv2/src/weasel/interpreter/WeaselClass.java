@@ -60,6 +60,8 @@ public class WeaselClass implements WeaselSaveable {
 	public WeaselClass(WeaselInterpreter interpreter, Object parent, String name, String fileName){
 		if(name.startsWith("[")){
 			this.arrayClass = (WeaselClass)parent;
+			fields = new WeaselField[1];
+			fields[0] = new WeaselField("length", WeaselModifier.PUBLIC|WeaselModifier.FINAL, this, new WeaselGenericClassInfo(interpreter.baseTypes.intClass, -1, new WeaselGenericClassInfo[0]), 0);
 			parent = null;
 		}else{
 			WeaselChecks.checkName(name);
@@ -95,6 +97,8 @@ public class WeaselClass implements WeaselSaveable {
 	}
 	
 	public WeaselClass getSuperClass() {
+		if(genericSuperClass==null)
+			return null;
 		return genericSuperClass.genericClass;
 	}
 	
@@ -525,6 +529,27 @@ public class WeaselClass implements WeaselSaveable {
 	
 	public WeaselGenericInformation getGenericInformation(int genericID) {
 		return genericInformation[genericID];
+	}
+
+	private static final HashMap<String, String> classNameMap = new HashMap<String, String>();
+	
+	static{
+		classNameMap.put("boolean", "N");
+		classNameMap.put("char", "C");
+		classNameMap.put("byte", "B");
+		classNameMap.put("short", "S");
+		classNameMap.put("int", "I");
+		classNameMap.put("long", "L");
+		classNameMap.put("float", "F");
+		classNameMap.put("double", "D");
+		classNameMap.put("void", "V");
+	}
+	
+	public static String mapClassNames(String name){
+		String mapedName = classNameMap.get(name);
+		if(mapedName!=null)
+			return mapedName;
+		return "O"+name+";";
 	}
 	
 }

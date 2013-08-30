@@ -18,11 +18,13 @@ import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselGenericField;
 import weasel.interpreter.WeaselGenericMethod2;
 import weasel.interpreter.WeaselModifier;
+import weasel.interpreter.WeaselNativeException;
 import weasel.interpreter.WeaselPrimitive;
 import weasel.interpreter.bytecode.WeaselInstruction;
 import weasel.interpreter.bytecode.WeaselInstructionInvoke;
 import weasel.interpreter.bytecode.WeaselInstructionInvokeStatic;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstBoolean;
+import weasel.interpreter.bytecode.WeaselInstructionLoadConstChar;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstDouble;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstInteger;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstString;
@@ -36,7 +38,7 @@ import weasel.interpreter.bytecode.WeaselInstructionReadFieldOf;
 import weasel.interpreter.bytecode.WeaselInstructionReadIndex;
 import weasel.interpreter.bytecode.WeaselInstructionReadStaticField;
 import weasel.interpreter.bytecode.WeaselInstructionSaveVariable;
-import weasel.interpreter.bytecode.WeaselInstructionWriteFieldOf;
+import weasel.interpreter.bytecode.WeaselInstructionWriteField;
 import weasel.interpreter.bytecode.WeaselInstructionWriteIndex;
 import weasel.interpreter.bytecode.WeaselInstructionWriteStaticField;
 
@@ -167,13 +169,13 @@ public class WeaselTreeTop extends WeaselTree {
 		}
 		return new WeaselTreeAddResult(wtl);
 	}
-
+	
 	@Override
 	public WeaselCompilerReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass write, WeaselGenericClass expect, WeaselGenericClass elementParent, boolean isVariable) throws WeaselCompilerException {
 		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
 		if(newClass!=null){
 			
-			WeaselClass weaselClass = compiler.getWeaselClass(newClass);
+			WeaselClass weaselClass = compiler.getWeaselClass(WeaselClass.mapClassNames(newClass));
 			//TODO
 			WeaselGenericClass genericClass = new WeaselGenericClass(weaselClass);
 			
@@ -325,18 +327,28 @@ public class WeaselTreeTop extends WeaselTree {
 				}
 				instructions.add(new WeaselInstructionLoadConstDouble((Double) token.param));
 				return new WeaselCompilerReturn(instructions, new WeaselGenericClass(compiler.baseTypes.doubleClass));
+			case KEYWORD:
+				if(token.param!=WeaselKeyWord.THIS)
+					throw new WeaselCompilerException(token.line, "Expect ident but got %s", token);
 			case IDENT:
-				String variable = (String)token.param;
-				WeaselVariableInfo wvi = compilerHelper.getVariable(variable);
-				if(wvi==null){
-					wvi = compilerHelper.getVariable("this");
+				String variable = token.toString();
+				if(elementParent==null){
+					WeaselVariableInfo wvi = compilerHelper.getVariable(variable);
 					if(wvi==null){
 						WeaselGenericField wf = compilerHelper.getGenericField(variable);
 						if(wf==null){
-							throw new WeaselCompilerException(token.line, "Variable not declared bevore %s", variable);
+							WeaselClass weaselClass;
+							try{
+								weaselClass = compiler.getWeaselClass(WeaselClass.mapClassNames(variable));
+							}catch(WeaselNativeException e){
+								throw new WeaselCompilerException(token.line, "Variable not declared bevore %s", variable);
+							}
+							return new WeaselCompilerReturn(instructions, new WeaselGenericClass(weaselClass), true);
 						}
-						if(!WeaselModifier.isStatic(wf.getField().getModifier())){
-							throw new WeaselCompilerException(token.line, "Variable %s is not static", variable);
+						if(WeaselModifier.isStatic(compilerHelper.getCompilingMethod().getMethod().getMethod().getModifier())){
+							if(!WeaselModifier.isStatic(wf.getField().getModifier())){
+								throw new WeaselCompilerException(token.line, "Variable %s is not static", variable);
+							}
 						}
 						if(write==null){
 							instructions.add(new WeaselInstructionReadStaticField(wf.getField().getDesk()));
@@ -345,29 +357,52 @@ public class WeaselTreeTop extends WeaselTree {
 							WeaselTree.autoCast(compiler, write, wf.getGenericType(), token.line, instructions, true);
 							instructions.add(new WeaselInstructionWriteStaticField(wf.getField().getDesk()));
 						}
+						return new WeaselCompilerReturn(instructions, wf.getGenericType());
 					}else{
-						WeaselGenericField wf = wvi.type.getGenericField(variable);
-						if(wf==null){
+						if(write==null){
+							instructions.add(new WeaselInstructionLoadVariable(wvi.pos));
+						}else{
+							instructions.add(new WeaselInstructionPlaceHolder());
+							WeaselTree.autoCast(compiler, write, wvi.type, token.line, instructions, true);
+							instructions.add(new WeaselInstructionSaveVariable(wvi.pos));
+						}
+						return new WeaselCompilerReturn(instructions, wvi.type);
+					}
+				}else{
+					WeaselGenericField wf = elementParent.getGenericField(variable);
+					if(wf==null){
+						WeaselClass weaselClass;
+						try{
+							weaselClass = compiler.getWeaselClass(WeaselClass.mapClassNames(variable));
+						}catch(WeaselNativeException e){
 							throw new WeaselCompilerException(token.line, "Variable not declared bevore %s", variable);
 						}
+						if(isVariable){
+							throw new WeaselCompilerException(token.line, "Can't get class form variable", variable);
+						}
+						return new WeaselCompilerReturn(instructions, new WeaselGenericClass(weaselClass), true);
+					}
+					if(isVariable){
 						if(write==null){
-							instructions.add(new WeaselInstructionReadFieldOf(wvi.pos, wf.getField().getDesk()));
+							instructions.add(new WeaselInstructionReadField(wf.getField().getDesk()));
 						}else{
 							instructions.add(new WeaselInstructionPlaceHolder());
 							WeaselTree.autoCast(compiler, write, wf.getGenericType(), token.line, instructions, true);
-							instructions.add(new WeaselInstructionWriteFieldOf(wvi.pos, wf.getField().getDesk()));
+							instructions.add(new WeaselInstructionWriteField(wf.getField().getDesk()));
+						}
+					}else{
+						if(!WeaselModifier.isStatic(wf.getField().getModifier()))
+							throw new WeaselCompilerException(token.line, "Filed %s isn't static", wf);
+						if(write==null){
+							instructions.add(new WeaselInstructionReadStaticField(wf.getField().getDesk()));
+						}else{
+							instructions.add(new WeaselInstructionPlaceHolder());
+							WeaselTree.autoCast(compiler, write, wf.getGenericType(), token.line, instructions, true);
+							instructions.add(new WeaselInstructionWriteStaticField(wf.getField().getDesk()));
 						}
 					}
-				}else{
-					if(write==null){
-						instructions.add(new WeaselInstructionLoadVariable(wvi.pos));
-					}else{
-						instructions.add(new WeaselInstructionPlaceHolder());
-						WeaselTree.autoCast(compiler, write, wvi.type, token.line, instructions, true);
-						instructions.add(new WeaselInstructionSaveVariable(wvi.pos));
-					}
+					return new WeaselCompilerReturn(instructions, wf.getGenericType());
 				}
-				return new WeaselCompilerReturn(instructions, wvi.type);
 			case INTEGER:
 				if(write!=null){
 					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
@@ -386,6 +421,14 @@ public class WeaselTreeTop extends WeaselTree {
 				}
 				instructions.add(new WeaselInstructionLoadConstString((String) token.param));
 				return new WeaselCompilerReturn(instructions, new WeaselGenericClass(compiler.baseTypes.getStringClass()));
+			case CHAR:
+				if(write!=null){
+					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
+				}
+				String s = (String) token.param;
+				if(s.length()!=1)
+					throw new WeaselCompilerException(token.line, "Only one char expected");
+				instructions.add(new WeaselInstructionLoadConstChar(s.charAt(0)));
 			default:
 				throw new WeaselCompilerException(token.line, "Expect ident but got %s", token);
 			}

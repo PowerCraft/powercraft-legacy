@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselInterpreter;
 import weasel.interpreter.WeaselMethodExecutor;
 import weasel.interpreter.WeaselThread;
@@ -33,6 +34,16 @@ public abstract class WeaselInstruction {
 	public abstract void run(WeaselInterpreter interpreter, WeaselThread thread, WeaselMethodExecutor method);
 
 	protected abstract void saveToDataStream(DataOutputStream dataOutputStream) throws IOException;
+	
+	protected WeaselClass getWeaselClass(WeaselInterpreter interpreter, String name){
+		String realName = "";
+		while(name.endsWith("[]")){
+			realName += "[";
+			name = name.substring(0, name.length()-2);
+		}
+		realName += WeaselClass.mapClassNames(name);
+		return interpreter.getWeaselClass(realName);
+	}
 	
 	@Override
 	public abstract String toString();

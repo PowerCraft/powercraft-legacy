@@ -102,12 +102,14 @@ public final class WeaselThread implements WeaselSaveable {
 				}
 				setException(interpreter.baseTypes.createException("OVMException;", wre.getMessage(), 0));
 			}
+			if(methodExecutor==null)
+				return;
 			if(exception!=0){
 				while(true){
 					boolean anyCatch = methodExecutor.gotoCatchForClass(interpreter.getObject(exception).getWeaselClass());
 					if(anyCatch)
 						break;
-					methodExecutor = methodExecutor.getCaller();
+					callReturn();
 					if(methodExecutor==null)
 						return;
 				}
@@ -130,6 +132,10 @@ public final class WeaselThread implements WeaselSaveable {
 	
 	public void call(WeaselMethodBody methodBody){
 		methodExecutor = new WeaselMethodExecutor(this, methodBody, methodExecutor);
+	}
+	
+	public void callReturn(){
+		methodExecutor = methodExecutor.getCaller();
 	}
 	
 	public StackTraceElement[] getStackTrace(){

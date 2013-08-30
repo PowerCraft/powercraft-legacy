@@ -2,14 +2,14 @@ package weasel.compiler.keywords;
 
 public enum WeaselKeyWord {
 
-	IF("if", null), 
-	ELSE("else", null), 
+	IF("if", new WeaselKeyWordCompilerIf()), 
+	ELSE("else", new WeaselKeyWordCompilerError()), 
 	WHILE("while", null), 
 	DO("do", null), 
 	FOR("for", null), 
 	BREAK("break", null), 
 	CONTINUE("continue", null), 
-	RETURN("return", null), 
+	RETURN("return", new WeaselKeyWordCompilerReturn()), 
 	THIS("this", null), 
 	SUPER("super", null), 
 	CLASS("class", null), 

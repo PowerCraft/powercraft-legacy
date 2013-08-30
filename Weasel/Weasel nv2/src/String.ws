@@ -29,8 +29,8 @@ public final class String{
 	public int compareTo(String other){
 		if(other==this)
 			return 0;
-		int len1 = value.lengh;
-		int len2 = other.lengh();
+		int len1 = value.length;
+		int len2 = other.length();
 		int min = len1>len2?len2:len1;
 		char c1, c2;
 		for(int i=0; i<min; i++){
