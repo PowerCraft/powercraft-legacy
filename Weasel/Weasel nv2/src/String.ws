@@ -35,7 +35,7 @@ public final class String{
 		char c1, c2;
 		for(int i=0; i<min; i++){
 			c1 = value[i];
-			c2 = other.charAt[i];
+			c2 = other.charAt(i);
 			if(c1 != c2){
 				return c1-c2;
 			}

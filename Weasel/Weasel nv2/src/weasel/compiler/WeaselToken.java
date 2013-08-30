@@ -24,7 +24,7 @@ public class WeaselToken{
 		if(tokenType == WeaselTokenType.STRING){
 			return "\""+param+"\"";
 		}
-		return param.toString();
+		return ""+param;
 	}
 
 }

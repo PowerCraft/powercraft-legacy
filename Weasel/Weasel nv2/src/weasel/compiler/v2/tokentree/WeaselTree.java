@@ -2,6 +2,7 @@ package weasel.compiler.v2.tokentree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -50,17 +51,19 @@ public abstract class WeaselTree {
 			return compileVarDec(token, compiler, compilerHelper, iterator);
 		}
 		if(token.tokenType==WeaselTokenType.IDENT){
+			WeaselClassCompiler wcc = compilerHelper.getClassCompiler();
+			boolean errored = false;
 			try{
-				WeaselClassCompiler wcc = compilerHelper.getClassCompiler();
 				wcc.readGenericClass(token, iterator);
-				if(iterator.next().tokenType==WeaselTokenType.IDENT){
-					while(iterator.previous()!=token);
-					iterator.next();
-					return compileVarDec(token, compiler, compilerHelper, iterator);
-				}
 			}catch(WeaselCompilerException e){
 				while(iterator.previous()!=token);
 				iterator.next();
+				errored = true;
+			}
+			if(!errored && iterator.next().tokenType==WeaselTokenType.IDENT){
+				while(iterator.previous()!=token);
+				iterator.next();
+				return compileVarDec(token, compiler, compilerHelper, iterator);
 			}
 		}
 		iterator.previous();
@@ -75,6 +78,45 @@ public abstract class WeaselTree {
 		return null;
 	}
 
+	public static List<WeaselInstruction> parseAndCompileWhithVarDec(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, ListIterator<WeaselToken> iterator) throws WeaselCompilerException {
+		
+		WeaselToken token = iterator.next();
+		if(token.tokenType==WeaselTokenType.KEYWORD && ((WeaselKeyWord)token.param).compiler!=null){
+			throw new WeaselCompilerException(token.line, "Unexpect keyword %s", token);
+		}
+		if(token.tokenType==WeaselTokenType.MODIFIER){
+			return compileVarDec(token, compiler, compilerHelper, iterator);
+		}
+		if(token.tokenType==WeaselTokenType.IDENT){
+			WeaselClassCompiler wcc = compilerHelper.getClassCompiler();
+			boolean errored = false;
+			try{
+				wcc.readGenericClass(token, iterator);
+			}catch(WeaselCompilerException e){
+				while(iterator.previous()!=token);
+				iterator.next();
+				errored = true;
+			}
+			if(!errored && iterator.next().tokenType==WeaselTokenType.IDENT){
+				while(iterator.previous()!=token);
+				iterator.next();
+				return compileVarDec(token, compiler, compilerHelper, iterator);
+			}
+		}
+		iterator.previous();
+	
+		WeaselTree tree = parse(iterator, WeaselTokenType.SEMICOLON);
+		if(tree!=null){
+			WeaselCompilerReturn wcr = tree.compile(compiler, compilerHelper, null, new WeaselGenericClass(compiler.baseTypes.voidClass), null, false);
+			if(wcr.returnType.getBaseClass()!=compiler.baseTypes.voidClass)
+				wcr.instructions.add(new WeaselInstructionPop());
+			return wcr.instructions;
+		}
+		return null;
+	}
+
+	
+	
 	private static List<WeaselInstruction> compileVarDec(WeaselToken token, WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, ListIterator<WeaselToken> iterator) throws WeaselCompilerException{
 		List<WeaselToken> modifiers = new ArrayList<WeaselToken>();
 		while(token.tokenType==WeaselTokenType.MODIFIER){
@@ -384,14 +426,20 @@ public abstract class WeaselTree {
 							
 							for(WeaselToken token1:tokenSuffix){
 								token1.param = ((Properties)token1.param).suffix;
+								if(token1.param==null)
+									throw new NullPointerException();
 							}
 							
 							for(WeaselToken token1:tokenCache){
 								token1.param = ((Properties)token1.param).infix;
+								if(token1.param==null)
+									throw new NullPointerException();
 							}
 							
 							for(WeaselToken token1:tokenPrefix){
 								token1.param = ((Properties)token1.param).prefix;
+								if(token1.param==null)
+									throw new NullPointerException();
 							}
 							
 							WeaselTree add;
@@ -437,9 +485,89 @@ public abstract class WeaselTree {
 		return wc1;
 	}
 	
-	public static WeaselParameterCompileReturn compileParamList(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselTree func, List<WeaselGenericMethod2> methods) {
-		// TODO Auto-generated method stub
-		return null;
+	public static WeaselParameterCompileReturn compileParamList(int line, String methodName, WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselTree func, List<WeaselGenericMethod2> methods) throws WeaselCompilerException {
+		WeaselCompilerReturn wcr;
+		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
+		WeaselGenericMethod2 method;
+		if(func instanceof WeaselTreeLevel){
+			WeaselTreeLevel treeLevel = (WeaselTreeLevel) func;
+			if(treeLevel.levelPriority == 0){
+				int param=treeLevel.level.size();
+				Iterator<WeaselGenericMethod2> iterator = methods.iterator();
+				while(iterator.hasNext()){
+					if(iterator.next().getGenericParams().length!=param)
+						iterator.remove();
+				}
+				WeaselGenericClass expect = null;
+				if(methods.isEmpty())
+					throw new WeaselCompilerException(line, "No method %s found with %s params", param);
+				List<WeaselCompilerReturn> wcrs = new ArrayList<WeaselCompilerReturn>();
+				for(int i=0; i<param; i++){
+					if(methods.size()==1)
+						expect = methods.get(0).getGenericParams()[i];
+					wcrs.add(treeLevel.level.get(i).compile(compiler, compilerHelper, null, expect, null, false));
+				}
+				iterator = methods.iterator();
+				while(iterator.hasNext()){
+					WeaselGenericMethod2 m=iterator.next();
+					for(int i=0; i<param; i++){
+						if(!wcrs.get(i).returnType.canCastTo(m.getGenericParams()[i]))
+							iterator.remove();
+					}
+				}
+				if(methods.isEmpty()){
+					List<WeaselGenericClass> params = new ArrayList<WeaselGenericClass>();
+					for(WeaselCompilerReturn wcr2:wcrs){
+						params.add(wcr2.returnType);
+					}
+					throw new WeaselCompilerException(line, "No method %s found with for params %s", methodName, params);
+				}
+				if(methods.size()==1){
+					method = methods.get(0);
+				}else{
+					throw new WeaselCompilerException(line, "Not supported now");
+				}
+			}
+		}
+		if(func==null){
+			method = null;
+			for(WeaselGenericMethod2 m:methods){
+				if(m.getGenericParams().length==0){
+					method = m;
+					break;
+				}
+			}
+			if(method==null){
+				throw new WeaselCompilerException(line, "No method %s found with no params", methodName);
+			}
+		}else{
+			Iterator<WeaselGenericMethod2> iterator = methods.iterator();
+			while(iterator.hasNext()){
+				if(iterator.next().getGenericParams().length!=1)
+					iterator.remove();
+			}
+			WeaselGenericClass expect = null;
+			if(methods.isEmpty())
+				throw new WeaselCompilerException(line, "No method %s found with one param", methodName);
+			if(methods.size()==1)
+				expect = methods.get(0).getGenericParams()[0];
+			wcr = func.compile(compiler, compilerHelper, null, expect, null, false);
+			iterator = methods.iterator();
+			while(iterator.hasNext()){
+				WeaselGenericMethod2 m=iterator.next();
+				if(!wcr.returnType.canCastTo(m.getGenericParams()[0]))
+					iterator.remove();
+			}
+			if(methods.isEmpty()){
+				throw new WeaselCompilerException(line, "No method %s found with for param %s", methodName, wcr.returnType);
+			}
+			if(methods.size()==1){
+				method = methods.get(0);
+			}else{
+				throw new WeaselCompilerException(line, "Not supported now");
+			}
+		}
+		return new WeaselParameterCompileReturn(instructions, method);
 	}
 	
 }

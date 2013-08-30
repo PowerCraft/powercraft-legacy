@@ -110,6 +110,7 @@ public class WeaselTreeTop extends WeaselTree {
 						token = iterator.next();
 						anySizeDesk = true;
 					}else{
+						arraySize.add(null);
 						size = false;
 					}
 					if(token.tokenType!=WeaselTokenType.CLOSEINDEX){
@@ -191,9 +192,9 @@ public class WeaselTreeTop extends WeaselTree {
 				
 				instructions.add(new WeaselInstructionPush(1));
 				
-				WeaselParameterCompileReturn wcr = WeaselTree.compileParamList(compiler, compilerHelper, func, methods);
+				WeaselParameterCompileReturn wcr = WeaselTree.compileParamList(token.line, newClass, compiler, compilerHelper, func, methods);
 				
-				instructions.addAll(wcr.instructios);
+				instructions.addAll(wcr.instructions);
 				
 				instructions.add(new WeaselInstructionInvoke(wcr.method.getMethod().getMethod().getNameAndDesk()));
 				
@@ -245,7 +246,7 @@ public class WeaselTreeTop extends WeaselTree {
 				throw new WeaselCompilerException(token.line, "Method not found %s", token);
 			}
 			
-			WeaselParameterCompileReturn wcr = WeaselTree.compileParamList(compiler, compilerHelper, func, methods);
+			WeaselParameterCompileReturn wcr = WeaselTree.compileParamList(token.line, (String)token.param, compiler, compilerHelper, func, methods);
 			
 			if(elementParent==null){
 				if(!WeaselModifier.isStatic(wcr.method.getMethod().getMethod().getModifier())){
@@ -253,7 +254,7 @@ public class WeaselTreeTop extends WeaselTree {
 				}
 			}
 			
-			instructions.addAll(wcr.instructios);
+			instructions.addAll(wcr.instructions);
 			
 			if(elementParent==null){
 				if(WeaselModifier.isStatic(wcr.method.getMethod().getMethod().getModifier())){

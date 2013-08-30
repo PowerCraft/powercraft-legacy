@@ -23,6 +23,7 @@ import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
 import weasel.interpreter.WeaselModifier;
 import weasel.interpreter.bytecode.WeaselInstruction;
+import weasel.interpreter.bytecode.WeaselInstructionJump;
 
 public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements WeaselKeyWordCompilerHelper {
 
@@ -83,6 +84,18 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 				while(token.tokenType!=WeaselTokenType.SEMICOLON && iterator.hasNext()){
 					token = iterator.next();
 				}
+			}
+		}
+		for(WeaselInstruction instruction:instructions){
+			if(instruction instanceof WeaselInstructionJump){
+				WeaselInstruction target = ((WeaselInstructionJump) instruction).getTarget();
+				int i=0;
+				for(WeaselInstruction targetInstruction:instructions){
+					if(targetInstruction==target)
+						break;
+					i++;
+				}
+				((WeaselInstructionJump) instruction).setTargetIndex(i+1);
 			}
 		}
 		System.out.println("instructions:"+instructions);
