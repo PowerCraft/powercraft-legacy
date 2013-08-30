@@ -87,6 +87,7 @@ public class WeaselOperator {
 	public static final Properties DECREASE =			new Properties("--"		,"decrease"		,	16	,	null	,	null	,	null	,	true	,	unknown	,	unknown	);
 	public static final Properties INCREASE =			new Properties("++"		,"increase"		,	16	,	null	,	null	,	null	,	true	,	unknown	,	unknown	);
 	public static final Properties BRACKETS =			new Properties("()"		,"brackets"		,	-1	,	null	,	null	,	null	,	true	,	unknown	,	unknown	);
+	public static final Properties IMPLEMENTS = 		new Properties("implements","implements",	16	,	null	,	null	,	null	,	true	,	unknown	,	unknown	);
 	
 	static {
 		COMMA.infix = COMMA;
@@ -147,6 +148,7 @@ public class WeaselOperator {
 		DECREASE.prefix = DECREASE_PREFIX;
 		INCREASE.suffix = INCREASE;
 		INCREASE.prefix = INCREASE_PREFIX;
+		IMPLEMENTS.suffix = IMPLEMENTS;
 		operators.put(ASSIGN.operator, ASSIGN);
 		operators.put(PLUS_ASSIGN.operator, PLUS_ASSIGN);
 		operators.put(MINUS_ASSIGN.operator, MINUS_ASSIGN);

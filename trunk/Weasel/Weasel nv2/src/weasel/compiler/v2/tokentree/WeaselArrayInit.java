@@ -45,7 +45,6 @@ public class WeaselArrayInit {
 					indexes.add(WeaselTree.parse(iterator, WeaselTokenType.COMMA, WeaselTokenType.CLOSEBLOCK));
 					iterator.previous();
 					token = iterator.next();
-					System.out.println("token:"+token);
 					if(token.tokenType==WeaselTokenType.CLOSEBLOCK)
 						break;
 				}

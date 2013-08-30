@@ -4,7 +4,7 @@ public enum WeaselTokenType {
 
 	NONE("EOF"), UNKNOWN("unknown"), IDENT("ident"), INTEGER("integer"), DOUBLE("double"), STRING("string"), BOOL("bool"), NULL("null"), 
 	OPENBRACKET("("), CLOSEBRACKET(")"), OPENINDEX("["), CLOSEINDEX("]"), OPENBLOCK("{"), CLOSEBLOCK("}"), COMMA(","), 
-	SEMICOLON(";"), COLON(":"), QUESTIONMARK("?"), OPERATOR("operator"), KEYWORD("keyword"), MODIFIER("modifier");
+	SEMICOLON(";"), COLON(":"), QUESTIONMARK("?"), OPERATOR("operator"), KEYWORD("keyword"), MODIFIER("modifier"), CHAR("char");
 	
 	public final String symbol;
 	public final boolean afterOperator;

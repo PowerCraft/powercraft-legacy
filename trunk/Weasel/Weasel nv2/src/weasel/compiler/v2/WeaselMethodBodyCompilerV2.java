@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
+import weasel.compiler.WeaselClassCompiler;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerMessage;
@@ -14,7 +15,9 @@ import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 import weasel.compiler.WeaselVariableInfo;
 import weasel.compiler.v2.tokentree.WeaselTree;
+import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselGenericField;
+import weasel.interpreter.WeaselGenericMethod;
 import weasel.interpreter.WeaselGenericMethod2;
 import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
@@ -30,6 +33,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 	protected final List<String> paramNames;
 	protected final List<Integer> paramModifier;
 	protected final HashMap<String, WeaselVariableInfo> variables = new HashMap<String, WeaselVariableInfo>();
+	protected final WeaselGenericMethod2 wgm;
 	
 	protected WeaselMethodBodyCompilerV2(WeaselMethod method, WeaselClassCompilerV2 classCompiler, List<WeaselToken> methodTokens, List<String> paramNames, List<Integer> paramModifier, WeaselCompiler compiler) {
 		super(method, classCompiler);
@@ -39,6 +43,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 		this.methodTokens = methodTokens;
 		this.paramNames = paramNames;
 		this.paramModifier = paramModifier;
+		wgm = new WeaselGenericMethod(classCompiler.genericClass, method).getMethod(new WeaselGenericClass[0]);
 	}
 
 	protected WeaselMethodBodyCompilerV2(WeaselMethod method, WeaselClassCompilerV2 classCompiler) {
@@ -48,15 +53,17 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 		methodTokens = null;
 		paramNames = null;
 		paramModifier = null;
+		wgm = new WeaselGenericMethod(classCompiler.genericClass, method).getMethod(new WeaselGenericClass[0]);
 	}
 
 	public void compile() {
 		if(isNative()){
 			return;
 		}
+		System.out.println(method+":"+methodTokens);
 		for(int i=0; i<paramNames.size(); i++){
 			WeaselGenericMethod2 genericMethod = classCompiler.genericClass.getGenericMethod(method.getNameAndDesk(), null);
-			variables.put(paramNames.get(i), new WeaselVariableInfo(paramModifier.get(i), paramNames.get(i), genericMethod.getGenericParams()[i], -i));
+			variables.put(paramNames.get(i), new WeaselVariableInfo(paramModifier.get(i), paramNames.get(i), genericMethod.getGenericParams()[i], -paramNames.size()+i+1));
 		}
 		if(!WeaselModifier.isStatic(method.getModifier())){
 			variables.put("this", new WeaselVariableInfo(0, "this", classCompiler.genericClass, -paramNames.size()));
@@ -92,6 +99,26 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 	@Override
 	public WeaselGenericField getGenericField(String variable) {
 		return classCompiler.genericClass.getGenericField(variable);
+	}
+
+	@Override
+	public WeaselGenericMethod2 getCompilingMethod() {
+		return wgm;
+	}
+
+	@Override
+	public WeaselClassCompiler getClassCompiler() {
+		return classCompiler;
+	}
+
+	@Override
+	public WeaselVariableInfo newVar(int modifier, String varName, WeaselGenericClass wgc) {
+		return null;
+	}
+
+	@Override
+	public void writeVar(WeaselVariableInfo wvi) {
+		
 	}
 	
 }

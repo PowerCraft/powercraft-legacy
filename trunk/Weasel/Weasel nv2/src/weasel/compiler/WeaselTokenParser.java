@@ -34,8 +34,8 @@ public class WeaselTokenParser {
 		isEOFOk=true;
 		try{
 			char c = skipWhiteSpace();
+			isEOFOk = false;
 			if(isAlphabetical(c)){
-				isEOFOk = false;
 				String ident="";
 				while(isAlphabetical(c)||isDigit(c)){
 					ident += c;
@@ -60,7 +60,6 @@ public class WeaselTokenParser {
 				return new WeaselToken(WeaselTokenType.IDENT, line, ident);
 			}
 			if(isDigit(c) || c=='.'){
-				isEOFOk = false;
 				boolean isDot = c=='.';
 				int num=0;
 				if(c=='0'){
@@ -134,9 +133,7 @@ public class WeaselTokenParser {
 					return new WeaselToken(WeaselTokenType.INTEGER, line, num);
 				}
 			}
-			isEOFOk = true;
 			if(c=='"'){
-				isEOFOk = false;
 				c = readNextChar();
 				String s="";
 				while(c!='"'){
@@ -149,11 +146,14 @@ public class WeaselTokenParser {
 						case 't':
 							s+='\t';
 							break;
+						case '"':
+							s+='"';
+							break;
 						case '\\':
 							s+='\\';
 							break;
 						default:
-							throw new WeaselCompilerException(line, "Expect \n, \t or \\");
+							throw new WeaselCompilerException(line, "Expect \\n, \\t, \\\" or \\\\");
 						}
 					}else{
 						s += c;
@@ -162,6 +162,36 @@ public class WeaselTokenParser {
 				}
 				return new WeaselToken(WeaselTokenType.STRING, line, s);
 			}
+			if(c=='\''){
+				c = readNextChar();
+				String s="";
+				while(c!='\''){
+					if(c=='\\'){
+						c = readNextChar();
+						switch(c){
+						case 'n':
+							s+='\n';
+							break;
+						case 't':
+							s+='\t';
+							break;
+						case '\'':
+							s+='\'';
+							break;
+						case '\\':
+							s+='\\';
+							break;
+						default:
+							throw new WeaselCompilerException(line, "Expect \\n, \\t, \\\' or \\\\");
+						}
+					}else{
+						s += c;
+					}
+					c = readNextChar();
+				}
+				return new WeaselToken(WeaselTokenType.CHAR, line, s);
+			}
+			isEOFOk = true;
 			WeaselTokenType wtt = WeaselTokenType.getTokenTypeFor(""+c, false);
 			if(wtt!=null){
 				return new WeaselToken(wtt, line);

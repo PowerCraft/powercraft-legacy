@@ -29,7 +29,7 @@ public class WeaselMethodBody {
 	}
 	
 	public WeaselInstruction getInstruction(int i) {
-		if(i>=instructions.length)
+		if(i>=instructions.length || i<0)
 			return null;
 		return instructions[i];
 	}

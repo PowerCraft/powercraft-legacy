@@ -12,7 +12,7 @@ import weasel.compiler.WeaselTokenType;
 
 public abstract class WeaselKeyWordCompiler {
 	
-	public abstract WeaselCompilerReturn compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher,  ListIterator<WeaselToken> iterator) throws WeaselCompilerException;
+	public abstract WeaselCompilerReturn compile(WeaselToken token, WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher,  ListIterator<WeaselToken> iterator) throws WeaselCompilerException;
 
 	protected void expect(WeaselToken token, WeaselTokenType...tokenTypes) throws WeaselCompilerException{
 		for(int i=0; i<tokenTypes.length; i++){

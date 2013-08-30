@@ -63,7 +63,7 @@ public class WeaselInstructionWriteStaticField extends WeaselInstruction {
 		if(field==null || type==null){
 			int d = fieldDesk.lastIndexOf(":");
 			int p = fieldDesk.lastIndexOf(".", d);
-			WeaselClass weaselClass = interpreter.getWeaselClass("O"+fieldDesk.substring(0, p)+";");
+			WeaselClass weaselClass = getWeaselClass(interpreter, fieldDesk.substring(0, p));
 			field = weaselClass.getField(fieldDesk.substring(p+1, d));
 			type = interpreter.getWeaselClass(fieldDesk.substring(d+1));
 		}

@@ -2,7 +2,6 @@ package weasel.compiler.v2.tokentree;
 
 import java.util.ListIterator;
 
-import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselToken;
@@ -39,7 +38,7 @@ public class WeaselTreeGenericElement {
 			token = iterator.next();
 		}
 		className = realClassName;
-		classByteName = WeaselCompiler.mapClassNames(className);
+		classByteName = WeaselClass.mapClassNames(className);
 		if(token.tokenType==WeaselTokenType.OPERATOR && token.param==WeaselOperator.LESS){
 			generic = new WeaselTreeGeneric(iterator);
 			close = generic.close;
