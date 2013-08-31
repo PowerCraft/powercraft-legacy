@@ -1,6 +1,7 @@
 package weasel.compiler.v2;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -691,6 +692,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 	@Override
 	public void finishCompile() {
 		compiler.addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.INFO, 0, getFileName(), "Compiling Methods"));
+		checkOverrides();
 		for(int i=0; i<staticMethodBodys.length; i++){
 			if(staticMethodBodys[i]!=null){
 				try{
@@ -710,6 +712,28 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 						e.printStackTrace();
 						onException(0, "Native exception in %s %s", methodBodys[i].getMethod(), e);
 					}
+				}
+			}
+		}
+	}
+
+	private void checkOverrides(WeaselMethod m, int i){
+		if(methodBodys[i]==null){
+			if(getSuperClass()==null){
+				onException(0, "You have to override %s", m);
+			}else{
+				if(!getSuperClass().isOverriden(i)){
+					onException(0, "You have to override %s", m);
+				}
+			}
+		}
+	}
+	
+	private void checkOverrides() {
+		if(!WeaselModifier.isAbstract(modifier)){
+			if(getSuperClass()!=null){
+				for(int i=0; i<methodBodys.length; i++){
+					checkOverrides(getMethod(i), i);
 				}
 			}
 		}
