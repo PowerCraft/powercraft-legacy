@@ -2,7 +2,7 @@ package powercraftCombi;
 
 import java.lang.reflect.Method;
 
-import weasel.compiler.WeaselCompiler;
+import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselInterpreter;
 import weasel.interpreter.WeaselMethodExecutor;
 import weasel.interpreter.WeaselNativeException;
@@ -35,7 +35,7 @@ public class WeaselNativeMethodAccessor implements WeaselNativeMethod {
 					gaveThis = true;
 				}
 			}else if(paramTypes[i].isPrimitive()){
-				nameBuilder += WeaselCompiler.mapClassNames(paramTypes[i].getName());
+				nameBuilder += WeaselClass.mapClassNames(paramTypes[i].getName());
 			}else{
 				throw new WeaselNativeException("Illegal parameter %s in method invokation %s", i, method);
 			}
@@ -45,7 +45,7 @@ public class WeaselNativeMethodAccessor implements WeaselNativeMethod {
 		if(returnType==WeaselObject.class){
 			nameBuilder += "OObject;";
 		}else if(returnType.isPrimitive()){
-			nameBuilder += WeaselCompiler.mapClassNames(returnType.getName());
+			nameBuilder += WeaselClass.mapClassNames(returnType.getName());
 		}else{
 			throw new WeaselNativeException("Illegal return parameter in method invokation %s", method);
 		}

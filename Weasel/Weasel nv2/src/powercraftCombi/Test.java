@@ -63,6 +63,7 @@ public class Test {
 			
 		}
 		
+		@SuppressWarnings("unchecked")
 		public static <T> Object callFunc(String obj, String func, Object... params){
 			try{
 				T o;
