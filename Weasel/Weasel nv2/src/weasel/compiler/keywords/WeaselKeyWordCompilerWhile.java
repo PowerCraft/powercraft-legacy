@@ -1,13 +1,12 @@
 package weasel.compiler.keywords;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ListIterator;
 
 import weasel.compiler.WeaselBlockInfo;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerReturn;
+import weasel.compiler.WeaselInstructionList;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
@@ -33,14 +32,14 @@ public class WeaselKeyWordCompilerWhile extends WeaselKeyWordCompiler {
 		}
 		WeaselToken t = iterator.next();
 		WeaselCompilerReturn wcr;
-		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
+		WeaselInstructionList instructions = new WeaselInstructionList();
 		WeaselInstruction continueJump = new WeaselInstructionJumperDummy();
-		instructions.add(continueJump);
+		instructions.add(token.line, continueJump);
 		wcr = tree1.compile(compiler, compilerHelpher, null, new WeaselGenericClass(compiler.baseTypes.booleanClass), null, false);
 		instructions.addAll(wcr.instructions);
 		WeaselTree.autoCast(compiler, wcr.returnType, new WeaselGenericClass(compiler.baseTypes.booleanClass), token.line, instructions, true);
 		WeaselInstructionIf ifI;
-		instructions.add(ifI = new WeaselInstructionIf());
+		instructions.add(token.line, ifI = new WeaselInstructionIf());
 		if(t.tokenType==WeaselTokenType.OPENBLOCK){
 			t = iterator.next();
 			while(t.tokenType!=WeaselTokenType.CLOSEBLOCK){
@@ -53,19 +52,19 @@ public class WeaselKeyWordCompilerWhile extends WeaselKeyWordCompiler {
 			instructions.addAll(WeaselTree.parseAndCompile(compiler, compilerHelpher, iterator));
 		}
 		WeaselInstruction ifJump = new WeaselInstructionJump(continueJump);
-		instructions.add(ifJump);
+		instructions.add(token.line, ifJump);
 		ifI.setTarget(ifJump);
 		WeaselBlockInfo wbi = compilerHelpher.closeBlock();
 		int pops = wbi.varsToPop();
 		if(pops==1){
-			instructions.add(new WeaselInstructionPop());
+			instructions.add(token.line, new WeaselInstructionPop());
 		}else if(pops>1){
-			instructions.add(new WeaselInstructionPops(pops));
+			instructions.add(token.line, new WeaselInstructionPops(pops));
 		}
 		if(pops>=1){
-			instructions.add(0, new WeaselInstructionReservate(pops));
+			instructions.add(t.line, new WeaselInstructionReservate(pops));
 		}
-		WeaselInstruction breakJump = instructions.get(instructions.size()-1);
+		WeaselInstruction breakJump = instructions.getLast();
 		for(WeaselInstructionJump breakI:wbi.breaks){
 			breakI.setTarget(breakJump);
 		}

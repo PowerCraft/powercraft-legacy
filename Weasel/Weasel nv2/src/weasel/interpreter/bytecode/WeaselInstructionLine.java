@@ -15,9 +15,13 @@ public class WeaselInstructionLine extends WeaselInstructionNoTime {
 	public WeaselInstructionLine(int line){
 		this.line = line;
 	}
-	
+
 	public WeaselInstructionLine(DataInputStream dataInputStream) throws IOException{
 		this.line = dataInputStream.readInt();
+	}
+	
+	public int getLine(){
+		return line;
 	}
 	
 	@Override

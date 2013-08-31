@@ -1,13 +1,12 @@
 package weasel.compiler.keywords;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ListIterator;
 
 import weasel.compiler.WeaselBlockInfo;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerReturn;
+import weasel.compiler.WeaselInstructionList;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
@@ -27,9 +26,9 @@ public class WeaselKeyWordCompilerDo extends WeaselKeyWordCompiler {
 	public WeaselCompilerReturn compile(WeaselToken token, WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelpher, ListIterator<WeaselToken> iterator) throws WeaselCompilerException {
 		compilerHelpher.openBlock(true);
 		WeaselToken t = iterator.next();
-		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
+		WeaselInstructionList instructions = new WeaselInstructionList();
 		WeaselInstructionJumperDummy startJump = new WeaselInstructionJumperDummy();
-		instructions.add(startJump);
+		instructions.add(token.line, startJump);
 		if(t.tokenType==WeaselTokenType.OPENBLOCK){
 			t = iterator.next();
 			while(t.tokenType!=WeaselTokenType.CLOSEBLOCK){
@@ -45,30 +44,30 @@ public class WeaselKeyWordCompilerDo extends WeaselKeyWordCompiler {
 		if(t.tokenType!=WeaselTokenType.KEYWORD || t.param!=WeaselKeyWord.WHILE){
 			throw new WeaselCompilerException(t.line, "expect while but got %s", t);
 		}
-		WeaselInstruction continueJump = instructions.get(instructions.size()-1);
+		WeaselInstruction continueJump = instructions.getLast();
 		expect(t = iterator.next(), WeaselTokenType.OPENBRACKET);
 		WeaselTree tree1 = WeaselTree.parse(iterator, WeaselTokenType.CLOSEBRACKET);
 		if(tree1==null){
-			throw new WeaselCompilerException(token.line, "Expect boolean value in while");
+			throw new WeaselCompilerException(t.line, "Expect boolean value in while");
 		}
 		WeaselCompilerReturn wcr;
 		wcr = tree1.compile(compiler, compilerHelpher, null, new WeaselGenericClass(compiler.baseTypes.booleanClass), null, false);
 		instructions.addAll(wcr.instructions);
-		WeaselTree.autoCast(compiler, wcr.returnType, new WeaselGenericClass(compiler.baseTypes.booleanClass), token.line, instructions, true);
+		WeaselTree.autoCast(compiler, wcr.returnType, new WeaselGenericClass(compiler.baseTypes.booleanClass), t.line, instructions, true);
 		WeaselInstruction ifJump = new WeaselInstructionJump(startJump);
-		instructions.add(new WeaselInstructionIf(ifJump));
-		instructions.add(ifJump);
+		instructions.add(t.line, new WeaselInstructionIf(ifJump));
+		instructions.add(t.line, ifJump);
 		WeaselBlockInfo wbi = compilerHelpher.closeBlock();
 		int pops = wbi.varsToPop();
 		if(pops==1){
-			instructions.add(new WeaselInstructionPop());
+			instructions.add(t.line, new WeaselInstructionPop());
 		}else if(pops>1){
-			instructions.add(new WeaselInstructionPops(pops));
+			instructions.add(t.line, new WeaselInstructionPops(pops));
 		}
 		if(pops>=1){
-			instructions.add(0, new WeaselInstructionReservate(pops));
+			instructions.addFirst(token.line, new WeaselInstructionReservate(pops));
 		}
-		WeaselInstruction breakJump = instructions.get(instructions.size()-1);
+		WeaselInstruction breakJump = instructions.getLast();
 		for(WeaselInstructionJump breakI:wbi.breaks){
 			breakI.setTarget(breakJump);
 		}
