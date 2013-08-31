@@ -513,7 +513,7 @@ public abstract class WeaselTree {
 				while(iterator.hasNext()){
 					WeaselGenericMethod2 m=iterator.next();
 					for(int i=0; i<param; i++){
-						if(!params.get(i).canCastTo(m.getGenericParams()[i]))
+						if(params.get(i)!=null && !params.get(i).canCastTo(m.getGenericParams()[i]))
 							iterator.remove();
 					}
 				}
