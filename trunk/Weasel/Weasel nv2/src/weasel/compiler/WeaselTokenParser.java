@@ -2,10 +2,12 @@ package weasel.compiler;
 
 import java.io.EOFException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map.Entry;
 
+import powercraftCombi.Test;
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.interpreter.WeaselModifier;
