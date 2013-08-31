@@ -7,6 +7,7 @@ import java.util.ListIterator;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerReturn;
+import weasel.compiler.WeaselInstructionList;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselOperator.Properties;
@@ -14,7 +15,6 @@ import weasel.compiler.WeaselToken;
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselPrimitive;
-import weasel.interpreter.bytecode.WeaselInstruction;
 import weasel.interpreter.bytecode.WeaselInstructionBitwiseAnd;
 import weasel.interpreter.bytecode.WeaselInstructionBitwiseOr;
 import weasel.interpreter.bytecode.WeaselInstructionBitwiseXor;
@@ -142,7 +142,7 @@ public class WeaselTreeLevel extends WeaselTree {
 			return level.get(0).compile(compiler, compilerHelper, null, expect, elementParent, isVariable);
 		WeaselToken operator = operators.get(i);
 		Properties oper = (Properties)operator.param;
-		List<WeaselInstruction> instructions;
+		WeaselInstructionList instructions;
 		WeaselCompilerReturn wcr;
 		WeaselGenericClass ret;
 		if(oper==WeaselOperator.INSTANCEOF){
@@ -151,13 +151,13 @@ public class WeaselTreeLevel extends WeaselTree {
 			WeaselGenericClass wgc = new WeaselGenericClass(wc);
 			wcr = compileOperator(compiler, compilerHelper, write, wgc, elementParent, isVariable, i-1);
 			if(wcr.returnType.canCastTo(wgc)){
-				instructions = new ArrayList<WeaselInstruction>();
-				instructions.add(new WeaselInstructionLoadConstBoolean(true));
+				instructions = new WeaselInstructionList();
+				instructions.add(operator.line, new WeaselInstructionLoadConstBoolean(true));
 			}else{
 				if(wcr.returnType.getBaseClass().isPrimitive())
 					throw new WeaselCompilerException(operator.line, "can't use implements for primitives");
 				instructions = wcr.instructions;
-				instructions.add(new WeaselInstructionInstanceof(wc.getByteName()));
+				instructions.add(operator.line, new WeaselInstructionInstanceof(wc.getByteName()));
 			}
 			ret = new WeaselGenericClass(compiler.baseTypes.booleanClass);
 		}else if(oper==WeaselOperator.CAST){
@@ -167,9 +167,9 @@ public class WeaselTreeLevel extends WeaselTree {
 			wcr = compileOperator(compiler, compilerHelper, write, ret, elementParent, isVariable, i+1);
 			instructions = wcr.instructions;
 			if(wc.isPrimitive()){
-				instructions.add(new WeaselInstructionCastPrimitive(WeaselPrimitive.getPrimitiveID(wc)));
+				instructions.add(operator.line, new WeaselInstructionCastPrimitive(WeaselPrimitive.getPrimitiveID(wc)));
 			}else{
-				instructions.add(new WeaselInstructionCast(wc.getByteName()));
+				instructions.add(operator.line, new WeaselInstructionCast(wc.getByteName()));
 			}
 		}else{
 			throw new WeaselCompilerException(operator.line, "Unknown operator %s", operator);
@@ -185,7 +185,7 @@ public class WeaselTreeLevel extends WeaselTree {
 			return level.get(operators.size()).compile(compiler, compilerHelper, write, expect, elementParent, isVariable);
 		WeaselToken operator = operators.get(i);
 		Properties oper = (Properties)operator.param;
-		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
+		WeaselInstructionList instructions = new WeaselInstructionList();
 		WeaselCompilerReturn wcr;
 		WeaselGenericClass ret;
 		WeaselGenericClass wgc;
@@ -196,19 +196,13 @@ public class WeaselTreeLevel extends WeaselTree {
 			wcr = compileInfixOperator(compiler, compilerHelper, null, new WeaselGenericClass(compiler.baseTypes.voidClass), null, false, i+1);
 			instructions.addAll(wcr.instructions);
 			if(wcr.returnType.getBaseClass()!=compiler.baseTypes.voidClass){
-				instructions.add(new WeaselInstructionPop());
+				instructions.add(operator.line, new WeaselInstructionPop());
 			}
 		}else if(oper==WeaselOperator.ASSIGN){
 			WeaselCompilerReturn wcr2 = compileInfixOperator(compiler, compilerHelper, null, expect, null, false, i+1);
 			wcr = level.get(i).compile(compiler, compilerHelper, wcr2.returnType, expect, null, false);
 			instructions.addAll(wcr.instructions);
-			List<WeaselInstruction> after = new ArrayList<WeaselInstruction>();
-			WeaselInstruction wi;
-			while(!((wi = instructions.remove(instructions.size()-1)) instanceof WeaselInstructionPlaceHolder)){
-				after.add(0, wi);
-			}
-			instructions.addAll(wcr2.instructions);
-			instructions.addAll(after);
+			instructions.replacePlaceHolderWith(wcr2.instructions);
 			ret = wcr.returnType;
 		}else if(oper==WeaselOperator.LOGICAL_OR || oper==WeaselOperator.LOGICAL_AND || oper==WeaselOperator.BITWISE_OR || oper==WeaselOperator.BITWISE_AND
 				 || oper==WeaselOperator.BITWISE_XOR || oper==WeaselOperator.LESS || oper==WeaselOperator.GREATER
@@ -242,23 +236,23 @@ public class WeaselTreeLevel extends WeaselTree {
 				ret = new WeaselGenericClass(compiler.baseTypes.booleanClass);
 			}
 			if(oper==WeaselOperator.LOGICAL_OR){
-				instructions.add(new WeaselInstructionLogicalOr(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionLogicalOr(primitiveID));
 			}else if(oper==WeaselOperator.LOGICAL_AND){
-				instructions.add(new WeaselInstructionLogicalAnd(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionLogicalAnd(primitiveID));
 			}else if(oper==WeaselOperator.BITWISE_OR){
-				instructions.add(new WeaselInstructionBitwiseOr(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionBitwiseOr(primitiveID));
 			}else if(oper==WeaselOperator.BITWISE_AND){
-				instructions.add(new WeaselInstructionBitwiseAnd(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionBitwiseAnd(primitiveID));
 			}else if(oper==WeaselOperator.BITWISE_XOR){
-				instructions.add(new WeaselInstructionBitwiseXor(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionBitwiseXor(primitiveID));
 			}else if(oper==WeaselOperator.LESS){
-				instructions.add(new WeaselInstructionLess(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionLess(primitiveID));
 			}else if(oper==WeaselOperator.GREATER){
-				instructions.add(new WeaselInstructionGreater(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionGreater(primitiveID));
 			}else if(oper==WeaselOperator.LESS_EQUAL){
-				instructions.add(new WeaselInstructionLessEqual(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionLessEqual(primitiveID));
 			}else if(oper==WeaselOperator.GREATER_EQUAL){
-				instructions.add(new WeaselInstructionGreaterEqual(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionGreaterEqual(primitiveID));
 			}
 		}else if(oper==WeaselOperator.VERY_SAME || oper==WeaselOperator.NOT_VERY_SAME
 					 || oper==WeaselOperator.EQUAL || oper==WeaselOperator.NOT_EQUAL){
@@ -274,13 +268,13 @@ public class WeaselTreeLevel extends WeaselTree {
 				ret = WeaselTree.autoCast(compiler, ret, wgc, operator.line, instructions, true);
 			int primitiveID = WeaselPrimitive.getPrimitiveID(ret.getBaseClass());
 			if(oper==WeaselOperator.VERY_SAME){
-				instructions.add(new WeaselInstructionVerySame(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionVerySame(primitiveID));
 			}else if(oper==WeaselOperator.NOT_VERY_SAME){
-				instructions.add(new WeaselInstructionNotVerySame(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionNotVerySame(primitiveID));
 			}else if(oper==WeaselOperator.EQUAL){
-				instructions.add(new WeaselInstructionEqual(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionEqual(primitiveID));
 			}else if(oper==WeaselOperator.NOT_EQUAL){
-				instructions.add(new WeaselInstructionNotEqual(primitiveID));
+				instructions.add(operator.line, new WeaselInstructionNotEqual(primitiveID));
 			}
 			ret = new WeaselGenericClass(compiler.baseTypes.booleanClass);
 		}else if(oper==WeaselOperator.ELEMENT){

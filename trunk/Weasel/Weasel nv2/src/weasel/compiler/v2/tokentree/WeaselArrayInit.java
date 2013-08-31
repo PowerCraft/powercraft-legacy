@@ -7,12 +7,12 @@ import java.util.ListIterator;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerReturn;
+import weasel.compiler.WeaselInstructionList;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
 import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselPrimitive;
-import weasel.interpreter.bytecode.WeaselInstruction;
 import weasel.interpreter.bytecode.WeaselInstructionLoadConstInteger;
 import weasel.interpreter.bytecode.WeaselInstructionNewArray;
 import weasel.interpreter.bytecode.WeaselInstructionPush;
@@ -64,11 +64,11 @@ public class WeaselArrayInit {
 		return s + "}";
 	}
 
-	public List<WeaselInstruction> compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass arrayClass) throws WeaselCompilerException {
+	public WeaselInstructionList compile(WeaselCompiler compiler, WeaselKeyWordCompilerHelper compilerHelper, WeaselGenericClass arrayClass) throws WeaselCompilerException {
 		arrayClass = new WeaselGenericClass(arrayClass.getBaseClass().getArrayClass(), arrayClass.getGenerics());
-		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
-		instructions.add(new WeaselInstructionLoadConstInteger(indexes.size()));
-		instructions.add(new WeaselInstructionNewArray(arrayClass.getBaseClass().getByteName(), 1));
+		WeaselInstructionList instructions = new WeaselInstructionList();
+		instructions.add(token.line, new WeaselInstructionLoadConstInteger(indexes.size()));
+		instructions.add(token.line, new WeaselInstructionNewArray(arrayClass.getBaseClass().getByteName(), 1));
 		for(int i=0; i<indexes.size(); i++){
 			Object o = indexes.get(i);
 			if(o instanceof WeaselArrayInit){
@@ -79,9 +79,9 @@ public class WeaselArrayInit {
 					throw new WeaselCompilerException(token.line, "Can't cast %s to %s", wcr.returnType, arrayClass);
 				instructions.addAll(wcr.instructions);
 			}
-			instructions.add(new WeaselInstructionPush(2));
-			instructions.add(new WeaselInstructionLoadConstInteger(i));
-			instructions.add(new WeaselInstructionWriteIndex(WeaselPrimitive.getPrimitiveID(arrayClass.getBaseClass())));
+			instructions.add(token.line, new WeaselInstructionPush(2));
+			instructions.add(token.line, new WeaselInstructionLoadConstInteger(i));
+			instructions.add(token.line, new WeaselInstructionWriteIndex(WeaselPrimitive.getPrimitiveID(arrayClass.getBaseClass())));
 		}
 		return instructions;
 	}

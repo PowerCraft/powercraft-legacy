@@ -1,6 +1,5 @@
 package weasel.compiler.v2;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -10,6 +9,7 @@ import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerMessage;
 import weasel.compiler.WeaselCompilerMessage.MessageType;
+import weasel.compiler.WeaselInstructionList;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
 import weasel.compiler.WeaselTokenType;
@@ -23,7 +23,6 @@ import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
 import weasel.interpreter.WeaselModifier;
 import weasel.interpreter.bytecode.WeaselInstruction;
-import weasel.interpreter.bytecode.WeaselInstructionJump;
 
 public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements WeaselKeyWordCompilerHelper {
 
@@ -72,7 +71,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 			WeaselGenericMethod2 genericMethod = classCompiler.genericClass.getGenericMethod(method.getNameAndDesk(), null);
 			block.newVar(paramModifier.get(i), paramNames.get(i), genericMethod.getGenericParams()[i]);
 		}
-		List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
+		WeaselInstructionList instructions = new WeaselInstructionList();
 		ListIterator<WeaselToken> iterator = methodTokens.listIterator();
 		while(iterator.hasNext()){
 			try{
@@ -86,20 +85,8 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 				}
 			}
 		}
-		for(WeaselInstruction instruction:instructions){
-			if(instruction instanceof WeaselInstructionJump){
-				WeaselInstruction target = ((WeaselInstructionJump) instruction).getTarget();
-				int i=0;
-				for(WeaselInstruction targetInstruction:instructions){
-					if(targetInstruction==target)
-						break;
-					i++;
-				}
-				((WeaselInstructionJump) instruction).setTargetIndex(i+1);
-			}
-		}
-		System.out.println("instructions:"+instructions);
-		this.instructions = instructions.toArray(this.instructions);
+		System.out.println(instructions);
+		this.instructions = instructions.getInstructions();
 	}
 	
 	@Override
