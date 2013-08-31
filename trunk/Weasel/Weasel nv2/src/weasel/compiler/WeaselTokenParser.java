@@ -129,6 +129,7 @@ public class WeaselTokenParser {
 					int d=0;
 					int i=1;
 					while(isDigit(c)){
+						d *= 10;
 						d += c-'0';
 						i *= 10;
 						c = readNextChar();
