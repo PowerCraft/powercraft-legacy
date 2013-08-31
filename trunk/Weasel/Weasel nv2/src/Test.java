@@ -57,7 +57,7 @@ public class Test implements WeaselClassFileProvider{
 	}
 	
 	public static void main(String[] args) throws WeaselCompilerException {
-		
+
 		//System.out.println(tokenList);
 		WeaselCompiler compiler = new WeaselCompiler();
 		try{
