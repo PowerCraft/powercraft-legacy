@@ -63,6 +63,7 @@ public class WeaselTokenParser {
 			}
 //Number-Parsing
 			if(isDigit(c) || c=='.'){
+				boolean isDot = c=='.';
 				int num=0;
 				if(c=='0'){
 					c = readNextChar();
@@ -126,19 +127,22 @@ public class WeaselTokenParser {
 //FloatingPoint-Parsing
 				if(c=='.'){
 					c = readNextChar();
-					int d=0;
-					int i=1;
-					while(isDigit(c)){
-						d *= 10;
-						d += c-'0';
-						i *= 10;
-						c = readNextChar();
+					if(!isDot || isDigit(c)){
+						int d=0;
+						int i=1;
+						while(isDigit(c)){
+							d *= 10;
+							d += c-'0';
+							i *= 10;
+							c = readNextChar();
+						}
+						if(c=='f' || c=='F')
+							return new WeaselToken(WeaselTokenType.FLOAT, line, num);
+						if(!(c=='d'||c=='D'))
+							c = readPrevChar();
+						return new WeaselToken(WeaselTokenType.DOUBLE, line, num+(double)d/i);
 					}
-					if(c=='f' || c=='F')
-						return new WeaselToken(WeaselTokenType.FLOAT, line, num);
-					if(!(c=='d'||c=='D'))
-						c = readPrevChar();
-					return new WeaselToken(WeaselTokenType.DOUBLE, line, num+(double)d/i);
+					readPrevChar();
 				}else if(isAlphabetical(c)){
 					throw new WeaselCompilerException(line, "Expect number but got "+c);
 				}else{
