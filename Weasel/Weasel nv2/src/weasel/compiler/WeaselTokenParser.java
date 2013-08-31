@@ -143,6 +143,7 @@ public class WeaselTokenParser {
 						return new WeaselToken(WeaselTokenType.DOUBLE, line, num+(double)d/i);
 					}
 					readPrevChar();
+					c='.';
 				}else if(isAlphabetical(c)){
 					throw new WeaselCompilerException(line, "Expect number but got "+c);
 				}else{

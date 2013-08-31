@@ -22,7 +22,6 @@ import weasel.interpreter.WeaselField;
 import weasel.interpreter.WeaselGenericClass;
 import weasel.interpreter.WeaselGenericClassInfo;
 import weasel.interpreter.WeaselGenericInformation;
-import weasel.interpreter.WeaselGenericMethod2;
 import weasel.interpreter.WeaselMethod;
 import weasel.interpreter.WeaselMethodBody;
 import weasel.interpreter.WeaselModifier;
@@ -366,16 +365,37 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		}
 		tokenParser = null;
 		
+		if(!isInterface()){
+			boolean hasConstructor = false;
+			for(int i=0; i<methods.length; i++){
+				if(methods[i].getName().equals("<init>")){
+					hasConstructor = true;
+					break;
+				}
+			}
+			
+			if(!hasConstructor){
+				System.out.println("ADDCONSTRUCTOR to "+name);
+				int id = ids.method++;
+				WeaselMethod method = createMethod("<init>", isEnum?0:WeaselModifier.PUBLIC, this, new WeaselGenericClassInfo(compiler.baseTypes.voidClass, -1, new WeaselGenericClassInfo[0]), new WeaselGenericClassInfo[0], new WeaselGenericInformation[0], id);
+				System.out.println(method);
+				WeaselMethod[] newMethods = new WeaselMethod[methods.length+1];
+				for(int i=0; i<methods.length; i++){
+					newMethods[i] = methods[i];
+				}
+				newMethods[methods.length] = method;
+				methods = newMethods;
+				WeaselMethodBody[] newMethodBodys = new WeaselMethodBody[ids.method];
+				for(int i=0; i<methodBodys.length; i++){
+					newMethodBodys[i] = methodBodys[i];
+				}
+				methodBodys = newMethodBodys;
+				methodBodys[id] = new WeaselMethodBodyCompilerV2(method, this, new ArrayList<WeaselToken>(), new ArrayList<String>(), new ArrayList<Integer>(), compiler);
+			}
+			
+		}
+		
 		genericClass = new WeaselGenericClass(this);
-		
-		checkOverrides();
-	}
-
-	private void checkOverrides(){
-		List<WeaselGenericMethod2> methodsToOverride = new ArrayList<WeaselGenericMethod2>();
-		
-		genericClass.addMethodsToOverride(methodsToOverride);
-		
 	}
 	
 	private WeaselGenericInformation[] makeGenericInformations(WeaselToken token) throws WeaselCompilerException{
