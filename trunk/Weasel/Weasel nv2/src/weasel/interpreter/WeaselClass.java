@@ -133,6 +133,10 @@ public class WeaselClass implements WeaselSaveable {
 		return genericSuperClass.genericClass.getField(name);
 	}
 
+	public WeaselMethod[] getMethods() {
+		return methods;
+	}
+	
 	public WeaselMethod getMethod(String name, WeaselGenericClassInfo[] paramClasses){
 		for(int i=0; i<methods.length; i++){
 			if(methods[i].getName().equals(name)){
@@ -525,6 +529,32 @@ public class WeaselClass implements WeaselSaveable {
 			}
 		}
 		return -1;
+	}
+	
+	public WeaselMethod getMethod(int i) {
+		for(int j=0; j<methods.length; j++){
+			if(!WeaselModifier.isStatic(methods[j].getModifier()) && methods[j].id==i){
+				return methods[j];
+			}
+		}
+		if(getSuperClass()==null)
+			return null;
+		return getSuperClass().getMethod(i);
+	}
+	
+	public boolean isOverriden(int i) {
+		if(methodBodys.length>=i)
+			return false;
+		if(methodBodys[i]!=null)
+			return true;
+		for(int j=0; j<methods.length; j++){
+			if(!WeaselModifier.isStatic(methods[j].getModifier()) && methods[j].id==i){
+				return false;
+			}
+		}
+		if(getSuperClass()==null)
+			return false;
+		return getSuperClass().isOverriden(i);
 	}
 	
 	public WeaselGenericInformation getGenericInformation(int genericID) {
