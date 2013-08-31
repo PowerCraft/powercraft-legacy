@@ -12,6 +12,7 @@ import weasel.interpreter.WeaselModifier;
 
 public class WeaselTokenParser {
 
+	//not yet working: "schrieb \"toll\"";
 	private String source;
 	private int pos;
 	private int line;
@@ -35,6 +36,7 @@ public class WeaselTokenParser {
 		try{
 			char c = skipWhiteSpace();
 			isEOFOk = false;
+//Keyword&Ident-Parsing
 			if(isAlphabetical(c)){
 				String ident="";
 				while(isAlphabetical(c)||isDigit(c)){
@@ -59,11 +61,12 @@ public class WeaselTokenParser {
 				}
 				return new WeaselToken(WeaselTokenType.IDENT, line, ident);
 			}
+//Number-Parsing
 			if(isDigit(c) || c=='.'){
-				boolean isDot = c=='.';
 				int num=0;
 				if(c=='0'){
 					c = readNextChar();
+//HexInteger-Parsing
 					if(c=='x'){
 						c = readNextChar();
 						if(!(isDigit(c) || (c>='a' && c<='f') || (c>='A' && c<='F')))
@@ -87,6 +90,7 @@ public class WeaselTokenParser {
 						}
 						readPrevChar();
 						return new WeaselToken(WeaselTokenType.INTEGER, line, num);
+//BinaryInteger-Parsing
 					}else if(c=='b'){
 						c = readNextChar();
 						if(!(c=='0' || c=='1'))
@@ -107,25 +111,33 @@ public class WeaselTokenParser {
 						return new WeaselToken(WeaselTokenType.INTEGER, line, num);
 					}
 				}
+//Integer-Parsing
 				while(isDigit(c)){
 					num *= 10;
 					num += c-'0';
 					c = readNextChar();
 				}
+				if(c=='l' || c=='L')
+					return new WeaselToken(WeaselTokenType.LONG, line, num);
+				if(c=='d' || c=='D')
+					return new WeaselToken(WeaselTokenType.DOUBLE, line, num);
+				if(c=='f' || c=='F')
+					return new WeaselToken(WeaselTokenType.FLOAT, line, num);
+//FloatingPoint-Parsing
 				if(c=='.'){
 					c = readNextChar();
-					if(!isDot || isDigit(c)){
-						int d=0;
-						int i=1;
-						while(isDigit(c)){
-							d += c-'0';
-							i *= 10;
-							c = readNextChar();
-						}
-						readPrevChar();
-						return new WeaselToken(WeaselTokenType.DOUBLE, line, num+(double)d/i);
+					int d=0;
+					int i=1;
+					while(isDigit(c)){
+						d += c-'0';
+						i *= 10;
+						c = readNextChar();
 					}
-					c = readPrevChar();
+					if(c=='f' || c=='F')
+						return new WeaselToken(WeaselTokenType.FLOAT, line, num);
+					if(!(c=='d'||c=='D'))
+						c = readPrevChar();
+					return new WeaselToken(WeaselTokenType.DOUBLE, line, num+(double)d/i);
 				}else if(isAlphabetical(c)){
 					throw new WeaselCompilerException(line, "Expect number but got "+c);
 				}else{
@@ -133,6 +145,7 @@ public class WeaselTokenParser {
 					return new WeaselToken(WeaselTokenType.INTEGER, line, num);
 				}
 			}
+//String-Parsing
 			if(c=='"'){
 				c = readNextChar();
 				String s="";
@@ -162,6 +175,7 @@ public class WeaselTokenParser {
 				}
 				return new WeaselToken(WeaselTokenType.STRING, line, s);
 			}
+//Char-Parsing
 			if(c=='\''){
 				c = readNextChar();
 				String s="";
@@ -322,7 +336,7 @@ public class WeaselTokenParser {
 		
 		return new ListIterator<WeaselToken>(){
 
-			private List<WeaselToken> readed = new ArrayList<WeaselToken>();
+			private List<WeaselToken> read = new ArrayList<WeaselToken>();
 			private int index=0;
 			
 			@Override
@@ -337,13 +351,13 @@ public class WeaselTokenParser {
 
 			@Override
 			public boolean hasPrevious() {
-				return !readed.isEmpty();
+				return !read.isEmpty();
 			}
 
 			@Override
 			public WeaselToken next() {
-				if(readed.size()>index){
-					return readed.get(index++);
+				if(read.size()>index){
+					return read.get(index++);
 				}
 				WeaselToken wt = null;
 				try {
@@ -351,7 +365,7 @@ public class WeaselTokenParser {
 				} catch (WeaselCompilerException e) {
 					e.printStackTrace();
 				}
-				readed.add(wt);
+				read.add(wt);
 				index++;
 				return wt;
 			}
@@ -365,7 +379,7 @@ public class WeaselTokenParser {
 			public WeaselToken previous() {
 				if(index==0)
 					return null;
-				return readed.get(--index);
+				return read.get(--index);
 			}
 
 			@Override
