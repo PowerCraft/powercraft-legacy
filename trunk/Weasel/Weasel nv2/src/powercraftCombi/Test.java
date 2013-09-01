@@ -38,15 +38,13 @@ public class Test {
 		public static void registerMethodsInClass(Class<?> c){
 			Named named;
 			for(Method m:c.getMethods()){
-				if((named=m.getAnnotation(Named.class))!=null){
-					if(((m.getModifiers()&Modifier.STATIC)==Modifier.STATIC)){
-						for(String namespace:named.nameSpaces()){
-							for(String weaselName:named.weaselNames()){
-								methods.add(new WeaselNativeMethodAccessor(namespace, weaselName, m));
-							}
-						}
-					}else{
+				if((named=m.getAnnotation(WeaselNamedMethod.class))!=null){
+					if(((m.getModifiers()&Modifier.STATIC)!=Modifier.STATIC))
 						throw new WeaselNativeException("Only static Methods can be loaded");
+					for(String namespace:named.nameSpaces()){
+						for(String weaselName:named.weaselNames()){
+							methods.add(new WeaselNativeMethodAccessor(namespace, weaselName, m));
+						}
 					}
 				}
 			}
