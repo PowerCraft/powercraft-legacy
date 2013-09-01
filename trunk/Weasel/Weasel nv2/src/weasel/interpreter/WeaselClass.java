@@ -547,7 +547,7 @@ public class WeaselClass implements WeaselSaveable {
 			return true;
 		for(int j=0; j<methods.length; j++){
 			if(!WeaselModifier.isStatic(methods[j].getModifier()) && methods[j].id==i){
-				return false;
+				return !WeaselModifier.isAbstract(methods[j].getModifier());
 			}
 		}
 		if(getSuperClass()==null)

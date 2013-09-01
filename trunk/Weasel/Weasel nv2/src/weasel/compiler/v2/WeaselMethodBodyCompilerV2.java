@@ -27,6 +27,7 @@ import weasel.interpreter.WeaselModifier;
 import weasel.interpreter.bytecode.WeaselInstruction;
 import weasel.interpreter.bytecode.WeaselInstructionInvoke;
 import weasel.interpreter.bytecode.WeaselInstructionLoadVariable;
+import weasel.interpreter.bytecode.WeaselInstructionReturn;
 
 public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements WeaselKeyWordCompilerHelper {
 
@@ -36,7 +37,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 	protected int methodTokenPos;
 	protected final List<String> paramNames;
 	protected final List<Integer> paramModifier;
-	protected final WeaselGenericMethod2 wgm;
+	protected WeaselGenericMethod2 wgm;
 	protected WeaselBlockInfo block;
 	protected boolean superCaller;
 	
@@ -48,7 +49,6 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 		this.methodTokens = methodTokens;
 		this.paramNames = paramNames;
 		this.paramModifier = paramModifier;
-		wgm = new WeaselGenericMethod(classCompiler.genericClass, method).getMethod(new WeaselGenericClass[0]);
 	}
 
 	protected WeaselMethodBodyCompilerV2(WeaselMethod method, WeaselClassCompilerV2 classCompiler) {
@@ -58,10 +58,10 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 		methodTokens = null;
 		paramNames = null;
 		paramModifier = null;
-		wgm = new WeaselGenericMethod(classCompiler.genericClass, method).getMethod(new WeaselGenericClass[0]);
 	}
 
 	public void compile() {
+		wgm = new WeaselGenericMethod(classCompiler.genericClass, method).getMethod(new WeaselGenericClass[0]);
 		if(isNative()){
 			return;
 		}
@@ -97,7 +97,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 								List<WeaselGenericMethod2> methods = classCompiler.genericClass.getGenericMethodsOfThis("<init>", true);
 								WeaselParameterCompileReturn wpcr = WeaselTree.compileParamList(token.line, "<init>", compiler, this, tree, methods);
 								instructions.addAll(wpcr.instructions);
-								instructions.add(token.line, new WeaselInstructionInvoke(wpcr.method.getMethod().getMethod().getNameAndDesk()));
+								instructions.add(token.line, new WeaselInstructionInvoke(wpcr.method.getMethod().getMethod().getClassNameAndDesk()));
 								token = iterator.next();
 								if(token.tokenType!=WeaselTokenType.SEMICOLON)
 									throw new WeaselCompilerException(token.line, "Expect ; but got %s", token);
@@ -108,7 +108,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 								List<WeaselGenericMethod2> methods = classCompiler.genericClass.getGenericSuperClass().getGenericMethodsOfThis("<init>", true);
 								WeaselParameterCompileReturn wpcr = WeaselTree.compileParamList(token.line, "<init>", compiler, this, tree, methods);
 								instructions.addAll(wpcr.instructions);
-								instructions.add(token.line, new WeaselInstructionInvoke(wpcr.method.getMethod().getMethod().getNameAndDesk()));
+								instructions.add(token.line, new WeaselInstructionInvoke(wpcr.method.getMethod().getMethod().getClassNameAndDesk()));
 								token = iterator.next();
 								if(token.tokenType!=WeaselTokenType.SEMICOLON)
 									throw new WeaselCompilerException(token.line, "Expect ; but got %s", token);
@@ -141,7 +141,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 								new WeaselCompilerMessage(MessageType.ERROR, 0, parentClass.getFileName(), 
 										String.format("No default constructor in %s found", classCompiler.genericClass.getGenericSuperClass())));
 					}else{
-						instructions.add(0, new WeaselInstructionInvoke(method.getMethod().getMethod().getNameAndDesk()));
+						instructions.add(0, new WeaselInstructionInvoke(method.getMethod().getMethod().getClassNameAndDesk()));
 					}
 				}
 			}
@@ -158,6 +158,7 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 				}
 			}
 		}
+		instructions.add(0, new WeaselInstructionReturn(block.varsToPop()));
 		System.out.println(instructions);
 		this.instructions = instructions.getInstructions();
 	}

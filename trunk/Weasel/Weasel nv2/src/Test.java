@@ -62,14 +62,12 @@ public class Test implements WeaselClassFileProvider{
 		WeaselCompiler compiler = new WeaselCompiler();
 		try{
 			compiler.compile(new Test());
-			System.out.println(compiler.getWeaselClass("OTest;").toSource());
-			System.out.println(compiler.getWeaselClass("OB;").toSource());
-			WeaselGenericClass wgc = new WeaselGenericClass(compiler.getWeaselClass("OTest;"), new WeaselGenericClass[]{new WeaselGenericClass(compiler.getWeaselClass("OString;"))});
+			System.out.println(compiler.getWeaselClass("OBoolean;").toSource());
+			WeaselGenericClass wgc = new WeaselGenericClass(compiler.getWeaselClass("OBoolean;"), new WeaselGenericClass[]{new WeaselGenericClass(compiler.getWeaselClass("OString;"))});
 			System.out.println(wgc);
-			wgc = wgc.getGenericInterfaces()[0];
+			wgc = wgc.getGenericSuperClass();
 			System.out.println(wgc);
-			System.out.println(wgc.getGenericField("test"));
-			System.out.println(wgc.getGenericMethod("f(OObject;)OTest;", new WeaselGenericClass[0]));
+			System.out.println(wgc.getGenericMethod("operator<=>(OEnum;)I", new WeaselGenericClass[0]));
 		}catch(Throwable e){
 			e.printStackTrace();
 		}

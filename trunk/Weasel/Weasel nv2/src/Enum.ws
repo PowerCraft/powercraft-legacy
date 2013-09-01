@@ -31,7 +31,7 @@ public class Enum<E extends Enum<E>>{
 	public final int operator<=>(E o) {
         if (getClass() != o.getClass())
             throw new ClassCastException();
-        return self.ordinal - other.ordinal;
+        return ordinal - o.ordinal;
     }
 
 	public final E operator<:(){

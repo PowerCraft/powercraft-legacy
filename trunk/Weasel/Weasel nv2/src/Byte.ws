@@ -18,6 +18,10 @@ public final class Byte extends Number{
 		return value;
 	}
 	
+	public long longValue(){
+		return value;
+	}
+	
 	public float floatValue(){
 		return value;
 	}
