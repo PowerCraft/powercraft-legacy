@@ -1,7 +1,6 @@
 package weasel.compiler.v2;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -13,7 +12,6 @@ import weasel.compiler.WeaselCompilerMessage.MessageType;
 import weasel.compiler.WeaselOperator;
 import weasel.compiler.WeaselOperator.Properties;
 import weasel.compiler.WeaselToken;
-import weasel.compiler.WeaselTokenParser;
 import weasel.compiler.WeaselTokenType;
 import weasel.compiler.keywords.WeaselKeyWord;
 import weasel.compiler.v2.tokentree.WeaselTreeGenericElement;
@@ -73,6 +71,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		if(token.param==WeaselKeyWord.EXTENDS){
 			ListIterator<WeaselToken> iterator = tokenParser.listIterator();
 			genericSuperClass = readGenericClass(iterator.next(), iterator);
+			compiler.compileEasy(genericSuperClass.genericClass);
 			WeaselChecks.checkSuperClass(genericSuperClass.genericClass);
 			ids.method = genericSuperClass.genericClass.getIDS().method;
 			ids.easyType = genericSuperClass.genericClass.getIDS().easyType;
@@ -83,6 +82,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 				ids.method = 1;
 			}else{
 				genericSuperClass = new WeaselGenericClassInfo(interpreter.baseTypes.getObjectClass(), -1, new WeaselGenericClassInfo[0]);
+				compiler.compileEasy(genericSuperClass.genericClass);
 				ids.method = genericSuperClass.genericClass.getIDS().method;
 				ids.easyType = genericSuperClass.genericClass.getIDS().easyType;
 				ids.objectRef = genericSuperClass.genericClass.getIDS().objectRef;
@@ -93,6 +93,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 			do{
 				ListIterator<WeaselToken> iterator = tokenParser.listIterator();
 				WeaselGenericClassInfo interfa = readGenericClass(iterator.next(), iterator);
+				compiler.compileEasy(interfa.genericClass);
 				interfaceGenericList.add(interfa);
 				WeaselChecks.checkInterface(interfa.genericClass);
 				token = iterator.next();
@@ -108,6 +109,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 			do{
 				ListIterator<WeaselToken> iterator = tokenParser.listIterator();
 				WeaselGenericClassInfo interfa = readGenericClass(iterator.next(), iterator);
+				compiler.compileEasy(interfa.genericClass);
 				interfaceGenericList.add(interfa);
 				WeaselChecks.checkInterface2(interfa.genericClass, this);
 				token = iterator.next();
@@ -119,6 +121,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 	
 	private WeaselToken readEnumHead(WeaselToken token) throws WeaselCompilerException{
 		genericSuperClass = new WeaselGenericClassInfo(interpreter.baseTypes.getEnumClass(), -1, new WeaselGenericClassInfo[]{new WeaselGenericClassInfo(this, -1, new WeaselGenericClassInfo[0])});
+		compiler.compileEasy(genericSuperClass.genericClass);
 		ids.method = genericSuperClass.genericClass.getIDS().method;
 		ids.easyType = genericSuperClass.genericClass.getIDS().easyType;
 		ids.objectRef = genericSuperClass.genericClass.getIDS().objectRef;
@@ -127,6 +130,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 			do{
 				ListIterator<WeaselToken> iterator = tokenParser.listIterator();
 				WeaselGenericClassInfo interfa = readGenericClass(iterator.next(), iterator);
+				compiler.compileEasy(interfa.genericClass);
 				interfaceGenericList.add(interfa);
 				WeaselChecks.checkInterface(interfa.genericClass);
 				token = iterator.next();
@@ -208,9 +212,8 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 	}
 	
 	@Override
-	public void compileEasy(String classSourceFor) {
+	public void compileEasy() {
 		compiler.addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.INFO, 0, getFileName(), "Compiling Class"));
-		tokenParser = new WeaselTokenParser(classSourceFor);
 		List<WeaselToken> modifiers = readModifier();
 		WeaselToken token = getNextToken();
 		try{
@@ -271,7 +274,7 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		methods = new WeaselMethod[isInterface()?1:2];
 		staticMethodBodys = new WeaselMethodBody[ids.staticMethod];
 		if(!isInterface())
-			methodBodys = new WeaselMethodBody[++ids.method];
+			methodBodys = new WeaselMethodBody[ids.method];
 		fields = new WeaselField[0];
 		
 		methods[0] = createMethod("<staticInit>", WeaselModifier.STATIC, this, new WeaselGenericClassInfo(interpreter.baseTypes.voidClass, -1, new WeaselGenericClassInfo[0]), new WeaselGenericClassInfo[0], new WeaselGenericInformation[0], ids.staticMethod-1);

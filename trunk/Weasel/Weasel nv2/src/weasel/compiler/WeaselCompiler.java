@@ -28,6 +28,7 @@ public class WeaselCompiler extends WeaselInterpreter {
 	protected List<String> classesCompiled = new ArrayList<String>();
 	protected List<String> classesToCompile = new ArrayList<String>();
 	protected List<WeaselClassCompiler> classesToCompileFinish = new ArrayList<WeaselClassCompiler>();
+	protected List<WeaselClassCompiler> classesToCompileEasy = new ArrayList<WeaselClassCompiler>();
 	protected WeaselClassFileProvider classFileProvider;
 	protected List<WeaselCompilerMessage> compilerMessages = new ArrayList<WeaselCompilerMessage>();
 	
@@ -35,24 +36,60 @@ public class WeaselCompiler extends WeaselInterpreter {
 		super(0);
 	}
 	
+	public void compileEasy(WeaselClass c){
+		if(classesToCompileEasy.contains(c)){
+			classesToCompileEasy.remove(c);
+			WeaselClassCompiler cc = (WeaselClassCompiler)c;
+			try{
+				cc.compileEasy();
+				classesToCompileFinish.add(cc);
+			}catch(Throwable e){
+				cc.tokenParser = null;
+				if(e instanceof WeaselCompilerException){
+					addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, ((WeaselCompilerException) e).getLine(), c.getFileName(), e.getMessage()));
+				}else{
+					e.printStackTrace();
+					addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, 0, c.getFileName(), "Native Exception: "+e));
+				}
+			}
+		}
+	}
+	
 	public boolean compile(WeaselClassFileProvider classFileProvider){
 		this.classFileProvider = classFileProvider;
 		classesToCompile.addAll(classFileProvider.allKnowClasses());
 		while(!classesToCompile.isEmpty()){
 			getWeaselClass("O"+classesToCompile.get(0)+";");
-			while(!classesToCompileFinish.isEmpty()){
-				WeaselClassCompiler c = classesToCompileFinish.remove(0);
-				try{
-					c.finishCompile();
-				}catch(Throwable e){
-					if(e instanceof WeaselCompilerException){
-						addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, ((WeaselCompilerException) e).getLine(), c.getFileName(), e.getMessage()));
-					}else{
-						e.printStackTrace();
-						addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, 0, c.getFileName(), "Native Exception: "+e));
+			do{
+				while(!classesToCompileEasy.isEmpty()){
+					WeaselClassCompiler c = classesToCompileEasy.remove(0);
+					try{
+						c.compileEasy();
+						classesToCompileFinish.add(c);
+					}catch(Throwable e){
+						c.tokenParser = null;
+						if(e instanceof WeaselCompilerException){
+							addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, ((WeaselCompilerException) e).getLine(), c.getFileName(), e.getMessage()));
+						}else{
+							e.printStackTrace();
+							addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, 0, c.getFileName(), "Native Exception: "+e));
+						}
 					}
 				}
-			}
+				if(!classesToCompileFinish.isEmpty()){
+					WeaselClassCompiler c = classesToCompileFinish.remove(0);
+					try{
+						c.finishCompile();
+					}catch(Throwable e){
+						if(e instanceof WeaselCompilerException){
+							addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, ((WeaselCompilerException) e).getLine(), c.getFileName(), e.getMessage()));
+						}else{
+							e.printStackTrace();
+							addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, 0, c.getFileName(), "Native Exception: "+e));
+						}
+					}
+				}
+			}while(!classesToCompileEasy.isEmpty() || !classesToCompileFinish.isEmpty());
 		}
 		return compilerMessages.isEmpty();
 	}
@@ -68,18 +105,8 @@ public class WeaselCompiler extends WeaselInterpreter {
 			classesCompiled.add(name);
 			WeaselClassCompiler weaselClass = makeClassCompilerFor(classFileProvider.getClassSourceVersionFor(name), name, name);
 			loadedClasses.put(name, weaselClass);
-			try{
-				weaselClass.compileEasy(classFileProvider.getClassSourceFor(name));
-				classesToCompileFinish.add(weaselClass);
-			}catch(Throwable e){
-				weaselClass.tokenParser = null;
-				if(e instanceof WeaselCompilerException){
-					addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, ((WeaselCompilerException) e).getLine(), weaselClass.getFileName(), e.getMessage()));
-				}else{
-					e.printStackTrace();
-					addWeaselCompilerMessage(new WeaselCompilerMessage(MessageType.ERROR, 0, weaselClass.getFileName(), "Native Exception: "+e));
-				}
-			}
+			classesToCompileEasy.add(weaselClass);
+			weaselClass.setSource(classFileProvider.getClassSourceFor(name));
 			return weaselClass;
 		}else{
 			return super.loadClass(name);
