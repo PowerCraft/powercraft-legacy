@@ -36,7 +36,7 @@ public class Test {
 		public static boolean finished=false;
 		
 		public static void registerMethodsInClass(Class<?> c){
-			Named named;
+			WeaselNamedMethod named;
 			for(Method m:c.getMethods()){
 				if((named=m.getAnnotation(WeaselNamedMethod.class))!=null){
 					if(((m.getModifiers()&Modifier.STATIC)!=Modifier.STATIC))
