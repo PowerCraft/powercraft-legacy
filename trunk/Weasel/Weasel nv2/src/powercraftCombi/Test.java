@@ -41,13 +41,29 @@ public class Test {
 				if((named=m.getAnnotation(WeaselNamedMethod.class))!=null){
 					if(((m.getModifiers()&Modifier.STATIC)!=Modifier.STATIC))
 						throw new WeaselNativeException("Only static Methods can be loaded");
-					for(String namespace:named.nameSpaces()){
-						for(String weaselName:named.weaselNames()){
-							methods.add(new WeaselNativeMethodAccessor(namespace, weaselName, m));
-						}
-					}
+					parseNamesAndRegister(named, m);
 				}
 			}
+		}
+		
+		public static void parseNamesAndRegister(WeaselNamedMethod wnm, Method m){
+			for(String name:wnm.value()){
+				int lastPoint = name.lastIndexOf('.');
+				String functionName = "";
+				String className = "";
+				if(lastPoint==-1 || lastPoint==0)
+					className = m.getDeclaringClass().getName();
+				else
+					className = name.substring(0, lastPoint);
+					
+				if(lastPoint==name.length()-1 || name.length()==0)
+					//TODO durch deobfuscator jagen
+					functionName = m.getName();
+				else
+					functionName = name.substring(lastPoint+1);
+				methods.add(new WeaselNativeMethodAccessor(className, functionName, m));
+			}
+
 		}
 		
 		public static boolean registerNativeMethodsInWeasel(WeaselInterpreter wi){

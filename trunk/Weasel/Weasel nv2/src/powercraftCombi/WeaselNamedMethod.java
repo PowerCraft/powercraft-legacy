@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface WeaselNamedMethod {
 
-	public String[] value() default {};
+	public String[] value() default {""};
 	
 }
