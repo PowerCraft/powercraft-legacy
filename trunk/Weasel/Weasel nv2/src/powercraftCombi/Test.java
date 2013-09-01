@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import powercraftCombi.WeaselClassMarker.WeaselClassList;
+import weasel.interpreter.WeaselNativeException;
 
 public class Test {
 
@@ -31,36 +32,27 @@ public class Test {
 		for(Class<?> c:classes){
 			WeaselClassList wc = c.getAnnotation(WeaselClassList.class);
 			if(wc!=null){
-				WeaselNativeSourceManager.registerNewClass(c);
+				WeaselNativeSourceManager.registerMethodsInClass(c);
 			}
 		}
 	}
 	
 	public static class WeaselNativeSourceManager{
 		public static HashMap<String, WeaselNamespace> classes = new HashMap<String, WeaselNamespace>();
-		public static HashMap<String, Object> objects = new HashMap<String, Object>();
 		
-		public static void init(){
-			registerNewClass("byte", byte.class);
-			registerNewClass("int", int.class);
-			registerNewClass("float", float.class);
-			registerNewClass("double", double.class);
-			registerNewClass("String", String.class);
-		}
-		
-		public static void registerNewClass(Class<?> c){
-			WeaselClassMarker wc = (WeaselClassMarker) c.getAnnotation(WeaselClassMarker.class);
-			if(wc!=null){
-				registerNewClass(wc.weaselName(), wc.getClass());
+		public static void registerMethodsInClass(Class<?> c){
+			Named named;
+			WeaselNamespace wn;
+			for(Method m:c.getMethods()){
+				if((named=m.getAnnotation(Named.class))!=null){
+					for(String namespace:named.nameSpaces()){
+						if((wn=classes.get(namespace))==null){
+							classes.put(namespace, wn=new WeaselNamespace(namespace));
+						}
+						wn.registerNewMethod(m);
+					}
+				}
 			}
-		}
-		
-		public static void registerNewClass(String name, Class<?> c){
-			//classes.put(name, c);
-		}
-		
-		public static void registerNewNamespace(String name){
-			
 		}
 		
 		@SuppressWarnings("unchecked")
