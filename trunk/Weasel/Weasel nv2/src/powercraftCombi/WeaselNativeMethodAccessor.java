@@ -18,11 +18,11 @@ public class WeaselNativeMethodAccessor implements WeaselNativeMethod {
 	private final Method method;
 	private final String name;
 	
-	public WeaselNativeMethodAccessor(Method method){
+	public WeaselNativeMethodAccessor(String nameSpace, String weaselName, Method method){
 		this.method = method;
 		Class<?>[] paramTypes = method.getParameterTypes();
-		String nameBuilder = method.getDeclaringClass().getName();
-		nameBuilder += "." + method.getName() + "(";
+		String nameBuilder = nameSpace;
+		nameBuilder += "." + weaselName + "(";
 		boolean gaveThis = false;
 		for(int i=0; i<paramTypes.length; i++){
 			if(paramTypes[i]==WeaselInterpreter.class){
@@ -90,6 +90,14 @@ public class WeaselNativeMethodAccessor implements WeaselNativeMethod {
 		} catch (Throwable e) {
 			throw new WeaselNativeException(e, "Error on native method invokation %s", method);
 		} 
+	}
+	
+	@Override
+	public boolean equals(Object paramObject) {
+		if(!(paramObject instanceof WeaselNativeMethodAccessor)) return false;
+		WeaselNativeMethodAccessor wnma = (WeaselNativeMethodAccessor)paramObject;
+		if(name==wnma.name) return true;
+		return false;
 	}
 
 }

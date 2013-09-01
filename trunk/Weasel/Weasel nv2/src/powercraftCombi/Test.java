@@ -2,14 +2,17 @@ package powercraftCombi;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.HashMap;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
-import powercraftCombi.WeaselClassMarker.WeaselClassList;
+import weasel.interpreter.WeaselInterpreter;
 import weasel.interpreter.WeaselNativeException;
 
 public class Test {
-
+	
+	
 	/*public void test(){
 		
 		WeaselClass.WeaselClassMarker wcm;																
@@ -35,46 +38,37 @@ public class Test {
 				WeaselNativeSourceManager.registerMethodsInClass(c);
 			}
 		}
+		WeaselNativeSourceManager.finished=true;
 	}
 	
 	public static class WeaselNativeSourceManager{
-		public static HashMap<String, WeaselNamespace> classes = new HashMap<String, WeaselNamespace>();
+		private static List<WeaselNativeMethodAccessor> methods = new ArrayList<WeaselNativeMethodAccessor>();
+		public static boolean finished=false;
 		
 		public static void registerMethodsInClass(Class<?> c){
 			Named named;
-			WeaselNamespace wn;
 			for(Method m:c.getMethods()){
 				if((named=m.getAnnotation(Named.class))!=null){
-					for(String namespace:named.nameSpaces()){
-						if((wn=classes.get(namespace))==null){
-							classes.put(namespace, wn=new WeaselNamespace(namespace));
+					if(((m.getModifiers()&Modifier.STATIC)==Modifier.STATIC)){
+						for(String namespace:named.nameSpaces()){
+							for(String weaselName:named.weaselNames()){
+								methods.add(new WeaselNativeMethodAccessor(namespace, weaselName, m));
+							}
 						}
-						wn.registerNewMethod(m);
+					}else{
+						throw new WeaselNativeException("Only static Methods can be loaded");
 					}
 				}
 			}
 		}
 		
-		@SuppressWarnings("unchecked")
-		public static <T> Object callFunc(String obj, String func, Object... params){
-			try{
-				T o;
-				if((o=(T) objects.get(obj))!=null){
-					Class<?> types[] = new Class[params.length];
-					for(int i=0; i<params.length; i++){
-						types[i] = params[i].getClass();
-					}
-					Method m = o.getClass().getDeclaredMethod(func, types);
-					if(m!=null && !m.isAnnotationPresent(WeaselClassMarker.Invisible.class)){
-						return m.invoke(o, params);
-					}
-				}
-				
-				return null;
-			}catch(Exception e){
-				
+		public static boolean registerNativeMethodsInWeasel(WeaselInterpreter wi){
+			WeaselNativeMethodAccessor tmp;
+			while(methods.size()>0){
+				tmp = methods.remove(0);
+				wi.registerNativeMethod(tmp.getName(), tmp);
 			}
-			return null;
+			return finished;
 		}
 	}
 }
