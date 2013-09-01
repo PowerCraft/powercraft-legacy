@@ -611,13 +611,16 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		boolean resize;
 		if(method!=null){
 			if(method.getParentClass()==this)
-				throw new WeaselCompilerException(tokenName.line, "Duplicated method %s", method);
+				onException(tokenName.line, "Duplicated method %s", method);
 			if(WeaselModifier.isStatic(modifier) != WeaselModifier.isStatic(method.getModifier()))
-				throw new WeaselCompilerException(tokenName.line, "Static method error");
+				onException(tokenName.line, "Static method error");
 			if(WeaselModifier.isStatic(modifier)){
 				id = ids.staticMethod++;
 				resize = true;
 			}else{
+				if(WeaselModifier.isFinal(method.getModifier())){
+					onException(tokenName.line, "Can't override final method %s", method);
+				}
 				id = method.getID();
 				resize = false;
 			}
