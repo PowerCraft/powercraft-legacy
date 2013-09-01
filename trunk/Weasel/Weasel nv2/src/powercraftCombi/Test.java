@@ -11,8 +11,10 @@ import weasel.interpreter.WeaselInterpreter;
 import weasel.interpreter.WeaselNativeException;
 
 public class Test {
-	
+	boolean isMinecraft=false;
 	public void loader() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+		//TODO nur Mod-Files 
+		s;
 		ClassLoader cl = Test.class.getClassLoader();
 		Field f = ClassLoader.class.getDeclaredField("classes");
 		f.setAccessible(true);
