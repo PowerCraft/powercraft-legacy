@@ -17,6 +17,10 @@ public class Throwable{
 		this(null, cause);
 	}
 
+	public Throwable(){
+		this(null, null);
+	}
+
 	public String getMessage(){
 		return message;
 	}

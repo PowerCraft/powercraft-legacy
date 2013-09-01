@@ -137,6 +137,10 @@ public final class WeaselMethod {
 		return name+getDesk();
 	}
 
+	public String getClassNameAndDesk(){
+		return getParentClass().getRealName()+"."+getNameAndDesk();
+	}
+	
 	public WeaselMethodBody getMethodFromClass(WeaselClass weaselClass) {
 		if(WeaselModifier.isStatic(modifier)){
 			return parentClass.staticMethodBodys[id];
@@ -152,14 +156,21 @@ public final class WeaselMethod {
 	@Override
 	public String toString() {
 		String params = "";
-		for(int i=0; i<genericParams.length; i++){
-			params += genericParams[i].getName(parentClass)+" ";
+		if(genericParams.length>0){
+			params = genericParams[0].getName(parentClass);
+			for(int i=1; i<genericParams.length; i++){
+				params += ", "+genericParams[i].getName(parentClass);
+			}
 		}
 		return WeaselModifier.toString2(modifier)+genericReturn.getName(parentClass)+" "+name+"("+params.trim()+")";
 	}
 
 	public WeaselClass getParentClass() {
 		return parentClass;
+	}
+
+	public int getID() {
+		return id;
 	}
 	
 }

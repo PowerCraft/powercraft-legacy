@@ -196,7 +196,7 @@ public class WeaselTreeTop extends WeaselTree {
 				
 				instructions.addAll(wcr.instructions);
 				
-				instructions.add(token.line, new WeaselInstructionInvoke(wcr.method.getMethod().getMethod().getNameAndDesk()));
+				instructions.add(token.line, new WeaselInstructionInvoke(wcr.method.getMethod().getMethod().getClassNameAndDesk()));
 				
 			}else{
 				
@@ -237,6 +237,7 @@ public class WeaselTreeTop extends WeaselTree {
 			if(elementParent==null){
 				methods = compilerHelper.getGenericMethods((String)token.param);
 			}else{
+				compiler.compileEasy(elementParent.getBaseClass());
 				methods = elementParent.getGenericMethods((String)token.param, isVariable);
 			}
 			if(methods.isEmpty()){
@@ -257,11 +258,11 @@ public class WeaselTreeTop extends WeaselTree {
 				if(WeaselModifier.isStatic(wcr.method.getMethod().getMethod().getModifier())){
 					instructions.add(token.line, new WeaselInstructionInvokeStatic(wcr.method.getMethod().getMethod().getNameAndDesk()));
 				}else{
-					instructions.add(token.line, new WeaselInstructionInvoke(wcr.method.getMethod().getMethod().getNameAndDesk()));
+					instructions.add(token.line, new WeaselInstructionInvoke(wcr.method.getMethod().getMethod().getClassNameAndDesk()));
 				}
 			}else{
 				if(isVariable){
-					instructions.add(token.line, new WeaselInstructionInvoke(wcr.method.getMethod().getMethod().getNameAndDesk()));
+					instructions.add(token.line, new WeaselInstructionInvoke(wcr.method.getMethod().getMethod().getClassNameAndDesk()));
 				}else{
 					instructions.add(token.line, new WeaselInstructionInvokeStatic(wcr.method.getMethod().getMethod().getNameAndDesk()));
 				}

@@ -607,9 +607,24 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		try{
 			method = getMethod(name, wgci);
 		}catch(WeaselNativeException e){}
-		if(method!=null && method.getParentClass()==this)
-			throw new WeaselCompilerException(tokenName.line, "Duplicated method %s", method);
-		int id = WeaselModifier.isStatic(modifier)?ids.staticMethod++:ids.method++;
+		int id;
+		boolean resize;
+		if(method!=null){
+			if(method.getParentClass()==this)
+				throw new WeaselCompilerException(tokenName.line, "Duplicated method %s", method);
+			if(WeaselModifier.isStatic(modifier) != WeaselModifier.isStatic(method.getModifier()))
+				throw new WeaselCompilerException(tokenName.line, "Static method error");
+			if(WeaselModifier.isStatic(modifier)){
+				id = ids.staticMethod++;
+				resize = true;
+			}else{
+				id = method.getID();
+				resize = false;
+			}
+		}else{
+			id = WeaselModifier.isStatic(modifier)?ids.staticMethod++:ids.method++;
+			resize = true;
+		}
 		method = createMethod(name, modifier, this, typeInfo, wgci, genericInformations, id);
 		WeaselMethod[] newMethods = new WeaselMethod[methods.length+1];
 		for(int i=0; i<methods.length; i++){
@@ -625,11 +640,13 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 			staticMethodBodys = newStaticMethodBodys;
 		}else{
 			if(!isInterface()){
-				WeaselMethodBody[] newMethodBodys = new WeaselMethodBody[ids.method];
-				for(int i=0; i<methodBodys.length; i++){
-					newMethodBodys[i] = methodBodys[i];
+				if(resize){
+					WeaselMethodBody[] newMethodBodys = new WeaselMethodBody[ids.method];
+					for(int i=0; i<methodBodys.length; i++){
+						newMethodBodys[i] = methodBodys[i];
+					}
+					methodBodys = newMethodBodys;
 				}
-				methodBodys = newMethodBodys;
 			}
 		}
 		token = getNextToken();
