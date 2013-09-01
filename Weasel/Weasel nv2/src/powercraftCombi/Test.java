@@ -21,7 +21,9 @@ public class Test {
 		for(Class<?> c:classes){
 			WeaselClassList wc = c.getAnnotation(WeaselClassList.class);
 			if(wc!=null){
-				WeaselNativeSourceManager.registerMethodsInClass(c);
+				for(Class<?> clazz:wc.classes()){
+					WeaselNativeSourceManager.registerMethodsInClass(clazz);
+				}
 			}
 		}
 		WeaselNativeSourceManager.finished=true;
