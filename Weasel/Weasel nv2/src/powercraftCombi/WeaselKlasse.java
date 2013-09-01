@@ -9,7 +9,6 @@ public class WeaselKlasse {
 		
 	}
 	
-	@Named(weaselNames="doIt", nameSpaces ="World")
 	public void c(){
 		
 	}
