@@ -5,6 +5,8 @@ public class WeaselKlasse {
 	public void a(){
 		
 	}
+	
+	@WeaselNamedMethod("Class.name")
 	public void b(){
 		
 	}
