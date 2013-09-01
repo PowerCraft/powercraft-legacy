@@ -4,13 +4,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
+import java.util.Set;
 
 import weasel.interpreter.WeaselThread.State;
 
-public class WeaselInterpreter implements WeaselSaveable {
+public class WeaselInterpreter implements WeaselSaveable, Map<String, Map<String, Object>> {
 
 	public final WeaselBaseTypes baseTypes;
 	
@@ -358,6 +360,109 @@ public class WeaselInterpreter implements WeaselSaveable {
 			for(WeaselThread waiting:waitings){
 				dataOutputStream.writeInt(owner.interpreter.threads.indexOf(waiting));
 			}
+		}
+		
+	}
+
+	public int getObjectID(WeaselObject value) {
+		for(int i=0; i<objectPointer.length; i++){
+			if(objectPointer[i] == value){
+				return i+1;
+			}
+		}
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		gc();
+	}
+
+	@Override
+	public boolean containsKey(Object key) {
+		return loadedClasses.containsKey(key);
+	}
+
+	@Override
+	public boolean containsValue(Object value) {
+		if(value instanceof WeaselObject)
+			return getObjectID((WeaselObject)value)!=0;
+		return false;
+	}
+
+	@Override
+	public Set<java.util.Map.Entry<String, Map<String, Object>>> entrySet() {
+		List<java.util.Map.Entry<String, Map<String, Object>>> list = new ArrayList<Map.Entry<String,Map<String,Object>>>();
+		Set<String> classes = loadedClasses.keySet();
+		for(String className:classes){
+			list.add(new WeaselInterpreterEntry(className));
+		}
+		return new WeaselReadableSet<Map.Entry<String,Map<String,Object>>>(list);
+	}
+
+	@Override
+	public Map<String, Object> get(Object key) {
+		if(key instanceof String)
+			return getObject(createObject(getWeaselClass("O"+(String)key+";")));
+		return null;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return loadedClasses.isEmpty();
+	}
+
+	@Override
+	public Set<String> keySet() {
+		return new WeaselReadableSet<String>(new ArrayList<String>(loadedClasses.keySet()));
+	}
+
+	@Override
+	public Map<String, Object> put(String key, Map<String, Object> value) {
+		throw new WeaselNativeException("remove not suport exception");
+	}
+
+	@Override
+	public void putAll(Map<? extends String, ? extends Map<String, Object>> m) {
+		throw new WeaselNativeException("remove not suport exception");
+	}
+
+	@Override
+	public Map<String, Object> remove(Object key) {
+		throw new WeaselNativeException("remove not suport exception");
+	}
+
+	@Override
+	public int size() {
+		return loadedClasses.size();
+	}
+
+	@Override
+	public Collection<Map<String, Object>> values() {
+		throw new WeaselNativeException("remove not suport exception");
+	}
+	
+	private class WeaselInterpreterEntry implements java.util.Map.Entry<String, Map<String, Object>>{
+
+		private final String className;
+		
+		public WeaselInterpreterEntry(String className){
+			this.className = className;
+		}
+		
+		@Override
+		public String getKey() {
+			return className;
+		}
+
+		@Override
+		public Map<String, Object> getValue() {
+			return get(className);
+		}
+
+		@Override
+		public Map<String, Object> setValue(Map<String, Object> value) {
+			throw new WeaselNativeException("setValue not suported");
 		}
 		
 	}

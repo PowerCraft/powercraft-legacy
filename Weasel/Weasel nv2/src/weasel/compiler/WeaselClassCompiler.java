@@ -20,7 +20,7 @@ public abstract class WeaselClassCompiler extends WeaselClass {
 		this.compiler = compiler;
 	}
 
-	public abstract void compileEasy(String classSourceFor);
+	public abstract void compileEasy();
 
 	public abstract void finishCompile();
 	
@@ -56,5 +56,9 @@ public abstract class WeaselClassCompiler extends WeaselClass {
 	}
 
 	public abstract WeaselGenericClass getGenericClass();
+
+	public void setSource(String source) {
+		tokenParser = new WeaselTokenParser(source);
+	}
 	
 }

@@ -543,8 +543,6 @@ public class WeaselClass implements WeaselSaveable {
 	}
 	
 	public boolean isOverriden(int i) {
-		if(methodBodys.length>=i)
-			return false;
 		if(methodBodys[i]!=null)
 			return true;
 		for(int j=0; j<methods.length; j++){
@@ -580,6 +578,23 @@ public class WeaselClass implements WeaselSaveable {
 		if(mapedName!=null)
 			return mapedName;
 		return "O"+name+";";
+	}
+
+	public List<String> getAllNonStaticFields() {
+		List<String> list;
+		if(genericSuperClass==null){
+			list = new ArrayList<String>();
+		}else{
+			list = genericSuperClass.genericClass.getAllNonStaticFields();
+		}
+		for(int i=0; i<fields.length; i++){
+			if(!WeaselModifier.isStatic(fields[i].getModifier())){
+				if(!list.contains(fields[i].getName())){
+					list.add(fields[i].getName());
+				}
+			}
+		}
+		return list;
 	}
 	
 }
