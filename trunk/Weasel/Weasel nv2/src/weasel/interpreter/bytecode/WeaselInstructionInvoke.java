@@ -21,6 +21,7 @@ public class WeaselInstructionInvoke extends WeaselInstruction {
 	private final String methodDesk;
 	private WeaselMethod method;
 	private boolean isRunnable;
+	private WeaselNativeMethod nativeMethod;
 	
 	public WeaselInstructionInvoke(String methodDesk){
 		this.methodDesk = methodDesk;
@@ -36,7 +37,9 @@ public class WeaselInstructionInvoke extends WeaselInstruction {
 		WeaselObject object = interpreter.getObject(thread.getObject(thread.getStackPointer()-this.method.getParamClasses().length-1));
 		WeaselMethodBody methodBody = this.method.getMethodFromClass(object.getWeaselClass());
 		if(methodBody.isNative()){
-			WeaselNativeMethod nativeMethod = interpreter.getNativeMethod(methodBody.getNameAndDesk());
+			if(nativeMethod==null){
+				nativeMethod = interpreter.getNativeMethod(methodBody.getNameAndDesk());
+			}
 			Object[] params = new Object[this.method.getParamClasses().length];
 			for(int i=0; i<params.length; i++){
 				StackElement se = thread.pop();
