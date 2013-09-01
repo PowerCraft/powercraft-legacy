@@ -12,21 +12,7 @@ import weasel.interpreter.WeaselNativeException;
 
 public class Test {
 	
-	
-	/*public void test(){
-		
-		WeaselClass.WeaselClassMarker wcm;																
-		for(ModContainer mc:Loader.instance().getModList()){
-			wcm = mc.getMod().getClass().getAnnotation(WeaselClass.WeaselClassMarker.class);
-			if(wcm!=null){
-				for(Class<?> c:wcm.classes()){
-					WeaselNativeSourceManager.registerNewClass(c);
-				}
-			}
-		}
-	}*/
-	
-	public void loaderV2() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+	public void loader() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
 		ClassLoader cl = Test.class.getClassLoader();
 		Field f = ClassLoader.class.getDeclaredField("classes");
 		f.setAccessible(true);
