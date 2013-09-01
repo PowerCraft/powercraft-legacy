@@ -14,7 +14,7 @@ public class WeaselKlasse {
 	}
 	
 	@WeaselNamedMethod("Class.name")
-	public @WeaselClassName("Vec")Map<String, Object> c(@WeaselClassName("Blub") Map<String, Object>in){
+	public @WeaselType("Vec")Map<String, Object> c(@WeaselType("Blub") Map<String, Object>in){
 		return null;
 	}
 }
