@@ -14,7 +14,7 @@ public class Test {
 	boolean isMinecraft=false;
 	public void loader() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
 		//TODO nur Mod-Files 
-		s;
+		
 		ClassLoader cl = Test.class.getClassLoader();
 		Field f = ClassLoader.class.getDeclaredField("classes");
 		f.setAccessible(true);
@@ -63,7 +63,6 @@ public class Test {
 					functionName = name.substring(lastPoint+1);
 				methods.add(new WeaselNativeMethodAccessor(className, functionName, m));
 			}
-
 		}
 		
 		public static boolean registerNativeMethodsInWeasel(WeaselInterpreter wi){
