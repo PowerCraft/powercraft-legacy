@@ -1,6 +1,9 @@
 package powercraftCombi;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselInterpreter;
@@ -23,7 +26,7 @@ public class WeaselNativeMethodAccessor implements WeaselNativeMethod {
 		boolean gaveThis = false;
 		for(int i=0; i<paramTypes.length; i++){
 			if(paramTypes[i]==WeaselInterpreter.class){
-				
+				Set<String> s = new HashSet<String>(new ArrayList<String>());
 			}else if(paramTypes[i]==WeaselThread.class){
 				
 			}else if(paramTypes[i]==WeaselMethodExecutor.class){
