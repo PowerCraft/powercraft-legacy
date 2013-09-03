@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import powercraft.api.PC_Direction;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -73,7 +74,7 @@ public abstract class PC_MultiblockTileEntity {
 	}
 
 
-	public int getRedstonePowerValue(int side) {
+	public int getRedstonePowerValue(PC_Direction side) {
 
 		return 0;
 	}
@@ -85,7 +86,7 @@ public abstract class PC_MultiblockTileEntity {
 	}
 
 
-	public boolean canConnectRedstone(int side) {
+	public boolean canConnectRedstone(PC_Direction side) {
 
 		return false;
 	}

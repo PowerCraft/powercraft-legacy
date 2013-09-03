@@ -70,7 +70,7 @@ public abstract class PC_TileEntity extends TileEntity {
 	}
 
 
-	public boolean onBlockActivated(EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+	public boolean onBlockActivated(EntityPlayer player, PC_Direction side, float xHit, float yHit, float zHit) {
 
 		if (this instanceof PC_IGresGuiOpenHandler) {
 			PC_Gres.openGui(player, this);
@@ -85,7 +85,7 @@ public abstract class PC_TileEntity extends TileEntity {
 	}
 
 
-	public int getRedstonePowerValue(int side) {
+	public int getRedstonePowerValue(PC_Direction side) {
 
 		return 0;
 	}
@@ -119,9 +119,9 @@ public abstract class PC_TileEntity extends TileEntity {
 	}
 
 
-	public boolean canConnectRedstone(int side) {
+	public boolean canConnectRedstone(PC_Direction side) {
 
-		return getBlockType().canProvidePower() && side != -1;
+		return getBlockType().canProvidePower() && side != PC_Direction.UNKNOWN;
 	}
 
 
@@ -149,19 +149,19 @@ public abstract class PC_TileEntity extends TileEntity {
 	}
 
 
-	public boolean rotateBlock(ForgeDirection axis) {
+	public boolean rotateBlock(PC_Direction side) {
 
 		return false;
 	}
 
 
-	public ForgeDirection[] getValidRotations() {
+	public PC_Direction[] getValidRotations() {
 
 		return null;
 	}
 
 
-	public boolean recolourBlock(ForgeDirection side, int colour) {
+	public boolean recolourBlock(PC_Direction side, int colour) {
 
 		return false;
 	}

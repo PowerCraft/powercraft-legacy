@@ -18,6 +18,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import powercraft.api.PC_Direction;
 import powercraft.api.PC_Logger;
 import powercraft.api.PC_Module;
 import powercraft.api.PC_Renderer;
@@ -106,9 +107,8 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
-
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
-		return tileEntity.onBlockActivated(player, side, xHit, yHit, zHit);
+		return tileEntity.onBlockActivated(player, PC_Direction.getOrientation(side), xHit, yHit, zHit);
 	}
 
 
@@ -116,7 +116,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
 
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
-		return tileEntity.getRedstonePowerValue(side);
+		return tileEntity.getRedstonePowerValue(PC_Direction.getOrientation(side));
 	}
 
 
@@ -124,7 +124,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
 
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
-		return tileEntity.getRedstonePowerValue(side);
+		return tileEntity.getRedstonePowerValue(PC_Direction.getOrientation(side));
 	}
 
 
@@ -145,7 +145,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
 
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
-		return tileEntity.canConnectRedstone(side);
+		return tileEntity.canConnectRedstone(PC_Direction.getOrientation(side));
 	}
 
 
@@ -167,9 +167,8 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 
 	@Override
 	public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis) {
-
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
-		return tileEntity.rotateBlock(axis);
+		return tileEntity.rotateBlock(PC_Direction.getDirection(axis));
 	}
 
 
@@ -177,15 +176,21 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 	public ForgeDirection[] getValidRotations(World world, int x, int y, int z) {
 
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
-		return tileEntity.getValidRotations();
+		PC_Direction[] rotations =  tileEntity.getValidRotations();
+		if(rotations==null)
+			return null;
+		ForgeDirection[] forgeRotations = new ForgeDirection[rotations.length];
+		for(int i=0; i<forgeRotations.length; i++){
+			forgeRotations[i] = rotations[i].getForgeDirection();
+		}
+		return forgeRotations;
 	}
 
 
 	@Override
 	public boolean recolourBlock(World world, int x, int y, int z, ForgeDirection side, int colour) {
-
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
-		return tileEntity.recolourBlock(side, colour);
+		return tileEntity.recolourBlock(PC_Direction.getDirection(side), colour);
 	}
 
 

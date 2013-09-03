@@ -111,7 +111,7 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 
 
 	@Override
-	public boolean canConnectRedstone(int side) {
+	public boolean canConnectRedstone(PC_Direction side) {
 
 		return PC_MultiblockIndex.getFaceDir(index) == PC_Direction.DOWN;
 	}
@@ -319,6 +319,9 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 					}
 				}
 				i++;
+			}
+			for (PC_RedstoneGrid grid:doneGrids) {
+				grid.onUpdateTick(this);
 			}
 			oldGrid.onUpdateTick(this);
 		}
@@ -576,8 +579,6 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 				}
 			}
 		}
-		if(first!=null)
-			grid.onUpdateTick(first);
 	}
 
 
@@ -598,11 +599,11 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 
 
 	@Override
-	public int getRedstonePowerValue(int side) {
+	public int getRedstonePowerValue(PC_Direction side) {
 
 		if (!isClient()) {
 			getGridIfNull();
-			PC_Direction dir = PC_Direction.getOrientation(side).getOpposite();
+			PC_Direction dir = side.getOpposite();
 			Block block = PC_Utils.getBlock(multiblock.worldObj, multiblock.xCoord + dir.offsetX, multiblock.yCoord + dir.offsetY, multiblock.zCoord
 					+ dir.offsetZ);
 			if (PC_MultiblockIndex.getFaceDir(index) == dir
