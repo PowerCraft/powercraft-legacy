@@ -39,8 +39,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	private int centerThickness;
 	private int connections[][] = new int[4][];
 	protected boolean isIO;
-
-
+	
 	public PC_CableTileEntity(int thickness, int width) {
 
 		super(thickness);

@@ -36,10 +36,21 @@ public enum PC_Direction {
 	public static final int[] OPPOSITES = { 1, 0, 3, 2, 5, 4, 6 };
 	public static final int[] PLAYER2MD = { 0, 3, 1, 2 };
 	// Left hand rule rotation matrix for all possible axes of rotation
-	public static final int[][] ROTATION_MATRIX = { { 0, 1, 4, 5, 3, 2, 6 }, { 0, 1, 5, 4, 2, 3, 6 }, { 5, 4, 2, 3, 0, 1, 6 },
-			{ 4, 5, 2, 3, 1, 0, 6 }, { 2, 3, 1, 0, 4, 5, 6 }, { 3, 2, 0, 1, 4, 5, 6 }, { 0, 1, 2, 3, 4, 5, 6 }, };
+	public static final int[][] ROTATION_MATRIX = {
+		{ 0, 1, 4, 5, 3, 2, 6 },
+		{ 0, 1, 5, 4, 2, 3, 6 },
+		{ 5, 4, 2, 3, 0, 1, 6 },
+		{ 4, 5, 2, 3, 1, 0, 6 },
+		{ 2, 3, 1, 0, 4, 5, 6 },
+		{ 3, 2, 0, 1, 4, 5, 6 },
+		{ 0, 1, 2, 3, 4, 5, 6 }};
 
-
+	public static final int[][] ROTATIONMD_MATRIX = {
+		{ 0, 1, 2, 3, 4, 5, 6 },
+		{ 0, 1, 2, 3, 4, 5, 6 },
+		{ 0, 1, 2, 3, 4, 5, 6 },
+		{ 0, 1, 2, 3, 4, 5, 6 }};
+	
 	private PC_Direction(int x, int y, int z) {
 
 		offsetX = x;
@@ -64,9 +75,21 @@ public enum PC_Direction {
 	}
 
 
-	public PC_Direction getRotation(ForgeDirection axis) {
+	public PC_Direction getRotation(PC_Direction axis) {
 
 		return getOrientation(ROTATION_MATRIX[axis.ordinal()][ordinal()]);
 	}
 
+	public PC_Direction rotateMD(int md){
+		return getOrientation(ROTATIONMD_MATRIX[md][ordinal()]);
+	}
+	
+	public ForgeDirection getForgeDirection(){
+		return ForgeDirection.getOrientation(ordinal());
+	}
+	
+	public static PC_Direction getDirection(ForgeDirection forgeDirection){
+		return getOrientation(forgeDirection.ordinal());
+	}
+	
 }

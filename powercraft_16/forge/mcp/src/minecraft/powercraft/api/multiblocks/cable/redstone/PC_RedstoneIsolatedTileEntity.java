@@ -196,7 +196,7 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 
 
 	@Override
-	public boolean canConnectRedstone(int side) {
+	public boolean canConnectRedstone(PC_Direction side) {
 
 		return getCableCount() == 1 && PC_MultiblockIndex.getFaceDir(index) == PC_Direction.DOWN;
 	}
@@ -305,12 +305,12 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 
 
 	@Override
-	public int getRedstonePowerValue(int side) {
+	public int getRedstonePowerValue(PC_Direction side) {
 
 		if (!isClient()) {
 			PC_RedstoneGrid grid = getGrid();
 			if (grid != null && isIO) {
-				PC_Direction dir = PC_Direction.getOrientation(side).getOpposite();
+				PC_Direction dir = side.getOpposite();
 				Block block = PC_Utils.getBlock(multiblock.worldObj, multiblock.xCoord + dir.offsetX, multiblock.yCoord + dir.offsetY,
 						multiblock.zCoord + dir.offsetZ);
 				if (PC_MultiblockIndex.getFaceDir(index) == dir

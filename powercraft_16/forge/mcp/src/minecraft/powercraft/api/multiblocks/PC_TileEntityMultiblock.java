@@ -10,6 +10,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import powercraft.api.PC_Direction;
 import powercraft.api.blocks.PC_ITileEntitySpecialRenderer;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.registries.PC_MultiblockRegistry;
@@ -100,7 +101,7 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 
 
 	@Override
-	public int getRedstonePowerValue(int side) {
+	public int getRedstonePowerValue(PC_Direction side) {
 
 		int maxRedstonePowerValue = 0;
 		for (int i = 0; i < tileEntities.length; i++) {
@@ -132,7 +133,7 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 
 
 	@Override
-	public boolean canConnectRedstone(int side) {
+	public boolean canConnectRedstone(PC_Direction side) {
 
 		boolean canConnectRedstone = false;
 		for (int i = 0; i < tileEntities.length; i++) {

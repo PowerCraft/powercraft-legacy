@@ -99,6 +99,10 @@ public class PC_Utils {
 
 	public static int getMD(IBlockAccess blockAccess, int x, int y, int z) {
 
+		TileEntity te = getTE(blockAccess, x, y, z);
+		if(te!=null){
+			return te.blockMetadata;
+		}
 		return blockAccess.getBlockMetadata(x, y, z);
 	}
 
