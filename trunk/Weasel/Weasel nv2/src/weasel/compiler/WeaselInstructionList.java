@@ -14,6 +14,11 @@ public class WeaselInstructionList {
 	private List<WeaselInstruction> instructions = new ArrayList<WeaselInstruction>();
 	private int line = 0;
 	
+	public void addWithoutLine(WeaselInstruction instruction){
+		instructions.add(instruction);
+	}
+	
+	
 	public void add(int line, WeaselInstruction instruction){
 		if(line!=this.line){
 			instructions.add(new WeaselInstructionLine(line));
@@ -36,6 +41,8 @@ public class WeaselInstructionList {
 	}
 	
 	public void addAll(WeaselInstructionList instructionList){
+		if(instructionList.instructions.isEmpty())
+			return;
 		line = instructionList.line;
 		instructions.addAll(instructionList.instructions);
 	}
@@ -73,6 +80,10 @@ public class WeaselInstructionList {
 	@Override
 	public String toString(){
 		return ""+instructions;
+	}
+	
+	public int getLine(){
+		return line;
 	}
 	
 }

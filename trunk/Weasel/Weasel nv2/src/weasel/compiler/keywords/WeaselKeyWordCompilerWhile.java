@@ -6,6 +6,7 @@ import weasel.compiler.WeaselBlockInfo;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerReturn;
+import weasel.compiler.WeaselCompilerReturnInstructionList;
 import weasel.compiler.WeaselInstructionList;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
@@ -36,8 +37,8 @@ public class WeaselKeyWordCompilerWhile extends WeaselKeyWordCompiler {
 		WeaselInstruction continueJump = new WeaselInstructionJumperDummy();
 		instructions.add(token.line, continueJump);
 		wcr = tree1.compile(compiler, compilerHelpher, null, new WeaselGenericClass(compiler.baseTypes.booleanClass), null, false);
-		instructions.addAll(wcr.instructions);
-		WeaselTree.autoCast(compiler, wcr.returnType, new WeaselGenericClass(compiler.baseTypes.booleanClass), token.line, instructions, true);
+		instructions.addAll(wcr.getInstructions());
+		WeaselTree.autoCast(compiler, wcr.getReturnType(), new WeaselGenericClass(compiler.baseTypes.booleanClass), token.line, instructions, true);
 		WeaselInstructionIf ifI;
 		instructions.add(token.line, ifI = new WeaselInstructionIf());
 		if(t.tokenType==WeaselTokenType.OPENBLOCK){
@@ -71,7 +72,7 @@ public class WeaselKeyWordCompilerWhile extends WeaselKeyWordCompiler {
 		for(WeaselInstructionJump continueI:wbi.continues){
 			continueI.setTarget(continueJump);
 		}
-		return new WeaselCompilerReturn(instructions, new WeaselGenericClass(compiler.baseTypes.voidClass));
+		return new WeaselCompilerReturnInstructionList(instructions, new WeaselGenericClass(compiler.baseTypes.voidClass));
 	}
 
 }

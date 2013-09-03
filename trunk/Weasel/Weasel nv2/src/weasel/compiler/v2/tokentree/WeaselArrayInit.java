@@ -75,9 +75,9 @@ public class WeaselArrayInit {
 				instructions.addAll(((WeaselArrayInit)o).compile(compiler, compilerHelper, arrayClass));
 			}else{
 				WeaselCompilerReturn wcr = ((WeaselTree)o).compile(compiler, compilerHelper, null, arrayClass, null, false);
-				if(!wcr.returnType.canCastTo(arrayClass))
-					throw new WeaselCompilerException(token.line, "Can't cast %s to %s", wcr.returnType, arrayClass);
-				instructions.addAll(wcr.instructions);
+				if(!wcr.getReturnType().canCastTo(arrayClass))
+					throw new WeaselCompilerException(token.line, "Can't cast %s to %s", wcr.getReturnType(), arrayClass);
+				instructions.addAll(wcr.getInstructions());
 			}
 			instructions.add(token.line, new WeaselInstructionPush(2));
 			instructions.add(token.line, new WeaselInstructionLoadConstInteger(i));
