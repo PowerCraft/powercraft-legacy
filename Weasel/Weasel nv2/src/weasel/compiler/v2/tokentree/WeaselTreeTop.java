@@ -7,6 +7,7 @@ import java.util.ListIterator;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerReturn;
+import weasel.compiler.WeaselCompilerReturnInstructionList;
 import weasel.compiler.WeaselInstructionList;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselOperator;
@@ -217,8 +218,7 @@ public class WeaselTreeTop extends WeaselTree {
 							className = "["+className;
 						}else{
 							WeaselCompilerReturn wcr = tree.compile(compiler, compilerHelper, null, new WeaselGenericClass(compiler.baseTypes.intClass), null, false);
-							instructions.addAll(wcr.instructions);
-							WeaselTree.autoCast(compiler, wcr.returnType, new WeaselGenericClass(compiler.baseTypes.intClass), token.line, instructions, true);
+							instructions.addAll(wcr.getInstructions(compiler, compiler.baseTypes.intClass));
 							sizes++;
 						}
 					}
@@ -231,7 +231,7 @@ public class WeaselTreeTop extends WeaselTree {
 				
 			}
 			
-			return new WeaselCompilerReturn(instructions, genericClass);
+			return new WeaselCompilerReturnInstructionList(instructions, genericClass);
 		}else if(isFunc){
 			List<WeaselGenericMethod2> methods;
 			if(elementParent==null){
@@ -268,7 +268,7 @@ public class WeaselTreeTop extends WeaselTree {
 				}
 			}
 			
-			return new WeaselCompilerReturn(instructions, wcr.method.getGenericReturn());
+			return new WeaselCompilerReturnInstructionList(instructions, wcr.method.getGenericReturn());
 		}else if(isIndex){
 			WeaselGenericClass arrayClass;
 			String variable = (String)token.param;
@@ -283,7 +283,7 @@ public class WeaselTreeTop extends WeaselTree {
 						}catch(WeaselNativeException e){
 							throw new WeaselCompilerException(token.line, "Variable not declared bevore %s", variable);
 						}
-						return new WeaselCompilerReturn(instructions, new WeaselGenericClass(weaselClass), true);
+						return new WeaselCompilerReturnInstructionList(instructions, new WeaselGenericClass(weaselClass), true);
 					}
 					if(WeaselModifier.isStatic(compilerHelper.getCompilingMethod().getMethod().getMethod().getModifier())){
 						if(!WeaselModifier.isStatic(wf.getField().getModifier())){
@@ -312,9 +312,7 @@ public class WeaselTreeTop extends WeaselTree {
 				throw new WeaselCompilerException(token.line, "%s is not an array", arrayClass);
 			}
 			WeaselCompilerReturn wcr = func.compile(compiler, compilerHelper, null, new WeaselGenericClass(compiler.baseTypes.intClass), null, false);
-			if(wcr.returnType.getBaseClass()!=compiler.baseTypes.intClass)
-				throw new WeaselCompilerException(token.line, "Index have to be a int not a %s", wcr.returnType);
-			instructions.addAll(wcr.instructions);
+			instructions.addAll(wcr.getInstructions(compiler, compiler.baseTypes.intClass));
 			if(write==null){
 				instructions.add(token.line, new WeaselInstructionReadIndex(WeaselPrimitive.getPrimitiveID(arrayClass.getBaseClass().getArrayClass())));
 			}else{
@@ -322,7 +320,7 @@ public class WeaselTreeTop extends WeaselTree {
 				WeaselTree.autoCast(compiler, write, new WeaselGenericClass(arrayClass.getBaseClass().getArrayClass(), arrayClass.getGenerics()), token.line, instructions, true);
 				instructions.add(token.line, new WeaselInstructionWriteIndex(WeaselPrimitive.getPrimitiveID(arrayClass.getBaseClass().getArrayClass())));
 			}
-			return new WeaselCompilerReturn(instructions, new WeaselGenericClass(arrayClass.getBaseClass().getArrayClass(), arrayClass.getGenerics()));
+			return new WeaselCompilerReturnInstructionList(instructions, new WeaselGenericClass(arrayClass.getBaseClass().getArrayClass(), arrayClass.getGenerics()));
 		}else if(token==null){
 			return tree.compile(compiler, compilerHelper, write, expect, elementParent, isVariable);
 		}else{
@@ -332,13 +330,13 @@ public class WeaselTreeTop extends WeaselTree {
 					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
 				}
 				instructions.add(token.line, new WeaselInstructionLoadConstBoolean((Boolean) token.param));
-				return new WeaselCompilerReturn(instructions, new WeaselGenericClass(compiler.baseTypes.booleanClass));
+				return new WeaselCompilerReturnInstructionList(instructions, new WeaselGenericClass(compiler.baseTypes.booleanClass));
 			case DOUBLE:
 				if(write!=null){
 					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
 				}
 				instructions.add(token.line, new WeaselInstructionLoadConstDouble((Double) token.param));
-				return new WeaselCompilerReturn(instructions, new WeaselGenericClass(compiler.baseTypes.doubleClass));
+				return new WeaselCompilerReturnInstructionList(instructions, new WeaselGenericClass(compiler.baseTypes.doubleClass));
 			case KEYWORD:
 				if(token.param!=WeaselKeyWord.THIS)
 					throw new WeaselCompilerException(token.line, "Expect ident but got %s", token);
@@ -355,7 +353,7 @@ public class WeaselTreeTop extends WeaselTree {
 							}catch(WeaselNativeException e){
 								throw new WeaselCompilerException(token.line, "Variable not declared bevore %s", variable);
 							}
-							return new WeaselCompilerReturn(instructions, new WeaselGenericClass(weaselClass), true);
+							return new WeaselCompilerReturnInstructionList(instructions, new WeaselGenericClass(weaselClass), true);
 						}
 						if(WeaselModifier.isStatic(compilerHelper.getCompilingMethod().getMethod().getMethod().getModifier())){
 							if(!WeaselModifier.isStatic(wf.getField().getModifier())){
@@ -380,7 +378,7 @@ public class WeaselTreeTop extends WeaselTree {
 								instructions.add(token.line, new WeaselInstructionWriteFieldOf(wvi.pos, wf.getField().getDesk()));
 							}
 						}
-						return new WeaselCompilerReturn(instructions, wf.getGenericType());
+						return new WeaselCompilerReturnInstructionList(instructions, wf.getGenericType());
 					}else{
 						if(write==null){
 							instructions.add(token.line, new WeaselInstructionLoadVariable(wvi.pos));
@@ -389,7 +387,7 @@ public class WeaselTreeTop extends WeaselTree {
 							WeaselTree.autoCast(compiler, write, wvi.type, token.line, instructions, true);
 							instructions.add(token.line, new WeaselInstructionSaveVariable(wvi.pos));
 						}
-						return new WeaselCompilerReturn(instructions, wvi.type);
+						return new WeaselCompilerReturnInstructionList(instructions, wvi.type);
 					}
 				}else{
 					WeaselGenericField wf = elementParent.getGenericField(variable);
@@ -403,7 +401,7 @@ public class WeaselTreeTop extends WeaselTree {
 						if(isVariable){
 							throw new WeaselCompilerException(token.line, "Can't get class form variable", variable);
 						}
-						return new WeaselCompilerReturn(instructions, new WeaselGenericClass(weaselClass), true);
+						return new WeaselCompilerReturnInstructionList(instructions, new WeaselGenericClass(weaselClass), true);
 					}
 					if(isVariable){
 						if(write==null){
@@ -424,26 +422,26 @@ public class WeaselTreeTop extends WeaselTree {
 							instructions.add(token.line, new WeaselInstructionWriteStaticField(wf.getField().getDesk()));
 						}
 					}
-					return new WeaselCompilerReturn(instructions, wf.getGenericType());
+					return new WeaselCompilerReturnInstructionList(instructions, wf.getGenericType());
 				}
 			case INTEGER:
 				if(write!=null){
 					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
 				}
 				instructions.add(token.line, new WeaselInstructionLoadConstInteger((Integer) token.param));
-				return new WeaselCompilerReturn(instructions, new WeaselGenericClass(compiler.baseTypes.intClass));
+				return new WeaselCompilerReturnInstructionList(instructions, new WeaselGenericClass(compiler.baseTypes.intClass));
 			case NULL:
 				if(write!=null){
 					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
 				}
 				instructions.add(token.line, new WeaselInstructionLoadNull());
-				return new WeaselCompilerReturn(instructions, null);
+				return new WeaselCompilerReturnInstructionList(instructions, null);
 			case STRING:
 				if(write!=null){
 					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
 				}
 				instructions.add(token.line, new WeaselInstructionLoadConstString((String) token.param));
-				return new WeaselCompilerReturn(instructions, new WeaselGenericClass(compiler.baseTypes.getStringClass()));
+				return new WeaselCompilerReturnInstructionList(instructions, new WeaselGenericClass(compiler.baseTypes.getStringClass()));
 			case CHAR:
 				if(write!=null){
 					throw new WeaselCompilerException(token.line, "Can't write %s to constant %s", write, token);
@@ -452,7 +450,7 @@ public class WeaselTreeTop extends WeaselTree {
 				if(s.length()!=1)
 					throw new WeaselCompilerException(token.line, "Only one char expected");
 				instructions.add(token.line, new WeaselInstructionLoadConstChar(s.charAt(0)));
-				return new WeaselCompilerReturn(instructions, new WeaselGenericClass(compiler.baseTypes.charClass));
+				return new WeaselCompilerReturnInstructionList(instructions, new WeaselGenericClass(compiler.baseTypes.charClass));
 			default:
 				throw new WeaselCompilerException(token.line, "Expect ident but got %s", token);
 			}

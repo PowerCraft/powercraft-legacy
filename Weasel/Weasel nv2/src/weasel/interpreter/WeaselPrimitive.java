@@ -1,5 +1,6 @@
 package weasel.interpreter;
 
+
 public final class WeaselPrimitive extends WeaselClass {
 	
 	public enum WeaselPrimitives{
@@ -147,8 +148,107 @@ public final class WeaselPrimitive extends WeaselClass {
 		return primitiveWrapperNames[getPrimitiveID(wc)];
 	}
 
+	public static int getUnwrapped(WeaselClass wc){
+		if(wc.isPrimitive()){
+			return getPrimitiveID(wc);
+		}
+		String name = wc.getByteName();
+		for(int i=0; i<primitiveWrapperNames.length; i++){
+			if(primitiveWrapperNames.equals(name)){
+				return i;
+			}
+		}
+		return 0;
+	}
+	
 	public static boolean canCastAutoTo(WeaselClass wc, WeaselClass wc2){
 		return castAutoMap[getPrimitiveID(wc)][getPrimitiveID(wc2)];
+	}
+
+	public static boolean getBoolean(Object constant) {
+		if(constant instanceof Boolean){
+			return (Boolean)constant;
+		}
+		throw new WeaselNativeException("Can't cast %s to Boolean", constant.getClass());
+	}
+	
+	public static char getChar(Object constant) {
+		if(constant instanceof Character){
+			return (Character)constant;
+		}
+		throw new WeaselNativeException("Can't cast %s to Char", constant.getClass());
+	}
+	
+	public static byte getByte(Object constant) {
+		if(constant instanceof Byte){
+			return (Byte)constant;
+		}
+		throw new WeaselNativeException("Can't cast %s to Byte", constant.getClass());
+	}
+	
+	public static short getShort(Object constant) {
+		if(constant instanceof Byte){
+			return (byte)(Byte)constant;
+		}else if(constant instanceof Short){
+			return (Short)constant;
+		}
+		throw new WeaselNativeException("Can't cast %s to Short", constant.getClass());
+	}
+	
+	public static int getInteger(Object constant) {
+		if(constant instanceof Byte){
+			return (byte)(Byte)constant;
+		}else if(constant instanceof Short){
+			return (short)(Short)constant;
+		}else if(constant instanceof Integer){
+			return (Integer)constant;
+		}
+		throw new WeaselNativeException("Can't cast %s to Integer", constant.getClass());
+	}
+	
+	public static long getLong(Object constant) {
+		if(constant instanceof Byte){
+			return (byte)(Byte)constant;
+		}else if(constant instanceof Short){
+			return (short)(Short)constant;
+		}else if(constant instanceof Integer){
+			return (int)(Integer)constant;
+		}else if(constant instanceof Long){
+			return (Long)constant;
+		}
+		throw new WeaselNativeException("Can't cast %s to Long", constant.getClass());
+	}
+	
+	public static float getFloat(Object constant) {
+		if(constant instanceof Byte){
+			return (byte)(Byte)constant;
+		}else if(constant instanceof Short){
+			return (short)(Short)constant;
+		}else if(constant instanceof Integer){
+			return (int)(Integer)constant;
+		}else if(constant instanceof Long){
+			return (long)(Long)constant;
+		}else if(constant instanceof Float){
+			return (Float)constant;
+		}
+		throw new WeaselNativeException("Can't cast %s to Float", constant.getClass());
+	}
+	
+	public static double getDouble(Object constant) {
+		if(constant instanceof Byte){
+			return (byte)(Byte)constant;
+		}else if(constant instanceof Short){
+			return (short)(Short)constant;
+		}else if(constant instanceof Integer){
+			return (int)(Integer)constant;
+		}else if(constant instanceof Long){
+			return (long)(Long)constant;
+		}else if(constant instanceof Float){
+			return (float)(Float)constant;
+		}else if(constant instanceof Double){
+			return (Double)constant;
+		}
+		throw new WeaselNativeException("Can't cast %s to Double", constant.getClass());
 	}
 	
 }

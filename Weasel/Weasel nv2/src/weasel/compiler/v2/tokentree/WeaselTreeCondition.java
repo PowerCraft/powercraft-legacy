@@ -6,6 +6,7 @@ import java.util.ListIterator;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerReturn;
+import weasel.compiler.WeaselCompilerReturnInstructionList;
 import weasel.compiler.WeaselInstructionList;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
@@ -45,27 +46,25 @@ public class WeaselTreeCondition extends WeaselTree {
 		}
 		WeaselInstructionList instructions;
 		WeaselCompilerReturn wcr = condition.compile(compiler, compilerHelper, null, new WeaselGenericClass(compiler.baseTypes.booleanClass), null, false);
-		if(wcr.returnType.getBaseClass()!=compiler.baseTypes.booleanClass)
-			throw new WeaselCompilerException(token.line, "Condition of Conditional have to be a boolean and no %s", wcr.returnType);
-		instructions = wcr.instructions;
+		instructions = wcr.getInstructions(compiler, compiler.baseTypes.booleanClass);
 		WeaselInstructionJump j1;
 		WeaselInstructionJump j2;
 		instructions.add(token.line, j1 = new WeaselInstructionIf());
 		wcr = tree1.compile(compiler, compilerHelper, null, expect, elementParent, isVariable);
-		WeaselGenericClass wc = wcr.returnType;
-		instructions.addAll(wcr.instructions);
+		WeaselGenericClass wc = wcr.getReturnType();
+		instructions.addAll(wcr.getInstructions());
 		wcr = tree2.compile(compiler, compilerHelper, null, expect, elementParent, isVariable);
-		if(wc.getBaseClass()==compiler.baseTypes.voidClass || wcr.returnType.getBaseClass()==compiler.baseTypes.voidClass){
+		if(wc.getBaseClass()==compiler.baseTypes.voidClass || wcr.getReturnType().getBaseClass()==compiler.baseTypes.voidClass){
 			throw new WeaselCompilerException(token.line, "Can't return void");
 		}
-		WeaselGenericClass wc2 = wcr.returnType;
+		WeaselGenericClass wc2 = wcr.getReturnType();
 		wc = WeaselTree.autoCast(compiler, wc, wc2, token.line, instructions, false);
 		instructions.add(token.line, j2 = new WeaselInstructionJump());
 		j1.setTarget(j2);
-		instructions.addAll(wcr.instructions);
+		instructions.addAll(wcr.getInstructions());
 		wc2 = WeaselTree.autoCast(compiler, wc2, wc, token.line, instructions, true);
 		j2.setTarget(instructions.getLast());
-		return new WeaselCompilerReturn(instructions, WeaselGenericClass.getSmallestSame(wc, wc2));
+		return new WeaselCompilerReturnInstructionList(instructions, WeaselGenericClass.getSmallestSame(wc, wc2));
 	}
 
 	@Override

@@ -98,4 +98,16 @@ public final class String{
 		return this;
 	}
 
+	public String operator+(Object other){
+		return concat(other);
+	}
+
+	public String concat(Object other){
+		return concat2(other==null?"null":other.toString());
+	}
+	
+	private String concat2(String other){
+	
+	}
+
 }

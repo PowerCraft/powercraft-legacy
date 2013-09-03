@@ -752,11 +752,72 @@ public class WeaselClassCompilerV2 extends WeaselClassCompiler {
 		}
 	}
 	
+	private void checkInterfaceOverrides(WeaselClass interfaceClass) {
+		WeaselMethod[] methods = interfaceClass.getMethods();
+		WeaselInterfaceMaps wim = new WeaselInterfaceMaps();
+		interfaceMaps.put(interfaceClass, wim);
+		wim.methodMapper = new int[methods.length];
+		for(int i=0; i<methods.length; i++){
+			if(!WeaselModifier.isStatic(methods[i].getModifier())){
+				WeaselMethod method = getMethod(methods[i].getName(), methods[i].getDesk());
+				checkOverrides(method, method.getID());
+				wim.methodMapper[methods[i].getID()] = method.getID();
+			}
+		}
+		
+	}
+	
+	private void overrideInterfaceMethods(WeaselClass interfaceClass) {
+		WeaselMethod[] methods = interfaceClass.getMethods();
+		WeaselInterfaceMaps wim = new WeaselInterfaceMaps();
+		interfaceMaps.put(interfaceClass, wim);
+		wim.methodMapper = new int[methods.length];
+		for(int i=0; i<methods.length; i++){
+			if(!WeaselModifier.isStatic(methods[i].getModifier())){
+				WeaselMethod method = getMethod(methods[i].getName(), methods[i].getDesk());
+				if(method==null){
+					int id = ids.method++;
+					WeaselClass[] params = methods[i].getParamClasses();
+					WeaselGenericClassInfo[] wgci = new WeaselGenericClassInfo[params.length];
+					for(int j=0; j<params.length; j++){
+						wgci[j] = new WeaselGenericClassInfo(params[i], -1, new WeaselGenericClassInfo[0]);
+					}
+					method = createMethod(name, modifier, this, new WeaselGenericClassInfo(methods[i].getReturnClasses(), -1, new WeaselGenericClassInfo[0]), wgci, new WeaselGenericInformation[0], id);
+					WeaselMethod[] newMethods = new WeaselMethod[this.methods.length+1];
+					for(int j=0; j<this.methods.length; j++){
+						newMethods[j] = this.methods[j];
+					}
+					newMethods[methods.length] = method;
+					this.methods = newMethods;
+					WeaselMethodBody[] newMethodBodys = new WeaselMethodBody[ids.method];
+					for(int j=0; j<methodBodys.length; j++){
+						newMethodBodys[j] = methodBodys[j];
+					}
+					methodBodys = newMethodBodys;
+				}
+				wim.methodMapper[methods[i].getID()] = method.getID();
+			}
+		}
+	}
+	
 	private void checkOverrides() {
-		if(!WeaselModifier.isAbstract(modifier)){
+		if(WeaselModifier.isAbstract(modifier)){
+			WeaselClass[] interfaces = getInterfaces();
+			if(interfaces!=null){
+				for(int i=0; i<interfaces.length; i++){
+					overrideInterfaceMethods(interfaces[i]);
+				}
+			}
+		}else{
 			if(getSuperClass()!=null){
 				for(int i=0; i<methodBodys.length; i++){
 					checkOverrides(getMethod(i), i);
+				}
+			}
+			WeaselClass[] interfaces = getInterfaces();
+			if(interfaces!=null){
+				for(int i=0; i<interfaces.length; i++){
+					checkInterfaceOverrides(interfaces[i]);
 				}
 			}
 		}

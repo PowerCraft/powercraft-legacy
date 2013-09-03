@@ -1,23 +1,20 @@
 package weasel.compiler;
 
+import weasel.interpreter.WeaselClass;
 import weasel.interpreter.WeaselGenericClass;
 
-public class WeaselCompilerReturn {
+public abstract class WeaselCompilerReturn {
 
-	public final WeaselInstructionList instructions;
-	public final WeaselGenericClass returnType;
-	public final boolean isClassAccess;
-	
-	public WeaselCompilerReturn(WeaselInstructionList instructions, WeaselGenericClass returnType) {
-		this.instructions = instructions;
-		this.returnType = returnType;
-		isClassAccess = false;
+	public abstract WeaselInstructionList getInstructions(WeaselCompiler compiler, WeaselGenericClass weaselGenericClass) throws WeaselCompilerException;
+
+	public abstract WeaselGenericClass getReturnType();
+
+	public abstract boolean isClassAccess();
+
+	public WeaselInstructionList getInstructions(WeaselCompiler compiler, WeaselClass baseClass) throws WeaselCompilerException {
+		return getInstructions(compiler, new WeaselGenericClass(baseClass));
 	}
-	
-	public WeaselCompilerReturn(WeaselInstructionList instructions, WeaselGenericClass returnType, boolean isClassAccess) {
-		this.instructions = instructions;
-		this.returnType = returnType;
-		this.isClassAccess = isClassAccess;
-	}
-	
+
+	public abstract WeaselInstructionList getInstructions();
+
 }

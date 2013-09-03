@@ -24,15 +24,10 @@ public class WeaselInstructionNew extends WeaselInstruction {
 
 	@Override
 	public void run(WeaselInterpreter interpreter, WeaselThread thread, WeaselMethodExecutor method) {
-		resolve(interpreter);
+		if(weaselClass==null)
+			weaselClass = interpreter.getWeaselClass(className);
 		int obj = interpreter.createObject(weaselClass);
 		thread.pushObject(obj);
-	}
-	
-	public void resolve(WeaselInterpreter interpreter){
-		if(weaselClass==null){
-			weaselClass = interpreter.getWeaselClass(className);
-		}
 	}
 	
 	@Override

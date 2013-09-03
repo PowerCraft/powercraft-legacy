@@ -63,7 +63,7 @@ public class Test implements WeaselClassFileProvider{
 		try{
 			compiler.compile(new Test());
 			System.out.println(compiler.getWeaselClass("OBoolean;").toSource());
-			WeaselGenericClass wgc = new WeaselGenericClass(compiler.getWeaselClass("OBoolean;"), new WeaselGenericClass[]{new WeaselGenericClass(compiler.getWeaselClass("OString;"))});
+			WeaselGenericClass wgc = new WeaselGenericClass(compiler.getWeaselClass("OBoolean;"), new WeaselGenericClass[0]);
 			System.out.println(wgc);
 			wgc = wgc.getGenericSuperClass();
 			System.out.println(wgc);

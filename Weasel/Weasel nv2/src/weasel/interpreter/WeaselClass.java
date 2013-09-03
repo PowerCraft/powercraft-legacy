@@ -491,7 +491,7 @@ public class WeaselClass implements WeaselSaveable {
 	}
 	
 	
-	private static class WeaselInterfaceMaps{
+	public static class WeaselInterfaceMaps{
 		
 		public int[] easyTypeMapper;
 		public int[] objectRefMapper;

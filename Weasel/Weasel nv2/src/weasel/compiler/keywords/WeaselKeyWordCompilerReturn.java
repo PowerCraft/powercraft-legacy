@@ -5,6 +5,7 @@ import java.util.ListIterator;
 import weasel.compiler.WeaselCompiler;
 import weasel.compiler.WeaselCompilerException;
 import weasel.compiler.WeaselCompilerReturn;
+import weasel.compiler.WeaselCompilerReturnInstructionList;
 import weasel.compiler.WeaselInstructionList;
 import weasel.compiler.WeaselKeyWordCompilerHelper;
 import weasel.compiler.WeaselToken;
@@ -32,11 +33,11 @@ public class WeaselKeyWordCompilerReturn extends WeaselKeyWordCompiler {
 				throw new WeaselCompilerException(token.line, "return need to return %s", retClass);
 			}
 			WeaselCompilerReturn wcr = tree.compile(compiler, compilerHelpher, null, retClass, null, false);
-			instructions = wcr.instructions;
-			WeaselTree.autoCast(compiler, wcr.returnType, retClass, token.line, instructions, true);
+			instructions = wcr.getInstructions();
+			WeaselTree.autoCast(compiler, wcr.getReturnType(), retClass, token.line, instructions, true);
 			instructions.add(token.line, new WeaselInstructionReturn(compilerHelpher.getVarCount()));
 		}
-		return new WeaselCompilerReturn(instructions, new WeaselGenericClass(compiler.baseTypes.voidClass));
+		return new WeaselCompilerReturnInstructionList(instructions, new WeaselGenericClass(compiler.baseTypes.voidClass));
 	}
 
 }
