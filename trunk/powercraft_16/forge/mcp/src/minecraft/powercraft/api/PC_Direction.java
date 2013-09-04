@@ -1,10 +1,12 @@
 package powercraft.api;
 
 
+import java.util.Map;
+
 import net.minecraftforge.common.ForgeDirection;
 
 
-public enum PC_Direction {
+public enum PC_Direction{
 	/** -Y */
 	DOWN(0, -1, 0),
 
@@ -16,7 +18,7 @@ public enum PC_Direction {
 
 	/** +Z */
 	SOUTH(0, 0, 1),
-
+	
 	/** -X */
 	WEST(-1, 0, 0),
 
@@ -49,10 +51,11 @@ public enum PC_Direction {
 		{ 0, 1, 2, 3, 4, 5, 6 },
 		{ 0, 1, 2, 3, 4, 5, 6 },
 		{ 0, 1, 2, 3, 4, 5, 6 },
-		{ 0, 1, 2, 3, 4, 5, 6 }};
+		{ 0, 1, 5, 2, 3, 4, 6 },
+		{ 0, 1, 4, 5, 2, 3, 6 },
+		{ 0, 1, 3, 4, 5, 2, 6 }};
 	
 	private PC_Direction(int x, int y, int z) {
-
 		offsetX = x;
 		offsetY = y;
 		offsetZ = z;
