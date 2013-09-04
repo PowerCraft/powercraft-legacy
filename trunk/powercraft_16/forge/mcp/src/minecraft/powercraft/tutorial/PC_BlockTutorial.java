@@ -2,12 +2,12 @@ package powercraft.tutorial;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
+import powercraft.api.blocks.PC_BlockRotated;
 import powercraft.api.registries.PC_TextureRegistry;
 
 @PC_BlockInfo(name="Tutorial", blockid="tutorial", defaultid=2000, tileEntity=PC_TileEntityTutorial.class)
-public class PC_BlockTutorial extends PC_Block {
+public class PC_BlockTutorial extends PC_BlockRotated {
 
 	
 	public PC_BlockTutorial(int id) {
