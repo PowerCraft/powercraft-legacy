@@ -36,7 +36,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 	public final PC_Module module;
 
 
-	public PC_Block(int id, Material material) {
+	protected PC_Block(int id, Material material) {
 
 		super(id, material);
 		blockInfo = getClass().getAnnotation(PC_BlockInfo.class);

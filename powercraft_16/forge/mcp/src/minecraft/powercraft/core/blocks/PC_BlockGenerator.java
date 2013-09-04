@@ -13,13 +13,14 @@ import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
+import powercraft.api.blocks.PC_BlockRotated;
 import powercraft.api.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 
 @PC_BlockInfo(name = "Generator", blockid = "generator", defaultid = 3001, tileEntity = PC_TileEntityGenerator.class)
-public class PC_BlockGenerator extends PC_Block {
+public class PC_BlockGenerator extends PC_BlockRotated {
 
 	private Icon frontLevel[] = new Icon[4];
 
@@ -59,9 +60,9 @@ public class PC_BlockGenerator extends PC_Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
+	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, PC_Direction side) {
 
-		if (side == PC_Utils.getRotation(world, x, y, z)) {
+		if (side == PC_Direction.NORTH) {
 			PC_TileEntityGenerator generator = PC_Utils.getTE(world, x, y, z);
 			if (generator != null && generator.getHeat() > 0) {
 				return frontLevel[(generator.getHeat() - 1) * 3 / PC_TileEntityGenerator.maxHeat + 1];
@@ -74,9 +75,9 @@ public class PC_BlockGenerator extends PC_Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int side, int metadata) {
+	public Icon getIcon(PC_Direction side, int metadata) {
 
-		if (side == 5) return frontLevel[0];
+		if (side == PC_Direction.EAST) return frontLevel[0];
 		return blockIcon;
 	}
 
