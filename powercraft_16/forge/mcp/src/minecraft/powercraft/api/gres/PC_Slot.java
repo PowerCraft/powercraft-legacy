@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import powercraft.api.PC_IInvectory;
+import powercraft.api.PC_IInventory;
 
 
 public class PC_Slot extends Slot {
@@ -32,8 +32,8 @@ public class PC_Slot extends Slot {
 	@Override
 	public int getSlotStackLimit() {
 
-		if (inventory instanceof PC_IInvectory) {
-			return ((PC_IInvectory) inventory).getSlotStackLimit(getSlotIndex());
+		if (inventory instanceof PC_IInventory) {
+			return ((PC_IInventory) inventory).getSlotStackLimit(getSlotIndex());
 		}
 		return super.getSlotStackLimit();
 	}
@@ -42,8 +42,8 @@ public class PC_Slot extends Slot {
 	@Override
 	public boolean canTakeStack(EntityPlayer entityPlayer) {
 
-		if (inventory instanceof PC_IInvectory) {
-			return ((PC_IInvectory) inventory).canTakeStack(getSlotIndex(), entityPlayer);
+		if (inventory instanceof PC_IInventory) {
+			return ((PC_IInventory) inventory).canTakeStack(getSlotIndex(), entityPlayer);
 		}
 		return super.canTakeStack(entityPlayer);
 	}
