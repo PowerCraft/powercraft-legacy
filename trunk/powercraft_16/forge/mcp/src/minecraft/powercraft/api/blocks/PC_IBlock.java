@@ -11,15 +11,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 
-public interface PC_IBlock {
+public interface PC_IBlock extends PC_INBTSaveable {
 
 	public void onBlockMessage(World world, int x, int y, int z, EntityPlayer player, NBTTagCompound nbtTagCompound);
-
-
-	public void loadFromNBT(World world, int x, int y, int z, NBTTagCompound nbtTagCompound);
-
-
-	public void saveToNBT(World world, int x, int y, int z, NBTTagCompound nbtTagCompound);
 
 
 	@SideOnly(Side.CLIENT)

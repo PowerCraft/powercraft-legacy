@@ -1,23 +1,35 @@
 package powercraft.api.blocks;
 
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.api.PC_IInventory;
 import powercraft.api.PC_InventoryUtils;
+import powercraft.api.gres.PC_GresAlign.V;
 
 
 public abstract class PC_TileEntityWithInventory extends PC_TileEntity implements PC_IInventory {
 
 	protected ItemStack[] inventoryContents;
-
+	protected Map<String, Integer> beginnings = new HashMap<String, Integer>();
 
 	protected PC_TileEntityWithInventory(int size) {
-
+		beginnings.put("main", 0);
 		inventoryContents = new ItemStack[size];
 	}
 
+	public final void enlargeInventory(String name, int slots){
+		beginnings.put(name, inventoryContents.length);
+		List<ItemStack> is;
+		(is=Arrays.asList(inventoryContents)).addAll(Arrays.asList(new ItemStack[slots]));
+		inventoryContents = is.toArray(inventoryContents);
+	}
 
 	@Override
 	public int getSizeInventory() {

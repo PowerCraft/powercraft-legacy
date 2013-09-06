@@ -8,7 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
-import powercraft.api.blocks.PC_IBlock;
+import powercraft.api.blocks.PC_INBTSaveable;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.gres.PC_Gres;
 import cpw.mods.fml.relauncher.Side;
@@ -25,7 +25,7 @@ public class PC_PacketHandlerClient extends PC_PacketHandler {
 		int y = dataInputStream.readInt();
 		int z = dataInputStream.readInt();
 		Block block = PC_Utils.getBlock(world, x, y, z);
-		if (block != null) ((PC_IBlock) block).loadFromNBT(world, x, y, z, readNBTTagCompound(dataInputStream));
+		if (block != null) ((PC_INBTSaveable) block).loadFromNBT(world, x, y, z, readNBTTagCompound(dataInputStream));
 	}
 
 

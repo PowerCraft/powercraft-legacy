@@ -3,7 +3,7 @@ package powercraft.api.registries;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
-import powercraft.api.blocks.PC_IBlock;
+import powercraft.api.blocks.PC_INBTSaveable;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.items.PC_Item;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -15,7 +15,7 @@ class PC_SidedRegistry {
 
 	protected void registerLanguage(String key, String value){}
 	
-	protected void registerIcons(PC_IBlock block, IconRegister iconRegistry) {}
+	protected void registerIcons(PC_INBTSaveable block, IconRegister iconRegistry) {}
 
 	protected void registerIcons(PC_Item item, IconRegister iconRegistry) {}
 
