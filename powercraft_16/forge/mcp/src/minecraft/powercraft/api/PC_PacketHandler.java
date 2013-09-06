@@ -15,6 +15,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
 import powercraft.api.blocks.PC_IBlock;
+import powercraft.api.blocks.PC_INBTSaveable;
 import powercraft.api.blocks.PC_TileEntity;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -92,7 +93,7 @@ public class PC_PacketHandler implements IPacketHandler {
 			dataOutputStream.writeInt(y);
 			dataOutputStream.writeInt(z);
 			NBTTagCompound nbtTagCompound = new NBTTagCompound("save");
-			((PC_IBlock) block).saveToNBT(world, x, y, z, nbtTagCompound);
+			((PC_INBTSaveable) block).saveToNBT(world, x, y, z, nbtTagCompound);
 			writeNBTTagCompound(dataOutputStream, nbtTagCompound);
 			return getPowerCraftPacket(byteArrayOutputStream.toByteArray());
 		} catch (IOException e) {
