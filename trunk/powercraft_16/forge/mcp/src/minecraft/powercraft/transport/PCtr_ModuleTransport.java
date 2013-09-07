@@ -17,7 +17,7 @@ public class PCtr_ModuleTransport extends PC_Module
 	public static PCtr_ModuleTransport instance;
 
 	@PC_FieldGenerator
-	public PCtr_BlockPrimitivePlate primitiveplate;
+	public static PCtr_BlockPrimitivePlate primitivePlate;
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
