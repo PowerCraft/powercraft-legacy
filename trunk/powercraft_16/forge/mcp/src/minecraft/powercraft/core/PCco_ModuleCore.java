@@ -17,10 +17,10 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = "PowerCraft-Core", name = "PowerCraft-Core", version="1.0.0", dependencies="required-after:PowerCraft-Api@1.0.0")
-public class PC_Core extends PC_Module {
+public class PCco_ModuleCore extends PC_Module {
 
 	@Instance("PowerCraft-Core")
-	public static PC_Core instance;
+	public static PCco_ModuleCore instance;
 
 	@PC_FieldGenerator
 	public PC_BlockMultiblock multiblock;

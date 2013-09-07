@@ -4,7 +4,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import powercraft.api.blocks.PC_ITileEntitySpecialRenderer;
 import powercraft.api.blocks.PC_TileEntity;
-import powercraft.core.PC_Core;
+import powercraft.core.PCco_ModuleCore;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -25,7 +25,7 @@ class PC_SidedRegistryClient extends PC_SidedRegistry {
 	protected Icon registerIcon(String icon, String objectName) {
 
 		if (icon.equals("DefaultMaschineTexture")) {
-			return PC_TextureRegistry.iconRegistry.registerIcon(PC_Core.instance.getMetadata().modId + ":maschineDefault/DefaultMaschineTexture");
+			return PC_TextureRegistry.iconRegistry.registerIcon(PCco_ModuleCore.instance.getMetadata().modId + ":maschineDefault/DefaultMaschineTexture");
 		}
 		return PC_TextureRegistry.iconRegistry.registerIcon(PC_ModuleRegistry.getActiveModule().getMetadata().modId + ":" + objectName + "/" + icon);
 	}
