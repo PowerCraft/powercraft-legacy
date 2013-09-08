@@ -36,7 +36,7 @@ public class PC_BlockGenerator extends PC_BlockRotated {
 	@SideOnly(Side.CLIENT)
 	public void loadIcons() {
 
-		blockIcon = PC_TextureRegistry.registerIcon("DefaultMaschineTexture");
+		blockIcon = PC_TextureRegistry.registerIcon("DefaultMachineTexture");
 		frontLevel[0] = PC_TextureRegistry.registerIcon("Front_Lvl0");
 		frontLevel[1] = PC_TextureRegistry.registerIcon("Front_Lvl1");
 		frontLevel[2] = PC_TextureRegistry.registerIcon("Front_Lvl2");

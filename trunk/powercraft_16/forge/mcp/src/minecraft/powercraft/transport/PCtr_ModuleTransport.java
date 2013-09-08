@@ -2,8 +2,9 @@ package powercraft.transport;
 
 import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
-import powercraft.transport.blocks.PCtr_BlockPrimitivePlate;
+import powercraft.transport.blocks.blocks.PCtr_BlockPrimitivePlate;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -20,21 +21,20 @@ public class PCtr_ModuleTransport extends PC_Module
 	public static PCtr_BlockPrimitivePlate primitivePlate;
 	
 	@Override
-	public void preInit(FMLPreInitializationEvent event)
-	{
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event) {
 		defaultPreInit(event);
-
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event)
-	{
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
 		defaultInit(event);
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event)
-	{
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
 		
 	}
 }

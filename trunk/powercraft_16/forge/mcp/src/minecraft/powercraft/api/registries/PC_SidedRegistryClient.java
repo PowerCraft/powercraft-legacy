@@ -24,8 +24,8 @@ class PC_SidedRegistryClient extends PC_SidedRegistry {
 	@Override
 	protected Icon registerIcon(String icon, String objectName) {
 
-		if (icon.equals("DefaultMaschineTexture")) {
-			return PC_TextureRegistry.iconRegistry.registerIcon(PCco_ModuleCore.instance.getMetadata().modId + ":maschineDefault/DefaultMaschineTexture");
+		if (icon.equals("DefaultMachineTexture")) {
+			return PC_TextureRegistry.iconRegistry.registerIcon(PCco_ModuleCore.instance.getMetadata().modId + ":machineDefault/DefaultMachineTexture");
 		}
 		return PC_TextureRegistry.iconRegistry.registerIcon(PC_ModuleRegistry.getActiveModule().getMetadata().modId + ":" + objectName + "/" + icon);
 	}

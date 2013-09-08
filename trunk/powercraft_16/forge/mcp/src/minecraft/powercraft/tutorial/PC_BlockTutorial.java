@@ -17,8 +17,9 @@ public class PC_BlockTutorial extends PC_BlockRotated {
 
 	
 	public PC_BlockTutorial(int id) {
-		super(id, Material.ground);
+		super(id, Material.ice);
 		setCreativeTab(CreativeTabs.tabBlock);
+		
 	}
 
 	@Override

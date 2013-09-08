@@ -33,7 +33,7 @@ public class PC_BlockPuffer extends PC_Block {
 	@SideOnly(Side.CLIENT)
 	public void loadIcons() {
 
-		blockIcon = PC_TextureRegistry.registerIcon("DefaultMaschineTexture");
+		blockIcon = PC_TextureRegistry.registerIcon("DefaultMachineTexture");
 		sideLevel[0] = PC_TextureRegistry.registerIcon("Side_Lvl0");
 		sideLevel[1] = PC_TextureRegistry.registerIcon("Side_Lvl1");
 		sideLevel[2] = PC_TextureRegistry.registerIcon("Side_Lvl2");
