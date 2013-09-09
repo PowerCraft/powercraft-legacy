@@ -8,7 +8,10 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.api.PC_Direction;
 import powercraft.api.PC_Vec3;
+import powercraft.api.PC_Vec3I;
+import powercraft.api.PC_MathHelper;
 
 public class PCtr_BeltHelper {
 
@@ -81,4 +84,184 @@ public class PCtr_BeltHelper {
 	public static boolean isEntityIgnored(Entity par5Entity) {
 		return true;
 	}
+	
+	public static void moveEntityOnBelt(World world, Entity entity, PC_Vec3I current_pos, boolean bordersEnabled, boolean motionEnabled, PC_Direction direction)
+	{
+		if (motionEnabled)
+		{
+			if (entity.onGround)
+			{
+				entity.moveEntity(0D, 0.01D, 0D);
+			}
+			switch (direction)
+			{
+				case NORTH:
+					if (entity.motionZ >= -MAX_HORIZONTAL_SPEED && motionEnabled)
+					{
+						entity.addVelocity(0, 0, -HORIZONTAL_BOOST);
+					}
+	
+					if (bordersEnabled)
+					{
+						if (entity.posX > current_pos.x + (1D - BORDERS))
+						{
+							entity.addVelocity(-BORDER_BOOST, 0, 0);
+						}
+	
+						if (entity.posX < current_pos.x + BORDERS)
+						{
+							entity.addVelocity(BORDER_BOOST, 0, 0);
+						}
+					}
+	
+					break;
+	
+				case EAST:
+					if (entity.motionX <= MAX_HORIZONTAL_SPEED && motionEnabled)
+					{
+						entity.addVelocity(HORIZONTAL_BOOST, 0, 0);
+					}
+	
+					if (bordersEnabled)
+					{
+						if (entity.posZ > current_pos.z + BORDERS)
+						{
+							entity.addVelocity(0, 0, -BORDER_BOOST);
+						}
+	
+						if (entity.posZ < current_pos.z + (1D - BORDERS))
+						{
+							entity.addVelocity(0, 0, BORDER_BOOST);
+						}
+					}
+	
+					break;
+	
+				case SOUTH:
+					if (entity.motionZ <= MAX_HORIZONTAL_SPEED && motionEnabled)
+					{
+						entity.addVelocity(0, 0, HORIZONTAL_BOOST);
+					}
+	
+					if (bordersEnabled)
+					{
+						if (entity.posX > current_pos.x + (1D - BORDERS))
+						{
+							entity.addVelocity(-BORDER_BOOST, 0, 0);
+						}
+	
+						if (entity.posX < current_pos.x + BORDERS)
+						{
+							entity.addVelocity(BORDER_BOOST, 0, 0);
+						}
+					}
+	
+					break;
+	
+				case WEST:
+					if (entity.motionX >= -MAX_HORIZONTAL_SPEED && motionEnabled)
+					{
+						entity.addVelocity(-HORIZONTAL_BOOST, 0, 0);
+					}
+	
+					if (bordersEnabled)
+					{
+						if (entity.posZ > current_pos.z + BORDERS)
+						{
+							entity.addVelocity(0, 0, -BORDER_BOOST);
+						}
+	
+						if (entity.posZ < current_pos.z + (1D - BORDERS))
+						{
+							entity.addVelocity(0, 0, BORDER_BOOST);
+						}
+					}
+	
+					break;
+	
+				case UP:
+					System.out.println("Inside UP Case");
+					System.out.println("Motion Y = " + entity.motionY);
+					if (entity.motionY >= MAX_HORIZONTAL_SPEED && motionEnabled)
+					{
+						entity.addVelocity(0, -HORIZONTAL_BOOST, 0);
+					}
+					else
+					{
+						entity.addVelocity(0, HORIZONTAL_BOOST, 0);
+					}
+					entity.fallDistance = 0;
+					
+					if (bordersEnabled)
+					{
+						if (entity.posX > current_pos.x + (1D - BORDERS))
+						{
+							entity.motionX -= BORDER_BOOST;
+						}
+	
+						if (entity.posX < current_pos.x + BORDERS)
+						{
+							entity.motionX += BORDER_BOOST;
+						}
+	
+						if (entity.posZ > current_pos.z + BORDERS)
+						{
+							entity.motionZ -= BORDER_BOOST;
+						}
+	
+						if (entity.posZ < current_pos.z + (1D - BORDERS))
+						{
+							entity.motionZ += BORDER_BOOST;
+						}
+	
+						entity.motionZ = PC_MathHelper.clamp_float((float)entity.motionZ, (float)-(BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
+						entity.motionX = PC_MathHelper.clamp_float((float)entity.motionX, (float)-(BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
+	
+					}
+					entity.motionY = PC_MathHelper.clamp_float((float)entity.motionY, 0, (float)MAX_HORIZONTAL_SPEED);
+	
+					break;
+	
+				case DOWN:
+	
+					if (Math.abs(entity.motionY) > 0.4D)
+					{
+						entity.motionY *= 0.3D;
+					}
+	
+					entity.fallDistance = 0;
+	
+					if (bordersEnabled)
+					{
+						if (entity.posX > current_pos.x + (1D - BORDERS))
+						{
+							entity.motionX -= BORDER_BOOST;
+						}
+	
+						if (entity.posX < current_pos.x + BORDERS)
+						{
+							entity.motionX += BORDER_BOOST;
+						}
+	
+						if (entity.posZ > current_pos.z + BORDERS)
+						{
+							entity.motionZ -= BORDER_BOOST;
+						}
+	
+						if (entity.posZ < current_pos.z + (1D - BORDERS))
+						{
+							entity.motionZ += BORDER_BOOST;
+						}
+	
+						entity.motionZ = PC_MathHelper.clamp_float((float)entity.motionZ, (float)-(BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
+//						entity.motionY = PC_MathHelper.clamp_float((float)entity.motionY, (float)-(BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
+						entity.motionX = PC_MathHelper.clamp_float((float)entity.motionX, (float)-(BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
+	
+					}
+				default:
+					break;
+			}
+		}
+	}
+
 }
