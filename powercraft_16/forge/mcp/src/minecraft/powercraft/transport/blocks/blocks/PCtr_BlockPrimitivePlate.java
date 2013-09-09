@@ -26,7 +26,7 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 	@Override
 	public void loadIcons()
 	{
-		this.blockIcon = PC_TextureRegistry.registerIcon("primitiveplate");
+		this.blockIcon = PC_TextureRegistry.registerIcon("primitiveplatea");
 	}
 
 	@Override
