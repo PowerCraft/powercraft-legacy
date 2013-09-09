@@ -47,21 +47,21 @@ public class PCtr_BlockUpgradeableBelt extends PC_BlockRotated {
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i,
 			int j, int k) {
-			    return PCtr_BeltHelper.getCollisionBoundingBoxFromPool(world, i, j, k);
+			    return PCtr_BeltHelper.getCollisionBoundingBoxFromPool(world, i, j, k, false);
 			}
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i,
 			int j, int k) {
-		return PCtr_BeltHelper.getSelectedBoundingBoxFromPool(world, i,j,k);
+		return PCtr_BeltHelper.getSelectedBoundingBoxFromPool(world, i,j,k, false);
 	}
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i,
 			int j, int k) {
-		PCtr_BeltHelper.setBlockBoundsBasedOnState(this, iblockaccess, i, j, k);
+		PCtr_BeltHelper.setBlockBoundsBasedOnState(this, iblockaccess, i, j, k, false);
 			}
 	@Override
 	public void setBlockBoundsForItemRender() {
-		PCtr_BeltHelper.setBlockBoundsForItemRender(this);
+		PCtr_BeltHelper.setBlockBoundsForItemRender(this, false);
 	}
 	@Override
 	public int tickRate(World world) {
