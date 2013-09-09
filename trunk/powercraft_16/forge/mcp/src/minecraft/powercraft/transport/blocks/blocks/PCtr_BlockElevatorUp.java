@@ -20,7 +20,6 @@ public class PCtr_BlockElevatorUp extends PCtr_BlockBeltBase
 	{
 		super(id, PCtr_MaterialElevator.getMaterial(), true);
 		setCreativeTab(CreativeTabs.tabBlock);
-		this.slipperiness = 0;
 	}
 
 	@Override
@@ -42,11 +41,11 @@ public class PCtr_BlockElevatorUp extends PCtr_BlockBeltBase
 		PC_Vec3I curposition = new PC_Vec3I(par2, par3, par4);
 		if (!PCtr_BeltHelper.isEntityIgnored(par5Entity))
 		{
-			MoveEntity(par1World, par5Entity, curposition);
+			moveEntity(par1World, par5Entity, curposition);
 		}
 	}
 
-	private void MoveEntity(World world, Entity entity, PC_Vec3I curPosition)
+	private void moveEntity(World world, Entity entity, PC_Vec3I curPosition)
 	{
 		// TODO: Check if there is an exit belt
 		PCtr_BeltHelper.moveEntityOnBelt(world, entity, curPosition, true, true, PC_Direction.UP);
