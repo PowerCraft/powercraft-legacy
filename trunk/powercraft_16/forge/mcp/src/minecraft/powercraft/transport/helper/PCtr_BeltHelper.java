@@ -1,9 +1,13 @@
 package powercraft.transport.helper;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.api.PC_Direction;
+import powercraft.api.PC_Vec3I;
+import powercraft.api.PC_MathHelper;
 
 public class PCtr_BeltHelper {
 
@@ -18,6 +22,163 @@ public class PCtr_BeltHelper {
 	public static final float STORAGE_BORDER_LONG = 0.8F;
 	public static final float STORAGE_BORDER_V = 0.6F;
 
+	public static void moveEntityOnBelt(World world, Entity entity,
+			PC_Vec3I current_pos, boolean bordersEnabled,
+			boolean motionEnabled, PC_Direction direction)
+	{
+		System.out.println(direction);
+		switch (direction)
+		{
+			case NORTH:
+				if (entity.motionZ >= -MAX_HORIZONTAL_SPEED && motionEnabled) {
+					entity.addVelocity(0, 0, -HORIZONTAL_BOOST);
+				}
+
+				if (bordersEnabled) {
+					if (entity.posX > current_pos.x + (1D - BORDERS)) {
+						entity.addVelocity(-BORDER_BOOST, 0, 0);
+					}
+
+					if (entity.posX < current_pos.x + BORDERS) {
+						entity.addVelocity(BORDER_BOOST, 0, 0);
+					}
+				}
+
+				break;
+
+			case EAST:
+				if (entity.motionX <= MAX_HORIZONTAL_SPEED && motionEnabled) {
+					entity.addVelocity(HORIZONTAL_BOOST, 0, 0);
+				}
+
+				if (bordersEnabled) {
+					if (entity.posZ > current_pos.z + BORDERS) {
+						entity.addVelocity(0, 0, -BORDER_BOOST);
+					}
+
+					if (entity.posZ < current_pos.z + (1D - BORDERS)) {
+						entity.addVelocity(0, 0, BORDER_BOOST);
+					}
+				}
+
+				break;
+
+			case SOUTH:
+				if (entity.motionZ <= MAX_HORIZONTAL_SPEED && motionEnabled) {
+					entity.addVelocity(0, 0, HORIZONTAL_BOOST);
+				}
+
+				if (bordersEnabled) {
+					if (entity.posX > current_pos.x + (1D - BORDERS)) {
+						entity.addVelocity(-BORDER_BOOST, 0, 0);
+					}
+
+					if (entity.posX < current_pos.x + BORDERS) {
+						entity.addVelocity(BORDER_BOOST, 0, 0);
+					}
+				}
+
+				break;
+
+			case WEST:
+				if (entity.motionX >= -MAX_HORIZONTAL_SPEED && motionEnabled) {
+					entity.addVelocity(-HORIZONTAL_BOOST, 0, 0);
+				}
+
+				if (bordersEnabled) {
+					if (entity.posZ > current_pos.z + BORDERS) {
+						entity.addVelocity(0, 0, -BORDER_BOOST);
+					}
+
+					if (entity.posZ < current_pos.z + (1D - BORDERS)) {
+						entity.addVelocity(0, 0, BORDER_BOOST);
+					}
+				}
+
+				break;
+
+			case UP:
+
+				if (Math.abs(entity.motionY) > 0.4D) {
+					entity.motionY *= 0.3D;
+				}
+
+				entity.fallDistance = 0;
+
+				if (entity.motionY < (motionEnabled ? 0.2D : 0.3D)) {
+					entity.motionY = (motionEnabled ? 0.2D : 0.3D);
+				}
+
+				if (bordersEnabled) {
+					if (entity.posX > current_pos.x + (1D - BORDERS)) {
+						entity.motionX -= BORDER_BOOST;
+					}
+
+					if (entity.posX < current_pos.x + BORDERS) {
+						entity.motionX += BORDER_BOOST;
+					}
+
+					if (entity.posZ > current_pos.z + BORDERS) {
+						entity.motionZ -= BORDER_BOOST;
+					}
+
+					if (entity.posZ < current_pos.z + (1D - BORDERS)) {
+						entity.motionZ += BORDER_BOOST;
+					}
+
+					entity.motionZ = PC_MathHelper.clamp_float(
+							(float)entity.motionZ,
+							(float)-(BORDER_BOOST * 1.5D),
+							(float)(BORDER_BOOST * 1.5D));
+					entity.motionX = PC_MathHelper.clamp_float(
+							(float)entity.motionX,
+							(float)-(BORDER_BOOST * 1.5D),
+							(float)(BORDER_BOOST * 1.5D));
+
+				}
+
+				break;
+
+			case DOWN:
+
+				if (Math.abs(entity.motionY) > 0.4D) {
+					entity.motionY *= 0.3D;
+				}
+
+				entity.fallDistance = 0;
+
+				if (bordersEnabled) {
+					if (entity.posX > current_pos.x + (1D - BORDERS)) {
+						entity.motionX -= BORDER_BOOST;
+					}
+
+					if (entity.posX < current_pos.x + BORDERS) {
+						entity.motionX += BORDER_BOOST;
+					}
+
+					if (entity.posZ > current_pos.z + BORDERS) {
+						entity.motionZ -= BORDER_BOOST;
+					}
+
+					if (entity.posZ < current_pos.z + (1D - BORDERS)) {
+						entity.motionZ += BORDER_BOOST;
+					}
+
+					entity.motionZ = PC_MathHelper.clamp_float(
+							(float)entity.motionZ,
+							(float)-(BORDER_BOOST * 1.5D),
+							(float)(BORDER_BOOST * 1.5D));
+					entity.motionX = PC_MathHelper.clamp_float(
+							(float)entity.motionX,
+							(float)-(BORDER_BOOST * 1.5D),
+							(float)(BORDER_BOOST * 1.5D));
+
+				}
+			default:
+				break;
+		}
+	}
+	
 	public static boolean isOpaqueCube() {
 	    return false;
 	}

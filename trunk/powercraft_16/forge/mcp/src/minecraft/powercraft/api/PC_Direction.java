@@ -24,7 +24,8 @@ public enum PC_Direction{
 
 	/** +X */
 	EAST(1, 0, 0),
-
+	
+	
 	/**
 	 * Used only by getOrientation, for invalid inputs
 	 */
