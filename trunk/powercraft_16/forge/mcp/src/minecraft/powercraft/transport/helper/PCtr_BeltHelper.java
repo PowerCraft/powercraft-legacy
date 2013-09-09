@@ -26,7 +26,7 @@ public class PCtr_BeltHelper {
 			PC_Vec3I current_pos, boolean bordersEnabled,
 			boolean motionEnabled, PC_Direction direction)
 	{
-		System.out.println(direction);
+
 		switch (direction)
 		{
 			case NORTH:
