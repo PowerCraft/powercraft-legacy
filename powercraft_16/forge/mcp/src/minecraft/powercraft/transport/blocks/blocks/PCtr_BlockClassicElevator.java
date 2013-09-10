@@ -7,24 +7,25 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_Vec3I;
+import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.registries.PC_TextureRegistry;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialElevator;
 
-@PC_BlockInfo(name = "ElevatorUp", blockid = "elevatorup", defaultid = 2060)
-public class PCtr_BlockElevatorUp extends PCtr_BlockBeltBase
+@PC_BlockInfo(name = "ElevatorUp", blockid = "elevatorup", defaultid = 2060, tileEntity=PCtr_BlockClassicElevatorTE.class)
+public class PCtr_BlockClassicElevator extends PC_Block
 {
-	// an Elevator is simply a conveyor belt that moves items up or down... so able to use base classes for belts.
-	public PCtr_BlockElevatorUp(int id)
+	// an Elevator is simply a conveyer belt that moves items up or down... so able to use base classes for belts.
+	public PCtr_BlockClassicElevator(int id)
 	{
-		super(id, PCtr_MaterialElevator.getMaterial(), true);
+		super(id, PCtr_MaterialElevator.getMaterial());
 		setCreativeTab(CreativeTabs.tabBlock);
 	}
 
 	@Override
 	public void loadIcons()
-	{
+	{		
 		this.blockIcon = PC_TextureRegistry.registerIcon("elevatorup");
 	}
 
@@ -35,9 +36,29 @@ public class PCtr_BlockElevatorUp extends PCtr_BlockBeltBase
 	}
 
 	@Override
+	public boolean isOpaqueCube()
+	{ 
+		return false;
+	}
+	
+	@Override
+	public void setBlockBoundsForItemRender()
+	{ 
+		this.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
+	}
+	
+	@Override
+	public boolean renderAsNormalBlock()
+	{ 
+		return false;
+	}
+	
+	
+	@Override
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
 	{
-		// TODO 1) check if valid entity (done)
+		// TODO 1) check if valid entity (done)		
+		System.out.println("EntityID: " + par5Entity.entityId);
 		PC_Vec3I curposition = new PC_Vec3I(par2, par3, par4);
 		if (!PCtr_BeltHelper.isEntityIgnored(par5Entity))
 		{
@@ -47,8 +68,8 @@ public class PCtr_BlockElevatorUp extends PCtr_BlockBeltBase
 
 	private void moveEntity(World world, Entity entity, PC_Vec3I curPosition)
 	{
-		// TODO: Check if there is an exit belt
-		PCtr_BeltHelper.moveEntityOnBelt(world, entity, curPosition, true, true, PC_Direction.UP);
+		boolean isPlayer = entity instanceof EntityPlayer;		
+		PCtr_BeltHelper.moveEntityOnBelt(world, entity, curPosition, isPlayer ? false : true, true, PC_Direction.UP);
 	}
 	
 	@Override	

@@ -25,7 +25,7 @@ public class PCtr_MaterialElevator extends Material
     @Override
     public boolean isSolid()
     {
-        return false;
+        return true;
     }
 
     @Override
