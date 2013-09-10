@@ -2,7 +2,7 @@ package powercraft.transport;
 
 import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
-import powercraft.transport.blocks.blocks.PCtr_BlockElevatorUp;
+import powercraft.transport.blocks.blocks.PCtr_BlockClassicElevator;
 import powercraft.transport.blocks.blocks.PCtr_BlockPrimitivePlate;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -22,7 +22,7 @@ public class PCtr_ModuleTransport extends PC_Module
 	public static PCtr_BlockPrimitivePlate primitivePlate;
 	
 	@PC_FieldGenerator
-	public static PCtr_BlockElevatorUp elevatorup;
+	public static PCtr_BlockClassicElevator elevatorup;
 	
 	@Override
 	@EventHandler
