@@ -48,6 +48,10 @@ public class PC_MathHelper {
 		return par0 >= 0 ? par0 : -par0;
 	}
 	
+	public static double abs_double(double par0) {
+		return par0 >= 0 ? par0 : -par0;
+	}
+	
 	public static int ceiling_float_int(float par0) {
 		int var1 = (int) par0;
 		return par0 > (float) var1 ? var1 + 1 : var1;
