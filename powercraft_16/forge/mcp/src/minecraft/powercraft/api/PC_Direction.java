@@ -3,6 +3,7 @@ package powercraft.api;
 
 import java.util.Map;
 
+import net.minecraft.entity.Entity;
 import net.minecraftforge.common.ForgeDirection;
 
 
@@ -94,6 +95,22 @@ public enum PC_Direction{
 	
 	public static PC_Direction getDirection(ForgeDirection forgeDirection){
 		return getOrientation(forgeDirection.ordinal());
+	}
+
+
+	public static PC_Direction getDirectionFromEntity(Entity entity) {
+		double x = PC_MathHelper.abs_double(entity.motionX);
+		double y = PC_MathHelper.abs_double(entity.motionY);
+		double z = PC_MathHelper.abs_double(entity.motionZ);
+		PC_Direction tmp;
+		boolean isNeg;
+		if(x>y && x>z){
+			tmp = PC_Direction.EAST;
+			isNeg=x<0;
+		}
+		else if(y>x && y>z) tmp = PC_Direction.UP;
+		else tmp = PC_Direction.SOUTH;
+		if()
 	}
 	
 }

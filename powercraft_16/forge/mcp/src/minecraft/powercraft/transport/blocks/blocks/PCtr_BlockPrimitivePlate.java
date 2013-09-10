@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_BlockWithoutTileEntity;
 import powercraft.api.registries.PC_TextureRegistry;
-import powercraft.transport.helper.PC_EntityVirtualPet;
+import powercraft.transport.helper.PC_EntityFractionless;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialConveyor;
 import cpw.mods.fml.relauncher.Side;
@@ -38,8 +38,8 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 
     @Override
     public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity){
-    	if(entity instanceof PC_EntityVirtualPet){
-    		
+    	if(entity instanceof PC_EntityFractionless){
+    		PCtr_BeltHelper.handleTrackerMovement(entity);
     		return;
     	}
     	if(entity.ridingEntity == null){

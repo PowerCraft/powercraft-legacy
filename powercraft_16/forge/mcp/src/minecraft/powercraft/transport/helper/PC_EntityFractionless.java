@@ -4,9 +4,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class PC_EntityVirtualPet extends Entity {
+public class PC_EntityFractionless extends Entity {
 
-	public PC_EntityVirtualPet(World par1World) {
+	public PC_EntityFractionless(World par1World) {
 		super(par1World);
 	}
 

@@ -35,14 +35,14 @@ public class PCtr_BeltHelper
 	}
 	
 	private static Entity getNewTrackerForEntity(Entity entity) {
-		PC_EntityVirtualPet tmp = new PC_EntityVirtualPet(entity.worldObj);
+		PC_EntityFractionless tmp = new PC_EntityFractionless(entity.worldObj);
 		tmp.riddenByEntity = entity;
 		return tmp;
 	}
 
 	public static void handleTrackerMovement(Entity entity) {
 		if(entity==null) return;
-		
+		PC_Direction.getDirectionFromEntity(entity);
 		
 	}
 
