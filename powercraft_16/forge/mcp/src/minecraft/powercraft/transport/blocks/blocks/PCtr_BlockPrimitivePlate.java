@@ -1,19 +1,18 @@
 package powercraft.transport.blocks.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_BlockWithoutTileEntity;
 import powercraft.api.registries.PC_TextureRegistry;
+import powercraft.transport.helper.PC_EntityVirtualPet;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialConveyor;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @PC_BlockInfo(name = "PrimitivePlate", blockid = "primitivePlate", defaultid = 2050)
 public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
@@ -39,13 +38,15 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 
     @Override
     public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity){
-    	boolean tmp;
-//    	if(entity instanceof EntityPlayer){
-//    		float f = ((EntityPlayer) entity).getRotationYawHead();
-//    		if(f<)
-//    	}
-    	
-    	//(entity.posX+0.5+(2*(i%1)-2)
+    	if(entity instanceof PC_EntityVirtualPet){
+    		
+    		return;
+    	}
+    	if(entity.ridingEntity == null){
+	    	PCtr_BeltHelper.addTrackerToEntity(entity);
+	    	return;
+	    }
+    	if(2+2==4) return;
     	if(entity.onGround && (i<=entity.posX && i+1>entity.posX) && (k<=entity.posZ && k+1>entity.posZ)){
     		updateSpeed(entity, entity.posX-i, entity.posZ-k);
     	}

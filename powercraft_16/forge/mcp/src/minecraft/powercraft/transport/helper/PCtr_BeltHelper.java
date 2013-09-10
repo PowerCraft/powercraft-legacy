@@ -29,6 +29,23 @@ public class PCtr_BeltHelper
 	public static final float STORAGE_BORDER_LONG = 0.8F;
 	public static final float STORAGE_BORDER_V = 0.6F;
 
+	public static void addTrackerToEntity(Entity entity){
+    	if(entity.ridingEntity!=null) return;
+    	entity.ridingEntity = getNewTrackerForEntity(entity);
+	}
+	
+	private static Entity getNewTrackerForEntity(Entity entity) {
+		PC_EntityVirtualPet tmp = new PC_EntityVirtualPet(entity.worldObj);
+		tmp.riddenByEntity = entity;
+		return tmp;
+	}
+
+	public static void handleTrackerMovement(Entity entity) {
+		if(entity==null) return;
+		
+		
+	}
+
 	public static void backupPercentageSpeed(float percent, Entity entity)
 	{
 		PC_Vec3 vec = restoreOldVelocityValue(entity);
