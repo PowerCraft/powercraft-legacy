@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+// this is spelled wrong... Frictionless is the right use.
 public class PC_EntityFractionless extends Entity {
 
 	public PC_EntityFractionless(World par1World) {
