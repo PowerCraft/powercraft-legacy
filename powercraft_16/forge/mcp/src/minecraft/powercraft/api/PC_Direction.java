@@ -113,4 +113,25 @@ public enum PC_Direction{
 		if()
 	}
 	
+	@Override
+	public String toString()
+	{
+		switch (this)
+		{
+			case NORTH:
+				return "North";
+			case EAST: 
+				return "East";
+			case SOUTH:
+				return "South";
+			case WEST:
+				return "West";
+			case UP:
+				return "Up";
+			case DOWN:
+				return "Down";
+			default:
+				return "Unknown";					
+		}
+	}
 }
