@@ -45,6 +45,47 @@ public class PCtr_BeltHelper
 		PC_Direction.getDirectionFromEntity(entity);
 		
 	}
+	
+	/**
+	 * Returns direction based on values passed in vec
+	 * @param vec Vector to compare
+	 * @param ignoreY Ignore vertical direction?
+	 * @return NORTH, SOUTH, EAST, WEST, UP, DOWN PC_Direction object.
+	 */
+	public static PC_Direction returnPrimaryDirection(PC_Vec3 vec, boolean ignoreY)
+	{
+		double motionx = vec.x;
+		double motiony = vec.y;
+		double motionz = vec.z;
+		
+		if (motionx == 0.0 && (ignoreY ? true : motiony == 0.0) && motionz == 0.0)
+			return PC_Direction.UNKNOWN;
+		// not moving vertically
+		if (Math.abs(motiony) < 0.1D || ignoreY)
+		{
+			if (Math.abs(motionx) > Math.abs(motionz)) 
+			{
+				if (motionx > 0)
+				{
+					return PC_Direction.EAST;
+				}
+				return PC_Direction.WEST;
+			}
+			else 
+			{
+				if (motionz > 0)
+				{
+					return PC_Direction.SOUTH;
+				}
+				return PC_Direction.NORTH;
+			}		
+		}		
+		if (motiony > 0)
+		{
+			return PC_Direction.UP;
+		}
+		return PC_Direction.DOWN;		
+	}
 
 	public static void backupPercentageSpeed(float percent, Entity entity)
 	{
