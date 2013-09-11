@@ -106,10 +106,17 @@ public enum PC_Direction{
 		boolean isNeg;
 		if(x>y && x>z){
 			tmp = PC_Direction.EAST;
-			isNeg=x<0;
+			isNeg = x<0;
 		}
-		else if(y>x && y>z) tmp = PC_Direction.UP;
-		else tmp = PC_Direction.SOUTH;
+		else if(y>x && y>z){
+			tmp = PC_Direction.UP;
+			isNeg = y<0;
+		}
+		else{
+			tmp = PC_Direction.SOUTH;
+			isNeg = z<0;
+		}
+		if(isNeg) tmp = tmp.getOpposite();
 		return tmp;
 	}
 	
