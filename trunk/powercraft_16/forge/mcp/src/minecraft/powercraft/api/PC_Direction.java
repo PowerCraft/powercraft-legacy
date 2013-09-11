@@ -110,7 +110,7 @@ public enum PC_Direction{
 		}
 		else if(y>x && y>z) tmp = PC_Direction.UP;
 		else tmp = PC_Direction.SOUTH;
-		if()
+		return tmp;
 	}
 	
 	@Override

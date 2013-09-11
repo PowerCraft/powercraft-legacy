@@ -88,10 +88,7 @@ public class PC_EntityDictionary
 		if (HasEntityID(eid))
 		{
 			PC_Vec3 vec = entityDictionary.get(eid);
-			// check rounded values			
-//			vec.y = BigDecimal.valueOf(vec.y).setScale(5, RoundingMode.HALF_UP).doubleValue();				
-//			evalues.y = BigDecimal.valueOf(evalues.y).setScale(5, RoundingMode.HALF_UP).doubleValue();			
-			
+			// check rounded values, currently 5 decimal places		
 			switch (edirection)
 			{
 				case NORTH:
@@ -103,9 +100,9 @@ public class PC_EntityDictionary
 				case WEST:
 					return BigDecimal.valueOf(evalues.x).setScale(5, RoundingMode.HALF_UP).doubleValue() < BigDecimal.valueOf(vec.x).setScale(5, RoundingMode.HALF_UP).doubleValue();
 				case UP:
-					return evalues.y > vec.y;
+					return BigDecimal.valueOf(evalues.y).setScale(5, RoundingMode.HALF_UP).doubleValue() > BigDecimal.valueOf(vec.y).setScale(5, RoundingMode.HALF_UP).doubleValue();
 				case DOWN:
-					return evalues.y < vec.y;
+					return BigDecimal.valueOf(evalues.y).setScale(5, RoundingMode.HALF_UP).doubleValue() < BigDecimal.valueOf(vec.y).setScale(5, RoundingMode.HALF_UP).doubleValue();
 				case UNKNOWN:
 					return false;					
 			}
