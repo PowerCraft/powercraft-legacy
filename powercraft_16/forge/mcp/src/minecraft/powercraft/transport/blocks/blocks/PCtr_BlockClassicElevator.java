@@ -7,26 +7,33 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_Vec3I;
-import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
+import powercraft.api.blocks.PC_BlockWithoutTileEntity;
 import powercraft.api.registries.PC_TextureRegistry;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialElevator;
 
-@PC_BlockInfo(name = "ElevatorUp", blockid = "elevatorup", defaultid = 2060, tileEntity=PCtr_BlockClassicElevatorTE.class)
-public class PCtr_BlockClassicElevator extends PC_Block
+@PC_BlockInfo(name = "ElevatorUp", blockid = "elevatorup", defaultid = 2060)
+public class PCtr_BlockClassicElevator extends PC_BlockWithoutTileEntity
 {
+	protected PC_Direction elevatorDirection;
 	// an Elevator is simply a conveyer belt that moves items up or down... so able to use base classes for belts.
 	public PCtr_BlockClassicElevator(int id)
 	{
 		super(id, PCtr_MaterialElevator.getMaterial());
 		setCreativeTab(CreativeTabs.tabBlock);
+		elevatorDirection = PC_Direction.UP;
 	}
 
 	@Override
 	public void loadIcons()
 	{		
 		this.blockIcon = PC_TextureRegistry.registerIcon("elevatorup");
+	}
+	
+	public PC_Direction getDirection()
+	{
+		return elevatorDirection;
 	}
 
 	@Override
@@ -60,6 +67,7 @@ public class PCtr_BlockClassicElevator extends PC_Block
 		// TODO 1) check if valid entity (done)		
 		System.out.println("EntityID: " + par5Entity.entityId);
 		PC_Vec3I curposition = new PC_Vec3I(par2, par3, par4);
+		System.out.println("Position: " + curposition.toString());
 		if (!PCtr_BeltHelper.isEntityIgnored(par5Entity))
 		{
 			moveEntity(par1World, par5Entity, curposition);
@@ -69,7 +77,7 @@ public class PCtr_BlockClassicElevator extends PC_Block
 	private void moveEntity(World world, Entity entity, PC_Vec3I curPosition)
 	{
 		boolean isPlayer = entity instanceof EntityPlayer;		
-		PCtr_BeltHelper.moveEntityOnBelt(world, entity, curPosition, isPlayer ? false : true, true, PC_Direction.UP);
+		//PCtr_BeltHelper.moveEntityOnBelt(world, entity, curPosition, isPlayer ? false : true, true, elevatorDirection);
 	}
 	
 	@Override	

@@ -3,7 +3,9 @@ package powercraft.transport;
 import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
 import powercraft.transport.blocks.blocks.PCtr_BlockClassicElevator;
+import powercraft.transport.blocks.blocks.PCtr_BlockClassicElevatorDown;
 import powercraft.transport.blocks.blocks.PCtr_BlockPrimitivePlate;
+import powercraft.transport.helper.PC_EntityDictionary;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -21,9 +23,13 @@ public class PCtr_ModuleTransport extends PC_Module
 	@PC_FieldGenerator
 	public static PCtr_BlockPrimitivePlate primitivePlate;
 	
-	@PC_FieldGenerator
+	@PC_FieldGenerator	
 	public static PCtr_BlockClassicElevator elevatorup;
 	
+	@PC_FieldGenerator
+	public static PCtr_BlockClassicElevatorDown elevatordown;
+	
+	public static PC_EntityDictionary trDict;
 	@Override
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -34,6 +40,7 @@ public class PCtr_ModuleTransport extends PC_Module
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		defaultInit(event);
+		trDict = new PC_EntityDictionary();
 	}
 
 	@Override
