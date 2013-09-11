@@ -29,8 +29,7 @@ public class PC_Vec3 {
 			return vec.x == x && vec.y == y && vec.z == z;
 		}
 		return false;
-	}
-
+	}	
 
 	@Override
 	public int hashCode() {
