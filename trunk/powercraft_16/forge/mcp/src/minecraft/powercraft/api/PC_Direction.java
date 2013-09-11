@@ -98,17 +98,19 @@ public enum PC_Direction{
 	}
 
 
-	public static PC_Direction getDirectionFromEntity(Entity entity) {
+	public static PC_Direction getDirectionFromEntity(Entity entity, boolean considerY) {
 		double x = PC_MathHelper.abs_double(entity.motionX);
 		double y = PC_MathHelper.abs_double(entity.motionY);
 		double z = PC_MathHelper.abs_double(entity.motionZ);
 		PC_Direction tmp;
 		boolean isNeg;
-		if(x>y && x>z){
+		if(x<0.1&&y<0.1&&z<0.1) return PC_Direction.UNKNOWN;
+		
+		if((x>y||!considerY) && x>z){
 			tmp = PC_Direction.EAST;
 			isNeg = x<0;
 		}
-		else if(y>x && y>z){
+		else if(considerY && y>x && y>z){
 			tmp = PC_Direction.UP;
 			isNeg = y<0;
 		}
