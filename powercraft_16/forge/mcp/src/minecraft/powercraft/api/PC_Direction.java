@@ -108,15 +108,15 @@ public enum PC_Direction{
 		
 		if((x>y||!considerY) && x>z){
 			tmp = PC_Direction.EAST;
-			isNeg = x<0;
+			isNeg = entity.motionX<0;
 		}
 		else if(considerY && y>x && y>z){
 			tmp = PC_Direction.UP;
-			isNeg = y<0;
+			isNeg = entity.motionY<0;
 		}
 		else{
 			tmp = PC_Direction.SOUTH;
-			isNeg = z<0;
+			isNeg = entity.motionZ<0;
 		}
 		if(isNeg) tmp = tmp.getOpposite();
 		return tmp;
