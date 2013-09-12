@@ -3,10 +3,14 @@ package powercraft.api.items;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import powercraft.api.PC_CreativeTab;
 import powercraft.api.PC_Module;
+import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.registries.PC_ModuleRegistry;
 import powercraft.api.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -64,6 +68,16 @@ public abstract class PC_Item extends Item {
 		if(getCreativeTab()==null)
 			return new CreativeTabs[]{};
 		return new CreativeTabs[]{ getCreativeTab(), PC_CreativeTab.getCrativeTab()};
+	}
+	
+	@Override
+	public void onUpdate(ItemStack itemStack, World world, Entity entity, int i, boolean currentItem) {
+		onTick(itemStack, world, PC_InventoryUtils.getInventoryFromEntity(entity), i);
+	}
+
+
+	public void onTick(ItemStack itemStack, World world, IInventory inventory, int i) {
+		
 	}
 	
 }

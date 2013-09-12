@@ -1,20 +1,29 @@
-package powercraft.api;
+package powercraft.api.inventory;
 
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
+import powercraft.api.items.PC_Item;
 
 
 public class PC_InventoryUtils {
 
-	public static void dropInventoryContent(World world, double x, double y, double z, IInventory inventory) {
-
+	public static void dropInventoryContent(IInventory inventory, World world, double x, double y, double z) {
 		if (!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-			for (int i = 0; i < inventory.getSizeInventory(); i++) {
+			int size = inventory.getSizeInventory();
+			for (int i = 0; i < size; i++) {
+				if(inventory instanceof PC_IInventory){
+					if(!((PC_IInventory)inventory).canDropStack(i))
+						continue;
+				}
 				ItemStack itemStack = inventory.getStackInSlot(i);
 				if (itemStack != null) {
 					inventory.setInventorySlotContents(i, null);
@@ -30,7 +39,6 @@ public class PC_InventoryUtils {
 		}
 	}
 
-
 	public static void loadInventoryFromNBT(IInventory inventory, NBTTagCompound nbtTagCompound, String key) {
 
 		NBTTagList list = nbtTagCompound.getTagList(key);
@@ -44,7 +52,8 @@ public class PC_InventoryUtils {
 	public static void saveInventoryToNBT(IInventory inventory, NBTTagCompound nbtTagCompound, String key) {
 
 		NBTTagList list = new NBTTagList();
-		for (int i = 0; i < inventory.getSizeInventory(); i++) {
+		int size = inventory.getSizeInventory();
+		for (int i = 0; i < size; i++) {
 			ItemStack itemStack = inventory.getStackInSlot(i);
 			if (itemStack != null) {
 				NBTTagCompound nbtTagCompound2 = new NBTTagCompound();
@@ -56,4 +65,37 @@ public class PC_InventoryUtils {
 		nbtTagCompound.setTag(key, list);
 	}
 
+	public static int getSlotStackLimit(IInventory inventory, int i){
+		if(inventory instanceof PC_IInventory){
+			((PC_IInventory)inventory).getSlotStackLimit(i);
+		}
+		return inventory.getInventoryStackLimit();
+	}
+
+	public static void onTick(IInventory inventory, World world) {
+		int size = inventory.getSizeInventory();
+		for(int i=0; i<size; i++){
+			ItemStack itemStack = inventory.getStackInSlot(i);
+			if(itemStack!=null){
+				Item item = itemStack.getItem();
+				if(item instanceof PC_Item){
+					((PC_Item)item).onTick(itemStack, world, inventory, i);
+				}
+			}
+		}
+	}
+
+	public static IInventory getInventoryFromEntity(Entity entity) {
+		if(entity instanceof PC_IInventoryProvider){
+			return ((PC_IInventoryProvider)entity).getInventory();
+		}else if(entity instanceof IInventory){
+			return (IInventory)entity;
+		}else if(entity instanceof EntityPlayer){
+			return ((EntityPlayer)entity).inventory;
+		}else if(entity instanceof EntityLiving){
+			return new PC_WrapperInventory(((EntityLiving)entity).getLastActiveItems());
+		}
+		return null;
+	}
+	
 }
