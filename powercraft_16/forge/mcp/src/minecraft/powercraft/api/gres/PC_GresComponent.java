@@ -391,6 +391,7 @@ public abstract class PC_GresComponent {
 
 		updateMinSize();
 		updatePrefSize();
+		updateMaxSize();
 		notifyParentOfChange();
 	}
 

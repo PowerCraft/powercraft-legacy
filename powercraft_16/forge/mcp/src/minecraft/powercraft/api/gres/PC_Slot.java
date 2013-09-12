@@ -48,7 +48,10 @@ public class PC_Slot extends Slot {
 		return super.canTakeStack(entityPlayer);
 	}
 
-
+	public boolean canDragIntoSlot() {
+		return true;
+	}
+	
 	public void setBackgroundStack(ItemStack backgroundStack) {
 
 		this.backgroundStack = backgroundStack;

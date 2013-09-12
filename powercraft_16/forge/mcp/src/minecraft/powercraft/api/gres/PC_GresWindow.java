@@ -1,7 +1,12 @@
 package powercraft.api.gres;
 
 
+import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.inventory.Slot;
+
+import org.lwjgl.opengl.GL11;
 
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
@@ -11,25 +16,47 @@ public class PC_GresWindow extends PC_GresContainer {
 
 	private static final String textureName = "Window";
 
-	private List<PC_GresWindowSideTab> sideTabs;
+	private List<PC_GresWindowSideTab> sideTabs = new ArrayList<PC_GresWindowSideTab>();
 	
 	public PC_GresWindow(String title) {
-
 		frame.setTo(new PC_RectI(4, 4 + fontRenderer.FONT_HEIGHT + 2, 4, 4));
 		setText(title);
 	}
 
+	public void addSideTab(PC_GresWindowSideTab sideTab) {
+		if (!sideTabs.contains(sideTab)) {
+			sideTabs.add(sideTab);
+			sideTab.setParent(this);
+			notifyChange();
+		}
+	}
 
+
+	public void removeSideTab(PC_GresWindowSideTab sideTab) {
+		sideTabs.remove(sideTab);
+		sideTab.setParent(null);
+		notifyChange();
+	}
+
+
+	public void removeAllSideTabs() {
+		while (!sideTabs.isEmpty())
+			sideTabs.remove(0).setParent(null);
+	}
+
+
+	public boolean isSideTab(PC_GresWindowSideTab sideTab) {
+		return sideTabs.contains(sideTab);
+	}
+	
 	@Override
 	protected PC_Vec2I calculateMinSize() {
-
 		return getTextureMinSize(textureName).max(fontRenderer.getStringWidth(text) + 8, 0);
 	}
 
 
 	@Override
 	protected PC_Vec2I calculateMaxSize() {
-
 		return new PC_Vec2I(-1, -1);
 	}
 
@@ -40,12 +67,108 @@ public class PC_GresWindow extends PC_GresContainer {
 		return new PC_Vec2I(-1, -1);
 	}
 
-
+	@Override
+	protected void notifyChange() {
+		super.notifyChange();
+		PC_Vec2I pos = new PC_Vec2I(rect.width-frame.x, 0);
+		for (PC_GresWindowSideTab sideTab : sideTabs) {
+			sideTab.setLocation(pos);
+			pos.y += sideTab.getSize().y+2;
+		}
+	}
+	
+	@Override
+	protected void setParentVisible(boolean visible) {
+		super.setParentVisible(enabled);
+		for (PC_GresWindowSideTab sideTab : sideTabs) {
+			sideTab.setParentVisible(visible);
+		}
+	}
+	
+	@Override
+	protected void setParentEnabled(boolean enabled) {
+		super.setParentEnabled(enabled);
+		for (PC_GresWindowSideTab sideTab : sideTabs) {
+			sideTab.setParentEnabled(visible);
+		}
+	}
+	
 	@Override
 	protected void paint(PC_RectI scissor, float timeStamp) {
-
 		drawTexture(textureName, 0, 0, rect.width, rect.height);
 		drawString(text, 4, 4, rect.width - 4, PC_GresAlign.H.CENTER, false);
+		
+	}
+	
+	@Override
+	protected void doPaint(PC_Vec2I offset, PC_RectI scissorOld, double scale, int displayHeight, float timeStamp) {
+		if (visible) {
+			PC_RectI rect = new PC_RectI(this.rect);
+			rect.x += offset.x;
+			rect.y += offset.y;
+			PC_RectI scissor = setDrawRect(scissorOld, rect, scale, displayHeight);
+			GL11.glPushMatrix();
+			GL11.glTranslatef(this.rect.x, this.rect.y, 0);
+			GL11.glColor3f(1.0f, 1.0f, 1.0f);
+			paint(scissor, timeStamp);
+			rect.x += frame.x;
+			rect.y += frame.y;
+			GL11.glTranslatef(frame.x, frame.y, 0);
+			offset = rect.getLocation();
+			for (PC_GresComponent child : childs) {
+				child.doPaint(offset, scissor, scale, displayHeight, timeStamp);
+			}
+			for (PC_GresWindowSideTab sideTab : sideTabs) {
+				sideTab.doPaint(offset, null, scale, displayHeight, timeStamp);
+			}
+			GL11.glPopMatrix();
+		}
+	}
+	
+	@Override
+	protected PC_GresComponent getComponentAtPosition(PC_Vec2I position) {
+		PC_GresComponent component = super.getComponentAtPosition(position);
+		if(component!=null) return component;
+		if (visible) {
+			position = position.sub(frame.getLocation());
+			for (PC_GresWindowSideTab sideTab : sideTabs) {
+				PC_RectI rect = sideTab.getRect();
+				component = sideTab.getComponentAtPosition(position.sub(rect.getLocation()));
+				if (component != null) return component;
+			}
+		}
+		return null;
 	}
 
+	@Override
+	protected void onTick() {
+		super.onTick();
+		for(PC_GresWindowSideTab sideTab:sideTabs){
+			sideTab.onTick();
+		}
+	}
+	
+	@Override
+	protected Slot getSlotAtPosition(PC_Vec2I position) {
+		Slot slot = super.getSlotAtPosition(position);
+		if (slot != null) return slot;
+		if (visible) {
+			position = position.sub(frame.getLocation());
+			for (PC_GresWindowSideTab sideTab : sideTabs) {
+				PC_RectI rect = sideTab.getRect();
+				slot = sideTab.getSlotAtPosition(position.sub(rect.getLocation()));
+				if (slot != null) return slot;
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	protected void tryActionOnKeyTyped(char key, int keyCode) {
+		super.tryActionOnKeyTyped(key, keyCode);
+		for(PC_GresWindowSideTab sideTab:sideTabs){
+			sideTab.tryActionOnKeyTyped(key, keyCode);
+		}
+	}
+	
 }

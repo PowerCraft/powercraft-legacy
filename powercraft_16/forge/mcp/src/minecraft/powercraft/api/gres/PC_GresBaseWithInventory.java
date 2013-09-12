@@ -105,4 +105,12 @@ public abstract class PC_GresBaseWithInventory extends Container {
 		}
 	}
 
+	@Override
+	public boolean canDragIntoSlot(Slot slot){
+		if(slot instanceof PC_Slot){
+			return ((PC_Slot)slot).canDragIntoSlot();
+		}
+        return true;
+    }
+	
 }
