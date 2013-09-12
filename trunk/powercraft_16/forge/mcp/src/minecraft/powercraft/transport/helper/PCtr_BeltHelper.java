@@ -40,10 +40,9 @@ public class PCtr_BeltHelper
 		return tmp;
 	}
 
-	public static void handleTrackerMovement(Entity entity) {
-		if(entity==null) return;
-		PC_Direction.getDirectionFromEntity(entity);
-		
+	public static PC_Direction handleTrackerMovement(Entity entity) {
+		if(entity==null) return PC_Direction.UNKNOWN;
+		return PC_Direction.getDirectionFromEntity(entity, false);		
 	}
 	
 	/**
