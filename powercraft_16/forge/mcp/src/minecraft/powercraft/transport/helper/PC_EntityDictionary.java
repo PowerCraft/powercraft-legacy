@@ -2,6 +2,7 @@ package powercraft.transport.helper;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import powercraft.api.PC_Direction;
@@ -10,10 +11,10 @@ import powercraft.api.PC_Vec3;
 
 public class PC_EntityDictionary
 {
-	protected static Hashtable<Integer, PC_Vec3> entityDictionary;
+	protected static HashMap<Integer, PC_Vec3> entityDictionary;
 	public PC_EntityDictionary()
 	{
-		entityDictionary = new Hashtable<Integer, PC_Vec3>();
+		entityDictionary = new HashMap<Integer, PC_Vec3>();
 	}
 	
 	public static int GetSize()
