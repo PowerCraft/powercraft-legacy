@@ -123,7 +123,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 
 		if (minSize == null && layout != null) {
 			this.minSize.setTo(layout.getMinimumLayoutSize(this).add(frame.x + frame.width, frame.y + frame.height));
-			maxSizeSet = false;
+			minSizeSet = false;
 		} else {
 			if (minSize == null) {
 				this.minSize.setTo(calculateMinSize().add(frame.x + frame.width, frame.y + frame.height));
@@ -238,12 +238,11 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 			position = position.sub(frame.getLocation());
 			for (PC_GresComponent child : childs) {
 				PC_RectI rect = child.getRect();
-				if (rect.contains(position)) {
-					PC_GresComponent component = child.getComponentAtPosition(position.sub(rect.getLocation()));
-					if (component != null) return component;
-				}
+				PC_GresComponent component = child.getComponentAtPosition(position.sub(rect.getLocation()));
+				if (component != null) return component;
 			}
-			return this;
+			if (rect.contains(position))
+				return this;
 		}
 		return null;
 	}
@@ -265,10 +264,8 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 			position = position.sub(frame.getLocation());
 			for (PC_GresComponent child : childs) {
 				PC_RectI rect = child.getRect();
-				if (rect.contains(position)) {
-					Slot slot = child.getSlotAtPosition(position.sub(rect.getLocation()));
-					if (slot != null) return slot;
-				}
+				Slot slot = child.getSlotAtPosition(position.sub(rect.getLocation()));
+				if (slot != null) return slot;
 			}
 		}
 		return null;

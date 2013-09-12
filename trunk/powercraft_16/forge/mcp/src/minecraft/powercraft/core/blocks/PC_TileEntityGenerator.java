@@ -11,6 +11,7 @@ import powercraft.api.energy.PC_IEnergyProvider;
 import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGuiOpenHandler;
+import powercraft.api.inventory.PC_Inventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,8 +27,7 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 
 
 	public PC_TileEntityGenerator() {
-
-		super(1);
+		super("Generator", new PC_Inventory[]{new PC_Inventory("Generator", 1, 64, PC_Inventory.USEABLEBYPLAYER|PC_Inventory.SIDEINSERTABLE|PC_Inventory.DROPSTACKS|PC_Inventory.SIDEEXTRACTABLE)});
 	}
 
 
@@ -77,8 +77,9 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 	public void updateEntity() {
 
 		if (burnTime <= 0 && !isClient()) {
-			if (inventoryContents[0] != null) {
-				maxBurnTime = PC_FuelHandler.getItemBurnTime(inventoryContents[0]);
+			ItemStack content = getStackInSlot(0);
+			if (content != null) {
+				maxBurnTime = PC_FuelHandler.getItemBurnTime(content);
 				burnTime = maxBurnTime;
 				if (burnTime > 0) {
 					decrStackSize(0, 1);
