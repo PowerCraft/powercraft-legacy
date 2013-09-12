@@ -1,6 +1,8 @@
 package powercraft.api.gres;
 
 
+import java.util.List;
+
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 
@@ -9,7 +11,8 @@ public class PC_GresWindow extends PC_GresContainer {
 
 	private static final String textureName = "Window";
 
-
+	private List<PC_GresWindowSideTab> sideTabs;
+	
 	public PC_GresWindow(String title) {
 
 		frame.setTo(new PC_RectI(4, 4 + fontRenderer.FONT_HEIGHT + 2, 4, 4));
