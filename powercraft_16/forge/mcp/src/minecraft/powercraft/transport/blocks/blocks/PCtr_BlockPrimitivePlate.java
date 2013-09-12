@@ -72,36 +72,32 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 					boolean isgreater = transportDictionary.NewMotionGreater(entity.entityId, emotion, oldDir);				
 					if (!isgreater)
 					{						
-						// need to add the lost velocity to the entity
-						double motiondelta = 0;						
-						
+//						double motiondelta = 0;						
 						switch (oldDir)
 						{
 							case NORTH:
-								motiondelta = Math.abs(storedmotion.z) - Math.abs(emotion.z);
-								System.out.println("  -> Going North with Delta: " + motiondelta);
-								entity.addVelocity(0, 0, -motiondelta);
+								//motiondelta = Math.abs(storedmotion.z) - Math.abs(emotion.z);
+								//System.out.println("  -> Going North with Delta: " + motiondelta);
+								entity.motionZ = storedmotion.z; // .addVelocity(0, 0, -motiondelta);
 								System.out.println("  -> Added Velocity, New motion (z): " + entity.motionZ);
 								break;
 							case EAST:
-								motiondelta = Math.abs(storedmotion.x) - Math.abs(emotion.x);
-								System.out.println("  -> Going East with Delta: " + motiondelta);
-//								entity.addVelocity(motiondelta, 0, 0);
+								//motiondelta = Math.abs(storedmotion.x) - Math.abs(emotion.x);
+								//System.out.println("  -> Going East with Delta: " + motiondelta);
 								entity.motionX = storedmotion.x;
-								System.out.println("  -> Added Velocity, New motion (x): " + entity.motionX);								
+								//System.out.println("  -> Added Velocity, New motion (x): " + entity.motionX);								
 								break;
 							case SOUTH:
-								motiondelta = Math.abs(storedmotion.z) - Math.abs(emotion.z);
-								System.out.println("  -> Going South with Delta: " + motiondelta);
-								entity.addVelocity(0, 0, motiondelta);
-								System.out.println("  -> Added Velocity, New motion (z): " + entity.motionZ);								
+								//motiondelta = Math.abs(storedmotion.z) - Math.abs(emotion.z);
+								//System.out.println("  -> Going South with Delta: " + motiondelta);
+								entity.motionZ = storedmotion.z; // .addVelocity(0, 0, motiondelta);
+								//System.out.println("  -> Added Velocity, New motion (z): " + entity.motionZ);								
 								break;
 							case WEST:
-								motiondelta = Math.abs(storedmotion.x) - Math.abs(emotion.x);
-								System.out.println("  -> Going West with Delta: " + motiondelta);
-//								entity.addVelocity(-motiondelta, 0, 0);
+								//motiondelta = Math.abs(storedmotion.x) - Math.abs(emotion.x);
+								//System.out.println("  -> Going West with Delta: " + motiondelta);
 								entity.motionX = storedmotion.x;
-								System.out.println("  -> Added Velocity, New motion (x): " + entity.motionX);								
+								//System.out.println("  -> Added Velocity, New motion (x): " + entity.motionX);								
 								break;
 							default:
 									break;
@@ -125,42 +121,13 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 			}
 			else
 			{
-				System.out.println("Adding EntityID : " + entity.entityId);
+//				System.out.println("Adding EntityID : " + entity.entityId);
 				transportDictionary.AddEntityValues(entity.entityId, emotion);				
 			}
-			System.out.println("--------------------------------------------------------------------");
+//			System.out.println("--------------------------------------------------------------------");
 		}
 	}
-/* Commented out old code, trying new Dictionary Implementation
-    @Override
-    public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity){
-    	if(entity instanceof PC_EntityFractionless){
-    		PCtr_BeltHelper.handleTrackerMovement(entity);
-    		return;
-    	}
-    	if(entity.ridingEntity == null){
-	    	PCtr_BeltHelper.addTrackerToEntity(entity);
-	    	return;
-	    }
-    	if(2+2==4) return;
-    	if(entity.onGround && (i<=entity.posX && i+1>entity.posX) && (k<=entity.posZ && k+1>entity.posZ)){
-    		updateSpeed(entity, entity.posX-i, entity.posZ-k);
-    	}
-    }
-    
-    private void updateSpeed(Entity entity, double offX, double offZ){
-    	PCtr_BeltHelper.backupPercentageSpeed(1, entity);
-    	if(Math.abs(entity.motionX)>Math.abs(entity.motionZ)){
-    		entity.motionZ*=0.5f;
-    		entity.motionZ+=(Math.abs(entity.motionX)>1?1:Math.abs(entity.motionX))*1.5*(0.5-offZ);
-    	}else{
-    		entity.motionX*=0.5f;
-    		entity.motionX+=(Math.abs(entity.motionZ)>1?1:Math.abs(entity.motionZ))*1.5*(0.5-offX);
-    	}
-    	
-    	
-    }
-  */  
+
 	@Override
 	public boolean isOpaqueCube()
 	{
