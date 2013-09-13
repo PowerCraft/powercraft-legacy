@@ -3,7 +3,6 @@ package powercraft.api.inventory;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -11,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
+import powercraft.api.PC_Utils;
 import powercraft.api.items.PC_Item;
 
 
@@ -27,13 +27,7 @@ public class PC_InventoryUtils {
 				ItemStack itemStack = inventory.getStackInSlot(i);
 				if (itemStack != null) {
 					inventory.setInventorySlotContents(i, null);
-					float f = 0.7F;
-					double d0 = (world.rand.nextFloat() * f) + (1.0F - f) * 0.5;
-					double d1 = (world.rand.nextFloat() * f) + (1.0F - f) * 0.5;
-					double d2 = (world.rand.nextFloat() * f) + (1.0F - f) * 0.5;
-					EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-					entityitem.delayBeforeCanPickup = 10;
-					world.spawnEntityInWorld(entityitem);
+					PC_Utils.spawnItem(world, x, y, z, itemStack);
 				}
 			}
 		}

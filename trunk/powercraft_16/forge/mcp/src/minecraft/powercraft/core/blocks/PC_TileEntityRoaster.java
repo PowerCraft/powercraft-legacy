@@ -91,7 +91,7 @@ public class PC_TileEntityRoaster extends PC_TileEntity implements PC_IEnergyCon
 							eitem.motionZ = item.motionZ;
 							eitem.delayBeforeCanPickup = 7;
 
-							worldObj.spawnEntityInWorld(eitem);
+							PC_Utils.spawnEntity(worldObj, eitem);
 
 							if (--item.getEntityItem().stackSize <= 0) {
 								item.setDead();
