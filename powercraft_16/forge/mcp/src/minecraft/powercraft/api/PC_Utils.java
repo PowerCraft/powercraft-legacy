@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.Side;
 
 
 public class PC_Utils {
-
+	
 	public static final int BLOCK_NOTIFY = 1, BLOCK_UPDATE = 2, BLOCK_ONLY_SERVERSIDE = 4;
 
 	protected static PC_Utils instance;

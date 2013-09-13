@@ -11,9 +11,17 @@ import net.minecraft.inventory.Slot;
 import org.lwjgl.opengl.GL11;
 
 import powercraft.api.PC_ClientUtils;
+import powercraft.api.PC_Debug;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
-import powercraft.api.gres.events.*;
+import powercraft.api.gres.events.PC_GresEvent;
+import powercraft.api.gres.events.PC_GresKeyEvent;
+import powercraft.api.gres.events.PC_GresMouseButtonEvent;
+import powercraft.api.gres.events.PC_GresMouseEvent;
+import powercraft.api.gres.events.PC_GresMouseMoveEvent;
+import powercraft.api.gres.events.PC_GresMouseWheelEvent;
+import powercraft.api.gres.events.PC_IGresEventListener;
+import powercraft.api.gres.events.PC_IGresEventListenerEx;
 
 
 @SuppressWarnings("unused")
@@ -441,22 +449,24 @@ public abstract class PC_GresComponent {
 	}
 
 	protected void doDebugRendering(int x, int y, int width, int height){
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_BLEND);
-		int hash = hashCode();
-		int red = hash>>16&255;
-		int green = hash>>8&255;
-		int blue = hash&255;
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.setColorRGBA(red, green, blue, 128);
-		tessellator.addVertex(x, y + height, 0);
-		tessellator.addVertex(x + width, y + height, 0);
-		tessellator.addVertex(x + width, y, 0);
-		tessellator.addVertex(x, y, 0);
-		tessellator.draw();
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		if(PC_Debug.DEBUG){
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			GL11.glEnable(GL11.GL_BLEND);
+			int hash = hashCode();
+			int red = hash>>16&255;
+			int green = hash>>8&255;
+			int blue = hash&255;
+			Tessellator tessellator = Tessellator.instance;
+			tessellator.startDrawingQuads();
+			tessellator.setColorRGBA(red, green, blue, 128);
+			tessellator.addVertex(x, y + height, 0);
+			tessellator.addVertex(x + width, y + height, 0);
+			tessellator.addVertex(x + width, y, 0);
+			tessellator.addVertex(x, y, 0);
+			tessellator.draw();
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+		}
 	}
 
 	protected abstract void paint(PC_RectI scissor, float timeStamp);
