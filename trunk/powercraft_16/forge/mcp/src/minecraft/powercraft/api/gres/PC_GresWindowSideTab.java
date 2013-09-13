@@ -14,6 +14,19 @@ public class PC_GresWindowSideTab extends PC_GresContainer {
 	}
 	
 	@Override
+	protected void setParent(PC_GresContainer parent) {
+		if(parent instanceof PC_GresWindow){
+			this.parent = parent;
+			parentVisible = parent.isRecursiveVisible();
+			parentEnabled = parent.isRecursiveEnabled();
+		}else if (parent == null) {
+			this.parent = null;
+			parentVisible = true;
+			parentEnabled = true;
+		}
+	}
+	
+	@Override
 	protected PC_Vec2I calculateMinSize() {
 		return new PC_Vec2I(16, 16);
 	}
@@ -30,7 +43,7 @@ public class PC_GresWindowSideTab extends PC_GresContainer {
 	
 	@Override
 	protected void paint(PC_RectI scissor, float timeStamp) {
-		
+		drawTexture("Frame", -2, 0, rect.width+2, rect.height);
 	}
 	
 	@Override
@@ -43,11 +56,19 @@ public class PC_GresWindowSideTab extends PC_GresContainer {
 	protected void onTick() {
 		super.onTick();
 		if(openSideTab==this){
-			size.setTo(size.add(2).max(16));
-			rect.setSize(size);
+			size.setTo(size.add(2).min(100));
 		}else{
 			size.setTo(size.sub(2).max(16));
-			rect.setSize(size);
+		}
+		setSize(size);
+	}
+
+	@Override
+	protected void handleMouseButtonClick(PC_Vec2I mouse, int buttons, int eventButton) {
+		if(openSideTab == this){
+			openSideTab = null;
+		}else{
+			openSideTab = this;
 		}
 	}
 	

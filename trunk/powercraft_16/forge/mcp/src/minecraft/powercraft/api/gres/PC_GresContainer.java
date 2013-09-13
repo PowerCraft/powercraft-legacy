@@ -78,7 +78,11 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 		if (!childs.contains(component)) {
 			childs.add(component);
 			component.setParent(this);
-			notifyChange();
+			if(component.getParent()==this){
+				notifyChange();
+			}else{
+				childs.remove(component);
+			}
 		}
 	}
 
@@ -219,6 +223,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 			GL11.glTranslatef(this.rect.x, this.rect.y, 0);
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			paint(scissor, timeStamp);
+			doDebugRendering(0, 0, rect.width, rect.height);
 			rect.x += frame.x;
 			rect.y += frame.y;
 			GL11.glTranslatef(frame.x, frame.y, 0);

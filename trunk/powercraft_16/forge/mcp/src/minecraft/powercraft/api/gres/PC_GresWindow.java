@@ -27,6 +27,7 @@ public class PC_GresWindow extends PC_GresContainer {
 		if (!sideTabs.contains(sideTab)) {
 			sideTabs.add(sideTab);
 			sideTab.setParent(this);
+			sideTab.setSize(sideTab.getMinSize());
 			notifyChange();
 		}
 	}
@@ -67,10 +68,19 @@ public class PC_GresWindow extends PC_GresContainer {
 		return new PC_Vec2I(-1, -1);
 	}
 
+	private void calculateMaxSideTabX(){
+		for (PC_GresWindowSideTab sideTab : sideTabs) {
+			if(sideTab.getSize().x+4>frame.x || sideTab.getSize().x+4>frame.width){
+				frame.x = frame.width = sideTab.getSize().x+4;
+			}
+		}
+	}
+	
 	@Override
 	protected void notifyChange() {
+		calculateMaxSideTabX();
 		super.notifyChange();
-		PC_Vec2I pos = new PC_Vec2I(rect.width-frame.x, 0);
+		PC_Vec2I pos = new PC_Vec2I(rect.width-frame.width+4, 4);
 		for (PC_GresWindowSideTab sideTab : sideTabs) {
 			sideTab.setLocation(pos);
 			pos.y += sideTab.getSize().y+2;
@@ -95,9 +105,8 @@ public class PC_GresWindow extends PC_GresContainer {
 	
 	@Override
 	protected void paint(PC_RectI scissor, float timeStamp) {
-		drawTexture(textureName, 0, 0, rect.width, rect.height);
-		drawString(text, 4, 4, rect.width - 4, PC_GresAlign.H.CENTER, false);
-		
+		drawTexture(textureName, frame.x - 4, 0, rect.width - frame.width - frame.x + 8, rect.height);
+		drawString(text, frame.x, 4, rect.width - frame.width - frame.x, PC_GresAlign.H.CENTER, false);
 	}
 	
 	@Override
@@ -111,6 +120,7 @@ public class PC_GresWindow extends PC_GresContainer {
 			GL11.glTranslatef(this.rect.x, this.rect.y, 0);
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			paint(scissor, timeStamp);
+			doDebugRendering(0, 0, rect.width, rect.height);
 			rect.x += frame.x;
 			rect.y += frame.y;
 			GL11.glTranslatef(frame.x, frame.y, 0);
@@ -118,8 +128,10 @@ public class PC_GresWindow extends PC_GresContainer {
 			for (PC_GresComponent child : childs) {
 				child.doPaint(offset, scissor, scale, displayHeight, timeStamp);
 			}
+			GL11.glTranslatef(-frame.x, -frame.y, 0);
+			offset = offset.sub(frame.getLocation());
 			for (PC_GresWindowSideTab sideTab : sideTabs) {
-				sideTab.doPaint(offset, null, scale, displayHeight, timeStamp);
+				sideTab.doPaint(offset, scissor, scale, displayHeight, timeStamp);
 			}
 			GL11.glPopMatrix();
 		}
@@ -128,15 +140,17 @@ public class PC_GresWindow extends PC_GresContainer {
 	@Override
 	protected PC_GresComponent getComponentAtPosition(PC_Vec2I position) {
 		PC_GresComponent component = super.getComponentAtPosition(position);
-		if(component!=null) return component;
-		/*if (visible) {
-			position = position.sub(frame.getLocation());
-			for (PC_GresWindowSideTab sideTab : sideTabs) {
+		if(component!=this) return component;
+		if (visible) {
+			for (PC_GresWindowSideTab sideTab:sideTabs) {
 				PC_RectI rect = sideTab.getRect();
-				component = sideTab.getComponentAtPosition(position.sub(rect.getLocation()));
-				if (component != null) return component;
+				if (rect.contains(position)){
+					component = sideTab.getComponentAtPosition(position.sub(rect.getLocation()));
+					if (component != null) return component;
+				}
 			}
-		}*/
+			return this;
+		}
 		return null;
 	}
 
@@ -153,8 +167,7 @@ public class PC_GresWindow extends PC_GresContainer {
 		Slot slot = super.getSlotAtPosition(position);
 		if (slot != null) return slot;
 		if (visible) {
-			position = position.sub(frame.getLocation());
-			for (PC_GresWindowSideTab sideTab : sideTabs) {
+			for (PC_GresWindowSideTab sideTab:sideTabs) {
 				PC_RectI rect = sideTab.getRect();
 				slot = sideTab.getSlotAtPosition(position.sub(rect.getLocation()));
 				if (slot != null) return slot;

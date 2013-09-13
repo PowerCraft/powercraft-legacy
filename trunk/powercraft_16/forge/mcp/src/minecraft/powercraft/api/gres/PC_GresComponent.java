@@ -63,12 +63,19 @@ public abstract class PC_GresComponent {
 
 	protected final List<PC_IGresEventListener> eventListeners = new ArrayList<PC_IGresEventListener>();
 
+	protected Object layoutData;
 
 	public PC_GresComponent() {
 
 	}
 
-
+	protected void setLayoutData(Object layoutData){
+		if(this.layoutData != layoutData){
+			this.layoutData = layoutData;
+			notifyChange();
+		}
+	}
+	
 	protected void setParent(PC_GresContainer parent) {
 
 		if (parent == null) {
@@ -428,10 +435,29 @@ public abstract class PC_GresComponent {
 			GL11.glTranslatef(this.rect.x, this.rect.y, 0);
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			paint(scissor, timeStamp);
+			doDebugRendering(0, 0, rect.width, rect.height);
 			GL11.glPopMatrix();
 		}
 	}
 
+	protected void doDebugRendering(int x, int y, int width, int height){
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_BLEND);
+		int hash = hashCode();
+		int red = hash>>16&255;
+		int green = hash>>8&255;
+		int blue = hash&255;
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.setColorRGBA(red, green, blue, 128);
+		tessellator.addVertex(x, y + height, 0);
+		tessellator.addVertex(x + width, y + height, 0);
+		tessellator.addVertex(x + width, y, 0);
+		tessellator.addVertex(x, y, 0);
+		tessellator.draw();
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
 
 	protected abstract void paint(PC_RectI scissor, float timeStamp);
 
