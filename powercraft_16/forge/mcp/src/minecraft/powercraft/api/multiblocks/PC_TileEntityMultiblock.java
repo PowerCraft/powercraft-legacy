@@ -6,11 +6,11 @@ import java.util.Random;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import powercraft.api.PC_Direction;
+import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_ITileEntitySpecialRenderer;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.registries.PC_MultiblockRegistry;
@@ -340,17 +340,7 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 
 	public void drop(List<ItemStack> drops) {
 
-		if (!worldObj.isRemote && worldObj.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-			for (ItemStack itemStack : drops) {
-				float f = 0.7F;
-				double d0 = worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-				double d1 = worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-				double d2 = worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-				EntityItem entityitem = new EntityItem(worldObj, xCoord + d0, yCoord + d1, zCoord + d2, itemStack);
-				entityitem.delayBeforeCanPickup = 10;
-				worldObj.spawnEntityInWorld(entityitem);
-			}
-		}
+		PC_Utils.spawnItems(worldObj, xCoord, yCoord, zCoord, drops);
 	}
 
 

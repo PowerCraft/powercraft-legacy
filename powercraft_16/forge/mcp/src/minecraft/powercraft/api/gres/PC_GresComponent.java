@@ -199,8 +199,8 @@ public abstract class PC_GresComponent {
 
 	public void putInRect(int x, int y, int width, int height) {
 
-		if (width > maxSize.x && maxSize.x >= 0) width = maxSize.x;
-		if (height > maxSize.y && maxSize.y >= 0) height = maxSize.y;
+		//if (width > maxSize.x && maxSize.x >= 0) width = maxSize.x;
+		//if (height > maxSize.y && maxSize.y >= 0) height = maxSize.y;
 		boolean needUpdate = false;
 		if (fill == PC_GresAlign.Fill.BOTH || fill == PC_GresAlign.Fill.HORIZONTAL) {
 			needUpdate |= rect.x != x + padding.x;

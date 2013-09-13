@@ -16,6 +16,7 @@ import powercraft.transport.helper.PCtr_MaterialElevator;
 @PC_BlockInfo(name = "ElevatorUp", blockid = "elevatorup", defaultid = 2060)
 public class PCtr_BlockClassicElevator extends PC_BlockWithoutTileEntity
 {
+	
 	protected PC_Direction elevatorDirection;
 	// an Elevator is simply a conveyer belt that moves items up or down... so able to use base classes for belts.
 	public PCtr_BlockClassicElevator(int id)

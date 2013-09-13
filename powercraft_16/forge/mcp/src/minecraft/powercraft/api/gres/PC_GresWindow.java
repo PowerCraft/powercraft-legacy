@@ -129,14 +129,14 @@ public class PC_GresWindow extends PC_GresContainer {
 	protected PC_GresComponent getComponentAtPosition(PC_Vec2I position) {
 		PC_GresComponent component = super.getComponentAtPosition(position);
 		if(component!=null) return component;
-		if (visible) {
+		/*if (visible) {
 			position = position.sub(frame.getLocation());
 			for (PC_GresWindowSideTab sideTab : sideTabs) {
 				PC_RectI rect = sideTab.getRect();
 				component = sideTab.getComponentAtPosition(position.sub(rect.getLocation()));
 				if (component != null) return component;
 			}
-		}
+		}*/
 		return null;
 	}
 

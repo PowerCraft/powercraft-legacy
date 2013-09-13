@@ -238,11 +238,12 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 			position = position.sub(frame.getLocation());
 			for (PC_GresComponent child : childs) {
 				PC_RectI rect = child.getRect();
-				PC_GresComponent component = child.getComponentAtPosition(position.sub(rect.getLocation()));
-				if (component != null) return component;
+				if (rect.contains(position)){
+					PC_GresComponent component = child.getComponentAtPosition(position.sub(rect.getLocation()));
+					if (component != null) return component;
+				}
 			}
-			if (rect.contains(position))
-				return this;
+			return this;
 		}
 		return null;
 	}

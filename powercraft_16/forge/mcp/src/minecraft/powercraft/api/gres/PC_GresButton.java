@@ -16,7 +16,7 @@ public class PC_GresButton extends PC_GresComponent {
 		fontColors[0] = 0xe0e0e0;
 		fontColors[1] = 0xffffa0;
 		fontColors[2] = 0xffffa0;
-		fontColors[3] = 0xa0a0a0;
+		fontColors[3] = 0x7a7a7a;
 	}
 
 
