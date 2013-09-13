@@ -35,7 +35,7 @@ public class PCtr_BeltHelper
 	}
 	
 	private static Entity getNewTrackerForEntity(Entity entity) {
-		PC_EntityFractionless tmp = new PC_EntityFractionless(entity.worldObj);
+		PC_EntityFrictionless tmp = new PC_EntityFrictionless(entity.worldObj);
 		tmp.riddenByEntity = entity;
 		return tmp;
 	}

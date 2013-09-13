@@ -10,7 +10,7 @@ import powercraft.api.PC_Vec3;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_BlockWithoutTileEntity;
 import powercraft.api.registries.PC_TextureRegistry;
-import powercraft.transport.helper.PC_EntityFractionless;
+import powercraft.transport.helper.PC_EntityFrictionless;
 import powercraft.transport.PCtr_ModuleTransport;
 import powercraft.transport.helper.PC_EntityDictionary;
 import powercraft.transport.helper.PCtr_BeltHelper;
