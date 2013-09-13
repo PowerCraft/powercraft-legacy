@@ -35,6 +35,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class PC_Gres {
 
 	/* TODO add:
+	 * 
+	 * ItemStack/Slot renderer
+	 * 
 	 * ComboBox
 	 * InputBox
 	 * Slider
