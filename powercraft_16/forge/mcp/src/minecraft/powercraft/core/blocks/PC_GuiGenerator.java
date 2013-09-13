@@ -32,6 +32,8 @@ public class PC_GuiGenerator extends PC_ContainerGenerator implements PC_IGresCl
 
 		gui.setLayout(new PC_GresLayoutVertical());
 		PC_GresWindow window = new PC_GresWindow("Generator");
+		window.addSideTab(new PC_GresWindowSideTab());
+		window.addSideTab(new PC_GresWindowSideTab());
 		window.setLayout(new PC_GresLayoutVertical());
 		window.add(label = new PC_GresLabel("Heat:0"));
 		window.add(progress = new PC_GresProgressImage("Fire"));

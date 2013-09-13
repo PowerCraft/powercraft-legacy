@@ -119,4 +119,21 @@ public class PC_Vec2I {
 		return new PC_Vec2I(x > vec.x ? x : vec.x, y > vec.y ? y : vec.y);
 	}
 
+	public PC_Vec2I min(int n) {
+
+		return new PC_Vec2I(x < n ? x : n, y < n ? y : n);
+	}
+
+
+	public PC_Vec2I min(int x, int y) {
+
+		return new PC_Vec2I(this.x < x ? this.x : x, this.y < y ? this.y : y);
+	}
+
+
+	public PC_Vec2I min(PC_Vec2I vec) {
+
+		return new PC_Vec2I(x < vec.x ? x : vec.x, y < vec.y ? y : vec.y);
+	}
+	
 }

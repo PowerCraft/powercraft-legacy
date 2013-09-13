@@ -163,7 +163,9 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 		Minecraft mc = gui.getMinecraft();
 		ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
 		fireEvent(new PC_GresPaintEvent(this, EventType.PRE, timeStamp));
+		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		doPaint(new PC_Vec2I(0, 0), null, scaledresolution.getScaleFactor(), mc.displayHeight, timeStamp);
+		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 		drawMouseItemStack(mouse, timeStamp);
 		if (mc.thePlayer.inventory.getItemStack() == null) {
 			drawTooltip(mouse);
