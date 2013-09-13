@@ -15,12 +15,14 @@ public class PC_GresCheckBox extends PC_GresComponent {
 	
 	@Override
 	protected PC_Vec2I calculateMinSize() {
-		return new PC_Vec2I(9+fontRenderer.getStringWidth(text)+(text!=null&&!text.isEmpty()?1:0), 9);
+		PC_Vec2I tm = getTextureMinSize(textureName[state?1:0]);
+		return new PC_Vec2I(tm.x+fontRenderer.getStringWidth(text)+(text!=null&&!text.isEmpty()?1:0), tm.y);
 	}
 
 	@Override
 	protected PC_Vec2I calculateMaxSize() {
-		return new PC_Vec2I(9+fontRenderer.getStringWidth(text)+(text!=null&&!text.isEmpty()?1:0), fontRenderer.FONT_HEIGHT);
+		PC_Vec2I tm = getTextureMinSize(textureName[state?1:0]);
+		return new PC_Vec2I(tm.x+fontRenderer.getStringWidth(text)+(text!=null&&!text.isEmpty()?1:0), fontRenderer.FONT_HEIGHT);
 	}
 
 	@Override
@@ -30,13 +32,16 @@ public class PC_GresCheckBox extends PC_GresComponent {
 	
 	@Override
 	protected void paint(PC_RectI scissor, float timeStamp) {
-		drawTexture(textureName[state?1:0], 0, 0, 9, 9);
-		drawString(text, 10, 0, rect.width - 9, rect.height, PC_GresAlign.H.CENTER, PC_GresAlign.V.CENTER, false);
+		PC_Vec2I tm = getTextureMinSize(textureName[state?1:0]);
+		drawTexture(textureName[state?1:0], 0, 0, tm.x, tm.y);
+		drawString(text, tm.x+1, 0, rect.width - tm.x-1, rect.height, PC_GresAlign.H.CENTER, PC_GresAlign.V.CENTER, false);
 	}
-
+	
 	@Override
-	protected void handleMouseButtonClick(PC_Vec2I mouse, int buttons, int eventButton) {
+	protected void handleMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
 		state=!state;
+		super.handleMouseButtonDown(mouse, buttons, eventButton);
+		notifyChange();
 	}
 	
 }
