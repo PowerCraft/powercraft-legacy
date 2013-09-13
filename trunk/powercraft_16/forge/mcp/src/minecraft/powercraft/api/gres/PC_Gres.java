@@ -34,7 +34,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class PC_Gres {
 
+	/* TODO add:
+	 * ComboBox
+	 * InputBox
+	 * Slider
+	 * Progressbar
+	 * Tabs
+	 * Scrollbar
+	 * Popup/Dialog
+	 */
+	
+	
 	private static TreeMap<String, PC_IGresGuiOpenHandler> guiOpenHandlers = new TreeMap<String, PC_IGresGuiOpenHandler>();
+	@SideOnly(Side.CLIENT)
 	private static TreeMap<String, PC_GresTexture> textures = new TreeMap<String, PC_GresTexture>();
 
 
@@ -158,7 +170,7 @@ public class PC_Gres {
 		}
 	}
 
-
+	@SideOnly(Side.CLIENT)
 	public static void loadTextures() {
 
 		final String states[] = { "loc_active", "loc_mouseOver", "loc_mouseDown", "loc_disabled" };
@@ -232,7 +244,7 @@ public class PC_Gres {
 		}
 	}
 
-
+	@SideOnly(Side.CLIENT)
 	public static PC_GresTexture getGresTexture(String name) {
 
 		return textures.get(name);
