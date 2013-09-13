@@ -36,7 +36,16 @@ public class PC_GuiGenerator extends PC_ContainerGenerator implements PC_IGresCl
 		window.add(label = new PC_GresLabel("Heat:0"));
 		window.add(progress = new PC_GresProgressImage("Fire"));
 		window.add(inv = new PC_GresInventory(1, 1));
-		window.add(new PC_GresCheckBox("Test"));
+		PC_GresRadioButton rb;
+		PC_GresComponent c;
+		window.add(c = new PC_GresCheckBox("T"));
+		c.setPadding(new PC_RectI(0, 0, 0, 4));
+		window.add(c = rb = new PC_GresRadioButton("Test1"));
+		c.setPadding(new PC_RectI(0, 0, 0, 4));
+		window.add(c = new PC_GresRadioButton("Test2", rb));
+		c.setPadding(new PC_RectI(0, 0, 0, 4));
+		window.add(c = new PC_GresRadioButton("Test3", rb));
+		c.setPadding(new PC_RectI(0, 0, 0, 4));
 		inv.setSlot(0, 0, invSlots[0]);
 		inv.setPadding(new PC_RectI(0, 0, 0, 4));
 		gui.add(window);

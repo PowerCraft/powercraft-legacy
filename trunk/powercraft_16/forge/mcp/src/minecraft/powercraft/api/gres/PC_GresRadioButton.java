@@ -1,33 +1,74 @@
 package powercraft.api.gres;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 
 public class PC_GresRadioButton extends PC_GresComponent {
-	private static PC_Vec2I minSize;
+	
+	private static final String textureName[] = {"RadioButton", "RadioButtonChecked"};
+	
+	private List<PC_GresRadioButton> group;
 	private boolean state;
+	
+	public PC_GresRadioButton(String title){
+		setText(title);
+		setGroup(null);
+	}
+	
+	public PC_GresRadioButton(String title, PC_GresRadioButton other){
+		setText(title);
+		setGroup(other);
+	}
+	
+	public void setGroup(PC_GresRadioButton other){
+		if(group!=null){
+			group.remove(this);
+		}
+		if(other==null){
+			group = new ArrayList<PC_GresRadioButton>();
+		}else{
+			group = other.group;
+		}
+		group.add(this);
+		state = false;
+	}
 	
 	@Override
 	protected PC_Vec2I calculateMinSize() {
-		if(minSize==null)minSize=getTextureMinSize("RadioButton");
-		return minSize.add(fontRenderer.getStringWidth(text), 0);
+		PC_Vec2I tm = getTextureMinSize(textureName[state?1:0]);
+		return new PC_Vec2I(tm.x+fontRenderer.getStringWidth(text)+(text!=null&&!text.isEmpty()?1:0), tm.y);
 	}
 
 	@Override
 	protected PC_Vec2I calculateMaxSize() {
-		if(minSize==null)minSize=getTextureMinSize("RadioButton");
-		return new PC_Vec2I(-1, minSize.y);
+		PC_Vec2I tm = getTextureMinSize(textureName[state?1:0]);
+		return new PC_Vec2I(tm.x+fontRenderer.getStringWidth(text)+(text!=null&&!text.isEmpty()?1:0), fontRenderer.FONT_HEIGHT);
 	}
 
 	@Override
 	protected PC_Vec2I calculatePrefSize() {
-		if(minSize==null)minSize=getTextureMinSize("RadioButton");
-		return minSize.add(fontRenderer.getStringWidth(text), 0);
+		return calculateMaxSize();
+	}
+	
+	@Override
+	protected void paint(PC_RectI scissor, float timeStamp) {
+		PC_Vec2I tm = getTextureMinSize(textureName[state?1:0]);
+		drawTexture(textureName[state?1:0], 0, 0, tm.x, tm.y);
+		drawString(text, tm.x+1, 0, rect.width - tm.x-1, rect.height, PC_GresAlign.H.CENTER, PC_GresAlign.V.CENTER, false);
 	}
 
 	@Override
-	protected void paint(PC_RectI scissor, float timeStamp) {
-		draw(textureName, 0, 0, rect.width, rect.height);
+	protected void handleMouseButtonClick(PC_Vec2I mouse, int buttons, int eventButton) {
+		if(!state){
+			for(PC_GresRadioButton rb:group){
+				rb.state = false;
+			}
+			state = true;
+		}
+		notifyChange();
 	}
 
 }
