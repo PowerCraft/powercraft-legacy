@@ -57,14 +57,14 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 				return;
 			}
 			
-			System.out.println("Current motion: " + emotion.toString() + " Direction :" + newDir.toString());			
+//			System.out.println("Current motion: " + emotion.toString() + " Direction :" + newDir.toString());			
 
 			if (transportDictionary.HasEntityID(entity.entityId))
 			{
 				PC_Vec3 storedmotion = transportDictionary.GetMotionForID(entity.entityId);
 				// belt should ignore UP and DOWN directions
 				PC_Direction oldDir = PCtr_BeltHelper.returnPrimaryDirection(storedmotion, true);		
-				System.out.println("  -> Stored motion: " + storedmotion.toString() + " Direction : " + oldDir.toString());
+//				System.out.println("  -> Stored motion: " + storedmotion.toString() + " Direction : " + oldDir.toString());
 				
 				// same entity, same dir
 				if (oldDir == newDir)
@@ -79,7 +79,7 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 								//motiondelta = Math.abs(storedmotion.z) - Math.abs(emotion.z);
 								//System.out.println("  -> Going North with Delta: " + motiondelta);
 								entity.motionZ = storedmotion.z; // .addVelocity(0, 0, -motiondelta);
-								System.out.println("  -> Added Velocity, New motion (z): " + entity.motionZ);
+//								System.out.println("  -> Added Velocity, New motion (z): " + entity.motionZ);
 								break;
 							case EAST:
 								//motiondelta = Math.abs(storedmotion.x) - Math.abs(emotion.x);
@@ -105,8 +105,8 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 					}
 					else
 					{ // our motion has increased! update with new values, ignore y
-						System.out.println(" ** Increased Speed! : " + entity.entityId);
-						System.out.println("New Motion X, Y, Z: " + emotion.x + ", " + emotion.y + ", " + emotion.z);						
+//						System.out.println(" ** Increased Speed! : " + entity.entityId);
+//						System.out.println("New Motion X, Y, Z: " + emotion.x + ", " + emotion.y + ", " + emotion.z);						
 						transportDictionary.UpdateEntityValues(entity.entityId, emotion, true);
 					}
 				}
