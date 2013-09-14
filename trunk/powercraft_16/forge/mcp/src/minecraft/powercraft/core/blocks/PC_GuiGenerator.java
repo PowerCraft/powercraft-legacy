@@ -48,6 +48,8 @@ public class PC_GuiGenerator extends PC_ContainerGenerator implements PC_IGresCl
 		c.setPadding(new PC_RectI(0, 0, 0, 4));
 		window.add(c = new PC_GresRadioButton("Test3", rb));
 		c.setPadding(new PC_RectI(0, 0, 0, 4));
+		window.add(c = new PC_GresTextEdit("Test3", 7));
+		c.setPadding(new PC_RectI(0, 0, 0, 4));
 		inv.setSlot(0, 0, invSlots[0]);
 		inv.setPadding(new PC_RectI(0, 0, 0, 4));
 		gui.add(window);

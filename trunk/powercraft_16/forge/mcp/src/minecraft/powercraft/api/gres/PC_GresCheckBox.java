@@ -1,8 +1,11 @@
 package powercraft.api.gres;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 
+@SideOnly(Side.CLIENT)
 public class PC_GresCheckBox extends PC_GresComponent {
 
 	private static final String textureName[] = {"CheckBox", "CheckBoxChecked"};
@@ -31,7 +34,7 @@ public class PC_GresCheckBox extends PC_GresComponent {
 	}
 	
 	@Override
-	protected void paint(PC_RectI scissor, float timeStamp) {
+	protected void paint(PC_RectI scissor, double scale, int displayHeight, float timeStamp) {
 		PC_Vec2I tm = getTextureMinSize(textureName[state?1:0]);
 		drawTexture(textureName[state?1:0], 0, 0, tm.x, tm.y);
 		drawString(text, tm.x+1, 0, rect.width - tm.x-1, rect.height, PC_GresAlign.H.CENTER, PC_GresAlign.V.CENTER, false);

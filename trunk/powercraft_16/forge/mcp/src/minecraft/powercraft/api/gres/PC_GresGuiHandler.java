@@ -131,7 +131,7 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 
 
 	@Override
-	protected void paint(PC_RectI scissor, float timeStamp) {
+	protected void paint(PC_RectI scissor, double scale, int displayHeight, float timeStamp) {
 
 		drawGradientRect(0, 0, rect.width, rect.height, -1072689136, -804253680);
 	}
@@ -164,8 +164,10 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 		ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
 		fireEvent(new PC_GresPaintEvent(this, EventType.PRE, timeStamp));
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
+		GL11.glEnable(GL11.GL_BLEND);
 		doPaint(new PC_Vec2I(0, 0), null, scaledresolution.getScaleFactor(), mc.displayHeight, timeStamp);
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
+		GL11.glDisable(GL11.GL_BLEND);
 		drawMouseItemStack(mouse, timeStamp);
 		if (mc.thePlayer.inventory.getItemStack() == null) {
 			drawTooltip(mouse);
@@ -270,7 +272,7 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 
 	protected void eventMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
 
-		focusedComponent = mouseOverComponent;
+		setFokus(mouseOverComponent);
 		focusedComponent.onMouseButtonDown(mouse.sub(focusedComponent.getRealLocation()), buttons, eventButton);
 	}
 
@@ -299,6 +301,19 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 	protected void notifyChange() {
 
 		updateLayout();
+	}
+
+
+	public void setFokus(PC_GresComponent focusedComponent) {
+		if(this.focusedComponent != focusedComponent){
+			if(this.focusedComponent!=null){
+				this.focusedComponent.onFokusLost();
+			}
+			this.focusedComponent = focusedComponent;
+			if(focusedComponent!=null){
+				focusedComponent.onFokusGot();
+			}
+		}
 	}
 
 }

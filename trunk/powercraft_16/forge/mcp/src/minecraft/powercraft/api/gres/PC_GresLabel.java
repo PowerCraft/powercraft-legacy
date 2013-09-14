@@ -35,7 +35,7 @@ public class PC_GresLabel extends PC_GresComponent {
 
 
 	@Override
-	protected void paint(PC_RectI scissor, float timeStamp) {
+	protected void paint(PC_RectI scissor, double scale, int displayHeight, float timeStamp) {
 
 		drawString(text, 0, 0, rect.width, rect.height, alignH, alignV, false);
 	}

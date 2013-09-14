@@ -104,7 +104,7 @@ public class PC_GresWindow extends PC_GresContainer {
 	}
 	
 	@Override
-	protected void paint(PC_RectI scissor, float timeStamp) {
+	protected void paint(PC_RectI scissor, double scale, int displayHeight, float timeStamp) {
 		drawTexture(textureName, frame.x - 4, 0, rect.width - frame.width - frame.x + 8, rect.height);
 		drawString(text, frame.x, 4, rect.width - frame.width - frame.x, PC_GresAlign.H.CENTER, false);
 	}
@@ -119,7 +119,7 @@ public class PC_GresWindow extends PC_GresContainer {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(this.rect.x, this.rect.y, 0);
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
-			paint(scissor, timeStamp);
+			paint(scissor, scale, displayHeight, timeStamp);
 			doDebugRendering(0, 0, rect.width, rect.height);
 			rect.x += frame.x;
 			rect.y += frame.y;

@@ -8,11 +8,14 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 
 
 @SuppressWarnings("unused")
+@SideOnly(Side.CLIENT)
 public abstract class PC_GresContainer extends PC_GresComponent {
 
 	protected final List<PC_GresComponent> childs = new ArrayList<PC_GresComponent>();
@@ -222,7 +225,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(this.rect.x, this.rect.y, 0);
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
-			paint(scissor, timeStamp);
+			paint(scissor, scale, displayHeight, timeStamp);
 			doDebugRendering(0, 0, rect.width, rect.height);
 			rect.x += frame.x;
 			rect.y += frame.y;

@@ -10,11 +10,15 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_ClientUtils;
 import powercraft.api.PC_Debug;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 import powercraft.api.gres.events.PC_GresEvent;
+import powercraft.api.gres.events.PC_GresFokusGotEvent;
+import powercraft.api.gres.events.PC_GresFokusLostEvent;
 import powercraft.api.gres.events.PC_GresKeyEvent;
 import powercraft.api.gres.events.PC_GresMouseButtonEvent;
 import powercraft.api.gres.events.PC_GresMouseEvent;
@@ -25,6 +29,7 @@ import powercraft.api.gres.events.PC_IGresEventListenerEx;
 
 
 @SuppressWarnings("unused")
+@SideOnly(Side.CLIENT)
 public abstract class PC_GresComponent {
 
 	protected PC_GresContainer parent;
@@ -73,6 +78,8 @@ public abstract class PC_GresComponent {
 
 	protected Object layoutData;
 
+	protected boolean fokus;
+	
 	public PC_GresComponent() {
 
 	}
@@ -401,7 +408,18 @@ public abstract class PC_GresComponent {
 		return enabled && (parent == null || parent.isRecursiveEnabled());
 	}
 
+	public boolean hasFokus(){
+		
+		return fokus;
+		
+	}
 
+	public void takeFokus(){
+		
+		getGuiHandler().setFokus(this);
+		
+	}
+	
 	protected void notifyChange() {
 
 		updateMinSize();
@@ -442,7 +460,7 @@ public abstract class PC_GresComponent {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(this.rect.x, this.rect.y, 0);
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
-			paint(scissor, timeStamp);
+			paint(scissor, scale, displayHeight, timeStamp);
 			doDebugRendering(0, 0, rect.width, rect.height);
 			GL11.glPopMatrix();
 		}
@@ -451,7 +469,6 @@ public abstract class PC_GresComponent {
 	protected void doDebugRendering(int x, int y, int width, int height){
 		if(PC_Debug.DEBUG){
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			GL11.glEnable(GL11.GL_BLEND);
 			int hash = hashCode();
 			int red = hash>>16&255;
 			int green = hash>>8&255;
@@ -464,12 +481,11 @@ public abstract class PC_GresComponent {
 			tessellator.addVertex(x + width, y, 0);
 			tessellator.addVertex(x, y, 0);
 			tessellator.draw();
-			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 		}
 	}
-
-	protected abstract void paint(PC_RectI scissor, float timeStamp);
+	
+	protected abstract void paint(PC_RectI scissor, double scale, int displayHeight, float timeStamp);
 
 
 	protected boolean onKeyTyped(char key, int keyCode) {
@@ -603,7 +619,30 @@ public abstract class PC_GresComponent {
 		}
 	}
 
+	protected void onFokusLost() {
+		PC_GresFokusLostEvent event = new PC_GresFokusLostEvent(this);
+		fireEvent(event);
+		if (!event.isConsumed()) {
+			handleFokusLost();
+		}
+	}
 
+	protected void handleFokusLost() {
+		fokus = false;
+	}
+	
+	protected void onFokusGot() {
+		PC_GresFokusGotEvent event = new PC_GresFokusGotEvent(this);
+		fireEvent(event);
+		if (!event.isConsumed()) {
+			handleFokusGot();
+		}
+	}
+
+	protected void handleFokusGot() {
+		fokus = true;
+	}
+	
 	protected PC_GresComponent getComponentAtPosition(PC_Vec2I mouse) {
 
 		return visible ? this : null;
@@ -748,6 +787,7 @@ public abstract class PC_GresComponent {
 				break;
 		}
 		fontRenderer.drawString(writeText, x, y, fontColors[enabled && parentEnabled ? mouseDown ? 2 : mouseOver ? 1 : 0 : 3], shadow);
+		GL11.glEnable(GL11.GL_BLEND);
 	}
 
 
@@ -762,7 +802,6 @@ public abstract class PC_GresComponent {
 		float bottomGreen = (colorBottom >> 8 & 255) / 255.0F;
 		float bottomBlue = (colorBottom & 255) / 255.0F;
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -776,7 +815,6 @@ public abstract class PC_GresComponent {
 		tessellator.addVertex(x + width, y + height, 0);
 		tessellator.draw();
 		GL11.glShadeModel(GL11.GL_FLAT);
-		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
