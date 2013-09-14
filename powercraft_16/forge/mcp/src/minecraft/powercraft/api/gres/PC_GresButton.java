@@ -1,10 +1,12 @@
 package powercraft.api.gres;
 
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 
-
+@SideOnly(Side.CLIENT)
 public class PC_GresButton extends PC_GresComponent {
 
 	private static final String textureName = "Button";
@@ -42,7 +44,7 @@ public class PC_GresButton extends PC_GresComponent {
 
 
 	@Override
-	protected void paint(PC_RectI scissor, float timeStamp) {
+	protected void paint(PC_RectI scissor, double scale, int displayHeight, float timeStamp) {
 
 		drawTexture(textureName, 0, 0, rect.width, rect.height);
 		drawString(text, 3, mouseDown ? 4 : 3, rect.width - 6, rect.height - 6, PC_GresAlign.H.CENTER, PC_GresAlign.V.CENTER, true);

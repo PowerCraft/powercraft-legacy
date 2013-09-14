@@ -51,7 +51,7 @@ public class PC_GresProgressImage extends PC_GresComponent {
 
 
 	@Override
-	protected void paint(PC_RectI scissor, float timeStamp) {
+	protected void paint(PC_RectI scissor, double scale, int displayHeight, float timeStamp) {
 
 		drawTexture(textureName + "Shadow", 0, 0, rect.width, rect.height);
 		PC_GresTexture texture = PC_Gres.getGresTexture(textureName + "On");

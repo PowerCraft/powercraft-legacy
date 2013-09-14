@@ -42,7 +42,7 @@ public class PC_GresWindowSideTab extends PC_GresContainer {
 	}
 	
 	@Override
-	protected void paint(PC_RectI scissor, float timeStamp) {
+	protected void paint(PC_RectI scissor, double scale, int displayHeight, float timeStamp) {
 		drawTexture("Frame", -2, 0, rect.width+2, rect.height);
 	}
 	

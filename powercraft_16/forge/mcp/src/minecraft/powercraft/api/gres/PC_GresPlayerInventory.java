@@ -36,7 +36,7 @@ public class PC_GresPlayerInventory extends PC_GresInventory {
 
 
 	@Override
-	protected void paint(PC_RectI scissor, float timeStamp) {
+	protected void paint(PC_RectI scissor, double scale, int displayHeight, float timeStamp) {
 
 		for (int x = 0; x < slots.length; x++) {
 			for (int y = 0; y < 3; y++) {
