@@ -39,7 +39,6 @@ public class PC_Gres {
 	 * ItemStack/Slot renderer
 	 * 
 	 * ComboBox
-	 * InputBox
 	 * Slider
 	 * Progressbar
 	 * Tabs
