@@ -51,17 +51,17 @@ public class PC_GresTextEdit extends PC_GresComponent {
 
 	@Override
 	protected PC_Vec2I calculateMinSize() {
-		return new PC_Vec2I(maxChars * 8 + 4, fontRenderer.FONT_HEIGHT + 4);
+		return new PC_Vec2I(maxChars * 8 + 4, fontRenderer.FONT_HEIGHT + 12);
 	}
 
 	@Override
 	protected PC_Vec2I calculateMaxSize() {
-		return new PC_Vec2I(-1, fontRenderer.FONT_HEIGHT + 4);
+		return new PC_Vec2I(-1, fontRenderer.FONT_HEIGHT + 12);
 	}
 
 	@Override
 	protected PC_Vec2I calculatePrefSize() {
-		return new PC_Vec2I(maxChars * 8 + 4, fontRenderer.FONT_HEIGHT + 4);
+		return new PC_Vec2I(maxChars * 8 + 4, fontRenderer.FONT_HEIGHT + 12);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class PC_GresTextEdit extends PC_GresComponent {
 		drawTexture(textureName, 0, 0, rect.width, rect.height);
 		PC_Vec2I offset = getRealLocation();
 		setDrawRect(scissor,
-				new PC_RectI(2+offset.x, 2+offset.y, rect.width - 4, rect.height - 4), scale,
+				new PC_RectI(2+offset.x, 6+offset.y, rect.width - 4, rect.height - 12), scale,
 				displayHeight);
 
 		if (fokus && mouseSelectStart != mouseSelectEnd) {
@@ -87,14 +87,15 @@ public class PC_GresTextEdit extends PC_GresComponent {
 					rect.height);
 		}
 
-		drawString(text, 2 - scroll, 2, false);
+		drawString(text, 2 - scroll, 6, false);
 
 		if (fokus && cursorCounter / 6 % 2 == 0) {
 			PC_GresRenderer.drawVerticalLine(fontRenderer.getStringWidth(text
-					.substring(0, mouseSelectEnd)) + 2, 2,
-					2 + fontRenderer.FONT_HEIGHT, fontColors[0]|0xff000000);
+					.substring(0, mouseSelectEnd)) + 2, 6,
+					6 + fontRenderer.FONT_HEIGHT, fontColors[0]|0xff000000);
 		}
 
+		setDrawRect(scissor, scissor, scale, displayHeight);
 	}
 
 	private int getMousePositionInString(int x) {
