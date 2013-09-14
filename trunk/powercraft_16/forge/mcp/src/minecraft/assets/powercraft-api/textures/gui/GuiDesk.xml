@@ -9,4 +9,6 @@
 	<Subtexture name="CheckBoxChecked" size="9, 9" frame="9, 9, 0, 0" loc_active="59, 14" loc_mouseDown="59, 32" loc_mouseOver="59, 23" loc_disabled="59, 41"></Subtexture>
 	<Subtexture name="RadioButton" size="9, 9" frame="9, 9, 0, 0" loc_active="68, 14" loc_mouseDown="68, 32" loc_mouseOver="68, 23" loc_disabled="68, 41"></Subtexture>
 	<Subtexture name="RadioButtonChecked" size="9, 9" frame="9, 9, 0, 0" loc_active="77, 14" loc_mouseDown="77, 32" loc_mouseOver="77, 23" loc_disabled="77, 41"></Subtexture>
+	<Subtexture name="TextEdit" size="4, 4" frame="1, 1, 1, 1" loc_active="4, 40" loc_mouseDown="4, 40" loc_mouseOver="4, 40" loc_disabled="4, 40"></Subtexture>
+	<Subtexture name="TextEditSelect" size="1, 4" frame="0, 0, 0, 0" loc_active="8, 40" loc_mouseDown="8, 40" loc_mouseOver="8, 40" loc_disabled="8, 40"></Subtexture>
 </Texture>
