@@ -14,7 +14,6 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 
 	private PC_GresGuiHandler guiHandler;
 	private int buttons;
-	private int wheel;
 	private int lastEventButton;
 	private long holdTime;
 
@@ -131,9 +130,8 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 				eventMouseButtonUp(mouse, buttons, eventButton);
 			}
 		}
-		if (eventWheel != wheel) {
-			eventMouseWheel(mouse, buttons, wheel - eventWheel);
-			wheel = eventWheel;
+		if (eventWheel != 0) {
+			eventMouseWheel(mouse, buttons, eventWheel>0?1:-1);
 		}
 	}
 

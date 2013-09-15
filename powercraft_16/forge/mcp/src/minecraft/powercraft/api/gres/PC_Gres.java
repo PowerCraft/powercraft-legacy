@@ -43,7 +43,6 @@ public class PC_Gres {
 	 * Progressbar
 	 * Tabs
 	 * Scrollbar
-	 * Popup/Dialog
 	 */
 	
 	

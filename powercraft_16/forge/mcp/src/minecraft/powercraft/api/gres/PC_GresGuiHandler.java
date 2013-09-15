@@ -31,8 +31,32 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 
 		this.gui = gui;
 		this.client = client;
+		super.setLayout(new PC_IGresLayout() {
+			
+			@Override
+			public PC_Vec2I getPreferredLayoutSize(PC_GresContainer container) {
+				return container.getPrefSize();
+			}
+			
+			@Override
+			public PC_Vec2I getMinimumLayoutSize(PC_GresContainer container) {
+				return container.getMaxSize();
+			}
+			
+			@Override
+			public void updateLayout(PC_GresContainer container) {
+				for (PC_GresComponent component : container.childs) {
+					component.putInRect(0, 0, container.rect.width, container.rect.height);
+				}
+			}
+			
+		});
 	}
-
+	
+	@Override
+	public void setLayout(PC_IGresLayout layout) {
+		
+	}
 
 	public PC_IGresClient getClient() {
 
@@ -287,7 +311,7 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 
 		checkMouseOverComponent(mouse, buttons);
 		mouseOverComponent.onMouseMove(mouse.sub(mouseOverComponent.getRealLocation()), buttons);
-
+		focusedComponent.onMouseMove(mouse.sub(focusedComponent.getRealLocation()), buttons);
 	}
 
 

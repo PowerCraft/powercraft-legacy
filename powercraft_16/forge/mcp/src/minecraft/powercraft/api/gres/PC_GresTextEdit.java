@@ -95,7 +95,11 @@ public class PC_GresTextEdit extends PC_GresComponent {
 					6 + fontRenderer.FONT_HEIGHT, fontColors[0]|0xff000000);
 		}
 
-		setDrawRect(scissor, scissor, scale, displayHeight);
+		if(scissor==null){
+			setDrawRect(scissor, new PC_RectI(-1, -1, -1, -1), scale, displayHeight);
+		}else{
+			setDrawRect(scissor, scissor, scale, displayHeight);
+		}
 	}
 
 	private int getMousePositionInString(int x) {
