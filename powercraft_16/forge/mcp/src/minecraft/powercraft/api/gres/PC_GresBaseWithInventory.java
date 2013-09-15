@@ -7,6 +7,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import powercraft.api.blocks.PC_TileEntity;
 
@@ -112,5 +113,13 @@ public abstract class PC_GresBaseWithInventory extends Container {
 		}
         return true;
     }
+
+
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+		return null;
+	}
+	
+	
 	
 }
