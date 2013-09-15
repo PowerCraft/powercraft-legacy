@@ -3,6 +3,7 @@ package powercraft.api.gres;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import net.minecraft.inventory.Slot;
 
@@ -116,6 +117,8 @@ public class PC_GresWindow extends PC_GresContainer {
 			rect.x += offset.x;
 			rect.y += offset.y;
 			PC_RectI scissor = setDrawRect(scissorOld, rect, scale, displayHeight);
+			if(scissor==null)
+				return;
 			GL11.glPushMatrix();
 			GL11.glTranslatef(this.rect.x, this.rect.y, 0);
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
@@ -125,13 +128,15 @@ public class PC_GresWindow extends PC_GresContainer {
 			rect.y += frame.y;
 			GL11.glTranslatef(frame.x, frame.y, 0);
 			offset = rect.getLocation();
-			for (PC_GresComponent child : childs) {
-				child.doPaint(offset, scissor, scale, displayHeight, timeStamp);
+			ListIterator<PC_GresComponent> iterator = childs.listIterator(childs.size());
+			while(iterator.hasPrevious()){
+				iterator.previous().doPaint(offset, scissor, scale, displayHeight, timeStamp);
 			}
 			GL11.glTranslatef(-frame.x, -frame.y, 0);
 			offset = offset.sub(frame.getLocation());
-			for (PC_GresWindowSideTab sideTab : sideTabs) {
-				sideTab.doPaint(offset, scissor, scale, displayHeight, timeStamp);
+			ListIterator<PC_GresWindowSideTab> iterator2 = sideTabs.listIterator(sideTabs.size());
+			while(iterator2.hasPrevious()){
+				iterator2.previous().doPaint(offset, scissor, scale, displayHeight, timeStamp);
 			}
 			GL11.glPopMatrix();
 		}

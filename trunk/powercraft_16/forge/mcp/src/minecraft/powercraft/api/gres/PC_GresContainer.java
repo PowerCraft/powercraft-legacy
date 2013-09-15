@@ -3,6 +3,7 @@ package powercraft.api.gres;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import net.minecraft.inventory.Slot;
 
@@ -19,7 +20,8 @@ import powercraft.api.PC_Vec2I;
 public abstract class PC_GresContainer extends PC_GresComponent {
 
 	protected final List<PC_GresComponent> childs = new ArrayList<PC_GresComponent>();
-
+	protected final List<PC_GresComponent> layoutChildOrder = new ArrayList<PC_GresComponent>();
+	
 	private PC_IGresLayout layout;
 
 	private boolean updatingLayout;
@@ -80,11 +82,14 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 
 		if (!childs.contains(component)) {
 			childs.add(component);
+			layoutChildOrder.add(component);
+			component.takeFokus();
 			component.setParent(this);
 			if(component.getParent()==this){
 				notifyChange();
 			}else{
 				childs.remove(component);
+				layoutChildOrder.remove(component);
 			}
 		}
 	}
@@ -93,6 +98,10 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 	public void remove(PC_GresComponent component) {
 
 		childs.remove(component);
+		layoutChildOrder.remove(component);
+		if(component.hasFokus()){
+			takeFokus();
+		}
 		component.setParent(null);
 		notifyChange();
 	}
@@ -222,6 +231,8 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 			rect.x += offset.x;
 			rect.y += offset.y;
 			PC_RectI scissor = setDrawRect(scissorOld, rect, scale, displayHeight);
+			if(scissor==null)
+				return;
 			GL11.glPushMatrix();
 			GL11.glTranslatef(this.rect.x, this.rect.y, 0);
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
@@ -231,8 +242,9 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 			rect.y += frame.y;
 			GL11.glTranslatef(frame.x, frame.y, 0);
 			offset = rect.getLocation();
-			for (PC_GresComponent child : childs) {
-				child.doPaint(offset, scissor, scale, displayHeight, timeStamp);
+			ListIterator<PC_GresComponent> iterator = childs.listIterator(childs.size());
+			while(iterator.hasPrevious()){
+				iterator.previous().doPaint(offset, scissor, scale, displayHeight, timeStamp);
 			}
 			GL11.glPopMatrix();
 		}
@@ -273,8 +285,10 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 			position = position.sub(frame.getLocation());
 			for (PC_GresComponent child : childs) {
 				PC_RectI rect = child.getRect();
-				Slot slot = child.getSlotAtPosition(position.sub(rect.getLocation()));
-				if (slot != null) return slot;
+				if (rect.contains(position)){
+					Slot slot = child.getSlotAtPosition(position.sub(rect.getLocation()));
+					if (slot != null) return slot;
+				}
 			}
 		}
 		return null;
@@ -291,4 +305,17 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 		}
 	}
 
+	protected void moveToTop(PC_GresComponent component){
+		if(childs.remove(component)){
+			childs.add(0, component);
+		}
+		moveToTop();
+	}
+	
+	protected void moveToBottom(PC_GresComponent component){
+		if(childs.remove(component)){
+			childs.add(component);
+		}
+	}
+	
 }

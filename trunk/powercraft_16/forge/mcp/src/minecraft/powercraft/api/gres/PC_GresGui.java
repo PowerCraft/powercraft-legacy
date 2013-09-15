@@ -13,7 +13,6 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 
 	private PC_GresGuiHandler guiHandler;
 	private int buttons;
-	private int wheel;
 
 
 	public PC_GresGui(PC_IGresClient client) {
@@ -108,9 +107,8 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 				eventMouseButtonUp(mouse, buttons, eventButton);
 			}
 		}
-		if (eventWheel != wheel) {
-			eventMouseWheel(mouse, buttons, wheel - eventWheel);
-			wheel = eventWheel;
+		if (eventWheel != 0) {
+			eventMouseWheel(mouse, buttons, eventWheel>0?1:-1);
 		}
 	}
 

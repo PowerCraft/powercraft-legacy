@@ -416,7 +416,10 @@ public abstract class PC_GresComponent {
 
 	public void takeFokus(){
 		
-		getGuiHandler().setFokus(this);
+		PC_GresGuiHandler guiHandler = getGuiHandler();
+		if(guiHandler!=null){
+			guiHandler.setFokus(this);
+		}
 		
 	}
 	
@@ -457,6 +460,8 @@ public abstract class PC_GresComponent {
 			rect.x += offset.x;
 			rect.y += offset.y;
 			PC_RectI scissor = setDrawRect(scissorOld, rect, scale, displayHeight);
+			if(scissor==null)
+				return;
 			GL11.glPushMatrix();
 			GL11.glTranslatef(this.rect.x, this.rect.y, 0);
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
@@ -640,6 +645,7 @@ public abstract class PC_GresComponent {
 	}
 
 	protected void handleFokusGot() {
+		moveToTop();
 		fokus = true;
 	}
 	
@@ -737,6 +743,15 @@ public abstract class PC_GresComponent {
 		return texture.getMinSize();
 	}
 
+	protected PC_RectI getTextureFrame(String textureName) {
+
+		PC_GresTexture texture = PC_Gres.getGresTexture(textureName);
+		if (texture == null) {
+			return new PC_RectI();
+		} 
+		return new PC_RectI(texture.getFrame());
+	}
+
 
 	protected PC_Vec2I getTextureDefaultSize(String textureName) {
 
@@ -819,4 +834,16 @@ public abstract class PC_GresComponent {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
+	protected void moveToTop(){
+		if(parent!=null){
+			parent.moveToTop(this);
+		}
+	}
+	
+	protected void moveToBottom(){
+		if(parent!=null){
+			parent.moveToBottom(this);
+		}
+	}
+	
 }

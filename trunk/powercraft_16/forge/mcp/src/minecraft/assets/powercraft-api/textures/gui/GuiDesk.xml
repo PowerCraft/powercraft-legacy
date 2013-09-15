@@ -11,4 +11,8 @@
 	<Subtexture name="RadioButtonChecked" size="9, 9" frame="9, 9, 0, 0" loc_active="77, 14" loc_mouseDown="77, 32" loc_mouseOver="77, 23" loc_disabled="77, 41"></Subtexture>
 	<Subtexture name="TextEdit" size="4, 4" frame="1, 1, 1, 1" loc_active="4, 40" loc_mouseDown="4, 40" loc_mouseOver="4, 40" loc_disabled="4, 40"></Subtexture>
 	<Subtexture name="TextEditSelect" size="1, 4" frame="0, 0, 0, 0" loc_active="8, 40" loc_mouseDown="8, 40" loc_mouseOver="8, 40" loc_disabled="8, 40"></Subtexture>
+	<Subtexture name="ScrollH" size="28, 12" frame="1, 1, 1, 1" loc_active="86, 0" loc_mouseDown="86, 24" loc_mouseOver="86, 12" loc_disabled="86, 36"></Subtexture>
+	<Subtexture name="ScrollHFrame" size="7, 14" frame="1, 1, 1, 1" loc_active="79, 0" loc_mouseDown="79, 0" loc_mouseOver="79, 0" loc_disabled="79, 0"></Subtexture>
+	<Subtexture name="ScrollV" size="12, 28" frame="1, 1, 1, 1" loc_active="114, 0" loc_mouseDown="138, 0" loc_mouseOver="126, 0" loc_disabled="150, 0"></Subtexture>
+	<Subtexture name="ScrollVFrame" size="14, 7" frame="1, 1, 1, 1" loc_active="114, 28" loc_mouseDown="114, 28" loc_mouseOver="114, 28" loc_disabled="114, 28"></Subtexture>
 </Texture>

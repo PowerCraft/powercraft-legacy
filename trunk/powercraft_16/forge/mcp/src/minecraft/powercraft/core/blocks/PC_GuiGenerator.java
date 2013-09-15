@@ -30,7 +30,6 @@ public class PC_GuiGenerator extends PC_ContainerGenerator implements PC_IGresCl
 	@Override
 	public void initGui(PC_GresGuiHandler gui) {
 
-		gui.setLayout(new PC_GresLayoutVertical());
 		PC_GresWindow window = new PC_GresWindow("Generator");
 		window.addSideTab(new PC_GresWindowSideTab());
 		window.addSideTab(new PC_GresWindowSideTab());
@@ -38,17 +37,21 @@ public class PC_GuiGenerator extends PC_ContainerGenerator implements PC_IGresCl
 		window.add(label = new PC_GresLabel("Heat:0"));
 		window.add(progress = new PC_GresProgressImage("Fire"));
 		window.add(inv = new PC_GresInventory(1, 1));
+		PC_GresScrollArea sa = new PC_GresScrollArea();
+		window.add(sa);
+		PC_GresContainer cont = sa.getContainer();
+		cont.setLayout(new PC_GresLayoutVertical());
 		PC_GresRadioButton rb;
 		PC_GresComponent c;
-		window.add(c = new PC_GresCheckBox("T"));
+		cont.add(c = new PC_GresCheckBox("T"));
 		c.setPadding(new PC_RectI(0, 0, 0, 4));
-		window.add(c = rb = new PC_GresRadioButton("Test1"));
+		cont.add(c = rb = new PC_GresRadioButton("Test1"));
 		c.setPadding(new PC_RectI(0, 0, 0, 4));
-		window.add(c = new PC_GresRadioButton("Test2", rb));
+		cont.add(c = new PC_GresRadioButton("Test2", rb));
 		c.setPadding(new PC_RectI(0, 0, 0, 4));
-		window.add(c = new PC_GresRadioButton("Test3", rb));
+		cont.add(c = new PC_GresRadioButton("Test3", rb));
 		c.setPadding(new PC_RectI(0, 0, 0, 4));
-		window.add(c = new PC_GresTextEdit("Test3", 7));
+		cont.add(c = new PC_GresTextEdit("Test3", 7));
 		c.setPadding(new PC_RectI(0, 0, 0, 4));
 		inv.setSlot(0, 0, invSlots[0]);
 		inv.setPadding(new PC_RectI(0, 0, 0, 4));
