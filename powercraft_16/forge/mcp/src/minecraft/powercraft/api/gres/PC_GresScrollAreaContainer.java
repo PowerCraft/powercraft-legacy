@@ -71,5 +71,10 @@ class PC_GresScrollAreaContainer extends PC_GresContainer {
 	protected void moveToBottom(){
 		scrollArea.moveToBottom();
 	}
+
+	@Override
+	public PC_GresContainer getParent() {
+		return scrollArea.getParent();
+	}
 	
 }

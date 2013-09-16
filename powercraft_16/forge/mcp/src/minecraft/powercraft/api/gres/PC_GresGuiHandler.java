@@ -46,7 +46,8 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 			@Override
 			public void updateLayout(PC_GresContainer container) {
 				for (PC_GresComponent component : container.childs) {
-					component.putInRect(0, 0, container.rect.width, container.rect.height);
+					if(component.layoutData==null)
+						component.putInRect(0, 0, container.rect.width, container.rect.height);
 				}
 			}
 			
@@ -331,11 +332,12 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 	public void setFokus(PC_GresComponent focusedComponent) {
 		if(this.focusedComponent != focusedComponent){
 			if(this.focusedComponent!=null){
-				this.focusedComponent.onFokusLost();
+				this.focusedComponent.onFokusLost(focusedComponent);
 			}
+			PC_GresComponent oldFocusedComponent = this.focusedComponent;
 			this.focusedComponent = focusedComponent;
 			if(focusedComponent!=null){
-				focusedComponent.onFokusGot();
+				focusedComponent.onFokusGot(oldFocusedComponent);
 			}
 		}
 	}
