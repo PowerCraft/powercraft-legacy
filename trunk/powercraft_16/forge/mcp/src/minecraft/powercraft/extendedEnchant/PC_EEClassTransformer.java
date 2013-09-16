@@ -18,7 +18,7 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 {
 	private static ArrayList<String> enchantmentclasses_obs = new ArrayList<String>(Arrays.asList("aam", 
 			"aan",	"aao",	"aap", "aaq", "aar", "aas", "abb",	"abc", "abd", "abe", "abf", "abg", "abh", "abi"));
-	private static ArrayList enchantmentclasses_dev = new ArrayList<String>(Arrays.asList(
+	private static ArrayList<String> enchantmentclasses_dev = new ArrayList<String>(Arrays.asList(
 			"net.minecraft.enchantment.EnchantmentArrowDamage",
 			"net.minecraft.enchantment.EnchantmentArrowFire",
 			"net.minecraft.enchantment.EnchantmentArrowInfinite",
@@ -70,6 +70,7 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 		return bytearray;
 	}
 
+	@SuppressWarnings("unused")
 	public byte[] patchClassASM(String name, byte[] bytes, boolean obfuscated, int enchantmentindex)
 	{		
 		
@@ -89,7 +90,6 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 		// Now we loop over all of the methods declared inside the Explosion class until we get to the targetMethodName "doExplosionB"
 
 		// find method to inject into
-		@SuppressWarnings("unchecked")
 		Iterator<MethodNode> methods = classNode.methods.iterator();
 		while (methods.hasNext())
 		{
@@ -105,7 +105,6 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 				AbstractInsnNode currentNode = null;
 				AbstractInsnNode targetNode = null;
 
-				@SuppressWarnings("unchecked")
 				Iterator<AbstractInsnNode> iter = m.instructions.iterator();
 
 				int index = -1;

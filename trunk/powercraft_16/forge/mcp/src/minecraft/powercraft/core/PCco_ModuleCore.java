@@ -1,5 +1,6 @@
 package powercraft.core;
 
+import powercraft.api.PC_Api;
 import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
 import powercraft.api.energy.PC_ConduitEnergyItem;
@@ -16,10 +17,14 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = "PowerCraft-Core", name = "PowerCraft-Core", version="1.0.0", dependencies="required-after:PowerCraft-Api@1.0.0")
+@Mod(modid = PCco_ModuleCore.NAME, name = PCco_ModuleCore.NAME, version=PCco_ModuleCore.VERSION, dependencies=PCco_ModuleCore.DEPENDENCIES)
 public class PCco_ModuleCore extends PC_Module {
 
-	@Instance("PowerCraft-Core")
+	public static final String NAME = POWERCRAFT+"-Core";
+	public static final String VERSION = "1.0.0";
+	public static final String DEPENDENCIES = "required-after:"+PC_Api.NAME+"@"+PC_Api.VERSION;
+	
+	@Instance(NAME)
 	public static PCco_ModuleCore instance;
 
 	@PC_FieldGenerator
