@@ -18,4 +18,8 @@ public class PC_Upgrade {
 		return upgrade+1;
 	}
 	
+	public static String getUpgradeName(int num){
+		return upgrades.get(num);
+	}
+	
 }
