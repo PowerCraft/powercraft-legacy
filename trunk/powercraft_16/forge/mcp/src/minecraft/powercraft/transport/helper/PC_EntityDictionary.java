@@ -3,7 +3,6 @@ package powercraft.transport.helper;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_Vec3;
@@ -46,10 +45,7 @@ public class PC_EntityDictionary
 		{
 			return entityDictionary.get(eid);
 		}
-		else
-		{
-			return null;
-		}
+		return null;
 	}
 	/**
 	 * Add item into dictionary
@@ -105,7 +101,9 @@ public class PC_EntityDictionary
 				case DOWN:
 					return BigDecimal.valueOf(evalues.y).setScale(5, RoundingMode.HALF_UP).doubleValue() < BigDecimal.valueOf(vec.y).setScale(5, RoundingMode.HALF_UP).doubleValue();
 				case UNKNOWN:
-					return false;					
+					return false;
+			default:
+				break;					
 			}
 		}
 		return false;

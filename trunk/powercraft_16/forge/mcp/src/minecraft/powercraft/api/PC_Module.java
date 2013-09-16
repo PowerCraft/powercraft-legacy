@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_IBlock;
-import powercraft.api.blocks.PC_IBlock;
 import powercraft.api.items.PC_Item;
 import powercraft.api.items.PC_ItemInfo;
 import powercraft.api.registries.PC_BlockRegistry;
@@ -59,6 +58,7 @@ public abstract class PC_Module {
 		if (metadata.modId != PC_Api.instance.getMetadata().modId) PC_Api.instance.getMetadata().childMods.add(getContainer());
 	}
 
+	@SuppressWarnings("unused")
 	protected void defaultInit(FMLInitializationEvent event) {
 
 		for (PC_IBlock block : blocks) {

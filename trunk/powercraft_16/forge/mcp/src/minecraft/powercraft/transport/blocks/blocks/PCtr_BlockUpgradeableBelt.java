@@ -52,6 +52,7 @@ public class PCtr_BlockUpgradeableBelt extends PC_BlockWithoutTileEntity
 			case EAST:
 			case WEST:
 				entity.motionX *= 2;
+			//$FALL-THROUGH$
 			case DOWN:
 				break;
 			case UP:

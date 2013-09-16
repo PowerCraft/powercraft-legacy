@@ -1,8 +1,6 @@
 package powercraft.api;
 
 
-import java.util.Map;
-
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -36,6 +34,10 @@ public enum PC_Direction{
 	public final int offsetY;
 	public final int offsetZ;
 	public final int flag;
+	public static final PC_Direction FRONT = NORTH;
+	public static final PC_Direction BACK = SOUTH;
+	public static final PC_Direction RIGHT = EAST;
+	public static final PC_Direction LEFT = WEST;
 	public static final PC_Direction[] VALID_DIRECTIONS = { DOWN, UP, NORTH, SOUTH, WEST, EAST };
 	public static final int[] OPPOSITES = { 1, 0, 3, 2, 5, 4, 6 };
 	public static final int[] PLAYER2MD = { 0, 3, 1, 2 };

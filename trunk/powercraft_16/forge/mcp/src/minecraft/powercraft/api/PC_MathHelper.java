@@ -14,7 +14,7 @@ public class PC_MathHelper {
 	}
 	
 	public static final float sqrt_float(float par0) {
-		return (float) Math.sqrt((double) par0);
+		return (float) Math.sqrt(par0);
 	}
 	
 	public static final float sqrt_double(double par0) {
@@ -23,7 +23,7 @@ public class PC_MathHelper {
 	
 	public static int floor_float(float par0) {
 		int var1 = (int) par0;
-		return par0 < (float) var1 ? var1 - 1 : var1;
+		return par0 < var1 ? var1 - 1 : var1;
 	}
 	
 	public static int truncateDoubleToInt(double par0) {
@@ -32,12 +32,12 @@ public class PC_MathHelper {
 	
 	public static int floor_double(double par0) {
 		int var2 = (int) par0;
-		return par0 < (double) var2 ? var2 - 1 : var2;
+		return par0 < var2 ? var2 - 1 : var2;
 	}
 	
 	public static long floor_double_long(double par0) {
 		long var2 = (long) par0;
-		return par0 < (double) var2 ? var2 - 1L : var2;
+		return par0 < var2 ? var2 - 1L : var2;
 	}
 	
 	public static float abs(float par0) {
@@ -54,12 +54,12 @@ public class PC_MathHelper {
 	
 	public static int ceiling_float_int(float par0) {
 		int var1 = (int) par0;
-		return par0 > (float) var1 ? var1 + 1 : var1;
+		return par0 > var1 ? var1 + 1 : var1;
 	}
 	
 	public static int ceiling_double_int(double par0) {
 		int var2 = (int) par0;
-		return par0 > (double) var2 ? var2 + 1 : var2;
+		return par0 > var2 ? var2 + 1 : var2;
 	}
 	
 	public static int clamp_int(int par0, int par1, int par2) {
@@ -144,9 +144,7 @@ public class PC_MathHelper {
 		
 		try {
 			var2 = Integer.parseInt(par0Str);
-		} catch (Throwable var4) {
-			;
-		}
+		} catch (Throwable var4) {}
 		
 		return var2;
 	}
@@ -156,9 +154,7 @@ public class PC_MathHelper {
 		
 		try {
 			var3 = Integer.parseInt(par0Str);
-		} catch (Throwable var5) {
-			;
-		}
+		} catch (Throwable var5) {}
 		
 		if (var3 < par2) {
 			var3 = par2;
@@ -172,9 +168,7 @@ public class PC_MathHelper {
 		
 		try {
 			var3 = Double.parseDouble(par0Str);
-		} catch (Throwable var6) {
-			;
-		}
+		} catch (Throwable var6) {}
 		
 		return var3;
 	}
@@ -184,9 +178,7 @@ public class PC_MathHelper {
 		
 		try {
 			var5 = Double.parseDouble(par0Str);
-		} catch (Throwable var8) {
-			;
-		}
+		} catch (Throwable var8) {}
 		
 		if (var5 < par3) {
 			var5 = par3;
@@ -197,7 +189,7 @@ public class PC_MathHelper {
 	
 	static {
 		for (int var0 = 0; var0 < 65536; ++var0) {
-			SIN_TABLE[var0] = (float) Math.sin((double) var0 * Math.PI * 2.0D / 65536.0D);
+			SIN_TABLE[var0] = (float) Math.sin(var0 * Math.PI * 2.0D / 65536.0D);
 		}
 	}
 }

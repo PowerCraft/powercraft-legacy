@@ -3,7 +3,6 @@ package powercraft.transport.blocks.blocks;
 import powercraft.api.PC_Direction;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.registries.PC_TextureRegistry;
-import powercraft.transport.helper.PCtr_MaterialElevator;
 
 @PC_BlockInfo(name = "ElevatorDown", blockid = "elevatordown", defaultid = 2061)
 public class PCtr_BlockClassicElevatorDown extends PCtr_BlockClassicElevator
