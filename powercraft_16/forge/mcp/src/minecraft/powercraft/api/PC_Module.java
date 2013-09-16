@@ -58,7 +58,6 @@ public abstract class PC_Module {
 		if (metadata.modId != PC_Api.instance.getMetadata().modId) PC_Api.instance.getMetadata().childMods.add(getContainer());
 	}
 
-	@SuppressWarnings("unused") 
 	protected void defaultInit(FMLInitializationEvent event) {
 
 		for (PC_IBlock block : blocks) {
