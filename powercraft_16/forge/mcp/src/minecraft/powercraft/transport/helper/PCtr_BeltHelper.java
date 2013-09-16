@@ -70,14 +70,11 @@ public class PCtr_BeltHelper
 				}
 				return PC_Direction.WEST;
 			}
-			else 
+			if (motionz > 0)
 			{
-				if (motionz > 0)
-				{
-					return PC_Direction.SOUTH;
-				}
-				return PC_Direction.NORTH;
-			}		
+				return PC_Direction.SOUTH;
+			}
+			return PC_Direction.NORTH;		
 		}		
 		if (motiony > 0)
 		{
@@ -127,17 +124,20 @@ public class PCtr_BeltHelper
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	public static AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
 	{
 		return AxisAlignedBB.getBoundingBox(i, 0.0F + j, k, (i + 1), (j + HEIGHT_COLLISION + 0.0F), (k + 1));
 	}
 
+	@SuppressWarnings("unused")
 	public static AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k)
 	{
 		float f = 0.0F + HEIGHT_SELECTED;
 		return AxisAlignedBB.getBoundingBox(i, 0.0F + j, k, (i + 1), j + f, (float)k + 1);
 	}
 
+	@SuppressWarnings("unused")
 	public static void setBlockBoundsBasedOnState(Block b, IBlockAccess iblockaccess, int i, int j, int k)
 	{
 		b.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0F + HEIGHT, 1.0F);
@@ -148,6 +148,7 @@ public class PCtr_BeltHelper
 		b.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0F + HEIGHT, 1.0F);
 	}
 
+	@SuppressWarnings("unused")
 	public static int tickRate(World world)
 	{
 		return 1;
@@ -186,6 +187,7 @@ public class PCtr_BeltHelper
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	public static void moveEntityOnBelt(World world, Entity entity, PC_Vec3I current_pos, boolean bordersEnabled, boolean motionEnabled, PC_Direction direction)
 	{
 		if (motionEnabled)
@@ -359,6 +361,7 @@ public class PCtr_BeltHelper
 						entity.motionX = PC_MathHelper.clamp_float((float)entity.motionX, (float)-(BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
 
 					}
+					break;
 				default:
 					break;
 			}

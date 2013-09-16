@@ -11,7 +11,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils;
-import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_BlockRotated;
 import powercraft.api.registries.PC_TextureRegistry;

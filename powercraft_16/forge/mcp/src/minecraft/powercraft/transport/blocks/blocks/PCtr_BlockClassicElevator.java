@@ -75,7 +75,8 @@ public class PCtr_BlockClassicElevator extends PC_BlockWithoutTileEntity
 		}
 	}
 
-	private void moveEntity(World world, Entity entity, PC_Vec3I curPosition)
+	@SuppressWarnings("unused")
+	private static void moveEntity(World world, Entity entity, PC_Vec3I curPosition)
 	{
 		boolean isPlayer = entity instanceof EntityPlayer;		
 		//PCtr_BeltHelper.moveEntityOnBelt(world, entity, curPosition, isPlayer ? false : true, true, elevatorDirection);
