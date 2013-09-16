@@ -8,26 +8,40 @@ import powercraft.api.upgrade.PC_Upgrade;
 import powercraft.api.upgrade.PC_UpgradeFunction;
 
 public class PC_TileEntityTutorial extends PC_TileEntityUpgradable {
-	int speed=1;
+	double speed=1;
 	
 	public PC_TileEntityTutorial() {
 		super("Tutorial", new PC_Inventory[]{}, 3);
 	}
 	
 	static{
-		registerUpgradeFunction("UpgradeA", new PC_UpgradeFunction.Impl(){
+		registerUpgradeFunction("Speed", new PC_UpgradeFunction.Impl(){
 
 			@Override
 			public void onPlaced(PC_TileEntityUpgradable te) {
-				((PC_TileEntityTutorial)te).speed=2;
+				((PC_TileEntityTutorial)te).speed*=2;
 			}
 
 			@Override
 			public void onRemoved(PC_TileEntityUpgradable te) {
-				((PC_TileEntityTutorial)te).speed=1;
+				((PC_TileEntityTutorial)te).speed/=2;
 			}
 			
 		});
+		registerUpgradeFunction("Slow", new PC_UpgradeFunction.Impl(){
+
+			@Override
+			public void onPlaced(PC_TileEntityUpgradable te) {
+				((PC_TileEntityTutorial)te).speed/=2;
+			}
+
+			@Override
+			public void onRemoved(PC_TileEntityUpgradable te) {
+				((PC_TileEntityTutorial)te).speed*=2;
+			}
+			
+		});
+	
 	}
 
 	/* (non-Javadoc)
