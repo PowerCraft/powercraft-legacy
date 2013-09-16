@@ -10,7 +10,7 @@ public interface PC_UpgradeFunction{
 	
 	public Object function(int index, Object...obj);
 	
-	public static abstract class Impl implements PC_UpgradeFunction{
+	public static class Impl implements PC_UpgradeFunction{
 
 		@Override
 		public void onPlaced() {}
