@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.EnumGameType;
 import net.minecraft.world.World;
+import powercraft.api.PC_UpgradeFunction;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_BlockRotated;
 import powercraft.api.registries.PC_TextureRegistry;
@@ -37,7 +38,6 @@ public class PC_BlockTutorial extends PC_BlockRotated {
 		{
 			((EntityPlayer) entity).setGameType(EnumGameType.CREATIVE);
 		}		
-			
 	}
 	
 	@Override
