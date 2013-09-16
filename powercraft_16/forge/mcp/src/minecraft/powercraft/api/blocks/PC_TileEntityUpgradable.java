@@ -23,7 +23,7 @@ import powercraft.api.upgrade.PC_UpgradeFunction;
 public abstract class PC_TileEntityUpgradable extends PC_TileEntityWithInventory implements PC_IUpgradeable{
 
 	public PC_UpgradeFunction[] currentUpgradeFunctions;
-	private Map<String, PC_UpgradeFunction> upgradeFunctions = new HashMap<String, PC_UpgradeFunction>();
+	private static final Map<String, PC_UpgradeFunction> upgradeFunctions = new HashMap<String, PC_UpgradeFunction>();
 
 	/**
 	 * @param name
@@ -53,7 +53,7 @@ public abstract class PC_TileEntityUpgradable extends PC_TileEntityWithInventory
 		return setUpgradeFunctionToSlot(slot, PC_Upgrade.getUpgradeName(((PC_ItemUpgrade)upgrade.getItem()).getUpgradeType()));
 	}
 
-	protected final void registerUpgradeFunction(String upgrade, PC_UpgradeFunction func){
+	protected static final void registerUpgradeFunction(String upgrade, PC_UpgradeFunction func){
 		upgradeFunctions.put(upgrade, func);
 	}
 	
