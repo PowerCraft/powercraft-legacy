@@ -2,6 +2,7 @@ package powercraft.api.gres;
 
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
+import powercraft.api.gres.events.PC_GresMouseWheelEvent;
 
 class PC_GresScrollAreaContainer extends PC_GresContainer {
 	
@@ -48,8 +49,10 @@ class PC_GresScrollAreaContainer extends PC_GresContainer {
 	}
 
 	@Override
-	protected void handleMouseWheel(PC_Vec2I mouse, int buttons, int wheel) {
-		scrollArea.onMouseWheel(mouse, buttons, wheel);
+	protected void handleMouseWheel(PC_GresMouseWheelEvent event) {
+		if(scrollArea.onMouseWheel(event.getMouse(), event.getButtonState(), event.getWheel())){
+			event.consume();
+		}
 	}
 	
 	@Override

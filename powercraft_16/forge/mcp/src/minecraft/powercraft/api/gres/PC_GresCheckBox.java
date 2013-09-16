@@ -41,10 +41,11 @@ public class PC_GresCheckBox extends PC_GresComponent {
 	}
 	
 	@Override
-	protected void handleMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
+	protected boolean handleMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
 		state=!state;
 		super.handleMouseButtonDown(mouse, buttons, eventButton);
 		notifyChange();
+		return true;
 	}
 	
 }

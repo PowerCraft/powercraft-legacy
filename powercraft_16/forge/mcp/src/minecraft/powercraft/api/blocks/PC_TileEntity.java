@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_PacketHandler;
@@ -295,4 +296,12 @@ public abstract class PC_TileEntity extends TileEntity {
 		}
 	}
 
+	public boolean isUpgradeable(){
+		return false;
+	}
+	
+	public boolean isUpgradeableByUpgrade(int upgrade){
+		return false;
+	}
+	
 }
