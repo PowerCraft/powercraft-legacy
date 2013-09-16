@@ -624,8 +624,8 @@ public abstract class PC_GresComponent {
 		}
 	}
 
-	protected void onFokusLost() {
-		PC_GresFokusLostEvent event = new PC_GresFokusLostEvent(this);
+	protected void onFokusLost(PC_GresComponent newFocusedComponent) {
+		PC_GresFokusLostEvent event = new PC_GresFokusLostEvent(this, newFocusedComponent);
 		fireEvent(event);
 		if (!event.isConsumed()) {
 			handleFokusLost();
@@ -636,8 +636,8 @@ public abstract class PC_GresComponent {
 		fokus = false;
 	}
 	
-	protected void onFokusGot() {
-		PC_GresFokusGotEvent event = new PC_GresFokusGotEvent(this);
+	protected void onFokusGot(PC_GresComponent oldFocusedComponent) {
+		PC_GresFokusGotEvent event = new PC_GresFokusGotEvent(this, oldFocusedComponent);
 		fireEvent(event);
 		if (!event.isConsumed()) {
 			handleFokusGot();
