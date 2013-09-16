@@ -82,9 +82,9 @@ public class PC_GresTextEdit extends PC_GresComponent {
 			}
 			drawTexture(textureName2,
 					fontRenderer.getStringWidth(text.substring(0, s)) - scroll
-							+ 2, 2,
+							+ 2, 1,
 					fontRenderer.getStringWidth(text.substring(s, e)),
-					rect.height);
+					rect.height+1);
 		}
 
 		drawString(text, 2 - scroll, 6, false);
