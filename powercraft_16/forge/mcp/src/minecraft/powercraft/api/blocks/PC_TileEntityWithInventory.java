@@ -35,7 +35,7 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 		return size;
 	}
 
-	private SlotData getInventoryFor(int i){
+	private SlotData getSlotInfoByGlobalSlotNum(int i){
 		if(i<0)
 			throw new IndexOutOfBoundsException();
 		for(int j=0; j<inventories.length; j++){
@@ -50,25 +50,25 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 	
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		SlotData sd = getInventoryFor(i);
+		SlotData sd = getSlotInfoByGlobalSlotNum(i);
 		return sd.inventory.getStackInSlot(sd.slot);
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		SlotData sd = getInventoryFor(i);
+		SlotData sd = getSlotInfoByGlobalSlotNum(i);
 		return sd.inventory.decrStackSize(sd.slot, j);
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		SlotData sd = getInventoryFor(i);
+		SlotData sd = getSlotInfoByGlobalSlotNum(i);
 		return sd.inventory.getStackInSlotOnClosing(sd.slot);
 	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		SlotData sd = getInventoryFor(i);
+		SlotData sd = getSlotInfoByGlobalSlotNum(i);
 		sd.inventory.setInventorySlotContents(sd.slot, itemstack);
 	}
 
@@ -104,7 +104,7 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		SlotData sd = getInventoryFor(i);
+		SlotData sd = getSlotInfoByGlobalSlotNum(i);
 		return sd.inventory.isItemValidForSlot(sd.slot, itemstack);
 	}
 
@@ -116,7 +116,7 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemstack, int side) {
 		if(isSlotCompatibleWithSide(i, side)){
-			SlotData sd = getInventoryFor(i);
+			SlotData sd = getSlotInfoByGlobalSlotNum(i);
 			return sd.inventory.canInsertItem(sd.slot, itemstack);
 		}
 		return false;
@@ -125,7 +125,7 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 	@Override
 	public boolean canExtractItem(int i, ItemStack itemstack, int side) {
 		if(isSlotCompatibleWithSide(i, side)){
-			SlotData sd = getInventoryFor(i);
+			SlotData sd = getSlotInfoByGlobalSlotNum(i);
 			return sd.inventory.canExtractItem(sd.slot, itemstack);
 		}
 		return false;
@@ -133,7 +133,7 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 
 	@Override
 	public int getSlotStackLimit(int i) {
-		SlotData sd = getInventoryFor(i);
+		SlotData sd = getSlotInfoByGlobalSlotNum(i);
 		return PC_InventoryUtils.getSlotStackLimit(sd.inventory, sd.slot);
 	}
 
@@ -144,7 +144,7 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 	
 	@Override
 	public boolean canDropStack(int i) {
-		SlotData sd = getInventoryFor(i);
+		SlotData sd = getSlotInfoByGlobalSlotNum(i);
 		return sd.inventory.canDropStacks();
 	}
 	
@@ -155,12 +155,19 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 		}
 	}
 
-	public PC_Inventory getSubInventory(int i){
+	public PC_Inventory getSubInventoryByID(int i){
 		return inventories[i];
+	}
+
+	public PC_Inventory getSubInventoryByName(String name){
+		for(PC_Inventory inv:inventories){
+			if(inv.getInvName()==name) return inv;
+		}
+		return null;
 	}
 	
 	public PC_Inventory getSubInventoryForSlot(int i){
-		return getInventoryFor(i).inventory;
+		return getSlotInfoByGlobalSlotNum(i).inventory;
 	}
 	
 	public int getIDForSide(int side){

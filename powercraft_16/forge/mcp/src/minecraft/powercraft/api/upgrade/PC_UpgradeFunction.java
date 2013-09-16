@@ -1,4 +1,4 @@
-package powercraft.api;
+package powercraft.api.upgrade;
 
 public interface PC_UpgradeFunction{
 	
