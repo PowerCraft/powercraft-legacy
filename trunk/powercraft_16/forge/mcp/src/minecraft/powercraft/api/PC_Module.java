@@ -54,6 +54,7 @@ public abstract class PC_Module {
 		metadata.authorList = new ArrayList<String>();
 		metadata.authorList.add("XOR");
 		metadata.authorList.add("Rapus");
+		metadata.authorList.add("Buggi");
 		metadata.credits = "MightyPork, RxD, LOLerul2";
 		if (metadata.modId != PC_Api.instance.getMetadata().modId) PC_Api.instance.getMetadata().childMods.add(getContainer());
 	}

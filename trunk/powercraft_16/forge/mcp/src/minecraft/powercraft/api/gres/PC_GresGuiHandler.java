@@ -271,7 +271,11 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 
 	protected void eventKeyTyped(char key, int keyCode) {
 
-		if (focusedComponent == this || !focusedComponent.onKeyTyped(key, keyCode)) {
+		PC_GresComponent c = focusedComponent;
+		while(c!=null && !c.onKeyTyped(key, keyCode)){
+			c = c.getParent();
+		}
+		if(c==null){
 			PC_GresKeyEvent event = new PC_GresKeyEvent(this, key, keyCode);
 			fireEvent(event);
 			if (!event.isConsumed()) {
@@ -297,7 +301,7 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 
 	protected void eventMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
 
-		setFokus(mouseOverComponent);
+		setFocus(mouseOverComponent);
 		focusedComponent.onMouseButtonDown(mouse.sub(focusedComponent.getRealLocation()), buttons, eventButton);
 	}
 
@@ -312,13 +316,16 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 
 		checkMouseOverComponent(mouse, buttons);
 		mouseOverComponent.onMouseMove(mouse.sub(mouseOverComponent.getRealLocation()), buttons);
-		focusedComponent.onMouseMove(mouse.sub(focusedComponent.getRealLocation()), buttons);
+		if(mouseOverComponent!=focusedComponent)
+			focusedComponent.onMouseMove(mouse.sub(focusedComponent.getRealLocation()), buttons);
 	}
 
 
 	protected void eventMouseWheel(PC_Vec2I mouse, int buttons, int wheel) {
-
-		focusedComponent.onMouseWheel(mouse.sub(focusedComponent.getRealLocation()), buttons, wheel);
+		PC_GresComponent c = focusedComponent;
+		while(c!=null && !c.onMouseWheel(mouse.sub(c.getRealLocation()), buttons, wheel)){
+			c = c.getParent();
+		}
 	}
 
 
@@ -329,15 +336,15 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 	}
 
 
-	public void setFokus(PC_GresComponent focusedComponent) {
+	public void setFocus(PC_GresComponent focusedComponent) {
 		if(this.focusedComponent != focusedComponent){
 			if(this.focusedComponent!=null){
-				this.focusedComponent.onFokusLost(focusedComponent);
+				this.focusedComponent.onFocusLost(focusedComponent);
 			}
 			PC_GresComponent oldFocusedComponent = this.focusedComponent;
 			this.focusedComponent = focusedComponent;
 			if(focusedComponent!=null){
-				focusedComponent.onFokusGot(oldFocusedComponent);
+				focusedComponent.onFocusGot(oldFocusedComponent);
 			}
 		}
 	}

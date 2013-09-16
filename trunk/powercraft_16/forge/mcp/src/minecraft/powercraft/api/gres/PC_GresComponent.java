@@ -17,8 +17,8 @@ import powercraft.api.PC_Debug;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 import powercraft.api.gres.events.PC_GresEvent;
-import powercraft.api.gres.events.PC_GresFokusGotEvent;
-import powercraft.api.gres.events.PC_GresFokusLostEvent;
+import powercraft.api.gres.events.PC_GresFocusGotEvent;
+import powercraft.api.gres.events.PC_GresFocusLostEvent;
 import powercraft.api.gres.events.PC_GresKeyEvent;
 import powercraft.api.gres.events.PC_GresMouseButtonEvent;
 import powercraft.api.gres.events.PC_GresMouseEvent;
@@ -78,7 +78,7 @@ public abstract class PC_GresComponent {
 
 	protected Object layoutData;
 
-	protected boolean fokus;
+	protected boolean focus;
 	
 	public PC_GresComponent() {
 
@@ -408,17 +408,17 @@ public abstract class PC_GresComponent {
 		return enabled && (parent == null || parent.isRecursiveEnabled());
 	}
 
-	public boolean hasFokus(){
+	public boolean hasFocus(){
 		
-		return fokus;
+		return focus;
 		
 	}
 
-	public void takeFokus(){
+	public void takeFocus(){
 		
 		PC_GresGuiHandler guiHandler = getGuiHandler();
 		if(guiHandler!=null){
-			guiHandler.setFokus(this);
+			guiHandler.setFocus(this);
 		}
 		
 	}
@@ -500,7 +500,7 @@ public abstract class PC_GresComponent {
 		if (!event.isConsumed()) {
 			return handleKeyTyped(key, keyCode);
 		}
-		return false;
+		return true;
 	}
 
 
@@ -548,105 +548,111 @@ public abstract class PC_GresComponent {
 	}
 
 
-	protected void onMouseMove(PC_Vec2I mouse, int buttons) {
+	protected boolean onMouseMove(PC_Vec2I mouse, int buttons) {
 
 		PC_GresMouseEvent event = new PC_GresMouseMoveEvent(this, mouse, buttons, PC_GresMouseMoveEvent.Event.MOVE);
 		fireEvent(event);
 		if (!event.isConsumed()) {
-			handleMouseMove(mouse, buttons);
+			return handleMouseMove(mouse, buttons);
 		}
+		return true;
 	}
 
 
-	protected void handleMouseMove(PC_Vec2I mouse, int buttons) {
-
+	protected boolean handleMouseMove(PC_Vec2I mouse, int buttons) {
+		return false;
 	}
 
 
-	protected void onMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
+	protected boolean onMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
 
 		PC_GresMouseEvent event = new PC_GresMouseButtonEvent(this, mouse, buttons, eventButton, PC_GresMouseButtonEvent.Event.DOWN);
 		fireEvent(event);
 		if (!event.isConsumed()) {
-			handleMouseButtonDown(mouse, buttons, eventButton);
+			return handleMouseButtonDown(mouse, buttons, eventButton);
 		}
+		return true;
 	}
 
 
-	protected void handleMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
+	protected boolean handleMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
 
 		mouseDown = enabled && parentEnabled;
+		return false;
 	}
 
 
-	protected void onMouseButtonUp(PC_Vec2I mouse, int buttons, int eventButton) {
+	protected boolean onMouseButtonUp(PC_Vec2I mouse, int buttons, int eventButton) {
 
 		PC_GresMouseEvent event = new PC_GresMouseButtonEvent(this, mouse, buttons, eventButton, PC_GresMouseButtonEvent.Event.UP);
 		fireEvent(event);
 		if (!event.isConsumed()) {
-			handleMouseButtonUp(mouse, buttons, eventButton);
+			return handleMouseButtonUp(mouse, buttons, eventButton);
 		}
+		return true;
 	}
 
 
-	protected void handleMouseButtonUp(PC_Vec2I mouse, int buttons, int eventButton) {
+	protected boolean handleMouseButtonUp(PC_Vec2I mouse, int buttons, int eventButton) {
 
+		boolean consumed = false;
 		if (mouseDown) {
 			PC_GresMouseEvent event = new PC_GresMouseButtonEvent(this, mouse, buttons, eventButton, PC_GresMouseButtonEvent.Event.CLICK);
 			fireEvent(event);
 			if (!event.isConsumed()) {
-				handleMouseButtonClick(mouse, buttons, eventButton);
+				consumed = handleMouseButtonClick(mouse, buttons, eventButton);
+			}else{
+				consumed = true;
 			}
 		}
 		mouseDown = false;
+		return consumed;
 	}
 
 
-	protected void handleMouseButtonClick(PC_Vec2I mouse, int buttons, int eventButton) {
-
+	protected boolean handleMouseButtonClick(PC_Vec2I mouse, int buttons, int eventButton) {
+		return false;
 	}
 
 
-	protected void onMouseWheel(PC_Vec2I mouse, int buttons, int wheel) {
+	protected final boolean onMouseWheel(PC_Vec2I mouse, int buttons, int wheel) {
+		PC_GresMouseWheelEvent event = new PC_GresMouseWheelEvent(this, mouse, buttons, wheel);
+		onMouseWheel(event);
+		return event.isConsumed();
+	}
 
-		PC_GresMouseEvent event = new PC_GresMouseWheelEvent(this, mouse, buttons, wheel);
+	protected void onMouseWheel(PC_GresMouseWheelEvent event) {
 		fireEvent(event);
 		if (!event.isConsumed()) {
-			handleMouseWheel(mouse, buttons, wheel);
+			handleMouseWheel(event);
 		}
 	}
 
+	protected void handleMouseWheel(PC_GresMouseWheelEvent event) {}
 
-	protected void handleMouseWheel(PC_Vec2I mouse, int buttons, int wheel) {
-
-		if (parent != null) {
-			parent.onMouseWheel(mouse, buttons, wheel);
-		}
-	}
-
-	protected void onFokusLost(PC_GresComponent newFocusedComponent) {
-		PC_GresFokusLostEvent event = new PC_GresFokusLostEvent(this, newFocusedComponent);
+	protected void onFocusLost(PC_GresComponent newFocusedComponent) {
+		PC_GresFocusLostEvent event = new PC_GresFocusLostEvent(this, newFocusedComponent);
 		fireEvent(event);
 		if (!event.isConsumed()) {
-			handleFokusLost();
+			handleFocusLost();
 		}
 	}
 
-	protected void handleFokusLost() {
-		fokus = false;
+	protected void handleFocusLost() {
+		focus = false;
 	}
 	
-	protected void onFokusGot(PC_GresComponent oldFocusedComponent) {
-		PC_GresFokusGotEvent event = new PC_GresFokusGotEvent(this, oldFocusedComponent);
+	protected void onFocusGot(PC_GresComponent oldFocusedComponent) {
+		PC_GresFocusGotEvent event = new PC_GresFocusGotEvent(this, oldFocusedComponent);
 		fireEvent(event);
 		if (!event.isConsumed()) {
-			handleFokusGot();
+			handleFocusGot();
 		}
 	}
 
-	protected void handleFokusGot() {
+	protected void handleFocusGot() {
 		moveToTop();
-		fokus = true;
+		focus = true;
 	}
 	
 	protected PC_GresComponent getComponentAtPosition(PC_Vec2I mouse) {

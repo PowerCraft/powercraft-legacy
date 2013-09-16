@@ -7,7 +7,7 @@ import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 import powercraft.api.gres.PC_GresAlign.Fill;
 import powercraft.api.gres.events.PC_GresEvent;
-import powercraft.api.gres.events.PC_GresFokusLostEvent;
+import powercraft.api.gres.events.PC_GresFocusLostEvent;
 import powercraft.api.gres.events.PC_GresMouseButtonEvent;
 import powercraft.api.gres.events.PC_IGresEventListener;
 
@@ -64,7 +64,7 @@ public class PC_GresComboBox extends PC_GresComponent {
 	}
 	
 	@Override
-	protected void handleMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
+	protected boolean handleMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
 		if(frame==null){
 			mouseDown = true;
 			frame = new PC_GresComboBoxFrame(this);
@@ -89,14 +89,17 @@ public class PC_GresComboBox extends PC_GresComponent {
 			frame.setMinSize(new PC_Vec2I(rect.width, 50));
 			frame.setSize(new PC_Vec2I(rect.width, 50));
 			getGuiHandler().add(frame);
-			frame.takeFokus();
+			frame.takeFocus();
 		}else{
 			closeDropDown();
 		}
+		return true;
 	}
 	
 	@Override
-	protected void handleMouseButtonUp(PC_Vec2I mouse, int buttons,int eventButton) {}
+	protected boolean handleMouseButtonUp(PC_Vec2I mouse, int buttons,int eventButton) {
+		return true;
+	}
 	
 	@Override
 	protected void handleMouseLeave(PC_Vec2I mouse, int buttons) {
@@ -123,8 +126,8 @@ public class PC_GresComboBox extends PC_GresComponent {
 		
 		@Override
 		public void onEvent(PC_GresEvent event) {
-			if(event instanceof PC_GresFokusLostEvent){
-				PC_GresFokusLostEvent le = (PC_GresFokusLostEvent)event;
+			if(event instanceof PC_GresFocusLostEvent){
+				PC_GresFocusLostEvent le = (PC_GresFocusLostEvent)event;
 				if(!isParentOf(frame, le.getNewFocusedComponent()) && le.getNewFocusedComponent()!=PC_GresComboBox.this){
 					if(!handleClosing){
 						handleClosing = true;

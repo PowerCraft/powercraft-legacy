@@ -64,12 +64,13 @@ public class PC_GresWindowSideTab extends PC_GresContainer {
 	}
 
 	@Override
-	protected void handleMouseButtonClick(PC_Vec2I mouse, int buttons, int eventButton) {
+	protected boolean handleMouseButtonClick(PC_Vec2I mouse, int buttons, int eventButton) {
 		if(openSideTab == this){
 			openSideTab = null;
 		}else{
 			openSideTab = this;
 		}
+		return true;
 	}
 	
 }

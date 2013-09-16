@@ -73,7 +73,7 @@ public class PC_GresTextEdit extends PC_GresComponent {
 				new PC_RectI(2+offset.x, 6+offset.y, rect.width - 4, rect.height - 12), scale,
 				displayHeight);
 
-		if (fokus && mouseSelectStart != mouseSelectEnd) {
+		if (focus && mouseSelectStart != mouseSelectEnd) {
 			int s = mouseSelectStart;
 			int e = mouseSelectEnd;
 			if (s > e) {
@@ -89,7 +89,7 @@ public class PC_GresTextEdit extends PC_GresComponent {
 
 		drawString(text, 2 - scroll, 6, false);
 
-		if (fokus && cursorCounter / 6 % 2 == 0) {
+		if (focus && cursorCounter / 6 % 2 == 0) {
 			PC_GresRenderer.drawVerticalLine(fontRenderer.getStringWidth(text
 					.substring(0, mouseSelectEnd)) + 2, 6,
 					6 + fontRenderer.FONT_HEIGHT, fontColors[0]|0xff000000);
@@ -462,26 +462,28 @@ public class PC_GresTextEdit extends PC_GresComponent {
 	}
 
 	@Override
-	protected void handleMouseMove(PC_Vec2I mouse, int buttons) {
+	protected boolean handleMouseMove(PC_Vec2I mouse, int buttons) {
 		super.handleMouseMove(mouse, buttons);
 		if (mouseDown) {
 			mouseSelectEnd = getMousePositionInString(mouse.x);
 			cursorCounter = 0;
 		}
+		return true;
 	}
 
 	@Override
-	protected void handleMouseButtonDown(PC_Vec2I mouse, int buttons,
+	protected boolean handleMouseButtonDown(PC_Vec2I mouse, int buttons,
 			int eventButton) {
 		super.handleMouseButtonDown(mouse, buttons, eventButton);
 		mouseSelectStart = getMousePositionInString(mouse.x);
 		mouseSelectEnd = mouseSelectStart;
 		cursorCounter = 0;
+		return true;
 	}
 
 	@Override
 	protected void onTick() {
-		if (fokus) {
+		if (focus) {
 			cursorCounter++;
 		} else {
 			cursorCounter = 0;

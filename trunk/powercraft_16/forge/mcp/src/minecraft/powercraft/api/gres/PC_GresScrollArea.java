@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
+import powercraft.api.gres.events.PC_GresMouseWheelEvent;
 
 public class PC_GresScrollArea extends PC_GresComponent {
 
@@ -163,7 +164,7 @@ public class PC_GresScrollArea extends PC_GresComponent {
 	}
 
 	@Override
-	protected void handleMouseMove(PC_Vec2I mouse, int buttons) {
+	protected boolean handleMouseMove(PC_Vec2I mouse, int buttons) {
 		super.handleMouseMove(mouse, buttons);
 		if(mouseDown){
 			if(selectBar==0){
@@ -177,6 +178,7 @@ public class PC_GresScrollArea extends PC_GresComponent {
 		if(mouseOver){
 			overBar = mouseOverBar(mouse);
 		}
+		return true;
 	}
 
 	private void calcScrollPosition() {
@@ -245,7 +247,7 @@ public class PC_GresScrollArea extends PC_GresComponent {
 	}
 	
 	@Override
-	protected void handleMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
+	protected boolean handleMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
 		super.handleMouseButtonDown(mouse, buttons, eventButton);
 		if(mouseDown){
 			lastMousePosition.setTo(mouse);
@@ -254,6 +256,7 @@ public class PC_GresScrollArea extends PC_GresComponent {
 		if(mouseOver){
 			overBar = mouseOverBar(mouse);
 		}
+		return true;
 	}
 
 	private int mouseOverBar(PC_Vec2I mouse){
@@ -270,13 +273,14 @@ public class PC_GresScrollArea extends PC_GresComponent {
 	}
 
 	@Override
-	protected void handleMouseWheel(PC_Vec2I mouse, int buttons, int wheel) {
+	protected void handleMouseWheel(PC_GresMouseWheelEvent event) {
 		if((type & VSCROLL)!=0){
-			vScrollPos -= wheel*3;
+			vScrollPos -= event.getWheel()*3;
 		}else if((type & HSCROLL)!=0){
-			hScrollPos -= wheel*3;
+			hScrollPos -= event.getWheel()*3;
 		}
 		updateScrollPosition();
+		event.consume();
 	}
 
 	@Override
