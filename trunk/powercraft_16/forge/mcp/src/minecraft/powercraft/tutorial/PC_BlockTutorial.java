@@ -33,28 +33,26 @@ public class PC_BlockTutorial extends PC_BlockRotated {
 	public void onEntityCollidedWithBlock(World world, int x,
 			int y, int z, Entity entity) {
 		// TODO Auto-generated method stub
-		if (entity instanceof EntityPlayer)
-		{
-			((EntityPlayer) entity).setGameType(EnumGameType.CREATIVE);
-		}		
+				
 	}
 	
 	@Override
 	public void onEntityWalking(World par1World, int par2,
 			int par3, int par4, Entity par5Entity) {
 		onEntityCollidedWithBlock(par1World, par2, par3, par4, par5Entity);
+		
 	}
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y,
 			int z, EntityPlayer player, int side, float xHit,
 			float yHit, float zHit) {		
-		player.setGameType(EnumGameType.CREATIVE);
+		
 		return true;
 	}
 	@Override
 	public void onBlockClicked(World par1World, int par2,
 			int par3, int par4, EntityPlayer par5EntityPlayer) {
-		par5EntityPlayer.setGameType(EnumGameType.SURVIVAL);
+		
 	}
 }

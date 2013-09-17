@@ -2,25 +2,31 @@ package powercraft.transport.blocks.blocks;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_Direction;
+import powercraft.api.PC_Utils;
 import powercraft.api.PC_Vec3;
 import powercraft.api.blocks.PC_BlockInfo;
-import powercraft.api.blocks.PC_BlockWithoutTileEntity;
+import powercraft.api.blocks.PC_BlockRotated;
 import powercraft.api.registries.PC_TextureRegistry;
+import powercraft.api.upgrade.PC_ItemUpgrade;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialConveyor;
+import powercraft.tutorial.PC_ItemTutorial;
+import powercraft.tutorial.PC_TileEntityTutorial;
 
-@PC_BlockInfo(name = "UpgradableBelt", blockid = "upgradableBelt", defaultid = 2051)
-public class PCtr_BlockUpgradeableBelt extends PC_BlockWithoutTileEntity
+@PC_BlockInfo(name = "UpgradableBelt", blockid = "upgradableBelt", defaultid = 2051,tileEntity=PC_TileEntityTutorial.class)
+public class PCtr_BlockUpgradeableBelt extends PC_BlockRotated
 {
-
+	
 	public PCtr_BlockUpgradeableBelt(int id)
 	{
 		super(id, PCtr_MaterialConveyor.getMaterial());
 		setCreativeTab(CreativeTabs.tabBlock);
+		
 	}
 
 	@Override
@@ -40,6 +46,7 @@ public class PCtr_BlockUpgradeableBelt extends PC_BlockWithoutTileEntity
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity)
 	{
+		PC_TileEntityTutorial tentity = PC_Utils.getTE(world, i, j, k);
 		if (!entity.onGround) return;
 		PC_Vec3 emotion = new PC_Vec3(entity.motionX, entity.motionY, entity.motionZ);
 		PC_Direction eDir = PCtr_BeltHelper.returnPrimaryDirection(emotion, true);
@@ -47,11 +54,11 @@ public class PCtr_BlockUpgradeableBelt extends PC_BlockWithoutTileEntity
 		{
 			case NORTH:
 			case SOUTH:
-				entity.motionZ *= 2;
+				entity.motionZ *= tentity.speed; // use the new upgradeable tile entity speed 
 				break;
 			case EAST:
 			case WEST:
-				entity.motionX *= 2;
+				entity.motionX *= tentity.speed;
 			//$FALL-THROUGH$
 			case DOWN:
 				break;
@@ -65,6 +72,18 @@ public class PCtr_BlockUpgradeableBelt extends PC_BlockWithoutTileEntity
 		}
 	}
 
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
+	{
+		PC_ItemUpgrade[] temp = new PC_ItemUpgrade[1];
+		temp[0] = new PC_ItemTutorial();
+		PC_TileEntityTutorial tentity = PC_Utils.getTE(world, x, y, z);
+		
+		tentity.onUpgradesChanged(temp); // manually fire the event with the new item
+		
+		return false;		
+	}
+	
 	@Override
 	public boolean isOpaqueCube()
 	{
@@ -105,5 +124,13 @@ public class PCtr_BlockUpgradeableBelt extends PC_BlockWithoutTileEntity
 	public int tickRate(World world)
 	{
 		return PCtr_BeltHelper.tickRate(world);
+	}
+	@Override
+	public int getLightOpacity(World world, int x, int y, int z)
+	{
+		// TODO Auto-generated method stub
+		//System.out.println("getLightOpacity inside block");
+		return 0;
+		//return super.getLightOpacity(world, x, y, z);
 	}
 }
