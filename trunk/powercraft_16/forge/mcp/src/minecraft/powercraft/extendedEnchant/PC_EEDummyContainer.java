@@ -11,10 +11,10 @@ import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-public class PC_EEDummyContainer extends DummyModContainer {
-
-	
-	public PC_EEDummyContainer() {
+public class PC_EEDummyContainer extends DummyModContainer 
+{	
+	public PC_EEDummyContainer() 
+	{
 		super(new ModMetadata());
 		ModMetadata meta = getMetadata();
 		meta.modId = "extendedEnchant";
@@ -30,20 +30,23 @@ public class PC_EEDummyContainer extends DummyModContainer {
 	}
 
 	@Override
-	public boolean registerBus(EventBus bus, LoadController controller) {
+	public boolean registerBus(EventBus bus, LoadController controller)
+	{
 		bus.register(this);
 		return true;
 	}
 
 	@SuppressWarnings("unused")
 	@Subscribe
-	public void preInit(FMLPreInitializationEvent evt) {
+	public void preInit(FMLPreInitializationEvent evt) 
+	{
 
 	}
 
 	@SuppressWarnings("unused")
 	@Subscribe
-	public void postInit(FMLPostInitializationEvent evt) {
+	public void postInit(FMLPostInitializationEvent evt) 
+	{
 
 	}
 

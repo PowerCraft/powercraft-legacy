@@ -57,13 +57,13 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 		// check for obsfucated classname
 		if (enchantmentclasses_obs.contains(classname))
 		{
-			System.out.println("********* INSIDE EnchantmentDigging Obsfucated TRANSFORMER ABOUT TO PATCH: " + classname);
+			System.out.println("********* INSIDE " + classname + ".class TRANSFORMER ABOUT TO PATCH: " + classname);
 			enchantedindex = enchantmentclasses_obs.indexOf(classname);
 			return patchClassASM(classname, bytearray, true, enchantedindex);
 		}
 		else if (enchantmentclasses_dev.contains(classname))
 		{
-			System.out.println("********* INSIDE EnchantmentDigging Developer TRANSFORMER ABOUT TO PATCH: " + classname);
+			System.out.println("********* INSIDE " + classname + " TRANSFORMER ABOUT TO PATCH: " + classname);
 			enchantedindex = enchantmentclasses_dev.indexOf(classname);
 			return patchClassASM(classname, bytearray, false, enchantedindex);
 		}
