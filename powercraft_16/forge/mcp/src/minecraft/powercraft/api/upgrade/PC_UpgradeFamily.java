@@ -8,10 +8,14 @@ public enum PC_UpgradeFamily
 	Damage (0x04),
 	Security (0x08);
 	
-	int upgradeFlag;
+	public int upgradeFlag;
 	
 	PC_UpgradeFamily(int flag)
 	{
 		this.upgradeFlag = flag;
+	}
+	public int getFamilyID()
+	{
+		return upgradeFlag;
 	}
 }

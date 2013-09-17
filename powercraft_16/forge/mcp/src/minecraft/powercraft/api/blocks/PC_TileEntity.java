@@ -296,11 +296,13 @@ public abstract class PC_TileEntity extends TileEntity {
 		}
 	}
 
-	public boolean isUpgradeable(){
+	public boolean isUpgradeable()
+	{
 		return false;
 	}
 	
-	public boolean isUpgradeableByUpgrade(int upgrade){
+	public boolean isUpgradeableByUpgrade(int upgrade)
+	{
 		return false;
 	}
 	

@@ -57,13 +57,13 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 		// check for obsfucated classname
 		if (enchantmentclasses_obs.contains(classname))
 		{
-			System.out.println("********* INSIDE " + classname + ".class TRANSFORMER ABOUT TO PATCH: " + classname);
+//			System.out.println("********* INSIDE " + classname + ".class TRANSFORMER ABOUT TO PATCH: " + classname);
 			enchantedindex = enchantmentclasses_obs.indexOf(classname);
 			return patchClassASM(classname, bytearray, true, enchantedindex);
 		}
 		else if (enchantmentclasses_dev.contains(classname))
 		{
-			System.out.println("********* INSIDE " + classname + " TRANSFORMER ABOUT TO PATCH: " + classname);
+//			System.out.println("********* INSIDE " + classname + " TRANSFORMER ABOUT TO PATCH: " + classname);
 			enchantedindex = enchantmentclasses_dev.indexOf(classname);
 			return patchClassASM(classname, bytearray, false, enchantedindex);
 		}
@@ -94,13 +94,13 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 		while (methods.hasNext())
 		{
 			MethodNode m = methods.next();
-			System.out.println("********* Method Name: " + m.name + " Desc:" + m.desc);
+//			System.out.println("********* Method Name: " + m.name + " Desc:" + m.desc);
 			int fdiv_index = -1;
 
 			// Check if this is getMaxLevel and it's method signature is ()I which means that it accepts a nothing () and returns an int I
 			if ((m.name.equals(targetMethodName) && m.desc.equals("()I")))
 			{
-				System.out.println("********* Inside target method!");
+//				System.out.println("********* Inside target method!");
 
 				AbstractInsnNode currentNode = null;
 				AbstractInsnNode targetNode = null;
@@ -114,7 +114,7 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 				{
 					index++;
 					currentNode = iter.next();
-					System.out.println("********* index : " + index + " currentNode.getOpcode() = " + currentNode.getOpcode());
+//					System.out.println("********* index : " + index + " currentNode.getOpcode() = " + currentNode.getOpcode());
 
 					// Found it! save the index location of instruction ICONST_5 and the node for this instruction
 					if (currentNode.getOpcode() == intbytecodes.get(vanillaEnchantValues[enchantmentindex]))
@@ -132,17 +132,17 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 				 * 2013-09-14 21:02:12 [INFO] [STDOUT] ********* index : 4 currentNode.getOpcode() = -1
 				 */
 
-				System.out.println("********* fdiv_index should be 2 -> " + fdiv_index);
+//				System.out.println("********* fdiv_index should be 2 -> " + fdiv_index);
 
 				if (targetNode == null)
 				{
-					System.out.println("Did not find all necessary target nodes! ABANDON CLASS!");
+//					System.out.println("Did not find all necessary target nodes! ABANDON CLASS!");
 					return bytes;
 				}
 
 				if (fdiv_index == -1)
 				{
-					System.out.println("Did not find all necessary target nodes! ABANDON CLASS!");
+//					System.out.println("Did not find all necessary target nodes! ABANDON CLASS!");
 					return bytes;
 				}
 
@@ -172,7 +172,7 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 				}
 				else
 				{
-					System.out.println("Patching not needed, new values are the same as old.");
+//					System.out.println("Patching not needed, new values are the same as old.");
 				}				
 				break;
 			}

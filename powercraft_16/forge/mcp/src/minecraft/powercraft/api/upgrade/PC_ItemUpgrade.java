@@ -4,15 +4,14 @@ import powercraft.api.items.PC_Item;
 
 public abstract class PC_ItemUpgrade extends PC_Item 
 {
-	private PC_UpgradeFamily upgradeFamily;
-	private int upgradeID;
-	private String upgradeName;	
-	private float upgradeAmplitude;
+	protected PC_UpgradeFamily upgradeFamily;
+	protected int upgradeID;
+	protected String upgradeName;	
+	protected float upgradeAmplitude;
+	protected int upgradeMeta; // use for non-float operations
 	
-	public PC_ItemUpgrade(int id, String uName) {
-		super(id);
-		this.upgradeID = id;
-		this.upgradeName = uName;
+	public PC_ItemUpgrade(int id) {
+		super(id);		
 	}
 
 	public PC_UpgradeFamily getUpgradeFamily()

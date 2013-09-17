@@ -6,5 +6,5 @@ package powercraft.api.upgrade;
  */
 public interface PC_IUpgradeable 
 {
-	public boolean onUpgradesChanged(int[] upgradeIDs);
+	public boolean onUpgradesChanged(PC_ItemUpgrade[] upgradearray);
 }
