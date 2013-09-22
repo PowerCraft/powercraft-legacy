@@ -59,7 +59,7 @@ public class PCtr_BlockUpgradeableBelt extends PC_BlockRotated
 			case EAST:
 			case WEST:
 				entity.motionX *= tentity.speed;
-			//$FALL-THROUGH$
+			//$FALL-THROUGH$  <-- not sure what this means (Buggi)
 			case DOWN:
 				break;
 			case UP:
