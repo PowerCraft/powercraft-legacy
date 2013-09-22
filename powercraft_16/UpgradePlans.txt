@@ -1,0 +1,2 @@
+belts-Normal(Speedy, Seperator, Ejection, Redirection, Detection)
+elevators-Up(Down, Splitter)
