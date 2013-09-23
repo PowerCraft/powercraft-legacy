@@ -1,5 +1,6 @@
 package powercraft.tutorial;
 
+import net.minecraft.nbt.NBTTagCompound;
 import powercraft.api.blocks.PC_TileEntityUpgradable;
 import powercraft.api.inventory.PC_Inventory;
 import powercraft.api.upgrade.PC_ItemUpgrade;
@@ -78,5 +79,19 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable
 		// TODO Auto-generated method stub
 		//System.out.println("getLightOpacity inside my tile entity");
 		return super.getLightOpacity();
+	}
+
+
+	@Override
+	public void loadFromNBT(NBTTagCompound nbtTagCompound) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void saveToNBT(NBTTagCompound nbtTagCompound) {
+		// TODO Auto-generated method stub
+		
 	}
 }

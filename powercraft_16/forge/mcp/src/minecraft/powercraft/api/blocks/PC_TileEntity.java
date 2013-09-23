@@ -27,16 +27,25 @@ import powercraft.api.energy.PC_IEnergyPuffer;
 import powercraft.api.gres.PC_Gres;
 import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.gres.PC_IGresGuiOpenHandler;
+import powercraft.api.security.PC_IPermissionHandler;
+import powercraft.api.security.PC_Permission;
+import powercraft.api.security.PC_Permissions;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SuppressWarnings("unused") 
-public abstract class PC_TileEntity extends TileEntity {
+public abstract class PC_TileEntity extends TileEntity implements PC_IPermissionHandler {
 
 	protected boolean send = false;
 	protected final List<PC_GresBaseWithInventory> containers = new ArrayList<PC_GresBaseWithInventory>();
-
-
+	private PC_Permissions permissions;
+	
+	public void setOwner(String name){
+		if(permissions==null && !isClient()){
+			permissions = new PC_Permissions(name);
+		}
+	}
+	
 	public boolean isClient() {
 
 		if (worldObj == null) return true;
@@ -173,20 +182,18 @@ public abstract class PC_TileEntity extends TileEntity {
 	}
 
 
-	public void loadFromNBT(NBTTagCompound nbtTagCompound) {
-
-	}
+	public abstract void loadFromNBT(NBTTagCompound nbtTagCompound);
 
 
-	public void saveToNBT(NBTTagCompound nbtTagCompound) {
-
-	}
+	public abstract void saveToNBT(NBTTagCompound nbtTagCompound);
 
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 
 		super.readFromNBT(nbtTagCompound);
+		if(nbtTagCompound.hasKey("permissions"))
+			permissions = new PC_Permissions(nbtTagCompound.getCompoundTag("permissions"));
 		loadFromNBT(nbtTagCompound);
 	}
 
@@ -195,6 +202,11 @@ public abstract class PC_TileEntity extends TileEntity {
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 
 		super.writeToNBT(nbtTagCompound);
+		if(permissions!=null){
+			NBTTagCompound permissionsCompound = new NBTTagCompound();
+			permissions.saveToNBT(permissionsCompound);
+			nbtTagCompound.setCompoundTag("permissions", permissionsCompound);
+		}
 		saveToNBT(nbtTagCompound);
 	}
 
@@ -304,6 +316,27 @@ public abstract class PC_TileEntity extends TileEntity {
 	public boolean isUpgradeableByUpgrade(int upgrade)
 	{
 		return false;
+	}
+	
+	@Override
+	public boolean checkPermission(EntityPlayer player, PC_Permission permission, String password) {
+		if(permissions==null)
+			return true;
+		return permissions.checkPermission(player, permission, password);
+	}
+
+	@Override
+	public boolean hasPermission(EntityPlayer player, PC_Permission permission) {
+		if(permissions==null)
+			return true;
+		return permissions.hasPermission(player, permission);
+	}
+
+	@Override
+	public boolean needPassword(EntityPlayer player) {
+		if(permissions==null)
+			return false;
+		return permissions.needPassword(player);
 	}
 	
 }
