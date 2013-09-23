@@ -3,7 +3,6 @@ package powercraft.tutorial;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.api.blocks.PC_TileEntityUpgradable;
 import powercraft.api.inventory.PC_Inventory;
-import powercraft.api.upgrade.PC_ItemUpgrade;
 import powercraft.api.upgrade.PC_UpgradeFamily;
 
 // could rename to TileEntityUpgradeableBelt
@@ -15,10 +14,10 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable
 	
 	public PC_TileEntityTutorial() 
 	{
-		super(PC_UpgradeFamily.Speed.upgradeFlag | PC_UpgradeFamily.Security.upgradeFlag, 3);
+		super(PC_UpgradeFamily.Speed.upgradeFlag | PC_UpgradeFamily.Security.upgradeFlag, 3, "Inv", new PC_Inventory[0]);
 		
 		// 0x01 | 0x08 = 0x09; Limiting us to 32 unique families of upgrades
-		validFamilies = PC_UpgradeFamily.Speed.upgradeFlag | PC_UpgradeFamily.Security.upgradeFlag;
+		//validFamilies = PC_UpgradeFamily.Speed.upgradeFlag | PC_UpgradeFamily.Security.upgradeFlag;
 				
 		speed = basespeed;
 	}
@@ -28,7 +27,7 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable
 	 * Catches event thrown by GUI any time there is a change to the list of upgrades
 	 * Rebuilds the upgrade list, checking to see if its a valid family.
 	 */
-	@Override
+	/*@Override
 	public boolean onUpgradesChanged(PC_ItemUpgrade[] upgrades)
 	{
 		// NOTE:
@@ -38,7 +37,7 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable
 		if (upgrades.length <= this.upgradeList.length)
 		{			
 			// reset the speed
-			speed = basespeed;
+			/*speed = basespeed;
 						
 			for (int x = 0, y=0; x < upgrades.length; x++)
 			{					
@@ -72,7 +71,7 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable
 			return true;
 		}		
 		return false;
-	}	
+	}	*/
 	@Override
 	public int getLightOpacity()
 	{
