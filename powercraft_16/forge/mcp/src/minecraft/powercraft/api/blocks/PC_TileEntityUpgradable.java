@@ -6,7 +6,6 @@ package powercraft.api.blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import powercraft.api.inventory.PC_Inventory;
-import powercraft.api.upgrade.PC_IUpgradeable;
 import powercraft.api.upgrade.PC_ItemUpgrade;
 import powercraft.api.upgrade.PC_UpgradeFamily;
 
@@ -15,7 +14,7 @@ import powercraft.api.upgrade.PC_UpgradeFamily;
  * @author Aaron
  *
  */
-public abstract class PC_TileEntityUpgradable extends PC_TileEntityWithInventory implements PC_IUpgradeable{
+public abstract class PC_TileEntityUpgradable extends PC_TileEntityWithInventory{
 	
 	protected int upgradeInv;
 	
