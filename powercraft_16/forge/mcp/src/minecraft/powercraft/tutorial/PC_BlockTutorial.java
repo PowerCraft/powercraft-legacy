@@ -4,12 +4,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.EnumGameType;
 import net.minecraft.world.World;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_BlockRotated;
 import powercraft.api.registries.PC_TextureRegistry;
-import powercraft.api.upgrade.PC_UpgradeFunction;
 				//IngameName	internalName		defaultid		reference to tileentity class
 @PC_BlockInfo(name="Tutorial", blockid="tutorial", defaultid=2000, tileEntity=PC_TileEntityTutorial.class)
 public class PC_BlockTutorial extends PC_BlockRotated {
