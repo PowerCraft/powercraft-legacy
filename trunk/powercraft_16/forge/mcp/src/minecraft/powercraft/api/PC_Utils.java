@@ -362,5 +362,10 @@ public class PC_Utils {
 			world.spawnEntityInWorld(entity);
 		}
 	}
+
+
+	public static boolean isOP(String username) {
+		return MinecraftServer.getServerConfigurationManager(mcs()).getOps().contains(username);
+	}
 	
 }

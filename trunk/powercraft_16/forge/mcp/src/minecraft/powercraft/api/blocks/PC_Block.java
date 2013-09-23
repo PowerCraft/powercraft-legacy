@@ -25,6 +25,7 @@ import powercraft.api.PC_Renderer;
 import powercraft.api.PC_Utils;
 import powercraft.api.registries.PC_ModuleRegistry;
 import powercraft.api.registries.PC_TextureRegistry;
+import powercraft.api.security.PC_Permission;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -233,7 +234,10 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 	@Override
 	public void onBlockHarvested(World world, int x, int y, int z, int metadata, EntityPlayer entityPlayer) {
 
-		if (!PC_Utils.isCreativ(entityPlayer)) super.harvestBlock(world, entityPlayer, x, y, z, metadata);
+		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
+		if(!tileEntity.hasPermission(entityPlayer, PC_Permission.BLOCKHARVEST)){
+			if (!PC_Utils.isCreativ(entityPlayer)) super.harvestBlock(world, entityPlayer, x, y, z, metadata);
+		}
 	}
 
 
@@ -297,6 +301,16 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 	public int getRenderType() {
 
 		return PC_Renderer.getRenderType();
+	}
+	
+	@Override
+	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z){
+		
+		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
+		if(!tileEntity.hasPermission(player, PC_Permission.BLOCKHARVEST)){
+			return -1;
+		}
+		return super.getPlayerRelativeBlockHardness(player, world, x, y, z);
 	}
 	
 }

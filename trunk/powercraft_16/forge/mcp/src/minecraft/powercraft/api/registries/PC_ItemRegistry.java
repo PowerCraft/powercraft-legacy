@@ -4,8 +4,8 @@ import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
 import powercraft.api.PC_Logger;
 import powercraft.api.PC_Module;
-import powercraft.api.PC_Security;
 import powercraft.api.items.PC_ItemInfo;
+import powercraft.api.security.PC_Security;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class PC_ItemRegistry {

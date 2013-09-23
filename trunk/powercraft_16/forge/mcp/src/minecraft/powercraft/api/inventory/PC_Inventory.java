@@ -1,10 +1,13 @@
 package powercraft.api.inventory;
 
+import java.util.Iterator;
+import java.util.ListIterator;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-public class PC_Inventory implements IInventory {
+public class PC_Inventory implements IInventory, Iterable<ItemStack> {
 
 	public static final int USEABLEBYPLAYER = 1;
 	public static final int SIDEINSERTABLE = 2;
@@ -143,6 +146,81 @@ public class PC_Inventory implements IInventory {
 
 	public boolean canDropStacks() {
 		return (flags & DROPSTACKS)!=0;
+	}
+
+	@Override
+	public Iterator<ItemStack> iterator() {
+		return listIterator();
+	}
+	
+	public ListIterator<ItemStack> listIterator(){
+		return listIterator(0);
+	}
+	
+	public ListIterator<ItemStack> listIterator(int index){
+		if(index<0 ||index>=getSizeInventory())
+			throw new IndexOutOfBoundsException();
+		return new InventoryIterator(index-1);
+	}
+	
+	private class InventoryIterator implements ListIterator<ItemStack>{
+
+		private int pos;
+		
+		private InventoryIterator(int pos){
+			this.pos = pos;
+		}
+		
+		@Override
+		public void add(ItemStack e) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return getSizeInventory()<pos-1;
+		}
+
+		@Override
+		public boolean hasPrevious() {
+			return pos>=0;
+		}
+
+		@Override
+		public ItemStack next() {
+			if(!hasNext())
+				throw new IndexOutOfBoundsException();
+			return getStackInSlot(++pos);
+		}
+
+		@Override
+		public int nextIndex() {
+			return pos+1;
+		}
+
+		@Override
+		public ItemStack previous() {
+			if(!hasPrevious())
+				throw new IndexOutOfBoundsException();
+			return getStackInSlot(--pos);
+		}
+
+		@Override
+		public int previousIndex() {
+			return pos-1;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void set(ItemStack itemstack) {
+			if(isItemValidForSlot(pos, itemstack))
+				setInventorySlotContents(pos, itemstack);
+		}
+		
 	}
 	
 }

@@ -161,7 +161,7 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 
 	public PC_Inventory getSubInventoryByName(String name){
 		for(PC_Inventory inv:inventories){
-			if(inv.getInvName()==name) return inv;
+			if(inv.getInvName().equals(name)) return inv;
 		}
 		return null;
 	}
@@ -184,13 +184,13 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbtTagCompound) {
+	public final void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
 		PC_InventoryUtils.loadInventoryFromNBT(this, nbtTagCompound, "Inventory");
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbtTagCompound) {
+	public final void writeToNBT(NBTTagCompound nbtTagCompound) {
 		super.writeToNBT(nbtTagCompound);
 		PC_InventoryUtils.saveInventoryToNBT(this, nbtTagCompound, "Inventory");
 	}

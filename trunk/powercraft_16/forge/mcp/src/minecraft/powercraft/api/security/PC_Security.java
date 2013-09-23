@@ -1,4 +1,7 @@
-package powercraft.api;
+package powercraft.api.security;
+
+import powercraft.api.PC_Logger;
+import powercraft.api.PC_Reflection;
 
 public class PC_Security {
 
