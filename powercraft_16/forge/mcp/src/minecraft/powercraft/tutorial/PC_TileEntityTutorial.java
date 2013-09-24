@@ -14,10 +14,18 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable
 	
 	public PC_TileEntityTutorial() 
 	{
+<<<<<<< .mine
+		super(PC_UpgradeFamily.Speed.getFamilyID() | PC_UpgradeFamily.Security.getFamilyID(), 3);
+=======
 		super(PC_UpgradeFamily.Speed.upgradeFlag | PC_UpgradeFamily.Security.upgradeFlag, 3, "Inv", new PC_Inventory[0]);
+>>>>>>> .r1500
 		
 		// 0x01 | 0x08 = 0x09; Limiting us to 32 unique families of upgrades
+<<<<<<< .mine
+		validFamilies = PC_UpgradeFamily.Speed.getFamilyID() | PC_UpgradeFamily.Security.getFamilyID();
+=======
 		//validFamilies = PC_UpgradeFamily.Speed.upgradeFlag | PC_UpgradeFamily.Security.upgradeFlag;
+>>>>>>> .r1500
 				
 		speed = basespeed;
 	}
@@ -41,7 +49,7 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable
 						
 			for (int x = 0, y=0; x < upgrades.length; x++)
 			{					
-				if ((upgrades[x].getUpgradeFamily().upgradeFlag & validFamilies) > 0)
+				if ((upgrades[x].getUpgradeFamily().getFamilyID() & validFamilies) > 0)
 				{					
 					// set the upgrade in the slot x to this upgrade 
 					// using y will ensure we do not go out of bounds in case there are more upgrades attached than we have slots for

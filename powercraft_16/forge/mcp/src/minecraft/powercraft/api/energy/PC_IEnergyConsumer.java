@@ -1,5 +1,7 @@
 package powercraft.api.energy;
 
+import powercraft.core.blocks.PC_TileEntityRoaster;
+
 
 public interface PC_IEnergyConsumer {
 

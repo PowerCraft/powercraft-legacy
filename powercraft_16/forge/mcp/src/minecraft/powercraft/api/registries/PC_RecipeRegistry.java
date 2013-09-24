@@ -52,21 +52,21 @@ public class PC_RecipeRegistry {
 
 	private static void addShapedRecipe(Object... obj) {
 
-		ItemStack output = PC_Utils.getItemStack(obj);
+		ItemStack output = PC_Utils.getItemStack(obj[0]);
 		CraftingManager.getInstance().addRecipe(output, Arrays.copyOfRange(obj, 1, obj.length));
 	}
 
 
 	private static void addShapelessRecipe(Object... obj) {
 
-		ItemStack output = PC_Utils.getItemStack(obj);
+		ItemStack output = PC_Utils.getItemStack(obj[0]);
 		CraftingManager.getInstance().addShapelessRecipe(output, Arrays.copyOfRange(obj, 1, obj.length));
 	}
 
 
 	private static void addSmelting(Object... obj) {
 
-		ItemStack output = PC_Utils.getItemStack(obj);
+		ItemStack output = PC_Utils.getItemStack(obj[0]);
 		int i = 1;
 		while (i < obj.length) {
 			ItemStack input = PC_Utils.getItemStack(obj[i]);
