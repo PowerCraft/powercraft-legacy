@@ -15,8 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_PacketHandler;
 import powercraft.api.PC_Utils;
@@ -38,18 +36,19 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	protected boolean send = false;
 	protected final List<PC_GresBaseWithInventory> containers = new ArrayList<PC_GresBaseWithInventory>();
+
 	private PC_Permissions permissions;
 	
 	public void setOwner(String name){
-		if(permissions==null && !isClient()){
-			permissions = new PC_Permissions(name);
+		if(this.permissions==null && !isClient()){
+			this.permissions = new PC_Permissions(name);
 		}
 	}
 	
 	public boolean isClient() {
 
-		if (worldObj == null) return true;
-		return worldObj.isRemote;
+		if (this.worldObj == null) return true;
+		return this.worldObj.isRemote;
 	}
 
 
@@ -109,7 +108,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	public boolean removeBlockByPlayer(EntityPlayer player) {
 
-		return worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+		return this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
 	}
 
 
@@ -118,11 +117,11 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		Block block = getBlockType();
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 
-		int count = block.quantityDropped(blockMetadata, fortune, worldObj.rand);
+		int count = block.quantityDropped(this.blockMetadata, fortune, this.worldObj.rand);
 		for (int i = 0; i < count; i++) {
-			int id = block.idDropped(blockMetadata, worldObj.rand, fortune);
+			int id = block.idDropped(this.blockMetadata, this.worldObj.rand, fortune);
 			if (id > 0) {
-				ret.add(new ItemStack(id, 1, block.damageDropped(blockMetadata)));
+				ret.add(new ItemStack(id, 1, block.damageDropped(this.blockMetadata)));
 			}
 		}
 		return ret;
@@ -138,7 +137,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	public ItemStack getPickBlock(MovingObjectPosition target) {
 
 		Block block = getBlockType();
-		int id = block.idPicked(worldObj, xCoord, yCoord, zCoord);
+		int id = block.idPicked(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 
 		if (id == 0) {
 			return null;
@@ -149,7 +148,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 			return null;
 		}
 
-		return new ItemStack(id, 1, block.getDamageValue(worldObj, xCoord, yCoord, zCoord));
+		return new ItemStack(id, 1, block.getDamageValue(this.worldObj, this.xCoord, this.yCoord, this.zCoord));
 	}
 
 
@@ -192,8 +191,8 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 
 		super.readFromNBT(nbtTagCompound);
-		if(nbtTagCompound.hasKey("permissions"))
-			permissions = new PC_Permissions(nbtTagCompound.getCompoundTag("permissions"));
+		if(nbtTagCompound.hasKey("permissions")) //$NON-NLS-1$
+			this.permissions = new PC_Permissions(nbtTagCompound.getCompoundTag("permissions")); //$NON-NLS-1$
 		loadFromNBT(nbtTagCompound);
 	}
 
@@ -202,10 +201,10 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 
 		super.writeToNBT(nbtTagCompound);
-		if(permissions!=null){
+		if(this.permissions!=null){
 			NBTTagCompound permissionsCompound = new NBTTagCompound();
-			permissions.saveToNBT(permissionsCompound);
-			nbtTagCompound.setCompoundTag("permissions", permissionsCompound);
+			this.permissions.saveToNBT(permissionsCompound);
+			nbtTagCompound.setCompoundTag("permissions", permissionsCompound); //$NON-NLS-1$
 		}
 		saveToNBT(nbtTagCompound);
 	}
@@ -214,7 +213,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	@Override
 	public Packet getDescriptionPacket() {
 
-		return PC_PacketHandler.getBlockDataPacket(worldObj, xCoord, yCoord, zCoord);
+		return PC_PacketHandler.getBlockDataPacket(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 
 
@@ -227,14 +226,14 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	public void notifyNeighbors() {
 
-		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+		PC_Utils.hugeUpdate(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 
 
 	public void sendToClient() {
 
 		if (isClient()) return;
-		send = true;
+		this.send = true;
 	}
 
 
@@ -246,7 +245,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 				List<PC_IEnergyProvider> providers = new ArrayList<PC_IEnergyProvider>();
 				List<PC_IEnergyPuffer> puffers = new ArrayList<PC_IEnergyPuffer>();
 				for (PC_Direction dir : PC_Direction.VALID_DIRECTIONS) {
-					TileEntity te = PC_Utils.getTE(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+					TileEntity te = PC_Utils.getTE(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 					if (te instanceof PC_IEnergyPuffer) {
 						puffers.add((PC_IEnergyPuffer) te);
 					} else if (te instanceof PC_IEnergyProvider) {
@@ -261,10 +260,10 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 				}
 				PC_EnergyGrid.calc(consumers, providers, puffers);
 			}
-			if (send) {
-				PC_PacketHandler.sendPacketToAllInDimension(PC_PacketHandler.getBlockDataPacket(worldObj, xCoord, yCoord, zCoord), worldObj
+			if (this.send) {
+				PC_PacketHandler.sendPacketToAllInDimension(PC_PacketHandler.getBlockDataPacket(this.worldObj, this.xCoord, this.yCoord, this.zCoord), this.worldObj
 						.getWorldInfo().getVanillaDimension());
-				send = false;
+				this.send = false;
 			}
 		}
 	}
@@ -272,27 +271,27 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	public void renderUpdate() {
 
-		if (worldObj != null) worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+		if (this.worldObj != null) this.worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
 	}
 
 
 	public void lightUpdate() {
 
-		if (worldObj != null) worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+		if (this.worldObj != null) this.worldObj.updateAllLightTypes(this.xCoord, this.yCoord, this.zCoord);
 	}
 
 
 	public void openContainer(PC_GresBaseWithInventory container) {
 
-		if (!containers.contains(container)) {
-			containers.add(container);
+		if (!this.containers.contains(container)) {
+			this.containers.add(container);
 		}
 	}
 
 
 	public void closeContainer(PC_GresBaseWithInventory container) {
 
-		containers.remove(container);
+		this.containers.remove(container);
 	}
 
 
@@ -303,7 +302,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	public void sendProgressBarUpdate(int key, int value) {
 
-		for (PC_GresBaseWithInventory container : containers) {
+		for (PC_GresBaseWithInventory container : this.containers) {
 			container.sendProgressBarUpdate(key, value);
 		}
 	}
@@ -320,23 +319,23 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	
 	@Override
 	public boolean checkPermission(EntityPlayer player, PC_Permission permission, String password) {
-		if(permissions==null)
+		if(this.permissions==null)
 			return true;
-		return permissions.checkPermission(player, permission, password);
+		return this.permissions.checkPermission(player, permission, password);
 	}
 
 	@Override
 	public boolean hasPermission(EntityPlayer player, PC_Permission permission) {
-		if(permissions==null)
+		if(this.permissions==null)
 			return true;
-		return permissions.hasPermission(player, permission);
+		return this.permissions.hasPermission(player, permission);
 	}
 
 	@Override
 	public boolean needPassword(EntityPlayer player) {
-		if(permissions==null)
+		if(this.permissions==null)
 			return false;
-		return permissions.needPassword(player);
+		return this.permissions.needPassword(player);
 	}
 	
 }

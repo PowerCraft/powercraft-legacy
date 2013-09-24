@@ -30,7 +30,6 @@ public class PC_TileEntityRoaster extends PC_TileEntity implements PC_IEnergyCon
 
 	@Override
 	public float getEnergyRequest() {
-
 		return request;
 	}
 
