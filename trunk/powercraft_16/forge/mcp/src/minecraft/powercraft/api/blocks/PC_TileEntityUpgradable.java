@@ -18,6 +18,15 @@ public abstract class PC_TileEntityUpgradable extends PC_TileEntityWithInventory
 	
 	protected int upgradeInv;
 	
+	
+	/**
+	 * Used to create a TileEntity for any Upgradeable Block.
+	 * @param vfamilies an int that contains all allowed upgrade families (
+	 * @param upgradeSlots the count of slots that should be used for upgrades
+	 * @param name that's the name of the TileEntity used to store the kind
+	 * @param inventories WARNING: DON'T INPUT UPGRADE INVENTORY gets automatically added
+	 * @param slotsForID
+	 */
 	public PC_TileEntityUpgradable(int vfamilies, int upgradeSlots, String name, PC_Inventory[] inventories, int[]... slotsForID){				
 		super(name, addUpgradeInventory(inventories, upgradeSlots, vfamilies), slotsForID);
 		upgradeInv = inventories.length;

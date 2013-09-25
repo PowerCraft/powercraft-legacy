@@ -1,6 +1,7 @@
 package powercraft.api.blocks;
 
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -27,16 +28,10 @@ public class PC_ItemBlock extends ItemBlock {
 	
 	@Override
 	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata){
-		if(!PC_Utils.setBID(world, x, y, z, getBlockID(), metadata)){
-			return false;
-		}
-		if(player!=null){
-	    	TileEntity te = PC_Utils.getTE(world, x, y, z);
-	    	if(te instanceof PC_TileEntity){
-	    		((PC_TileEntity) te).setOwner(player.username);
-	    	}
-	    }
-	    return super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
+		Block block = Block.blocksList[getBlockID()];
+		if(block instanceof PC_IBlock)
+			metadata = ((PC_IBlock)block).modifyMetadataPostPlace(world, x, y, z, side, hitX, hitY, hitZ, metadata, stack, player);
+		return super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
     }
 	
 }

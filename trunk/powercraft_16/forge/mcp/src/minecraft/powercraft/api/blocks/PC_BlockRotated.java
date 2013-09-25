@@ -76,11 +76,14 @@ public abstract class PC_BlockRotated extends PC_Block {
 		return tileEntity.recolourBlock(rotate(world, x, y, z, PC_Direction.getDirection(side)), colour);
 	}
 	
+	
+	
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
-
+	public int modifyMetadataPostPlace(World world, int x, int y, int z,
+			int side, float hitX, float hitY, float hitZ, int metadata,
+			ItemStack stack, EntityPlayer entity) {
 		int l = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		PC_Utils.setMD(world, x, y, z, PC_Direction.PLAYER2MD[l]);
+		return (PC_Direction.PLAYER2MD[l]&3)|(metadata&~3);
 	}
 
 	public PC_Direction rotate(IBlockAccess world, int x, int y, int z, PC_Direction side){
