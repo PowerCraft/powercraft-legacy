@@ -14,19 +14,10 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable
 	
 	public PC_TileEntityTutorial() 
 	{
-<<<<<<< .mine
-		super(PC_UpgradeFamily.Speed.getFamilyID() | PC_UpgradeFamily.Security.getFamilyID(), 3);
-=======
-		super(PC_UpgradeFamily.Speed.upgradeFlag | PC_UpgradeFamily.Security.upgradeFlag, 3, "Inv", new PC_Inventory[0]);
->>>>>>> .r1500
-		
-		// 0x01 | 0x08 = 0x09; Limiting us to 32 unique families of upgrades
-<<<<<<< .mine
-		validFamilies = PC_UpgradeFamily.Speed.getFamilyID() | PC_UpgradeFamily.Security.getFamilyID();
-=======
-		//validFamilies = PC_UpgradeFamily.Speed.upgradeFlag | PC_UpgradeFamily.Security.upgradeFlag;
->>>>>>> .r1500
-				
+		super(PC_UpgradeFamily.Speed.getFamilyID() | PC_UpgradeFamily.Security.getFamilyID(), 3,
+				"Tutorial", new PC_Inventory[]{
+			new PC_Inventory("main", 9*3, 64, PC_Inventory.USEABLEBYPLAYER|PC_Inventory.DROPSTACKS),
+			new PC_Inventory("upgrade", 3, 1, PC_Inventory.USEABLEBYPLAYER|PC_Inventory.DROPSTACKS)});		
 		speed = basespeed;
 	}
 

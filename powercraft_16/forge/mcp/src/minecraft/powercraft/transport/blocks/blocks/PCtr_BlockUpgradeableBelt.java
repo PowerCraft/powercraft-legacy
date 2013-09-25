@@ -6,20 +6,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.api.PC_Direction;
-import powercraft.api.PC_Utils;
-import powercraft.api.PC_Vec3;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_BlockRotated;
 import powercraft.api.registries.PC_TextureRegistry;
-import powercraft.api.upgrade.PC_ItemUpgrade;
-import powercraft.transport.blocks.tileEntities.PCtr_TEUpgradeableBelt;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialConveyor;
-import powercraft.tutorial.PC_ItemTutorial;
-import powercraft.tutorial.PC_TileEntityTutorial;
 
-@PC_BlockInfo(name = "UpgradableBelt", blockid = "upgradableBelt", defaultid = 2051,tileEntity=PCtr_TEUpgradeableBelt.class)
+@PC_BlockInfo(name = "UpgradeableBelt", blockid = "upgradeableBelt", defaultid = 2051, tileEntity=PCtr_TEUpgradeableBelt.class, itemBlock=PCtr_ItemBlockUpgradeableBelt.class)
 public class PCtr_BlockUpgradeableBelt extends PC_BlockRotated
 {
 	

@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.ForgeDirection;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_Logger;
@@ -70,7 +72,6 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 
 		return module;
 	}
-
 
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
@@ -311,6 +312,46 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 			return -1;
 		}
 		return super.getPlayerRelativeBlockHardness(player, world, x, y, z);
+	}
+
+
+	/**
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param side
+	 * @param hitX
+	 * @param hitY
+	 * @param hitZ
+	 * @param metadata
+	 * @param stack
+	 * @param player
+	 * @return
+	 */
+	@Override
+	public int modifyMetadataPostPlace(World world, int x, int y, int z,
+			int side, float hitX, float hitY, float hitZ, int metadata,
+			ItemStack stack, EntityPlayer player) {
+		return metadata;
+	}
+
+	@Override
+	public void generate(Random random, int chunkX, int chunkZ, World world,
+			IChunkProvider chunkGenerator, IChunkProvider chunkProvider){
+		
+	}
+	
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z,
+			EntityLivingBase player, ItemStack stack) {
+		if(player instanceof EntityPlayer){
+	    	TileEntity te = PC_Utils.getTE(world, x, y, z);
+	    	if(te instanceof PC_TileEntity){
+	    		((PC_TileEntity) te).setOwner(((EntityPlayer)player).username);
+	    	}
+	    }
+		super.onBlockPlacedBy(world, x, y, z, player, stack);
 	}
 	
 }

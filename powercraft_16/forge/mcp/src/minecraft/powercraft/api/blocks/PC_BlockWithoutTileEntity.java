@@ -1,14 +1,18 @@
 package powercraft.api.blocks;
 
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
 import powercraft.api.PC_Module;
 import powercraft.api.PC_Renderer;
 import powercraft.api.registries.PC_ModuleRegistry;
@@ -95,4 +99,17 @@ public abstract class PC_BlockWithoutTileEntity extends Block implements PC_IBlo
 		return PC_Renderer.getRenderType();
 	}
 
+	@Override
+	public int modifyMetadataPostPlace(World world, int x, int y, int z,
+			int side, float hitX, float hitY, float hitZ, int metadata,
+			ItemStack stack, EntityPlayer player) {
+		return metadata;
+	}
+	
+	@Override
+	public void generate(Random random, int chunkX, int chunkZ, World world,
+			IChunkProvider chunkGenerator, IChunkProvider chunkProvider){
+		
+	}
+	
 }
