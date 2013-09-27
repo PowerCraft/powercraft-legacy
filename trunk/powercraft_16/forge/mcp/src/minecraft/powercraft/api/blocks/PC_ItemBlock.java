@@ -6,10 +6,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import powercraft.api.PC_CreativeTab;
-import powercraft.api.PC_Utils;
 
 
 public class PC_ItemBlock extends ItemBlock {

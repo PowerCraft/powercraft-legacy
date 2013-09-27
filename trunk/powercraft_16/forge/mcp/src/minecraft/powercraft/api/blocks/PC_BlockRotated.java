@@ -1,7 +1,6 @@
 package powercraft.api.blocks;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
