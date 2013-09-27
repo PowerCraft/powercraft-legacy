@@ -4,6 +4,7 @@ package powercraft.core.blocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.api.PC_Direction;
 import powercraft.api.PC_FuelHandler;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_TileEntityWithInventory;
@@ -32,14 +33,14 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 
 
 	@Override
-	public float getEnergyForUsage() {
+	public float getEnergyForUsage(PC_Direction side) {
 
 		return energy;
 	}
 
 
 	@Override
-	public float getEnergy(float energy) {
+	public float getEnergy(PC_Direction side, float energy) {
 
 		if (this.energy >= energy) {
 			this.energy -= energy;
@@ -154,8 +155,8 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 
 
 	@Override
-	public boolean canProviderTubeConnectTo(int side) {
-
+	public boolean canProviderTubeConnectTo(PC_Direction side) {
+		
 		return side != PC_Utils.getRotation(worldObj, xCoord, yCoord, zCoord);
 	}
 

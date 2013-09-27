@@ -86,7 +86,7 @@ public abstract class PC_BlockRotated extends PC_Block {
 	}
 
 	public PC_Direction rotate(IBlockAccess world, int x, int y, int z, PC_Direction side){
-		return side.rotateMD(PC_Utils.getRotation(world, x, y, z));
+		return PC_Utils.rotate(side, world, x, y, z);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.energy.PC_IEnergyConsumer;
@@ -29,13 +30,13 @@ public class PC_TileEntityRoaster extends PC_TileEntity implements PC_IEnergyCon
 
 
 	@Override
-	public float getEnergyRequest() {
+	public float getEnergyRequest(PC_Direction side) {
 		return request;
 	}
 
 
 	@Override
-	public float consumeEnergy(float energy) {
+	public float consumeEnergy(PC_Direction side, float energy) {
 
 		if (energy <= request) {
 			request -= energy;
@@ -169,9 +170,9 @@ public class PC_TileEntityRoaster extends PC_TileEntity implements PC_IEnergyCon
 
 
 	@Override
-	public boolean canConsumerTubeConnectTo(int side) {
+	public boolean canConsumerTubeConnectTo(PC_Direction side) {
 
-		return side != 1;
+		return side != PC_Direction.UP;
 	}
 
 }

@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.api.PC_Direction;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.energy.PC_IEnergyPuffer;
 import powercraft.api.gres.PC_GresBaseWithInventory;
@@ -28,14 +29,14 @@ public class PC_TileEntityPuffer extends PC_TileEntity implements PC_IGresGuiOpe
 
 
 	@Override
-	public float getEnergyRequest() {
+	public float getEnergyRequest(PC_Direction side) {
 
 		return request;
 	}
 
 
 	@Override
-	public float consumeEnergy(float energy) {
+	public float consumeEnergy(PC_Direction side, float energy) {
 
 		sendToClient();
 		if (energy <= request) {
@@ -51,14 +52,14 @@ public class PC_TileEntityPuffer extends PC_TileEntity implements PC_IGresGuiOpe
 
 
 	@Override
-	public float getEnergyForUsage() {
+	public float getEnergyForUsage(PC_Direction side) {
 
 		return forUsage;
 	}
 
 
 	@Override
-	public float getEnergy(float energy) {
+	public float getEnergy(PC_Direction side, float energy) {
 
 		sendToClient();
 		if (energy <= forUsage) {
@@ -74,7 +75,7 @@ public class PC_TileEntityPuffer extends PC_TileEntity implements PC_IGresGuiOpe
 
 
 	@Override
-	public float getEnergyLevel() {
+	public float getEnergyLevel(PC_Direction side) {
 
 		return energy;
 	}
@@ -120,14 +121,14 @@ public class PC_TileEntityPuffer extends PC_TileEntity implements PC_IGresGuiOpe
 
 
 	@Override
-	public boolean canConsumerTubeConnectTo(int side) {
+	public boolean canConsumerTubeConnectTo(PC_Direction side) {
 
 		return true;
 	}
 
 
 	@Override
-	public boolean canProviderTubeConnectTo(int side) {
+	public boolean canProviderTubeConnectTo(PC_Direction side) {
 
 		return true;
 	}
