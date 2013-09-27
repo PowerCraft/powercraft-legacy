@@ -91,22 +91,22 @@ public class PC_EnergyGrid extends PC_Grid<PC_EnergyGrid, PC_ConduitEnergyTileEn
 		float requestedPower = 0;
 		float pufferLevel = 0;
 		for (PC_IEnergyProvider provider : providers) {
-			maxProviderPower += provider.getEnergyForUsage();
+			maxProviderPower += provider.getEnergyForUsage(null);
 		}
 		int i = 0;
 		for (PC_IEnergyPuffer puffer : puffers) {
 			pufferDatas[i++] = new PC_PufferData(puffer);
-			maxPufferPower += puffer.getEnergyForUsage();
-			pufferLevel += puffer.getEnergyLevel();
+			maxPufferPower += puffer.getEnergyForUsage(null);
+			pufferLevel += puffer.getEnergyLevel(null);
 		}
 		Arrays.sort(pufferDatas);
 		if (!puffers.isEmpty()) pufferLevel /= puffers.size();
 		for (PC_IEnergyConsumer consumer : consumers) {
-			requestedPower += consumer.getEnergyRequest();
+			requestedPower += consumer.getEnergyRequest(null);
 		}
 		if (requestedPower <= maxProviderPower + maxPufferPower) {
 			for (PC_IEnergyConsumer consumer : consumers) {
-				consumer.consumeEnergy(consumer.getEnergyRequest());
+				consumer.consumeEnergy(null, consumer.getEnergyRequest(null));
 			}
 			float powerThere = maxProviderPower - requestedPower;
 			if (powerThere > 0) {
@@ -133,7 +133,7 @@ public class PC_EnergyGrid extends PC_Grid<PC_EnergyGrid, PC_ConduitEnergyTileEn
 			}
 			if (proz != -1) {
 				for (PC_IEnergyProvider provider : providers) {
-					provider.getEnergy(provider.getEnergyForUsage() * proz);
+					provider.getEnergy(null, provider.getEnergyForUsage(null) * proz);
 				}
 			}
 			if (powerThere < 0) {
@@ -171,20 +171,20 @@ public class PC_EnergyGrid extends PC_Grid<PC_EnergyGrid, PC_ConduitEnergyTileEn
 				}
 			}
 			for (i = 0; i < pufferDatas.length; i++) {
-				if (pufferDatas[i].gottenPower > 0) pufferDatas[i].puffer.consumeEnergy(pufferDatas[i].gottenPower);
-				if (pufferDatas[i].removedPower > 0) pufferDatas[i].puffer.getEnergy(pufferDatas[i].removedPower);
+				if (pufferDatas[i].gottenPower > 0) pufferDatas[i].puffer.consumeEnergy(null, pufferDatas[i].gottenPower);
+				if (pufferDatas[i].removedPower > 0) pufferDatas[i].puffer.getEnergy(null, pufferDatas[i].removedPower);
 			}
 		} else {
 			for (PC_IEnergyProvider provider : providers) {
-				provider.getEnergy(provider.getEnergyForUsage());
+				provider.getEnergy(null, provider.getEnergyForUsage(null));
 			}
 			for (PC_IEnergyPuffer puffer : puffers) {
-				puffer.getEnergy(puffer.getEnergyForUsage());
+				puffer.getEnergy(null, puffer.getEnergyForUsage(null));
 			}
 			if (requestedPower > 0) {
 				float proz = (maxProviderPower + maxPufferPower) / requestedPower;
 				for (PC_IEnergyConsumer consumer : consumers) {
-					consumer.consumeEnergy(consumer.getEnergyRequest() * proz);
+					consumer.consumeEnergy(null, consumer.getEnergyRequest(null) * proz);
 				}
 			}
 		}

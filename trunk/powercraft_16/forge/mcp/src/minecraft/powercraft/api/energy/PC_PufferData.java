@@ -14,9 +14,9 @@ public class PC_PufferData implements Comparable<PC_PufferData> {
 	public PC_PufferData(PC_IEnergyPuffer puffer) {
 
 		this.puffer = puffer;
-		maxPufferPower = puffer.getEnergyForUsage();
-		pufferLevel = puffer.getEnergyLevel();
-		pufferRequestedPower = puffer.getEnergyRequest();
+		maxPufferPower = puffer.getEnergyForUsage(null);
+		pufferLevel = puffer.getEnergyLevel(null);
+		pufferRequestedPower = puffer.getEnergyRequest(null);
 	}
 
 

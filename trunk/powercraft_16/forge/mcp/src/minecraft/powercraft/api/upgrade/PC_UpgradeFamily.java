@@ -1,6 +1,5 @@
 package powercraft.api.upgrade;
 
-import net.minecraft.item.ItemStack;
 
 public enum PC_UpgradeFamily
 {

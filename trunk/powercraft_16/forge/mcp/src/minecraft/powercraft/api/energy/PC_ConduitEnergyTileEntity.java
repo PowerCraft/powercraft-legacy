@@ -44,7 +44,7 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 
 
 	@Override
-	public int canConnectToBlock(World world, int x, int y, int z, int side, Block block, int oldConnectionInfo) {
+	public int canConnectToBlock(World world, int x, int y, int z, PC_Direction side, Block block, int oldConnectionInfo) {
 
 		TileEntity te = PC_Utils.getTE(world, x, y, z);
 		int ret = 0;

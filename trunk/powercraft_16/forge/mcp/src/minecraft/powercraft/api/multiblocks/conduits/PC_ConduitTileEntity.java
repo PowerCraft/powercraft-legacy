@@ -45,7 +45,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 	}
 
 	@SuppressWarnings("unused")
-	public int canConnectToBlock(World world, int x, int y, int z, int side, Block block, int oldConnectionInfo){
+	public int canConnectToBlock(World world, int x, int y, int z, PC_Direction side, Block block, int oldConnectionInfo){
 		return 0;
 	}
 	
@@ -63,7 +63,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 				return 1;
 			}
 		}
-		int i = canConnectToBlock(multiblock.worldObj, x, y, z, dir.getOpposite().ordinal(), block, oldConnection>>1);
+		int i = canConnectToBlock(multiblock.worldObj, x, y, z, dir.getOpposite(), block, oldConnection>>1);
 		if(i>0){
 			return (i&15)<<1;
 		}

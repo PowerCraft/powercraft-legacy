@@ -248,11 +248,15 @@ public class PC_Utils {
 	}
 
 
-	public static int getRotation(IBlockAccess world, int x, int y, int z) {
+	public static PC_Direction getRotation(IBlockAccess world, int x, int y, int z) {
 
-		return (getMD(world, x, y, z) & 3) + 2;
+		return PC_Direction.getOrientation((getMD(world, x, y, z) & 3) + 2);
 	}
 
+	public static PC_Direction rotate(PC_Direction side, IBlockAccess world, int x, int y, int z) {
+		return side.rotateMD(getRotation(world, x, y, z).ordinal());
+	}
+	
 
 	public static EnumGameType getGameTypeFor(EntityPlayer player) {
 

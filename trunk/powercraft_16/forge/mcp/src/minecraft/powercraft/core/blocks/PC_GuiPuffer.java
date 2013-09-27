@@ -31,7 +31,7 @@ public class PC_GuiPuffer implements PC_IGresClient, PC_IGresEventListener {
 		gui.setLayout(new PC_GresLayoutVertical());
 		PC_GresWindow window = new PC_GresWindow("Puffer");
 		window.setLayout(new PC_GresLayoutVertical());
-		window.add(label = new PC_GresLabel("Energy:" + (int) (tileEntityPuffer.getEnergyLevel() + 0.5) + "/10000"));
+		window.add(label = new PC_GresLabel("Energy:" + (int) (tileEntityPuffer.getEnergyLevel(null) + 0.5) + "/10000"));
 		gui.add(window);
 		gui.addEventListener(this);
 	}
@@ -52,7 +52,7 @@ public class PC_GuiPuffer implements PC_IGresClient, PC_IGresEventListener {
 		} else if (event instanceof PC_GresTickEvent) {
 			PC_GresTickEvent tickEvent = (PC_GresTickEvent) event;
 			if (component == guiHandler && tickEvent.getEventType() == PC_GresTickEvent.EventType.PRE) {
-				label.setText("Energy:" + (int) (tileEntityPuffer.getEnergyLevel() + 0.5) + "/10000");
+				label.setText("Energy:" + (int) (tileEntityPuffer.getEnergyLevel(null) + 0.5) + "/10000");
 			}
 		}
 	}
