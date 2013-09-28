@@ -16,7 +16,7 @@ public class Test {
 		wcf.methods = new WeaselClassFile.WeaselMethod[1];
 		wcf.methods[0] = new WeaselClassFile.WeaselMethod();
 		wcf.methods[0].name = "f1";
-		wcf.methods[0].params = new WeaselClassFile.WeaselField[0];
+		wcf.methods[0].params = new WeaselClassFile.WeaselClass[0];
 		wcf.methods[0].returnType = new WeaselClassFile.WeaselClass();
 		wcf.methods[0].returnType.name = "Test";
 		wcf.methods[0].returnType.annotations = new WeaselClassFile.WeaselAnnotation[0];

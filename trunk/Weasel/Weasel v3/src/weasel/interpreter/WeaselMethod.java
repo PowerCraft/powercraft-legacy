@@ -18,7 +18,7 @@ public class WeaselMethod {
 		name = weaselMethod.name;
 		modifier = weaselMethod.returnType.modifier;
 		annotations = weaselMethod.returnType.annotations;
-		returnType = parent.getGenericBuildPlan(weaselMethod.returnType);
+		returnType = parent.getInterpreter().getGenericBuildPlan(weaselMethod.returnType, parent);
 		paramTypes = new WeaselClassGenericBuildPlan[weaselMethod.params.length];
 		paramAnnotations = new WeaselAnnotation[weaselMethod.params.length][];
 		for(int i=0; i<paramTypes.length; i++){
