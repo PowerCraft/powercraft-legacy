@@ -72,7 +72,7 @@ public class  WeaselVersion1ClassFileSaver extends WeaselVersionClassFileSaver{
 	private void writeMethod(DataOutputStream dataOutputStream, WeaselMethod method) throws IOException {
 		writeString(dataOutputStream, method.name);
 		writeClass(dataOutputStream, method.returnType);
-		writeFields(dataOutputStream, method.params);
+		writeTypeParams(dataOutputStream, method.params);
 		writeSuperClasses(dataOutputStream, method.throwClasses);
 		writeByteCodes(dataOutputStream, method.byteCodes);
 	}

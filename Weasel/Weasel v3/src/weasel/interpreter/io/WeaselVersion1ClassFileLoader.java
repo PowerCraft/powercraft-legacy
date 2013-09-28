@@ -75,7 +75,7 @@ public class  WeaselVersion1ClassFileLoader extends WeaselVersionClassFileLoader
 		WeaselMethod method = new WeaselMethod();
 		method.name = readString(dataInputStream);
 		method.returnType = readClass(dataInputStream);
-		method.params = readFields(dataInputStream);
+		method.params = readTypeParams(dataInputStream);
 		method.throwClasses = readSuperClasses(dataInputStream);
 		method.byteCodes = readByteCodes(dataInputStream);
 		return method;
