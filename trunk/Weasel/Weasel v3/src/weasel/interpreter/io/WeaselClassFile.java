@@ -321,7 +321,7 @@ public class WeaselClassFile {
 
 		public String name;
 		public WeaselClass returnType;
-		public WeaselField[] params;
+		public WeaselClass[] params;
 		public WeaselClass[] throwClasses;
 		public WeaselByteCode[] byteCodes;
 		
