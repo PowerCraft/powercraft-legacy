@@ -35,7 +35,7 @@ public class WeaselClassBuildPlan extends WeaselPackage {
 			}else{
 				superClasses = new WeaselClassGenericBuildPlan[wcf.superClasses.length];
 				for(int i=0; i<superClasses.length; i++){
-					superClasses[i] = getGenericBuildPlan(wcf.superClasses[i]);
+					superClasses[i] = interpreter.getGenericBuildPlan(wcf.superClasses[i], this);
 					WeaselChecks.checkSuperClass(superClasses[i].getClassBuildPlan());
 				}
 			}
@@ -45,18 +45,6 @@ public class WeaselClassBuildPlan extends WeaselPackage {
 			innerClasses[i] = new WeaselClassBuildPlan(interpreter, wcf.innerClasses[i].wClass.name, wcf.innerClasses[i]);
 			childPackages.put(wcf.innerClasses[i].wClass.name, innerClasses[i]);
 		}
-	}
-	
-	protected WeaselClassGenericBuildPlan getGenericBuildPlan(weasel.interpreter.io.WeaselClassFile.WeaselClass wClass){
-		WeaselClassBuildPlan wcbp = interpreter.getWeaselClassBuildPlan(wClass.name);
-		WeaselClassGenericBuildPlan[] obj = new WeaselClassGenericBuildPlan[wClass.typeParams.length];
-		for(int i=0; i<obj.length; i++){
-			obj[i] = interpreter.getGenericBuildPlan(wClass.typeParams[i], this);
-		}
-		if(wcbp.getGenericInfos().length != obj.length){
-			throw new WeaselRuntimeException("Wrong argument of generic types for %s", name);
-		}
-		return new WeaselClassGenericBuildPlan(wcbp, obj);
 	}
 	
 	public WeaselClass getGenericClass(WeaselClass[] generics) {
@@ -78,7 +66,7 @@ public class WeaselClassBuildPlan extends WeaselPackage {
 			for(int i=0; i<genericInfos.length; i++){
 				WeaselClassGenericBuildPlan[] genericBuildPlans = genericInfos[i].getBuildPlans();
 				for(int j=0; j<genericBuildPlans.length; j++){
-					genericBuildPlans[i] = getGenericBuildPlan(wcf.genericInfos[i].classes[j]);
+					genericBuildPlans[i] = interpreter.getGenericBuildPlan(wcf.genericInfos[i].classes[j], this);
 				}
 			}
 			fields = new WeaselField[wcf.fields.length];
