@@ -24,7 +24,7 @@ public class WeaselClassFile {
 	public WeaselClassFile[] innerClasses;
 	
 	static{
-		addVersionGetter(new StandartVersionGetter());
+		addVersionGetter(new StandardVersionGetter());
 	}
 	
 	@Override
@@ -116,7 +116,7 @@ public class WeaselClassFile {
 		wvcfs.save(dataOutputStream, weaselClassFile);
 	}
 	
-	private static class StandartVersionGetter implements WeaselVersionGetter{
+	private static class StandardVersionGetter implements WeaselVersionGetter{
 
 		@Override
 		public WeaselVersionClassFileLoader getVersionClassFileLoader(int version) {
