@@ -25,7 +25,7 @@ public interface PC_IEnergyConsumer {
 	 * 
 	 * value of needed energy for the next tick
 	 * 
-	 * @param side later side of input, in the moment unused, always null
+	 * @param side in the future side of input, at the moment unused, always null
 	 * @return value of energy
 	 */
 	public float getEnergyRequest(PC_Direction side);
@@ -34,7 +34,7 @@ public interface PC_IEnergyConsumer {
 	 * 
 	 * called to consume a special energy value
 	 * 
-	 * @param side later side of input, in the moment unused, always null
+	 * @param side in the future side of input, at the moment unused, always null
 	 * @param energy to consume
 	 * @return not needed energy, will maybe disappear
 	 */
