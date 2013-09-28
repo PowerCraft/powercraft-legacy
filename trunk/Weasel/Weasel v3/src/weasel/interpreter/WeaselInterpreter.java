@@ -54,5 +54,29 @@ public class WeaselInterpreter {
 	private WeaselClassInput getClassInput(String name){
 		return null;
 	}
+
+	public WeaselClassGenericBuildPlan getGenericBuildPlan(weasel.interpreter.io.WeaselClassFile.WeaselClass weaselClass, WeaselClassBuildPlan weaselClassBuildPlan) {
+		String name = weaselClass.name;
+		char c = name.charAt(0);
+		switch(c){
+		case 'G':
+			if(!name.endsWith(";"))
+				throw new WeaselRuntimeException("Malformed generic name %s", name);
+			return new WeaselClassGenericBuildPlan(weaselClassBuildPlan.getGenericIndex(name.substring(1, name.length()-2)));
+		case 'O':
+			if(!name.endsWith(";"))
+				throw new WeaselRuntimeException("Malformed generic name %s", name);
+			WeaselClassBuildPlan wcbp = getWeaselClassBuildPlan(name.substring(1, name.length()-2));
+			WeaselClassGenericBuildPlan[] genericBuildPlans = new WeaselClassGenericBuildPlan[weaselClass.typeParams.length];
+			for(int i=0; i<genericBuildPlans.length; i++){
+				genericBuildPlans[i] = getGenericBuildPlan(weaselClass.typeParams[i], weaselClassBuildPlan);
+			}
+			if(wcbp.getGenericInfos().length != genericBuildPlans.length){
+				throw new WeaselRuntimeException("Wrong argument of generic types for %s", name);
+			}
+			return new WeaselClassGenericBuildPlan(wcbp, genericBuildPlans);
+		}
+		return null;
+	}
 	
 }

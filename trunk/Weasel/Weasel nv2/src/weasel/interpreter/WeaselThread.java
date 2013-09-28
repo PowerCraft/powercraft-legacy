@@ -87,7 +87,7 @@ public final class WeaselThread implements WeaselSaveable {
 				instrucion = methodExecutor.getNextInstruction();
 				if(instrucion!=null)
 					break;
-				methodExecutor = methodExecutor.getCaller();
+				callReturn();
 				if(methodExecutor==null)
 					return;
 			}

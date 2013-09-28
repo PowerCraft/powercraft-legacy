@@ -18,6 +18,24 @@ public class WeaselMethod {
 		returnType = parent.getGenericBuildPlan(weaselMethod.returnType);
 	}
 
+	public WeaselClassBuildPlan getParent(){
+		return parent;
+	}
 	
+	public String getName(){
+		return name;
+	}
+	
+	public int getModifier(){
+		return modifier;
+	}
+	
+	public WeaselAnnotation[] getAnnotations(){
+		return annotations;
+	}
+	
+	public WeaselClass getReturnType(WeaselClass[] generics){
+		return returnType.getWeaselClass(generics);
+	}
 	
 }

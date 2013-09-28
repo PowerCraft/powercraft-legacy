@@ -16,6 +16,7 @@ public class WeaselObject implements WeaselSaveable, Map<String, Object>{
 	protected final int[] easyTypes;
 	protected final int[] objectRefs;
 	protected boolean isVisible;
+	protected WeaselGenericClass[] generics;
 	
 	protected WeaselObject(WeaselClass weaselClass, int parent, int arrayLength) {
 		WeaselChecks.checkCreationClass(weaselClass);

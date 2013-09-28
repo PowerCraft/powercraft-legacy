@@ -26,7 +26,10 @@ import weasel.interpreter.WeaselMethodBody;
 import weasel.interpreter.WeaselModifier;
 import weasel.interpreter.bytecode.WeaselInstruction;
 import weasel.interpreter.bytecode.WeaselInstructionInvoke;
+import weasel.interpreter.bytecode.WeaselInstructionJump;
 import weasel.interpreter.bytecode.WeaselInstructionLoadVariable;
+import weasel.interpreter.bytecode.WeaselInstructionPop;
+import weasel.interpreter.bytecode.WeaselInstructionPops;
 import weasel.interpreter.bytecode.WeaselInstructionReturn;
 
 public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements WeaselKeyWordCompilerHelper {
@@ -219,6 +222,66 @@ public class WeaselMethodBodyCompilerV2 extends WeaselMethodBody implements Weas
 			b = b.base;
 		}
 		return count;
+	}
+
+	@Override
+	public void addBreak(int s, WeaselInstructionJump breakJump) {
+		WeaselBlockInfo b = block;
+		while(s>1){
+			if(b.canAddBreaks){
+				s--;
+			}
+			b = b.base;
+		}
+		while(!b.canAddBreaks){
+			b = b.base;
+		}
+		b.breaks.add(breakJump);
+	}
+	
+	@Override
+	public void addContinue(int s, WeaselInstructionJump continueJump) {
+		WeaselBlockInfo b = block;
+		while(s>1){
+			if(b.canAddBreaks){
+				s--;
+			}
+			b = b.base;
+		}
+		while(!b.canAddBreaks){
+			b = b.base;
+		}
+		b.continues.add(continueJump);
+	}
+
+	@Override
+	public void addClosingsAndFrees(int s, WeaselInstructionList instructionList, boolean last) {
+		int frees = 0;
+		WeaselBlockInfo b = block;
+		while(s>1){
+			if(b.canAddBreaks){
+				s--;
+			}
+			frees += b.variables.size();
+			if(b.exiting!=null)
+				instructionList.addWithoutLine(b.exiting.create());
+			b = b.base;
+		}
+		while(!b.canAddBreaks){
+			frees += b.variables.size();
+			if(b.exiting!=null)
+				instructionList.addWithoutLine(b.exiting.create());
+			b = b.base;
+		}
+		if(last){
+			frees += b.variables.size();
+		}
+		if(b.exiting!=null)
+			instructionList.addWithoutLine(b.exiting.create());
+		if(frees==1)
+			instructionList.addWithoutLine(new WeaselInstructionPop());
+		else if(frees>1)
+			instructionList.addWithoutLine(new WeaselInstructionPops(frees));
 	}
 	
 }
