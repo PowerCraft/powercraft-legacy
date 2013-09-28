@@ -58,6 +58,15 @@ public class WeaselObject implements WeaselSaveable {
 		return visible;
 	}
 
+	public int getParent(){
+		return parent;
+	}
+	
+	public void setThisAndKnownVisible(){
+		visible = true;
+		
+	}
+	
 	@Override
 	public void saveToDataStream(DataOutputStream dataOutputStream) throws IOException {
 		dataOutputStream.writeUTF(weaselClass.getName());

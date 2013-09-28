@@ -14,7 +14,6 @@ import weasel.interpreter.WeaselModifier;
 
 public class WeaselTokenParser {
 
-	//not yet working: "schrieb \"toll\"";
 	private String source;
 	private int pos;
 	private int line;

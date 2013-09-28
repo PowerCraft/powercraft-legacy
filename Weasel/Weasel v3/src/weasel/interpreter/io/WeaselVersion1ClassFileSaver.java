@@ -11,6 +11,7 @@ import weasel.interpreter.io.WeaselClassFile.WeaselAnnotationEntry;
 import weasel.interpreter.io.WeaselClassFile.WeaselByteCode;
 import weasel.interpreter.io.WeaselClassFile.WeaselClass;
 import weasel.interpreter.io.WeaselClassFile.WeaselField;
+import weasel.interpreter.io.WeaselClassFile.WeaselGenericInfo;
 import weasel.interpreter.io.WeaselClassFile.WeaselMethod;
 
 public class  WeaselVersion1ClassFileSaver extends WeaselVersionClassFileSaver{
@@ -27,6 +28,7 @@ public class  WeaselVersion1ClassFileSaver extends WeaselVersionClassFileSaver{
 
 	private WeaselClassFile writeClass(DataOutputStream dataOutputStream, WeaselClassFile wcf) throws IOException{
 		writeClass(dataOutputStream, wcf.wClass);
+		writeGenericInfos(dataOutputStream, wcf.genericInfos);
 		writeSuperClasses(dataOutputStream, wcf.superClasses);
 		writeFields(dataOutputStream, wcf.fields);
 		writeMethods(dataOutputStream, wcf.methods);
@@ -34,6 +36,18 @@ public class  WeaselVersion1ClassFileSaver extends WeaselVersionClassFileSaver{
 		return wcf;
 	}
 
+	private void writeGenericInfos(DataOutputStream dataOutputStream, WeaselGenericInfo[] genericInfos) throws IOException{
+		dataOutputStream.writeInt(genericInfos.length);
+		for(int i=0; i<genericInfos.length; i++){
+			writeGenericInfo(dataOutputStream, genericInfos[i]);
+		}
+	}
+	
+	private void writeGenericInfo(DataOutputStream dataOutputStream, WeaselGenericInfo genericInfo) throws IOException{
+		writeString(dataOutputStream, genericInfo.name);
+		writeSuperClasses(dataOutputStream, genericInfo.classes);
+	}
+	
 	private void writeClasses(DataOutputStream dataOutputStream, WeaselClassFile[] classes) throws IOException {
 		dataOutputStream.writeInt(classes.length);
 		for(int i=0; i<classes.length; i++){

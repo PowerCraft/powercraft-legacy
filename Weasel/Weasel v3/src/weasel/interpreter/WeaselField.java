@@ -15,9 +15,27 @@ public class WeaselField {
 		name = weaselField.name;
 		modifier = weaselField.type.modifier;
 		annotations = weaselField.type.annotations;
-		type = parent.getGenericBuildPlan(weaselField.type);
+		type = parent.getInterpreter().getGenericBuildPlan(weaselField.type, parent);
 	}
 	
+	public WeaselClassBuildPlan getParent(){
+		return parent;
+	}
 	
+	public String getName(){
+		return name;
+	}
+	
+	public int getModifier(){
+		return modifier;
+	}
+	
+	public WeaselAnnotation[] getAnnotations(){
+		return annotations;
+	}
+	
+	public WeaselClass getType(WeaselClass[] generics){
+		return type.getWeaselClass(generics);
+	}
 	
 }

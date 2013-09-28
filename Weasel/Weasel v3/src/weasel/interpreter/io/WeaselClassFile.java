@@ -18,6 +18,7 @@ public class WeaselClassFile {
 	public static int MAGICNUMBER = (byte)('w')<<24 | (byte)('s')<<16 | (byte)('c')<<8 | (byte)('f');
 	
 	public WeaselClass wClass;
+	public WeaselGenericInfo[] genericInfos;
 	public WeaselClass[] superClasses;
 	public WeaselField[] fields;
 	public WeaselMethod[] methods;
@@ -347,6 +348,25 @@ public class WeaselClassFile {
 	}
 	
 	public static class WeaselByteCode{
+		
+	}
+	
+	public static class WeaselGenericInfo{
+		
+		public String name;
+		public WeaselClass classes[];
+		
+		@Override
+		public String toString(){
+			String s = name;
+			if(classes.length>0){
+				s += " extends "+classes[0];
+				for(int i=1; i<classes.length; i++){
+					s += ", "+classes[i];
+				}
+			}
+			return s;
+		}
 		
 	}
 	

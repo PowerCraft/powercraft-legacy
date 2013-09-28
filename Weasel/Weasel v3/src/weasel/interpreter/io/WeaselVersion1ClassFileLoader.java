@@ -8,6 +8,7 @@ import weasel.interpreter.io.WeaselClassFile.WeaselAnnotationEntry;
 import weasel.interpreter.io.WeaselClassFile.WeaselByteCode;
 import weasel.interpreter.io.WeaselClassFile.WeaselClass;
 import weasel.interpreter.io.WeaselClassFile.WeaselField;
+import weasel.interpreter.io.WeaselClassFile.WeaselGenericInfo;
 import weasel.interpreter.io.WeaselClassFile.WeaselMethod;
 
 public class  WeaselVersion1ClassFileLoader extends WeaselVersionClassFileLoader {
@@ -23,6 +24,7 @@ public class  WeaselVersion1ClassFileLoader extends WeaselVersionClassFileLoader
 	private WeaselClassFile loadClass(DataInputStream dataInputStream) throws IOException{
 		WeaselClassFile wcf = new WeaselClassFile();
 		wcf.wClass = readClass(dataInputStream);
+		wcf.genericInfos = readGenericInfos(dataInputStream);
 		wcf.superClasses = readSuperClasses(dataInputStream);
 		wcf.fields = readFields(dataInputStream);
 		wcf.methods = readMethods(dataInputStream);
@@ -30,6 +32,21 @@ public class  WeaselVersion1ClassFileLoader extends WeaselVersionClassFileLoader
 		return wcf;
 	}
 
+	private WeaselGenericInfo[] readGenericInfos(DataInputStream dataInputStream) throws IOException{
+		WeaselGenericInfo[] genericInfos = new WeaselGenericInfo[dataInputStream.readInt()];
+		for(int i=0; i<genericInfos.length; i++){
+			genericInfos[i] = readGenericInfo(dataInputStream);
+		}
+		return genericInfos;
+	}
+	
+	private WeaselGenericInfo readGenericInfo(DataInputStream dataInputStream) throws IOException{
+		WeaselGenericInfo genericInfo = new WeaselGenericInfo();
+		genericInfo.name = readString(dataInputStream);
+		genericInfo.classes = readSuperClasses(dataInputStream);
+		return genericInfo;
+	}
+	
 	private WeaselClassFile[] readClasses(DataInputStream dataInputStream) throws IOException {
 		WeaselClassFile[] classes = new WeaselClassFile[dataInputStream.readInt()];
 		for(int i=0; i<classes.length; i++){
