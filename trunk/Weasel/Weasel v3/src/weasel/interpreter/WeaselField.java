@@ -9,7 +9,8 @@ public class WeaselField {
 	private int modifier;
 	private WeaselAnnotation[] annotations;
 	private WeaselClassGenericBuildPlan type;
-
+	private int index;
+	
 	public WeaselField(WeaselClassBuildPlan parent, weasel.interpreter.io.WeaselClassFile.WeaselField weaselField) {
 		this.parent = parent;
 		name = weaselField.name;
@@ -23,6 +24,10 @@ public class WeaselField {
 	}
 	
 	public String getName(){
+		return parent.getName()+name;
+	}
+	
+	public String getSimpleName(){
 		return name;
 	}
 	
@@ -36,6 +41,13 @@ public class WeaselField {
 	
 	public WeaselClass getType(WeaselClass[] generics){
 		return type.getWeaselClass(generics);
+	}
+
+	public long get(WeaselObject object) {
+		WeaselClass weaselClass = weaselPointer.getWeaselObject().getWeaselClass().getAllSuperClasses()[weaselPointer.getTable()];
+		if(weaselClass.getClassBuildPlan()!=parent)
+			throw new WeaselRuntimeException("Can't get field %s from %s", getName(), weaselClass);
+		return weaselPointer.getWeaselObject().getDatas()[index+weaselPointer.getOffset()];
 	}
 	
 }

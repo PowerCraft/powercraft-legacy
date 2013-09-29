@@ -11,7 +11,8 @@ public class WeaselClassBuildPlan extends WeaselPackage {
 	private WeaselClassFile wcf;
 	private int modifier;
 	private WeaselGenericInfo[] genericInfos;
-	private WeaselClassGenericBuildPlan[] superClasses;
+	protected WeaselClassGenericBuildPlan[] superClasses;
+	protected WeaselClassBuildPlan[] allSuperClasses;
 	private WeaselField fields[];
 	private WeaselMethod methods[];
 	private WeaselClassBuildPlan[] innerClasses;
@@ -100,6 +101,15 @@ public class WeaselClassBuildPlan extends WeaselPackage {
 
 	public WeaselInterpreter getInterpreter() {
 		return interpreter;
+	}
+
+	public WeaselField getField(String name) {
+		for(int i=0; i<fields.length; i++){
+			if(fields[i].getName().equals(name)){
+				return fields[i];
+			}
+		}
+		return null;
 	}
 	
 }
