@@ -124,10 +124,14 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 	@Override
 	public void onBlockMessage(EntityPlayer player,
 			NBTTagCompound nbtTagCompound) {
-		if(nbtTagCompound.getName()=="guiChanges"){
+		System.out.println("1stStep");
+		if(nbtTagCompound.getName().equals("guiChanges")){
+			System.out.println("2ndStep");
 			if(!hasPermission(player, PC_Permission.CHANGEGUI)) return;
+			System.out.println("3rdStep");
 			if((PC_Utils.getGameTypeFor(player)==EnumGameType.ADVENTURE)&&
 					!hasPermission(player, PC_Permission.ADVENTUREACCESS)) return;
+			System.out.println("4thStep");
 			speed=nbtTagCompound.getDouble("speed");
 		}
 	}
