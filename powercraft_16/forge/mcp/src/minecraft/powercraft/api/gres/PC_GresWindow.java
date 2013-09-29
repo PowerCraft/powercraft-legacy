@@ -128,7 +128,7 @@ public class PC_GresWindow extends PC_GresContainer {
 			rect.y += frame.y;
 			GL11.glTranslatef(frame.x, frame.y, 0);
 			offset = rect.getLocation();
-			ListIterator<PC_GresComponent> iterator = childs.listIterator(childs.size());
+			ListIterator<PC_GresComponent> iterator = children.listIterator(children.size());
 			while(iterator.hasPrevious()){
 				iterator.previous().doPaint(offset, scissor, scale, displayHeight, timeStamp);
 			}

@@ -3,14 +3,24 @@
  */
 package powercraft.tutorial;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 import org.lwjgl.input.Keyboard;
 
 import powercraft.api.gres.PC_GresComponent;
 import powercraft.api.gres.PC_GresGuiHandler;
+import powercraft.api.gres.PC_GresLabel;
+import powercraft.api.gres.PC_GresLayoutVertical;
+import powercraft.api.gres.PC_GresTextEdit;
+import powercraft.api.gres.PC_GresWindow;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.events.PC_GresEvent;
+import powercraft.api.gres.events.PC_GresFocusLostEvent;
 import powercraft.api.gres.events.PC_GresKeyEvent;
+import powercraft.api.gres.events.PC_GresTickEvent;
 import powercraft.api.gres.events.PC_IGresEventListener;
+import powercraft.api.gres.events.PC_GresPrePostEvent.EventType;
+import powercraft.core.blocks.PC_TileEntityPuffer;
 
 /**
  * if there were an Inventory we would extend PC_GresBaseWithInventory
@@ -24,6 +34,14 @@ import powercraft.api.gres.events.PC_IGresEventListener;
 
 public class PC_GuiTutorial implements PC_IGresClient, PC_IGresEventListener {
 
+	PC_TileEntityTutorial tileEntityTut;
+	
+	
+	public PC_GuiTutorial(PC_TileEntityTutorial tileEntityTut, EntityPlayer player) {
+
+		this.tileEntityTut = tileEntityTut;
+	}
+	
 	/* (non-Javadoc)
 	 * @see powercraft.api.gres.events.PC_IGresEventListener#onEvent(powercraft.api.gres.events.PC_GresEvent)
 	 */
@@ -38,6 +56,16 @@ public class PC_GuiTutorial implements PC_IGresClient, PC_IGresEventListener {
 					guiHandler.close();
 				}
 			}
+		}else if(event instanceof PC_GresFocusLostEvent){
+			PC_GresFocusLostEvent ev = (PC_GresFocusLostEvent) event;
+			if(ev.getComponent()==text){
+				tileEntityTut.speed=Double.valueOf(text.getText());
+			}
+		}else if(event instanceof PC_GresTickEvent){
+			PC_GresTickEvent ev = (PC_GresTickEvent) event;
+			if(ev.getEventType()==EventType.PRE){
+				label.setText("Speed: "+tileEntityTut.speed);
+			}
 		}
 	}
 
@@ -46,8 +74,17 @@ public class PC_GuiTutorial implements PC_IGresClient, PC_IGresEventListener {
 	 */
 	@Override
 	public void initGui(PC_GresGuiHandler gui) {
-		// TODO Auto-generated method stub
-		
+		gui.setLayout(new PC_GresLayoutVertical());
+		PC_GresWindow window = new PC_GresWindow("TutorialGui");
+		window.setLayout(new PC_GresLayoutVertical());
+		window.add(label = new PC_GresLabel("Speed: " + tileEntityTut.speed));
+		(text = new PC_GresTextEdit("Speed:", 5)).setText(""+tileEntityTut.speed);
+		window.add(text);
+		gui.add(window);
+		gui.addEventListener(this);
+		text.addEventListener(this);
 	}
 
+	PC_GresLabel label;
+	PC_GresTextEdit text;
 }

@@ -45,7 +45,7 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 			
 			@Override
 			public void updateLayout(PC_GresContainer container) {
-				for (PC_GresComponent component : container.childs) {
+				for (PC_GresComponent component : container.children) {
 					if(component.layoutData==null)
 						component.putInRect(0, 0, container.rect.width, container.rect.height);
 				}
