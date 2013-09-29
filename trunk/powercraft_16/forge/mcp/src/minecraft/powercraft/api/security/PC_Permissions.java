@@ -30,7 +30,8 @@ public final class PC_Permissions implements PC_IPermissionHandler{
 			permissions.put(compound.getString("key["+i+"]"), compound.getLong("value["+i+"]"));
 		}
 		defaultPermissions = compound.getLong("defaultPermissions");
-		passwordMD5 = compound.getString("password");
+		if(compound.hasKey("password"))
+			passwordMD5 = compound.getString("password");
 	}
 	
 	public void saveToNBT(NBTTagCompound compound){
@@ -42,7 +43,8 @@ public final class PC_Permissions implements PC_IPermissionHandler{
 			i++;
 		}
 		compound.setLong("defaultPermissions", defaultPermissions);
-		compound.setString("password", passwordMD5);
+		if(passwordMD5!=null)
+			compound.setString("password", passwordMD5);
 	}
 	
 	@Override
