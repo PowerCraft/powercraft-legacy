@@ -1,12 +1,16 @@
 package powercraft.tutorial;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.api.blocks.PC_TileEntityUpgradable;
+import powercraft.api.gres.PC_GresBaseWithInventory;
+import powercraft.api.gres.PC_IGresClient;
+import powercraft.api.gres.PC_IGresGuiOpenHandler;
 import powercraft.api.inventory.PC_Inventory;
 import powercraft.api.upgrade.PC_UpgradeFamily;
 
 // could rename to TileEntityUpgradeableBelt
-public class PC_TileEntityTutorial extends PC_TileEntityUpgradable
+public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC_IGresGuiOpenHandler
 {
 	private double basespeed=1;
 	public double speed;
@@ -21,6 +25,23 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable
 		speed = basespeed;
 	}
 
+
+	/* (non-Javadoc)
+	 * @see powercraft.api.gres.PC_IGresGuiOpenHandler#openClientGui(net.minecraft.entity.player.EntityPlayer)
+	 */
+	@Override
+	public PC_IGresClient openClientGui(EntityPlayer player) {
+		return new PC_GuiTutorial();
+	}
+
+	/* (non-Javadoc)
+	 * @see powercraft.api.gres.PC_IGresGuiOpenHandler#openServerGui(net.minecraft.entity.player.EntityPlayer)
+	 */
+	@Override
+	public PC_GresBaseWithInventory openServerGui(EntityPlayer player) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	/**
 	 * Catches event thrown by GUI any time there is a change to the list of upgrades

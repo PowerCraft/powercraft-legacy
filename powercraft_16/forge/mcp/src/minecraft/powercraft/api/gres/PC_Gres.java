@@ -148,8 +148,7 @@ public class PC_Gres {
 			}
 		}
 	}
-
-
+	
 	public static void openGui(EntityPlayer player, Item item) {
 
 		if (player instanceof EntityPlayerMP && item instanceof PC_IGresGuiOpenHandler) {
