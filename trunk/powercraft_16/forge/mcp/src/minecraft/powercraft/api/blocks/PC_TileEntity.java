@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_PacketHandler;
+import powercraft.api.PC_PacketHandlerClient;
 import powercraft.api.PC_Utils;
 import powercraft.api.energy.PC_EnergyGrid;
 import powercraft.api.energy.PC_IEnergyConsumer;
@@ -336,6 +337,15 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		if(this.permissions==null)
 			return false;
 		return this.permissions.needPassword(player);
+	}
+	
+	public void sendMessage(NBTTagCompound nbtTagCompound){
+		if(isClient()){
+			PC_PacketHandler.sendPacketToServer(PC_PacketHandler.getBlockMessagePacket(worldObj, xCoord, yCoord, zCoord, nbtTagCompound));
+		}else{
+			PC_PacketHandler.sendPacketToAllInDimension(PC_PacketHandler.getBlockMessagePacket(worldObj, xCoord, yCoord, zCoord, nbtTagCompound), worldObj
+					.getWorldInfo().getVanillaDimension());
+		}
 	}
 	
 }

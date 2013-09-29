@@ -81,7 +81,23 @@ public class PC_PacketHandler implements IPacketHandler {
 		return new Packet250CustomPayload("PowerCraft", byteArray);
 	}
 
-
+	public static Packet250CustomPayload getBlockMessagePacket(World world, int x, int y, int z, NBTTagCompound nbtTagCompound){
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+		try {
+			dataOutputStream.writeInt(BLOCKMESSAGE);
+			dataOutputStream.writeInt(x);
+			dataOutputStream.writeInt(y);
+			dataOutputStream.writeInt(z);
+			writeNBTTagCompound(dataOutputStream, nbtTagCompound);
+			return getPowerCraftPacket(byteArrayOutputStream.toByteArray());
+		} catch (IOException e) {
+			e.printStackTrace();
+			PC_Logger.severe("Error while generating packet");
+		}
+		return null;
+	}
+	
 	public static Packet250CustomPayload getBlockDataPacket(World world, int x, int y, int z) {
 
 		Block block = PC_Utils.getBlock(world, x, y, z);
@@ -161,17 +177,20 @@ public class PC_PacketHandler implements IPacketHandler {
 	}
 
 
-	public static void sendPacketToAllInDimension(Packet250CustomPayload blockDataPacket, int dimension) {
+	public static void sendPacketToAllInDimension(Packet250CustomPayload packet, int dimension) {
 
-		PacketDispatcher.sendPacketToAllInDimension(blockDataPacket, dimension);
+		PacketDispatcher.sendPacketToAllInDimension(packet, dimension);
 	}
 
 
-	public static void sendPacketToPlayer(Packet250CustomPayload guiPacket, EntityPlayer player) {
+	public static void sendPacketToPlayer(Packet250CustomPayload packet, EntityPlayer player) {
 
-		PacketDispatcher.sendPacketToPlayer(guiPacket, (Player) player);
+		PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
 	}
 
+	public static void sendPacketToServer(Packet250CustomPayload packet) {
+		PacketDispatcher.sendPacketToServer(packet);
+	}
 
 	public static NBTTagCompound readNBTTagCompound(DataInputStream dataInputStream) throws IOException {
 
