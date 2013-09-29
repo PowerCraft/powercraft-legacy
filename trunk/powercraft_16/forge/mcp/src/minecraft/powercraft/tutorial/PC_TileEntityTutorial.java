@@ -31,7 +31,7 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 	 */
 	@Override
 	public PC_IGresClient openClientGui(EntityPlayer player) {
-		return new PC_GuiTutorial();
+		return new PC_GuiTutorial(this, player);
 	}
 
 	/* (non-Javadoc)
@@ -103,14 +103,14 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 
 	@Override
 	public void loadFromNBT(NBTTagCompound nbtTagCompound) {
-		// TODO Auto-generated method stub
-		
+
+		speed = nbtTagCompound.getDouble("speed");
 	}
 
 
 	@Override
 	public void saveToNBT(NBTTagCompound nbtTagCompound) {
-		// TODO Auto-generated method stub
-		
+
+		nbtTagCompound.setDouble("speed", speed);
 	}
 }

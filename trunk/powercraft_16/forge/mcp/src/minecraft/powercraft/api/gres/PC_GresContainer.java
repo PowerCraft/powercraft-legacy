@@ -19,7 +19,7 @@ import powercraft.api.PC_Vec2I;
 @SideOnly(Side.CLIENT)
 public abstract class PC_GresContainer extends PC_GresComponent {
 
-	protected final List<PC_GresComponent> childs = new ArrayList<PC_GresComponent>();
+	protected final List<PC_GresComponent> children = new ArrayList<PC_GresComponent>();
 	protected final List<PC_GresComponent> layoutChildOrder = new ArrayList<PC_GresComponent>();
 	
 	private PC_IGresLayout layout;
@@ -80,15 +80,15 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 
 	public void add(PC_GresComponent component) {
 
-		if (!childs.contains(component)) {
-			childs.add(component);
+		if (!children.contains(component)) {
+			children.add(component);
 			layoutChildOrder.add(component);
 			component.takeFocus();
 			component.setParent(this);
 			if(component.getParent()==this){
 				notifyChange();
 			}else{
-				childs.remove(component);
+				children.remove(component);
 				layoutChildOrder.remove(component);
 			}
 		}
@@ -97,7 +97,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 
 	public void remove(PC_GresComponent component) {
 
-		childs.remove(component);
+		children.remove(component);
 		layoutChildOrder.remove(component);
 		if(component.hasFocus()){
 			takeFocus();
@@ -109,14 +109,14 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 
 	public void removeAll() {
 
-		while (!childs.isEmpty())
-			childs.remove(0).setParent(null);
+		while (!children.isEmpty())
+			children.remove(0).setParent(null);
 	}
 
 
 	public boolean isChild(PC_GresComponent component) {
 
-		return childs.contains(component);
+		return children.contains(component);
 	}
 
 
@@ -187,7 +187,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 	public void setVisible(boolean visible) {
 
 		super.setVisible(visible);
-		for (PC_GresComponent child : childs) {
+		for (PC_GresComponent child : children) {
 			child.setParentVisible(visible);
 		}
 	}
@@ -197,7 +197,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 	protected void setParentVisible(boolean visible) {
 
 		super.setParentVisible(enabled);
-		for (PC_GresComponent child : childs) {
+		for (PC_GresComponent child : children) {
 			child.setParentVisible(visible);
 		}
 	}
@@ -207,7 +207,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 	public void setEnabled(boolean enabled) {
 
 		super.setEnabled(enabled);
-		for (PC_GresComponent child : childs) {
+		for (PC_GresComponent child : children) {
 			child.setParentEnabled(enabled);
 		}
 	}
@@ -217,7 +217,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 	protected void setParentEnabled(boolean enabled) {
 
 		super.setParentEnabled(enabled);
-		for (PC_GresComponent child : childs) {
+		for (PC_GresComponent child : children) {
 			child.setParentEnabled(visible);
 		}
 	}
@@ -242,7 +242,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 			rect.y += frame.y;
 			GL11.glTranslatef(frame.x, frame.y, 0);
 			offset = rect.getLocation();
-			ListIterator<PC_GresComponent> iterator = childs.listIterator(childs.size());
+			ListIterator<PC_GresComponent> iterator = children.listIterator(children.size());
 			while(iterator.hasPrevious()){
 				iterator.previous().doPaint(offset, scissor, scale, displayHeight, timeStamp);
 			}
@@ -256,7 +256,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 
 		if (visible) {
 			position = position.sub(frame.getLocation());
-			for (PC_GresComponent child : childs) {
+			for (PC_GresComponent child : children) {
 				PC_RectI rect = child.getRect();
 				if (rect.contains(position)){
 					PC_GresComponent component = child.getComponentAtPosition(position.sub(rect.getLocation()));
@@ -272,7 +272,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 	@Override
 	protected void onTick() {
 
-		for (PC_GresComponent child : childs) {
+		for (PC_GresComponent child : children) {
 			child.onTick();
 		}
 	}
@@ -283,7 +283,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 
 		if (visible) {
 			position = position.sub(frame.getLocation());
-			for (PC_GresComponent child : childs) {
+			for (PC_GresComponent child : children) {
 				PC_RectI rect = child.getRect();
 				if (rect.contains(position)){
 					Slot slot = child.getSlotAtPosition(position.sub(rect.getLocation()));
@@ -299,22 +299,22 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 	protected void tryActionOnKeyTyped(char key, int keyCode) {
 
 		if (visible) {
-			for (PC_GresComponent child : childs) {
+			for (PC_GresComponent child : children) {
 				child.tryActionOnKeyTyped(key, keyCode);
 			}
 		}
 	}
 
 	protected void moveToTop(PC_GresComponent component){
-		if(childs.remove(component)){
-			childs.add(0, component);
+		if(children.remove(component)){
+			children.add(0, component);
 		}
 		moveToTop();
 	}
 	
 	protected void moveToBottom(PC_GresComponent component){
-		if(childs.remove(component)){
-			childs.add(component);
+		if(children.remove(component)){
+			children.add(component);
 		}
 	}
 	
