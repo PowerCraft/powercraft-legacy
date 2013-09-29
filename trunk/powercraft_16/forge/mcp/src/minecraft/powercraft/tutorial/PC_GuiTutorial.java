@@ -4,6 +4,7 @@
 package powercraft.tutorial;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 import org.lwjgl.input.Keyboard;
 
@@ -53,6 +54,7 @@ public class PC_GuiTutorial implements PC_IGresClient, PC_IGresEventListener {
 			PC_GresKeyEvent keyEvent = (PC_GresKeyEvent) event;
 			if (component == guiHandler) {
 				if (keyEvent.getKeyCode() == Keyboard.KEY_ESCAPE || keyEvent.getKeyCode() == Keyboard.KEY_E) {
+					keepInSync();
 					guiHandler.close();
 				}
 			}
@@ -67,6 +69,12 @@ public class PC_GuiTutorial implements PC_IGresClient, PC_IGresEventListener {
 				label.setText("Speed: "+tileEntityTut.speed);
 			}
 		}
+	}
+	
+	private void keepInSync(){
+		NBTTagCompound nbt = new NBTTagCompound("guiChanges");
+		nbt.setDouble("speed", tileEntityTut.speed);
+		tileEntityTut.sendMessage(nbt);
 	}
 
 	/* (non-Javadoc)
