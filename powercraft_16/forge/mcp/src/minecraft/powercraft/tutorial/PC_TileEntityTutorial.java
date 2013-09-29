@@ -105,7 +105,6 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 	public void loadFromNBT(NBTTagCompound nbtTagCompound) {
 		
 		speed = nbtTagCompound.getDouble("speed");
-		System.out.println("loadFromNBT:"+speed);
 	}
 
 
@@ -113,6 +112,5 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 	public void saveToNBT(NBTTagCompound nbtTagCompound) {
 
 		nbtTagCompound.setDouble("speed", speed);
-		System.out.println("saveToNBT:"+speed);
 	}
 }
