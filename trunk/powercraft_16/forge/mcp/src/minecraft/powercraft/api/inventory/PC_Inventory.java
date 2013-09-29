@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 public class PC_Inventory implements IInventory, Iterable<ItemStack> {
 
-	public static final int USEABLEBYPLAYER = 1;
+	public static final int NOTUSABLEBYPLAYER = 1;
 	public static final int SIDEINSERTABLE = 2;
 	public static final int SIDEEXTRACTABLE = 4;
 	public static final int DROPNOSTACKS = 8;
@@ -107,7 +107,7 @@ public class PC_Inventory implements IInventory, Iterable<ItemStack> {
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if((flags & USEABLEBYPLAYER)==0){
+		if((flags & NOTUSABLEBYPLAYER)!=0){
 			return false;
 		}
 		if(parentInventory!=null)
