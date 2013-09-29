@@ -2,11 +2,15 @@ package powercraft.tutorial;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.EnumGameType;
+import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_TileEntityUpgradable;
 import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGuiOpenHandler;
+import powercraft.api.gres.PC_GresTextEdit.PC_GresInputType;
 import powercraft.api.inventory.PC_Inventory;
+import powercraft.api.security.PC_Permission;
 import powercraft.api.upgrade.PC_UpgradeFamily;
 
 // could rename to TileEntityUpgradeableBelt
@@ -112,5 +116,19 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 	public void saveToNBT(NBTTagCompound nbtTagCompound) {
 
 		nbtTagCompound.setDouble("speed", speed);
+	}
+	
+	/* (non-Javadoc)
+	 * @see powercraft.api.blocks.PC_TileEntity#onBlockMessage(net.minecraft.entity.player.EntityPlayer, net.minecraft.nbt.NBTTagCompound)
+	 */
+	@Override
+	public void onBlockMessage(EntityPlayer player,
+			NBTTagCompound nbtTagCompound) {
+		if(nbtTagCompound.getName()=="guiChanges"){
+			if(!hasPermission(player, PC_Permission.CHANGEGUI)) return;
+			if((PC_Utils.getGameTypeFor(player)==EnumGameType.ADVENTURE)&&
+					!hasPermission(player, PC_Permission.ADVENTUREACCESS)) return;
+			speed=nbtTagCompound.getDouble("speed");
+		}
 	}
 }
