@@ -12,7 +12,7 @@ public class PC_Inventory implements IInventory, Iterable<ItemStack> {
 	public static final int USEABLEBYPLAYER = 1;
 	public static final int SIDEINSERTABLE = 2;
 	public static final int SIDEEXTRACTABLE = 4;
-	public static final int DROPSTACKS = 8;
+	public static final int DROPNOSTACKS = 8;
 	
 	private final String name;
 	private final ItemStack[] inventoryContents;
@@ -145,7 +145,7 @@ public class PC_Inventory implements IInventory, Iterable<ItemStack> {
 	}
 
 	public boolean canDropStacks() {
-		return (flags & DROPSTACKS)!=0;
+		return (flags & DROPNOSTACKS)==0;
 	}
 
 	@Override
