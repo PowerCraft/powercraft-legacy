@@ -20,8 +20,8 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 	{
 		super(PC_UpgradeFamily.Speed.getFamilyID() | PC_UpgradeFamily.Security.getFamilyID(), 3,
 				"Tutorial", new PC_Inventory[]{
-			new PC_Inventory("main", 9*3, 64, PC_Inventory.USEABLEBYPLAYER|PC_Inventory.DROPSTACKS),
-			new PC_Inventory("upgrade", 3, 1, PC_Inventory.USEABLEBYPLAYER|PC_Inventory.DROPSTACKS)});		
+			new PC_Inventory("main", 9*3, 64, PC_Inventory.USEABLEBYPLAYER),
+			new PC_Inventory("upgrade", 3, 1, PC_Inventory.USEABLEBYPLAYER)});		
 		speed = basespeed;
 	}
 

@@ -77,7 +77,7 @@ public abstract class PC_TileEntityUpgradable extends PC_TileEntityWithInventory
 		private int validFamilies;
 		
 		public UpgradeInventory(int size, int validFamilies) {
-			super("upgrades", size, 1, PC_Inventory.USEABLEBYPLAYER|PC_Inventory.DROPSTACKS);
+			super("upgrades", size, 1, PC_Inventory.USEABLEBYPLAYER);
 			this.validFamilies = validFamilies;
 		}
 
