@@ -3,6 +3,7 @@ package powercraft.transport.blocks.tileEntities;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.blocks.PC_TileEntityUpgradable;
+import powercraft.api.inventory.PC_Inventory;
 import powercraft.transport.blocks.blocks.PCtr_BeltTypeEnum;
 
 public class PCtr_TEUpgradeableBelt extends PC_TileEntityUpgradable
@@ -11,6 +12,7 @@ public class PCtr_TEUpgradeableBelt extends PC_TileEntityUpgradable
 	
 	public PCtr_TEUpgradeableBelt()
 	{
+		super(0, 3, "Belt", new PC_Inventory[0]);
 		belttype = PCtr_BeltTypeEnum.Standard;
 	}
 		
