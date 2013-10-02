@@ -7,19 +7,19 @@ import java.util.Random;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import powercraft.api.PC_Direction;
+import powercraft.api.PC_FieldDescription;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_ITileEntitySpecialRenderer;
 import powercraft.api.blocks.PC_TileEntity;
-import powercraft.api.registries.PC_MultiblockRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 
 public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEntitySpecialRenderer {
 
+	@PC_FieldDescription(sync=true)
 	private PC_MultiblockTileEntity[] tileEntities = new PC_MultiblockTileEntity[27];
 
 
@@ -250,38 +250,6 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 			}
 		}
 		return true;
-	}
-
-
-	@Override
-	public void loadFromNBT(NBTTagCompound nbtTagCompound) {
-
-		for (int i = 0; i < tileEntities.length; i++) {
-			if (nbtTagCompound.hasKey("data[" + i + "]")) {
-				String multiblockTileEntityName = nbtTagCompound.getString("multiblockTileEntityName[" + i + "]");
-				if (!PC_MultiblockRegistry.isMultiblockTileEntity(tileEntities[i], multiblockTileEntityName)) {
-					tileEntities[i] = PC_MultiblockRegistry.createMultiblockTileEntityFromName(multiblockTileEntityName);
-					tileEntities[i].setIndexAndMultiblock(PC_MultiblockIndex.values()[i], this);
-				}
-				tileEntities[i].loadFromNBT(nbtTagCompound.getCompoundTag("data[" + i + "]"));
-			} else {
-				tileEntities[i] = null;
-			}
-		}
-	}
-
-
-	@Override
-	public void saveToNBT(NBTTagCompound nbtTagCompound) {
-
-		for (int i = 0; i < tileEntities.length; i++) {
-			if (tileEntities[i] != null) {
-				nbtTagCompound.setString("multiblockTileEntityName[" + i + "]", PC_MultiblockRegistry.getMultiblockTileEntityName(tileEntities[i]));
-				NBTTagCompound compound = new NBTTagCompound();
-				tileEntities[i].saveToNBT(compound);
-				nbtTagCompound.setCompoundTag("data[" + i + "]", compound);
-			}
-		}
 	}
 
 

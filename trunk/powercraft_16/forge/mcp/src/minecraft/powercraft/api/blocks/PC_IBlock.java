@@ -41,11 +41,11 @@ public interface PC_IBlock {
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, RenderBlocks renderer);
 
 	
-	public abstract void loadFromNBT(World world, int x, int y, int z,
+	public abstract void loadFromNBTPacket(World world, int x, int y, int z,
 			NBTTagCompound nbtTagCompound);
 
 	
-	public abstract void saveToNBT(World world, int x, int y, int z,
+	public abstract void saveToNBTPacket(World world, int x, int y, int z,
 			NBTTagCompound nbtTagCompound);
 	
 	public int modifyMetadataPostPlace(World world, int x, int y, int z,

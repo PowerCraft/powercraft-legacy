@@ -18,10 +18,9 @@ import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.events.PC_GresEvent;
 import powercraft.api.gres.events.PC_GresFocusLostEvent;
 import powercraft.api.gres.events.PC_GresKeyEvent;
+import powercraft.api.gres.events.PC_GresPrePostEvent.EventType;
 import powercraft.api.gres.events.PC_GresTickEvent;
 import powercraft.api.gres.events.PC_IGresEventListener;
-import powercraft.api.gres.events.PC_GresPrePostEvent.EventType;
-import powercraft.core.blocks.PC_TileEntityPuffer;
 
 /**
  * if there were an Inventory we would extend PC_GresBaseWithInventory

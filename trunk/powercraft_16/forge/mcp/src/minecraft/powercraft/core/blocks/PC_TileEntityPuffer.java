@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import powercraft.api.PC_Direction;
+import powercraft.api.PC_FieldDescription;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.energy.PC_IEnergyPuffer;
 import powercraft.api.gres.PC_GresBaseWithInventory;
@@ -23,6 +23,7 @@ public class PC_TileEntityPuffer extends PC_TileEntity implements PC_IGresGuiOpe
 	private static final int maxEnergyOutput = 100;
 	public static final int maxEnergy = 10000;
 
+	@PC_FieldDescription(sync=true)
 	private float energy = 0;
 	private float request = 0;
 	private float forUsage = 0;
@@ -102,21 +103,6 @@ public class PC_TileEntityPuffer extends PC_TileEntity implements PC_IGresGuiOpe
 	public PC_GresBaseWithInventory openServerGui(EntityPlayer player) {
 
 		return null;
-	}
-
-
-	@Override
-	public void loadFromNBT(NBTTagCompound nbtTagCompound) {
-
-		energy = nbtTagCompound.getFloat("energy");
-		renderUpdate();
-	}
-
-
-	@Override
-	public void saveToNBT(NBTTagCompound nbtTagCompound) {
-
-		nbtTagCompound.setFloat("energy", energy);
 	}
 
 

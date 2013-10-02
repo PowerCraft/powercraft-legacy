@@ -109,7 +109,7 @@ public class PC_PacketHandler implements IPacketHandler {
 			dataOutputStream.writeInt(y);
 			dataOutputStream.writeInt(z);
 			NBTTagCompound nbtTagCompound = new NBTTagCompound("save");
-			((PC_IBlock) block).saveToNBT(world, x, y, z, nbtTagCompound);
+			((PC_IBlock) block).saveToNBTPacket(world, x, y, z, nbtTagCompound);
 			writeNBTTagCompound(dataOutputStream, nbtTagCompound);
 			return getPowerCraftPacket(byteArrayOutputStream.toByteArray());
 		} catch (IOException e) {

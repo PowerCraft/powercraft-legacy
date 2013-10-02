@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import powercraft.api.PC_Direction;
+import powercraft.api.PC_INBT;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,22 +15,24 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SuppressWarnings("unused")
-public abstract class PC_MultiblockTileEntity {
+public abstract class PC_MultiblockTileEntity implements PC_INBT {
 
 	protected PC_MultiblockIndex index;
 	protected PC_TileEntityMultiblock multiblock;
 	protected int thickness;
 
-
-	public PC_TileEntityMultiblock getTileEntity() {
-
-		return multiblock;
+	protected PC_MultiblockTileEntity(NBTTagCompound nbtTagCompound) {
+		thickness = nbtTagCompound.getInteger("thickness");
 	}
-
-
+	
 	protected PC_MultiblockTileEntity(int thickness) {
 
 		this.thickness = thickness;
+	}
+	
+	public PC_TileEntityMultiblock getTileEntity() {
+
+		return multiblock;
 	}
 
 
@@ -121,13 +124,9 @@ public abstract class PC_MultiblockTileEntity {
 	}
 
 
-	public void loadFromNBT(NBTTagCompound nbtCompoundTag) {
-
-	}
-
-
+	@Override
 	public void saveToNBT(NBTTagCompound nbtCompoundTag) {
-
+		nbtCompoundTag.setInteger("thickness", thickness);
 	}
 
 

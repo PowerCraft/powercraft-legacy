@@ -3,8 +3,8 @@ package powercraft.core.blocks;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import powercraft.api.PC_Direction;
+import powercraft.api.PC_FieldDescription;
 import powercraft.api.PC_FuelHandler;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_TileEntityWithInventory;
@@ -20,9 +20,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implements PC_IGresGuiOpenHandler, PC_IEnergyProvider {
 
 	public static final int maxHeat = 1000;
+	@PC_FieldDescription
 	private int burnTime = 0;
+	@PC_FieldDescription
 	private int maxBurnTime = 1;
 	private float energy = 0;
+	@PC_FieldDescription(sync=true)
 	private int heat = 0;
 	private int oldHeat10 = 0;
 
@@ -123,26 +126,6 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 
 		sendProgressBarUpdate(0, burnTime * 1000 / maxBurnTime);
 		sendProgressBarUpdate(1, heat);
-	}
-
-
-	@Override
-	public void loadFromNBT(NBTTagCompound nbtTagCompound) {
-
-		burnTime = nbtTagCompound.getInteger("burnTime");
-		maxBurnTime = nbtTagCompound.getInteger("maxBurnTime");
-		heat = nbtTagCompound.getInteger("heat");
-		renderUpdate();
-		lightUpdate();
-	}
-
-
-	@Override
-	public void saveToNBT(NBTTagCompound nbtTagCompound) {
-
-		nbtTagCompound.setInteger("burnTime", burnTime);
-		nbtTagCompound.setInteger("maxBurnTime", maxBurnTime);
-		nbtTagCompound.setInteger("heat", heat);
 	}
 
 

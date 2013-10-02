@@ -25,6 +25,20 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 	private PC_RedstoneCable cable[] = new PC_RedstoneCable[16];
 
 
+	public PC_RedstoneIsolatedTileEntity(NBTTagCompound nbtTagCompound) {
+		super(nbtTagCompound);
+		int mask = nbtTagCompound.getInteger("mask");
+		for (int i = 0; i < cable.length; i++) {
+			if ((mask & (1 << i)) == 0) {
+				cable[i] = null;
+			} else {
+				cable[i] = new PC_RedstoneCable(1 << i);
+				cable[i].setTileEntity(this);
+			}
+		}
+		calculateThickness();
+	}
+	
 	public PC_RedstoneIsolatedTileEntity() {
 
 		super(2, 4);
@@ -102,23 +116,6 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 		List<ItemStack> drops = new ArrayList<ItemStack>();
 		drops.add(new ItemStack(PC_RedstoneIsolatedItem.item, 1, 0));
 		return drops;
-	}
-
-
-	@Override
-	public void loadFromNBT(NBTTagCompound nbtCompoundTag) {
-
-		int mask = nbtCompoundTag.getInteger("mask");
-		for (int i = 0; i < cable.length; i++) {
-			if ((mask & (1 << i)) == 0) {
-				cable[i] = null;
-			} else {
-				cable[i] = new PC_RedstoneCable(1 << i);
-				cable[i].setTileEntity(this);
-			}
-		}
-		calculateThickness();
-		super.loadFromNBT(nbtCompoundTag);
 	}
 
 

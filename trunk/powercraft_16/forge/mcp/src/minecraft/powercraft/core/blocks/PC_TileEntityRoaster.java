@@ -8,10 +8,10 @@ import java.util.Random;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import powercraft.api.PC_Direction;
+import powercraft.api.PC_FieldDescription;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.energy.PC_IEnergyConsumer;
@@ -25,6 +25,7 @@ public class PC_TileEntityRoaster extends PC_TileEntity implements PC_IEnergyCon
 	private List<EntityItem> itemsList;
 	private float energy = 0;
 	private float request = 0;
+	@PC_FieldDescription(sync=true)
 	private boolean isActive = false;
 	private boolean oldIsActive = false;
 
@@ -152,20 +153,6 @@ public class PC_TileEntityRoaster extends PC_TileEntity implements PC_IEnergyCon
 			}
 		}
 		return items;
-	}
-
-
-	@Override
-	public void loadFromNBT(NBTTagCompound nbtTagCompound) {
-
-		isActive = nbtTagCompound.getBoolean("isActive");
-	}
-
-
-	@Override
-	public void saveToNBT(NBTTagCompound nbtTagCompound) {
-
-		nbtTagCompound.setBoolean("isActive", isActive);
 	}
 
 

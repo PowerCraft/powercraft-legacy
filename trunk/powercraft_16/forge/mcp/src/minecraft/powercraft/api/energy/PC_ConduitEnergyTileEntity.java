@@ -32,6 +32,11 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 	private int type;
 	private PC_EnergyGrid grid;
 
+	public PC_ConduitEnergyTileEntity(NBTTagCompound nbtTagCompound) {
+		super(nbtTagCompound);
+		type = nbtTagCompound.getInteger("type");
+	}
+	
 	public PC_ConduitEnergyTileEntity() {
 
 	}
@@ -254,14 +259,6 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 	public void setGrid(PC_EnergyGrid grid) {
 
 		this.grid = grid;
-	}
-
-
-	@Override
-	public void loadFromNBT(NBTTagCompound nbtCompoundTag) {
-
-		super.loadFromNBT(nbtCompoundTag);
-		type = nbtCompoundTag.getInteger("type");
 	}
 
 
