@@ -95,6 +95,8 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 	public float getBlockHardness(World world, int x, int y, int z) {
 
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
+		if(tileEntity==null)
+			return super.getBlockHardness(world, x, y, z);
 		return tileEntity.getBlockHardness();
 	}
 
@@ -228,6 +230,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 		if (tileEntity != null) {
 			return tileEntity.getBlockDropped(fortune);
 		}
+		System.out.println("Error");
 		return new ArrayList<ItemStack>();
 	}
 
@@ -236,9 +239,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 	public void onBlockHarvested(World world, int x, int y, int z, int metadata, EntityPlayer entityPlayer) {
 
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
-		if(!tileEntity.hasPermission(entityPlayer, PC_Permission.BLOCKHARVEST)){
+		if(tileEntity.hasPermission(entityPlayer, PC_Permission.BLOCKHARVEST)){
+			System.out.println("Checked");
 			if (!PC_Utils.isCreativ(entityPlayer)) super.harvestBlock(world, entityPlayer, x, y, z, metadata);
 		}
+		System.out.println("Error");
 	}
 
 

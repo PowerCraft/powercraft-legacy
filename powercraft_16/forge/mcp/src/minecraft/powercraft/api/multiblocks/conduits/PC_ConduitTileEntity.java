@@ -244,6 +244,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 
 	@Override
 	public void saveToNBT(NBTTagCompound nbtCompoundTag) {
+		super.saveToNBT(nbtCompoundTag);
 		nbtCompoundTag.setInteger("connections", connections);
 	}
 

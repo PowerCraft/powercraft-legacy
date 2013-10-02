@@ -20,9 +20,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implements PC_IGresGuiOpenHandler, PC_IEnergyProvider {
 
 	public static final int maxHeat = 1000;
-	@PC_FieldDescription
+	@PC_FieldDescription(sync=true)
 	private int burnTime = 0;
-	@PC_FieldDescription
+	@PC_FieldDescription(sync=true)
 	private int maxBurnTime = 1;
 	private float energy = 0;
 	@PC_FieldDescription(sync=true)
@@ -141,6 +141,12 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 	public boolean canProviderTubeConnectTo(PC_Direction side) {
 		
 		return side != PC_Utils.getRotation(worldObj, xCoord, yCoord, zCoord);
+	}
+	
+	@Override
+	public void onLoadedFromNBT() {
+		super.onLoadedFromNBT();
+		renderUpdate();
 	}
 
 }

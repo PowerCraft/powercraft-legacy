@@ -201,8 +201,8 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 
 	public void notifyNeighbors() {
-
-		PC_Utils.hugeUpdate(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+		if(worldObj!=null)
+			PC_Utils.hugeUpdate(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 
 
@@ -333,9 +333,13 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
-
-		super.readFromNBT(nbtTagCompound);
-		loadFieldsFromNBT(nbtTagCompound);
+		try{
+			super.readFromNBT(nbtTagCompound);
+			loadFieldsFromNBT(nbtTagCompound);
+			onLoadedFromNBT();
+		}catch(Throwable e){
+			e.printStackTrace();
+		}
 	}
 
 
@@ -344,6 +348,11 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 		super.writeToNBT(nbtTagCompound);
 		saveFieldsToNBT(nbtTagCompound, 0);
+		
+	}
+	
+	public void onLoadedFromNBT(){
+		
 	}
 	
 	private void saveFieldsToNBT(NBTTagCompound nbtTagCompound, int type){
@@ -427,6 +436,8 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	public void loadFromNBTPacket(NBTTagCompound nbtTagCompound) {
 		loadFieldsFromNBT(nbtTagCompound);
+		onLoadedFromNBT();
+		
 	}
 
 	public void saveToNBTPacket(NBTTagCompound nbtTagCompound) {

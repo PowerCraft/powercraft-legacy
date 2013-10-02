@@ -139,4 +139,11 @@ public class PC_TileEntityPuffer extends PC_TileEntity implements PC_IGresGuiOpe
 		return ret;
 	}
 
+
+	@Override
+	public void onLoadedFromNBT() {
+		super.onLoadedFromNBT();
+		renderUpdate();
+	}
+	
 }

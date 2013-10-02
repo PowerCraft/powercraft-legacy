@@ -17,7 +17,7 @@ import cpw.mods.fml.common.IWorldGenerator;
  */
 public class PC_WorldGenerator implements IWorldGenerator {
 
-	/* (non-Javadoc)
+	/**
 	 * @see cpw.mods.fml.common.IWorldGenerator#generate(java.util.Random, int, int, net.minecraft.world.World, net.minecraft.world.chunk.IChunkProvider, net.minecraft.world.chunk.IChunkProvider)
 	 */
 	@Override

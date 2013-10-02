@@ -222,9 +222,10 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 
 	@Override
 	public void notifyNeighbors() {
-
-		onNeighborBlockChange(getBlockType().blockID);
-		super.notifyNeighbors();
+		if(worldObj!=null){
+			onNeighborBlockChange(getBlockType().blockID);
+			super.notifyNeighbors();
+		}
 	}
 
 
@@ -322,4 +323,17 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 		}
 	}
 
+
+	@Override
+	public void onLoadedFromNBT() {
+		super.onLoadedFromNBT();
+		for(int i=0; i < tileEntities.length; i++) {
+			if (tileEntities[i] != null) {
+				tileEntities[i].setIndexAndMultiblock(PC_MultiblockIndex.values()[i], this);
+			}
+		}
+		notifyNeighbors();
+		renderUpdate();
+	}
+	
 }

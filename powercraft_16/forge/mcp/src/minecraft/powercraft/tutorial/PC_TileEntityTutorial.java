@@ -18,7 +18,7 @@ import powercraft.api.upgrade.PC_UpgradeFamily;
 public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC_IGresGuiOpenHandler
 {
 	private double basespeed=1;
-	@PC_FieldDescription
+	@PC_FieldDescription(sync=true)
 	public double speed;
 	
 	
@@ -128,5 +128,6 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 			System.out.println("4thStep");
 			speed=nbtTagCompound.getDouble("speed");
 		}
+		sendToClient();
 	}
 }

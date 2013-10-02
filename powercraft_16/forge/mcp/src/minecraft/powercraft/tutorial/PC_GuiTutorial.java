@@ -72,7 +72,7 @@ public class PC_GuiTutorial implements PC_IGresClient, PC_IGresEventListener {
 	
 	private void keepInSync(){
 		NBTTagCompound nbt = new NBTTagCompound("guiChanges");
-		nbt.setDouble("speed", tileEntityTut.speed);
+		nbt.setDouble("speed", Double.valueOf(text.getText()));
 		tileEntityTut.sendMessage(nbt);
 	}
 
