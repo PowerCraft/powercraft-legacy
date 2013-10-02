@@ -4,6 +4,7 @@ import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
 import powercraft.transport.blocks.blocks.PCtr_BlockClassicElevator;
 import powercraft.transport.blocks.blocks.PCtr_BlockClassicElevatorDown;
+import powercraft.transport.blocks.blocks.PCtr_BlockPlate;
 import powercraft.transport.blocks.blocks.PCtr_BlockPrimitivePlate;
 import powercraft.transport.blocks.blocks.PCtr_BlockUpgradeableBelt;
 import powercraft.transport.helper.PC_EntityDictionary;
@@ -32,6 +33,9 @@ public class PCtr_ModuleTransport extends PC_Module
 	
 	@PC_FieldGenerator
 	public static PCtr_BlockUpgradeableBelt upgradeablebelt;
+	
+	@PC_FieldGenerator
+	public static PCtr_BlockPlate plate;
 	
 	public static PC_EntityDictionary trDict;
 	@Override
