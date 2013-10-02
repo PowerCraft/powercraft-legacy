@@ -13,6 +13,7 @@ import powercraft.api.gres.PC_GresGuiHandler;
 import powercraft.api.gres.PC_GresLabel;
 import powercraft.api.gres.PC_GresLayoutVertical;
 import powercraft.api.gres.PC_GresTextEdit;
+import powercraft.api.gres.PC_GresTextEdit.PC_GresInputType;
 import powercraft.api.gres.PC_GresWindow;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.events.PC_GresEvent;
@@ -57,11 +58,6 @@ public class PC_GuiTutorial implements PC_IGresClient, PC_IGresEventListener {
 					guiHandler.close();
 				}
 			}
-		}else if(event instanceof PC_GresFocusLostEvent){
-			PC_GresFocusLostEvent ev = (PC_GresFocusLostEvent) event;
-			if(ev.getComponent()==text){
-				tileEntityTut.speed=Double.valueOf(text.getText());
-			}
 		}else if(event instanceof PC_GresTickEvent){
 			PC_GresTickEvent ev = (PC_GresTickEvent) event;
 			if(ev.getEventType()==EventType.PRE){
@@ -85,7 +81,7 @@ public class PC_GuiTutorial implements PC_IGresClient, PC_IGresEventListener {
 		PC_GresWindow window = new PC_GresWindow("TutorialGui");
 		window.setLayout(new PC_GresLayoutVertical());
 		window.add(label = new PC_GresLabel("Speed: " + tileEntityTut.speed));
-		(text = new PC_GresTextEdit("Speed:", 5)).setText(""+tileEntityTut.speed);
+		(text = new PC_GresTextEdit("Speed:", 5, PC_GresInputType.SIGNED_FLOAT)).setText(""+tileEntityTut.speed);
 		window.add(text);
 		gui.add(window);
 		gui.addEventListener(this);

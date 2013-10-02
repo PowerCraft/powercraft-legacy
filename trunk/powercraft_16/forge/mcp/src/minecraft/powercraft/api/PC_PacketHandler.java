@@ -57,12 +57,12 @@ public class PC_PacketHandler implements IPacketHandler {
 
 	protected void packetGuiOpen(World world, EntityPlayer player, DataInputStream dataInputStream) throws IOException {
 
-		PC_Logger.severe("Client %s try to open gui", player.username);
+		PC_Logger.severe("Client %s tries to open gui", player.username);
 	}
 
 	protected void packetBlockData(World world, EntityPlayer player, DataInputStream dataInputStream) throws IOException {
 
-		PC_Logger.severe("Client %s try to write tileentity data", player.username);
+		PC_Logger.severe("Client %s tries to write tileentity data", player.username);
 	}
 
 

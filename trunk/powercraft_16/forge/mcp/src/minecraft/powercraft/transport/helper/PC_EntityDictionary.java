@@ -28,10 +28,6 @@ public class PC_EntityDictionary
 	 */
 	public static boolean HasEntityID(int eid)
 	{
-		if ((Integer)eid == null)
-		{
-			return false;			
-		}
 		return entityDictionary.containsKey(eid);
 	}
 	/**
