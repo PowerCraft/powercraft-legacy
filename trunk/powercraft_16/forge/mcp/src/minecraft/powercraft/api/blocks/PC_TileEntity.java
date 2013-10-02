@@ -1,6 +1,7 @@
 package powercraft.api.blocks;
 
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,6 +17,9 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import powercraft.api.PC_Direction;
+import powercraft.api.PC_FieldDescription;
+import powercraft.api.PC_Logger;
+import powercraft.api.PC_NBTTagHandler;
 import powercraft.api.PC_PacketHandler;
 import powercraft.api.PC_PacketHandlerClient;
 import powercraft.api.PC_Utils;
@@ -38,6 +42,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	protected boolean send = false;
 	protected final List<PC_GresBaseWithInventory> containers = new ArrayList<PC_GresBaseWithInventory>();
 
+	@PC_FieldDescription
 	private PC_Permissions permissions;
 	
 	public void setOwner(String name){
@@ -351,6 +356,85 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 			nbtTagCompound.setCompoundTag("permissions", permissionsCompound); //$NON-NLS-1$
 		}
 		saveToNBT(nbtTagCompound);
+	}
+	
+	private void saveFieldsToNBT(NBTTagCompound nbtTagCompound, int type){
+		Class<?> c = getClass();
+		saveFieldsToNBT(nbtTagCompound, c, type);
+	}
+	
+	private void saveFieldsToNBT(NBTTagCompound nbtTagCompound, Class<?> c, int type){
+		Field[] fields = c.getDeclaredFields();
+		String s = c.getSimpleName();
+		for(int i=0; i<fields.length; i++){
+			PC_FieldDescription fieldDescription = fields[i].getAnnotation(PC_FieldDescription.class);
+			if(fieldDescription!=null){
+				if((type==0 && fieldDescription.save())||(type==1 && fieldDescription.sync())||(type==2 && fieldDescription.guiSync())){
+					String name = fieldDescription.name();
+					if(name.isEmpty()){
+						name = fields[i].getName();
+					}
+					fields[i].setAccessible(true);
+					try {
+						PC_NBTTagHandler.saveToNBT(nbtTagCompound, name, fields[i].get(this));
+					} catch (Exception e) {
+						e.printStackTrace();
+						PC_Logger.severe("Error while saving %s of %s", name, c);
+					} 
+				}
+			}
+		}
+		c = c.getSuperclass();
+		if(PC_TileEntity.class.isAssignableFrom(c)){
+			saveFieldsToNBT(nbtTagCompound, c, type);
+		}
+	}
+	
+	private void loadFieldsFromNBT(NBTTagCompound nbtTagCompound, int type){
+		Class<?> c = getClass();
+		loadFieldsFromNBT(nbtTagCompound, c, type);
+	}
+	
+	private void loadFieldsFromNBT(NBTTagCompound nbtTagCompound, Class<?> c, int type){
+		Field[] fields = c.getDeclaredFields();
+		String s = c.getSimpleName();
+		for(int i=0; i<fields.length; i++){
+			PC_FieldDescription fieldDescription = fields[i].getAnnotation(PC_FieldDescription.class);
+			if(fieldDescription!=null){
+				String name = fieldDescription.name();
+				if(name.isEmpty()){
+					name = fields[i].getName();
+				}
+				if(nbtTagCompound.hasKey(name)){
+					fields[i].setAccessible(true);
+					Object obj = PC_NBTTagHandler.loadFromNBT(nbtTagCompound, name, fields[i].getType());
+					try {
+						fields[i].set(this, obj);
+					} catch (Exception e) {
+						e.printStackTrace();
+						PC_Logger.severe("Error while loading %s of %s", name, c);
+					}
+				}else{
+					String otherNames[] = fieldDescription.otherNames();
+					for(int j=0; j<otherNames.length; j++){
+						if(nbtTagCompound.hasKey(otherNames[j])){
+							fields[i].setAccessible(true);
+							Object obj = PC_NBTTagHandler.loadFromNBT(nbtTagCompound, otherNames[j], fields[i].getType());
+							try {
+								fields[i].set(this, obj);
+							} catch (Exception e) {
+								e.printStackTrace();
+								PC_Logger.severe("Error while loading %s of %s", name, c);
+							}
+						}
+					}
+				}
+			}
+		}
+		c = c.getSuperclass();
+		if(PC_TileEntity.class.isAssignableFrom(c)){
+			loadFieldsFromNBT(nbtTagCompound, c, type);
+		}
 	}
 	
 }
