@@ -50,7 +50,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		}
 		centerThickness = nbtTagCompound.getInteger("centerThickness");
 		isIO = nbtTagCompound.getBoolean("isIO");
-		multiblock.renderUpdate();
+		width = nbtTagCompound.getInteger("width");
 	}
 	
 	public PC_CableTileEntity(int thickness, int width) {
@@ -394,11 +394,12 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 
 	@Override
 	public void saveToNBT(NBTTagCompound nbtCompoundTag) {
-
+		super.saveToNBT(nbtCompoundTag);
 		for (int i = 0; i < connections.length; i++)
 			if (connections[i] != null) nbtCompoundTag.setIntArray("connections" + i, connections[i]);
 		nbtCompoundTag.setInteger("centerThickness", centerThickness);
 		nbtCompoundTag.setBoolean("isIO", isIO);
+		nbtCompoundTag.setInteger("width", width);
 	}
 
 

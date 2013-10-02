@@ -3,11 +3,13 @@ package powercraft.api.inventory;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import powercraft.api.PC_INBT;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
-public class PC_Inventory implements IInventory, Iterable<ItemStack> {
+public class PC_Inventory implements IInventory, Iterable<ItemStack>, PC_INBT {
 
 	public static final int NOTUSABLEBYPLAYER = 1;
 	public static final int SIDEINSERTABLE = 2;
@@ -19,6 +21,14 @@ public class PC_Inventory implements IInventory, Iterable<ItemStack> {
 	private final int stackLimit;
 	private final int flags;
 	private IInventory parentInventory;
+	
+	public PC_Inventory(NBTTagCompound tag){
+		name = tag.getString("name");
+		stackLimit = tag.getInteger("stackLimit");
+		flags = tag.getInteger("flags");
+		inventoryContents = new ItemStack[tag.getInteger("size")];
+		PC_InventoryUtils.loadInventoryFromNBT(this, tag, "inv");
+	}
 	
 	public PC_Inventory(String name, int size, int stackLimit, int flags){
 		this.name = name;
@@ -221,6 +231,15 @@ public class PC_Inventory implements IInventory, Iterable<ItemStack> {
 				setInventorySlotContents(pos, itemstack);
 		}
 		
+	}
+
+	@Override
+	public void saveToNBT(NBTTagCompound tag) {
+		tag.setString("name", name);
+		tag.setInteger("stackLimit", stackLimit);
+		tag.setInteger("flags", flags);
+		tag.setInteger("size", inventoryContents.length);
+		PC_InventoryUtils.saveInventoryToNBT(this, tag, "inv");
 	}
 	
 }

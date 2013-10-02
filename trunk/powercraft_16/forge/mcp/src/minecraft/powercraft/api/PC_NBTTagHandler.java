@@ -86,7 +86,8 @@ public class PC_NBTTagHandler {
 			}
 			return list;
 		}else if(PC_INBT.class.isAssignableFrom(c)){
-			NBTTagCompound tag = new NBTTagCompound(c.getName());
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setString("Class", c.getName());
 			((PC_INBT)value).saveToNBT(tag);
 			return tag;
 		}
@@ -102,8 +103,10 @@ public class PC_NBTTagHandler {
 	}
 
 	public static Object getObjectFromNBT(NBTBase base, Class<?> c) {
+		if(base==null)
+			return null;
 		if(base instanceof NBTTagCompound){
-			if(((NBTTagCompound)base).getName().equals("")){
+			if(((NBTTagCompound)base).hasNoTags()){
 				return null;
 			}
 		}
@@ -134,12 +137,12 @@ public class PC_NBTTagHandler {
 			Object array = Array.newInstance(ac, size);
 			for(int i=0; i<size; i++){
 				NBTBase obj = list.tagAt(i);
-				Array.set(obj, i, getObjectFromNBT(base, ac));
+				Array.set(array, i, getObjectFromNBT(obj, ac));
 			}
 			return array;
 		}else if(PC_INBT.class.isAssignableFrom(c)){
 			NBTTagCompound tag = (NBTTagCompound) base;
-			String cName = tag.getName();
+			String cName = tag.getString("Class");
 			try {
 				Class<?> cc = Class.forName(cName);
 				Constructor<?> constr = cc.getConstructor(NBTTagCompound.class);

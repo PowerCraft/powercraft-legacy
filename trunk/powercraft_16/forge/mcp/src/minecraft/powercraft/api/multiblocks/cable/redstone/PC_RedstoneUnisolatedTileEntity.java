@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -21,7 +22,12 @@ import powercraft.api.multiblocks.cable.PC_CableTileEntity;
 
 public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implements PC_IRedstoneCable {
 
-
+	private boolean removed;
+	
+	public PC_RedstoneUnisolatedTileEntity(NBTTagCompound nbtTagCompound) {
+		super(nbtTagCompound);
+	}
+	
 	public PC_RedstoneUnisolatedTileEntity() {
 
 		super(1, 2);
@@ -120,7 +126,7 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 	@Override
 	protected void updateGrid(boolean updateIO) {
 
-		if (!isClient()) {
+		if (!isClient() && !removed) {
 			if (grid == null) {
 				getGridIfNull();
 			} else if (updateIO) {
@@ -180,7 +186,7 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 
 	private void addToGrid() {
 
-		if (!isClient()) {
+		if (!isClient() && !removed) {
 			getGridIfNull();
 			if (isIO) {
 				grid.addIO(this);
@@ -230,6 +236,7 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 	private void removeFormGrid() {
 
 		if (!isClient() && grid != null) {
+			removed = true;
 			PC_RedstoneGrid oldGrid = grid;
 			grid.remove(this);
 			grid = null;
