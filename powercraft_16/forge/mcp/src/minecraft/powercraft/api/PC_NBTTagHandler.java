@@ -4,6 +4,8 @@
 package powercraft.api;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
@@ -86,11 +88,12 @@ public class PC_NBTTagHandler {
 				list.appendTag(base);
 			}
 			return list;
-		}else if(c.isAssignableFrom(PC_INBT.class)){
+		}else if(PC_INBT.class.isAssignableFrom(c)){
 			NBTTagCompound tag = new NBTTagCompound(c.getName());
 			((PC_INBT)value).saveToNBT(tag);
 			return tag;
 		}
+		PC_Logger.severe("Can't save object %s form type %s", value, c);
 		return null;
 	}
 	
@@ -137,9 +140,38 @@ public class PC_NBTTagHandler {
 				Array.set(obj, i, getObjectFromNBT(base, ac));
 			}
 			return array;
-		}else if(c.isAssignableFrom(PC_INBT.class)){
-			
+		}else if(PC_INBT.class.isAssignableFrom(c)){
+			NBTTagCompound tag = (NBTTagCompound) base;
+			String cName = tag.getName();
+			try {
+				Class<?> cc = Class.forName(cName);
+				Constructor<?> constr = cc.getConstructor(NBTTagCompound.class);
+				return constr.newInstance(tag);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				PC_Logger.severe("Can't find class %s form NBT save", cName);
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+				PC_Logger.severe("Class %s need constructor %s(NBTTagCompound)", cName, cName);
+			} catch (SecurityException e) {
+				e.printStackTrace();
+				PC_Logger.severe("No Permissions :(");
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+				PC_Logger.severe("Class %s can't be instantionated", cName);
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+				PC_Logger.severe("No access to constructor %s(NBTTagCompound)", cName);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+				PC_Logger.severe("Class %s can't get NBTTagCompound as argument", cName);
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+				PC_Logger.severe("Error while initialize class %s", cName);
+			}
+			return null;
 		}
+		PC_Logger.severe("Can't load an unknown object");
 		return null;
 	}
 	
