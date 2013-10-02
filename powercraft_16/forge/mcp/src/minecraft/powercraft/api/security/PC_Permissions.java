@@ -3,11 +3,12 @@ package powercraft.api.security;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import powercraft.api.PC_Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MD5String;
 import net.minecraft.world.EnumGameType;
+import powercraft.api.PC_Logger;
+import powercraft.api.PC_Utils;
 
 public final class PC_Permissions implements PC_IPermissionHandler{
 
@@ -77,6 +78,16 @@ public final class PC_Permissions implements PC_IPermissionHandler{
 			}
 		}
 		return (userPermissions&permission.id())!=0;
+	}
+	
+	@Override
+	public boolean tryPermission(EntityPlayer player, PC_Permission permission){
+		if(hasPermission(player, permission)){
+			return true;
+		}
+		if(permission!=PC_Permission.NEEDPASSWORD)
+			PC_Logger.warning("Player %s tried to %s without permission", player.username, permission);
+		return false;
 	}
 	
 	@Override
