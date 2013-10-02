@@ -7,10 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MD5String;
 import net.minecraft.world.EnumGameType;
+import powercraft.api.PC_INBT;
 import powercraft.api.PC_Logger;
 import powercraft.api.PC_Utils;
 
-public final class PC_Permissions implements PC_IPermissionHandler{
+public final class PC_Permissions implements PC_IPermissionHandler, PC_INBT{
 
 	private final static MD5String MD5 = new MD5String("");
 	
@@ -35,6 +36,7 @@ public final class PC_Permissions implements PC_IPermissionHandler{
 			passwordMD5 = compound.getString("password");
 	}
 	
+	@Override
 	public void saveToNBT(NBTTagCompound compound){
 		compound.setString("owner", owner);
 		int i=0;
