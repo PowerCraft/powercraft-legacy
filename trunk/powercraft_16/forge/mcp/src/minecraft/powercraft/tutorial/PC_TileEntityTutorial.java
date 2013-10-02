@@ -3,6 +3,7 @@ package powercraft.tutorial;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.EnumGameType;
+import powercraft.api.PC_Logger;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_TileEntityUpgradable;
 import powercraft.api.gres.PC_GresBaseWithInventory;
@@ -127,10 +128,16 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 		System.out.println("1stStep");
 		if(nbtTagCompound.getName().equals("guiChanges")){
 			System.out.println("2ndStep");
-			if(!hasPermission(player, PC_Permission.CHANGEGUI)) return;
+			if(!hasPermission(player, PC_Permission.CHANGEGUI)){
+				PC_Logger.warning("Player %s trys to Change Gui without permission", player.username);
+				return;
+			}
 			System.out.println("3rdStep");
 			if((PC_Utils.getGameTypeFor(player)==EnumGameType.ADVENTURE)&&
-					!hasPermission(player, PC_Permission.ADVENTUREACCESS)) return;
+					!hasPermission(player, PC_Permission.ADVENTUREACCESS)){
+				
+				return;
+			}
 			System.out.println("4thStep");
 			speed=nbtTagCompound.getDouble("speed");
 		}

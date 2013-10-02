@@ -181,36 +181,6 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	}
 
-
-	public abstract void loadFromNBT(NBTTagCompound nbtTagCompound);
-
-
-	public abstract void saveToNBT(NBTTagCompound nbtTagCompound);
-
-
-	@Override
-	public void readFromNBT(NBTTagCompound nbtTagCompound) {
-
-		super.readFromNBT(nbtTagCompound);
-		if(nbtTagCompound.hasKey("permissions")) //$NON-NLS-1$
-			this.permissions = new PC_Permissions(nbtTagCompound.getCompoundTag("permissions")); //$NON-NLS-1$
-		loadFromNBT(nbtTagCompound);
-	}
-
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbtTagCompound) {
-
-		super.writeToNBT(nbtTagCompound);
-		if(this.permissions!=null){
-			NBTTagCompound permissionsCompound = new NBTTagCompound();
-			this.permissions.saveToNBT(permissionsCompound);
-			nbtTagCompound.setCompoundTag("permissions", permissionsCompound); //$NON-NLS-1$
-		}
-		saveToNBT(nbtTagCompound);
-	}
-
-
 	@Override
 	public Packet getDescriptionPacket() {
 
@@ -333,6 +303,13 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	}
 
 	@Override
+	public boolean tryPermission(EntityPlayer player, PC_Permission permission) {
+		if(this.permissions==null)
+			return true;
+		return this.permissions.hasPermission(player, permission);
+	}
+	
+	@Override
 	public boolean needPassword(EntityPlayer player) {
 		if(this.permissions==null)
 			return false;
@@ -346,6 +323,34 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 			PC_PacketHandler.sendPacketToAllInDimension(PC_PacketHandler.getBlockMessagePacket(worldObj, xCoord, yCoord, zCoord, nbtTagCompound), worldObj
 					.getWorldInfo().getVanillaDimension());
 		}
+	}
+	
+	public abstract void loadFromNBT(NBTTagCompound nbtTagCompound);
+
+
+	public abstract void saveToNBT(NBTTagCompound nbtTagCompound);
+
+
+	@Override
+	public void readFromNBT(NBTTagCompound nbtTagCompound) {
+
+		super.readFromNBT(nbtTagCompound);
+		if(nbtTagCompound.hasKey("permissions")) //$NON-NLS-1$
+			this.permissions = new PC_Permissions(nbtTagCompound.getCompoundTag("permissions")); //$NON-NLS-1$
+		loadFromNBT(nbtTagCompound);
+	}
+
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbtTagCompound) {
+
+		super.writeToNBT(nbtTagCompound);
+		if(this.permissions!=null){
+			NBTTagCompound permissionsCompound = new NBTTagCompound();
+			this.permissions.saveToNBT(permissionsCompound);
+			nbtTagCompound.setCompoundTag("permissions", permissionsCompound); //$NON-NLS-1$
+		}
+		saveToNBT(nbtTagCompound);
 	}
 	
 }

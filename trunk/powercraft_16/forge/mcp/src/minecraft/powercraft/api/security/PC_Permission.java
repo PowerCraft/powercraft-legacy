@@ -8,4 +8,9 @@ public enum PC_Permission {
 		return 1<<ordinal();
 	}
 	
+	@Override
+	public String toString(){
+		return super.toString().toLowerCase();
+	}
+	
 }
