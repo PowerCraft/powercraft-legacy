@@ -1,6 +1,3 @@
-/**
- * 
- */
 package powercraft.api;
 
 import java.lang.reflect.Array;
