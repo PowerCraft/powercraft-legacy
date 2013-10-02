@@ -40,6 +40,19 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	private int connections[][] = new int[4][];
 	protected boolean isIO;
 	
+	public PC_CableTileEntity(NBTTagCompound nbtTagCompound) {
+		super(nbtTagCompound);
+		for (int i = 0; i < connections.length; i++) {
+			if (nbtTagCompound.hasKey("connections" + i))
+				connections[i] = nbtTagCompound.getIntArray("connections" + i);
+			else
+				connections[i] = null;
+		}
+		centerThickness = nbtTagCompound.getInteger("centerThickness");
+		isIO = nbtTagCompound.getBoolean("isIO");
+		multiblock.renderUpdate();
+	}
+	
 	public PC_CableTileEntity(int thickness, int width) {
 
 		super(thickness);
@@ -376,21 +389,6 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			return false;
 		}
 		return true;
-	}
-
-
-	@Override
-	public void loadFromNBT(NBTTagCompound nbtCompoundTag) {
-
-		for (int i = 0; i < connections.length; i++) {
-			if (nbtCompoundTag.hasKey("connections" + i))
-				connections[i] = nbtCompoundTag.getIntArray("connections" + i);
-			else
-				connections[i] = null;
-		}
-		centerThickness = nbtCompoundTag.getInteger("centerThickness");
-		isIO = nbtCompoundTag.getBoolean("isIO");
-		multiblock.renderUpdate();
 	}
 
 

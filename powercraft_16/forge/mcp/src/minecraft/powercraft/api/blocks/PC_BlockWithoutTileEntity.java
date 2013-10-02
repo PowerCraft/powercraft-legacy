@@ -57,13 +57,13 @@ public abstract class PC_BlockWithoutTileEntity extends Block implements PC_IBlo
 
 
 	@Override
-	public void loadFromNBT(World world, int x, int y, int z, NBTTagCompound nbtTagCompound) {
+	public void loadFromNBTPacket(World world, int x, int y, int z, NBTTagCompound nbtTagCompound) {
 
 	}
 
 
 	@Override
-	public void saveToNBT(World world, int x, int y, int z, NBTTagCompound nbtTagCompound) {
+	public void saveToNBTPacket(World world, int x, int y, int z, NBTTagCompound nbtTagCompound) {
 
 	}
 

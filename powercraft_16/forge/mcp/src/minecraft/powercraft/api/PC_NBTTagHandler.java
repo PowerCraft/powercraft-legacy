@@ -130,7 +130,7 @@ public class PC_NBTTagHandler {
 		}else if(c.isArray()){
 			NBTTagList list = (NBTTagList) base;
 			int size = list.tagCount();
-			Class<?> ac = c.getDeclaringClass();
+			Class<?> ac = c.getComponentType();
 			Object array = Array.newInstance(ac, size);
 			for(int i=0; i<size; i++){
 				NBTBase obj = list.tagAt(i);

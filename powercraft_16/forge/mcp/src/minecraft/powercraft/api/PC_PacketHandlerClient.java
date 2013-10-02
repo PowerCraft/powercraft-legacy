@@ -25,7 +25,7 @@ public class PC_PacketHandlerClient extends PC_PacketHandler {
 		int y = dataInputStream.readInt();
 		int z = dataInputStream.readInt();
 		Block block = PC_Utils.getBlock(world, x, y, z);
-		if (block != null) ((PC_IBlock) block).loadFromNBT(world, x, y, z, readNBTTagCompound(dataInputStream));
+		if (block != null) ((PC_IBlock) block).loadFromNBTPacket(world, x, y, z, readNBTTagCompound(dataInputStream));
 	}
 
 

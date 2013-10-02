@@ -329,20 +329,13 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 					.getWorldInfo().getVanillaDimension());
 		}
 	}
-	
-	public abstract void loadFromNBT(NBTTagCompound nbtTagCompound);
-
-
-	public abstract void saveToNBT(NBTTagCompound nbtTagCompound);
 
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 
 		super.readFromNBT(nbtTagCompound);
-		if(nbtTagCompound.hasKey("permissions")) //$NON-NLS-1$
-			this.permissions = new PC_Permissions(nbtTagCompound.getCompoundTag("permissions")); //$NON-NLS-1$
-		loadFromNBT(nbtTagCompound);
+		loadFieldsFromNBT(nbtTagCompound);
 	}
 
 
@@ -350,12 +343,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 
 		super.writeToNBT(nbtTagCompound);
-		if(this.permissions!=null){
-			NBTTagCompound permissionsCompound = new NBTTagCompound();
-			this.permissions.saveToNBT(permissionsCompound);
-			nbtTagCompound.setCompoundTag("permissions", permissionsCompound); //$NON-NLS-1$
-		}
-		saveToNBT(nbtTagCompound);
+		saveFieldsToNBT(nbtTagCompound, 0);
 	}
 	
 	private void saveFieldsToNBT(NBTTagCompound nbtTagCompound, int type){
@@ -390,12 +378,12 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		}
 	}
 	
-	private void loadFieldsFromNBT(NBTTagCompound nbtTagCompound, int type){
+	private void loadFieldsFromNBT(NBTTagCompound nbtTagCompound){
 		Class<?> c = getClass();
-		loadFieldsFromNBT(nbtTagCompound, c, type);
+		loadFieldsFromNBT(nbtTagCompound, c);
 	}
 	
-	private void loadFieldsFromNBT(NBTTagCompound nbtTagCompound, Class<?> c, int type){
+	private void loadFieldsFromNBT(NBTTagCompound nbtTagCompound, Class<?> c){
 		Field[] fields = c.getDeclaredFields();
 		String s = c.getSimpleName();
 		for(int i=0; i<fields.length; i++){
@@ -433,8 +421,20 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		}
 		c = c.getSuperclass();
 		if(PC_TileEntity.class.isAssignableFrom(c)){
-			loadFieldsFromNBT(nbtTagCompound, c, type);
+			loadFieldsFromNBT(nbtTagCompound, c);
 		}
+	}
+
+	public void loadFromNBTPacket(NBTTagCompound nbtTagCompound) {
+		loadFieldsFromNBT(nbtTagCompound);
+	}
+
+	public void saveToNBTPacket(NBTTagCompound nbtTagCompound) {
+		saveFieldsToNBT(nbtTagCompound, 1);
+	}
+	
+	public void saveToGuiNBTPacket(NBTTagCompound nbtTagCompound){
+		saveFieldsToNBT(nbtTagCompound, 2);
 	}
 	
 }

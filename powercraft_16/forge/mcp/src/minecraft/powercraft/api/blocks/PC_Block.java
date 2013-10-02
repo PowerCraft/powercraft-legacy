@@ -257,18 +257,18 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 
 
 	@Override
-	public void loadFromNBT(World world, int x, int y, int z, NBTTagCompound nbtTagCompound) {
+	public void loadFromNBTPacket(World world, int x, int y, int z, NBTTagCompound nbtTagCompound) {
 
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
-		tileEntity.loadFromNBT(nbtTagCompound);
+		tileEntity.loadFromNBTPacket(nbtTagCompound);
 	}
 
 
 	@Override
-	public void saveToNBT(World world, int x, int y, int z, NBTTagCompound nbtTagCompound) {
+	public void saveToNBTPacket(World world, int x, int y, int z, NBTTagCompound nbtTagCompound) {
 
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
-		tileEntity.saveToNBT(nbtTagCompound);
+		tileEntity.saveToNBTPacket(nbtTagCompound);
 	}
 
 

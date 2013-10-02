@@ -3,13 +3,13 @@ package powercraft.tutorial;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.EnumGameType;
+import powercraft.api.PC_FieldDescription;
 import powercraft.api.PC_Logger;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_TileEntityUpgradable;
 import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGuiOpenHandler;
-import powercraft.api.gres.PC_GresTextEdit.PC_GresInputType;
 import powercraft.api.inventory.PC_Inventory;
 import powercraft.api.security.PC_Permission;
 import powercraft.api.upgrade.PC_UpgradeFamily;
@@ -18,6 +18,7 @@ import powercraft.api.upgrade.PC_UpgradeFamily;
 public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC_IGresGuiOpenHandler
 {
 	private double basespeed=1;
+	@PC_FieldDescription
 	public double speed;
 	
 	
@@ -103,20 +104,6 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 		// TODO Auto-generated method stub
 		//System.out.println("getLightOpacity inside my tile entity");
 		return super.getLightOpacity();
-	}
-
-
-	@Override
-	public void loadFromNBT(NBTTagCompound nbtTagCompound) {
-		
-		speed = nbtTagCompound.getDouble("speed");
-	}
-
-
-	@Override
-	public void saveToNBT(NBTTagCompound nbtTagCompound) {
-
-		nbtTagCompound.setDouble("speed", speed);
 	}
 	
 	/* (non-Javadoc)

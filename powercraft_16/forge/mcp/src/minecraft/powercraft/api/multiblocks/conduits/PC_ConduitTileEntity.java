@@ -28,6 +28,11 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 	protected int connectionLength=3;
 	protected int connections;
 	
+	protected PC_ConduitTileEntity(NBTTagCompound nbtTagCompound){
+		super(nbtTagCompound);
+		connections = nbtTagCompound.getInteger("connections");
+	}
+	
 	protected PC_ConduitTileEntity(){
 		super(6);
 	}
@@ -235,12 +240,6 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		if(off<0)
 			return 0.5f-f1;
 		return 0.5f+f;
-	}
-	
-	@Override
-	public void loadFromNBT(NBTTagCompound nbtCompoundTag) {
-		connections = nbtCompoundTag.getInteger("connections");
-		multiblock.renderUpdate();
 	}
 
 	@Override

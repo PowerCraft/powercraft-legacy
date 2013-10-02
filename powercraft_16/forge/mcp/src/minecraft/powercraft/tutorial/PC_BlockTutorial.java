@@ -3,14 +3,9 @@ package powercraft.tutorial;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_BlockRotated;
-import powercraft.api.gres.PC_Gres;
-import powercraft.api.gres.PC_GresBaseWithInventory;
-import powercraft.api.gres.PC_IGresClient;
-import powercraft.api.gres.PC_IGresGuiOpenHandler;
 import powercraft.api.registries.PC_TextureRegistry;
 				//IngameName	internalName		defaultid		reference to tileentity class
 @PC_BlockInfo(name="Tutorial", blockid="tutorial", defaultid=2000, tileEntity=PC_TileEntityTutorial.class)
