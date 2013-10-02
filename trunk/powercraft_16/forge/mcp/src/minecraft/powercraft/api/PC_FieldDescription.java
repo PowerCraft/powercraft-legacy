@@ -1,5 +1,10 @@
 package powercraft.api;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * 
  * Maks fields wich should be saved, synced with client
@@ -7,6 +12,8 @@ package powercraft.api;
  * @author XOR
  *
  */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
 public @interface PC_FieldDescription {
 
 	/**
