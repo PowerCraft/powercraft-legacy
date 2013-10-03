@@ -20,13 +20,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implements PC_IGresGuiOpenHandler, PC_IEnergyProvider {
 
 	public static final int maxHeat = 1000;
+	
 	@PC_FieldDescription(sync=true)
 	private int burnTime = 0;
+	
 	@PC_FieldDescription(sync=true)
 	private int maxBurnTime = 1;
+	
 	private float energy = 0;
+	
 	@PC_FieldDescription(sync=true)
 	private int heat = 0;
+	
 	private int oldHeat10 = 0;
 
 

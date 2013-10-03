@@ -28,6 +28,10 @@ public class PC_EntityTracker
 		}
 		return powerCraftTag;
 	}
+	
+	public static void increaseEntitySpeedXYZ(Entity entity, double increaseX, double increaseY, double increaseZ){
+		
+	}
 
 	public static void moveEntityXZ(Entity entity)
 	{

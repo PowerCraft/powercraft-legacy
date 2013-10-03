@@ -1,4 +1,4 @@
-package powercraft.transport.blocks.blocks;
+package powercraft.transport.blocks;
 
 public enum PCtr_BeltTypeEnum
 {

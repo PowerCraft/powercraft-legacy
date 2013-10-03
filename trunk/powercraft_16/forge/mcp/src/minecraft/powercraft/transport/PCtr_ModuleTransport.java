@@ -2,9 +2,9 @@ package powercraft.transport;
 
 import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
-import powercraft.transport.blocks.blocks.PCtr_BlockClassicElevator;
-import powercraft.transport.blocks.blocks.PCtr_BlockClassicElevatorDown;
-import powercraft.transport.blocks.blocks.PCtr_BlockPlate;
+import powercraft.transport.blocks.PCtr_BlockClassicElevator;
+import powercraft.transport.blocks.PCtr_BlockClassicElevatorDown;
+import powercraft.transport.blocks.PCtr_BlockPlate;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;

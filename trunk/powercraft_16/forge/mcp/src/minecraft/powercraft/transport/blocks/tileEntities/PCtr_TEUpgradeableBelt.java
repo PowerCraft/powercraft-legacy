@@ -1,7 +1,7 @@
 /**
  * 
  */
-package powercraft.transport.blocks.blocks;
+package powercraft.transport.blocks.tileentities;
 
 import powercraft.api.blocks.PC_TileEntityUpgradable;
 import powercraft.api.inventory.PC_Inventory;
