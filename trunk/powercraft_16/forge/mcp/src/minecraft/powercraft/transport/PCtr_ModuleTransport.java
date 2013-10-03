@@ -17,11 +17,12 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 /**
  * 
- * id=2051 {@link PCtr_BlockUpgradeableBelt}
- * id=2052 {@link PCtr_BlockPlate}
- * id=2053 {@link PCtr_BlockBeltSpeedBooster}
- * id=2060 {@link PCtr_BlockClassicElevator}
- * id=2061 {@link PCtr_BlockClassicElevatorDown}
+ * IDs:<br>
+ * 2051 {@link PCtr_BlockUpgradeableBelt}<br>
+ * 2052 {@link PCtr_BlockPlate}<br>
+ * 2053 {@link PCtr_BlockBeltSpeedBooster}<br>
+ * 2060 {@link PCtr_BlockClassicElevator}<br>
+ * 2061 {@link PCtr_BlockClassicElevatorDown}<br>
  * 
  */
 

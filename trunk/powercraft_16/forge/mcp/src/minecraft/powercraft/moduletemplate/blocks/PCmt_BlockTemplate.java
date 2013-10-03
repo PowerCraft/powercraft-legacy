@@ -1,7 +1,7 @@
 /**
  * 
  */
-package powercraft.structurepattern.blocks;
+package powercraft.moduletemplate.blocks;
 
 import net.minecraft.block.material.Material;
 import powercraft.api.blocks.PC_Block;
@@ -13,13 +13,13 @@ import powercraft.core.blocks.tileentities.PC_TileEntityRoaster;
  *
  */
 @PC_BlockInfo(name = "BlockPattern", blockid = "blockpattern", defaultid = 3009, tileEntity = PC_TileEntityRoaster.class)
-public class PCsp_BlockPattern extends PC_Block {
+public class PCmt_BlockTemplate extends PC_Block {
 
 	/**
 	 * @param id
 	 * @param material
 	 */
-	protected PCsp_BlockPattern(int id) {
+	protected PCmt_BlockTemplate(int id) {
 		super(id, Material.rock);
 		// TODO Auto-generated constructor stub
 	}
