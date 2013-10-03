@@ -114,7 +114,10 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 	public List<ItemStack> getDrop() {
 
 		List<ItemStack> drops = new ArrayList<ItemStack>();
-		drops.add(new ItemStack(PC_RedstoneIsolatedItem.item, 1, 0));
+		for(int i=0; i<cable.length; i++){
+			if(cable[i]!=null)
+				drops.add(new ItemStack(PC_RedstoneIsolatedItem.item, 1, i));
+		}
 		return drops;
 	}
 
