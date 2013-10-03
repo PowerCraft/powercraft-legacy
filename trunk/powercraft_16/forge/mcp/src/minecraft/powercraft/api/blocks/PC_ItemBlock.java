@@ -8,6 +8,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import powercraft.api.PC_CreativeTab;
+import powercraft.api.PC_Direction;
 
 
 public class PC_ItemBlock extends ItemBlock {
@@ -27,8 +28,8 @@ public class PC_ItemBlock extends ItemBlock {
 	@Override
 	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata){
 		Block block = Block.blocksList[getBlockID()];
-		if(block instanceof PC_IBlock)
-			metadata = ((PC_IBlock)block).modifyMetadataPostPlace(world, x, y, z, side, hitX, hitY, hitZ, metadata, stack, player);
+		if(block instanceof PC_Block)
+			metadata = ((PC_Block)block).modifyMetadataPostPlace(world, x, y, z, PC_Direction.getOrientation(side), hitX, hitY, hitZ, metadata, stack, player);
 		return super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
     }
 	

@@ -8,7 +8,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import powercraft.api.PC_Logger;
 import powercraft.api.PC_Module;
 import powercraft.api.PC_Utils;
-import powercraft.api.blocks.PC_IBlock;
+import powercraft.api.blocks.PC_Block;
 import powercraft.api.items.PC_Item;
 
 public class PC_RecipeRegistry {
@@ -20,8 +20,8 @@ public class PC_RecipeRegistry {
 	public static void registerRecipes(PC_Module module, Object object) {
 
 		PC_ModuleRegistry.setActiveModule(module);
-		if (object instanceof PC_IBlock) {
-			((PC_IBlock) object).registerRecipes();
+		if (object instanceof PC_Block) {
+			((PC_Block) object).registerRecipes();
 		} else if (object instanceof PC_Item) {
 			((PC_Item) object).registerRecipes();
 		}

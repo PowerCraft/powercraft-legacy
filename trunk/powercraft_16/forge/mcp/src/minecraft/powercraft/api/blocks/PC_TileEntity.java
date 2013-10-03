@@ -2,13 +2,17 @@ package powercraft.api.blocks;
 
 
 import java.lang.reflect.Field;
+import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,6 +20,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.Explosion;
+import net.minecraftforge.common.IPlantable;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_FieldDescription;
 import powercraft.api.PC_Logger;
@@ -44,12 +51,6 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	@PC_FieldDescription
 	private PC_Permissions permissions;
-	
-	public void setOwner(String name){
-		if(this.permissions==null && !isClient()){
-			this.permissions = new PC_Permissions(name);
-		}
-	}
 	
 	public boolean isClient() {
 
@@ -446,6 +447,139 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	
 	public void saveToGuiNBTPacket(NBTTagCompound nbtTagCompound){
 		saveFieldsToNBT(nbtTagCompound, 2);
+	}
+
+	public boolean getBlocksMovement() {
+		return !getBlockType().blockMaterial.blocksMovement();
+	}
+
+	public boolean isBlockSolid(PC_Direction side) {
+		return getBlockType().blockMaterial.isSolid();
+	}
+
+	public float getPlayerRelativeBlockHardness(EntityPlayer player) {
+		return hasPermission(player, PC_Permission.BLOCKHARVEST)?getBlockType().getBlockHardness(worldObj, xCoord, yCoord, zCoord):-1;
+	}
+
+	public void onEntityWalking(Entity entity) {}
+
+	public void onBlockClicked(EntityPlayer player) {}
+
+	public void velocityToAddToEntity(Entity entity, Vec3 vec3) {}
+
+	public int isProvidingWeakPower(PC_Direction side) {
+		return 0;
+	}
+
+	public int colorMultiplier() {
+		return 0xffffffff;
+	}
+
+	public int isProvidingStrongPower(PC_Direction side) {
+		return 0;
+	}
+
+	public void onBlockPlacedBy(EntityLivingBase living, ItemStack itemStack) {
+		if(living instanceof EntityPlayer){
+			if(this.permissions==null && !isClient()){
+				this.permissions = new PC_Permissions(((EntityPlayer)living).username);
+			}
+		}
+	}
+
+	public void onFallenUpon(Entity entity, float fallDistance) {}
+
+	public void fillWithRain() {}
+
+	public int getComparatorInputOverride(PC_Direction side) {
+		return 0;
+	}
+
+	public boolean isLadder(EntityLivingBase entity) {
+		return false;
+	}
+
+	public boolean isBlockNormalCube() {
+		Block block = getBlockType();
+		return block.blockMaterial.isOpaque() && block.renderAsNormalBlock() && !block.canProvidePower();
+	}
+
+	public boolean isBlockReplaceable() {
+		return false;
+	}
+
+	public boolean isBlockBurning() {
+		return false;
+	}
+
+	public int getFlammability(PC_Direction side) {
+		return 0;
+	}
+
+	public boolean isFlammable(PC_Direction side) {
+		return false;
+	}
+
+	public int getFireSpreadSpeed(PC_Direction side) {
+		return 0;
+	}
+
+	public boolean isFireSource(PC_Direction side) {
+		return false;
+	}
+
+	public boolean canSilkHarvest(EntityPlayer player) {
+		return false;
+	}
+
+	public boolean canCreatureSpawn(EnumCreatureType type) {
+		return false;
+	}
+
+	public float getExplosionResistance(Entity entity, double explosionX, double explosionY, double explosionZ) {
+		return getBlockType().getExplosionResistance(entity);
+	}
+
+	public boolean canPlaceTorchOnTop() {
+		return worldObj.doesBlockHaveSolidTopSurface(xCoord, yCoord, zCoord);
+	}
+
+	public boolean addBlockHitEffects(MovingObjectPosition target, EffectRenderer effectRenderer) {
+		return false;
+	}
+
+	public boolean addBlockDestroyEffects(EffectRenderer effectRenderer) {
+		return false;
+	}
+
+	public boolean canSustainPlant(PC_Direction side, IPlantable plant) {
+		return false;
+	}
+
+	public boolean canEntityDestroy(Entity entity) {
+		if(entity instanceof EntityPlayer){
+			return hasPermission((EntityPlayer)entity, PC_Permission.BLOCKHARVEST);
+		}
+		return true;
+	}
+
+	public boolean isBeaconBase(int beaconX, int beaconY, int beaconZ) {
+		return false;
+	}
+
+	public float getEnchantPowerBonus() {
+		return 0;
+	}
+
+	public boolean canExplode(Explosion explosion) {
+		return true;
+	}
+
+	public void onPlantGrow(int sourceX, int sourceY, int sourceZ) {}
+
+
+	public boolean isFertile() {
+		return false;
 	}
 	
 }

@@ -340,6 +340,7 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 	}
 
 
+	@Override
 	public boolean isLadder(EntityLivingBase entity) {
 		return tileEntities[0] == null ? false : tileEntities[0] instanceof PC_ConduitTileEntity;
 	}

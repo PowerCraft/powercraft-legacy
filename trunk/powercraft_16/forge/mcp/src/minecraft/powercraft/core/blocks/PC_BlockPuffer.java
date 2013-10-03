@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
@@ -63,9 +64,9 @@ public class PC_BlockPuffer extends PC_Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
+	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, PC_Direction side) {
 
-		if (side < 2) {
+		if (side.ordinal() < 2) {
 			return blockIcon;
 		} 
 		PC_TileEntityPuffer puffer = PC_Utils.getTE(world, x, y, z);
@@ -78,9 +79,9 @@ public class PC_BlockPuffer extends PC_Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int side, int metadata) {
+	public Icon getIcon(PC_Direction side, int metadata) {
 
-		if (side < 2) return blockIcon;
+		if (side.ordinal() < 2) return blockIcon;
 		if (metadata > 0) {
 			return sideLevel[(metadata - 1) * 3 / PC_TileEntityPuffer.maxEnergy + 1];
 		}

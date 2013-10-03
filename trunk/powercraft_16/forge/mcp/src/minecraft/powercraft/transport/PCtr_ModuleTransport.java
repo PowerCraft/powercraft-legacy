@@ -1,5 +1,6 @@
 package powercraft.transport;
 
+import powercraft.api.PC_Api;
 import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
 import powercraft.transport.blocks.PCtr_BlockClassicElevator;
@@ -12,11 +13,15 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = "PowerCraft-Transport", name = "PowerCraft-Transport", version="1.0.0", dependencies="required-after:PowerCraft-Api")
+@Mod(modid = PCtr_ModuleTransport.NAME, name = PCtr_ModuleTransport.NAME, version=PCtr_ModuleTransport.VERSION, dependencies=PCtr_ModuleTransport.DEPENDENCIES)
 public class PCtr_ModuleTransport extends PC_Module
 {
 	
-	@Instance("PowerCraft-Transport")
+	public static final String NAME = POWERCRAFT+"-Transport";
+	public static final String VERSION = "1.0.0";
+	public static final String DEPENDENCIES = "required-after:"+PC_Api.NAME;
+	
+	@Instance(NAME)
 	public static PCtr_ModuleTransport instance;
 
 	@PC_FieldGenerator	
@@ -27,6 +32,7 @@ public class PCtr_ModuleTransport extends PC_Module
 	
 	@PC_FieldGenerator
 	public static PCtr_BlockPlate plate;
+	
 	
 	@Override
 	@EventHandler
