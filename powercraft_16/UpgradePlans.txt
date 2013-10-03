@@ -3,6 +3,10 @@ belts-Normal(Speedy, Seperator, Ejection, Redirection, Detection)
 elevators-Up(Down, Splitter)
 
 
----
-Lasers?
-Mirros? Prisms? Teleporters?
+Light:
+Lasers-justLight(harvest, build, traction, range, sensor, damage, color[, area light])
+Mirros
+Prisms
+
+Teleporters:
+[Teleporters]
