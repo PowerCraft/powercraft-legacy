@@ -19,7 +19,7 @@ import powercraft.transport.blocks.tileentities.PCtr_TEUpgradeableBelt;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialConveyor;
 
-@PC_BlockInfo(name = "SpeedBoostBelt", blockid = "speedbelt", defaultid = 2052, tileEntity=PCtr_TEUpgradeableBelt.class, itemBlock=PCtr_ItemBlockUpgradeableBelt.class)
+@PC_BlockInfo(name = "SpeedBoostBelt", blockid = "speedbelt", defaultid = 2053, tileEntity=PCtr_TEUpgradeableBelt.class, itemBlock=PCtr_ItemBlockUpgradeableBelt.class)
 public class PCtr_BlockBeltSpeedBooster extends PC_Block
 {
 	public PCtr_BlockBeltSpeedBooster(int id)
