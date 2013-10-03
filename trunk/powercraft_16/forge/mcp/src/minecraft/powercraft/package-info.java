@@ -14,7 +14,3 @@
  */
 
 package powercraft;
-
-
-
-

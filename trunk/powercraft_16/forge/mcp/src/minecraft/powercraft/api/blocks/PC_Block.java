@@ -818,6 +818,11 @@ public abstract class PC_Block extends BlockContainer {
 		return false;
 	}
 	
+	@SideOnly(Side.CLIENT)
+	public void setupRotation(IBlockAccess world, int x, int y, int z, RenderBlocks renderer) {
+		
+	}
+	
 	@SuppressWarnings("unused")
 	public int modifyMetadataPostPlace(World world, int x, int y, int z,
 			PC_Direction side, float hitX, float hitY, float hitZ, int metadata,
