@@ -1,4 +1,4 @@
-package powercraft;
+
 /**
  * id=3001 {@link powercraft.core.blocks.PC_BlockGenerator}
  * <br>id=3002 {@link powercraft.core.blocks.PC_BlockPuffer}
@@ -11,4 +11,9 @@ package powercraft;
  * <br>id=2000 {@link powercraft.tutorial.blocks.PC_BlockTutorial}
  * <br>id=3412 {@link powercraft.tutorial.blocks.PC_ItemTutorial}
  */
+
+package powercraft;
+
+
+
 
