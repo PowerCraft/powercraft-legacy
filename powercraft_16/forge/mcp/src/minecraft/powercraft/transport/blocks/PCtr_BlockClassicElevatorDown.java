@@ -1,4 +1,4 @@
-package powercraft.transport.blocks.blocks;
+package powercraft.transport.blocks;
 
 import powercraft.api.PC_Direction;
 import powercraft.api.blocks.PC_BlockInfo;

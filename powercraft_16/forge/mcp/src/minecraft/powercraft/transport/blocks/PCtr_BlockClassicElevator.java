@@ -1,4 +1,4 @@
-package powercraft.transport.blocks.blocks;
+package powercraft.transport.blocks;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;

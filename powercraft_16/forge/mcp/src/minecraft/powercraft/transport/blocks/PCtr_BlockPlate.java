@@ -1,31 +1,32 @@
-package powercraft.transport.blocks.blocks;
+package powercraft.transport.blocks;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.api.PC_EntityTracker;
 import powercraft.api.blocks.PC_BlockInfo;
-import powercraft.api.blocks.PC_BlockRotated;
+import powercraft.api.blocks.PC_BlockWithoutTileEntity;
 import powercraft.api.registries.PC_TextureRegistry;
 import powercraft.transport.helper.PCtr_BeltHelper;
-import powercraft.transport.helper.PCtr_MaterialConveyor;
+import powercraft.transport.helper.PCtr_MaterialElevator;
 
-@PC_BlockInfo(name = "UpgradeableBelt", blockid = "upgradeableBelt", defaultid = 2051, tileEntity=PCtr_TEUpgradeableBelt.class, itemBlock=PCtr_ItemBlockUpgradeableBelt.class)
-public class PCtr_BlockUpgradeableBelt extends PC_BlockRotated
+@PC_BlockInfo(name = "Plate", blockid = "plate", defaultid = 2052)
+public class PCtr_BlockPlate extends PC_BlockWithoutTileEntity
 {
-	
-	public PCtr_BlockUpgradeableBelt(int id)
+
+	public PCtr_BlockPlate(int id)
 	{
-		super(id, PCtr_MaterialConveyor.getMaterial());			
+		super(id, PCtr_MaterialElevator.getMaterial());
+		setCreativeTab(CreativeTabs.tabTransport);
+		this.slipperiness = 1;
 	}
 
 	@Override
 	public void loadIcons()
 	{
-//		this.blockIcon = PC_TextureRegistry.registerIcon("upgradeablebelt");
-
+		this.blockIcon = PC_TextureRegistry.registerIcon("plate");
 	}
 
 	@Override
@@ -36,17 +37,12 @@ public class PCtr_BlockUpgradeableBelt extends PC_BlockRotated
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity)
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
 	{
-
+		if (!PC_EntityTracker.isEntityIgnored(entity)) // sanity check
+			PC_EntityTracker.moveEntityXZ(entity);
 	}
 
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
-	{
-		return false;		
-	}
-	
 	@Override
 	public boolean isOpaqueCube()
 	{
@@ -88,9 +84,5 @@ public class PCtr_BlockUpgradeableBelt extends PC_BlockRotated
 	{
 		return PCtr_BeltHelper.tickRate(world);
 	}
-	@Override
-	public int getLightOpacity(World world, int x, int y, int z)
-	{
-		return 0;
-	}
+
 }
