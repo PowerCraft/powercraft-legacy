@@ -271,10 +271,7 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 
 		PC_MultiblockTileEntity multiblock = tileEntities[index.ordinal()];
 		if (multiblock != null) {
-			AxisAlignedBB aabb = multiblock.getSelectionBox();
-			if (aabb != null) {
-				return aabb.offset(xCoord, yCoord, zCoord);
-			}
+			return multiblock.getSelectionBox();
 		}
 		return null;
 	}
@@ -288,7 +285,6 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 				List<AxisAlignedBB> l = tileEntities[i].getCollisionBoxes();
 				if (l != null) {
 					for (AxisAlignedBB e : l) {
-						e.offset(xCoord, yCoord, zCoord);
 						list.add(e);
 					}
 				}

@@ -203,7 +203,7 @@ public abstract class PC_Block extends BlockContainer {
 	@SuppressWarnings("unused")
 	public List<AxisAlignedBB> getCollisonBoxesList(World world, int x, int y, int z, Entity entity){
 		List<AxisAlignedBB> list = new ArrayList<AxisAlignedBB>();
-		list.add(super.getCollisionBoundingBoxFromPool(world, x, y, z));
+		list.add(getCollisionBoundingBox(world, x, y, z));
 		return list;
 	}
 	
@@ -213,32 +213,40 @@ public abstract class PC_Block extends BlockContainer {
 		List<AxisAlignedBB> l = getCollisonBoxesList(world, x, y, z, entity);
 		if(l!=null){
 			for(AxisAlignedBB aabb:l){
-				aabb = rotateAABB(world, x, y, z, aabb);
+				aabb = makeAABBOffset(rotateAABB(world, x, y, z, aabb), x, y, z);
 				if (aabb != null && axisAlignedBB.intersectsWith(aabb)){
-		        	list.add(aabb);
-		        }
+			       	list.add(aabb);
+			    }
 			}
 		}
 	}
 
+	private static AxisAlignedBB makeAABBOffset(AxisAlignedBB axisAlignedBB, int x, int y, int z){
+		if(axisAlignedBB==null)
+			return null;
+		return AxisAlignedBB.getAABBPool().getAABB(axisAlignedBB.minX+x, axisAlignedBB.minY+y, axisAlignedBB.minZ+z, axisAlignedBB.maxX+x, axisAlignedBB.maxY+y, axisAlignedBB.maxZ+z);
+	}
+	
+	@SuppressWarnings("unused")
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getSelectedBoundingBox(World world, int x, int y, int z) {
-		return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+		return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public final AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-		return rotateAABB(world, x, y, z, getSelectedBoundingBox(world, x, y, z));
+		return makeAABBOffset(rotateAABB(world, x, y, z, getSelectedBoundingBox(world, x, y, z)), x, y, z);
 	}
 
+	@SuppressWarnings("unused")
 	public AxisAlignedBB getCollisionBoundingBox(World world, int x, int y, int z) {
-		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+		return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 	}
 	
 	@Override
 	public final AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-		return rotateAABB(world, x, y, z, getCollisionBoundingBox(world, x, y, z));
+		return makeAABBOffset(rotateAABB(world, x, y, z, getCollisionBoundingBox(world, x, y, z)), x, y, z);
 	}
 
 	@Override
@@ -774,17 +782,15 @@ public abstract class PC_Block extends BlockContainer {
 		case DOWN:
 			return AxisAlignedBB.getBoundingBox(aabb.minZ, aabb.minY, 1-aabb.maxX, aabb.maxZ, aabb.maxY, 1-aabb.minX);
 		case EAST:
-			break;
+			return AxisAlignedBB.getBoundingBox(aabb.minX, aabb.minZ, 1-aabb.maxY, aabb.maxX, aabb.maxZ, 1-aabb.minY);
 		case NORTH:
-			break;
+			return AxisAlignedBB.getBoundingBox(1-aabb.maxY, aabb.minX, aabb.minZ, 1-aabb.minY, aabb.maxX, aabb.maxZ);
 		case SOUTH:
-			break;
-		case UNKNOWN:
-			break;
+			return AxisAlignedBB.getBoundingBox(aabb.minY, 1-aabb.maxX, aabb.minZ, aabb.maxY, 1-aabb.minX, aabb.maxZ);
 		case UP:
 			return AxisAlignedBB.getBoundingBox(1-aabb.maxZ, aabb.minY, aabb.minX, 1-aabb.minZ, aabb.maxY, aabb.maxX);
 		case WEST:
-			break;
+			return AxisAlignedBB.getBoundingBox(aabb.minX, 1-aabb.maxZ, aabb.minY, aabb.maxX, 1-aabb.minZ, aabb.maxY);
 		default:
 			return aabb;
 		}
