@@ -86,14 +86,25 @@ public class PC_Renderer implements ISimpleBlockRenderingHandler {
 	public static boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer) {
 
 		if (block instanceof PC_Block) {
+			((PC_Block) block).setupRotation(world, x, y, z, renderer);
 			if (((PC_Block) block).renderWorldBlock(world, x, y, z, renderer)) {
+				resetRotation(renderer);
 				return true;
 			}
 		}
 		renderer.renderStandardBlock(block, x, y, z);
+		resetRotation(renderer);
 		return true;
 	}
 
+	public static void resetRotation(RenderBlocks renderer){
+		renderer.uvRotateBottom = 0;
+		renderer.uvRotateEast = 0;
+		renderer.uvRotateNorth = 0;
+		renderer.uvRotateSouth = 0;
+		renderer.uvRotateTop = 0;
+		renderer.uvRotateWest = 0;
+	}
 
 	public static void renderInvBox(Block block, int metadata, RenderBlocks renderer) {
 
