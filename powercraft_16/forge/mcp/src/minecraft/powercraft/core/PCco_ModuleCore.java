@@ -18,9 +18,10 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 /**
- * id=3001 {@link PC_BlockGenerator}
- * id=3002 {@link PC_BlockPuffer}
- * id=3003 {@link PC_BlockRoaster}
+ * IDs:<br>
+ * 3001 {@link PC_BlockGenerator}<br>
+ * 3002 {@link PC_BlockPuffer}<br>
+ * 3003 {@link PC_BlockRoaster}<br>
  */
 
 @Mod(modid = PCco_ModuleCore.NAME, name = PCco_ModuleCore.NAME, version=PCco_ModuleCore.VERSION, dependencies=PCco_ModuleCore.DEPENDENCIES)

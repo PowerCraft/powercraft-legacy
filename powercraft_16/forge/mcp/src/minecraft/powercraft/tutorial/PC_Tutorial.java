@@ -13,11 +13,10 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 /**
  * 
- * id = 2000 {@link PC_BlockTutorial}
- * id = 3412 {@link PC_ItemTutorial}
+ * IDs:<br>
+ * 2000 {@link PC_BlockTutorial}<br>
+ * 3412 {@link PC_ItemTutorial}<br>
  * 
- * @author XOR
- *
  */
 
 @Mod(modid = "PowerCraft-Tutorial", name = "PowerCraft-Tutorial", version="1.0.0", dependencies="required-after:PowerCraft-Api")
