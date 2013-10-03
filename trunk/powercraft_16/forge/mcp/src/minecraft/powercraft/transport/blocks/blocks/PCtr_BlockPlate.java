@@ -8,33 +8,39 @@ import net.minecraft.world.World;
 import powercraft.api.PC_EntityTracker;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_BlockWithoutTileEntity;
+import powercraft.api.registries.PC_TextureRegistry;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialElevator;
 
-@PC_BlockInfo(name="Plate", blockid="plate", defaultid=2052)
-public class PCtr_BlockPlate extends PC_BlockWithoutTileEntity {
+@PC_BlockInfo(name = "Plate", blockid = "plate", defaultid = 2052)
+public class PCtr_BlockPlate extends PC_BlockWithoutTileEntity
+{
 
-	public PCtr_BlockPlate(int id) {
+	public PCtr_BlockPlate(int id)
+	{
 		super(id, PCtr_MaterialElevator.getMaterial());
 		setCreativeTab(CreativeTabs.tabTransport);
 		this.slipperiness = 1;
 	}
 
 	@Override
-	public void loadIcons() {
+	public void loadIcons()
+	{
+		this.blockIcon = PC_TextureRegistry.registerIcon("plate");
+	}
+
+	@Override
+	public void registerRecipes()
+	{
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void registerRecipes() {
-		// TODO Auto-generated method stub
-
-	}
-	
-	@Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-		PC_EntityTracker.moveEntityXZ(entity);
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
+	{
+		if (!PC_EntityTracker.isEntityIgnored(entity)) // sanity check
+			PC_EntityTracker.moveEntityXZ(entity);
 	}
 
 	@Override
@@ -78,5 +84,5 @@ public class PCtr_BlockPlate extends PC_BlockWithoutTileEntity {
 	{
 		return PCtr_BeltHelper.tickRate(world);
 	}
-	
+
 }
