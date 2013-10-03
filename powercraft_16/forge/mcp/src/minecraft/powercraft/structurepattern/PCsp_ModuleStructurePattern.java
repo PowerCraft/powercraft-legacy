@@ -18,6 +18,9 @@ import powercraft.transport.blocks.PCtr_BlockClassicElevatorDown;
 import powercraft.transport.blocks.PCtr_BlockPlate;
 
 /**
+ * 
+ * id=3010 {@link PCsp_BlockPattern}
+ * 
  * @author Aaron
  *
  */

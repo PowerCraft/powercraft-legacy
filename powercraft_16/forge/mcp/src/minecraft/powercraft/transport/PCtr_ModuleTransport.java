@@ -3,15 +3,27 @@ package powercraft.transport;
 import powercraft.api.PC_Api;
 import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
+import powercraft.transport.blocks.PCtr_BlockBeltSpeedBooster;
 import powercraft.transport.blocks.PCtr_BlockClassicElevator;
 import powercraft.transport.blocks.PCtr_BlockClassicElevatorDown;
 import powercraft.transport.blocks.PCtr_BlockPlate;
+import powercraft.transport.blocks.PCtr_BlockUpgradeableBelt;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+
+/**
+ * 
+ * id=2051 {@link PCtr_BlockUpgradeableBelt}
+ * id=2052 {@link PCtr_BlockPlate}
+ * id=2053 {@link PCtr_BlockBeltSpeedBooster}
+ * id=2060 {@link PCtr_BlockClassicElevator}
+ * id=2061 {@link PCtr_BlockClassicElevatorDown}
+ * 
+ */
 
 @Mod(modid = PCtr_ModuleTransport.NAME, name = PCtr_ModuleTransport.NAME, version=PCtr_ModuleTransport.VERSION, dependencies=PCtr_ModuleTransport.DEPENDENCIES)
 public class PCtr_ModuleTransport extends PC_Module
