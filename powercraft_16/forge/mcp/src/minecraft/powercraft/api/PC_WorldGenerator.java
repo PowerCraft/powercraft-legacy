@@ -8,7 +8,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-import powercraft.api.blocks.PC_IBlock;
+import powercraft.api.blocks.PC_Block;
 import cpw.mods.fml.common.IWorldGenerator;
 
 /**
@@ -24,8 +24,8 @@ public class PC_WorldGenerator implements IWorldGenerator {
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
 		for(int i=0; i<Block.blocksList.length; i++){
 			Block block = Block.blocksList[i];
-			if(block instanceof PC_IBlock){
-				((PC_IBlock)block).generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+			if(block instanceof PC_Block){
+				((PC_Block)block).generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 			}
 		}
 	}

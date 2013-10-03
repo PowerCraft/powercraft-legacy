@@ -11,8 +11,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils;
+import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
-import powercraft.api.blocks.PC_BlockRotated;
 import powercraft.api.registries.PC_TextureRegistry;
 import powercraft.core.blocks.tileentities.PC_TileEntityGenerator;
 import cpw.mods.fml.relauncher.Side;
@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 
 @PC_BlockInfo(name = "Generator", blockid = "generator", defaultid = 3001, tileEntity = PC_TileEntityGenerator.class)
-public class PC_BlockGenerator extends PC_BlockRotated {
+public class PC_BlockGenerator extends PC_Block {
 
 	private Icon frontLevel[] = new Icon[4];
 

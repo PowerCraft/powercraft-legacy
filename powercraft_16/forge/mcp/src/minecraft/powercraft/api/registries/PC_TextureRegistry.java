@@ -4,8 +4,6 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import powercraft.api.blocks.PC_Block;
-import powercraft.api.blocks.PC_BlockWithoutTileEntity;
-import powercraft.api.blocks.PC_IBlock;
 import powercraft.api.items.PC_Item;
 import powercraft.api.security.PC_Security;
 import cpw.mods.fml.relauncher.Side;
@@ -18,9 +16,9 @@ public class PC_TextureRegistry {
 	private static String objectName;
 	
 	@SideOnly(Side.CLIENT)
-	public static void registerIcons(PC_IBlock block, IconRegister iconRegistry) {
+	public static void registerIcons(PC_Block block, IconRegister iconRegistry) {
 
-		if(PC_Security.allowedCaller("PC_TextureRegistry.registerIcons(PC_IBlock block, IconRegister iconRegistry)", PC_Block.class, PC_BlockWithoutTileEntity.class)){
+		if(PC_Security.allowedCaller("PC_TextureRegistry.registerIcons(PC_Block block, IconRegister iconRegistry)", PC_Block.class)){
 			PC_ModuleRegistry.setActiveModule(block.getModule());
 			PC_TextureRegistry.iconRegistry = iconRegistry;
 			objectName = block.getBlockInfo().blockid();

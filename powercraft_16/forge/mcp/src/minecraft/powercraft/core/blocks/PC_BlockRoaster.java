@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
@@ -44,10 +45,10 @@ public class PC_BlockRoaster extends PC_Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int side, int metadata) {
+	public Icon getIcon(PC_Direction side, int metadata) {
 
-		if (side == 0) return bottomIcon;
-		if (side == 1) return topIcon;
+		if (side == PC_Direction.DOWN) return bottomIcon;
+		if (side == PC_Direction.UP) return topIcon;
 		return blockIcon;
 	}
 

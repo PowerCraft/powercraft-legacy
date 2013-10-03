@@ -9,8 +9,8 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
+import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
-import powercraft.api.blocks.PC_IBlock;
 import powercraft.api.items.PC_Item;
 import powercraft.api.items.PC_ItemInfo;
 import powercraft.api.registries.PC_BlockRegistry;
@@ -33,7 +33,7 @@ public abstract class PC_Module {
 	public static final String POWERCRAFT_CREDITS = "MightyPork, RxD, LOLerul2";
 	
 	private Configuration config;
-	private List<PC_IBlock> blocks = new ArrayList<PC_IBlock>();
+	private List<PC_Block> blocks = new ArrayList<PC_Block>();
 	private List<PC_Item> items = new ArrayList<PC_Item>();
 
 
@@ -69,7 +69,7 @@ public abstract class PC_Module {
 	@SuppressWarnings("unused")
 	protected void defaultInit(FMLInitializationEvent event) {
 
-		for (PC_IBlock block : blocks) {
+		for (PC_Block block : blocks) {
 			PC_RecipeRegistry.registerRecipes(this, block);
 		}
 		for (PC_Item item : items) {
@@ -112,8 +112,8 @@ public abstract class PC_Module {
 
 		if (Block.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(PC_BlockInfo.class)) {
 			Block block = PC_BlockRegistry.registerBlock(this, (Class<? extends Block>) clazz);
-			if (block instanceof PC_IBlock) {
-				blocks.add((PC_IBlock) block);
+			if (block instanceof PC_Block) {
+				blocks.add((PC_Block) block);
 			}
 			return block;
 		} else if (Item.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(PC_ItemInfo.class)) {

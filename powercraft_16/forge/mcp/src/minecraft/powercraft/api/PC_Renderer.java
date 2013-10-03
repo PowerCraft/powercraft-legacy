@@ -9,7 +9,7 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.api.blocks.PC_IBlock;
+import powercraft.api.blocks.PC_Block;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -74,8 +74,8 @@ public class PC_Renderer implements ISimpleBlockRenderingHandler {
 
 	public static void renderInventoryBlock(Block block, int metadata, RenderBlocks renderer) {
 
-		if (block instanceof PC_IBlock) {
-			if (((PC_IBlock) block).renderInventoryBlock(metadata, renderer)) {
+		if (block instanceof PC_Block) {
+			if (((PC_Block) block).renderInventoryBlock(metadata, renderer)) {
 				return;
 			}
 		}
@@ -85,8 +85,8 @@ public class PC_Renderer implements ISimpleBlockRenderingHandler {
 
 	public static boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer) {
 
-		if (block instanceof PC_IBlock) {
-			if (((PC_IBlock) block).renderWorldBlock(world, x, y, z, renderer)) {
+		if (block instanceof PC_Block) {
+			if (((PC_Block) block).renderWorldBlock(world, x, y, z, renderer)) {
 				return true;
 			}
 		}

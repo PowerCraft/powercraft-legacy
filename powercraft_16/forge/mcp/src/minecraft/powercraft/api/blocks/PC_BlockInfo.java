@@ -25,4 +25,10 @@ public @interface PC_BlockInfo {
 
 	public Class<? extends PC_TileEntity> tileEntity() default PC_TileEntity.class;
 
+	
+	public boolean rotateable() default false;
+	
+	
+	public boolean pitchable() default false;
+	
 }

@@ -6,7 +6,6 @@ import java.util.Random;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -16,6 +15,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_ClientUtils;
+import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
@@ -83,11 +83,12 @@ public class PC_BlockMultiblock extends PC_Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int side, int metadata) {
+	public Icon getIcon(PC_Direction side, int metadata) {
 
 		if (icons == null) return null;
-		if (side >= icons.length) side = icons.length - 1;
-		return icons[side];
+		int sideID = side.ordinal();
+		if (sideID >= icons.length) sideID = icons.length - 1;
+		return icons[sideID];
 	}
 
 
@@ -199,12 +200,6 @@ public class PC_BlockMultiblock extends PC_Block {
 	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
 
 		return colorMultiplier;
-	}
-	
-	@Override
-	public boolean isLadder(World world, int x, int y, int z, EntityLivingBase entity) {
-		PC_TileEntityMultiblock te = PC_Utils.getTE(world, x, y, z);
-		return te.isLadder(entity);
 	}
 
 }
