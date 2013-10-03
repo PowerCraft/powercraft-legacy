@@ -281,7 +281,7 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 
 
 	@SuppressWarnings("unused")
-	public void addCollisionBoxesToList(AxisAlignedBB aabb, List<AxisAlignedBB> list, Entity entity) {
+	public void addCollisionBoxesToList(List<AxisAlignedBB> list, Entity entity) {
 
 		for (int i = 0; i < tileEntities.length; i++) {
 			if (tileEntities[i] != null) {
@@ -289,9 +289,7 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 				if (l != null) {
 					for (AxisAlignedBB e : l) {
 						e.offset(xCoord, yCoord, zCoord);
-						if (aabb == null || aabb.intersectsWith(e)) {
-							list.add(e);
-						}
+						list.add(e);
 					}
 				}
 			}
