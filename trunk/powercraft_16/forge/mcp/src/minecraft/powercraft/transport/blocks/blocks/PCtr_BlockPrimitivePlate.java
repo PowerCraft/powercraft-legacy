@@ -45,7 +45,6 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 	{
 		if (!PCtr_BeltHelper.isEntityIgnored(entity)) // ignores FX entities and such
 		{
-						
 			// creates PC_Vec out of current motion
 			PC_Vec3 emotion = new PC_Vec3(entity.motionX, entity.motionY, entity.motionZ);
 			PC_Direction newDir = PCtr_BeltHelper.returnPrimaryDirection(emotion, true);
@@ -54,14 +53,11 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 				return;
 			}
 			
-//			System.out.println("Current motion: " + emotion.toString() + " Direction :" + newDir.toString());			
-
 			if (PC_EntityDictionary.HasEntityID(entity.entityId))
 			{
 				PC_Vec3 storedmotion = PC_EntityDictionary.GetMotionForID(entity.entityId);
 				// belt should ignore UP and DOWN directions
 				PC_Direction oldDir = PCtr_BeltHelper.returnPrimaryDirection(storedmotion, true);		
-//				System.out.println("  -> Stored motion: " + storedmotion.toString() + " Direction : " + oldDir.toString());
 				
 				// same entity, same dir
 				if (oldDir == newDir)
@@ -69,32 +65,19 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 					boolean isgreater = PC_EntityDictionary.NewMotionGreater(entity.entityId, emotion, oldDir);				
 					if (!isgreater)
 					{						
-//						double motiondelta = 0;						
 						switch (oldDir)
 						{
 							case NORTH:
-								//motiondelta = Math.abs(storedmotion.z) - Math.abs(emotion.z);
-								//System.out.println("  -> Going North with Delta: " + motiondelta);
-								entity.motionZ = storedmotion.z; // .addVelocity(0, 0, -motiondelta);
-//								System.out.println("  -> Added Velocity, New motion (z): " + entity.motionZ);
+								entity.motionZ = storedmotion.z;
 								break;
 							case EAST:
-								//motiondelta = Math.abs(storedmotion.x) - Math.abs(emotion.x);
-								//System.out.println("  -> Going East with Delta: " + motiondelta);
 								entity.motionX = storedmotion.x;
-								//System.out.println("  -> Added Velocity, New motion (x): " + entity.motionX);								
 								break;
 							case SOUTH:
-								//motiondelta = Math.abs(storedmotion.z) - Math.abs(emotion.z);
-								//System.out.println("  -> Going South with Delta: " + motiondelta);
-								entity.motionZ = storedmotion.z; // .addVelocity(0, 0, motiondelta);
-								//System.out.println("  -> Added Velocity, New motion (z): " + entity.motionZ);								
+								entity.motionZ = storedmotion.z;
 								break;
 							case WEST:
-								//motiondelta = Math.abs(storedmotion.x) - Math.abs(emotion.x);
-								//System.out.println("  -> Going West with Delta: " + motiondelta);
 								entity.motionX = storedmotion.x;
-								//System.out.println("  -> Added Velocity, New motion (x): " + entity.motionX);								
 								break;
 							default:
 									break;
@@ -102,8 +85,6 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 					}
 					else
 					{ // our motion has increased! update with new values, ignore y
-//						System.out.println(" ** Increased Speed! : " + entity.entityId);
-//						System.out.println("New Motion X, Y, Z: " + emotion.x + ", " + emotion.y + ", " + emotion.z);						
 						PC_EntityDictionary.UpdateEntityValues(entity.entityId, emotion, true);
 					}
 				}
@@ -114,14 +95,11 @@ public class PCtr_BlockPrimitivePlate extends PC_BlockWithoutTileEntity
 					// changing the stored velocities in a direction
 					// even if they are in the middle of the block. think separator belt or mobs
 				}
-								
 			}
 			else
 			{
-//				System.out.println("Adding EntityID : " + entity.entityId);
 				PC_EntityDictionary.AddEntityValues(entity.entityId, emotion);				
 			}
-//			System.out.println("--------------------------------------------------------------------");
 		}
 	}
 

@@ -2,43 +2,67 @@ package powercraft.transport.blocks.blocks;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.api.PC_Direction;
+import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_BlockRotated;
 import powercraft.api.registries.PC_TextureRegistry;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialConveyor;
 
-@PC_BlockInfo(name = "UpgradeableBelt", blockid = "upgradeableBelt", defaultid = 2051, tileEntity=PCtr_TEUpgradeableBelt.class, itemBlock=PCtr_ItemBlockUpgradeableBelt.class)
-public class PCtr_BlockUpgradeableBelt extends PC_BlockRotated
+@PC_BlockInfo(name = "SpeedBoostBelt", blockid = "speedbelt", defaultid = 2052, tileEntity=PCtr_TEUpgradeableBelt.class, itemBlock=PCtr_ItemBlockUpgradeableBelt.class)
+public class PCtr_BlockBeltSpeedBooster extends PC_BlockRotated
 {
-	
-	public PCtr_BlockUpgradeableBelt(int id)
+	public PCtr_BlockBeltSpeedBooster(int id)
 	{
-		super(id, PCtr_MaterialConveyor.getMaterial());			
+		super(id, PCtr_MaterialConveyor.getMaterial());
+		setCreativeTab(CreativeTabs.tabBlock);
 	}
 
 	@Override
 	public void loadIcons()
 	{
-//		this.blockIcon = PC_TextureRegistry.registerIcon("upgradeablebelt");
-
+		this.blockIcon = PC_TextureRegistry.registerIcon("speedbelt");
 	}
 
 	@Override
 	public void registerRecipes()
 	{
-		// TODO Auto-generated method stub
-
+		
 	}
-
+	
 	@Override
-	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity)
-	{
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
 
+		int l = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		PC_Utils.setMD(world, x, y, z, PC_Direction.PLAYER2MD[l]);
+	}
+	
+	@Override
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
+	{
+		if (!PCtr_BeltHelper.isEntityIgnored(entity))
+		{
+			PC_Direction blockroation; // -??????
+			if (entity.getEntityData().hasKey("PC_StoredMotions"))
+			{
+				
+			}
+			else
+			{
+				entity.getEntityData().setBoolean("PC_StoredMotions", true);
+				entity.getEntityData().setDouble("PC_MotionX", entity.motionX);
+				entity.getEntityData().setDouble("PC_MotionY", entity.motionY);
+				entity.getEntityData().setDouble("PC_MotionZ", entity.motionZ);
+			}
+		}
 	}
 
 	@Override
@@ -94,3 +118,4 @@ public class PCtr_BlockUpgradeableBelt extends PC_BlockRotated
 		return 0;
 	}
 }
+

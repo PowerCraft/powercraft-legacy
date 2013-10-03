@@ -27,7 +27,7 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 		super(PC_UpgradeFamily.Speed.getFamilyID() | PC_UpgradeFamily.Security.getFamilyID(), 3,
 				"Tutorial", new PC_Inventory[]{
 			new PC_Inventory("main", 9*3, 64, 0),
-			new PC_Inventory("upgrade", 3, 1, 0)});
+			new PC_Inventory("upgrade", 3, 1, 0)});		
 		speed = basespeed;
 	}
 
@@ -49,55 +49,6 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 		return null;
 	}
 	
-	/**
-	 * Catches event thrown by GUI any time there is a change to the list of upgrades
-	 * Rebuilds the upgrade list, checking to see if its a valid family.
-	 */
-	/*@Override
-	public boolean onUpgradesChanged(PC_ItemUpgrade[] upgrades)
-	{
-		// NOTE:
-		// BEFORE this event is thrown, the GUI should have already done the hasSecurityUpgrade() on this
-		// entity and prompted a password dialog. When this method is called it is assumed the player had access 
-		// as this process will over-write the existing list of upgrades attached to this tile entity.		
-		if (upgrades.length <= this.upgradeList.length)
-		{			
-			// reset the speed
-			/*speed = basespeed;
-						
-			for (int x = 0, y=0; x < upgrades.length; x++)
-			{					
-				if ((upgrades[x].getUpgradeFamily().getFamilyID() & validFamilies) > 0)
-				{					
-					// set the upgrade in the slot x to this upgrade 
-					// using y will ensure we do not go out of bounds in case there are more upgrades attached than we have slots for
-					// there should be other checks in the GUI that contain filters for the upgrades it allows based on the validFamilies flag.
-					this.upgradeList[y] = upgrades[x]; y++;
-					
-					switch (upgrades[x].getUpgradeFamily())
-					{
-						case Speed:							
-							// modify speed of this TE, if for example 3 speed upgrades are attached
-							// this will *= the speed three times.
-							speed *= upgrades[x].getUpgradeEffect();
-							break;
-						case Security:
-							// prompt for password
-							break;
-						default: 
-							break;
-					}
-				}
-				else 
-				{
-					// family is not supported, so do nothing					
-					return false;
-				}
-			}
-			return true;
-		}		
-		return false;
-	}	*/
 	@Override
 	public int getLightOpacity()
 	{
