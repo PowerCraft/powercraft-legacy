@@ -371,5 +371,14 @@ public class PC_Utils {
 	public static boolean isOP(String username) {
 		return MinecraftServer.getServerConfigurationManager(mcs()).getOps().contains(username);
 	}
+
+
+	public static boolean isClient() {
+		return instance.iisClient();
+	}
+	
+	protected boolean iisClient(){
+		return false;
+	}
 	
 }

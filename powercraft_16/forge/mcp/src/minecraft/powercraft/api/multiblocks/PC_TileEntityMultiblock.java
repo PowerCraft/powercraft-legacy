@@ -6,6 +6,7 @@ import java.util.Random;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import powercraft.api.PC_Direction;
@@ -13,6 +14,7 @@ import powercraft.api.PC_FieldDescription;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_ITileEntitySpecialRenderer;
 import powercraft.api.blocks.PC_TileEntity;
+import powercraft.api.multiblocks.conduits.PC_ConduitTileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -212,8 +214,9 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 			return null;
 		}
 		List<ItemStack> drop = tileEntities[index].getDrop();
-		tileEntities[index].onBreak();
+		PC_MultiblockTileEntity te = tileEntities[index];
 		tileEntities[index] = null;
+		te.onBreak();
 		notifyNeighbors();
 		sendToClient();
 		return drop;
@@ -334,6 +337,11 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 		}
 		notifyNeighbors();
 		renderUpdate();
+	}
+
+
+	public boolean isLadder(EntityLivingBase entity) {
+		return tileEntities[0] == null ? false : tileEntities[0] instanceof PC_ConduitTileEntity;
 	}
 	
 }

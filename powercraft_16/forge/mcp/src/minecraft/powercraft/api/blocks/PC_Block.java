@@ -230,7 +230,6 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 		if (tileEntity != null) {
 			return tileEntity.getBlockDropped(fortune);
 		}
-		System.out.println("Error");
 		return new ArrayList<ItemStack>();
 	}
 
@@ -240,10 +239,8 @@ public abstract class PC_Block extends BlockContainer implements PC_IBlock {
 
 		PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
 		if(tileEntity.hasPermission(entityPlayer, PC_Permission.BLOCKHARVEST)){
-			System.out.println("Checked");
 			if (!PC_Utils.isCreativ(entityPlayer)) super.harvestBlock(world, entityPlayer, x, y, z, metadata);
 		}
-		System.out.println("Error");
 	}
 
 

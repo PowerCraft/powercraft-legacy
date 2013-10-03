@@ -42,4 +42,9 @@ public class PC_ClientUtils extends PC_Utils {
 		return PC_Reflection.getValue(PlayerControllerMP.class, mc().playerController, 10, EnumGameType.class);
 	}
 
+	@Override
+	protected boolean iisClient(){
+		return true;
+	}
+	
 }
