@@ -19,7 +19,7 @@ public class PCmt_BlockTemplate extends PC_Block {
 	 * @param id
 	 * @param material
 	 */
-	protected PCmt_BlockTemplate(int id) {
+	public PCmt_BlockTemplate(int id) {
 		super(id, Material.rock);
 		// TODO Auto-generated constructor stub
 	}
