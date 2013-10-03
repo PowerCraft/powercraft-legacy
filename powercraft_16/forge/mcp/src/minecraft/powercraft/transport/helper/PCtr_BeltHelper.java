@@ -44,7 +44,7 @@ public class PCtr_BeltHelper
 		if(entity==null) return PC_Direction.UNKNOWN;
 		return PC_Direction.getDirectionFromEntity(entity, false);		
 	}
-	
+
 	/**
 	 * Returns direction based on values passed in vec
 	 * @param vec Vector to compare
