@@ -7,14 +7,14 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_Vec3I;
+import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
-import powercraft.api.blocks.PC_BlockWithoutTileEntity;
 import powercraft.api.registries.PC_TextureRegistry;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialElevator;
 
 @PC_BlockInfo(name = "ElevatorUp", blockid = "elevatorup", defaultid = 2060)
-public class PCtr_BlockClassicElevator extends PC_BlockWithoutTileEntity
+public class PCtr_BlockClassicElevator extends PC_Block
 {
 	
 	protected PC_Direction elevatorDirection;
@@ -83,7 +83,7 @@ public class PCtr_BlockClassicElevator extends PC_BlockWithoutTileEntity
 	}
 	
 	@Override	
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
+	public AxisAlignedBB getCollisionBoundingBox(World world, int i, int j, int k)
 	{ 
 		return null;
 	}
