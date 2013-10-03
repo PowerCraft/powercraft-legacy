@@ -1,4 +1,4 @@
-package powercraft.core.blocks;
+package powercraft.core.blocks.tileentities;
 
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +13,8 @@ import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGuiOpenHandler;
 import powercraft.api.inventory.PC_Inventory;
+import powercraft.core.blocks.guis.PC_ContainerGenerator;
+import powercraft.core.blocks.guis.PC_GuiGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

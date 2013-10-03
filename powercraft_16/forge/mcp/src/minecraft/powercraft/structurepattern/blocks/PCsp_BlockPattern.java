@@ -1,18 +1,18 @@
 /**
  * 
  */
-package structurepattern.blocks;
+package powercraft.structurepattern.blocks;
 
 import net.minecraft.block.material.Material;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
-import powercraft.core.blocks.PC_TileEntityRoaster;
+import powercraft.core.blocks.tileentities.PC_TileEntityRoaster;
 
 /**
  * @author Aaron
  *
  */
-@PC_BlockInfo(name = "Roaster", blockid = "roaster", defaultid = 3003, tileEntity = PC_TileEntityRoaster.class)
+@PC_BlockInfo(name = "BlockPattern", blockid = "blockpattern", defaultid = 3009, tileEntity = PC_TileEntityRoaster.class)
 public class PCsp_BlockPattern extends PC_Block {
 
 	/**

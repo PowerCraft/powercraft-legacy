@@ -1,4 +1,4 @@
-package powercraft.core.blocks;
+package powercraft.core.blocks.tileentities;
 
 
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import powercraft.api.energy.PC_IEnergyPuffer;
 import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.gres.PC_IGresClient;
 import powercraft.api.gres.PC_IGresGuiOpenHandler;
+import powercraft.core.blocks.guis.PC_GuiPuffer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

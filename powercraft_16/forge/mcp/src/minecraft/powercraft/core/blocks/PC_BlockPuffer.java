@@ -12,6 +12,8 @@ import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.registries.PC_TextureRegistry;
+import powercraft.core.blocks.itemblocks.PC_ItemBlockPuffer;
+import powercraft.core.blocks.tileentities.PC_TileEntityPuffer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

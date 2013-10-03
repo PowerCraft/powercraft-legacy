@@ -1,7 +1,7 @@
 /**
  * 
  */
-package structurepattern;
+package powercraft.structurepattern;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -11,11 +11,11 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
+import powercraft.structurepattern.blocks.PCsp_BlockPattern;
 import powercraft.transport.PCtr_ModuleTransport;
 import powercraft.transport.blocks.PCtr_BlockClassicElevator;
 import powercraft.transport.blocks.PCtr_BlockClassicElevatorDown;
 import powercraft.transport.blocks.PCtr_BlockPlate;
-import structurepattern.blocks.PCsp_BlockPattern;
 
 /**
  * @author Aaron

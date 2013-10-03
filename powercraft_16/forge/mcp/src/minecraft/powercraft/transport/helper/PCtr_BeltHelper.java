@@ -29,17 +29,6 @@ public class PCtr_BeltHelper
 	public static final float STORAGE_BORDER_LONG = 0.8F;
 	public static final float STORAGE_BORDER_V = 0.6F;
 
-	public static void addTrackerToEntity(Entity entity){
-    	if(entity.ridingEntity!=null) return;
-    	entity.ridingEntity = getNewTrackerForEntity(entity);
-	}
-	
-	private static Entity getNewTrackerForEntity(Entity entity) {
-		PC_EntityFrictionless tmp = new PC_EntityFrictionless(entity.worldObj);
-		tmp.riddenByEntity = entity;
-		return tmp;
-	}
-
 	public static PC_Direction handleTrackerMovement(Entity entity) {
 		if(entity==null) return PC_Direction.UNKNOWN;
 		return PC_Direction.getDirectionFromEntity(entity, false);		

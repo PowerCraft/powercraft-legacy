@@ -1,7 +1,7 @@
 /**
  * 
  */
-package powercraft.transport.items.itemblocks;
+package powercraft.transport.blocks.itemblocks;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

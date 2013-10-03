@@ -1,4 +1,4 @@
-package powercraft.core.blocks;
+package powercraft.core.blocks.guis;
 
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,6 +10,7 @@ import powercraft.api.gres.events.PC_GresEvent;
 import powercraft.api.gres.events.PC_GresKeyEvent;
 import powercraft.api.gres.events.PC_GresTickEvent;
 import powercraft.api.gres.events.PC_IGresEventListener;
+import powercraft.core.blocks.tileentities.PC_TileEntityPuffer;
 
 
 public class PC_GuiPuffer implements PC_IGresClient, PC_IGresEventListener {

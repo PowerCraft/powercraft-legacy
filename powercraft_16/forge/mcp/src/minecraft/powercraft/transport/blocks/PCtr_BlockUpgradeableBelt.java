@@ -1,6 +1,5 @@
 package powercraft.transport.blocks;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -8,11 +7,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_BlockRotated;
-import powercraft.api.registries.PC_TextureRegistry;
+import powercraft.transport.blocks.itemblocks.PCtr_ItemBlockUpgradeableBelt;
 import powercraft.transport.blocks.tileentities.PCtr_TEUpgradeableBelt;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialConveyor;
-import powercraft.transport.items.itemblocks.PCtr_ItemBlockUpgradeableBelt;
 
 @PC_BlockInfo(name = "UpgradeableBelt", blockid = "upgradeableBelt", defaultid = 2051, tileEntity=PCtr_TEUpgradeableBelt.class, itemBlock=PCtr_ItemBlockUpgradeableBelt.class)
 public class PCtr_BlockUpgradeableBelt extends PC_BlockRotated

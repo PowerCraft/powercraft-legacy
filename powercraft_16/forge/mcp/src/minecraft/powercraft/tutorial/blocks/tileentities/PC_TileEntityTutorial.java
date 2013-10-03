@@ -1,4 +1,4 @@
-package powercraft.tutorial;
+package powercraft.tutorial.blocks.tileentities;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,6 +13,7 @@ import powercraft.api.gres.PC_IGresGuiOpenHandler;
 import powercraft.api.inventory.PC_Inventory;
 import powercraft.api.security.PC_Permission;
 import powercraft.api.upgrade.PC_UpgradeFamily;
+import powercraft.tutorial.blocks.guis.PC_GuiTutorial;
 
 // could rename to TileEntityUpgradeableBelt
 public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC_IGresGuiOpenHandler

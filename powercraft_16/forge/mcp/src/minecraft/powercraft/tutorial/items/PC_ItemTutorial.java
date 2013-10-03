@@ -1,9 +1,11 @@
-package powercraft.tutorial;
+package powercraft.tutorial.items;
 
+import powercraft.api.items.PC_ItemInfo;
 import powercraft.api.upgrade.PC_ItemUpgrade;
 import powercraft.api.upgrade.PC_UpgradeFamily;
 
 // should be PC_ItemUpgradeSpeedBoost or something
+@PC_ItemInfo(defaultid = 3412, itemid = "tutorial", name = "Tutorial")
 public class PC_ItemTutorial extends PC_ItemUpgrade
 {
 	private static int itemid = 3412;

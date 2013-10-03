@@ -1,8 +1,9 @@
-package powercraft.core.blocks;
+package powercraft.core.blocks.itemblocks;
 
 
 import net.minecraft.item.ItemStack;
 import powercraft.api.blocks.PC_ItemBlock;
+import powercraft.core.blocks.tileentities.PC_TileEntityPuffer;
 
 
 public class PC_ItemBlockPuffer extends PC_ItemBlock {
