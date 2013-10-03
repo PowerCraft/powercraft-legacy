@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_ItemBlock;
-import powercraft.transport.blocks.tileentities.PCtr_TEUpgradeableBelt;
+import powercraft.transport.blocks.tileEntities.PCtr_TEUpgradeableBelt;
 
 /**
  * @author Aaron

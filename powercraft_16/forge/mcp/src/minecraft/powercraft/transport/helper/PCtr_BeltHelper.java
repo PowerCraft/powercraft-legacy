@@ -116,14 +116,13 @@ public class PCtr_BeltHelper
 	@SuppressWarnings("unused")
 	public static AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
 	{
-		return AxisAlignedBB.getBoundingBox(i, 0.0F + j, k, (i + 1), (j + HEIGHT_COLLISION + 0.0F), (k + 1));
+		return AxisAlignedBB.getBoundingBox(0, 0, 0, 1, HEIGHT_COLLISION, 1);
 	}
 
 	@SuppressWarnings("unused")
 	public static AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k)
 	{
-		float f = 0.0F + HEIGHT_SELECTED;
-		return AxisAlignedBB.getBoundingBox(i, 0.0F + j, k, (i + 1), j + f, (float)k + 1);
+		return AxisAlignedBB.getBoundingBox(0, 0, 0, 1, HEIGHT_SELECTED, 1);
 	}
 
 	@SuppressWarnings("unused")

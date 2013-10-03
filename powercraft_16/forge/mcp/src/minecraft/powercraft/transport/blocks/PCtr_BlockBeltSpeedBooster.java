@@ -11,16 +11,16 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_Utils;
+import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
-import powercraft.api.blocks.PC_BlockRotated;
 import powercraft.api.registries.PC_TextureRegistry;
 import powercraft.transport.blocks.itemblocks.PCtr_ItemBlockUpgradeableBelt;
-import powercraft.transport.blocks.tileentities.PCtr_TEUpgradeableBelt;
+import powercraft.transport.blocks.tileEntities.PCtr_TEUpgradeableBelt;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialConveyor;
 
 @PC_BlockInfo(name = "SpeedBoostBelt", blockid = "speedbelt", defaultid = 2052, tileEntity=PCtr_TEUpgradeableBelt.class, itemBlock=PCtr_ItemBlockUpgradeableBelt.class)
-public class PCtr_BlockBeltSpeedBooster extends PC_BlockRotated
+public class PCtr_BlockBeltSpeedBooster extends PC_Block
 {
 	public PCtr_BlockBeltSpeedBooster(int id)
 	{
@@ -86,13 +86,13 @@ public class PCtr_BlockBeltSpeedBooster extends PC_BlockRotated
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
+	public AxisAlignedBB getCollisionBoundingBox(World world, int i, int j, int k)
 	{
 		return PCtr_BeltHelper.getCollisionBoundingBoxFromPool(world, i, j, k);
 	}
 
 	@Override
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k)
+	public AxisAlignedBB getSelectedBoundingBox(World world, int i, int j, int k)
 	{
 		return PCtr_BeltHelper.getSelectedBoundingBoxFromPool(world, i, j, k);
 	}

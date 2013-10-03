@@ -6,14 +6,14 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_EntityTracker;
+import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
-import powercraft.api.blocks.PC_BlockWithoutTileEntity;
 import powercraft.api.registries.PC_TextureRegistry;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialElevator;
 
 @PC_BlockInfo(name = "Plate", blockid = "plate", defaultid = 2052)
-public class PCtr_BlockPlate extends PC_BlockWithoutTileEntity
+public class PCtr_BlockPlate extends PC_Block
 {
 
 	public PCtr_BlockPlate(int id)
@@ -56,13 +56,13 @@ public class PCtr_BlockPlate extends PC_BlockWithoutTileEntity
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
+	public AxisAlignedBB getCollisionBoundingBox(World world, int i, int j, int k)
 	{
 		return PCtr_BeltHelper.getCollisionBoundingBoxFromPool(world, i, j, k);
 	}
 
 	@Override
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k)
+	public AxisAlignedBB getSelectedBoundingBox(World world, int i, int j, int k)
 	{
 		return PCtr_BeltHelper.getSelectedBoundingBoxFromPool(world, i, j, k);
 	}
