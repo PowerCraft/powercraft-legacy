@@ -1,6 +1,7 @@
 package powercraft.api.multiblocks;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -147,8 +148,7 @@ public class PC_BlockMultiblock extends PC_Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-
+	public AxisAlignedBB getSelectedBoundingBox(World world, int x, int y, int z) {
 		PC_TileEntityMultiblock tileEntity = PC_Utils.getTE(world, x, y, z);
 		if (tileEntity != null && selectionIndex != null) {
 			return tileEntity.getSelectionBox(selectionIndex);
@@ -157,18 +157,17 @@ public class PC_BlockMultiblock extends PC_Block {
 	}
 
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aabb, List list, Entity entity) {
-
+	public List<AxisAlignedBB> getCollisonBoxesList(World world, int x, int y, int z, Entity entity) {
+		List<AxisAlignedBB> list = new ArrayList<AxisAlignedBB>();
 		PC_TileEntityMultiblock tileEntity = PC_Utils.getTE(world, x, y, z);
-		if (tileEntity != null) tileEntity.addCollisionBoxesToList(aabb, list, entity);
+		if (tileEntity != null) tileEntity.addCollisionBoxesToList(list, entity);
+		return list;
 	}
 
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-
+	public AxisAlignedBB getCollisionBoundingBox(World world, int x, int y, int z) {
 		return null;
 	}
 

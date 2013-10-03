@@ -747,7 +747,7 @@ public abstract class PC_Block extends BlockContainer {
 		return dir;
 	}
 	
-	public AxisAlignedBB rotateAABB(IBlockAccess world, int x, int y, int z, AxisAlignedBB aabb, ForgeDirection dir){
+	public AxisAlignedBB rotateAABB(IBlockAccess world, int x, int y, int z, AxisAlignedBB aabb){
 		if(aabb==null)
 			return null;
 		PC_Direction pitch = getBlockPitch(world, x, y, z);
@@ -772,8 +772,7 @@ public abstract class PC_Block extends BlockContainer {
 	private static AxisAlignedBB rotateAABBAround(AxisAlignedBB aabb, PC_Direction dir){
 		switch(dir){
 		case DOWN:
-			new 
-			break;
+			return AxisAlignedBB.getBoundingBox(aabb.minZ, aabb.minY, 1-aabb.maxX, aabb.maxZ, aabb.maxY, 1-aabb.minX);
 		case EAST:
 			break;
 		case NORTH:
@@ -783,7 +782,7 @@ public abstract class PC_Block extends BlockContainer {
 		case UNKNOWN:
 			break;
 		case UP:
-			break;
+			return AxisAlignedBB.getBoundingBox(1-aabb.maxZ, aabb.minY, aabb.minX, 1-aabb.minZ, aabb.maxY, aabb.maxX);
 		case WEST:
 			break;
 		default:
