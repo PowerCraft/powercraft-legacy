@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.transport.blocks.itemblocks.PCtr_ItemBlockUpgradeableBelt;
-import powercraft.transport.blocks.tileEntities.PCtr_TEUpgradeableBelt;
+import powercraft.transport.blocks.tileentities.PCtr_TEUpgradeableBelt;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialConveyor;
 
