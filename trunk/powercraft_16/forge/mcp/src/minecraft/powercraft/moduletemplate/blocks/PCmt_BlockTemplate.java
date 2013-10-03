@@ -12,7 +12,7 @@ import powercraft.core.blocks.tileentities.PC_TileEntityRoaster;
  * @author Aaron
  *
  */
-@PC_BlockInfo(name = "BlockPattern", blockid = "blockpattern", defaultid = 3009, tileEntity = PC_TileEntityRoaster.class)
+@PC_BlockInfo(name = "BlockPattern", blockid = "blockpattern", defaultid = 3009)
 public class PCmt_BlockTemplate extends PC_Block {
 
 	/**
