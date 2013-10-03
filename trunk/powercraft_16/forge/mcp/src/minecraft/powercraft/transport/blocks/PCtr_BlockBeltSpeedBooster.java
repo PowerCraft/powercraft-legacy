@@ -14,10 +14,10 @@ import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.blocks.PC_BlockRotated;
 import powercraft.api.registries.PC_TextureRegistry;
+import powercraft.transport.blocks.itemblocks.PCtr_ItemBlockUpgradeableBelt;
 import powercraft.transport.blocks.tileentities.PCtr_TEUpgradeableBelt;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialConveyor;
-import powercraft.transport.items.itemblocks.PCtr_ItemBlockUpgradeableBelt;
 
 @PC_BlockInfo(name = "SpeedBoostBelt", blockid = "speedbelt", defaultid = 2052, tileEntity=PCtr_TEUpgradeableBelt.class, itemBlock=PCtr_ItemBlockUpgradeableBelt.class)
 public class PCtr_BlockBeltSpeedBooster extends PC_BlockRotated

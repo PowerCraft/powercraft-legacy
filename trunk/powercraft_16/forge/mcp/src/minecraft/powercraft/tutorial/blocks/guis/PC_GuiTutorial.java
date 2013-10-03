@@ -1,7 +1,7 @@
 /**
  * 
  */
-package powercraft.tutorial;
+package powercraft.tutorial.blocks.guis;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,6 +22,7 @@ import powercraft.api.gres.events.PC_GresKeyEvent;
 import powercraft.api.gres.events.PC_GresPrePostEvent.EventType;
 import powercraft.api.gres.events.PC_GresTickEvent;
 import powercraft.api.gres.events.PC_IGresEventListener;
+import powercraft.tutorial.blocks.tileentities.PC_TileEntityTutorial;
 
 /**
  * if there were an Inventory we would extend PC_GresBaseWithInventory

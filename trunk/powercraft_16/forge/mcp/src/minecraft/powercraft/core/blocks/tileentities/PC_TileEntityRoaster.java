@@ -1,4 +1,4 @@
-package powercraft.core.blocks;
+package powercraft.core.blocks.tileentities;
 
 
 import java.util.Iterator;

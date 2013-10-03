@@ -1,4 +1,4 @@
-package powercraft.core.blocks;
+package powercraft.core.blocks.guis;
 
 
 import java.util.Arrays;
@@ -12,6 +12,7 @@ import powercraft.api.gres.*;
 import powercraft.api.gres.events.PC_GresEvent;
 import powercraft.api.gres.events.PC_GresKeyEvent;
 import powercraft.api.gres.events.PC_IGresEventListener;
+import powercraft.core.blocks.tileentities.PC_TileEntityGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
