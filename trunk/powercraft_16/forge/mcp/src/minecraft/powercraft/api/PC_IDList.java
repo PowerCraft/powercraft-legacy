@@ -11,6 +11,7 @@ public @interface PC_IDList {
 
 	public PC_IDElement[] elements();
 
+	@Target({})
 	@Retention(RetentionPolicy.SOURCE)
 	public @interface PC_IDElement{
 
