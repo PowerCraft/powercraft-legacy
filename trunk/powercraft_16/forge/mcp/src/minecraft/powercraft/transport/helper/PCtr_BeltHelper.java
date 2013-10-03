@@ -161,7 +161,7 @@ public class PCtr_BeltHelper
 		{
 			return true;
 		}
-
+		
 		if (!entity.isEntityAlive())
 		{
 			return true;

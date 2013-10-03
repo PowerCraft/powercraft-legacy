@@ -36,6 +36,9 @@ public class PCtr_BlockPlate extends PC_BlockWithoutTileEntity {
 	
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+		if(PCtr_BeltHelper.isEntityIgnored(entity) || !entity.onGround){
+			return;
+		}
 		NBTTagCompound tagCompound = entity.getEntityData();
 		NBTTagCompound powerCraftTag;
 		if(tagCompound.hasKey("PowerCraft")){
