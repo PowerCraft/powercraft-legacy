@@ -468,7 +468,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	public void velocityToAddToEntity(Entity entity, Vec3 vec3) {}
 
 	public int isProvidingWeakPower(PC_Direction side) {
-		return 0;
+		return getRedstonePowerValue(side);
 	}
 
 	public int colorMultiplier() {
@@ -476,7 +476,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	}
 
 	public int isProvidingStrongPower(PC_Direction side) {
-		return 0;
+		return getRedstonePowerValue(side);
 	}
 
 	public void onBlockPlacedBy(EntityLivingBase living, ItemStack itemStack) {

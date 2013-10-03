@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 
-@PC_BlockInfo(name = "Generator", blockid = "generator", defaultid = 3001, tileEntity = PC_TileEntityGenerator.class)
+@PC_BlockInfo(name = "Generator", blockid = "generator", defaultid = 3001, tileEntity = PC_TileEntityGenerator.class, rotateable=true, pitchable=true)
 public class PC_BlockGenerator extends PC_Block {
 
 	private Icon frontLevel[] = new Icon[4];
@@ -47,14 +47,6 @@ public class PC_BlockGenerator extends PC_Block {
 	@Override
 	public void registerRecipes() {
 
-	}
-
-
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
-
-		int l = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		PC_Utils.setMD(world, x, y, z, PC_Direction.PLAYER2MD[l]);
 	}
 
 
