@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.registries.PC_TextureRegistry;
+import powercraft.tutorial.blocks.tileentities.PC_TileEntityTutorial;
 				//IngameName	internalName		defaultid		reference to tileentity class
 @PC_BlockInfo(name="Tutorial", blockid="tutorial", defaultid=2000, tileEntity=PC_TileEntityTutorial.class)
 public class PC_BlockTutorial extends PC_Block{
