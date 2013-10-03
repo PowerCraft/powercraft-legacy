@@ -11,6 +11,7 @@ public @interface PC_IDList {
 
 	public PC_IDElement[] elements();
 
+	@Retention(RetentionPolicy.SOURCE)
 	public @interface PC_IDElement{
 
 		public int id();
