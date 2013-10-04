@@ -52,7 +52,7 @@ public class PCtr_BlockBeltSpeedBooster extends PC_Block
 	{
 		if (!PCtr_BeltHelper.isEntityIgnored(entity))
 		{
-			PC_Direction blockrotation; // -??????
+			int blockrotation = getBlockRotation(world, x, y, z);
 			if (entity.getEntityData().hasKey("PC_StoredMotions"))
 			{
 				

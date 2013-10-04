@@ -6,7 +6,6 @@ package powercraft.moduletemplate.blocks;
 import net.minecraft.block.material.Material;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
-import powercraft.core.blocks.tileentities.PC_TileEntityRoaster;
 
 /**
  * @author Aaron
