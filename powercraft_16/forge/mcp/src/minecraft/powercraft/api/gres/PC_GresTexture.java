@@ -64,7 +64,7 @@ public class PC_GresTexture {
 
 	public void draw(int x, int y, int width, int height, int state) {
 
-		PC_ClientUtils.mc().func_110434_K().func_110577_a(texture);
+		PC_ClientUtils.mc().getTextureManager().bindTexture(texture);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		PC_Vec2I location = locations[state];
 
