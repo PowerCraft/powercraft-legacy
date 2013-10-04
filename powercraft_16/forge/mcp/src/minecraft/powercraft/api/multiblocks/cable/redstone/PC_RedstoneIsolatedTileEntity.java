@@ -187,10 +187,14 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 
 
 	@Override
-	protected int canConnectToBlock(World world, int x, int y, int z, Block block) {
+	protected int canConnectToBlock(World world, int x, int y, int z, Block block, PC_Direction dir, PC_Direction dir2) {
 
-		if (getCableCount() == 1)
-			return block instanceof BlockRedstoneWire || (block != null && block.canProvidePower()) ? getMask() | (16 << 16) : 0;
+		if (getCableCount() == 1){
+			if(block instanceof BlockRedstoneWire){
+				return dir2 == PC_Direction.DOWN || (dir2.getOpposite() == PC_MultiblockIndex.getFaceDir(index) && dir==PC_Direction.DOWN)? getMask() | (16 << 16) : 0;
+			}
+			return (block != null && PC_Utils.canConnectRedstone(world, x, y, z, dir2)) ? getMask() | (16 << 16) : 0;
+		}
 		return 0;
 	}
 
@@ -198,7 +202,7 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 	@Override
 	public boolean canConnectRedstone(PC_Direction side) {
 
-		return getCableCount() == 1 && PC_MultiblockIndex.getFaceDir(index) == PC_Direction.DOWN;
+		return side!=PC_Direction.UNKNOWN && getCableCount() == 1 && (PC_MultiblockIndex.getFaceDir(index) == PC_Direction.DOWN || PC_MultiblockIndex.getFaceDir(index) == side);
 	}
 
 
@@ -296,25 +300,22 @@ public class PC_RedstoneIsolatedTileEntity extends PC_CableTileEntity {
 	}
 
 
-	@SuppressWarnings("unused")
-	public boolean isIO(int xOffset, int yOffset, int zOffset, PC_Direction dir) {
+	public boolean isIO(int xOffset, int yOffset, int zOffset, PC_Direction dir, PC_Direction dir2) {
 
 		Block block = PC_Utils.getBlock(multiblock.worldObj, multiblock.xCoord + xOffset, multiblock.yCoord + yOffset, multiblock.zCoord + zOffset);
-		return canConnectToBlock(multiblock.worldObj, multiblock.xCoord + xOffset, multiblock.yCoord + yOffset, multiblock.zCoord + zOffset, block) != 0;
+		return canConnectToBlock(multiblock.worldObj, multiblock.xCoord + xOffset, multiblock.yCoord + yOffset, multiblock.zCoord + zOffset, block, dir, dir2) != 0;
 	}
 
 
 	@Override
 	public int getRedstonePowerValue(PC_Direction side) {
 
-		if (!isClient()) {
+		if (!isClient() && side!=PC_Direction.UNKNOWN) {
 			PC_RedstoneGrid grid = getGrid();
 			if (grid != null && isIO) {
 				PC_Direction dir = side.getOpposite();
-				Block block = PC_Utils.getBlock(multiblock.worldObj, multiblock.xCoord + dir.offsetX, multiblock.yCoord + dir.offsetY,
-						multiblock.zCoord + dir.offsetZ);
-				if (PC_MultiblockIndex.getFaceDir(index) == dir
-						|| ((block instanceof BlockRedstoneWire) && PC_MultiblockIndex.getFaceDir(index) == PC_Direction.DOWN)) {
+				PC_Direction dir2 = PC_MultiblockIndex.getFaceDir(index);
+				if(isIO(dir.offsetX, dir.offsetY, dir.offsetZ, PC_Direction.DOWN, dir2.getOpposite())){
 					return grid.getRedstonePowerValue();
 				}
 			}

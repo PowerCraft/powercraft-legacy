@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
@@ -410,7 +411,7 @@ public abstract class PC_Block extends BlockContainer {
 	
 	@Override
 	public final int getComparatorInputOverride(World world, int x, int y, int z, int side) {
-		return getComparatorInputOverride(world, x, y, z, getBlockRotation(world, x, y, z, side));
+		return getComparatorInputOverride(world, x, y, z, getBlockRotation(world, x, y, z, redstone2Side[side+1]));
 	}
 
 	@Override
@@ -572,12 +573,14 @@ public abstract class PC_Block extends BlockContainer {
 		TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
 		if(tileEntity instanceof PC_TileEntity)
 			return ((PC_TileEntity)tileEntity).canConnectRedstone(side);
-		return super.canConnectRedstone(world, x, y, z, side.ordinal());
+		return canProvidePower() && side!=PC_Direction.UNKNOWN;
 	}
+	
+	private static final int redstone2Side[] = {-1, 2, 5, 3, 4};
 	
 	@Override
 	public final boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
-		return canConnectRedstone(world, x, y, z, getBlockRotation(world, x, y, z, side));
+		return canConnectRedstone(world, x, y, z, getBlockRotation(world, x, y, z, redstone2Side[side+1]));
 	}
 
 	@Override
@@ -814,7 +817,7 @@ public abstract class PC_Block extends BlockContainer {
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, RenderBlocks renderer) {
 		TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
 		if(tileEntity instanceof PC_TileEntity)
-			((PC_TileEntity)tileEntity).renderWorldBlock(renderer);
+			return ((PC_TileEntity)tileEntity).renderWorldBlock(renderer);
 		return false;
 	}
 	
@@ -835,8 +838,8 @@ public abstract class PC_Block extends BlockContainer {
 		if(canRotate){
 			metadata <<= 2;
 			int dir = 0;
-			
-			metadata |= dir&2;
+			dir = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D);
+			metadata |= dir&3;
 		}
 		return metadata;
 	}

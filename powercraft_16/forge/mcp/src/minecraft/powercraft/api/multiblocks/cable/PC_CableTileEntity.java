@@ -253,7 +253,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		return connection | (length << 16);
 	}
 
-	protected int canConnectToBlock(World world, int x, int y, int z, Block block) {
+	protected int canConnectToBlock(World world, int x, int y, int z, Block block, PC_Direction dir, PC_Direction dir2) {
 
 		return 0;
 	}
@@ -265,10 +265,12 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		if (block instanceof PC_BlockMultiblock) {
 			PC_TileEntityMultiblock multiblock = PC_Utils.getTE(world, x, y, z);
 			PC_MultiblockTileEntity mbte = multiblock.getMultiblockTileEntity(PC_MultiblockIndex.FACEINDEXFORDIR[dir.ordinal()]);
-			if (mbte != null) return canConnectToMultiblock(mbte);
+			if (mbte != null) 
+				return canConnectToMultiblock(mbte);
+			return 0;
 		}
 		if (block != null) {
-			int i = canConnectToBlock(world, x, y, z, block);
+			int i = canConnectToBlock(world, x, y, z, block, dir, dir2);
 			if (i != 0) isIO = true;
 			return i;
 		}

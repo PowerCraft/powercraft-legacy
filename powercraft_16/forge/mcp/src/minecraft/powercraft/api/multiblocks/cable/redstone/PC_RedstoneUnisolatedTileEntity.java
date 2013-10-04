@@ -110,16 +110,18 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 
 
 	@Override
-	protected int canConnectToBlock(World world, int x, int y, int z, Block block) {
-
-		return block instanceof BlockRedstoneWire || (block != null && block.canProvidePower()) ? 0xFFFF : 0;
+	protected int canConnectToBlock(World world, int x, int y, int z, Block block, PC_Direction dir, PC_Direction dir2) {
+		if(block instanceof BlockRedstoneWire){
+			return dir2 == PC_Direction.DOWN || (dir2.getOpposite() == PC_MultiblockIndex.getFaceDir(index) && dir==PC_Direction.DOWN)?0xFF | (16 << 16) : 0;
+		}
+		return block != null && block.canProvidePower() ? 0xFF | (16 << 16) : 0;
 	}
 
 
 	@Override
 	public boolean canConnectRedstone(PC_Direction side) {
 
-		return PC_MultiblockIndex.getFaceDir(index) == PC_Direction.DOWN;
+		return side!=PC_Direction.UNKNOWN && (PC_MultiblockIndex.getFaceDir(index) == PC_Direction.DOWN || PC_MultiblockIndex.getFaceDir(index) == side);
 	}
 
 
@@ -176,11 +178,10 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 	}
 
 
-	@SuppressWarnings("unused")
-	private boolean isIO(int xOffset, int yOffset, int zOffset, PC_Direction dir) {
+	private boolean isIO(int xOffset, int yOffset, int zOffset, PC_Direction dir, PC_Direction dir2) {
 
 		Block block = PC_Utils.getBlock(multiblock.worldObj, multiblock.xCoord + xOffset, multiblock.yCoord + yOffset, multiblock.zCoord + zOffset);
-		return canConnectToBlock(multiblock.worldObj, multiblock.xCoord + xOffset, multiblock.yCoord + yOffset, multiblock.zCoord + zOffset, block) != 0;
+		return canConnectToBlock(multiblock.worldObj, multiblock.xCoord + xOffset, multiblock.yCoord + yOffset, multiblock.zCoord + zOffset, block, dir, dir2) != 0;
 	}
 
 
@@ -608,13 +609,11 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 	@Override
 	public int getRedstonePowerValue(PC_Direction side) {
 
-		if (!isClient()) {
+		if (!isClient() && side!=PC_Direction.UNKNOWN) {
 			getGridIfNull();
 			PC_Direction dir = side.getOpposite();
-			Block block = PC_Utils.getBlock(multiblock.worldObj, multiblock.xCoord + dir.offsetX, multiblock.yCoord + dir.offsetY, multiblock.zCoord
-					+ dir.offsetZ);
-			if (PC_MultiblockIndex.getFaceDir(index) == dir
-					|| ((block instanceof BlockRedstoneWire) && PC_MultiblockIndex.getFaceDir(index) == PC_Direction.DOWN)) {
+			PC_Direction dir2 = PC_MultiblockIndex.getFaceDir(index);
+			if((isIO && isIO(dir.offsetX, dir.offsetY, dir.offsetZ, PC_Direction.DOWN, dir2.getOpposite())) || dir==dir2){
 				return grid.getRedstonePowerValue();
 			}
 		}
@@ -634,21 +633,21 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 			int connection[] = getConnections(i);
 			if (connection != null) {
 				if (connection.length > 1 && (connection[1] & 0xFFFF) != 0) {
-					if (isIO(dir.offsetX, dir.offsetY, dir.offsetZ, dir2)) {
+					if (isIO(dir.offsetX, dir.offsetY, dir.offsetZ, dir, dir2)) {
 						poweringBlocks.add(new PC_Vec3IWithRotation(multiblock.xCoord + dir.offsetX, multiblock.yCoord + dir.offsetY,
-								multiblock.zCoord + dir.offsetZ, dir2));
+								multiblock.zCoord + dir.offsetZ, dir));
 					}
 				}
 				if (connection.length > 2 && (connection[2] & 0xFFFF) != 0) {
-					if (isIO(dir2.offsetX, dir2.offsetY, dir2.offsetZ, dir)) {
+					if (isIO(dir2.offsetX, dir2.offsetY, dir2.offsetZ, dir2, dir)) {
 						poweringBlocks.add(new PC_Vec3IWithRotation(multiblock.xCoord + dir2.offsetX, multiblock.yCoord + dir2.offsetY,
-								multiblock.zCoord + dir2.offsetZ, dir));
+								multiblock.zCoord + dir2.offsetZ, dir2));
 					}
 				}
 				if (connection.length > 3 && (connection[3] & 0xFFFF) != 0) {
-					if (isIO(dir.offsetX + dir2.offsetX, dir.offsetY + dir2.offsetY, dir.offsetZ + dir2.offsetZ, dir2.getOpposite())) {
+					if (isIO(dir.offsetX + dir2.offsetX, dir.offsetY + dir2.offsetY, dir.offsetZ + dir2.offsetZ, dir, dir2)) {
 						poweringBlocks.add(new PC_Vec3IWithRotation(multiblock.xCoord + dir.offsetX + dir2.offsetX, multiblock.yCoord + dir.offsetY
-								+ dir2.offsetY, multiblock.zCoord + dir.offsetZ + dir2.offsetZ, dir2.getOpposite()));
+								+ dir2.offsetY, multiblock.zCoord + dir.offsetZ + dir2.offsetZ, dir));
 					}
 				}
 			}

@@ -338,5 +338,17 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 	public boolean isLadder(EntityLivingBase entity) {
 		return tileEntities[0] == null ? false : tileEntities[0] instanceof PC_ConduitTileEntity;
 	}
+
+
+	@Override
+	public boolean isBlockSolid(PC_Direction side) {
+		PC_MultiblockIndex index = PC_MultiblockIndex.FACEINDEXFORDIR[side.ordinal()];
+		if (tileEntities[index.ordinal()] != null) {
+			return tileEntities[index.ordinal()].isSolid();
+		}
+		return false;
+	}
+	
+	
 	
 }
