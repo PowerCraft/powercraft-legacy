@@ -4,12 +4,15 @@ package powercraft.api.multiblocks.cable.redstone;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import powercraft.api.items.PC_ItemInfo;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.cable.PC_CableItem;
+import powercraft.api.registries.PC_RecipeRegistry;
+import powercraft.api.registries.PC_RecipeRegistry.PC_RecipeTypes;
 import powercraft.api.registries.PC_TextureRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -60,6 +63,9 @@ public class PC_RedstoneIsolatedItem extends PC_CableItem {
 	@Override
 	public void registerRecipes() {
 
+		for(int i=0; i<16; i++){
+			PC_RecipeRegistry.addRecipe(PC_RecipeTypes.SHAPELESS, new ItemStack(this, 1, i), PC_RedstoneUnisolatedItem.item, new ItemStack(Item.dyePowder, 1, i));
+		}
 	}
 
 

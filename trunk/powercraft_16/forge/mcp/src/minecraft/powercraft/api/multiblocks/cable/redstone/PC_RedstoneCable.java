@@ -69,22 +69,22 @@ public class PC_RedstoneCable implements PC_IRedstoneCable {
 				int connection[] = tileEntity.getConnections(i);
 				if (connection != null) {
 					if (connection.length > 1 && (connection[1] & 0xFFFF) != 0) {
-						if (tileEntity.isIO(dir.offsetX, dir.offsetY, dir.offsetZ, dir2)) {
+						if (tileEntity.isIO(dir.offsetX, dir.offsetY, dir.offsetZ, dir, dir2)) {
 							poweringBlocks.add(new PC_Vec3IWithRotation(tileEntity.getTileEntity().xCoord + dir.offsetX,
-									tileEntity.getTileEntity().yCoord + dir.offsetY, tileEntity.getTileEntity().zCoord + dir.offsetZ, dir2));
+									tileEntity.getTileEntity().yCoord + dir.offsetY, tileEntity.getTileEntity().zCoord + dir.offsetZ, dir));
 						}
 					}
 					if (connection.length > 2 && (connection[2] & 0xFFFF) != 0) {
-						if (tileEntity.isIO(dir2.offsetX, dir2.offsetY, dir2.offsetZ, dir)) {
+						if (tileEntity.isIO(dir2.offsetX, dir2.offsetY, dir2.offsetZ, dir2, dir)) {
 							poweringBlocks.add(new PC_Vec3IWithRotation(tileEntity.getTileEntity().xCoord + dir2.offsetX,
-									tileEntity.getTileEntity().yCoord + dir2.offsetY, tileEntity.getTileEntity().zCoord + dir2.offsetZ, dir));
+									tileEntity.getTileEntity().yCoord + dir2.offsetY, tileEntity.getTileEntity().zCoord + dir2.offsetZ, dir2));
 						}
 					}
 					if (connection.length > 3 && (connection[3] & 0xFFFF) != 0) {
-						if (tileEntity.isIO(dir.offsetX + dir2.offsetX, dir.offsetY + dir2.offsetY, dir.offsetZ + dir2.offsetZ, dir2.getOpposite())) {
+						if (tileEntity.isIO(dir.offsetX + dir2.offsetX, dir.offsetY + dir2.offsetY, dir.offsetZ + dir2.offsetZ, dir, dir2)) {
 							poweringBlocks.add(new PC_Vec3IWithRotation(tileEntity.getTileEntity().xCoord + dir.offsetX + dir2.offsetX, tileEntity
 									.getTileEntity().yCoord + dir.offsetY + dir2.offsetY, tileEntity.getTileEntity().zCoord + dir.offsetZ
-									+ dir2.offsetZ, dir2.getOpposite()));
+									+ dir2.offsetZ, dir));
 						}
 					}
 				}

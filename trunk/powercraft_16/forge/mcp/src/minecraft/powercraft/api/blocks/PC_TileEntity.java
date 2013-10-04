@@ -2,7 +2,6 @@ package powercraft.api.blocks;
 
 
 import java.lang.reflect.Field;
-import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -28,7 +27,6 @@ import powercraft.api.PC_FieldDescription;
 import powercraft.api.PC_Logger;
 import powercraft.api.PC_NBTTagHandler;
 import powercraft.api.PC_PacketHandler;
-import powercraft.api.PC_PacketHandlerClient;
 import powercraft.api.PC_Utils;
 import powercraft.api.energy.PC_EnergyGrid;
 import powercraft.api.energy.PC_IEnergyConsumer;
@@ -336,6 +334,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		try{
 			super.readFromNBT(nbtTagCompound);
+			blockMetadata = nbtTagCompound.getInteger("metadata");
 			loadFieldsFromNBT(nbtTagCompound);
 			onLoadedFromNBT();
 		}catch(Throwable e){
@@ -348,6 +347,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 
 		super.writeToNBT(nbtTagCompound);
+		nbtTagCompound.setInteger("metadata", blockMetadata);
 		saveFieldsToNBT(nbtTagCompound, 0);
 		
 	}
@@ -437,12 +437,14 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	public void loadFromNBTPacket(NBTTagCompound nbtTagCompound) {
 		loadFieldsFromNBT(nbtTagCompound);
+		blockMetadata = nbtTagCompound.getInteger("metadata");
 		onLoadedFromNBT();
 		
 	}
 
 	public void saveToNBTPacket(NBTTagCompound nbtTagCompound) {
 		saveFieldsToNBT(nbtTagCompound, 1);
+		nbtTagCompound.setInteger("metadata", blockMetadata);
 	}
 	
 	public void saveToGuiNBTPacket(NBTTagCompound nbtTagCompound){
@@ -580,6 +582,26 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	public boolean isFertile() {
 		return false;
+	}
+	
+	@Override
+	public void updateContainingBlockInfo(){
+		this.blockType = null;
+	}
+	
+	@Override
+	public int getBlockMetadata(){
+		return blockMetadata;
+	}
+	
+	@Override
+	public void onInventoryChanged(){
+		if (worldObj != null){
+			worldObj.updateTileEntityChunkAndDoNothing(xCoord, yCoord, zCoord, this);
+			if (getBlockType() != null){
+				worldObj.func_96440_m(xCoord, yCoord, zCoord, getBlockType().blockID);
+			}
+		}
 	}
 	
 }

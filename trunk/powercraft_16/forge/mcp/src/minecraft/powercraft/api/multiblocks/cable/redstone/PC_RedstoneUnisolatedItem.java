@@ -2,10 +2,13 @@ package powercraft.api.multiblocks.cable.redstone;
 
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
 import powercraft.api.items.PC_ItemInfo;
 import powercraft.api.multiblocks.PC_MultiblockTileEntity;
 import powercraft.api.multiblocks.cable.PC_CableItem;
+import powercraft.api.registries.PC_RecipeRegistry;
+import powercraft.api.registries.PC_RecipeRegistry.PC_RecipeTypes;
 import powercraft.api.registries.PC_TextureRegistry;
 
 
@@ -41,6 +44,8 @@ public class PC_RedstoneUnisolatedItem extends PC_CableItem {
 	@Override
 	public void registerRecipes() {
 
+		PC_RecipeRegistry.addRecipe(PC_RecipeTypes.SMELTING, this, Item.redstone);
+		
 	}
 
 

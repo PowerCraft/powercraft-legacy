@@ -80,6 +80,11 @@ public abstract class PC_MultiblockItem extends PC_Item {
 				default:
 					break;
 			}
+			block = PC_Utils.getBlock(world, x, y, z);
+			if ((block == Block.snow && (world.getBlockMetadata(x, y, z) & 7) < 1) || !(block != Block.vine && block != Block.tallGrass && block != Block.deadBush
+					&& (block == null || !block.isBlockReplaceable(world, x, y, z)))) {
+				replaceAble = true;
+			}
 		} else {
 			replaceAble = true;
 		}
@@ -105,7 +110,6 @@ public abstract class PC_MultiblockItem extends PC_Item {
 			default:
 				break;
 		}
-		block = PC_Utils.getBlock(world, x, y, z);
 		if (block == null || replaceAble) {
 			world.setBlock(x, y, z, PC_BlockMultiblock.block.blockID);
 			block = PC_Utils.getBlock(world, x, y, z);

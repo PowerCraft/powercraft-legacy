@@ -104,7 +104,7 @@ public class PC_Utils {
 
 		TileEntity te = getTE(blockAccess, x, y, z);
 		if(te!=null){
-			return te.blockMetadata;
+			return te.getBlockMetadata();
 		}
 		return blockAccess.getBlockMetadata(x, y, z);
 	}
@@ -379,6 +379,16 @@ public class PC_Utils {
 	
 	protected boolean iisClient(){
 		return false;
+	}
+
+	private static final int redstone2Side[] = {-2, -2, 0, 2, 3, 1, -1};
+	public static boolean canConnectRedstone(World world, int x, int y, int z, PC_Direction side) {
+		Block block = getBlock(world, x, y, z);
+		int s = redstone2Side[side.ordinal()];
+		if(s==-2){
+			return block.canProvidePower();
+		}
+		return block.canConnectRedstone(world, x, y, z, redstone2Side[side.ordinal()]);
 	}
 	
 }

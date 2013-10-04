@@ -235,4 +235,8 @@ public abstract class PC_MultiblockTileEntity implements PC_INBT {
 		
 	}
 
+	public boolean isSolid() {
+		return false;
+	}
+
 }
