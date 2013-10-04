@@ -3,9 +3,13 @@ package powercraft.api.multiblocks.covers;
 
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import powercraft.api.PC_Direction;
 import powercraft.api.items.PC_ItemInfo;
@@ -26,7 +30,7 @@ public class PC_CoverItem extends PC_MultiblockItem {
 		setHasSubtypes(true);
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void getSubItems(int itemID, CreativeTabs creativeTab, List list) {
 		list.add(getCoverItem(2, 0, Block.stone));
@@ -44,7 +48,7 @@ public class PC_CoverItem extends PC_MultiblockItem {
 
 	@Override
 	public void registerRecipes() {
-		
+		GameRegistry.addRecipe(new PC_CoverRecipes(Item.axeStone));
 	}
 
 	@Override
@@ -58,24 +62,39 @@ public class PC_CoverItem extends PC_MultiblockItem {
 	}
 	
 	public static int getThickness(ItemStack itemStack){
-		return (itemStack.getItemDamage() & 7) + 1;
+		return itemStack.getItemDamage();
 	}
 	
-	public static int getMetadata(ItemStack itemStack){
-		return (itemStack.getItemDamage()>>3 & 15);
-	}
-	
-	public static Block getBlock(ItemStack itemStack){
-		return Block.blocksList[(itemStack.getItemDamage()>>7)];
+	public static ItemStack getInner(ItemStack itemStack){
+		return itemStack.getTagCompound()==null?null:ItemStack.loadItemStackFromNBT(itemStack.getTagCompound().getCompoundTag("inner"));
 	}
 	
 	public static Icon getIconFormSide(ItemStack itemStack, PC_Direction side){
-		return getBlock(itemStack).getIcon(side.ordinal(), getMetadata(itemStack));
+		ItemStack inner = getInner(itemStack);
+		return getBlock(inner.itemID).getIcon(side.ordinal(), inner.getItemDamage());
 	}
 	
+	private static Block getBlock(int block) {
+		return Block.blocksList.length<=block || block<0?null:Block.blocksList[block];
+	}
+
 	public static ItemStack getCoverItem(int thickness, int metadata, Block block){
-		int damage = (thickness & 7)|((metadata & 15)<<3)|(block.blockID<<7);
-		return new ItemStack(item, 1, damage);
+		ItemStack inner = new ItemStack(block, 1, metadata);
+		ItemStack is = new ItemStack(item, 1, thickness);
+		NBTTagCompound nbtTagCompound = new NBTTagCompound();
+		inner.writeToNBT(nbtTagCompound);
+		is.setTagInfo("inner", nbtTagCompound);
+		return is;
+	}
+
+	String[] names = new String[]{"1/16", "1/8", "3/16", "1/4", "5/16", "3/8", "7/16", "1/2", "9/16", "5/8", "11/16", "3/4", "13/16", "7/8", "15/16", "1"}; 
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean advancedItemTooltips) {
+		int thickness = getThickness(itemStack);
+		ItemStack is = getInner(itemStack);
+		list.add(names[thickness-1] + " of block: "+is.getDisplayName());
 	}
 	
 }
