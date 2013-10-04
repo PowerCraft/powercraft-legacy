@@ -247,10 +247,11 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean renderWorldBlock(RenderBlocks renderer) {
-
-		for (int i = 0; i < tileEntities.length; i++) {
-			if (tileEntities[i] != null) {
-				tileEntities[i].renderWorldBlock(renderer);
+		if(!renderer.hasOverrideBlockTexture()){
+			for (int i = 0; i < tileEntities.length; i++) {
+				if (tileEntities[i] != null) {
+					tileEntities[i].renderWorldBlock(renderer);
+				}
 			}
 		}
 		return true;
