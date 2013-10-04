@@ -41,7 +41,6 @@ import powercraft.api.security.PC_Permissions;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@SuppressWarnings("unused") 
 public abstract class PC_TileEntity extends TileEntity implements PC_IPermissionHandler {
 
 	protected boolean send = false;
@@ -597,7 +596,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	@Override
 	public void onInventoryChanged(){
 		if (worldObj != null){
-			worldObj.updateTileEntityChunkAndDoNothing(xCoord, yCoord, zCoord, this);
+			worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
 			if (getBlockType() != null){
 				worldObj.func_96440_m(xCoord, yCoord, zCoord, getBlockType().blockID);
 			}

@@ -32,8 +32,9 @@ public class PC_BlockRegistry {
 			}
 		}
 		
+		@Override
 		public void bindTexture(ResourceLocation texture){
-			func_110628_a(texture);
+			super.bindTexture(texture);
 		}
 		
 	}
