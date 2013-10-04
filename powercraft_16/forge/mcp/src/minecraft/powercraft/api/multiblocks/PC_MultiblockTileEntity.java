@@ -147,15 +147,42 @@ public abstract class PC_MultiblockTileEntity implements PC_INBT {
 
 	public List<AxisAlignedBB> getCollisionBoxes() {
 
-		AxisAlignedBB aabb = getSelectionBox();
+		AxisAlignedBB aabb = getCollisionBox();
 		if (aabb == null) return null;
 		List<AxisAlignedBB> list = new ArrayList<AxisAlignedBB>();
 		list.add(aabb);
 		return list;
 	}
 
-
 	public AxisAlignedBB getSelectionBox() {
+		AxisAlignedBB aabb = AxisAlignedBB.getAABBPool().getAABB(0, 0, 0, 0, 0, 0);
+		List<AxisAlignedBB> list = getCollisionBoxes();
+		aabb = list.get(0);
+		aabb = AxisAlignedBB.getBoundingBox(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ);
+		for(AxisAlignedBB e:list){
+			if(aabb.minX>e.minX){
+				aabb.minX = e.minX;
+			}
+			if(aabb.minY>e.minY){
+				aabb.minY = e.minY;
+			}
+			if(aabb.minZ>e.minZ){
+				aabb.minZ = e.minZ;
+			}
+			if(aabb.maxX<e.maxX){
+				aabb.maxX = e.maxX;
+			}
+			if(aabb.maxY<e.maxY){
+				aabb.maxY = e.maxY;
+			}
+			if(aabb.maxZ<e.maxZ){
+				aabb.maxZ = e.maxZ;
+			}
+		}
+		return aabb;
+	}
+	
+	public AxisAlignedBB getCollisionBox() {
 
 		double thickness16 = thickness / 16.0;
 		double thickness32 = thickness / 32.0;
