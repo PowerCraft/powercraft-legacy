@@ -269,7 +269,7 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		return list;
 	}
 
-	@Override
+	/*@Override
 	public AxisAlignedBB getSelectionBox() {
 		double s = thickness/32.0;
 		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0.5-s, 0.5-s, 0.5-s, 0.5+s, 0.5+s, 0.5+s);
@@ -286,6 +286,6 @@ public abstract class PC_ConduitTileEntity extends PC_MultiblockTileEntity {
 		if(!notingOnSide(PC_Direction.SOUTH))
 			aabb.maxZ = 1;
 		return aabb;
-	}
+	}*/
 	
 }

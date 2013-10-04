@@ -1,6 +1,7 @@
 package powercraft.api.multiblocks.cable;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -405,7 +406,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	}
 
 
-	@Override
+	/*@Override
 	public AxisAlignedBB getSelectionBox() {
 
 		float s = thickness / 16.0f;
@@ -438,7 +439,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			return AxisAlignedBB.getBoundingBox(minX, 0, 0, maxX, 1, 1);
 		}
 		return null;
-	}
+	}*/
 
 
 	public int getCenterThickness() {
@@ -706,8 +707,72 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 		renderer.uvRotateSouth = 0;
 		renderer.uvRotateWest = 0;
 	}
-
-
+	
+	@Override
+	public List<AxisAlignedBB> getCollisionBoxes() {
+		List<AxisAlignedBB> list = new ArrayList<AxisAlignedBB>();
+		dir = PC_MultiblockIndex.getFaceDir(index);
+		float s = thickness / 16.0f;
+		float w = width / 32.0f;
+		min2 = 0;
+		max1 = 1;
+		if (centerThickness > 0) {
+			float t = (centerThickness + 2) / 32.0f;
+			min2 = 0.5f - t - s;
+			max1 = 0.5f + t + s;
+		}
+		PC_CableTileEntity.dir2 = PC_Direction.UNKNOWN;
+		list.add(generateAABB(w, -w, w, min2, max1, s));
+		int i = 0;
+		for (PC_Direction dir2 : PC_Direction.VALID_DIRECTIONS) {
+			PC_CableTileEntity.dir2 = dir2;
+			if (dir2 == dir || dir2.getOpposite() == dir) continue;
+			int connection[] = connections[i++];
+			if (connection != null) {
+				int c1 = connection[0];
+				double max = (c1 >> 16) / 32.0;
+				int c2 = connection.length > 1 ? connection[1] : 0;
+				double c2e = (c2 >> 16) / 32.0;
+				if(c2e>max){
+					max = c2e;
+				}
+				int c3 = connection.length > 2 ? connection[2] & 0xFFFF : 0;
+				int c4 = connection.length > 3 ? connection[3] & 0xFFFF : 0;
+				int c5 = connection.length > 4 ? connection[4] & 0xFFFF : 0;
+				if(c3!=0 || c4!=0 || c5!=0){
+					max = 0.5;
+				}else if(max>0.5){
+					max = 0.5;
+				}
+				list.add(generateAABB(w, w, max, min2, max1, s));
+			}
+		}
+		return list;
+	}
+	
+	public AxisAlignedBB generateAABB(double w, double wl, double l, double min, double max, float s) {
+		double minX = min(w, wl, dir2.offsetX, l);
+		double minY = min(w, wl, dir2.offsetY, l);
+		double minZ = min(w, wl, dir2.offsetZ, l);
+		double maxX = max(w, wl, dir2.offsetX, l);
+		double maxY = max(w, wl, dir2.offsetY, l);
+		double maxZ = max(w, wl, dir2.offsetZ, l);
+		if (dir.offsetX > 0) {
+			return AxisAlignedBB.getBoundingBox(max - s, minY, minZ, max, maxY, maxZ);
+		} else if (dir.offsetX < 0) {
+			return AxisAlignedBB.getBoundingBox(min, minY, minZ, min + s, maxY, maxZ);
+		} else if (dir.offsetY > 0) {
+			return AxisAlignedBB.getBoundingBox(minX, max - s, minZ, maxX, max, maxZ);
+		} else if (dir.offsetY < 0) {
+			return AxisAlignedBB.getBoundingBox(minX, min, minZ, maxX, min + s, maxZ);
+		} else if (dir.offsetZ > 0) {
+			return AxisAlignedBB.getBoundingBox(minX, minY, max - s, maxX, maxY, max);
+		} else if (dir.offsetZ < 0) {
+			return AxisAlignedBB.getBoundingBox(minX, minY, min, maxX, maxY, min + s);
+		}
+		return null;
+	}
+	
 	private static double min(double w, int offset, double l) {
 
 		if (offset < 0) {
