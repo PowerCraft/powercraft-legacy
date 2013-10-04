@@ -711,7 +711,7 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 	@Override
 	public List<AxisAlignedBB> getCollisionBoxes() {
 		List<AxisAlignedBB> list = new ArrayList<AxisAlignedBB>();
-		dir = PC_MultiblockIndex.getFaceDir(index);
+		PC_Direction dir = PC_MultiblockIndex.getFaceDir(index);
 		float s = thickness / 16.0f;
 		float w = width / 32.0f;
 		min2 = 0;
@@ -721,11 +721,9 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 			min2 = 0.5f - t - s;
 			max1 = 0.5f + t + s;
 		}
-		PC_CableTileEntity.dir2 = PC_Direction.UNKNOWN;
-		list.add(generateAABB(w, -w, w, min2, max1, s));
+		list.add(generateAABB(dir, PC_Direction.UNKNOWN, w, -w, w, min2, max1, s));
 		int i = 0;
 		for (PC_Direction dir2 : PC_Direction.VALID_DIRECTIONS) {
-			PC_CableTileEntity.dir2 = dir2;
 			if (dir2 == dir || dir2.getOpposite() == dir) continue;
 			int connection[] = connections[i++];
 			if (connection != null) {
@@ -744,13 +742,13 @@ public abstract class PC_CableTileEntity extends PC_MultiblockTileEntity {
 				}else if(max>0.5){
 					max = 0.5;
 				}
-				list.add(generateAABB(w, w, max, min2, max1, s));
+				list.add(generateAABB(dir, dir2, w, w, max, min2, max1, s));
 			}
 		}
 		return list;
 	}
 	
-	public AxisAlignedBB generateAABB(double w, double wl, double l, double min, double max, float s) {
+	public AxisAlignedBB generateAABB(PC_Direction dir, PC_Direction dir2, double w, double wl, double l, double min, double max, float s) {
 		double minX = min(w, wl, dir2.offsetX, l);
 		double minY = min(w, wl, dir2.offsetY, l);
 		double minZ = min(w, wl, dir2.offsetZ, l);
