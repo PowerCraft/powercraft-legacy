@@ -26,8 +26,9 @@ public class PC_CoverTileEntity extends PC_MultiblockTileEntity {
 	
 	public PC_CoverTileEntity(ItemStack itemStack) {
 		super(PC_CoverItem.getThickness(itemStack));
-		metadata = PC_CoverItem.getMetadata(itemStack);
-		block = PC_CoverItem.getBlock(itemStack);
+		ItemStack inner = PC_CoverItem.getInner(itemStack);
+		metadata = inner.getItemDamage();
+		block = Block.blocksList[inner.itemID];
 	}
 
 	@Override

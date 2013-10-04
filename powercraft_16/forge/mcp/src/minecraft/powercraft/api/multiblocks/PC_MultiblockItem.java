@@ -158,7 +158,7 @@ public abstract class PC_MultiblockItem extends PC_Item {
 				float hit1;
 				float hit2;
 				float hit3;
-				final float a = 0.5f-3f/16f;
+				final float a = 0.5f-2f/16f;
 				switch(dir){
 				case DOWN:
 				case UP:
@@ -211,22 +211,6 @@ public abstract class PC_MultiblockItem extends PC_Item {
 					return 1;
 				}
 				return 0;
-				/*PC_Direction bestSide = null;
-				float minDist = 100.0f;
-				for (PC_Direction dir : PC_Direction.VALID_DIRECTIONS) {
-					float xD = (dir.offsetX + 1) / 2.0f - xHit;
-					float yD = (dir.offsetY + 1) / 2.0f - yHit;
-					float zD = (dir.offsetZ + 1) / 2.0f - zHit;
-					float dist = (float) Math.sqrt(xD * xD + yD * yD + zD * zD);
-					if (dist < minDist) {
-						bestSide = dir;
-						minDist = dist;
-					}
-				}
-				if (bestSide!=null && tileEntityMultiblock.setMultiblockTileEntity(PC_MultiblockIndex.FACEINDEXFORDIR[bestSide.ordinal()], getTileEntity(itemStack))) {
-					itemStack.stackSize--;
-					return 1;
-				}*/
 			}
 			default:
 				break;
