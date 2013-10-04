@@ -26,6 +26,7 @@ public class PC_CoverItem extends PC_MultiblockItem {
 		setHasSubtypes(true);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void getSubItems(int itemID, CreativeTabs creativeTab, List list) {
 		list.add(getCoverItem(2, 0, Block.stone));
