@@ -821,6 +821,7 @@ public abstract class PC_Block extends BlockContainer {
 		return false;
 	}
 	
+	@SuppressWarnings("unused")
 	@SideOnly(Side.CLIENT)
 	public void setupRotation(IBlockAccess world, int x, int y, int z, RenderBlocks renderer) {
 		
