@@ -36,6 +36,7 @@ import powercraft.api.PC_Module;
 import powercraft.api.PC_Renderer;
 import powercraft.api.PC_Utils;
 import powercraft.api.registries.PC_ModuleRegistry;
+import powercraft.api.registries.PC_RecipeRegistry;
 import powercraft.api.registries.PC_TextureRegistry;
 import powercraft.api.security.PC_Permission;
 import cpw.mods.fml.relauncher.Side;
@@ -888,9 +889,21 @@ public abstract class PC_Block extends BlockContainer {
 		}
 	}
 
+	
+	/**
+	 * This is called on startup. In that method you must load your Icons by using
+	 * {@link PC_TextureRegistry#registerIcon(String)}
+	 * @see PC_TextureRegistry#registerIcon(String)
+	 */
 	@SideOnly(Side.CLIENT)
 	public abstract void loadIcons();
 	
+	
+	/**
+	 * This is called on startup. In that method you must load your Icons by using
+	 * {@link PC_RecipeRegistry#addRecipe(powercraft.api.registries.PC_RecipeRegistry.PC_RecipeTypes, Object...)}
+	 * @see PC_RecipeRegistry#addRecipe powercraft.api.registries.PC_RecipeRegistry.PC_RecipeTypes, Object...))
+	 */
 	public abstract void registerRecipes();
 	
 }
