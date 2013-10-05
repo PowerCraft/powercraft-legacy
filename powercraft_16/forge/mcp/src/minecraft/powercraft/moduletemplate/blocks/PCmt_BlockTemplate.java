@@ -16,7 +16,6 @@ public class PCmt_BlockTemplate extends PC_Block {
 
 	/**
 	 * @param id
-	 * @param material
 	 */
 	public PCmt_BlockTemplate(int id) {
 		super(id, Material.rock);
