@@ -11,6 +11,7 @@ import powercraft.api.multiblocks.covers.PC_CoverItem;
 import powercraft.core.blocks.PC_BlockGenerator;
 import powercraft.core.blocks.PC_BlockPuffer;
 import powercraft.core.blocks.PC_BlockRoaster;
+import powercraft.core.items.PC_ItemSaw;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -58,6 +59,9 @@ public class PCco_ModuleCore extends PC_Module {
 	
 	@PC_FieldGenerator
 	public PC_CoverItem coverItem;
+	
+	@PC_FieldGenerator
+	public PC_ItemSaw saw;
 	
 	@Override
 	@EventHandler
