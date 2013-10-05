@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_FieldDescription;
 import powercraft.api.PC_Utils;
@@ -349,7 +350,17 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 		}
 		return false;
 	}
-	
-	
+
+
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target) {
+		int subHit = target.subHit;
+		if(subHit>=0 && subHit<tileEntities.length){
+			if(tileEntities[subHit]!=null){
+				return tileEntities[subHit].getPickBlock();
+			}
+		}
+		return null;
+	}
 	
 }

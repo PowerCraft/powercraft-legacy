@@ -100,6 +100,7 @@ public class PC_BlockMultiblock extends PC_Block {
 	}
 
 
+	@SuppressWarnings("null")
 	@Override
 	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 pos, Vec3 startPos) {
 
@@ -127,12 +128,15 @@ public class PC_BlockMultiblock extends PC_Block {
 				}
 			}
 		}
-		if (bestMovingObjectPosition != null && world.isRemote) {
-			if (selectionIndex != bestIndex) {
-				PC_ClientUtils.mc().playerController.resetBlockRemoving();
-				selectionIndex = bestIndex;
+		if(bestMovingObjectPosition!=null){
+			bestMovingObjectPosition.subHit = bestIndex.ordinal();
+			if (world.isRemote) {
+				if (selectionIndex != bestIndex) {
+					PC_ClientUtils.mc().playerController.resetBlockRemoving();
+					selectionIndex = bestIndex;
+				}
+				setBlockBoundsBasedOnState(world, x, y, z);
 			}
-			setBlockBoundsBasedOnState(world, x, y, z);
 		}
 		return bestMovingObjectPosition;
 	}
@@ -151,7 +155,9 @@ public class PC_BlockMultiblock extends PC_Block {
 	public AxisAlignedBB getSelectedBoundingBox(World world, int x, int y, int z) {
 		PC_TileEntityMultiblock tileEntity = PC_Utils.getTE(world, x, y, z);
 		if (tileEntity != null && selectionIndex != null) {
-			return tileEntity.getSelectionBox(selectionIndex);
+			AxisAlignedBB aabb = tileEntity.getSelectionBox(selectionIndex);
+			if(aabb!=null)
+				return aabb;
 		}
 		return AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 	}
