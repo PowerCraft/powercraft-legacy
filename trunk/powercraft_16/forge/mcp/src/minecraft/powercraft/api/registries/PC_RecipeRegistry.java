@@ -14,7 +14,7 @@ import powercraft.api.items.PC_Item;
 public class PC_RecipeRegistry {
 
 	public static enum PC_RecipeTypes {
-		SHAPED, SHAPELESS, RECIPE3D, SMELTING;
+		SHAPED, SHAPELESS, RECIPE3D, SMELTING, IRECIPE;
 	}
 	
 	public static void registerRecipes(PC_Module module, Object object) {
@@ -43,10 +43,21 @@ public class PC_RecipeRegistry {
 			case SMELTING:
 				addSmelting(obj);
 				break;
+			case IRECIPE:
+				addIRecipe(obj);
+				break;
 			default:
 				PC_Logger.severe("Unknown recipe type %s", recipeType);
 				break;
 		}
+	}
+
+
+	@SuppressWarnings("unchecked")
+	private static void addIRecipe(Object[] obj) {
+		
+		CraftingManager.getInstance().getRecipeList().add(obj[0]);
+		
 	}
 
 
