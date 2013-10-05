@@ -3,11 +3,9 @@ package powercraft.api.multiblocks.covers;
 
 import java.util.List;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
@@ -48,7 +46,7 @@ public class PC_CoverItem extends PC_MultiblockItem {
 
 	@Override
 	public void registerRecipes() {
-		GameRegistry.addRecipe(new PC_CoverRecipes(Item.axeStone));
+		
 	}
 
 	@Override

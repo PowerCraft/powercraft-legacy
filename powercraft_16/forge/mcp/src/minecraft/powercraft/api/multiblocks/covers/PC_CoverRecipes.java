@@ -78,8 +78,11 @@ public class PC_CoverRecipes implements IRecipe {
     		}
     	}
     	Block block = Block.blocksList[is.itemID];
-    	if(block!=null && Block.isNormalCube(block.blockID))
-    		return PC_CoverItem.getCoverItem(thickness, is.getItemDamage(), block);
+    	if(block!=null && Block.isNormalCube(block.blockID)){
+    		is = PC_CoverItem.getCoverItem(thickness, is.getItemDamage(), block);
+    		is.stackSize = 2;
+    		return is;
+    	}
     	return null;
     }
     
