@@ -28,5 +28,7 @@ class PC_SidedRegistry {
 	}
 
 	protected void bindTexture(ResourceLocation texture) {}
+
+	protected void registerItemRenderer(PC_Item item) {}
 	
 }

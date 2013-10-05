@@ -2,6 +2,7 @@ package powercraft.api.registries;
 
 import powercraft.api.PC_ClientUtils;
 import powercraft.api.PC_Utils;
+import powercraft.api.items.PC_Item;
 import powercraft.api.security.PC_Security;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,6 +22,10 @@ public class PC_Registry {
 		if(PC_Security.allowedCaller("PC_Registry.createServerRegistry()", PC_Utils.class) && sidedRegistry==null){
 			sidedRegistry = new PC_SidedRegistry();
 		}
+	}
+	
+	public static void registerItemRenderer(PC_Item item){
+		sidedRegistry.registerItemRenderer(item);
 	}
 	
 }

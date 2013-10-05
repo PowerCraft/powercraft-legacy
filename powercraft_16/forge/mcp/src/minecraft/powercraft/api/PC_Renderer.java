@@ -4,12 +4,16 @@ package powercraft.api;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
 import powercraft.api.blocks.PC_Block;
+import powercraft.api.items.PC_Item;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -17,15 +21,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 
 @SideOnly(Side.CLIENT)
-public class PC_Renderer implements ISimpleBlockRenderingHandler {
+public class PC_Renderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 	private static int renderId;
-
+	private static PC_Renderer renderer;
 
 	private PC_Renderer() {
 
 		renderId = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(this);
+		renderer = this;
+		
 	}
 
 
@@ -57,11 +63,38 @@ public class PC_Renderer implements ISimpleBlockRenderingHandler {
 	}
 
 
-	@SuppressWarnings("unused")
+	@Override
+	public boolean handleRenderType(ItemStack itemStack, ItemRenderType type) {
+		Item item = itemStack.getItem();
+		if(item instanceof PC_Item){
+			return ((PC_Item)item).handleRenderType(itemStack, type);
+		}
+		return false;
+	}
+
+
+	@Override
+	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack itemStack, ItemRendererHelper helper) {
+		Item item = itemStack.getItem();
+		if(item instanceof PC_Item){
+			return ((PC_Item)item).shouldUseRenderHelper(itemStack, type, helper);
+		}
+		return false;
+	}
+
+
+	@Override
+	public void renderItem(ItemRenderType type, ItemStack itemStack, Object... data) {
+		Item item = itemStack.getItem();
+		if(item instanceof PC_Item){
+			((PC_Item)item).renderItem(itemStack, type, data);
+		}
+	}
+	
 	public static void create() {
 
 		if (renderId == 0) {
-			new PC_Renderer();
+			getRenderer();
 		}
 	}
 
@@ -146,6 +179,14 @@ public class PC_Renderer implements ISimpleBlockRenderingHandler {
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		renderer.unlockBlockBounds();
+	}
+
+
+	public static PC_Renderer getRenderer() {
+		if(renderer==null){
+			renderer = new PC_Renderer();
+		}
+		return renderer;
 	}
 
 }

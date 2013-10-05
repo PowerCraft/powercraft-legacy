@@ -18,5 +18,5 @@ public @interface PC_ItemInfo {
 
 
 	public int defaultid();
-
+	
 }

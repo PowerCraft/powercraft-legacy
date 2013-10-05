@@ -2,8 +2,11 @@ package powercraft.api.registries;
 
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.MinecraftForgeClient;
+import powercraft.api.PC_Renderer;
 import powercraft.api.blocks.PC_ITileEntitySpecialRenderer;
 import powercraft.api.blocks.PC_TileEntity;
+import powercraft.api.items.PC_Item;
 import powercraft.core.PCco_ModuleCore;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -42,6 +45,11 @@ class PC_SidedRegistryClient extends PC_SidedRegistry {
 	@Override
 	protected void bindTexture(ResourceLocation texture) {
 		PC_BlockRegistry.getSpecialRenderer().bindTexture(texture);
+	}
+	
+	@Override
+	protected void registerItemRenderer(PC_Item item) {
+		MinecraftForgeClient.registerItemRenderer(item.itemID, PC_Renderer.getRenderer());
 	}
 	
 }

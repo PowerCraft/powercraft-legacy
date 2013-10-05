@@ -1,5 +1,8 @@
 package powercraft.api.multiblocks.covers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -28,11 +31,42 @@ public class PC_CoverRecipes implements IRecipe {
 
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inventoryCrafting){
-    	int count = 0;
+    	List<ItemStack> list = new ArrayList<ItemStack>();
     	for(int i=0; i<3; i++){
     		for(int j=0; j<3; j++){
-    			if(inventoryCrafting.getStackInRowAndColumn(i, j)!=null){
-    				count++;
+    			ItemStack itemStack = inventoryCrafting.getStackInRowAndColumn(i, j);
+    			if(itemStack!=null){
+    				list.add(itemStack);
+    			}
+    		}
+    	}
+    	int count = list.size();
+    	if(count>1){
+    		boolean ok = true;
+    		for(ItemStack is:list){
+    			Item item = is.getItem();
+    			if(item!=PC_CoverItem.item){
+    				ok = false;
+    				break;
+    			}
+    		}
+    		if(ok){
+    			ItemStack inner = PC_CoverItem.getInner(list.get(0));
+    			int thickness = 0;
+    			for(ItemStack is:list){
+    				ItemStack oinner = PC_CoverItem.getInner(is);
+    				if(!inner.isItemEqual(oinner)){
+    					ok = false;
+    					break;
+    				}
+    				thickness += PC_CoverItem.getThickness(is);
+    			}
+    			if(ok){
+    				if(thickness<16){
+    					return PC_CoverItem.getCoverItem(thickness, inner);
+    				}else if(thickness==16){
+    					return inner;
+    				}
     			}
     		}
     	}
@@ -42,7 +76,7 @@ public class PC_CoverRecipes implements IRecipe {
     		for(int j=0; j<3; j++){
     			ItemStack itemStack = inventoryCrafting.getStackInRowAndColumn(i, j);
     			if(itemStack != null && itemStack.getItem() == splitter){
-    				itemStack =  getStackInRowAndColumn(inventoryCrafting, i, j+1);
+    				itemStack = getStackInRowAndColumn(inventoryCrafting, i, j+1);
     				if(itemStack != null){
     					return makeHalfStack(itemStack);
     				}
