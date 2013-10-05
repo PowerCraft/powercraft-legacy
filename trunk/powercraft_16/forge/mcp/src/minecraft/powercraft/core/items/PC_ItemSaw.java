@@ -18,7 +18,7 @@ public class PC_ItemSaw extends PC_Item {
 	public PC_ItemSaw(int id) {
 		super(id);
 		setContainerItem(this);
-		setMaxDamage(100);
+		setMaxDamage(1024);
 		setMaxStackSize(1);
 		setCreativeTab(CreativeTabs.tabTools);
 	}

@@ -56,6 +56,7 @@ public abstract class PC_Block extends BlockContainer {
 		module = PC_ModuleRegistry.getActiveModule();
 		if(module==null)
 			PC_Logger.severe("No Module for block %s", getClass().getName());
+		setHardness(5);
 	}
 
 	@SuppressWarnings("unused")
