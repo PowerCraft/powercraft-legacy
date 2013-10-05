@@ -469,6 +469,10 @@ public abstract class PC_Block extends BlockContainer {
 	@Override
 	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
 		if(hasPermissionToHarvest(world, x, y, z, player)){
+			TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
+			if(tileEntity instanceof PC_TileEntity){
+				return ((PC_TileEntity)tileEntity).removeBlockByPlayer(player);
+			}
 			return super.removeBlockByPlayer(world, player, x, y, z);
 		}
 		return false;
