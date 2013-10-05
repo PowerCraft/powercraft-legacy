@@ -72,17 +72,20 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	}
 
 
+	@SuppressWarnings("unused")
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(Random random) {
 
 	}
 
 
+	@SuppressWarnings("unused")
 	public void onNeighborBlockChange(int neighborID) {
 
 	}
 
 
+	@SuppressWarnings("unused")
 	public boolean onBlockActivated(EntityPlayer player, PC_Direction side, float xHit, float yHit, float zHit) {
 
 		if (this instanceof PC_IGresGuiOpenHandler) {
@@ -93,11 +96,13 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	}
 
 
+	@SuppressWarnings("unused")
 	public void onEntityCollidedWithBlock(Entity entity) {
 
 	}
 
 
+	@SuppressWarnings("unused")
 	public int getRedstonePowerValue(PC_Direction side) {
 
 		return 0;
@@ -110,6 +115,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	}
 
 
+	@SuppressWarnings("unused")
 	public boolean removeBlockByPlayer(EntityPlayer player) {
 
 		return this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
@@ -138,6 +144,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	}
 
 
+	@SuppressWarnings("unused")
 	public ItemStack getPickBlock(MovingObjectPosition target) {
 
 		Block block = getBlockType();
@@ -162,6 +169,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	}
 
 
+	@SuppressWarnings("unused")
 	public boolean rotateBlock(PC_Direction side) {
 
 		return false;
@@ -174,12 +182,14 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	}
 
 
+	@SuppressWarnings("unused")
 	public boolean recolourBlock(PC_Direction side, int colour) {
 
 		return false;
 	}
 
 
+	@SuppressWarnings("unused")
 	public void onBlockMessage(EntityPlayer player, NBTTagCompound nbtTagCompound) {
 
 	}
@@ -191,6 +201,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	}
 
 
+	@SuppressWarnings("unused")
 	@SideOnly(Side.CLIENT)
 	public boolean renderWorldBlock(RenderBlocks renderer) {
 
@@ -286,6 +297,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		return false;
 	}
 	
+	@SuppressWarnings("unused")
 	public boolean isUpgradeableByUpgrade(int upgrade)
 	{
 		return false;
@@ -362,7 +374,6 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	
 	private void saveFieldsToNBT(NBTTagCompound nbtTagCompound, Class<?> c, int type){
 		Field[] fields = c.getDeclaredFields();
-		String s = c.getSimpleName();
 		for(int i=0; i<fields.length; i++){
 			PC_FieldDescription fieldDescription = fields[i].getAnnotation(PC_FieldDescription.class);
 			if(fieldDescription!=null){
@@ -394,7 +405,6 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	
 	private void loadFieldsFromNBT(NBTTagCompound nbtTagCompound, Class<?> c){
 		Field[] fields = c.getDeclaredFields();
-		String s = c.getSimpleName();
 		for(int i=0; i<fields.length; i++){
 			PC_FieldDescription fieldDescription = fields[i].getAnnotation(PC_FieldDescription.class);
 			if(fieldDescription!=null){
@@ -454,6 +464,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		return !getBlockType().blockMaterial.blocksMovement();
 	}
 
+	@SuppressWarnings("unused")
 	public boolean isBlockSolid(PC_Direction side) {
 		return getBlockType().blockMaterial.isSolid();
 	}
@@ -462,10 +473,13 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		return hasPermission(player, PC_Permission.BLOCKHARVEST)?getBlockType().getBlockHardness(worldObj, xCoord, yCoord, zCoord):-1;
 	}
 
+	@SuppressWarnings("unused")
 	public void onEntityWalking(Entity entity) {}
 
+	@SuppressWarnings("unused")
 	public void onBlockClicked(EntityPlayer player) {}
 
+	@SuppressWarnings("unused")
 	public void velocityToAddToEntity(Entity entity, Vec3 vec3) {}
 
 	public int isProvidingWeakPower(PC_Direction side) {
@@ -480,6 +494,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		return getRedstonePowerValue(side);
 	}
 
+	@SuppressWarnings("unused")
 	public void onBlockPlacedBy(EntityLivingBase living, ItemStack itemStack) {
 		if(living instanceof EntityPlayer){
 			if(this.permissions==null && !isClient()){
@@ -488,14 +503,17 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public void onFallenUpon(Entity entity, float fallDistance) {}
 
 	public void fillWithRain() {}
 
+	@SuppressWarnings("unused")
 	public int getComparatorInputOverride(PC_Direction side) {
 		return 0;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean isLadder(EntityLivingBase entity) {
 		return false;
 	}
@@ -513,30 +531,37 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	public int getFlammability(PC_Direction side) {
 		return 0;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean isFlammable(PC_Direction side) {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	public int getFireSpreadSpeed(PC_Direction side) {
 		return 0;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean isFireSource(PC_Direction side) {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean canSilkHarvest(EntityPlayer player) {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean canCreatureSpawn(EnumCreatureType type) {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	public float getExplosionResistance(Entity entity, double explosionX, double explosionY, double explosionZ) {
 		return getBlockType().getExplosionResistance(entity);
 	}
@@ -545,14 +570,17 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		return worldObj.doesBlockHaveSolidTopSurface(xCoord, yCoord, zCoord);
 	}
 
+	@SuppressWarnings("unused")
 	public boolean addBlockHitEffects(MovingObjectPosition target, EffectRenderer effectRenderer) {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean addBlockDestroyEffects(EffectRenderer effectRenderer) {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean canSustainPlant(PC_Direction side, IPlantable plant) {
 		return false;
 	}
@@ -564,6 +592,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		return true;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean isBeaconBase(int beaconX, int beaconY, int beaconZ) {
 		return false;
 	}
@@ -572,10 +601,12 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		return 0;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean canExplode(Explosion explosion) {
 		return true;
 	}
 
+	@SuppressWarnings("unused")
 	public void onPlantGrow(int sourceX, int sourceY, int sourceZ) {}
 
 
