@@ -62,5 +62,10 @@ public class PC_CoverTileEntity extends PC_MultiblockTileEntity {
 		nbtCompoundTag.setInteger("metadata", metadata);
 		nbtCompoundTag.setInteger("block", block.blockID);
 	}
+
+	@Override
+	public ItemStack getPickBlock() {
+		return PC_CoverItem.getCoverItem(thickness, metadata, block);
+	}
 	
 }

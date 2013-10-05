@@ -347,5 +347,10 @@ public class PC_ConduitEnergyTileEntity extends PC_ConduitTileEntity implements 
 			modelEnergyBeam.renderAll();
 		}
 	}
+
+	@Override
+	public ItemStack getPickBlock() {
+		return new ItemStack(PC_ConduitEnergyItem.item, 1, type);
+	}
 	
 }

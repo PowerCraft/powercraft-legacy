@@ -696,4 +696,9 @@ public class PC_RedstoneUnisolatedTileEntity extends PC_CableTileEntity implemen
 		return false;
 	}
 
+	@Override
+	public ItemStack getPickBlock() {
+		return new ItemStack(PC_RedstoneUnisolatedItem.item, 1, 0);
+	}
+
 }

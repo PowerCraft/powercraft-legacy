@@ -266,4 +266,6 @@ public abstract class PC_MultiblockTileEntity implements PC_INBT {
 		return false;
 	}
 
+	public abstract ItemStack getPickBlock();
+
 }
