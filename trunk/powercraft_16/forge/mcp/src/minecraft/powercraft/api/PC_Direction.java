@@ -2,6 +2,7 @@ package powercraft.api;
 
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
 
 
@@ -40,7 +41,14 @@ public enum PC_Direction{
 	public static final PC_Direction LEFT = WEST;
 	public static final PC_Direction[] VALID_DIRECTIONS = { DOWN, UP, NORTH, SOUTH, WEST, EAST };
 	public static final int[] OPPOSITES = { 1, 0, 3, 2, 5, 4, 6 };
+	
+	// After testing the formula:
+	// int l = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+	// I've discovered that the resulting l values are thus:
+	// { North, East, South, West } = { 2, 3, 0, 1 }
 	public static final int[] PLAYER2MD = { 0, 3, 1, 2 };
+	
+	
 	// Left hand rule rotation matrix for all possible axes of rotation
 	public static final int[][] ROTATION_MATRIX = {
 		{ 0, 1, 4, 5, 3, 2, 6 },

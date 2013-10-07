@@ -33,7 +33,8 @@ public class PC_BlockRegistry {
 		}
 		
 		@Override
-		public void bindTexture(ResourceLocation texture){
+		public void bindTexture(ResourceLocation texture)
+		{
 			super.bindTexture(texture);
 		}
 		

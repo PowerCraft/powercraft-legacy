@@ -40,10 +40,14 @@ public class PCtr_BlockBeltSpeedBooster extends PC_Block
 		
 	}
 	
+	/**
+	 * Stores MD of direction 
+	 * (2, 3, 0, 1 = N, E, S, W respectively)
+	 */
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
-
-		int l = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) 
+	{		
+		int l = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;		
 		PC_Utils.setMD(world, x, y, z, PC_Direction.PLAYER2MD[l]);
 	}
 	

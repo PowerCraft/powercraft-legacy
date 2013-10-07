@@ -17,13 +17,12 @@ import powercraft.transport.helper.PCtr_MaterialElevator;
 public class PCtr_BlockClassicElevator extends PC_Block
 {
 	
-	protected PC_Direction elevatorDirection;
+	protected static PC_Direction elevatorDirection = PC_Direction.UP;
 	// an Elevator is simply a conveyer belt that moves items up or down... so able to use base classes for belts.
 	public PCtr_BlockClassicElevator(int id)
 	{
 		super(id, PCtr_MaterialElevator.getMaterial());
-		setCreativeTab(CreativeTabs.tabBlock);
-		elevatorDirection = PC_Direction.UP;
+		setCreativeTab(CreativeTabs.tabBlock);		
 	}
 
 	@Override
@@ -64,11 +63,9 @@ public class PCtr_BlockClassicElevator extends PC_Block
 	
 	@Override
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
-	{
-		// TODO 1) check if valid entity (done)		
-		System.out.println("EntityID: " + par5Entity.entityId);
-		PC_Vec3I curposition = new PC_Vec3I(par2, par3, par4);
-		System.out.println("Position: " + curposition.toString());
+	{	
+		System.out.println("Entity YAW: " + par5Entity.rotationYaw);
+		PC_Vec3I curposition = new PC_Vec3I(par2, par3, par4);		
 		if (!PCtr_BeltHelper.isEntityIgnored(par5Entity))
 		{
 			moveEntity(par1World, par5Entity, curposition);
@@ -77,9 +74,9 @@ public class PCtr_BlockClassicElevator extends PC_Block
 
 	@SuppressWarnings("unused")
 	private static void moveEntity(World world, Entity entity, PC_Vec3I curPosition)
-	{
+	{		
 		boolean isPlayer = entity instanceof EntityPlayer;		
-		//PCtr_BeltHelper.moveEntityOnBelt(world, entity, curPosition, isPlayer ? false : true, true, elevatorDirection);
+		PCtr_BeltHelper.moveEntityOnBelt(world, entity, curPosition, isPlayer ? false : true, true, elevatorDirection);
 	}
 	
 	@Override	
