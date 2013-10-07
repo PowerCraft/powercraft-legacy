@@ -22,6 +22,7 @@ public class PCtr_BeltHelper
 	public static final float HEIGHT_SELECTED = HEIGHT;
 	public static final float HEIGHT_COLLISION = HEIGHT;
 	public static final double MAX_HORIZONTAL_SPEED = 0.5F;
+	public static final double MIN_HORIZONTAL_SPEED = 0.2F;
 	public static final double HORIZONTAL_BOOST = 0.14D;
 	public static final double BORDERS = 0.35D;
 	public static final double BORDER_BOOST = 0.063D;
@@ -271,8 +272,6 @@ public class PCtr_BeltHelper
 					break;
 
 				case UP:
-					System.out.println("Inside UP Case");
-					System.out.println("Motion Y = " + entity.motionY);
 					if (entity.motionY >= MAX_HORIZONTAL_SPEED && motionEnabled)
 					{
 						entity.addVelocity(0, -HORIZONTAL_BOOST, 0);
@@ -344,11 +343,11 @@ public class PCtr_BeltHelper
 							entity.motionZ += BORDER_BOOST;
 						}
 
-						entity.motionZ = PC_MathHelper.clamp_float((float)entity.motionZ, (float)-(BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
-//						entity.motionY = PC_MathHelper.clamp_float((float)entity.motionY, (float)-(BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
+						entity.motionZ = PC_MathHelper.clamp_float((float)entity.motionZ, (float)-(BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));						
 						entity.motionX = PC_MathHelper.clamp_float((float)entity.motionX, (float)-(BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
 
 					}
+					entity.motionY = PC_MathHelper.clamp_float((float)entity.motionY, (float)-(BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
 					break;
 				default:
 					break;
