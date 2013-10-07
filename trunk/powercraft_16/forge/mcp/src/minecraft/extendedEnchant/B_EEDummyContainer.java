@@ -1,4 +1,4 @@
-package powercraft.extendedEnchant;
+package extendedEnchant;
 
 import java.util.Arrays;
 
@@ -11,18 +11,18 @@ import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-public class PC_EEDummyContainer extends DummyModContainer 
+public class B_EEDummyContainer extends DummyModContainer 
 {	
-	public PC_EEDummyContainer() 
+	public B_EEDummyContainer() 
 	{
 		super(new ModMetadata());
 		ModMetadata meta = getMetadata();
 		meta.modId = "extendedEnchant";
 		meta.name = "Extended Enchanting";
-		meta.version = "@VERSION@"; //String.format("%d.%d.%d.%d", majorVersion, minorVersion, revisionVersion, buildVersion);
+		meta.version = "1.0.0"; //String.format("%d.%d.%d.%d", majorVersion, minorVersion, revisionVersion, buildVersion);
 		meta.credits = "Special thanks to culegooner for the tutorials!";
 		meta.authorList = Arrays.asList("Buggi");
-		meta.description = "";
+		meta.description = "Modifies several vanilla enchantments with a higher max-level.";
 		meta.url = "";
 		meta.updateUrl = "";
 		meta.screenshots = new String[0];
@@ -40,14 +40,11 @@ public class PC_EEDummyContainer extends DummyModContainer
 	@Subscribe
 	public void preInit(FMLPreInitializationEvent evt) 
 	{
-
 	}
 
 	@SuppressWarnings("unused")
 	@Subscribe
 	public void postInit(FMLPostInitializationEvent evt) 
 	{
-
 	}
-
 }

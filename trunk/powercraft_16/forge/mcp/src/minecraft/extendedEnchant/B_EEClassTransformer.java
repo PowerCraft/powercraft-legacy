@@ -1,4 +1,4 @@
-package powercraft.extendedEnchant;
+package extendedEnchant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.IntInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
-public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClassTransformer
+public class B_EEClassTransformer implements net.minecraft.launchwrapper.IClassTransformer
 {
 	private static ArrayList<String> enchantmentclasses_obs = new ArrayList<String>(Arrays.asList("aam", 
 			"aan",	"aao",	"aap", "aaq", "aar", "aas", "abb",	"abc", "abd", "abe", "abf", "abg", "abh", "abi"));
@@ -57,13 +57,11 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 		// check for obsfucated classname
 		if (enchantmentclasses_obs.contains(classname))
 		{
-//			System.out.println("********* INSIDE " + classname + ".class TRANSFORMER ABOUT TO PATCH: " + classname);
 			enchantedindex = enchantmentclasses_obs.indexOf(classname);
 			return patchClassASM(classname, bytearray, true, enchantedindex);
 		}
 		else if (enchantmentclasses_dev.contains(classname))
 		{
-//			System.out.println("********* INSIDE " + classname + " TRANSFORMER ABOUT TO PATCH: " + classname);
 			enchantedindex = enchantmentclasses_dev.indexOf(classname);
 			return patchClassASM(classname, bytearray, false, enchantedindex);
 		}
@@ -94,28 +92,19 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 		while (methods.hasNext())
 		{
 			MethodNode m = methods.next();
-//			System.out.println("********* Method Name: " + m.name + " Desc:" + m.desc);
 			int fdiv_index = -1;
-
 			// Check if this is getMaxLevel and it's method signature is ()I which means that it accepts a nothing () and returns an int I
 			if ((m.name.equals(targetMethodName) && m.desc.equals("()I")))
 			{
-//				System.out.println("********* Inside target method!");
-
 				AbstractInsnNode currentNode = null;
 				AbstractInsnNode targetNode = null;
-
 				Iterator<AbstractInsnNode> iter = m.instructions.iterator();
-
 				int index = -1;
-
 				// Loop over the instruction set and find the instruction  which does the division of 1/explosionSize
 				while (iter.hasNext())
 				{
 					index++;
 					currentNode = iter.next();
-//					System.out.println("********* index : " + index + " currentNode.getOpcode() = " + currentNode.getOpcode());
-
 					// Found it! save the index location of instruction ICONST_5 and the node for this instruction
 					if (currentNode.getOpcode() == intbytecodes.get(vanillaEnchantValues[enchantmentindex]))
 					{
@@ -132,22 +121,18 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 				 * 2013-09-14 21:02:12 [INFO] [STDOUT] ********* index : 4 currentNode.getOpcode() = -1
 				 */
 
-//				System.out.println("********* fdiv_index should be 2 -> " + fdiv_index);
-
 				if (targetNode == null)
 				{
-//					System.out.println("Did not find all necessary target nodes! ABANDON CLASS!");
 					return bytes;
 				}
 
 				if (fdiv_index == -1)
 				{
-//					System.out.println("Did not find all necessary target nodes! ABANDON CLASS!");
 					return bytes;
 				}
 
 				/*
-				 * now we want the save nods that load the variable explosionSize and the division instruction:
+				 * now we want the save nodes that load the variable explosionSize and the division instruction:
 				 * 
 				 * The instruction we want to modify is thus:
 				 * 
@@ -170,10 +155,6 @@ public class PC_EEClassTransformer implements net.minecraft.launchwrapper.IClass
 					m.instructions.set(ourNode, newinst);
 					System.out.println("Patching Complete!");
 				}
-				else
-				{
-//					System.out.println("Patching not needed, new values are the same as old.");
-				}				
 				break;
 			}
 		}

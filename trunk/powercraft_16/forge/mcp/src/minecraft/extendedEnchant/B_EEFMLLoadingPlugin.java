@@ -1,11 +1,11 @@
-package powercraft.extendedEnchant;
+package extendedEnchant;
 
 import java.util.Map;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 
 @MCVersion(value = "1.6.2")
-public class PC_EEFMLLoadingPlugin implements cpw.mods.fml.relauncher.IFMLLoadingPlugin {
+public class B_EEFMLLoadingPlugin implements cpw.mods.fml.relauncher.IFMLLoadingPlugin {
 
 	@Override
 	public String[] getLibraryRequestClass() {
@@ -16,13 +16,13 @@ public class PC_EEFMLLoadingPlugin implements cpw.mods.fml.relauncher.IFMLLoadin
 	@Override
 	public String[] getASMTransformerClass() {
 		//This will return the name of the class "mod.culegooner.ExplosionDropsCore.EDClassTransformer"
-		return new String[]{PC_EEClassTransformer.class.getName()};
+		return new String[]{B_EEClassTransformer.class.getName()};
 	}
 
 	@Override
 	public String getModContainerClass() {
 		//This is the name of our dummy container "mod.culegooner.ExplosionDropsCore.EDDummyContainer"
-		return PC_EEDummyContainer.class.getName();
+		return B_EEDummyContainer.class.getName();
 	}
 
 	@Override
