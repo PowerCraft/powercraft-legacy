@@ -1,4 +1,4 @@
-package extendedEnchant;
+package mod.buggi.extendedEnchant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,17 +52,18 @@ public class B_EEClassTransformer implements net.minecraft.launchwrapper.IClassT
 	@Override
 	public byte[] transform(String classname, String arg1, byte[] bytearray)
 	{
-		int enchantedindex = 0;
-		
+		int enchantedindex = 0;		
 		// check for obsfucated classname
 		if (enchantmentclasses_obs.contains(classname))
 		{
 			enchantedindex = enchantmentclasses_obs.indexOf(classname);
+			System.out.println("About to transform :" + classname + " aka :" + enchantmentclasses_dev.get(enchantedindex));
 			return patchClassASM(classname, bytearray, true, enchantedindex);
 		}
 		else if (enchantmentclasses_dev.contains(classname))
 		{
 			enchantedindex = enchantmentclasses_dev.indexOf(classname);
+			System.out.println("About to transform :" + classname);
 			return patchClassASM(classname, bytearray, false, enchantedindex);
 		}
 		return bytearray;
@@ -71,8 +72,6 @@ public class B_EEClassTransformer implements net.minecraft.launchwrapper.IClassT
 	@SuppressWarnings("unused")
 	public byte[] patchClassASM(String name, byte[] bytes, boolean obfuscated, int enchantmentindex)
 	{		
-		
-		
 		String targetMethodName = "";
 
 		if (obfuscated == true)
@@ -108,6 +107,7 @@ public class B_EEClassTransformer implements net.minecraft.launchwrapper.IClassT
 					// Found it! save the index location of instruction ICONST_5 and the node for this instruction
 					if (currentNode.getOpcode() == intbytecodes.get(vanillaEnchantValues[enchantmentindex]))
 					{
+						System.out.println("Found correct Bytecode " + currentNode.getOpcode());
 						targetNode = currentNode;
 						fdiv_index = index;
 					}
@@ -131,18 +131,11 @@ public class B_EEClassTransformer implements net.minecraft.launchwrapper.IClassT
 					return bytes;
 				}
 
-				/*
-				 * now we want the save nodes that load the variable explosionSize and the division instruction:
-				 * 
-				 * The instruction we want to modify is thus:
-				 * 
-				 * mv.visitInsn(ICONST_5);
-				 */
-
 				AbstractInsnNode ourNode = m.instructions.get(fdiv_index); // mv.visitInsn(ICONST_5);
 				AbstractInsnNode newinst;
 				if (vanillaEnchantValues[enchantmentindex] != newEnchantvalues[enchantmentindex])
 				{
+					System.out.println("Setting new maxLevel value!");
 					if (newEnchantvalues[enchantmentindex] > 5)
 					{
 						newinst = new IntInsnNode(intbytecodes.get(newEnchantvalues[enchantmentindex]), newEnchantvalues[enchantmentindex]);

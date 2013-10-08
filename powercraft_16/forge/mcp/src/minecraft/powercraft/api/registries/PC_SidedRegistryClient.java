@@ -44,7 +44,7 @@ class PC_SidedRegistryClient extends PC_SidedRegistry {
 	
 	@Override
 	protected void bindTexture(ResourceLocation texture) {
-		PC_BlockRegistry.getSpecialRenderer().bindTexture(texture);
+	//	PC_BlockRegistry.getSpecialRenderer().bindTexture(texture);
 	}
 	
 	@Override
