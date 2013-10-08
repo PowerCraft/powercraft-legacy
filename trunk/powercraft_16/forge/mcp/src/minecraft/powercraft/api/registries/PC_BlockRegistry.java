@@ -31,13 +31,13 @@ public class PC_BlockRegistry {
 				GL11.glPopMatrix();
 			}
 		}
-		
+/*		
 		@Override
 		public void bindTexture(ResourceLocation texture)
 		{
 			super.bindTexture(texture);
 		}
-		
+*/		
 	}
 	
 	@SideOnly(Side.CLIENT)

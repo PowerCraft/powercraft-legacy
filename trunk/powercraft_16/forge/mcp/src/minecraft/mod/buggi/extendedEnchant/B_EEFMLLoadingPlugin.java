@@ -1,4 +1,4 @@
-package extendedEnchant;
+package mod.buggi.extendedEnchant;
 
 import java.util.Map;
 
@@ -15,13 +15,13 @@ public class B_EEFMLLoadingPlugin implements cpw.mods.fml.relauncher.IFMLLoading
 
 	@Override
 	public String[] getASMTransformerClass() {
-		//This will return the name of the class "mod.culegooner.ExplosionDropsCore.EDClassTransformer"
+		//This will return the name of the class "mod.buggi.extendedEnchant.B_EEClassTransformer"
 		return new String[]{B_EEClassTransformer.class.getName()};
 	}
 
 	@Override
 	public String getModContainerClass() {
-		//This is the name of our dummy container "mod.culegooner.ExplosionDropsCore.EDDummyContainer"
+		//This is the name of our dummy container "mod.buggi.extendedEnchant.B_EEDummyContainer"
 		return B_EEDummyContainer.class.getName();
 	}
 

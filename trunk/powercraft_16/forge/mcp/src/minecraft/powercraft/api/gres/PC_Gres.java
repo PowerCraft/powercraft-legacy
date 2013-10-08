@@ -172,10 +172,10 @@ public class PC_Gres {
 	public static void loadTextures() {
 
 		final String states[] = { "loc_active", "loc_mouseOver", "loc_mouseDown", "loc_disabled" };
-		ResourceManager resourceManager = PC_ClientUtils.mc().getResourceManager();
+		ResourceManager resourceManager = PC_ClientUtils.mc().func_110442_L();
 		try {
-			Resource resource = resourceManager.getResource(PC_Utils.getResourceLocation(PC_Api.instance, "textures/gui/GuiDesk.xml"));
-			InputStream inputStream = resource.getInputStream();
+			Resource resource = resourceManager.func_110536_a(PC_Utils.getResourceLocation(PC_Api.instance, "textures/gui/GuiDesk.xml"));
+			InputStream inputStream = resource.func_110527_b();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 			String page = "";
 			String line;

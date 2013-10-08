@@ -1,4 +1,4 @@
-package extendedEnchant;
+package mod.buggi.extendedEnchant;
 
 import java.util.Arrays;
 
@@ -36,13 +36,11 @@ public class B_EEDummyContainer extends DummyModContainer
 		return true;
 	}
 
-	@SuppressWarnings("unused")
 	@Subscribe
 	public void preInit(FMLPreInitializationEvent evt) 
 	{
 	}
 
-	@SuppressWarnings("unused")
 	@Subscribe
 	public void postInit(FMLPostInitializationEvent evt) 
 	{

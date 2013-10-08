@@ -627,7 +627,10 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	@Override
 	public void onInventoryChanged(){
 		if (worldObj != null){
-			worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+			
+//			Function does not exist :
+//			worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+			
 			if (getBlockType() != null){
 				worldObj.func_96440_m(xCoord, yCoord, zCoord, getBlockType().blockID);
 			}
