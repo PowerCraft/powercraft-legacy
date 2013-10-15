@@ -28,8 +28,8 @@ public class PC_GresRenderer {
         FontRenderer font = null;
         if (itemStack != null) font = itemStack.getItem().getFontRenderer(itemStack);
         if (font == null) font = fontRenderer;
-        itemRenderer.renderItemAndEffectIntoGUI(font, mc.func_110434_K(), itemStack, x, y);
-        itemRenderer.renderItemOverlayIntoGUI(font, mc.func_110434_K(), itemStack, x, y, str);
+        itemRenderer.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), itemStack, x, y);
+        itemRenderer.renderItemOverlayIntoGUI(font, mc.getTextureManager(), itemStack, x, y, str);
         itemRenderer.zLevel = 0.0F;
 	}
 	
