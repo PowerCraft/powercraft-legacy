@@ -1,17 +1,14 @@
 package powercraft.transport.blocks;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_Direction;
-import powercraft.api.PC_EntityTracker;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
@@ -21,29 +18,25 @@ import powercraft.transport.blocks.tileentities.PCtr_TEUpgradeableBelt;
 import powercraft.transport.helper.PCtr_BeltHelper;
 import powercraft.transport.helper.PCtr_MaterialConveyor;
 
-@PC_BlockInfo(name = "SpeedBelt", blockid = "speedbelt", defaultid = 2053, tileEntity=PCtr_TEUpgradeableBelt.class, itemBlock=PCtr_ItemBlockUpgradeableBelt.class, rotateable=true)
-public class PCtr_BlockBeltSpeedBooster extends PC_Block
-{
-	public Icon beltSideTexture;
-	
-	public PCtr_BlockBeltSpeedBooster(int id)
+@PC_BlockInfo(name = "SeparatorBelt", blockid = "separatorbelt", defaultid = 2054, tileEntity=PCtr_TEUpgradeableBelt.class, itemBlock=PCtr_ItemBlockUpgradeableBelt.class, rotateable=true)
+public class PCtr_BlockBeltSeparator extends PC_Block {
+
+	protected PCtr_BlockBeltSeparator(int id)
 	{
-		super(id, PCtr_MaterialConveyor.getMaterial());
+		super(id, PCtr_MaterialConveyor.getMaterial());	
 		setCreativeTab(CreativeTabs.tabBlock);
-		
 	}
 
 	@Override
-	public void loadIcons()
-	{
-		this.blockIcon = PC_TextureRegistry.registerIcon("speedbelt");
-		beltSideTexture = PC_TextureRegistry.registerIcon("beltside");
+	public void loadIcons() 
+	{ 
+		this.blockIcon = PC_TextureRegistry.registerIcon("separatorbelt");
 	}
-	
+
 	@Override
-	public void registerRecipes()
+	public void registerRecipes() 
 	{
-		
+
 	}
 	
 	/**
@@ -53,30 +46,9 @@ public class PCtr_BlockBeltSpeedBooster extends PC_Block
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) 
 	{		
-		int l = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;				
+		int l = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		// N, E, S, W = 1, 2, 0, 3
 		PC_Utils.setMD(world, x, y, z, PC_Direction.PLAYER2MD[l]);
-//		this.rotateBlock(world, x, y, z, ForgeDirection. PC_Direction.PLAYER2MD[l]);
-	}
-	
-	@Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
-	{
-		if (!PC_EntityTracker.isEntityIgnored(entity)) // sanity check 									
-		{			
-			// N, E, S, W = 1, 2, 0, 3
-			int blockrotation = getBlockRotation(world, x, y, z);			
-			//PC_EntityTracker.increaseEntitySpeedXYZ(entity,	increaseX, increaseY, increaseZ);
-		}
-	}
-
-	@Override
-	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, PC_Direction side) 
-	{	
-		if (side == PC_Direction.TOP)
-		{
-			return blockIcon;
-		}
-		return beltSideTexture;
 	}
 	
 	@Override
@@ -130,6 +102,5 @@ public class PCtr_BlockBeltSpeedBooster extends PC_Block
 	public int getLightOpacity(World world, int x, int y, int z)
 	{
 		return 0;
-	}
+	}	
 }
-
