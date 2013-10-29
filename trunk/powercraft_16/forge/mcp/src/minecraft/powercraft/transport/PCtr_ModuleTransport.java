@@ -3,6 +3,7 @@ package powercraft.transport;
 import powercraft.api.PC_Api;
 import powercraft.api.PC_FieldGenerator;
 import powercraft.api.PC_Module;
+import powercraft.transport.blocks.PCtr_BlockBeltSeparator;
 import powercraft.transport.blocks.PCtr_BlockBeltSpeedBooster;
 import powercraft.transport.blocks.PCtr_BlockClassicElevator;
 import powercraft.transport.blocks.PCtr_BlockClassicElevatorDown;
@@ -45,7 +46,12 @@ public class PCtr_ModuleTransport extends PC_Module
 	
 	@PC_FieldGenerator
 	public static PCtr_BlockPlate plate;
-	
+
+	@PC_FieldGenerator
+	public static PCtr_BlockBeltSpeedBooster speedbelt;
+
+	@PC_FieldGenerator
+	public static PCtr_BlockBeltSeparator separatorbelt;
 	
 	@Override
 	@EventHandler

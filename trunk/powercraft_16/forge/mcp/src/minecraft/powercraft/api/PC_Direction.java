@@ -39,6 +39,8 @@ public enum PC_Direction{
 	public static final PC_Direction BACK = SOUTH;
 	public static final PC_Direction RIGHT = EAST;
 	public static final PC_Direction LEFT = WEST;
+	public static final PC_Direction TOP = UP;
+	public static final PC_Direction BOTTOM = DOWN;
 	public static final PC_Direction[] VALID_DIRECTIONS = { DOWN, UP, NORTH, SOUTH, WEST, EAST };
 	public static final int[] OPPOSITES = { 1, 0, 3, 2, 5, 4, 6 };
 	

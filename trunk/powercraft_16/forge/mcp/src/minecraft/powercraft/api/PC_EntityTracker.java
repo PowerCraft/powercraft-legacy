@@ -144,6 +144,11 @@ public class PC_EntityTracker
 		{
 			return true;
 		}
+		
+		if (entity instanceof EntityFX)
+		{
+			return true;
+		}
 
 		if (entity instanceof EntityPlayer)
 		{
