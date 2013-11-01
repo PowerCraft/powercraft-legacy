@@ -1,12 +1,12 @@
 package powercraft.api.registries;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Configuration;
+
+import org.lwjgl.opengl.GL11;
+
 import powercraft.api.PC_Logger;
 import powercraft.api.PC_Module;
 import powercraft.api.blocks.PC_BlockInfo;

@@ -33,6 +33,7 @@ public class PC_Api extends PC_Module {
 
 		PC_Logger.init(PC_Utils.getPowerCraftFile(null, POWERCRAFT+".log"));
 		defaultPreInit(event);
+		
 	}
 
 

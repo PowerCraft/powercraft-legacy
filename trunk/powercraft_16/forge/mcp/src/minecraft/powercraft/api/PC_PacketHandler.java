@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,9 +24,14 @@ import cpw.mods.fml.common.network.Player;
 @SuppressWarnings("unused") 
 public class PC_PacketHandler implements IPacketHandler {
 
-	public static final int BLOCKDATA = 1, BLOCKMESSAGE = 2, GUIOPEN = 3;
+	public static final int BLOCKDATA = 1, BLOCKMESSAGE = 2, GUIOPEN = 3, PACKETHANDLER = 4;
 
+	private static HashMap<String, PC_IPacketHandler> packetHandlers = new HashMap<String, PC_IPacketHandler>();
 
+	public static void registerPacketHandler(String name, PC_IPacketHandler packetHandler){
+		packetHandlers.put(name, packetHandler);
+	}
+	
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
 
@@ -44,6 +50,9 @@ public class PC_PacketHandler implements IPacketHandler {
 				case GUIOPEN:
 					packetGuiOpen(world, entityPlayer, dataInputStream);
 					break;
+				case PACKETHANDLER:
+					packetPacketHandler(world, entityPlayer, dataInputStream);
+					break;
 				default:
 					PC_Logger.severe("Unknown packet type %s", packetType);
 					break;
@@ -51,6 +60,16 @@ public class PC_PacketHandler implements IPacketHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 			PC_Logger.severe("Error while reading packet");
+		}
+	}
+
+	protected void packetPacketHandler(World world, EntityPlayer entityPlayer, DataInputStream dataInputStream) throws IOException {
+		String packetHandlerName = dataInputStream.readUTF();
+		PC_IPacketHandler packetHandler = packetHandlers.get(packetHandlerName);
+		if(packetHandler==null){
+			PC_Logger.severe("Can't find packethandler %s", packetHandlerName);
+		}else{
+			packetHandler.handlePacket(world, entityPlayer, readNBTTagCompound(dataInputStream));
 		}
 	}
 
@@ -80,6 +99,21 @@ public class PC_PacketHandler implements IPacketHandler {
 		return new Packet250CustomPayload("PowerCraft", byteArray);
 	}
 
+	public static Packet250CustomPayload getPacketHandlerPacket(String packetHandler, NBTTagCompound nbtTagCompound){
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+		try {
+			dataOutputStream.writeInt(PACKETHANDLER);
+			dataOutputStream.writeUTF(packetHandler);
+			writeNBTTagCompound(dataOutputStream, nbtTagCompound);
+			return getPowerCraftPacket(byteArrayOutputStream.toByteArray());
+		} catch (IOException e) {
+			e.printStackTrace();
+			PC_Logger.severe("Error while generating packet");
+		}
+		return null;
+	}
+	
 	public static Packet250CustomPayload getBlockMessagePacket(World world, int x, int y, int z, NBTTagCompound nbtTagCompound){
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);

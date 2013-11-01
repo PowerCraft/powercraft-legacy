@@ -1,6 +1,7 @@
 package powercraft.api.blocks;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -47,6 +48,8 @@ public abstract class PC_Block extends BlockContainer {
 	public final PC_BlockInfo blockInfo;
 
 	public final PC_Module module;
+	
+	private static HashMap<Thread, EntityPlayer> map = new HashMap<Thread, EntityPlayer>();
 	
 	protected PC_Block(int id, Material material) {
 		super(id, material);
@@ -137,6 +140,7 @@ public abstract class PC_Block extends BlockContainer {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getRenderType() {
 		return PC_Renderer.getRenderType();
 	}
@@ -153,6 +157,9 @@ public abstract class PC_Block extends BlockContainer {
 
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
+		EntityPlayer player = map.remove(Thread.currentThread());
+		if(player!=null)
+			return getBlockHardness(player, world, x, y, z);
 		TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
 		if(tileEntity instanceof PC_TileEntity) 
 			return ((PC_TileEntity)tileEntity).getBlockHardness();
@@ -259,12 +266,17 @@ public abstract class PC_Block extends BlockContainer {
 			((PC_TileEntity)tileEntity).onNeighborBlockChange(neighborID);
 		super.onNeighborBlockChange(world, x, y, z, neighborID);
 	}
-
-	@Override
-	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z) {
+	
+	public float getBlockHardness(EntityPlayer player, World world, int x, int y, int z){
 		TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
 		if(tileEntity instanceof PC_TileEntity) 
-			return ((PC_TileEntity)tileEntity).getPlayerRelativeBlockHardness(player);
+			return ((PC_TileEntity)tileEntity).getBlockHardness(player);
+		return getBlockHardness(world, x, y, z);
+	}
+	
+	@Override
+	public final float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z) {
+		map.put(Thread.currentThread(), player);
 		return super.getPlayerRelativeBlockHardness(player, world, x, y, z);
 	}
 
@@ -417,6 +429,7 @@ public abstract class PC_Block extends BlockContainer {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public final void registerIcons(IconRegister iconRegister) {
 		PC_TextureRegistry.registerIcons(this, iconRegister);
 	}
