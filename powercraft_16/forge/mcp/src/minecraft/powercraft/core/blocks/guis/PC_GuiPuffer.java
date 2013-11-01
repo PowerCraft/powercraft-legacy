@@ -13,7 +13,7 @@ import powercraft.api.gres.events.PC_IGresEventListener;
 import powercraft.core.blocks.tileentities.PC_TileEntityPuffer;
 
 
-public class PC_GuiPuffer implements PC_IGresClient, PC_IGresEventListener {
+public class PC_GuiPuffer implements PC_IGresGui, PC_IGresEventListener {
 
 	private PC_GresLabel label;
 	private PC_TileEntityPuffer tileEntityPuffer;

@@ -17,7 +17,7 @@ public interface PC_IGresGuiOpenHandler {
 	 * @return the GUI Object of the GUI that shall be opened
 	 */
 	@SideOnly(Side.CLIENT)
-	public PC_IGresClient openClientGui(EntityPlayer player);
+	public PC_IGresGui openClientGui(EntityPlayer player);
 
 	/**
 	 * that's the method that is called for opening a GUI on server

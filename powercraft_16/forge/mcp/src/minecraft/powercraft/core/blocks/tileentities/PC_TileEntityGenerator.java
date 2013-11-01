@@ -10,7 +10,7 @@ import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_TileEntityWithInventory;
 import powercraft.api.energy.PC_IEnergyProvider;
 import powercraft.api.gres.PC_GresBaseWithInventory;
-import powercraft.api.gres.PC_IGresClient;
+import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.gres.PC_IGresGuiOpenHandler;
 import powercraft.api.inventory.PC_Inventory;
 import powercraft.core.blocks.guis.PC_ContainerGenerator;
@@ -64,7 +64,7 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public PC_IGresClient openClientGui(EntityPlayer player) {
+	public PC_IGresGui openClientGui(EntityPlayer player) {
 
 		return new PC_GuiGenerator(this, player);
 	}

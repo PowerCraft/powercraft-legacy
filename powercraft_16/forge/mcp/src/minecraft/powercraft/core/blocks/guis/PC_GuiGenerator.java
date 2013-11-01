@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 
-public class PC_GuiGenerator extends PC_ContainerGenerator implements PC_IGresClient, PC_IGresEventListener {
+public class PC_GuiGenerator extends PC_ContainerGenerator implements PC_IGresGui, PC_IGresEventListener {
 
 	private PC_GresLabel label;
 	private PC_GresProgressImage progress;

@@ -287,7 +287,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 				PC_RectI rect = child.getRect();
 				if (rect.contains(position)){
 					Slot slot = child.getSlotAtPosition(position.sub(rect.getLocation()));
-					if (slot != null) return slot;
+					return slot;
 				}
 			}
 		}

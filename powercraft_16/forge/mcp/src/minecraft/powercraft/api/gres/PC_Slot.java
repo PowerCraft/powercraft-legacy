@@ -12,7 +12,6 @@ public class PC_Slot extends Slot {
 
 	private ItemStack backgroundStack;
 	private boolean renderGrayWhenEmpty;
-	private boolean useAlwaysBackground;
 
 
 	public PC_Slot(IInventory inventory, int slotIndex) {
@@ -73,18 +72,6 @@ public class PC_Slot extends Slot {
 	public boolean renderGrayWhenEmpty() {
 
 		return renderGrayWhenEmpty;
-	}
-
-
-	public void setUseAlwaysBackground(boolean useAlwaysBackground) {
-
-		this.useAlwaysBackground = useAlwaysBackground;
-	}
-
-
-	public boolean useAlwaysBackground() {
-
-		return useAlwaysBackground;
 	}
 
 }

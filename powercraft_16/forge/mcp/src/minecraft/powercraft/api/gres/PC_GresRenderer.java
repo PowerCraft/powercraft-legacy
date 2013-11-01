@@ -1,12 +1,16 @@
 package powercraft.api.gres;
 
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,23 +20,11 @@ public class PC_GresRenderer {
 
 	private static Minecraft mc = Minecraft.getMinecraft();
 	private static RenderItem itemRenderer = new RenderItem();
-	private static FontRenderer fontRenderer;
+	private static FontRenderer fontRenderer = mc.fontRenderer;
 	
 	public static void setFontRenderer(FontRenderer fontRenderer){
 		PC_GresRenderer.fontRenderer = fontRenderer;
 	}
-	
-	public static void drawItemStack(ItemStack itemStack, int x, int y, String str){
-		GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-        itemRenderer.zLevel = 200.0F;
-        FontRenderer font = null;
-        if (itemStack != null) font = itemStack.getItem().getFontRenderer(itemStack);
-        if (font == null) font = fontRenderer;
-        itemRenderer.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), itemStack, x, y);
-        itemRenderer.renderItemOverlayIntoGUI(font, mc.getTextureManager(), itemStack, x, y, str);
-        itemRenderer.zLevel = 0.0F;
-	}
-	
 	
 	public static void drawHorizontalLine(int x1, int x2, int y, int color){
         if (x2 < x1){
@@ -85,5 +77,104 @@ public class PC_GresRenderer {
         tessellator.draw();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
+
+	public static void drawItemStack(int x, int y, ItemStack itemStack, String text) {
+		if(itemStack==null)
+			return;
+		FontRenderer font = itemStack.getItem().getFontRenderer(itemStack);
+		if(font==null)
+			font  = fontRenderer;
+		GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+		itemRenderer.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), itemStack, x, y);
+        itemRenderer.renderItemOverlayIntoGUI(font, mc.getTextureManager(), itemStack, x, y, text);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+	}
+
+	public static void drawTooltip(int x, int y, int wWidth, int wHeigth, List<String> list) {
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		RenderHelper.disableStandardItemLighting();
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		int maxWidth = 0;
+		for (String s : list) {
+			int width = fontRenderer.getStringWidth(s);
+			if (width > maxWidth) {
+				maxWidth = width;
+			}
+		}
+
+		x += 12;
+		y += 12;
+		int k1 = 8;
+
+		if (list.size() > 1) {
+			k1 += 2 + (list.size() - 1) * 10;
+		}
+
+		if (x + maxWidth > wWidth) {
+			x -= 28 + maxWidth;
+		}
+
+		if (y + k1 + 6 > wHeigth) {
+			y = wHeigth - k1 - 6;
+		}
+
+		final int l1 = -267386864;
+		drawGradientRect(x - 3, y - 4, maxWidth + 6, 1, l1, l1);
+		drawGradientRect(x - 3, y + k1 + 3, maxWidth + 6, 1, l1, l1);
+		drawGradientRect(x - 3, y - 3, maxWidth + 6, k1 + 6, l1, l1);
+		drawGradientRect(x - 4, y - 3, 1, k1 + 6, l1, l1);
+		drawGradientRect(x + maxWidth + 3, y - 3, 1, k1 + 6, l1, l1);
+		final int i2 = 1347420415;
+		final int j2 = (i2 & 16711422) >> 1 | i2 & -16777216;
+		drawGradientRect(x - 3, y - 3 + 1, 1, k1 + 4, i2, j2);
+		drawGradientRect(x + maxWidth + 2, y - 3 + 1, 1, k1 + 4, i2, j2);
+		drawGradientRect(x - 3, y - 3, maxWidth + 6, 1, i2, i2);
+		drawGradientRect(x - 3, y + k1 + 2, maxWidth + 6, 1, j2, j2);
+
+		boolean isMainLine = true;
+		for (String s : list) {
+			fontRenderer.drawStringWithShadow(s, x, y, -1);
+			if (isMainLine) {
+				y += 2;
+				isMainLine = false;
+			}
+			y += 10;
+		}
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		RenderHelper.enableStandardItemLighting();
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+	}
     
+	public static void drawGradientRect(int x, int y, int width, int height, int colorTop, int colorBottom) {
+
+		float topAlpha = (colorTop >> 24 & 255) / 255.0F;
+		float topRed = (colorTop >> 16 & 255) / 255.0F;
+		float topGreen = (colorTop >> 8 & 255) / 255.0F;
+		float topBlue = (colorTop & 255) / 255.0F;
+		float bottomAlpha = (colorBottom >> 24 & 255) / 255.0F;
+		float bottomRed = (colorBottom >> 16 & 255) / 255.0F;
+		float bottomGreen = (colorBottom >> 8 & 255) / 255.0F;
+		float bottomBlue = (colorBottom & 255) / 255.0F;
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_ALPHA_TEST);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glShadeModel(GL11.GL_SMOOTH);
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.setColorRGBA_F(topRed, topGreen, topBlue, topAlpha);
+		tessellator.addVertex(x + width, y, 0);
+		tessellator.addVertex(x, y, 0);
+		tessellator.setColorRGBA_F(bottomRed, bottomGreen, bottomBlue, bottomAlpha);
+		tessellator.addVertex(x, y + height, 0);
+		tessellator.addVertex(x + width, y + height, 0);
+		tessellator.draw();
+		GL11.glShadeModel(GL11.GL_FLAT);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
+	
 }

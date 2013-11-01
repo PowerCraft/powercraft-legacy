@@ -853,7 +853,6 @@ public abstract class PC_Block extends BlockContainer {
 	public void setupRotation(IBlockAccess world, int x, int y, int z, RenderBlocks renderer) {
 		int rotation = getBlockRotation(world, x, y, z);
 		PC_Direction pitch = getBlockPitch(world, x, y, z);
-		System.out.println(pitch.ordinal()+":"+rotation);
 		renderer.uvRotateBottom = rotationMap[pitch.ordinal()][0][rotation];
 		renderer.uvRotateTop = rotationMap[pitch.ordinal()][1][rotation];
 		renderer.uvRotateNorth = rotationMap[pitch.ordinal()][2][rotation];
