@@ -8,7 +8,7 @@ import powercraft.api.PC_Logger;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_TileEntityUpgradable;
 import powercraft.api.gres.PC_GresBaseWithInventory;
-import powercraft.api.gres.PC_IGresClient;
+import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.gres.PC_IGresGuiOpenHandler;
 import powercraft.api.inventory.PC_Inventory;
 import powercraft.api.security.PC_Permission;
@@ -37,7 +37,7 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 	 * @see powercraft.api.gres.PC_IGresGuiOpenHandler#openClientGui(net.minecraft.entity.player.EntityPlayer)
 	 */
 	@Override
-	public PC_IGresClient openClientGui(EntityPlayer player) {
+	public PC_IGresGui openClientGui(EntityPlayer player) {
 		return new PC_GuiTutorial(this, player);
 	}
 
@@ -47,7 +47,7 @@ public class PC_TileEntityTutorial extends PC_TileEntityUpgradable implements PC
 	@Override
 	public PC_GresBaseWithInventory openServerGui(EntityPlayer player) {
 		// TODO Auto-generated method stub
-		return null;
+		return new PC_GuiTutorial(this, player);
 	}
 	
 	@Override

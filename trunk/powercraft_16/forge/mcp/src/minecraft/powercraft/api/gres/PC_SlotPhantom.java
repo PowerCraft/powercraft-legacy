@@ -12,10 +12,5 @@ public class PC_SlotPhantom extends PC_Slot {
 	public int getSlotStackLimit() {
 		return 0;
 	}
-
-	@Override
-	public boolean canDragIntoSlot() {
-		return false;
-	}
 	
 }

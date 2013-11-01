@@ -811,35 +811,6 @@ public abstract class PC_GresComponent {
 		GL11.glEnable(GL11.GL_BLEND);
 	}
 
-
-	protected void drawGradientRect(int x, int y, int width, int height, int colorTop, int colorBottom) {
-
-		float topAlpha = (colorTop >> 24 & 255) / 255.0F;
-		float topRed = (colorTop >> 16 & 255) / 255.0F;
-		float topGreen = (colorTop >> 8 & 255) / 255.0F;
-		float topBlue = (colorTop & 255) / 255.0F;
-		float bottomAlpha = (colorBottom >> 24 & 255) / 255.0F;
-		float bottomRed = (colorBottom >> 16 & 255) / 255.0F;
-		float bottomGreen = (colorBottom >> 8 & 255) / 255.0F;
-		float bottomBlue = (colorBottom & 255) / 255.0F;
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.setColorRGBA_F(topRed, topGreen, topBlue, topAlpha);
-		tessellator.addVertex(x + width, y, 0);
-		tessellator.addVertex(x, y, 0);
-		tessellator.setColorRGBA_F(bottomRed, bottomGreen, bottomBlue, bottomAlpha);
-		tessellator.addVertex(x, y + height, 0);
-		tessellator.addVertex(x + width, y + height, 0);
-		tessellator.draw();
-		GL11.glShadeModel(GL11.GL_FLAT);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-	}
-
 	protected void moveToTop(){
 		if(parent!=null){
 			parent.moveToTop(this);

@@ -154,7 +154,13 @@ public class PC_GresWindow extends PC_GresContainer {
 					if (component != null) return component;
 				}
 			}
-			return this;
+			PC_RectI rect = new PC_RectI(this.rect);
+			rect.x = frame.x;
+			rect.y = frame.y;
+			rect.width -= frame.x+frame.width;
+			rect.height -= frame.y+frame.height;
+			if(rect.contains(position))
+				return this;
 		}
 		return null;
 	}

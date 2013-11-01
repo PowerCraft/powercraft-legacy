@@ -11,7 +11,7 @@ import powercraft.api.PC_FieldDescription;
 import powercraft.api.blocks.PC_TileEntity;
 import powercraft.api.energy.PC_IEnergyPuffer;
 import powercraft.api.gres.PC_GresBaseWithInventory;
-import powercraft.api.gres.PC_IGresClient;
+import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.gres.PC_IGresGuiOpenHandler;
 import powercraft.core.blocks.guis.PC_GuiPuffer;
 import cpw.mods.fml.relauncher.Side;
@@ -94,7 +94,7 @@ public class PC_TileEntityPuffer extends PC_TileEntity implements PC_IGresGuiOpe
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public PC_IGresClient openClientGui(EntityPlayer player) {
+	public PC_IGresGui openClientGui(EntityPlayer player) {
 
 		return new PC_GuiPuffer(this, player);
 	}

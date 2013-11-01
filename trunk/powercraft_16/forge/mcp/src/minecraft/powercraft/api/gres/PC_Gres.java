@@ -54,13 +54,12 @@ public class PC_Gres {
 
 		loadTextures();
 		if (tileEntity instanceof PC_IGresGuiOpenHandler) {
-			PC_IGresClient gui = ((PC_IGresGuiOpenHandler) tileEntity).openClientGui(player);
+			PC_IGresGui gui = ((PC_IGresGuiOpenHandler) tileEntity).openClientGui(player);
 			if (gui != null) {
 				Minecraft mc = PC_ClientUtils.mc();
-				if (windowId == -1) {
-					mc.displayGuiScreen(new PC_GresGui(gui));
-				} else {
-					mc.displayGuiScreen(new PC_GresContainerGui(gui));
+				mc.displayGuiScreen(new PC_GresGuiScreen(gui));
+				if (windowId != -1 && gui instanceof PC_GresBaseWithInventory) {
+					player.openContainer = (PC_GresBaseWithInventory)gui;
 					player.openContainer.windowId = windowId;
 				}
 			}
@@ -74,13 +73,12 @@ public class PC_Gres {
 		loadTextures();
 		PC_IGresGuiOpenHandler guiOpenHandler = guiOpenHandlers.get(guiOpenHandlerName);
 		if (guiOpenHandler != null) {
-			PC_IGresClient gui = guiOpenHandler.openClientGui(player);
+			PC_IGresGui gui = guiOpenHandler.openClientGui(player);
 			if (gui != null) {
 				Minecraft mc = PC_ClientUtils.mc();
-				if (windowId == -1) {
-					mc.displayGuiScreen(new PC_GresGui(gui));
-				} else {
-					mc.displayGuiScreen(new PC_GresContainerGui(gui));
+				mc.displayGuiScreen(new PC_GresGuiScreen(gui));
+				if (windowId != -1 && gui instanceof PC_GresBaseWithInventory) {
+					player.openContainer = (PC_GresBaseWithInventory)gui;
 					player.openContainer.windowId = windowId;
 				}
 			}
@@ -93,13 +91,12 @@ public class PC_Gres {
 
 		loadTextures();
 		if (item instanceof PC_IGresGuiOpenHandler) {
-			PC_IGresClient gui = ((PC_IGresGuiOpenHandler) item).openClientGui(player);
+			PC_IGresGui gui = ((PC_IGresGuiOpenHandler) item).openClientGui(player);
 			if (gui != null) {
 				Minecraft mc = PC_ClientUtils.mc();
-				if (windowId == -1) {
-					mc.displayGuiScreen(new PC_GresGui(gui));
-				} else {
-					mc.displayGuiScreen(new PC_GresContainerGui(gui));
+				mc.displayGuiScreen(new PC_GresGuiScreen(gui));
+				if (windowId != -1 && gui instanceof PC_GresBaseWithInventory) {
+					player.openContainer = (PC_GresBaseWithInventory)gui;
 					player.openContainer.windowId = windowId;
 				}
 			}

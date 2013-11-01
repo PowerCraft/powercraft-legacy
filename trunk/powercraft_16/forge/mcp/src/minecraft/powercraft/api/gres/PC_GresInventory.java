@@ -104,14 +104,13 @@ public class PC_GresInventory extends PC_GresComponent {
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k / 1.0F, i1 / 1.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		PC_Vec2I realLocation = getRealLocation();
+		PC_GresGuiHandler guiHandler = getGuiHandler();
 
 		for (int x = 0, xp = 1 + (slotWidth - 18) / 2; x < slots.length; x++, xp += slotWidth) {
 			for (int y = 0, yp = 1 + (slotHeight - 18) / 2; y < slots[x].length; y++, yp += slotHeight) {
 				if (slots[x][y] != null) {
 					Slot slot = slots[x][y];
-					slot.xDisplayPosition = xp + realLocation.x;
-					slot.yDisplayPosition = yp + realLocation.y;
+					guiHandler.renderSlot(xp, yp, slot);
 				}
 			}
 		}
@@ -119,8 +118,7 @@ public class PC_GresInventory extends PC_GresComponent {
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		RenderHelper.disableStandardItemLighting();
 	}
-
-
+	
 	@Override
 	protected Slot getSlotAtPosition(PC_Vec2I position) {
 
