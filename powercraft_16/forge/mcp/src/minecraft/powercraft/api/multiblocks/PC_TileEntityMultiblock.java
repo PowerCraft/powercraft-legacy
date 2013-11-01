@@ -2,16 +2,24 @@ package powercraft.api.multiblocks;
 
 
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
 
+import net.minecraft.client.renderer.DestroyBlockProgress;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
+import powercraft.api.PC_ClientUtils;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_FieldDescription;
+import powercraft.api.PC_Reflection;
 import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_ITileEntitySpecialRenderer;
 import powercraft.api.blocks.PC_TileEntity;
@@ -245,10 +253,29 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean renderWorldBlock(RenderBlocks renderer) {
-		if(!renderer.hasOverrideBlockTexture()){
+		if(renderer.hasOverrideBlockTexture()){
+			RenderGlobal renderGlobal = PC_ClientUtils.mc().renderGlobal;
+			Icon[] destroyBlockIcons = PC_Reflection.getValue(RenderGlobal.class, renderGlobal, 29, Icon[].class);
+			for(Entry<Integer, DestroyBlockProgress> e:(Set<Entry<Integer, DestroyBlockProgress>>)renderGlobal.damagedBlocks.entrySet()){
+				DestroyBlockProgress destroyblockprogress = e.getValue();
+				int x = destroyblockprogress.getPartialBlockX();
+				int y = destroyblockprogress.getPartialBlockY();
+				int z = destroyblockprogress.getPartialBlockZ();
+				if(x == xCoord && y == yCoord && z == zCoord){
+					PC_MultiblockIndex index = PC_BlockMultiblock.playerSelection.get(e.getKey());
+					if(index!=null && tileEntities[index.ordinal()] != null){
+						renderer.setOverrideBlockTexture(destroyBlockIcons[destroyblockprogress.getPartialBlockDamage()]);
+						tileEntities[index.ordinal()].renderWorldBlock(renderer);
+					}else{
+						PC_BlockMultiblock.playerSelection.remove(e.getKey());
+					}
+				}
+			}
+		}else{
 			for (int i = 0; i < tileEntities.length; i++) {
 				if (tileEntities[i] != null) {
 					tileEntities[i].renderWorldBlock(renderer);
@@ -361,6 +388,13 @@ public class PC_TileEntityMultiblock extends PC_TileEntity implements PC_ITileEn
 			}
 		}
 		return null;
+	}
+	
+	public float getTileHardness(PC_MultiblockIndex index, EntityPlayer player){
+		if (tileEntities[index.ordinal()] != null) {
+			return tileEntities[index.ordinal()].getHardness(player);
+		}
+		return 0;
 	}
 	
 }

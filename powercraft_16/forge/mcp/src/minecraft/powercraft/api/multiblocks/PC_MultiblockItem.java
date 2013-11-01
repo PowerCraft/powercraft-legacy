@@ -54,7 +54,7 @@ public abstract class PC_MultiblockItem extends PC_Item {
 	@Override
 	public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float xHit, float yHit,
 			float zHit) {
-
+		side &= 7;
 		Block block = PC_Utils.getBlock(world, x, y, z);
 		boolean replaceAble = false;
 		if (block instanceof PC_BlockMultiblock) {

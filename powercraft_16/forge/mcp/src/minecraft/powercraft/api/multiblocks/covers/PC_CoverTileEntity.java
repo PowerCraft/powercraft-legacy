@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -66,6 +67,11 @@ public class PC_CoverTileEntity extends PC_MultiblockTileEntity {
 	@Override
 	public ItemStack getPickBlock() {
 		return PC_CoverItem.getCoverItem(thickness, metadata, block);
+	}
+
+	@Override
+	public float getHardness(EntityPlayer player) {
+		return block.blockHardness;
 	}
 	
 }

@@ -8,6 +8,7 @@ import java.util.Random;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_INBT;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -267,5 +268,9 @@ public abstract class PC_MultiblockTileEntity implements PC_INBT {
 	}
 
 	public abstract ItemStack getPickBlock();
+
+	public float getHardness(EntityPlayer player) {
+		return 0;
+	}
 
 }

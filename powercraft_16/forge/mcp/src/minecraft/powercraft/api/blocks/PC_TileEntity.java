@@ -469,10 +469,6 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		return getBlockType().blockMaterial.isSolid();
 	}
 
-	public float getPlayerRelativeBlockHardness(EntityPlayer player) {
-		return hasPermission(player, PC_Permission.BLOCKHARVEST)?getBlockType().getBlockHardness(worldObj, xCoord, yCoord, zCoord):-1;
-	}
-
 	@SuppressWarnings("unused")
 	public void onEntityWalking(Entity entity) {}
 
@@ -635,6 +631,11 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 				worldObj.func_96440_m(xCoord, yCoord, zCoord, getBlockType().blockID);
 			}
 		}
+	}
+
+
+	public float getBlockHardness(EntityPlayer player) {
+		return hasPermission(player, PC_Permission.BLOCKHARVEST)?getBlockType().getBlockHardness(worldObj, xCoord, yCoord, zCoord):-1;
 	}
 	
 }
