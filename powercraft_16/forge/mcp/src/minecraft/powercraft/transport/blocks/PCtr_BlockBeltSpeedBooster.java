@@ -2,17 +2,13 @@ package powercraft.transport.blocks;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_EntityTracker;
-import powercraft.api.PC_Utils;
 import powercraft.api.blocks.PC_Block;
 import powercraft.api.blocks.PC_BlockInfo;
 import powercraft.api.registries.PC_TextureRegistry;
@@ -33,6 +29,7 @@ public class PCtr_BlockBeltSpeedBooster extends PC_Block
 		
 	}
 
+	// Bottom texture also needed
 	@Override
 	public void loadIcons()
 	{
@@ -50,13 +47,16 @@ public class PCtr_BlockBeltSpeedBooster extends PC_Block
 	 * Stores MD of direction 
 	 * (2, 3, 0, 1 = N, E, S, W respectively)
 	 */
-	@Override
+	// Form XOR
+	// DONE BY PC_Block.modifyMetadataPostPlace
+	// But not used PC_Direction.PLAYER2MD[l], so use it when you call getBlockRotation(...)
+	/*@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) 
 	{		
 		int l = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;				
 		PC_Utils.setMD(world, x, y, z, PC_Direction.PLAYER2MD[l]);
 //		this.rotateBlock(world, x, y, z, ForgeDirection. PC_Direction.PLAYER2MD[l]);
-	}
+	}*/
 	
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
@@ -69,6 +69,7 @@ public class PCtr_BlockBeltSpeedBooster extends PC_Block
 		}
 	}
 
+	// AND BOTTOM?? You need also a bottom texture, take a look on the bottom :/
 	@Override
 	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, PC_Direction side) 
 	{	

@@ -840,10 +840,26 @@ public abstract class PC_Block extends BlockContainer {
 		return false;
 	}
 	
-	@SuppressWarnings("unused")
+	private static final int[][][] rotationMap = {
+		{{3, 2, 0, 1}, {3, 2, 0, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+		{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+		{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+		{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+		{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+		{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}
+	};
+	
 	@SideOnly(Side.CLIENT)
 	public void setupRotation(IBlockAccess world, int x, int y, int z, RenderBlocks renderer) {
-		
+		int rotation = getBlockRotation(world, x, y, z);
+		PC_Direction pitch = getBlockPitch(world, x, y, z);
+		System.out.println(pitch.ordinal()+":"+rotation);
+		renderer.uvRotateBottom = rotationMap[pitch.ordinal()][0][rotation];
+		renderer.uvRotateTop = rotationMap[pitch.ordinal()][1][rotation];
+		renderer.uvRotateNorth = rotationMap[pitch.ordinal()][2][rotation];
+		renderer.uvRotateSouth = rotationMap[pitch.ordinal()][3][rotation];
+		renderer.uvRotateWest = rotationMap[pitch.ordinal()][4][rotation];
+		renderer.uvRotateEast = rotationMap[pitch.ordinal()][5][rotation];
 	}
 	
 	@SuppressWarnings("unused")
@@ -875,10 +891,12 @@ public abstract class PC_Block extends BlockContainer {
 	}
 	
 	public boolean canPitch(IBlockAccess world, int x, int y, int z){
+		if(blockInfo.pitchable()==false)
+			return false;
 		if(canRotate(world, x, y, z)){
 			return blockInfo.tileEntity()!=PC_TileEntity.class;
 		}
-		return blockInfo.pitchable();
+		return true;
 	}
 	
 	@SuppressWarnings("unused")
