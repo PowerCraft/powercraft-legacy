@@ -8,21 +8,23 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.lwjgl.input.Keyboard;
 
+import powercraft.api.PC_Vec2I;
 import powercraft.api.gres.PC_GresBaseWithInventory;
+import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresComponent;
 import powercraft.api.gres.PC_GresGuiHandler;
 import powercraft.api.gres.PC_GresLabel;
 import powercraft.api.gres.PC_GresLayoutVertical;
-import powercraft.api.gres.PC_GresPlayerInventory;
+import powercraft.api.gres.PC_GresTab;
 import powercraft.api.gres.PC_GresTextEdit;
+import powercraft.api.gres.PC_GresTextEdit.PC_GresInputType;
 import powercraft.api.gres.PC_GresWindow;
 import powercraft.api.gres.PC_IGresGui;
-import powercraft.api.gres.PC_GresTextEdit.PC_GresInputType;
 import powercraft.api.gres.events.PC_GresEvent;
 import powercraft.api.gres.events.PC_GresKeyEvent;
+import powercraft.api.gres.events.PC_GresPrePostEvent.EventType;
 import powercraft.api.gres.events.PC_GresTickEvent;
 import powercraft.api.gres.events.PC_IGresEventListener;
-import powercraft.api.gres.events.PC_GresPrePostEvent.EventType;
 import powercraft.api.inventory.PC_Inventory;
 import powercraft.tutorial.blocks.tileentities.PC_TileEntityTutorial;
 
@@ -86,7 +88,15 @@ public class PC_GuiTutorial extends PC_GresBaseWithInventory implements PC_IGres
 		window.add(label = new PC_GresLabel("Speed: " + tileEntityTut.speed));
 		(text = new PC_GresTextEdit("Speed:", 5, PC_GresInputType.SIGNED_FLOAT)).setText(""+tileEntityTut.speed);
 		window.add(text);
-		window.add(new PC_GresPlayerInventory(this));
+		PC_GresTab tab;
+		window.add(tab = new PC_GresTab());
+		tab.setMinSize(new PC_Vec2I(100, 100));
+		tab.setPrefSize(new PC_Vec2I(100, 100));
+		tab.setMaxSize(new PC_Vec2I(100, 100));
+		tab.setSize(new PC_Vec2I(100, 100));
+		for(int i=0; i<10; i++){
+			tab.add(new PC_GresButton("B"+i));
+		}
 		gui.add(window);
 		gui.addEventListener(this);
 		text.addEventListener(this);

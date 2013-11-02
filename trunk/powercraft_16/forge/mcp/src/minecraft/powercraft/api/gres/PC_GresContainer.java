@@ -111,6 +111,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 
 		while (!children.isEmpty())
 			children.remove(0).setParent(null);
+		notifyChange();
 	}
 
 

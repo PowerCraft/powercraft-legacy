@@ -33,16 +33,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 
 public class PC_Gres {
-
-	/* TODO add:
-	 * 
-	 * ItemStack/Slot renderer
-	 * 
-	 * Slider
-	 * Progressbar
-	 * Tabs
-	 */
-	
 	
 	private static TreeMap<String, PC_IGresGuiOpenHandler> guiOpenHandlers = new TreeMap<String, PC_IGresGuiOpenHandler>();
 	@SideOnly(Side.CLIENT)
