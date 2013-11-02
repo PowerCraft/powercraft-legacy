@@ -16,6 +16,7 @@ public class PC_GresTab extends PC_GresContainer {
 	
 	private static final String textureName = "TabFrame";
 	private static final String textureNameTab = "Tab";
+	private static final String textureNameTabScroll = "TabScroll";
 	
 	private int tabsScroll;
 	private List<Tab> tabs = new ArrayList<Tab>();
@@ -121,12 +122,27 @@ public class PC_GresTab extends PC_GresContainer {
 		for(Tab tab:tabs){
 			int width = fontRenderer.getStringWidth(tab.tab)+4;
 			int state = tab.child == children.get(0)?2:tab==mouseOverTab&&mouseOver?1:0;
-			GL11.glColor4f(1, 1, 1, 1);
 			drawTexture(textureNameTab, x, 1, width, 12, state);
 			drawString(tab.tab, x+2, 3, false);
+			GL11.glColor4f(1, 1, 1, 1);
 			x+=width;
 		}
 		setDrawRect(scissor, new PC_RectI(rl.x, rl.y, rect.width, rect.height), scale, displayHeight);
+		int width = getTextureDefaultSize(textureNameTabScroll).x;
+		x = (int) (getTabScrollProz()*(rect.width-width-4));
+		drawTexture(textureNameTabScroll, x+2, 13, width, 1, move?2:0);
+	}
+	
+	private float getTabScrollProz(){
+		int width = 0;
+		for(Tab tab:tabs){
+			width += fontRenderer.getStringWidth(tab.tab)+4;
+		}
+		int over = width-(rect.width-2);
+		if(over<=0){
+			return 0;
+		}
+		return tabsScroll/(float)over;
 	}
 
 	@Override
