@@ -9,12 +9,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Keyboard;
 
 import powercraft.api.PC_Vec2I;
+import powercraft.api.gres.PC_GresAlign;
 import powercraft.api.gres.PC_GresBaseWithInventory;
 import powercraft.api.gres.PC_GresButton;
 import powercraft.api.gres.PC_GresComponent;
 import powercraft.api.gres.PC_GresGuiHandler;
 import powercraft.api.gres.PC_GresLabel;
 import powercraft.api.gres.PC_GresLayoutVertical;
+import powercraft.api.gres.PC_GresProgressbar;
+import powercraft.api.gres.PC_GresSlider;
 import powercraft.api.gres.PC_GresTab;
 import powercraft.api.gres.PC_GresTextEdit;
 import powercraft.api.gres.PC_GresTextEdit.PC_GresInputType;
@@ -22,6 +25,7 @@ import powercraft.api.gres.PC_GresWindow;
 import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.gres.events.PC_GresEvent;
 import powercraft.api.gres.events.PC_GresKeyEvent;
+import powercraft.api.gres.events.PC_GresMouseMoveEvent;
 import powercraft.api.gres.events.PC_GresPrePostEvent.EventType;
 import powercraft.api.gres.events.PC_GresTickEvent;
 import powercraft.api.gres.events.PC_IGresEventListener;
@@ -42,6 +46,8 @@ public class PC_GuiTutorial extends PC_GresBaseWithInventory implements PC_IGres
 
 	PC_TileEntityTutorial tileEntityTut;
 	
+	PC_GresProgressbar progressbar;
+	PC_GresSlider slider;
 	
 	public PC_GuiTutorial(PC_TileEntityTutorial tileEntityTut, EntityPlayer player) {
 		super(player, new PC_Inventory("NULL", 0, 0, 0));
@@ -68,6 +74,10 @@ public class PC_GuiTutorial extends PC_GresBaseWithInventory implements PC_IGres
 			if(ev.getEventType()==EventType.PRE){
 				label.setText("Speed: "+tileEntityTut.speed);
 			}
+		}else if(event instanceof PC_GresMouseMoveEvent){
+			if(component==slider){
+				progressbar.setProgress(slider.getProgress());
+			}
 		}
 	}
 	
@@ -88,6 +98,11 @@ public class PC_GuiTutorial extends PC_GresBaseWithInventory implements PC_IGres
 		window.add(label = new PC_GresLabel("Speed: " + tileEntityTut.speed));
 		(text = new PC_GresTextEdit("Speed:", 5, PC_GresInputType.SIGNED_FLOAT)).setText(""+tileEntityTut.speed);
 		window.add(text);
+		window.add(slider = new PC_GresSlider());
+		slider.addEventListener(this);
+		slider.setFill(PC_GresAlign.Fill.BOTH);
+		window.add(progressbar = new PC_GresProgressbar());
+		progressbar.setFill(PC_GresAlign.Fill.BOTH);
 		PC_GresTab tab;
 		window.add(tab = new PC_GresTab());
 		tab.setMinSize(new PC_Vec2I(100, 100));
@@ -101,7 +116,7 @@ public class PC_GuiTutorial extends PC_GresBaseWithInventory implements PC_IGres
 		gui.addEventListener(this);
 		text.addEventListener(this);
 	}
-
+	
 	PC_GresLabel label;
 	PC_GresTextEdit text;
 }

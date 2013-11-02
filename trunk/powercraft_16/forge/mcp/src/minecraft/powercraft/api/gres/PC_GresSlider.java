@@ -51,13 +51,13 @@ public class PC_GresSlider extends PC_GresComponent {
 	@Override
 	protected void paint(PC_RectI scissor, double scale, int displayHeight, float timeStamp) {
 		drawTexture(textureName, 0, 0, rect.width, rect.height, 3);
-		int x = (int) (progress*(rect.width-SLIDER_SIZE));
+		int x = (int) (progress*(rect.width-SLIDER_SIZE)/steps+0.5);
 		drawTexture(textureName, x, 0, SLIDER_SIZE, rect.height);
 	}
 	
 	@Override
 	protected boolean handleMouseButtonDown(PC_Vec2I mouse, int buttons, int eventButton) {
-		int x = (int) (progress*(rect.width-SLIDER_SIZE)/steps);
+		int x = (int) (progress*(rect.width-SLIDER_SIZE)/steps+0.5);
 		if(mouse.x>=x && mouse.x<=x+SLIDER_SIZE && enabled && parentEnabled){
 			mouseDown = true;
 			moveBarToMouse(mouse);
@@ -75,12 +75,16 @@ public class PC_GresSlider extends PC_GresComponent {
 	}
 
 	private void moveBarToMouse(PC_Vec2I mouse){
-		progress = (mouse.x - SLIDER_SIZE/2)/(rect.width-SLIDER_SIZE)*steps;
+		progress = (mouse.x - SLIDER_SIZE/2)/(float)(rect.width-SLIDER_SIZE)*steps;
+		if(progress<0)
+			progress = 0;
+		if(progress>steps)
+			progress = steps;
 	}
 	
 	@Override
 	protected boolean handleMouseButtonUp(PC_Vec2I mouse, int buttons, int eventButton) {
-		progress = ((int)(progress/steps+0.5))*steps;
+		progress = (int)(progress+0.5);
 		return super.handleMouseButtonUp(mouse, buttons, eventButton);
 	}
 	
