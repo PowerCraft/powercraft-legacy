@@ -12,6 +12,7 @@ public class PC_GresProgressbar extends PC_GresComponent {
 	
 	private int type;
 	private float progress;
+	private int steps = 100;
 	
 	public PC_GresProgressbar(){
 		
@@ -23,6 +24,14 @@ public class PC_GresProgressbar extends PC_GresComponent {
 	
 	public void setProgress(float progress){
 		this.progress = progress;
+	}
+	
+	public float getSteps(){
+		return steps;
+	}
+	
+	public void setProgress(int steps){
+		this.steps = steps;
 	}
 	
 	public float getType(){
@@ -51,7 +60,7 @@ public class PC_GresProgressbar extends PC_GresComponent {
 	@Override
 	protected void paint(PC_RectI scissor, double scale, int displayHeight, float timeStamp) {
 		drawTexture(textureName, 0, 0, rect.width, rect.height);
-		drawTexture(textureNameContent[type], 1, 1, (int) ((rect.width-2)*progress/100+0.5), rect.height-2);
+		drawTexture(textureNameContent[type], 1, 1, (int) ((rect.width-2)*progress/steps+0.5), rect.height-2);
 	}
 
 }
