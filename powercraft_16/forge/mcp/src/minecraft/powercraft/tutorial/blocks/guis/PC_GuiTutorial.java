@@ -102,6 +102,7 @@ public class PC_GuiTutorial extends PC_GresBaseWithInventory implements PC_IGres
 		slider.addEventListener(this);
 		slider.setFill(PC_GresAlign.Fill.BOTH);
 		window.add(progressbar = new PC_GresProgressbar());
+		progressbar.setType(PC_GresProgressbar.TYPE_3D);
 		progressbar.setFill(PC_GresAlign.Fill.BOTH);
 		PC_GresTab tab;
 		window.add(tab = new PC_GresTab());
