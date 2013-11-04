@@ -47,7 +47,7 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 	private int lastClickButton;
 	private boolean takeAll;
 	
-	public PC_GresGuiHandler(PC_IGresGui gui) {
+	protected PC_GresGuiHandler(PC_IGresGui gui) {
 
 		this.gui = gui;
 		this.mc = PC_ClientUtils.mc();
