@@ -5,25 +5,22 @@ import java.util.List;
 
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_ClientUtils;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class PC_GresInventory extends PC_GresComponent {
 
 	protected static final String textureName = "Slot";
-
-	protected static final RenderItem itemRenderer = new RenderItem();
 
 	protected Slot slots[][];
 
