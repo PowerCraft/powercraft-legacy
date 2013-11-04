@@ -28,6 +28,7 @@ import powercraft.api.gres.events.PC_GresPaintEvent;
 import powercraft.api.gres.events.PC_GresTickEvent;
 import powercraft.api.gres.events.PC_GresPrePostEvent.EventType;
 import powercraft.api.gres.layout.PC_IGresLayout;
+import powercraft.api.gres.slot.PC_Slot;
 
 @SideOnly(Side.CLIENT)
 public class PC_GresGuiHandler extends PC_GresContainer {

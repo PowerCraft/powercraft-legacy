@@ -10,6 +10,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import powercraft.api.blocks.PC_TileEntity;
+import powercraft.api.gres.slot.PC_Slot;
 
 
 public abstract class PC_GresBaseWithInventory extends Container {
