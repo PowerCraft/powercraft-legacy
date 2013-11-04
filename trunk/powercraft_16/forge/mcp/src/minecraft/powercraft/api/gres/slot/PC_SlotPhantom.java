@@ -1,4 +1,4 @@
-package powercraft.api.gres;
+package powercraft.api.gres.slot;
 
 import net.minecraft.inventory.IInventory;
 
