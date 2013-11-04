@@ -1,8 +1,11 @@
 package powercraft.api.gres;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 
+@SideOnly(Side.CLIENT)
 public class PC_GresProgressbar extends PC_GresComponent {
 
 	public static final int TYPE_3D = 0, TYPE_RIFFELED = 1, TYPE_PLANE = 2;

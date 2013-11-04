@@ -8,10 +8,12 @@ import net.minecraft.inventory.Slot;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 
-
+@SideOnly(Side.CLIENT)
 public class PC_GresPlayerInventory extends PC_GresInventory {
 
 	public PC_GresPlayerInventory(PC_GresBaseWithInventory base) {

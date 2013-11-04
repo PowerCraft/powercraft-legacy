@@ -2,16 +2,19 @@ package powercraft.api.gres;
 
 import org.lwjgl.input.Mouse;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_Vec2I;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
-public class PC_GresGuiScreen extends GuiScreen {
+@SideOnly(Side.CLIENT)
+class PC_GresGuiScreen extends GuiScreen {
 
 	private PC_GresGuiHandler guiHandler;
 	private int buttons;
 	
-	public PC_GresGuiScreen(PC_IGresGui client) {
+	protected PC_GresGuiScreen(PC_IGresGui client) {
 		guiHandler = new PC_GresGuiHandler(client);
 	}
 	

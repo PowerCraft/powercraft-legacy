@@ -16,8 +16,6 @@ public abstract class PC_GresBaseWithInventory extends Container {
 
 	protected final EntityPlayer player;
 
-//	private static final int playerSlots = 9 * 4;
-
 	protected final Slot[][] inventoryPlayerUpper = new Slot[9][3];
 
 	protected final Slot[] inventoryPlayerLower = new Slot[9];

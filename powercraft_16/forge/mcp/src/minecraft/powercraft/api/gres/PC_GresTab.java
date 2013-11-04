@@ -8,10 +8,13 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 import powercraft.api.gres.events.PC_GresMouseWheelEvent;
 
+@SideOnly(Side.CLIENT)
 public class PC_GresTab extends PC_GresContainer {
 	
 	private static final String textureName = "TabFrame";

@@ -12,11 +12,13 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_ClientUtils;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 
-
+@SideOnly(Side.CLIENT)
 public class PC_GresInventory extends PC_GresComponent {
 
 	protected static final String textureName = "Slot";

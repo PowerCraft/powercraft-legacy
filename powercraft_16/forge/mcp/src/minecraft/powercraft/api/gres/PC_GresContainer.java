@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
+import powercraft.api.gres.layout.PC_IGresLayout;
 
 
 @SuppressWarnings("unused")
@@ -35,6 +36,9 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 
 	}
 
+	public List<PC_GresComponent> getLayoutChildOrder(){
+		return layoutChildOrder;
+	}
 
 	public PC_RectI getFrame() {
 

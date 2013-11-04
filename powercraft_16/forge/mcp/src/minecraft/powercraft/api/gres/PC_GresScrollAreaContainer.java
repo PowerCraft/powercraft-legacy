@@ -1,9 +1,12 @@
 package powercraft.api.gres;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 import powercraft.api.gres.events.PC_GresMouseWheelEvent;
 
+@SideOnly(Side.CLIENT)
 class PC_GresScrollAreaContainer extends PC_GresContainer {
 	
 	private PC_GresScrollArea scrollArea;
