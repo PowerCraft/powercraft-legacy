@@ -197,6 +197,7 @@ public class PC_Gres {
 										PC_Logger.severe("Can't find activeLocation in xml");
 									} else {
 										PC_Logger.warning("Can't find a specific atribute in xml");
+										others[k] = others[0];
 									}
 								}
 							}
@@ -212,6 +213,7 @@ public class PC_Gres {
 								frame = new PC_RectI(subTextureElement.getAttribute("frame"));
 							} catch (NumberFormatException e) {
 								e.printStackTrace();
+								PC_Logger.severe("Can't find frame in xml");
 							}
 							if (name != null && size != null && frame != null && others[0] != null) {
 								textures.put(name, new PC_GresTexture(resourceLocation, size, frame, others));

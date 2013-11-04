@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -175,6 +176,16 @@ public class PC_GresRenderer {
 		GL11.glShadeModel(GL11.GL_FLAT);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
+
+	public static void drawIcon(int x, int y, int width, int height, Icon icon) {
+		Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(x, y + height, 0, icon.getMinU(), icon.getMaxV());
+        tessellator.addVertexWithUV(x + width, y + height, 0, icon.getMaxU(), icon.getMaxV());
+        tessellator.addVertexWithUV(x + width, y, 0, icon.getMaxU(), icon.getMinV());
+        tessellator.addVertexWithUV(x, y, 0, icon.getMinU(), icon.getMinV());
+        tessellator.draw();
 	}
 	
 }

@@ -1,5 +1,9 @@
 package powercraft.api.gres;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
 class PC_GresComboBoxFrame extends PC_GresFrame {
 
 	private PC_GresComboBox comboBox;

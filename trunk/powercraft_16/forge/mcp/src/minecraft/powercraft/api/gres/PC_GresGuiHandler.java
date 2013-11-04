@@ -17,6 +17,8 @@ import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_ClientUtils;
 import powercraft.api.PC_MathHelper;
 import powercraft.api.PC_RectI;
@@ -25,8 +27,9 @@ import powercraft.api.gres.events.PC_GresKeyEvent;
 import powercraft.api.gres.events.PC_GresPaintEvent;
 import powercraft.api.gres.events.PC_GresTickEvent;
 import powercraft.api.gres.events.PC_GresPrePostEvent.EventType;
+import powercraft.api.gres.layout.PC_IGresLayout;
 
-
+@SideOnly(Side.CLIENT)
 public class PC_GresGuiHandler extends PC_GresContainer {
 
 	private final PC_IGresGui gui;

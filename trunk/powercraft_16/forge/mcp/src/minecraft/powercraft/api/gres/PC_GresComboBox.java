@@ -3,6 +3,8 @@ package powercraft.api.gres;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 import powercraft.api.gres.PC_GresAlign.Fill;
@@ -10,7 +12,9 @@ import powercraft.api.gres.events.PC_GresEvent;
 import powercraft.api.gres.events.PC_GresFocusLostEvent;
 import powercraft.api.gres.events.PC_GresMouseButtonEvent;
 import powercraft.api.gres.events.PC_IGresEventListener;
+import powercraft.api.gres.layout.PC_GresLayoutVertical;
 
+@SideOnly(Side.CLIENT)
 public class PC_GresComboBox extends PC_GresComponent {
 
 	private static final String textureName = "Button";

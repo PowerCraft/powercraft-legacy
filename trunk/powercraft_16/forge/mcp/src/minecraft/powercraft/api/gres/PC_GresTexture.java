@@ -6,11 +6,13 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_ClientUtils;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 
-
+@SideOnly(Side.CLIENT)
 public class PC_GresTexture {
 
 	private final ResourceLocation texture;
@@ -68,6 +70,9 @@ public class PC_GresTexture {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		PC_Vec2I location = locations[state];
 
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		
 		if (frame.y > 0) {
 			if (frame.x > 0) {
 				drawTexturedModalRect(x, y, location.x, location.y, frame.x, frame.y);
@@ -102,6 +107,9 @@ public class PC_GresTexture {
 						- frame.height, frame.width, frame.height);
 			}
 		}
+		
+		tessellator.draw();
+		
 	}
 
 
@@ -128,12 +136,10 @@ public class PC_GresTexture {
 		float f = 0.00390625F;
 		float f1 = 0.00390625F;
 		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(x, y + height, 0, u * f, (v + height) * f1);
 		tessellator.addVertexWithUV(x + width, y + height, 0, (u + width) * f, (v + height) * f1);
 		tessellator.addVertexWithUV(x + width, y, 0, (u + width) * f, v * f1);
 		tessellator.addVertexWithUV(x, y, 0, u * f, v * f1);
-		tessellator.draw();
 	}
 
 }

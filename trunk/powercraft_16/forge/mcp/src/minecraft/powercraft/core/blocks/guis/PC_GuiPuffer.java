@@ -10,6 +10,7 @@ import powercraft.api.gres.events.PC_GresEvent;
 import powercraft.api.gres.events.PC_GresKeyEvent;
 import powercraft.api.gres.events.PC_GresTickEvent;
 import powercraft.api.gres.events.PC_IGresEventListener;
+import powercraft.api.gres.layout.PC_GresLayoutVertical;
 import powercraft.core.blocks.tileentities.PC_TileEntityPuffer;
 
 
