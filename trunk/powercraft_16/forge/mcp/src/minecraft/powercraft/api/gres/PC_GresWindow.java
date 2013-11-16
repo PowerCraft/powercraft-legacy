@@ -130,9 +130,14 @@ public class PC_GresWindow extends PC_GresContainer {
 			rect.y += frame.y;
 			GL11.glTranslatef(frame.x, frame.y, 0);
 			offset = rect.getLocation();
-			ListIterator<PC_GresComponent> iterator = children.listIterator(children.size());
-			while(iterator.hasPrevious()){
-				iterator.previous().doPaint(offset, scissor, scale, displayHeight, timeStamp);
+			rect.width -= frame.x + frame.width;
+			rect.height -= frame.y + frame.height;
+			PC_RectI nScissor = setDrawRect(scissor, rect, scale, displayHeight);
+			if(nScissor!=null){
+				ListIterator<PC_GresComponent> iterator = children.listIterator(children.size());
+				while(iterator.hasPrevious()){
+					iterator.previous().doPaint(offset, nScissor, scale, displayHeight, timeStamp);
+				}
 			}
 			GL11.glTranslatef(-frame.x, -frame.y, 0);
 			offset = offset.sub(frame.getLocation());

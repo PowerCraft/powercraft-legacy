@@ -85,7 +85,6 @@ public abstract class PC_GresBaseWithInventory extends Container {
 		}
 	}
 
-
 	@Override
 	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
 

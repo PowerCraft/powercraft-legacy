@@ -91,5 +91,9 @@ class PC_GresGuiScreen extends GuiScreen {
 	public boolean doesGuiPauseGame() {
 		return false;
 	}
+
+	public PC_IGresGui getCurrentClientGui() {
+		return guiHandler.getClient();
+	}
 	
 }

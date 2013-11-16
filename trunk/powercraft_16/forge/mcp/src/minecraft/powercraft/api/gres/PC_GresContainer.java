@@ -36,6 +36,10 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 
 	}
 
+	public PC_GresContainer(String text) {
+		super(text);
+	}
+
 	public List<PC_GresComponent> getLayoutChildOrder(){
 		return layoutChildOrder;
 	}
@@ -48,14 +52,14 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 
 	public PC_RectI getChildRect() {
 
-		return new PC_RectI(rect.x + frame.x, rect.y + frame.y, rect.width - frame.x - frame.width, rect.height - frame.y - frame.height);
+		return new PC_RectI(frame.x, frame.y, rect.width - frame.x - frame.width, rect.height - frame.y - frame.height);
 	}
 
 
 	public void setLayout(PC_IGresLayout layout) {
 
 		this.layout = layout;
-		if (layout != null) layout.updateLayout(this);
+		notifyChange();
 	}
 
 
@@ -143,17 +147,20 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 	public void setMinSize(PC_Vec2I minSize) {
 
 		if (minSize == null && layout != null) {
-			this.minSize.setTo(layout.getMinimumLayoutSize(this).add(frame.x + frame.width, frame.y + frame.height));
+			this.minSize.setTo(layout.getMinimumLayoutSize(this));
+			this.minSize.x += frame.x + frame.width;
+			this.minSize.y += frame.y + frame.height;
 			minSizeSet = false;
 		} else {
 			if (minSize == null) {
-				this.minSize.setTo(calculateMinSize().add(frame.x + frame.width, frame.y + frame.height));
+				this.minSize.setTo(calculateMinSize());
 				minSizeSet = false;
 			} else {
-				this.minSize.setTo(minSize.add(frame.x + frame.width, frame.y + frame.height));
+				this.minSize.setTo(minSize);
 				minSizeSet = true;
 			}
 		}
+		setSize(getSize().max(this.minSize));
 	}
 
 
@@ -161,10 +168,11 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 	public void setMaxSize(PC_Vec2I maxSize) {
 
 		if (maxSize == null) {
-			this.maxSize.setTo(calculateMaxSize().add(frame.x + frame.width, frame.y + frame.height));
+			this.maxSize.setTo(calculateMaxSize());
+			
 			maxSizeSet = false;
 		} else {
-			this.maxSize.setTo(maxSize.add(frame.x + frame.width, frame.y + frame.height));
+			this.maxSize.setTo(maxSize);
 			maxSizeSet = true;
 		}
 	}
@@ -174,17 +182,22 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 	public void setPrefSize(PC_Vec2I prefSize) {
 
 		if (prefSize == null && layout != null) {
-			this.prefSize.setTo(layout.getPreferredLayoutSize(this).add(frame.x + frame.width, frame.y + frame.height));
+			this.prefSize.setTo(layout.getPreferredLayoutSize(this));
+			if(this.prefSize.x!=-1)
+				this.prefSize.x += frame.x + frame.width;
+			if(this.prefSize.y!=-1)
+				this.prefSize.y += frame.y + frame.height;
 			prefSizeSet = false;
 		} else {
 			if (prefSize == null) {
-				this.prefSize.setTo(calculatePrefSize().add(frame.x + frame.width, frame.y + frame.height));
+				this.prefSize.setTo(calculatePrefSize());
 				prefSizeSet = false;
 			} else {
-				this.prefSize.setTo(prefSize.add(frame.x + frame.width, frame.y + frame.height));
+				this.prefSize.setTo(prefSize);
 				prefSizeSet = true;
 			}
 		}
+		
 	}
 
 
@@ -245,11 +258,16 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 			doDebugRendering(0, 0, rect.width, rect.height);
 			rect.x += frame.x;
 			rect.y += frame.y;
+			rect.width -= frame.x + frame.width;
+			rect.height -= frame.y + frame.height;
 			GL11.glTranslatef(frame.x, frame.y, 0);
 			offset = rect.getLocation();
 			ListIterator<PC_GresComponent> iterator = children.listIterator(children.size());
-			while(iterator.hasPrevious()){
-				iterator.previous().doPaint(offset, scissor, scale, displayHeight, timeStamp);
+			scissor = setDrawRect(scissor, rect, scale, displayHeight);
+			if(scissor!=null){
+				while(iterator.hasPrevious()){
+					iterator.previous().doPaint(offset, scissor, scale, displayHeight, timeStamp);
+				}
 			}
 			GL11.glPopMatrix();
 		}
@@ -260,12 +278,14 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 	protected PC_GresComponent getComponentAtPosition(PC_Vec2I position) {
 
 		if (visible) {
-			position = position.sub(frame.getLocation());
-			for (PC_GresComponent child : children) {
-				PC_RectI rect = child.getRect();
-				if (rect.contains(position)){
-					PC_GresComponent component = child.getComponentAtPosition(position.sub(rect.getLocation()));
-					if (component != null) return component;
+			if(getChildRect().contains(position)){
+				position = position.sub(frame.getLocation());
+				for (PC_GresComponent child : children) {
+					PC_RectI rect = child.getRect();
+					if (rect.contains(position)){
+						PC_GresComponent component = child.getComponentAtPosition(position.sub(rect.getLocation()));
+						if (component != null) return component;
+					}
 				}
 			}
 			return this;
@@ -286,7 +306,7 @@ public abstract class PC_GresContainer extends PC_GresComponent {
 	@Override
 	protected Slot getSlotAtPosition(PC_Vec2I position) {
 
-		if (visible) {
+		if (visible && getChildRect().contains(position)) {
 			position = position.sub(frame.getLocation());
 			for (PC_GresComponent child : children) {
 				PC_RectI rect = child.getRect();

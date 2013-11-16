@@ -120,6 +120,9 @@ public class PC_GresScrollArea extends PC_GresComponent {
 			paint(scissor, scale, displayHeight, timeStamp);
 			doDebugRendering(0, 0, rect.width, rect.height);
 			offset = rect.getLocation();
+			rect.width -= getTextureDefaultSize(scrollVFrame).x;
+			rect.height -= getTextureDefaultSize(scrollHFrame).y;
+			scissor = setDrawRect(scissor, rect, scale, displayHeight);
 			container.doPaint(offset, scissor, scale, displayHeight, timeStamp);
 			GL11.glPopMatrix();
 		}
@@ -130,7 +133,7 @@ public class PC_GresScrollArea extends PC_GresComponent {
 	protected PC_GresComponent getComponentAtPosition(PC_Vec2I position) {
 		if (visible) {
 			PC_RectI rect = container.getRect();
-			if (rect.contains(position)){
+			if (rect.contains(position)&& position.x < this.rect.width-getTextureDefaultSize(scrollVFrame).x && position.y < this.rect.height-getTextureDefaultSize(scrollHFrame).y){
 				PC_GresComponent component = container.getComponentAtPosition(position.sub(rect.getLocation()));
 				if (component != null) return component;
 			}
@@ -150,7 +153,7 @@ public class PC_GresScrollArea extends PC_GresComponent {
 	protected Slot getSlotAtPosition(PC_Vec2I position) {
 		if (visible) {
 			PC_RectI rect = container.getRect();
-			if (rect.contains(position)){
+			if (rect.contains(position) && position.x < this.rect.width-getTextureDefaultSize(scrollVFrame).x && position.y < this.rect.height-getTextureDefaultSize(scrollHFrame).y){
 				Slot slot = container.getSlotAtPosition(position.sub(rect.getLocation()));
 				if (slot != null) return slot;
 			}

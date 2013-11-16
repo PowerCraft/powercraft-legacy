@@ -17,22 +17,22 @@ import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import powercraft.api.PC_ClientUtils;
 import powercraft.api.PC_MathHelper;
 import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 import powercraft.api.gres.events.PC_GresKeyEvent;
 import powercraft.api.gres.events.PC_GresPaintEvent;
-import powercraft.api.gres.events.PC_GresTickEvent;
 import powercraft.api.gres.events.PC_GresPrePostEvent.EventType;
+import powercraft.api.gres.events.PC_GresTickEvent;
 import powercraft.api.gres.layout.PC_IGresLayout;
 import powercraft.api.gres.slot.PC_Slot;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class PC_GresGuiHandler extends PC_GresContainer {
-
+	
 	private final PC_IGresGui gui;
 	private final Minecraft mc;
 	private boolean initialized;
@@ -525,16 +525,18 @@ public class PC_GresGuiHandler extends PC_GresContainer {
 			renderGray = true;
 		}
 		renderGray &= slot.func_111238_b();
-		if(itemStack==null && slot instanceof PC_Slot){
-			itemStack = ((PC_Slot)slot).getBackgroundStack();
-			renderGray |= ((PC_Slot)slot).renderGrayWhenEmpty();
+		if(slot instanceof PC_Slot){
+			PC_Slot sSlot = (PC_Slot)slot;
+			if(itemStack==null){
+				itemStack = sSlot.getBackgroundStack();
+				renderGray |= sSlot.renderGrayWhenEmpty();
+			}
 		}
+		
 		if(renderGray){
              PC_GresRenderer.drawGradientRect(x, y, 16, 16, -2130706433, -2130706433);
 		}
-		GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-		PC_GresRenderer.drawItemStack(x, y, itemStack, text);
+		PC_GresRenderer.drawEasyItemStack(x, y, itemStack, text);
 	}
 
 	public void eventGuiClosed() {

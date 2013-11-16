@@ -27,8 +27,8 @@ public abstract class PC_TileEntityUpgradable extends PC_TileEntityWithInventory
 	 * @param inventories WARNING: DON'T INPUT UPGRADE INVENTORY gets automatically added
 	 * @param slotsForID
 	 */
-	public PC_TileEntityUpgradable(int vfamilies, int upgradeSlots, String name, PC_Inventory[] inventories, int[]... slotsForID){				
-		super(name, addUpgradeInventory(inventories, upgradeSlots, vfamilies), slotsForID);
+	public PC_TileEntityUpgradable(int vfamilies, int upgradeSlots, String name, PC_Inventory[] inventories, int[] outputs, int[]... slotsForID){				
+		super(name, addUpgradeInventory(inventories, upgradeSlots, vfamilies), outputs, slotsForID);
 		upgradeInv = inventories.length;
 	}
 	

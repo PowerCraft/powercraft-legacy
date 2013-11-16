@@ -2,25 +2,38 @@ package powercraft.api.gres;
 
 import java.lang.reflect.Array;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import powercraft.api.PC_RectI;
 import powercraft.api.PC_Vec2I;
 import powercraft.api.gres.events.PC_GresEvent;
 import powercraft.api.gres.events.PC_GresMouseButtonEvent;
 import powercraft.api.gres.events.PC_IGresEventListener;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class PC_GresDisplayObject extends PC_GresComponent {
+public class PC_GresDisplayObject implements PC_IGresEventListener {
 
-	private Object display;
+	private final Object display;
 	
 	public PC_GresDisplayObject(Object display){
-		setDisplayObject(display);
+		if(display.getClass().isArray()){
+			display = new ObjectChange(display);
+		}
+		if(display instanceof Item){
+			display = new ItemStack((Item)display);
+		}else if(display instanceof Block){
+			display = new ItemStack((Block)display);
+		}
+		if(!(display instanceof Icon || display instanceof ItemStack || display instanceof PC_GresTexture || display instanceof ObjectChange))
+			throw new IllegalArgumentException("Unknow display object:"+display);
+		this.display = display;
+	}
+	
+	public PC_GresDisplayObject(Object...display){
+		this(new ObjectChange(display));
 	}
 	
 	public Object getDisplayObject(){
@@ -44,37 +57,19 @@ public class PC_GresDisplayObject extends PC_GresComponent {
 		return 0;
 	}
 	
-	public void setDisplayObject(Object toDisplay){
-		if(display==toDisplay)
-			return;
-		if(toDisplay.getClass().isArray()){
-			toDisplay = new ObjectChange(toDisplay);
+	public void setActiveDisplayObjectIndex(int index){
+		if(display instanceof ObjectChange){
+			((ObjectChange)display).pos = index;
 		}
-		if(toDisplay instanceof Item){
-			toDisplay = new ItemStack((Item)toDisplay);
-		}else if(toDisplay instanceof Block){
-			toDisplay = new ItemStack((Block)toDisplay);
-		}
-		if(!(toDisplay instanceof Icon || toDisplay instanceof ItemStack || toDisplay instanceof PC_GresTexture || toDisplay instanceof ObjectChange))
-			throw new IllegalArgumentException("Unknow display object");
-		if(display instanceof ObjectChange)
-			removeEventListener((ObjectChange)display);
-		display = toDisplay;
-		if(display instanceof ObjectChange)
-			addEventListener((ObjectChange)display);
-		notifyChange();
 	}
 	
-	@Override
-	protected PC_Vec2I calculateMinSize() {
+	public PC_Vec2I getMinSize() {
 		Object d = display;
 		if(display instanceof ObjectChange){
 			d = ((ObjectChange)display).getObject();
 		}
 		if(d instanceof Icon){
-			int x = ((Icon)d).getIconWidth();
-			int y = ((Icon)d).getIconHeight();
-			return new PC_Vec2I(x, y);
+			return new PC_Vec2I(16, 16);
 		}else if(d instanceof ItemStack){
 			return new PC_Vec2I(16, 16);
 		}else if(d instanceof PC_GresTexture){
@@ -83,21 +78,13 @@ public class PC_GresDisplayObject extends PC_GresComponent {
 		return new PC_Vec2I(-1, -1);
 	}
 
-	@Override
-	protected PC_Vec2I calculateMaxSize() {
-		return new PC_Vec2I(-1, -1);
-	}
-
-	@Override
-	protected PC_Vec2I calculatePrefSize() {
+	public PC_Vec2I getPrefSize() {
 		Object d = display;
 		if(display instanceof ObjectChange){
 			d = ((ObjectChange)display).getObject();
 		}
 		if(d instanceof Icon){
-			int x = ((Icon)d).getIconWidth();
-			int y = ((Icon)d).getIconHeight();
-			return new PC_Vec2I(x, y);
+			return new PC_Vec2I(16, 16);
 		}else if(d instanceof ItemStack){
 			return new PC_Vec2I(16, 16);
 		}else if(d instanceof PC_GresTexture){
@@ -106,20 +93,26 @@ public class PC_GresDisplayObject extends PC_GresComponent {
 		return new PC_Vec2I(-1, -1);
 	}
 
-	@Override
-	protected void paint(PC_RectI scissor, double scale, int displayHeight, float timeStamp) {
+	public void draw(int x, int y, int width, int height) {
 		Object d = display;
 		if(display instanceof ObjectChange){
 			d = ((ObjectChange)display).getObject();
 		}
 		if(d instanceof Icon){
-			PC_GresRenderer.drawIcon(0, 0, rect.width, rect.height, (Icon)d);
+			PC_GresRenderer.drawTerrainIcon(x, y, width, height, (Icon)d);
 		}else if(d instanceof ItemStack){
-			int x = rect.width/2-8;
-			int y = rect.height/2-8;
+			x += width/2-8;
+			y -= height/2-8;
 			PC_GresRenderer.drawItemStack(x, y, (ItemStack)d, null);
 		}else if(d instanceof PC_GresTexture){
-			((PC_GresTexture)d).draw(0, 0, rect.width, rect.height, 0);
+			((PC_GresTexture)d).draw(x, y, width, height, 0);
+		}
+	}
+	
+	@Override
+	public void onEvent(PC_GresEvent event) {
+		if(display instanceof ObjectChange){
+			((ObjectChange) display).onEvent(event);
 		}
 	}
 	
@@ -137,8 +130,8 @@ public class PC_GresDisplayObject extends PC_GresComponent {
 				}else if(o instanceof Block){
 					o = new ItemStack((Block)o);
 				}
-				if(!(o instanceof Icon || o instanceof ItemStack || o instanceof PC_GresTexture || o instanceof ObjectChange))
-					throw new IllegalArgumentException("Unknow display object");
+				if(!(o instanceof Icon || o instanceof ItemStack || o instanceof PC_GresTexture))
+					throw new IllegalArgumentException("Unknow display object:"+o);
 				this.display[i] = o;
 			}
 		}
@@ -152,8 +145,8 @@ public class PC_GresDisplayObject extends PC_GresComponent {
 				}else if(o instanceof Block){
 					o = new ItemStack((Block)o);
 				}
-				if(!(o instanceof Icon || o instanceof ItemStack || o instanceof PC_GresTexture || o instanceof ObjectChange))
-					throw new IllegalArgumentException("Unknow display object");
+				if(!(display instanceof Icon || o instanceof ItemStack || o instanceof PC_GresTexture))
+					throw new IllegalArgumentException("Unknow display object:"+o);
 				this.display[i] = o;
 			}
 		}
@@ -161,7 +154,7 @@ public class PC_GresDisplayObject extends PC_GresComponent {
 		@Override
 		public void onEvent(PC_GresEvent event) {
 			if(event instanceof PC_GresMouseButtonEvent){
-				if(((PC_GresMouseButtonEvent)event).getEvent()==PC_GresMouseButtonEvent.Event.CLICK){
+				if(((PC_GresMouseButtonEvent)event).getEvent()==PC_GresMouseButtonEvent.Event.UP && event.getComponent().mouseDown){
 					pos++;
 					pos %= display.length;
 				}

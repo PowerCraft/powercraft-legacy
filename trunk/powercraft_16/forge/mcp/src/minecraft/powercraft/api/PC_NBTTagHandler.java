@@ -90,6 +90,11 @@ public class PC_NBTTagHandler {
 			tag.setString("Class", c.getName());
 			((PC_INBT)value).saveToNBT(tag);
 			return tag;
+		}else if(Enum.class.isAssignableFrom(c)){
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setString("Enum", c.getName());
+			tag.setString("value", ((Enum<?>)value).name());
+			return tag;
 		}
 		PC_Logger.severe("Can't save object %s form type %s", value, c);
 		return null;
@@ -102,6 +107,7 @@ public class PC_NBTTagHandler {
 		return getObjectFromNBT(base, c);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Object getObjectFromNBT(NBTBase base, Class<?> c) {
 		if(base==null)
 			return null;
@@ -169,6 +175,17 @@ public class PC_NBTTagHandler {
 				e.printStackTrace();
 				PC_Logger.severe("Error while initialize class %s", cName);
 			}
+			return null;
+		}else if(Enum.class.isAssignableFrom(c)){
+			NBTTagCompound tag = (NBTTagCompound) base;
+			String eName = tag.getString("Enum");
+			try {
+				Class<? extends Enum> ec = (Class<? extends Enum>) Class.forName(eName);
+				return Enum.valueOf(ec, tag.getString("value"));
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				PC_Logger.severe("Can't find enum %s form NBT save", eName);
+			} 
 			return null;
 		}
 		PC_Logger.severe("Can't load an unknown object");

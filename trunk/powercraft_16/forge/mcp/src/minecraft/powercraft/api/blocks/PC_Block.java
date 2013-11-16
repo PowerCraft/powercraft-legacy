@@ -923,7 +923,28 @@ public abstract class PC_Block extends BlockContainer {
 			((PC_TileEntity)tileEntity).loadFromNBTPacket(nbtTagCompound);
 		}
 	}
-
+	
+	public void loadFromClientNBTPacket(World world, int x, int y, int z, NBTTagCompound nbtTagCompound, EntityPlayer player) {
+		TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
+		if(tileEntity instanceof PC_TileEntity){
+			((PC_TileEntity)tileEntity).loadFromClientNBTPacket(nbtTagCompound, player);
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void handlePermissionThings(World world, int x, int y, int z, NBTTagCompound nbtTagCompound) {
+		TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
+		if(tileEntity instanceof PC_TileEntity){
+			((PC_TileEntity)tileEntity).handlePermissionThings(nbtTagCompound);
+		}
+	}
+	
+	public void handleClientPermissionThings(World world, int x, int y, int z, NBTTagCompound readNBTTagCompound, EntityPlayer player) {
+		TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
+		if(tileEntity instanceof PC_TileEntity){
+			((PC_TileEntity)tileEntity).handleClientPermissionThings(readNBTTagCompound, player);
+		}
+	}
 	
 	/**
 	 * This is called on startup. In that method you must load your Icons by using

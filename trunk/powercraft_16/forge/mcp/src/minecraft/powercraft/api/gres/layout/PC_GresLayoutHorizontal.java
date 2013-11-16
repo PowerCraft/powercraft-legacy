@@ -9,7 +9,7 @@ import powercraft.api.gres.PC_GresComponent;
 import powercraft.api.gres.PC_GresContainer;
 
 @SideOnly(Side.CLIENT)
-public class PC_GresLayoutVertical implements PC_IGresLayout {
+public class PC_GresLayoutHorizontal implements PC_IGresLayout {
 
 	@Override
 	public PC_Vec2I getPreferredLayoutSize(PC_GresContainer container) {
@@ -19,19 +19,19 @@ public class PC_GresLayoutVertical implements PC_IGresLayout {
 			PC_RectI padding = component.getPadding();
 			PC_Vec2I minSize = component.getMinSize();
 			PC_Vec2I prefSize = component.getPrefSize();
+			int height;
 			if (prefSize.y == -1) {
-				preferredSize.y += minSize.y + padding.y + padding.height;
+				height = minSize.y + padding.y + padding.height;
 			} else {
-				preferredSize.y += prefSize.y + padding.y + padding.height;
+				height = prefSize.y + padding.y + padding.height;
 			}
-			int width;
+			if (height > preferredSize.y) {
+				preferredSize.y = height;
+			}
 			if (prefSize.x == -1) {
-				width = minSize.x + padding.x + padding.width;
+				preferredSize.x += minSize.x + padding.x + padding.width;
 			} else {
-				width = prefSize.x + padding.x + padding.width;
-			}
-			if (width > preferredSize.x) {
-				preferredSize.x = width;
+				preferredSize.x += prefSize.x + padding.x + padding.width;
 			}
 		}
 		return preferredSize;
@@ -45,11 +45,11 @@ public class PC_GresLayoutVertical implements PC_IGresLayout {
 		for (PC_GresComponent component : container.getLayoutChildOrder()) {
 			PC_RectI padding = component.getPadding();
 			PC_Vec2I minSize = component.getMinSize();
-			int width = minSize.x + padding.x + padding.width;
-			if (width > minimumSize.x) {
-				minimumSize.x = width;
+			minimumSize.y += minSize.x + padding.x + padding.width;
+			int height = minSize.y + padding.y + padding.height;
+			if (height > minimumSize.y) {
+				minimumSize.y= height;
 			}
-			minimumSize.y += minSize.y + padding.y + padding.height;
 		}
 		return minimumSize;
 	}
@@ -60,15 +60,15 @@ public class PC_GresLayoutVertical implements PC_IGresLayout {
 
 		PC_Vec2I preferredSize = getMinimumLayoutSize(container);
 		PC_RectI childRect = container.getChildRect();
-		int y = (int)(childRect.height / 2.0 - preferredSize.y / 2.0);
+		int x = (int)(childRect.width / 2.0 - preferredSize.x / 2.0);
 		for (PC_GresComponent component : container.getLayoutChildOrder()) {
 			PC_RectI padding = component.getPadding();
-			int height = -1;//component.getPrefSize().y;
-			if(height==-1)
-				height = component.getMinSize().y;
-			y += padding.y;
-			component.putInRect(0, y, childRect.width, height);
-			y += height + padding.height;
+			int width = -1;//component.getPrefSize().x;
+			if(width==-1)
+				width = component.getMinSize().x;
+			x += padding.x;
+			component.putInRect(x, 0, width, childRect.height);
+			x += width + padding.width;
 		}
 	}
 

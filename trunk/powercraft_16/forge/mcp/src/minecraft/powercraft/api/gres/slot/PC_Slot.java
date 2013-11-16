@@ -74,4 +74,11 @@ public class PC_Slot extends Slot {
 		return renderGrayWhenEmpty;
 	}
 
+	public int[] getAppliedSides() {
+		if(inventory instanceof PC_IInventory){
+			return ((PC_IInventory)inventory).getAppliedSides(getSlotIndex());
+		}
+		return null;
+	}
+	
 }

@@ -46,8 +46,19 @@ public class PC_PacketHandlerClient extends PC_PacketHandler {
 			int z = dataInputStream.readInt();
 			int windowId = dataInputStream.readInt();
 			PC_TileEntity tileEntity = PC_Utils.getTE(world, x, y, z);
+			tileEntity.loadFromNBTPacket(readNBTTagCompound(dataInputStream));
 			PC_Gres.openClientGui(player, tileEntity, windowId);
 		}
 	}
-
+	
+	@Override
+	protected void packetPermissionThings(World world, EntityPlayer player, DataInputStream dataInputStream) throws IOException {
+		
+		int x = dataInputStream.readInt();
+		int y = dataInputStream.readInt();
+		int z = dataInputStream.readInt();
+		Block block = PC_Utils.getBlock(world, x, y, z);
+		if (block instanceof PC_Block) ((PC_Block) block).handlePermissionThings(world, x, y, z, readNBTTagCompound(dataInputStream));
+	}
+	
 }

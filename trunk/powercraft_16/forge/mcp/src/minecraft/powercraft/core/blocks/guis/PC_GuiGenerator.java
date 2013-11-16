@@ -8,7 +8,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Keyboard;
 
 import powercraft.api.PC_RectI;
-import powercraft.api.gres.*;
+import powercraft.api.gres.PC_GresCheckBox;
+import powercraft.api.gres.PC_GresComboBox;
+import powercraft.api.gres.PC_GresComponent;
+import powercraft.api.gres.PC_GresContainer;
+import powercraft.api.gres.PC_GresGuiHandler;
+import powercraft.api.gres.PC_GresInventory;
+import powercraft.api.gres.PC_GresLabel;
+import powercraft.api.gres.PC_GresPlayerInventory;
+import powercraft.api.gres.PC_GresProgressImage;
+import powercraft.api.gres.PC_GresRadioButton;
+import powercraft.api.gres.PC_GresScrollArea;
+import powercraft.api.gres.PC_GresTextEdit;
+import powercraft.api.gres.PC_GresWindow;
+import powercraft.api.gres.PC_GresWindowSideTab;
+import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.gres.events.PC_GresEvent;
 import powercraft.api.gres.events.PC_GresKeyEvent;
 import powercraft.api.gres.events.PC_IGresEventListener;
@@ -35,8 +49,8 @@ public class PC_GuiGenerator extends PC_ContainerGenerator implements PC_IGresGu
 	public void initGui(PC_GresGuiHandler gui) {
 
 		PC_GresWindow window = new PC_GresWindow("Generator");
-		window.addSideTab(new PC_GresWindowSideTab());
-		window.addSideTab(new PC_GresWindowSideTab());
+		window.addSideTab((PC_GresWindowSideTab)PC_GresWindowSideTab.createRedstoneSideTab()[0]);
+		window.addSideTab(PC_GresWindowSideTab.createIOConfigurationSideTab(generator));
 		window.setLayout(new PC_GresLayoutVertical());
 		window.add(label = new PC_GresLabel("Heat:0"));
 		window.add(progress = new PC_GresProgressImage("Fire"));

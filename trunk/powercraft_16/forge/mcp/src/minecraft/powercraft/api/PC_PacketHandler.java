@@ -24,7 +24,7 @@ import cpw.mods.fml.common.network.Player;
 @SuppressWarnings("unused") 
 public class PC_PacketHandler implements IPacketHandler {
 
-	public static final int BLOCKDATA = 1, BLOCKMESSAGE = 2, GUIOPEN = 3, PACKETHANDLER = 4;
+	public static final int BLOCKDATA = 1, BLOCKMESSAGE = 2, GUIOPEN = 3, PACKETHANDLER = 4, PERMISSION_THINGS=5;
 
 	private static HashMap<String, PC_IPacketHandler> packetHandlers = new HashMap<String, PC_IPacketHandler>();
 
@@ -53,6 +53,9 @@ public class PC_PacketHandler implements IPacketHandler {
 				case PACKETHANDLER:
 					packetPacketHandler(world, entityPlayer, dataInputStream);
 					break;
+				case PERMISSION_THINGS:
+					packetPermissionThings(world, entityPlayer, dataInputStream);
+					break;
 				default:
 					PC_Logger.severe("Unknown packet type %s", packetType);
 					break;
@@ -80,7 +83,11 @@ public class PC_PacketHandler implements IPacketHandler {
 
 	protected void packetBlockData(World world, EntityPlayer player, DataInputStream dataInputStream) throws IOException {
 
-		PC_Logger.severe("Client %s tries to write tileentity data", player.username);
+		int x = dataInputStream.readInt();
+		int y = dataInputStream.readInt();
+		int z = dataInputStream.readInt();
+		Block block = PC_Utils.getBlock(world, x, y, z);
+		if (block instanceof PC_Block) ((PC_Block) block).loadFromClientNBTPacket(world, x, y, z, readNBTTagCompound(dataInputStream), player);
 	}
 
 
@@ -93,6 +100,14 @@ public class PC_PacketHandler implements IPacketHandler {
 		((PC_Block) block).onBlockMessage(world, x, y, z, player, readNBTTagCompound(dataInputStream));
 	}
 
+	protected void packetPermissionThings(World world, EntityPlayer player, DataInputStream dataInputStream) throws IOException {
+		
+		int x = dataInputStream.readInt();
+		int y = dataInputStream.readInt();
+		int z = dataInputStream.readInt();
+		Block block = PC_Utils.getBlock(world, x, y, z);
+		((PC_Block) block).handleClientPermissionThings(world, x, y, z, readNBTTagCompound(dataInputStream), player);
+	}
 
 	public static Packet250CustomPayload getPowerCraftPacket(byte[] byteArray) {
 
@@ -163,6 +178,9 @@ public class PC_PacketHandler implements IPacketHandler {
 			dataOutputStream.writeInt(tileEntity.yCoord);
 			dataOutputStream.writeInt(tileEntity.zCoord);
 			dataOutputStream.writeInt(windowId);
+			NBTTagCompound nbtTagCompound = new NBTTagCompound("save");
+			tileEntity.saveToGuiNBTPacket(nbtTagCompound);
+			writeNBTTagCompound(dataOutputStream, nbtTagCompound);
 			return getPowerCraftPacket(byteArrayOutputStream.toByteArray());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -210,6 +228,23 @@ public class PC_PacketHandler implements IPacketHandler {
 	}
 
 
+	public static Packet250CustomPayload getPermissionThingsPacket(World world, int x, int y, int z, NBTTagCompound nbtTagCompound) {
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+		try {
+			dataOutputStream.writeInt(PERMISSION_THINGS);
+			dataOutputStream.writeInt(x);
+			dataOutputStream.writeInt(y);
+			dataOutputStream.writeInt(z);
+			writeNBTTagCompound(dataOutputStream, nbtTagCompound);
+			return getPowerCraftPacket(byteArrayOutputStream.toByteArray());
+		} catch (IOException e) {
+			e.printStackTrace();
+			PC_Logger.severe("Error while generating packet");
+		}
+		return null;
+	}
+	
 	public static void sendPacketToAllInDimension(Packet250CustomPayload packet, int dimension) {
 
 		PacketDispatcher.sendPacketToAllInDimension(packet, dimension);

@@ -60,8 +60,8 @@ public class PC_GresPlayerInventory extends PC_GresInventory {
 
 		PC_GresGuiHandler guiHandler = getGuiHandler();
 		
-		for (int x = 0, xp = 1 + (slotWidth - 18) / 2; x < slots.length; x++, xp += slotWidth) {
-			for (int y = 0, yp = 1 + (slotHeight - 18) / 2; y < 3; y++, yp += slotHeight) {
+		for (int x = 0, xp = 1+(slotWidth-18)/2; x < slots.length; x++, xp += slotWidth) {
+			for (int y = 0, yp = 1+(slotHeight-18)/2; y < 3; y++, yp += slotHeight) {
 				if (slots[x][y] != null) {
 					Slot slot = slots[x][y];
 					guiHandler.renderSlot(xp, yp, slot);
@@ -69,10 +69,10 @@ public class PC_GresPlayerInventory extends PC_GresInventory {
 			}
 		}
 
-		for (int x = 0, xp = 1 + (slotWidth - 18) / 2; x < slots.length; x++, xp += slotWidth) {
+		for (int x = 0, xp = 1+(slotWidth-18)/2; x < slots.length; x++, xp += slotWidth) {
 			if (slots[x][3] != null) {
 				Slot slot = slots[x][3];
-				guiHandler.renderSlot(xp, 5 + slotHeight * 3, slot);
+				guiHandler.renderSlot(xp, 5 + slotHeight * 3 + (slotHeight-18)/2, slot);
 			}
 		}
 

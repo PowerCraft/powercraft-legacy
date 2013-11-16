@@ -15,5 +15,7 @@ public interface PC_IInventory extends ISidedInventory {
 	public boolean canDropStack(int i);
 
 	public void onTick(World world);
+
+	public int[] getAppliedSides(int i);
 	
 }
