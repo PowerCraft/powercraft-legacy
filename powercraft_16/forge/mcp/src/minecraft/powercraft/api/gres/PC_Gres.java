@@ -26,7 +26,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import powercraft.api.*;
+import powercraft.api.PC_Api;
+import powercraft.api.PC_ClientUtils;
+import powercraft.api.PC_Logger;
+import powercraft.api.PC_PacketHandler;
+import powercraft.api.PC_RectI;
+import powercraft.api.PC_Utils;
+import powercraft.api.PC_Vec2I;
 import powercraft.api.blocks.PC_TileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -42,17 +48,9 @@ public class PC_Gres {
 	@SideOnly(Side.CLIENT)
 	public static void openClientGui(EntityPlayer player, PC_TileEntity tileEntity, int windowId) {
 
-		loadTextures();
 		if (tileEntity instanceof PC_IGresGuiOpenHandler) {
 			PC_IGresGui gui = ((PC_IGresGuiOpenHandler) tileEntity).openClientGui(player);
-			if (gui != null) {
-				Minecraft mc = PC_ClientUtils.mc();
-				mc.displayGuiScreen(new PC_GresGuiScreen(gui));
-				if (windowId != -1 && gui instanceof PC_GresBaseWithInventory) {
-					player.openContainer = (PC_GresBaseWithInventory)gui;
-					player.openContainer.windowId = windowId;
-				}
-			}
+			openClientGui(player, gui, windowId);
 		}
 	}
 
@@ -60,18 +58,10 @@ public class PC_Gres {
 	@SideOnly(Side.CLIENT)
 	public static void openClientGui(EntityPlayer player, String guiOpenHandlerName, int windowId) {
 
-		loadTextures();
 		PC_IGresGuiOpenHandler guiOpenHandler = guiOpenHandlers.get(guiOpenHandlerName);
 		if (guiOpenHandler != null) {
 			PC_IGresGui gui = guiOpenHandler.openClientGui(player);
-			if (gui != null) {
-				Minecraft mc = PC_ClientUtils.mc();
-				mc.displayGuiScreen(new PC_GresGuiScreen(gui));
-				if (windowId != -1 && gui instanceof PC_GresBaseWithInventory) {
-					player.openContainer = (PC_GresBaseWithInventory)gui;
-					player.openContainer.windowId = windowId;
-				}
-			}
+			openClientGui(player, gui, windowId);
 		}
 	}
 
@@ -79,20 +69,26 @@ public class PC_Gres {
 	@SideOnly(Side.CLIENT)
 	public static void openClientGui(EntityPlayer player, Item item, int windowId) {
 
-		loadTextures();
 		if (item instanceof PC_IGresGuiOpenHandler) {
 			PC_IGresGui gui = ((PC_IGresGuiOpenHandler) item).openClientGui(player);
-			if (gui != null) {
-				Minecraft mc = PC_ClientUtils.mc();
-				mc.displayGuiScreen(new PC_GresGuiScreen(gui));
-				if (windowId != -1 && gui instanceof PC_GresBaseWithInventory) {
-					player.openContainer = (PC_GresBaseWithInventory)gui;
-					player.openContainer.windowId = windowId;
-				}
-			}
+			openClientGui(player, gui, windowId);
 		}
 	}
-
+	
+	@SideOnly(Side.CLIENT)
+	public static void openClientGui(EntityPlayer player, PC_IGresGui gui, int windowId) {
+		
+		if (gui != null) {
+			loadTextures();
+			Minecraft mc = PC_ClientUtils.mc();
+			mc.displayGuiScreen(new PC_GresGuiScreen(gui));
+			if (windowId != -1 && gui instanceof PC_GresBaseWithInventory) {
+				player.openContainer = (PC_GresBaseWithInventory)gui;
+				player.openContainer.windowId = windowId;
+			}
+		}
+		
+	}
 
 	public static void openGui(EntityPlayer player, PC_TileEntity tileEntity) {
 
@@ -174,12 +170,15 @@ public class PC_Gres {
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 			Document doc = docBuilder.parse(new ByteArrayInputStream(page.getBytes("UTF-8")));
 			doc.getDocumentElement().normalize();
-			NodeList textureNodes = doc.getChildNodes();
+			NodeList textureNodes = ((Element)doc.getChildNodes().item(0)).getChildNodes();
+			System.out.println("Load:"+textureNodes.getLength());
 			for (int i = 0; i < textureNodes.getLength(); i++) {
 				Node texureNode = textureNodes.item(i);
+				System.out.println("Load:"+texureNode.getNodeName());
 				if (texureNode.getNodeName().equals("Texture")) {
 					Element texureElement = (Element) texureNode;
 					String textureName = texureElement.getAttribute("textureName");
+					System.out.println("Load:"+textureName);
 					ResourceLocation resourceLocation = PC_Utils.getResourceLocation(PC_Api.instance, "textures/gui/" + textureName);
 					NodeList subTextureNodes = texureNode.getChildNodes();
 					for (int j = 0; j < subTextureNodes.getLength(); j++) {
@@ -235,6 +234,15 @@ public class PC_Gres {
 	public static PC_GresTexture getGresTexture(String name) {
 
 		return textures.get(name);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static PC_IGresGui getCurrentClientGui() {
+		Minecraft mc = PC_ClientUtils.mc();
+		if(mc.currentScreen instanceof PC_GresGuiScreen){
+			return ((PC_GresGuiScreen)mc.currentScreen).getCurrentClientGui();
+		}
+		return null;
 	}
 
 }

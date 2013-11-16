@@ -84,6 +84,10 @@ public abstract class PC_GresComponent {
 
 	}
 
+	public PC_GresComponent(String text) {
+		this.text = text;
+	}
+
 	protected void setLayoutData(Object layoutData){
 		if(this.layoutData != layoutData){
 			this.layoutData = layoutData;
@@ -225,10 +229,10 @@ public abstract class PC_GresComponent {
 		//if (height > maxSize.y && maxSize.y >= 0) height = maxSize.y;
 		boolean needUpdate = false;
 		if (fill == PC_GresAlign.Fill.BOTH || fill == PC_GresAlign.Fill.HORIZONTAL) {
-			needUpdate |= rect.x != x + padding.x;
-			rect.x = x + padding.x;
-			needUpdate |= rect.width != width - padding.x - padding.width;
-			rect.width = width - padding.x - padding.width;
+			needUpdate |= rect.x != x;
+			rect.x = x;
+			needUpdate |= rect.width != width;
+			rect.width = width;
 		} else {
 			switch (alignH) {
 				case CENTER:
@@ -236,33 +240,33 @@ public abstract class PC_GresComponent {
 					rect.x = x + width / 2 - rect.width / 2;
 					break;
 				case RIGHT:
-					needUpdate |= rect.x != x + width - padding.width - rect.width;
-					rect.x = x + width - padding.width - rect.width;
+					needUpdate |= rect.x != x + width - rect.width;
+					rect.x = x + width - rect.width;
 					break;
 				default:
-					needUpdate |= rect.x != x + padding.x;
-					rect.x = x + padding.x;
+					needUpdate |= rect.x != x;
+					rect.x = x;
 					break;
 			}
 		}
 		if (fill == PC_GresAlign.Fill.BOTH || fill == PC_GresAlign.Fill.VERTICAL) {
-			needUpdate |= rect.y != y + padding.y;
-			rect.y = y + padding.y;
-			needUpdate |= rect.height != height - padding.y - padding.height;
-			rect.height = height - padding.y - padding.height;
+			needUpdate |= rect.y != y;
+			rect.y = y;
+			needUpdate |= rect.height != height;
+			rect.height = height;
 		} else {
 			switch (alignV) {
 				case CENTER:
-					needUpdate |= rect.y != y + height / 2 - rect.height / 2;
-					rect.y = y + height / 2 - rect.height / 2;
+					needUpdate |= rect.y != y + (height - rect.height) / 2;
+					rect.y = y + (height - rect.height) / 2;
 					break;
 				case BOTTOM:
-					needUpdate |= rect.y != y + height - padding.height - rect.height;
-					rect.y = y + height - padding.height - rect.height;
+					needUpdate |= rect.y != y + height - rect.height;
+					rect.y = y + height - rect.height;
 					break;
 				default:
-					needUpdate |= rect.y != y + padding.y;
-					rect.y = y + padding.y;
+					needUpdate |= rect.y != y;
+					rect.y = y;
 					break;
 			}
 		}
@@ -279,6 +283,7 @@ public abstract class PC_GresComponent {
 			this.minSize.setTo(minSize);
 			minSizeSet = true;
 		}
+		setSize(getSize().max(this.minSize));
 	}
 
 
@@ -292,9 +297,6 @@ public abstract class PC_GresComponent {
 
 		if (!minSizeSet) {
 			setMinSize(null);
-			if (rect.setSize(rect.getSize().max(minSize))) {
-				notifyChange();
-			}
 		}
 	}
 
@@ -498,7 +500,7 @@ public abstract class PC_GresComponent {
 		PC_GresKeyEvent event = new PC_GresKeyEvent(this, key, keyCode);
 		fireEvent(event);
 		if (!event.isConsumed()) {
-			return handleKeyTyped(key, keyCode);
+			return handleKeyTyped(event.getKey(), event.getKeyCode());
 		}
 		return true;
 	}

@@ -93,8 +93,19 @@ public final class PC_Permissions implements PC_IPermissionHandler, PC_INBT{
 	}
 	
 	@Override
+	public boolean tryPassword(EntityPlayer player, String password) {
+		if(needPassword(player)){
+			if(!passwordMD5.equals(MD5.getMD5String(password))){
+				PC_Logger.warning("Player %s don't have the right password", player.username);
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
 	public boolean needPassword(EntityPlayer player){
-		return hasPermission(player, PC_Permission.NEEDPASSWORD);
+		return hasPermission(player, PC_Permission.NEEDPASSWORD) && passwordMD5!=null;
 	}
 	
 }

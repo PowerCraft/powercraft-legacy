@@ -56,4 +56,13 @@ public @interface PC_FieldDescription {
 	 */
 	public boolean guiSync() default true;
 	
+	
+	/**
+	 * 
+	 * Should the client be able to set this filed if he has access permissions?
+	 * 
+	 * @return if the client can set this field
+	 */
+	public boolean withPermissionClientSync() default false;
+	
 }

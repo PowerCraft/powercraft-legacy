@@ -4,9 +4,11 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 
@@ -79,8 +81,8 @@ public class PC_GresRenderer {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
 
-	public static void drawItemStack(int x, int y, ItemStack itemStack, String text) {
-		if(itemStack==null)
+    public static void drawEasyItemStack(int x, int y, ItemStack itemStack, String text) {
+    	if(itemStack==null)
 			return;
 		FontRenderer font = itemStack.getItem().getFontRenderer(itemStack);
 		if(font==null)
@@ -91,12 +93,31 @@ public class PC_GresRenderer {
         itemRenderer.renderItemOverlayIntoGUI(font, mc.getTextureManager(), itemStack, x, y, text);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
+    }
+    
+	public static void drawItemStack(int x, int y, ItemStack itemStack, String text) {
+		if(itemStack==null)
+			return;
+		GL11.glTranslated(0, 0, 100);
+		RenderHelper.enableGUIStandardItemLighting();
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		int k = 240;
+		int i1 = 240;
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k / 1.0F, i1 / 1.0F);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		drawEasyItemStack(x, y, itemStack, text);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		RenderHelper.disableStandardItemLighting();
+		GL11.glTranslated(0, 0, -100);
 	}
 
 	public static void drawTooltip(int x, int y, int wWidth, int wHeigth, List<String> list) {
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		int maxWidth = 0;
 		for (String s : list) {
@@ -148,6 +169,7 @@ public class PC_GresRenderer {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		RenderHelper.enableStandardItemLighting();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glEnable(GL11.GL_BLEND);
 	}
     
 	public static void drawGradientRect(int x, int y, int width, int height, int colorTop, int colorBottom) {
@@ -162,6 +184,7 @@ public class PC_GresRenderer {
 		float bottomBlue = (colorBottom & 255) / 255.0F;
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
+		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		Tessellator tessellator = Tessellator.instance;
@@ -178,6 +201,11 @@ public class PC_GresRenderer {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
+	public static void drawTerrainIcon(int x, int y, int width, int height, Icon icon) {
+		mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+		drawIcon(x, y, width, height, icon);
+	}
+	
 	public static void drawIcon(int x, int y, int width, int height, Icon icon) {
 		Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();

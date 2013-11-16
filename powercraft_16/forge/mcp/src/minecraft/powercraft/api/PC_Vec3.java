@@ -45,4 +45,11 @@ public class PC_Vec3 {
 	}
 
 
+	public void setTo(PC_Vec3 vec) {
+		x = vec.x;
+		y = vec.y;
+		z = vec.z;
+	}
+
+
 }

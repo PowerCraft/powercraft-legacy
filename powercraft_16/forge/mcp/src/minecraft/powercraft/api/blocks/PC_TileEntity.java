@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.Entity;
@@ -17,11 +18,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.IPlantable;
+import powercraft.api.PC_ClientUtils;
 import powercraft.api.PC_Direction;
 import powercraft.api.PC_FieldDescription;
 import powercraft.api.PC_Logger;
@@ -32,8 +35,10 @@ import powercraft.api.energy.PC_EnergyGrid;
 import powercraft.api.energy.PC_IEnergyConsumer;
 import powercraft.api.energy.PC_IEnergyProvider;
 import powercraft.api.energy.PC_IEnergyPuffer;
+import powercraft.api.energy.PC_RedstoneWorkType;
 import powercraft.api.gres.PC_Gres;
 import powercraft.api.gres.PC_GresBaseWithInventory;
+import powercraft.api.gres.PC_IGresGui;
 import powercraft.api.gres.PC_IGresGuiOpenHandler;
 import powercraft.api.security.PC_IPermissionHandler;
 import powercraft.api.security.PC_Permission;
@@ -45,9 +50,17 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	protected boolean send = false;
 	protected final List<PC_GresBaseWithInventory> containers = new ArrayList<PC_GresBaseWithInventory>();
-
+	
+	@PC_FieldDescription(sync=true)
+	private int redstoneValue;
+	
+	@PC_FieldDescription(sync=true, withPermissionClientSync=true)
+	protected PC_RedstoneWorkType workWhen;
+	
 	@PC_FieldDescription
 	private PC_Permissions permissions;
+	
+	private String password;
 	
 	public boolean isClient() {
 
@@ -56,6 +69,14 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	}
 
 
+	public PC_Block getBlock(){
+		return (PC_Block)getBlockType();
+	}
+	
+	public int getRedstoneValue(){
+		return redstoneValue;
+	}
+	
 	public void onBlockAdded() {
 
 	}
@@ -81,15 +102,44 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	@SuppressWarnings("unused")
 	public void onNeighborBlockChange(int neighborID) {
-
+		updateRedstone();
 	}
 
+	protected void updateRedstone(){
+		int newRedstoneValue = PC_Utils.getRedstoneValue(worldObj, xCoord, yCoord, zCoord);
+		if(newRedstoneValue!=redstoneValue){
+			onRedstoneValueChanging(newRedstoneValue, redstoneValue);
+			redstoneValue = newRedstoneValue;
+		}
+	}
 
+	protected void onRedstoneValueChanging(int newValue, int oldValue){
+		if(newValue==0 && oldValue!=0 && (workWhen == PC_RedstoneWorkType.ON_FLANK || workWhen == PC_RedstoneWorkType.ON_LOW_FLANK)){
+			doWork();
+		}else if(newValue!=0 && oldValue==0 && (workWhen == PC_RedstoneWorkType.ON_FLANK || workWhen == PC_RedstoneWorkType.ON_HI_FLANK)){
+			doWork();
+		}
+	}
+	
+	protected void doWork(){
+		
+	}
+	
 	@SuppressWarnings("unused")
 	public boolean onBlockActivated(EntityPlayer player, PC_Direction side, float xHit, float yHit, float zHit) {
 
 		if (this instanceof PC_IGresGuiOpenHandler) {
-			PC_Gres.openGui(player, this);
+			if(!isClient()){
+				if(hasPermission(player, PC_Permission.ENTERGUI)){
+					if(needPassword(player)){
+						NBTTagCompound tagCompound = new NBTTagCompound();
+						tagCompound.setInteger("type", NEED_PASSWORD);
+						PC_PacketHandler.sendPacketToPlayer(PC_PacketHandler.getPermissionThingsPacket(worldObj, xCoord, yCoord, zCoord, tagCompound), player);
+					}else{
+						PC_Gres.openGui(player, this);
+					}
+				}
+			}
 			return true;
 		}
 		return false;
@@ -225,6 +275,14 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	@Override
 	public void updateEntity() {
 
+		if(redstoneValue==0 && workWhen == PC_RedstoneWorkType.ON_OFF){
+			doWork();
+		}else if(redstoneValue!=0 && workWhen == PC_RedstoneWorkType.ON_ON){
+			doWork();
+		}else if(workWhen == PC_RedstoneWorkType.EVER){
+			doWork();
+		}
+		
 		if (!isClient()) {
 			if (this instanceof PC_IEnergyConsumer) {
 				List<PC_IEnergyProvider> providers = new ArrayList<PC_IEnergyProvider>();
@@ -321,7 +379,14 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 	public boolean tryPermission(EntityPlayer player, PC_Permission permission) {
 		if(this.permissions==null)
 			return true;
-		return this.permissions.hasPermission(player, permission);
+		return this.permissions.tryPermission(player, permission);
+	}
+	
+	@Override
+	public boolean tryPassword(EntityPlayer player, String password) {
+		if(this.permissions==null)
+			return true;
+		return this.permissions.tryPassword(player, password);
 	}
 	
 	@Override
@@ -346,7 +411,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		try{
 			super.readFromNBT(nbtTagCompound);
 			blockMetadata = nbtTagCompound.getInteger("metadata");
-			loadFieldsFromNBT(nbtTagCompound);
+			loadFieldsFromNBT(nbtTagCompound, 0);
 			onLoadedFromNBT();
 		}catch(Throwable e){
 			e.printStackTrace();
@@ -367,6 +432,10 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		
 	}
 	
+	public void onLoadedFromClientNBT(){
+		sendToClient();
+	}
+	
 	private void saveFieldsToNBT(NBTTagCompound nbtTagCompound, int type){
 		Class<?> c = getClass();
 		saveFieldsToNBT(nbtTagCompound, c, type);
@@ -377,7 +446,7 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		for(int i=0; i<fields.length; i++){
 			PC_FieldDescription fieldDescription = fields[i].getAnnotation(PC_FieldDescription.class);
 			if(fieldDescription!=null){
-				if((type==0 && fieldDescription.save())||(type==1 && fieldDescription.sync())||(type==2 && fieldDescription.guiSync())){
+				if((type==0 && fieldDescription.save())||(type==1 && fieldDescription.sync())||(type==2 && fieldDescription.guiSync()) || (type==3 && fieldDescription.withPermissionClientSync())){
 					String name = fieldDescription.name();
 					if(name.isEmpty()){
 						name = fields[i].getName();
@@ -398,40 +467,42 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		}
 	}
 	
-	private void loadFieldsFromNBT(NBTTagCompound nbtTagCompound){
+	private void loadFieldsFromNBT(NBTTagCompound nbtTagCompound, int type){
 		Class<?> c = getClass();
-		loadFieldsFromNBT(nbtTagCompound, c);
+		loadFieldsFromNBT(nbtTagCompound, c, type);
 	}
 	
-	private void loadFieldsFromNBT(NBTTagCompound nbtTagCompound, Class<?> c){
+	private void loadFieldsFromNBT(NBTTagCompound nbtTagCompound, Class<?> c, int type){
 		Field[] fields = c.getDeclaredFields();
 		for(int i=0; i<fields.length; i++){
 			PC_FieldDescription fieldDescription = fields[i].getAnnotation(PC_FieldDescription.class);
 			if(fieldDescription!=null){
-				String name = fieldDescription.name();
-				if(name.isEmpty()){
-					name = fields[i].getName();
-				}
-				if(nbtTagCompound.hasKey(name)){
-					fields[i].setAccessible(true);
-					Object obj = PC_NBTTagHandler.loadFromNBT(nbtTagCompound, name, fields[i].getType());
-					try {
-						fields[i].set(this, obj);
-					} catch (Exception e) {
-						e.printStackTrace();
-						PC_Logger.severe("Error while loading %s of %s", name, c);
+				if(type==0 || (type==1 && fieldDescription.withPermissionClientSync())){
+					String name = fieldDescription.name();
+					if(name.isEmpty()){
+						name = fields[i].getName();
 					}
-				}else{
-					String otherNames[] = fieldDescription.otherNames();
-					for(int j=0; j<otherNames.length; j++){
-						if(nbtTagCompound.hasKey(otherNames[j])){
-							fields[i].setAccessible(true);
-							Object obj = PC_NBTTagHandler.loadFromNBT(nbtTagCompound, otherNames[j], fields[i].getType());
-							try {
-								fields[i].set(this, obj);
-							} catch (Exception e) {
-								e.printStackTrace();
-								PC_Logger.severe("Error while loading %s of %s", name, c);
+					if(nbtTagCompound.hasKey(name)){
+						fields[i].setAccessible(true);
+						Object obj = PC_NBTTagHandler.loadFromNBT(nbtTagCompound, name, fields[i].getType());
+						try {
+							fields[i].set(this, obj);
+						} catch (Exception e) {
+							e.printStackTrace();
+							PC_Logger.severe("Error while loading %s of %s", name, c);
+						}
+					}else{
+						String otherNames[] = fieldDescription.otherNames();
+						for(int j=0; j<otherNames.length; j++){
+							if(nbtTagCompound.hasKey(otherNames[j])){
+								fields[i].setAccessible(true);
+								Object obj = PC_NBTTagHandler.loadFromNBT(nbtTagCompound, otherNames[j], fields[i].getType());
+								try {
+									fields[i].set(this, obj);
+								} catch (Exception e) {
+									e.printStackTrace();
+									PC_Logger.severe("Error while loading %s of %s", name, c);
+								}
 							}
 						}
 					}
@@ -440,26 +511,51 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 		}
 		c = c.getSuperclass();
 		if(PC_TileEntity.class.isAssignableFrom(c)){
-			loadFieldsFromNBT(nbtTagCompound, c);
+			loadFieldsFromNBT(nbtTagCompound, c, type);
 		}
 	}
 
 	public void loadFromNBTPacket(NBTTagCompound nbtTagCompound) {
-		loadFieldsFromNBT(nbtTagCompound);
+		loadFieldsFromNBT(nbtTagCompound, 0);
 		blockMetadata = nbtTagCompound.getInteger("metadata");
 		onLoadedFromNBT();
 		
 	}
 
+	public void loadFromClientNBTPacket(NBTTagCompound nbtTagCompound, EntityPlayer player) {
+		if(tryPermission(player, PC_Permission.CHANGEGUI)){
+			if(!needPassword(player) || tryPassword(player, nbtTagCompound.getString("password"))){
+				loadFieldsFromNBT(nbtTagCompound, 1);
+				onLoadedFromClientNBT();
+			}else{
+				
+			}
+		}else{
+			
+		}
+	}
+	
 	public void saveToNBTPacket(NBTTagCompound nbtTagCompound) {
-		saveFieldsToNBT(nbtTagCompound, 1);
-		nbtTagCompound.setInteger("metadata", blockMetadata);
+		if(isClient()){
+			saveFieldsToNBT(nbtTagCompound, 3);
+			if(password!=null)
+				nbtTagCompound.setString("password", password);
+		}else{
+			saveFieldsToNBT(nbtTagCompound, 1);
+			nbtTagCompound.setInteger("metadata", blockMetadata);
+		}
 	}
 	
 	public void saveToGuiNBTPacket(NBTTagCompound nbtTagCompound){
 		saveFieldsToNBT(nbtTagCompound, 2);
 	}
-
+	
+	public void sendToServer(){
+		if(isClient()){
+			PC_PacketHandler.sendPacketToServer(PC_PacketHandler.getBlockDataPacket(worldObj, xCoord, yCoord, zCoord));
+		}
+	}
+	
 	public boolean getBlocksMovement() {
 		return !getBlockType().blockMaterial.blocksMovement();
 	}
@@ -636,6 +732,60 @@ public abstract class PC_TileEntity extends TileEntity implements PC_IPermission
 
 	public float getBlockHardness(EntityPlayer player) {
 		return hasPermission(player, PC_Permission.BLOCKHARVEST)?getBlockType().getBlockHardness(worldObj, xCoord, yCoord, zCoord):-1;
+	}
+
+	private static final int NEED_PASSWORD=1, WRONG_PASSWORD=2;
+	private static final int REACTIVATE=1;
+	
+	@SideOnly(Side.CLIENT)
+	public void handlePermissionThings(NBTTagCompound nbtTagCompound) {
+		int type = nbtTagCompound.getInteger("type");
+		Minecraft mc = PC_ClientUtils.mc();
+		switch(type){
+		case NEED_PASSWORD:
+			PC_Gres.openClientGui(mc.thePlayer, new PC_GuiPasswordInput(this), 0);
+			break;
+		case WRONG_PASSWORD:
+			PC_IGresGui gui = PC_Gres.getCurrentClientGui();
+			if(gui instanceof PC_GuiPasswordInput){
+				((PC_GuiPasswordInput)gui).passwordFailed();
+			}
+			break;
+		default:
+			PC_Logger.warning("Unknown permission error %s", type);
+			break;
+		}
+	}
+
+	public void handleClientPermissionThings(NBTTagCompound nbtTagCompound, EntityPlayer player) {
+		int type = nbtTagCompound.getInteger("type");
+		switch(type){
+		case REACTIVATE:
+			if(tryPermission(player, PC_Permission.ENTERGUI)){
+				if(!needPassword(player) || tryPassword(player, nbtTagCompound.getString("password"))){
+					PC_Gres.openGui(player, this);
+				}else{
+					NBTTagCompound tagCompound = new NBTTagCompound();
+					tagCompound.setInteger("type", WRONG_PASSWORD);
+					PC_PacketHandler.sendPacketToPlayer(PC_PacketHandler.getPermissionThingsPacket(worldObj, xCoord, yCoord, zCoord, tagCompound), player);
+				}
+			}
+			break;
+		default:
+			PC_Logger.warning("Unknown permission error %s", type);
+			break;
+		}
+	}
+
+	public Packet250CustomPayload getReactivatePackage() {
+		NBTTagCompound tagCompound = new NBTTagCompound();
+		tagCompound.setInteger("type", REACTIVATE);
+		tagCompound.setString("password", password);
+		return PC_PacketHandler.getPermissionThingsPacket(worldObj, xCoord, yCoord, zCoord, tagCompound);
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 }

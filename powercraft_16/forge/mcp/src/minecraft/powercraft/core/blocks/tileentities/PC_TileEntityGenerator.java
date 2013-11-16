@@ -38,7 +38,7 @@ public class PC_TileEntityGenerator extends PC_TileEntityWithInventory implement
 
 
 	public PC_TileEntityGenerator() {
-		super("Generator", new PC_Inventory[]{new PC_Inventory("Generator", 1, 64, PC_Inventory.SIDEINSERTABLE|PC_Inventory.SIDEEXTRACTABLE)});
+		super("Generator", new PC_Inventory[]{new PC_Inventory("Generator", 1, 64, PC_Inventory.SIDEINSERTABLE)}, new int[0], new int[]{0});
 	}
 
 

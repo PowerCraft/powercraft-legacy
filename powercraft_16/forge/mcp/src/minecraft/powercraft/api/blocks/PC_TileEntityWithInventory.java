@@ -1,10 +1,16 @@
 package powercraft.api.blocks;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import powercraft.api.PC_Direction;
+import powercraft.api.PC_FieldDescription;
 import powercraft.api.inventory.PC_IInventory;
 import powercraft.api.inventory.PC_InventoryUtils;
 import powercraft.api.inventory.PC_Inventory;
@@ -14,16 +20,19 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 
 	private final String name;
 	private final PC_Inventory[] inventories;
-	private final int side2IdMaper[] = new int[6];
+	@PC_FieldDescription(withPermissionClientSync=true, sync=true)
+	private int side2IdMaper[] = {-1, -1, -1, -1, -1, -1};
 	private final int slotsForID[][];
+	private final int sideIdOutputs[];
 	
-	public PC_TileEntityWithInventory(String name, PC_Inventory[] inventories, int[]... slotsForID){
+	public PC_TileEntityWithInventory(String name, PC_Inventory[] inventories, int[] outputs, int[]... slotsForID){
 		this.name = name;
 		this.inventories = inventories;
 		for(int i=0; i<inventories.length; i++){
 			inventories[i].setParentInventory(this);
 		}
 		this.slotsForID = slotsForID;
+		sideIdOutputs = outputs;
 	}
 	
 	@Override
@@ -68,6 +77,23 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
+		int[] sides = getAppliedSides(i);
+		if(sides!=null && sides.length>0){
+			List<Integer> outSides = new ArrayList<Integer>();
+			for(int j=0; j<sideIdOutputs.length; j++){
+				for(int k=0; k<sides.length; k++){
+					if(sides[k] == sideIdOutputs[j]){
+						if(!outSides.contains(sides[k]))
+							outSides.add(sides[k]);
+					}
+				}
+			}
+			while(itemstack!=null && !outSides.isEmpty()){
+				itemstack = PC_InventoryUtils.tryToMove(worldObj, xCoord, yCoord, zCoord, outSides.remove((int)(Math.random()*outSides.size())), itemstack);
+			}
+			if(itemstack==null)
+				return;
+		}
 		SlotData sd = getSlotInfoByGlobalSlotNum(i);
 		sd.inventory.setInventorySlotContents(sd.slot, itemstack);
 	}
@@ -110,7 +136,11 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return slotsForID[side2IdMaper[side]];
+		int groupID = getIDForSide(side);
+		if(groupID==-1){
+			return new int[0];
+		}
+		return slotsForID[groupID];
 	}
 
 	@Override
@@ -154,6 +184,30 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 			PC_InventoryUtils.onTick(inventories[i], world);
 		}
 	}
+	
+	@Override
+	public int[] getAppliedSides(int i) {
+		List<Integer> sides = new ArrayList<Integer>();
+		for(int j=0; j<side2IdMaper.length; j++){
+			int groupID = side2IdMaper[j];
+			if(groupID!=-1 && !sides.contains(groupID)){
+				for(int k=0; k<slotsForID[groupID].length; k++){
+					if(slotsForID[groupID][k] == i){
+						sides.add(groupID);
+						break;
+					}
+				}
+			}
+		}
+		if(sides.isEmpty())
+			return null;
+		int[] a = new int[sides.size()];
+		for(int j=0; j<a.length; j++){
+			a[j] = sides.get(j);
+		}
+		Arrays.sort(a);
+		return a;
+	}
 
 	public PC_Inventory getSubInventoryByID(int i){
 		return inventories[i];
@@ -171,11 +225,18 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 	}
 	
 	public int getIDForSide(int side){
-		return side2IdMaper[side];
+		return getIDForSide(PC_Direction.getOrientation(side));
+	}
+	
+	public int getIDForSide(PC_Direction side){
+		return side2IdMaper[getBlock().getBlockRotation(worldObj, xCoord, yCoord, zCoord, side.ordinal()).ordinal()];
 	}
 	
 	public boolean isSlotCompatibleWithSide(int i, int side){
-		int[] slotsForSide = slotsForID[side2IdMaper[side]];
+		int groupID = getIDForSide(side);
+		if(groupID==-1)
+			return false;
+		int[] slotsForSide = slotsForID[groupID];
 		for(int j=0; j<slotsForSide.length; j++){
 			if(slotsForSide[j]==i)
 				return true;
@@ -216,6 +277,19 @@ public abstract class PC_TileEntityWithInventory extends PC_TileEntity implement
 			this.inventory = inventory;
 		}
 		
+	}
+
+	public int getGroupCount() {
+		return slotsForID.length;
+	}
+
+	public void setSideGroup(int i, int j) {
+		side2IdMaper[i] = j;
+		sendToServer();
+	}
+	
+	public int getSideGroup(int i) {
+		return side2IdMaper[i];
 	}
 	
 }

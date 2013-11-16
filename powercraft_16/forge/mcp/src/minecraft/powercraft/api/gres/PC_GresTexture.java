@@ -112,6 +112,19 @@ public class PC_GresTexture {
 		
 	}
 
+	public void drawProzentual(int x, int y, int width, int height, float u, float v, float w, float h, int state) {
+		float f = 0.00390625F;
+		float f1 = 0.00390625F;
+		float uc = (u * size.x) + locations[state].x;
+		float vc = (v * size.y) + locations[state].y;
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.addVertexWithUV(x, y + height, 0, uc * f, (vc + h*size.y) * f1);
+		tessellator.addVertexWithUV(x + width, y + height, 0, (uc + w*size.x) * f, (vc + h*size.y) * f1);
+		tessellator.addVertexWithUV(x + width, y, 0, (uc + w*size.x) * f, vc * f1);
+		tessellator.addVertexWithUV(x, y, 0, uc * f, vc * f1);
+		tessellator.draw();
+	}
 
 	private static void renderTextureSliced_static(int x, int y, int width, int height, int u, int v, int imgWidth, int imgHeight) {
 

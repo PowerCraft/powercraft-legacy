@@ -13,7 +13,7 @@ import powercraft.api.inventory.PC_Inventory;
 public class PCtr_TEUpgradeableBelt extends PC_TileEntityUpgradable {
 
 	public PCtr_TEUpgradeableBelt() {
-		super(0, 3, "Belt", new PC_Inventory[0]);
+		super(0, 3, "Belt", new PC_Inventory[0], new int[]{});
 	}
 
 	/**

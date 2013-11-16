@@ -10,6 +10,8 @@ public interface PC_IPermissionHandler {
 	
 	public boolean tryPermission(EntityPlayer player, PC_Permission permission);
 	
+	public boolean tryPassword(EntityPlayer player, String password);
+	
 	public boolean needPassword(EntityPlayer player);
 	
 }

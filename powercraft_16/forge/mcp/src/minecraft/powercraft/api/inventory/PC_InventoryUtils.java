@@ -91,5 +91,9 @@ public class PC_InventoryUtils {
 		}
 		return null;
 	}
+
+	public static ItemStack tryToMove(World world, int x, int y, int z, int side, ItemStack itemstack) {
+		return itemstack;
+	}
 	
 }
