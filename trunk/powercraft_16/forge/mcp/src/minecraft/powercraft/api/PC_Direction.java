@@ -4,7 +4,13 @@ package powercraft.api;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.ForgeDirection;
 
-
+/**
+ * 
+ * PowerCrafts direction class, like forges
+ * 
+ * @author XOR
+ *
+ */
 public enum PC_Direction{
 	/** -Y */
 	DOWN(0, -1, 0),
@@ -68,14 +74,18 @@ public enum PC_Direction{
 		{ 0, 1, 4, 5, 2, 3, 6 },
 		{ 0, 1, 3, 4, 5, 2, 6 }};
 	
-	private PC_Direction(int x, int y, int z) {
+	PC_Direction(int x, int y, int z) {
 		offsetX = x;
 		offsetY = y;
 		offsetZ = z;
 		flag = 1 << ordinal();
 	}
 
-
+	/**
+	 * get the orintation for a int side
+	 * @param id the int side
+	 * @return the direction or UNKNOWN when there is no valid direction
+	 */
 	public static PC_Direction getOrientation(int id) {
 
 		if (id >= 0 && id < VALID_DIRECTIONS.length) {
@@ -84,31 +94,57 @@ public enum PC_Direction{
 		return UNKNOWN;
 	}
 
-
+	/**
+	 * get the opposite direction of this direction
+	 * @return the opposite direction
+	 */
 	public PC_Direction getOpposite() {
 
 		return getOrientation(OPPOSITES[ordinal()]);
 	}
 
-
+	/**
+	 * rotate the direction around another axis
+	 * @param axis the axis to rotate around
+	 * @return the rotated direction
+	 */
 	public PC_Direction getRotation(PC_Direction axis) {
 
 		return getOrientation(ROTATION_MATRIX[axis.ordinal()][ordinal()]);
 	}
 
+	/**
+	 * used for rotate a direction for a block with the block metadata
+	 * @param md the block metadata
+	 * @return the direction
+	 */
 	public PC_Direction rotateMD(int md){
 		return getOrientation(ROTATIONMD_MATRIX[md][ordinal()]);
 	}
 	
+	/**
+	 * gets the forge direction for this direction
+	 * @return the forge direction
+	 */
 	public ForgeDirection getForgeDirection(){
 		return ForgeDirection.getOrientation(ordinal());
 	}
 	
+	/**
+	 * gets the direction for the forge direction
+	 * @param forgeDirection the forge direction
+	 * @return the same PC direction
+	 */
 	public static PC_Direction getDirection(ForgeDirection forgeDirection){
 		return getOrientation(forgeDirection.ordinal());
 	}
 
-
+	/**
+	 * the direction in which a entity is walking mostly, or UNKNOWN if its not walking
+	 * @param entity the entity form witch to know the walk direction
+	 * @param considerY should also y-axis be included
+	 * @return the direction in which the entity is wallking
+	 */
 	public static PC_Direction getDirectionFromEntity(Entity entity, boolean considerY) {
 		double x = PC_MathHelper.abs_double(entity.motionX);
 		double y = PC_MathHelper.abs_double(entity.motionY);
@@ -133,11 +169,13 @@ public enum PC_Direction{
 		return tmp;
 	}
 	
+	/**
+	 * returns the names of the directions
+	 * @return the name of the direction
+	 */
 	@Override
-	public String toString()
-	{
-		switch (this)
-		{
+	public String toString(){
+		switch (this){
 			case NORTH:
 				return "North";
 			case EAST: 

@@ -12,18 +12,31 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-
+/**
+ * 
+ * the PowerCraft Logger
+ * 
+ * @author XOR
+ *
+ */
 public class PC_Logger {
-
+	
 	private static final Logger logger = Logger.getLogger("PowerCraft");
 
 	private static boolean loggingEnabled = true;
 
+	private static boolean inited;
+	
 	private static boolean printToStdout = false;
 
-
-	public static void init(File file) {
-
+	/**
+	 * inits the logger, called from PC_Api
+	 * @param file the PowerCraft .log file
+	 */
+	static void init(File file) {
+		if(inited)
+			return;
+		inited = true;
 		try {
 			FileHandler handler = new FileHandler(file.getPath());
 			handler.setFormatter(new PC_LogFormatter());
@@ -38,19 +51,30 @@ public class PC_Logger {
 		logger.info((new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")).format(new Date()));
 	}
 
-
+	/**
+	 * sets the logging enabled/disabled
+	 * @param flag the state
+	 */
 	public static void enableLogging(boolean flag) {
 
 		loggingEnabled = flag;
 	}
 
-
+	/**
+	 * sets the print to the console enabled/disabled
+	 * @param flag the state
+	 */
 	public static void setPrintToStdout(boolean printToStdout) {
 
 		PC_Logger.printToStdout = printToStdout;
 	}
 
-
+	/**
+	 * makes a log message
+	 * @param level the message level
+	 * @param msg the message
+	 * @param param the format parameters
+	 */
 	public static void log(Level level, String msg, Object... param) {
 
 		if (!loggingEnabled) {
@@ -59,43 +83,72 @@ public class PC_Logger {
 		logger.log(level, String.format(msg, param));
 	}
 
-
+	/**
+	 * makes a info message
+	 * @param msg the info message
+	 * @param param the format parameters
+	 */
 	public static void info(String msg, Object... param) {
 
 		log(Level.INFO, msg, param);
 	}
 
-
+	/**
+	 * makes a fine message
+	 * @param msg the fine message
+	 * @param param the format parameters
+	 */
 	public static void fine(String msg, Object... param) {
 
 		log(Level.FINE, msg, param);
 	}
 
-
+	/**
+	 * makes a finer message
+	 * @param msg the finer message
+	 * @param param the format parameters
+	 */
 	public static void finer(String msg, Object... param) {
 
 		log(Level.FINER, msg, param);
 	}
 
-
+	/**
+	 * makes a finest message
+	 * @param msg the finest message
+	 * @param param the format parameters
+	 */
 	public static void finest(String msg, Object... param) {
 
 		log(Level.FINEST, msg, param);
 	}
 
-
+	/**
+	 * makes a warning message
+	 * @param msg the warning message
+	 * @param param the format parameters
+	 */
 	public static void warning(String msg, Object... param) {
 
 		log(Level.WARNING, msg, param);
 	}
 
-
+	/**
+	 * makes a severe message
+	 * @param msg the severe message
+	 * @param param the format parameters
+	 */
 	public static void severe(String msg, Object... param) {
 
 		log(Level.SEVERE, msg, param);
 	}
 
-
+	/**
+	 * makes a throw
+	 * @param sourceClass the source class name
+	 * @param sourceMethod the method name
+	 * @param thrown the thrown object
+	 */
 	public static void throwing(String sourceClass, String sourceMethod, Throwable thrown) {
 
 		if (!loggingEnabled) {
@@ -105,6 +158,13 @@ public class PC_Logger {
 		logger.throwing(sourceClass, sourceMethod, thrown);
 	}
 
+	/**
+	 *
+	 * the log formatter
+	 *
+	 * @author MightyPork
+	 *
+	 */
 	private static class PC_LogFormatter extends Formatter {
 
 		private static final String nl = System.getProperty("line.separator");

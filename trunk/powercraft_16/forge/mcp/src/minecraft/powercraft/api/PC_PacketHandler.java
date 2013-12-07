@@ -21,17 +21,37 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
-@SuppressWarnings("unused") 
+/**
+ * 
+ * the main PacketHandler
+ * 
+ * @author XOR
+ *
+ */
 public class PC_PacketHandler implements IPacketHandler {
 
-	public static final int BLOCKDATA = 1, BLOCKMESSAGE = 2, GUIOPEN = 3, PACKETHANDLER = 4, PERMISSION_THINGS=5;
+	/**
+	 * Packet types
+	 */
+	public static final int BLOCKDATA = 1, BLOCKMESSAGE = 2, GUIOPEN = 3, PACKETHANDLER = 4, PERMISSION_THINGS = 5;
 
+	/**
+	 * registerd packet handlers
+	 */
 	private static HashMap<String, PC_IPacketHandler> packetHandlers = new HashMap<String, PC_IPacketHandler>();
 
+	/**
+	 * register a packethandler
+	 * @param name the name of the packethandler
+	 * @param packetHandler the packethandler
+	 */
 	public static void registerPacketHandler(String name, PC_IPacketHandler packetHandler){
 		packetHandlers.put(name, packetHandler);
 	}
 	
+	/**
+	 * called from forge on packet receive
+	 */
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
 
@@ -76,6 +96,7 @@ public class PC_PacketHandler implements IPacketHandler {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	protected void packetGuiOpen(World world, EntityPlayer player, DataInputStream dataInputStream) throws IOException {
 
 		PC_Logger.severe("Client %s tries to open gui", player.username);
@@ -109,11 +130,22 @@ public class PC_PacketHandler implements IPacketHandler {
 		((PC_Block) block).handleClientPermissionThings(world, x, y, z, readNBTTagCompound(dataInputStream), player);
 	}
 
+	/**
+	 * create a PowerCraft packet
+	 * @param byteArray the packet data bytes
+	 * @return the packet
+	 */
 	public static Packet250CustomPayload getPowerCraftPacket(byte[] byteArray) {
 
 		return new Packet250CustomPayload("PowerCraft", byteArray);
 	}
 
+	/**
+	 * 
+	 * @param packetHandler
+	 * @param nbtTagCompound
+	 * @return
+	 */
 	public static Packet250CustomPayload getPacketHandlerPacket(String packetHandler, NBTTagCompound nbtTagCompound){
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
@@ -129,6 +161,7 @@ public class PC_PacketHandler implements IPacketHandler {
 		return null;
 	}
 	
+	@SuppressWarnings("unused")
 	public static Packet250CustomPayload getBlockMessagePacket(World world, int x, int y, int z, NBTTagCompound nbtTagCompound){
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
@@ -228,6 +261,7 @@ public class PC_PacketHandler implements IPacketHandler {
 	}
 
 
+	@SuppressWarnings("unused")
 	public static Packet250CustomPayload getPermissionThingsPacket(World world, int x, int y, int z, NBTTagCompound nbtTagCompound) {
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
