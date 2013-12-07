@@ -1,0 +1,7 @@
+package xscript.lang;
+
+public class Long{
+
+	private final long value;
+
+}

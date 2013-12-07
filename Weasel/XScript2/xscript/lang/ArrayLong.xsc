@@ -1,0 +1,11 @@
+package xscript.lang;
+
+public final class ArrayLong{
+
+	public final int length;
+	
+	private ArrayLong(){
+		size = 0;
+	}
+
+}

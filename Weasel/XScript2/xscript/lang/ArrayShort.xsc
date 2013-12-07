@@ -1,0 +1,11 @@
+package xscript.lang;
+
+public final class ArrayShort{
+
+	public final int length;
+	
+	private ArrayShort(){
+		size = 0;
+	}
+
+}

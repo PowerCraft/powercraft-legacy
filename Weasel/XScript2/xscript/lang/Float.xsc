@@ -1,0 +1,7 @@
+package xscript.lang;
+
+public class Float{
+
+	private final float value;
+
+}

@@ -1,0 +1,11 @@
+package xscript.lang;
+
+public final class ArrayDouble{
+
+	public final int length;
+	
+	private ArrayDouble(){
+		size = 0;
+	}
+
+}

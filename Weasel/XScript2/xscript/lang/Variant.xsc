@@ -1,0 +1,18 @@
+package xscript.lang;
+
+/*
+ * Class that can be cast to all other classes. If it represents another class
+ * and a function is called, it will call invoke with the methodName and the
+ * parameters
+ * same for read and write fields
+ *
+ */
+public abstract class Variant{
+
+	public abstract Object invoke(String methodName, Object[] params);
+	
+	public abstract Object getValue(String fieldName);
+	
+	public abstract void setValue(String fieldName, Object value);
+
+}

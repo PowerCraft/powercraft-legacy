@@ -1,0 +1,11 @@
+package xscript.lang;
+
+public final class ArrayFloat{
+
+	public final int length;
+	
+	private ArrayFloat(){
+		size = 0;
+	}
+
+}

@@ -1,0 +1,11 @@
+package xscript.lang;
+
+public final class ArrayChar{
+
+	public final int length;
+	
+	private ArrayChar(){
+		size = 0;
+	}
+
+}
