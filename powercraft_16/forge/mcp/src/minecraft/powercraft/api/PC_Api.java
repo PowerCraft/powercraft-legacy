@@ -12,7 +12,13 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 
-
+/**
+ * 
+ * Mainmodule, all other PowerCraft modules will have this as dependencies
+ * 
+ * @author XOR
+ *
+ */
 @Mod(modid = PC_Api.NAME, name = PC_Api.NAME, version = PC_Api.VERSION, dependencies=PC_Api.DEPENDENCIES)
 @NetworkMod(clientSideRequired = true, serverPacketHandlerSpec = @SidedPacketHandler(channels = { PC_Module.POWERCRAFT }, packetHandler = PC_PacketHandler.class), clientPacketHandlerSpec = @SidedPacketHandler(channels = { PC_Module.POWERCRAFT }, packetHandler = PC_PacketHandlerClient.class))
 public class PC_Api extends PC_Module {

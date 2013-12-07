@@ -17,13 +17,20 @@ import powercraft.api.registries.PC_BlockRegistry;
 import powercraft.api.registries.PC_ItemRegistry;
 import powercraft.api.registries.PC_RecipeRegistry;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-
+/**
+ * 
+ * the base module class, all PowerCraft modules should extend this class
+ * 
+ * @author XOR
+ *
+ */
 public abstract class PC_Module {
 	
 	public static final String POWERCRAFT = "PowerCraft";
@@ -36,16 +43,28 @@ public abstract class PC_Module {
 	private List<PC_Block> blocks = new ArrayList<PC_Block>();
 	private List<PC_Item> items = new ArrayList<PC_Item>();
 
-
+	/**
+	 * forge preinit, when overridden, add @{@link EventHandler}
+	 * @param event the forge event
+	 */
 	public abstract void preInit(FMLPreInitializationEvent event);
 
-
+	/**
+	 * forge init, when overridden, add @{@link EventHandler}
+	 * @param event the forge event
+	 */
 	public abstract void init(FMLInitializationEvent event);
 
-
+	/**
+	 * forge postInit, when overridden, add @{@link EventHandler}
+	 * @param event the forge event
+	 */
 	public abstract void postInit(FMLPostInitializationEvent event);
 
-
+	/**
+	 * default preinit, should be called from preInit()
+	 * @param event the forge event
+	 */
 	protected void defaultPreInit(FMLPreInitializationEvent event) {
 
 		ModMetadata metadata = getMetadata();
@@ -62,11 +81,19 @@ public abstract class PC_Module {
 		if (metadata.modId != PC_Api.instance.getMetadata().modId) PC_Api.instance.getMetadata().childMods.add(getContainer());
 	}
 
+	/**
+	 * get the description of this module
+	 * @return the description
+	 */
 	protected String getDescription(){
 		return "";
 	}
 	
-	@SuppressWarnings("unused")
+	/**
+	 * default init, should be called from init()<br>
+	 * here all field with @{@link PC_FieldGenerator} will be created
+	 * @param event the forge event
+	 */
 	protected void defaultInit(FMLInitializationEvent event) {
 
 		for (PC_Block block : blocks) {
@@ -77,7 +104,9 @@ public abstract class PC_Module {
 		}
 	}
 
-
+	/**
+	 * generates the fields marked with @{@link PC_FieldGenerator}
+	 */
 	private void generateFields() {
 
 		Field[] fields = getClass().getDeclaredFields();
@@ -88,7 +117,10 @@ public abstract class PC_Module {
 		}
 	}
 
-
+	/**
+	 * generates a field marked with @{@link PC_FieldGenerator}
+	 * @param field the field to generate
+	 */
 	private void generateField(Field field) {
 
 		PC_FieldGenerator generator = field.getAnnotation(PC_FieldGenerator.class);
@@ -106,7 +138,10 @@ public abstract class PC_Module {
 		}
 	}
 
-
+	/**
+	 * generates a instance of a class
+	 * @param clazz the class form which a instance should be created
+	 */
 	@SuppressWarnings("unchecked")
 	private Object createClass(Class<?> clazz) throws InstantiationException, IllegalAccessException {
 
@@ -127,7 +162,10 @@ public abstract class PC_Module {
 		}
 	}
 
-
+	/**
+	 * get the {@link ModContainer} for this module
+	 * @return the modContainer or null if none
+	 */
 	public ModContainer getContainer() {
 
 		List<ModContainer> modContainers = Loader.instance().getModList();
@@ -139,20 +177,30 @@ public abstract class PC_Module {
 		return null;
 	}
 
-
+	/**
+	 * get the mod metadata
+	 * @return the metadata
+	 */
 	public ModMetadata getMetadata() {
 
 		ModContainer modContainer = getContainer();
+		if(modContainer==null)
+			return null;
 		return modContainer.getMetadata();
 	}
 
-
+	/**
+	 * returns the config of this module
+	 * @return the config
+	 */
 	public Configuration getConfig() {
 
 		return config;
 	}
 
-
+	/**
+	 * saves the changed config
+	 */
 	public void saveConfig() {
 
 		config.save();

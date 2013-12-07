@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * 
- * Maks fields wich should be saved, synced with client
+ * Maks fields which should be saved, synced with client
  * 
  * @author XOR
  *
@@ -36,7 +36,7 @@ public @interface PC_FieldDescription {
 	 * 
 	 * Should this field be saved when the world is be saved
 	 * 
-	 * @return indicates if it sould be saved
+	 * @return indicates if it should be saved
 	 */
 	public boolean save() default true;
 	
@@ -44,7 +44,7 @@ public @interface PC_FieldDescription {
 	 * 
 	 * Should this field be synced with the clients
 	 * 
-	 * @return indicates if it sould be synced
+	 * @return indicates if it should be synced
 	 */
 	public boolean sync() default false;
 	
@@ -52,7 +52,7 @@ public @interface PC_FieldDescription {
 	 * 
 	 * Should this field be synced with the clients which have the gui open
 	 * 
-	 * @return indicates if it sould be synced when the gui is open
+	 * @return indicates if it should be synced when the gui is open
 	 */
 	public boolean guiSync() default true;
 	

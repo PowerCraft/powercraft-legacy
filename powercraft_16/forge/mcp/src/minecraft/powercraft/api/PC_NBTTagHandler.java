@@ -18,17 +18,33 @@ import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 
 /**
+ * 
+ * NBTTag handler for saving and loading objects
+ * 
  * @author Aaron
  *
  */
 public class PC_NBTTagHandler {
 
+	/**
+	 * saves a object to an nbttag
+	 * @param nbtTagCompound the nbttag
+	 * @param name the key
+	 * @param value the object
+	 */
 	public static void saveToNBT(NBTTagCompound nbtTagCompound, String name, Object value){
 		NBTBase base = getObjectNBT(value);
 		if(base!=null)
 			nbtTagCompound.setTag(name, base);
 	}
 	
+	/**
+	 * create a nbt for a object<b>
+	 * can save base types, arrays, PC_INBT instances and Enum values
+	 * 
+	 * @param value the object
+	 * @return the generated nbt
+	 */
 	public static NBTBase getObjectNBT(Object value){
 		if(value==null)
 			return null;
@@ -100,15 +116,28 @@ public class PC_NBTTagHandler {
 		return null;
 	}
 	
-	public static Object loadFromNBT(NBTTagCompound nbtTagCompound, String name, Class<?> c){
+	/**
+	 * loads a object from a nbttag
+	 * @param nbtTagCompound the nbttag
+	 * @param name the key
+	 * @param c the expected object class
+	 * @return the object
+	 */
+	public static <T> T loadFromNBT(NBTTagCompound nbtTagCompound, String name, Class<T> c){
 		NBTBase base = nbtTagCompound.getTag(name);
 		if(base==null)
 			return null;
 		return getObjectFromNBT(base, c);
 	}
 
+	/**
+	 * loads a object from a nbt
+	 * @param base the nbt
+	 * @param c the expected object class
+	 * @return the object
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static Object getObjectFromNBT(NBTBase base, Class<?> c) {
+	public static <T> T getObjectFromNBT(NBTBase base, Class<T> c) {
 		if(base==null)
 			return null;
 		if(base instanceof NBTTagCompound){
@@ -117,25 +146,25 @@ public class PC_NBTTagHandler {
 			}
 		}
 		if(c==Boolean.class || c==boolean.class){
-			return ((NBTTagByte)base).data!=0;
+			return (T)(Boolean)(((NBTTagByte)base).data!=0);
 		}else if(c==Byte.class || c==byte.class){
-			return ((NBTTagByte)base).data;
+			return (T)(Byte)((NBTTagByte)base).data;
 		}else if(c==Short.class || c==short.class){
-			return ((NBTTagShort)base).data;
+			return (T)(Short)((NBTTagShort)base).data;
 		}else if(c==Integer.class || c==int.class){
-			return ((NBTTagInt)base).data;
+			return (T)(Integer)((NBTTagInt)base).data;
 		}else if(c==Long.class || c==long.class){
-			return ((NBTTagLong)base).data;
+			return (T)(Long)((NBTTagLong)base).data;
 		}else if(c==Float.class || c==float.class){
-			return ((NBTTagFloat)base).data;
+			return (T)(Float)((NBTTagFloat)base).data;
 		}else if(c==Double.class || c==double.class){
-			return ((NBTTagDouble)base).data;
+			return (T)(Double)((NBTTagDouble)base).data;
 		}else if(c==String.class){
-			return ((NBTTagString)base).data;
+			return (T)((NBTTagString)base).data;
 		}else if(c==int[].class){
-			return ((NBTTagIntArray)base).intArray;
+			return (T)((NBTTagIntArray)base).intArray;
 		}else if(c==byte[].class){
-			return ((NBTTagByteArray)base).byteArray;
+			return (T)((NBTTagByteArray)base).byteArray;
 		}else if(c.isArray()){
 			NBTTagList list = (NBTTagList) base;
 			int size = list.tagCount();
@@ -145,14 +174,14 @@ public class PC_NBTTagHandler {
 				NBTBase obj = list.tagAt(i);
 				Array.set(array, i, getObjectFromNBT(obj, ac));
 			}
-			return array;
+			return (T)array;
 		}else if(PC_INBT.class.isAssignableFrom(c)){
 			NBTTagCompound tag = (NBTTagCompound) base;
 			String cName = tag.getString("Class");
 			try {
 				Class<?> cc = Class.forName(cName);
 				Constructor<?> constr = cc.getConstructor(NBTTagCompound.class);
-				return constr.newInstance(tag);
+				return (T)constr.newInstance(tag);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				PC_Logger.severe("Can't find class %s form NBT save", cName);
@@ -181,7 +210,7 @@ public class PC_NBTTagHandler {
 			String eName = tag.getString("Enum");
 			try {
 				Class<? extends Enum> ec = (Class<? extends Enum>) Class.forName(eName);
-				return Enum.valueOf(ec, tag.getString("value"));
+				return (T)Enum.valueOf(ec, tag.getString("value"));
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				PC_Logger.severe("Can't find enum %s form NBT save", eName);
