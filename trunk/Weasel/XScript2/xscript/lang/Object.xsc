@@ -1,0 +1,17 @@
+package xscript.lang;
+
+public class Object{
+	
+	public native Class getClass();
+	
+	public bool equals(Object other){
+		return this==other;
+	}
+	
+	public native long hashCode();
+	
+	public String toString(){
+		return getClass().getName()+"@"+Integer.toHex(hashCode());
+	}
+	
+}

@@ -1,0 +1,11 @@
+package xscript.lang;
+
+public final class ArrayBoolean{
+
+	public final int length;
+	
+	private ArrayBoolean(){
+		size = 0;
+	}
+
+}

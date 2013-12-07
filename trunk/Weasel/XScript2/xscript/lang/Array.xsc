@@ -1,0 +1,13 @@
+package xscript.lang;
+
+public final class Array<T>{
+
+	public final int length;
+	
+	private Array(){
+		size = 0;
+	}
+
+	public T make(){}
+
+}

@@ -1,0 +1,11 @@
+package xscript.lang;
+
+public final class ArrayByte{
+
+	public final int length;
+	
+	private ArrayByte(){
+		size = 0;
+	}
+
+}

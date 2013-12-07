@@ -1,0 +1,5 @@
+package xscript.lang;
+
+public abstract class Annotation{
+	
+}

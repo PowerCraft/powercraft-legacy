@@ -1,0 +1,11 @@
+package xscript.lang;
+
+public final class String{
+
+	private final char[] value;
+
+	public int length(){
+		return value.length;
+	}
+
+}

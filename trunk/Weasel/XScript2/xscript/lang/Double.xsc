@@ -1,0 +1,7 @@
+package xscript.lang;
+
+public class Double{
+
+	private final double value;
+
+}

@@ -1,0 +1,11 @@
+package xscript.lang;
+
+public final class ArrayInt{
+
+	public final int length;
+	
+	private ArrayInt(){
+		size = 0;
+	}
+
+}

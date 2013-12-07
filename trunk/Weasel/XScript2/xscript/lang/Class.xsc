@@ -1,0 +1,10 @@
+package xscript.lang;
+
+public final class Class{
+
+	private Class(){
+	}
+
+	public String getName(){}
+
+}

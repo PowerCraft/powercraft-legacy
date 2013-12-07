@@ -1,0 +1,7 @@
+package xscript.lang;
+
+public class Char{
+
+	private final char value;
+
+}
